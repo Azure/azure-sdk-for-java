@@ -31,11 +31,17 @@ import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CheckNa
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ConfigurationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.DatabasesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.FirewallRulesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.FlexibleServersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.GetPrivateDnsZoneSuffixesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LocationBasedCapabilitiesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LogFilesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LtrBackupOperationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.MigrationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.OperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PostgreSqlManagementClientBuilder;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ReplicasImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ResourceProvidersImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerCapabilitiesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualNetworkSubnetUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Administrators;
@@ -45,10 +51,16 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvaila
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configurations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Databases;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FirewallRules;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.GetPrivateDnsZoneSuffixes;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LocationBasedCapabilities;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.LogFiles;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.LtrBackupOperations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Migrations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Operations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replicas;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ResourceProviders;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerCapabilities;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
 import java.time.Duration;
@@ -70,6 +82,8 @@ public final class PostgreSqlManager {
 
     private LocationBasedCapabilities locationBasedCapabilities;
 
+    private ServerCapabilities serverCapabilities;
+
     private CheckNameAvailabilities checkNameAvailabilities;
 
     private CheckNameAvailabilityWithLocations checkNameAvailabilityWithLocations;
@@ -82,13 +96,23 @@ public final class PostgreSqlManager {
 
     private Servers servers;
 
+    private Migrations migrations;
+
+    private ResourceProviders resourceProviders;
+
     private Operations operations;
 
     private GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes;
 
     private Replicas replicas;
 
+    private LogFiles logFiles;
+
     private VirtualNetworkSubnetUsages virtualNetworkSubnetUsages;
+
+    private FlexibleServers flexibleServers;
+
+    private LtrBackupOperations ltrBackupOperations;
 
     private final PostgreSqlManagementClient clientObject;
 
@@ -255,7 +279,7 @@ public final class PostgreSqlManager {
                 .append("-")
                 .append("com.azure.resourcemanager.postgresqlflexibleserver")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -350,6 +374,18 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of ServerCapabilities.
+     *
+     * @return Resource collection API of ServerCapabilities.
+     */
+    public ServerCapabilities serverCapabilities() {
+        if (this.serverCapabilities == null) {
+            this.serverCapabilities = new ServerCapabilitiesImpl(clientObject.getServerCapabilities(), this);
+        }
+        return serverCapabilities;
+    }
+
+    /**
      * Gets the resource collection API of CheckNameAvailabilities.
      *
      * @return Resource collection API of CheckNameAvailabilities.
@@ -424,6 +460,30 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of Migrations. It manages MigrationResource.
+     *
+     * @return Resource collection API of Migrations.
+     */
+    public Migrations migrations() {
+        if (this.migrations == null) {
+            this.migrations = new MigrationsImpl(clientObject.getMigrations(), this);
+        }
+        return migrations;
+    }
+
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
      *
      * @return Resource collection API of Operations.
@@ -461,6 +521,18 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of LogFiles.
+     *
+     * @return Resource collection API of LogFiles.
+     */
+    public LogFiles logFiles() {
+        if (this.logFiles == null) {
+            this.logFiles = new LogFilesImpl(clientObject.getLogFiles(), this);
+        }
+        return logFiles;
+    }
+
+    /**
      * Gets the resource collection API of VirtualNetworkSubnetUsages.
      *
      * @return Resource collection API of VirtualNetworkSubnetUsages.
@@ -471,6 +543,30 @@ public final class PostgreSqlManager {
                 new VirtualNetworkSubnetUsagesImpl(clientObject.getVirtualNetworkSubnetUsages(), this);
         }
         return virtualNetworkSubnetUsages;
+    }
+
+    /**
+     * Gets the resource collection API of FlexibleServers.
+     *
+     * @return Resource collection API of FlexibleServers.
+     */
+    public FlexibleServers flexibleServers() {
+        if (this.flexibleServers == null) {
+            this.flexibleServers = new FlexibleServersImpl(clientObject.getFlexibleServers(), this);
+        }
+        return flexibleServers;
+    }
+
+    /**
+     * Gets the resource collection API of LtrBackupOperations.
+     *
+     * @return Resource collection API of LtrBackupOperations.
+     */
+    public LtrBackupOperations ltrBackupOperations() {
+        if (this.ltrBackupOperations == null) {
+            this.ltrBackupOperations = new LtrBackupOperationsImpl(clientObject.getLtrBackupOperations(), this);
+        }
+        return ltrBackupOperations;
     }
 
     /**

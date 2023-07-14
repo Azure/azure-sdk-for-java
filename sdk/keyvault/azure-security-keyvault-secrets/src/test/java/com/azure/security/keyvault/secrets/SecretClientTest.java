@@ -7,9 +7,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
@@ -25,7 +23,6 @@ import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,16 +55,7 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        //skip paging and polling requests until their sync stack support is landed in azure-core.
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getSecrets")
-                || callerMethod.contains("getSecretVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("getDeletedSecrets")
-                || callerMethod.contains("recover"));
-        };
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
             .assertSync()
             .build();
     }

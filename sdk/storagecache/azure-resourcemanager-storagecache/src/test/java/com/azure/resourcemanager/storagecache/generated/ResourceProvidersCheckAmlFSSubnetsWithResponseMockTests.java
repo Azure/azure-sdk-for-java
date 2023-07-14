@@ -62,10 +62,10 @@ public final class ResourceProvidersCheckAmlFSSubnetsWithResponseMockTests {
             .resourceProviders()
             .checkAmlFSSubnetsWithResponse(
                 new AmlFilesystemSubnetInfo()
-                    .withFilesystemSubnet("epbqpcrfkbw")
-                    .withStorageCapacityTiB(94.3013F)
-                    .withSku(new SkuName().withName("vcdwxlpqekftn"))
-                    .withLocation("tjsyin"),
+                    .withFilesystemSubnet("xuqlcvydypat")
+                    .withStorageCapacityTiB(8.170676F)
+                    .withSku(new SkuName().withName("jkniodko"))
+                    .withLocation("bw"),
                 com.azure.core.util.Context.NONE);
     }
 }

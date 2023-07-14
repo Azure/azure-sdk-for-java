@@ -16,30 +16,21 @@ public final class BareMetalMachinePatchParametersTests {
         BareMetalMachinePatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"machineDetails\":\"tgdqohmcwsldriz\"},\"tags\":{\"zakakankjpdn\":\"wbralllibphbqzm\",\"xprimrsop\":\"zhajoylhjlmuo\",\"stvasylwxdzaumw\":\"eecjmeis\",\"fuzboyjathwtzolb\":\"oohgu\"}}")
+                    "{\"properties\":{\"machineDetails\":\"muvgp\"},\"tags\":{\"mhfbuzjy\":\"eqsx\",\"ypoh\":\"hsasbhu\"}}")
                 .toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("wbralllibphbqzm", model.tags().get("zakakankjpdn"));
-        Assertions.assertEquals("tgdqohmcwsldriz", model.machineDetails());
+        Assertions.assertEquals("eqsx", model.tags().get("mhfbuzjy"));
+        Assertions.assertEquals("muvgp", model.machineDetails());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachinePatchParameters model =
             new BareMetalMachinePatchParameters()
-                .withTags(
-                    mapOf(
-                        "zakakankjpdn",
-                        "wbralllibphbqzm",
-                        "xprimrsop",
-                        "zhajoylhjlmuo",
-                        "stvasylwxdzaumw",
-                        "eecjmeis",
-                        "fuzboyjathwtzolb",
-                        "oohgu"))
-                .withMachineDetails("tgdqohmcwsldriz");
+                .withTags(mapOf("mhfbuzjy", "eqsx", "ypoh", "hsasbhu"))
+                .withMachineDetails("muvgp");
         model = BinaryData.fromObject(model).toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("wbralllibphbqzm", model.tags().get("zakakankjpdn"));
-        Assertions.assertEquals("tgdqohmcwsldriz", model.machineDetails());
+        Assertions.assertEquals("eqsx", model.tags().get("mhfbuzjy"));
+        Assertions.assertEquals("muvgp", model.machineDetails());
     }
 
     @SuppressWarnings("unchecked")

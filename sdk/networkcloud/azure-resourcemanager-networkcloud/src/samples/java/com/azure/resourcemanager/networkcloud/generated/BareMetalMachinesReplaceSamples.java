@@ -10,7 +10,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplacePara
 /** Samples for BareMetalMachines Replace. */
 public final class BareMetalMachinesReplaceSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_Replace.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Replace.json
      */
     /**
      * Sample code: Replace bare metal machine.

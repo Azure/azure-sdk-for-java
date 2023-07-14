@@ -24,14 +24,6 @@ public final class ChatCompletions {
     private String id;
 
     /*
-     * The first timestamp associated with generation activity for this completions response,
-     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-     */
-    @Generated
-    @JsonProperty(value = "created")
-    private int created;
-
-    /*
      * The collection of completions choices associated with this completions response.
      * Generally, `n` choices are generated per provided prompt with a default value of 1.
      * Token limits and other settings may limit the number of choices generated.
@@ -51,7 +43,7 @@ public final class ChatCompletions {
      * Creates an instance of ChatCompletions class.
      *
      * @param id the id value to set.
-     * @param created the created value to set.
+     * @param createdAt the createdAt value to set.
      * @param choices the choices value to set.
      * @param usage the usage value to set.
      */
@@ -59,11 +51,11 @@ public final class ChatCompletions {
     @JsonCreator
     private ChatCompletions(
             @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") int created,
+            @JsonProperty(value = "created") int createdAt,
             @JsonProperty(value = "choices") List<ChatChoice> choices,
             @JsonProperty(value = "usage") CompletionsUsage usage) {
         this.id = id;
-        this.created = created;
+        this.createdAt = createdAt;
         this.choices = choices;
         this.usage = usage;
     }
@@ -76,17 +68,6 @@ public final class ChatCompletions {
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the created property: The first timestamp associated with generation activity for this completions response,
-     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-     *
-     * @return the created value.
-     */
-    @Generated
-    public int getCreated() {
-        return this.created;
     }
 
     /**
@@ -110,5 +91,43 @@ public final class ChatCompletions {
     @Generated
     public CompletionsUsage getUsage() {
         return this.usage;
+    }
+
+    /*
+     * The first timestamp associated with generation activity for this completions response,
+     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
+     */
+    @Generated
+    @JsonProperty(value = "created")
+    private int createdAt;
+
+    /**
+     * Get the createdAt property: The first timestamp associated with generation activity for this completions
+     * response, represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
+     *
+     * @return the createdAt value.
+     */
+    @Generated
+    public int getCreatedAt() {
+        return this.createdAt;
+    }
+
+    /*
+     * Content filtering results for zero or more prompts in the request. In a streaming request,
+     * results for different prompts may arrive at different times or in different orders.
+     */
+    @Generated
+    @JsonProperty(value = "prompt_annotations")
+    private List<PromptFilterResult> promptFilterResults;
+
+    /**
+     * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
+     * streaming request, results for different prompts may arrive at different times or in different orders.
+     *
+     * @return the promptFilterResults value.
+     */
+    @Generated
+    public List<PromptFilterResult> getPromptFilterResults() {
+        return this.promptFilterResults;
     }
 }

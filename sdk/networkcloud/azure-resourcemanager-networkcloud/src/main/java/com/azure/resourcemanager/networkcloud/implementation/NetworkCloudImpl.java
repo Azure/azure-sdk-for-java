@@ -22,6 +22,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.networkcloud.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.networkcloud.fluent.BareMetalMachineKeySetsClient;
 import com.azure.resourcemanager.networkcloud.fluent.BareMetalMachinesClient;
 import com.azure.resourcemanager.networkcloud.fluent.BmcKeySetsClient;
@@ -29,8 +30,7 @@ import com.azure.resourcemanager.networkcloud.fluent.CloudServicesNetworksClient
 import com.azure.resourcemanager.networkcloud.fluent.ClusterManagersClient;
 import com.azure.resourcemanager.networkcloud.fluent.ClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.ConsolesClient;
-import com.azure.resourcemanager.networkcloud.fluent.DefaultCniNetworksClient;
-import com.azure.resourcemanager.networkcloud.fluent.HybridAksClustersClient;
+import com.azure.resourcemanager.networkcloud.fluent.KubernetesClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.L2NetworksClient;
 import com.azure.resourcemanager.networkcloud.fluent.L3NetworksClient;
 import com.azure.resourcemanager.networkcloud.fluent.MetricsConfigurationsClient;
@@ -54,11 +54,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the NetworkCloudImpl type. */
 @ServiceClient(builder = NetworkCloudBuilder.class)
 public final class NetworkCloudImpl implements NetworkCloud {
-    /** The ID of the target subscription. */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -186,28 +186,16 @@ public final class NetworkCloudImpl implements NetworkCloud {
         return this.clusters;
     }
 
-    /** The DefaultCniNetworksClient object to access its operations. */
-    private final DefaultCniNetworksClient defaultCniNetworks;
+    /** The KubernetesClustersClient object to access its operations. */
+    private final KubernetesClustersClient kubernetesClusters;
 
     /**
-     * Gets the DefaultCniNetworksClient object to access its operations.
+     * Gets the KubernetesClustersClient object to access its operations.
      *
-     * @return the DefaultCniNetworksClient object.
+     * @return the KubernetesClustersClient object.
      */
-    public DefaultCniNetworksClient getDefaultCniNetworks() {
-        return this.defaultCniNetworks;
-    }
-
-    /** The HybridAksClustersClient object to access its operations. */
-    private final HybridAksClustersClient hybridAksClusters;
-
-    /**
-     * Gets the HybridAksClustersClient object to access its operations.
-     *
-     * @return the HybridAksClustersClient object.
-     */
-    public HybridAksClustersClient getHybridAksClusters() {
-        return this.hybridAksClusters;
+    public KubernetesClustersClient getKubernetesClusters() {
+        return this.kubernetesClusters;
     }
 
     /** The L2NetworksClient object to access its operations. */
@@ -342,6 +330,18 @@ public final class NetworkCloudImpl implements NetworkCloud {
         return this.metricsConfigurations;
     }
 
+    /** The AgentPoolsClient object to access its operations. */
+    private final AgentPoolsClient agentPools;
+
+    /**
+     * Gets the AgentPoolsClient object to access its operations.
+     *
+     * @return the AgentPoolsClient object.
+     */
+    public AgentPoolsClient getAgentPools() {
+        return this.agentPools;
+    }
+
     /** The ConsolesClient object to access its operations. */
     private final ConsolesClient consoles;
 
@@ -361,7 +361,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     NetworkCloudImpl(
@@ -376,14 +376,13 @@ public final class NetworkCloudImpl implements NetworkCloud {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-12-12-preview";
+        this.apiVersion = "2023-05-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.bareMetalMachines = new BareMetalMachinesClientImpl(this);
         this.cloudServicesNetworks = new CloudServicesNetworksClientImpl(this);
         this.clusterManagers = new ClusterManagersClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
-        this.defaultCniNetworks = new DefaultCniNetworksClientImpl(this);
-        this.hybridAksClusters = new HybridAksClustersClientImpl(this);
+        this.kubernetesClusters = new KubernetesClustersClientImpl(this);
         this.l2Networks = new L2NetworksClientImpl(this);
         this.l3Networks = new L3NetworksClientImpl(this);
         this.rackSkus = new RackSkusClientImpl(this);
@@ -395,6 +394,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
         this.bareMetalMachineKeySets = new BareMetalMachineKeySetsClientImpl(this);
         this.bmcKeySets = new BmcKeySetsClientImpl(this);
         this.metricsConfigurations = new MetricsConfigurationsClientImpl(this);
+        this.agentPools = new AgentPoolsClientImpl(this);
         this.consoles = new ConsolesClientImpl(this);
     }
 

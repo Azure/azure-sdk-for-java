@@ -4,6 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,6 +15,31 @@ import java.util.Map;
 /** A policy that defines actions to execute when exception are triggered. */
 @Fluent
 public final class ExceptionPolicy {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
+    public ExceptionPolicy(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param internal The internal ExceptionPolicy
+     */
+    ExceptionPolicy(ExceptionPolicyInternal internal) {
+        id = internal.getId();
+
+        setName(internal.getName());
+        setExceptionRules(ExceptionPolicyAdapter.convertExceptionRulesToPublic(internal.getExceptionRules()));
+    }
+
+    static {
+        ExceptionPolicyConstructorProxy.setAccessor(internal -> new ExceptionPolicy(internal));
+    }
+
     /*
      * The Id of the exception policy
      */

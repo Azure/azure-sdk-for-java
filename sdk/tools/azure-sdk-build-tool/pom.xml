@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-            <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+            <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
         </dependency>
 
         <!-- Unit Test -->
@@ -160,7 +160,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+                <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -178,7 +178,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>copy</id>
@@ -199,7 +199,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>

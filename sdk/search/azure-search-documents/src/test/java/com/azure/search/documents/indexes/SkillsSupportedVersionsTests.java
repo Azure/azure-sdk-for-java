@@ -25,6 +25,7 @@ public class SkillsSupportedVersionsTests {
         assertThrows(IllegalArgumentException.class, executable);
     }
 
+    @SuppressWarnings("deprecation")
     static Stream<Executable> throwsAsExpectedSupplier() {
         return Stream.of(
             // V1 doesn't support setting a model version.
@@ -48,6 +49,7 @@ public class SkillsSupportedVersionsTests {
         assertDoesNotThrow(executable);
     }
 
+    @SuppressWarnings("deprecation")
     static Stream<Executable> doesNotThrowAsExpectedSupplier() {
         // Setting null values are fine.
         return Stream.of(
