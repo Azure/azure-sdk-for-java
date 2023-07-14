@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metricsnamespaces.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Kind of namespace. */
@@ -33,7 +32,6 @@ public final class NamespaceClassification extends ExpandableStringEnum<Namespac
      * @param name a name to look for.
      * @return the corresponding NamespaceClassification.
      */
-    @JsonCreator
     public static NamespaceClassification fromString(String name) {
         return fromString(name, NamespaceClassification.class);
     }

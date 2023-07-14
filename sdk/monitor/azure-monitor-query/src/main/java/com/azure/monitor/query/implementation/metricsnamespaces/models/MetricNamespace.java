@@ -5,39 +5,39 @@
 package com.azure.monitor.query.implementation.metricsnamespaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
 /** Metric namespace class specifies the metadata for a metric namespace. */
 @Fluent
-public final class MetricNamespace {
+public final class MetricNamespace implements JsonSerializable<MetricNamespace> {
     /*
      * The ID of the metric namespace.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The type of the namespace.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The escaped name of the namespace.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Kind of namespace
      */
-    @JsonProperty(value = "classification")
     private NamespaceClassification classification;
 
     /*
      * Properties which include the fully qualified namespace name.
      */
-    @JsonProperty(value = "properties")
     private MetricNamespaceName properties;
 
     /** Creates an instance of MetricNamespace class. */
@@ -152,5 +152,52 @@ public final class MetricNamespace {
         if (getProperties() != null) {
             getProperties().validate();
         }
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("classification", Objects.toString(this.classification, null));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricNamespace from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricNamespace if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricNamespace.
+     */
+    public static MetricNamespace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    MetricNamespace deserializedMetricNamespace = new MetricNamespace();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("id".equals(fieldName)) {
+                            deserializedMetricNamespace.id = reader.getString();
+                        } else if ("type".equals(fieldName)) {
+                            deserializedMetricNamespace.type = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            deserializedMetricNamespace.name = reader.getString();
+                        } else if ("classification".equals(fieldName)) {
+                            deserializedMetricNamespace.classification =
+                                    NamespaceClassification.fromString(reader.getString());
+                        } else if ("properties".equals(fieldName)) {
+                            deserializedMetricNamespace.properties = MetricNamespaceName.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedMetricNamespace;
+                });
     }
 }

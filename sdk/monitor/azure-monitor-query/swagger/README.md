@@ -21,6 +21,7 @@ client-side-validations: true
 artifact-id: azure-monitor-query
 disable-client-builder: true
 enable-sync-stack: true
+stream-style-serialization: true
 ```
 
 ## Log Query 
@@ -53,6 +54,8 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dba6ed1
 namespace: com.azure.monitor.query.implementation.metricsnamespaces
 ```
 
+### Rename service client to MetricsNamespacesClient
+
 ``` yaml $(tag) == 'package-metrics-namespaces'
 directive:
 - from: swagger-document
@@ -69,6 +72,8 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dba6ed1
 service-name: MetricsDefinitions
 namespace: com.azure.monitor.query.implementation.metricsdefinitions
 ```
+
+### Rename service client to MetricsDefinitionsClient
 
 ``` yaml $(tag) == 'package-metrics-definitions'
 directive:

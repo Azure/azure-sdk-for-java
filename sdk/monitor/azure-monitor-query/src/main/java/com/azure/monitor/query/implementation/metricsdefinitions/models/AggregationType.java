@@ -4,9 +4,6 @@
 
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** the aggregation type of the metric. */
 public enum AggregationType {
     /** Enum value None. */
@@ -40,7 +37,6 @@ public enum AggregationType {
      * @param value the serialized value to parse.
      * @return the parsed AggregationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AggregationType fromString(String value) {
         if (value == null) {
             return null;
@@ -55,7 +51,6 @@ public enum AggregationType {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -4,7 +4,7 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for LogsColumnType. */
@@ -45,7 +45,6 @@ public final class LogsColumnType extends ExpandableStringEnum<LogsColumnType> {
      * @param name a name to look for.
      * @return the corresponding LogsColumnType.
      */
-    @JsonCreator
     public static LogsColumnType fromString(String name) {
         return fromString(name, LogsColumnType.class);
     }

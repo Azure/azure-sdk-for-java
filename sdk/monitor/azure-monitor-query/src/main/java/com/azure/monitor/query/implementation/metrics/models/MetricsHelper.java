@@ -22,6 +22,7 @@ import com.azure.monitor.query.models.NamespaceClassification;
 import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -60,12 +61,13 @@ public final class MetricsHelper {
      * Accessor interface
      */
     public interface MetricNamespaceAccessor {
-        void setMetricNamespaceProperties(MetricNamespace metricNamespace, NamespaceClassification classification, String id, String name,
-                                          String fullyQualifiedName, String type);
+        void setMetricNamespaceProperties(MetricNamespace metricNamespace, NamespaceClassification classification,
+                                          String id, String name, String fullyQualifiedName, String type);
     }
 
     /**
      * Sets the accessor instance.
+     *
      * @param metricDefinitionAccessor the accessor instance
      */
     public static void setMetricDefinitionAccessor(final MetricDefinitionAccessor metricDefinitionAccessor) {
@@ -88,72 +90,88 @@ public final class MetricsHelper {
                                                      List<AggregationType> supportedAggregationTypes,
                                                      List<MetricAvailability> metricAvailabilities, String id,
                                                      List<String> dimensions) {
-        metricDefinitionAccessor.setMetricDefinitionProperties(metricDefinition, dimensionRequired, resourceId, namespace,
-                name, displayDescription, category, metricClass, unit, primaryAggregationType,
-                supportedAggregationTypes, metricAvailabilities, id, dimensions);
+        metricDefinitionAccessor.setMetricDefinitionProperties(metricDefinition, dimensionRequired, resourceId,
+            namespace, name, displayDescription, category, metricClass, unit, primaryAggregationType,
+            supportedAggregationTypes, metricAvailabilities, id, dimensions);
     }
 
     public static void setMetricAvailabilityProperties(MetricAvailability metricAvailability, Duration retention,
                                                        Duration granularity) {
         metricAvailabilityAccessor.setMetricAvailabilityProperties(metricAvailability, retention, granularity);
-
     }
 
-    public static void setMetricNamespaceProperties(MetricNamespace metricNamespace, NamespaceClassification classification, String id, String name,
+    public static void setMetricNamespaceProperties(MetricNamespace metricNamespace,
+                                                    NamespaceClassification classification, String id, String name,
                                                     String fullyQualifiedName, String type) {
         metricNamespaceAccessor.setMetricNamespaceProperties(metricNamespace, classification, id, name,
-                fullyQualifiedName, type);
-
+            fullyQualifiedName, type);
     }
 
     public static Response<MetricsQueryResult> convertToMetricsQueryResult(Response<MetricsResponse> response) {
         MetricsResponse metricsResponse = response.getValue();
-        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(
-            metricsResponse.getCost(),
-            metricsResponse.getTimespan() == null ? null : QueryTimeInterval.parse(metricsResponse.getTimespan()),
-            metricsResponse.getInterval(),
-            metricsResponse.getNamespace(), metricsResponse.getResourceregion(), mapMetrics(metricsResponse.getValue()));
 
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), metricsQueryResult);
+        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(metricsResponse.getCost(),
+            metricsResponse.getTimespan() == null ? null : QueryTimeInterval.parse(metricsResponse.getTimespan()),
+            metricsResponse.getInterval(), metricsResponse.getNamespace(), metricsResponse.getResourceregion(),
+            mapMetrics(metricsResponse.getValue()));
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            metricsQueryResult);
     }
 
     public static List<MetricResult> mapMetrics(List<Metric> value) {
-        return value.stream()
-            .map(metric -> {
-                MetricUnit metricUnit = metric.getUnit() == null ? null : MetricUnit.fromString(metric.getUnit().toString());
-                return new MetricResult(metric.getId(), metric.getType(),
-                    metricUnit,
-                    metric.getName().getValue(),
-                    mapTimeSeries(metric.getTimeseries()), metric.getDisplayDescription(),
-                    new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
-            })
-            .collect(Collectors.toList());
+        List<MetricResult> metricResults = new ArrayList<>(value.size());
+
+        for (Metric metric : value) {
+            MetricUnit metricUnit = metric.getUnit() == null ? null
+                : MetricUnit.fromString(metric.getUnit().toString());
+            metricResults.add(new MetricResult(metric.getId(), metric.getType(),
+                metricUnit,
+                metric.getName().getValue(),
+                mapTimeSeries(metric.getTimeseries()), metric.getDisplayDescription(),
+                new ResponseError(metric.getErrorCode(), metric.getErrorMessage())));
+        }
+
+        return metricResults;
     }
 
-    public static List<com.azure.monitor.query.models.TimeSeriesElement> mapTimeSeries(List<com.azure.monitor.query.implementation.metrics.models.TimeSeriesElement> timeseries) {
-        return timeseries.stream()
-            .map(timeSeriesElement -> new com.azure.monitor.query.models.TimeSeriesElement(mapMetricsData(timeSeriesElement.getData()),
-                mapMetricsMetadata(timeSeriesElement.getMetadatavalues())))
-            .collect(Collectors.toList());
+    public static List<com.azure.monitor.query.models.TimeSeriesElement> mapTimeSeries(
+        List<com.azure.monitor.query.implementation.metrics.models.TimeSeriesElement> timeseries) {
+        List<com.azure.monitor.query.models.TimeSeriesElement> mappedTimeSeries =  new ArrayList<>(timeseries.size());
+
+        for (com.azure.monitor.query.implementation.metrics.models.TimeSeriesElement timeSeriesElement : timeseries) {
+            mappedTimeSeries.add(new com.azure.monitor.query.models.TimeSeriesElement(
+                mapMetricsData(timeSeriesElement.getData()),
+                mapMetricsMetadata(timeSeriesElement.getMetadatavalues())));
+        }
+
+        return mappedTimeSeries;
     }
 
     public static Map<String, String> mapMetricsMetadata(List<MetadataValue> metadataValues) {
         if (metadataValues == null) {
             return null;
         }
+
         return metadataValues.stream()
             .collect(Collectors.toMap(value -> value.getName().getValue(), MetadataValue::getValue));
     }
 
-    public static List<com.azure.monitor.query.models.MetricValue> mapMetricsData(List<com.azure.monitor.query.implementation.metrics.models.MetricValue> data) {
-        return data.stream()
-            .map(metricValue -> new com.azure.monitor.query.models.MetricValue(metricValue.getTimeStamp(),
+    public static List<com.azure.monitor.query.models.MetricValue> mapMetricsData(
+        List<com.azure.monitor.query.implementation.metrics.models.MetricValue> data) {
+        List<com.azure.monitor.query.models.MetricValue> metricValues = new ArrayList<>(data.size());
+
+        for (com.azure.monitor.query.implementation.metrics.models.MetricValue metricValue : data) {
+            metricValues.add(new com.azure.monitor.query.models.MetricValue(metricValue.getTimeStamp(),
                 metricValue.getAverage(), metricValue.getMinimum(), metricValue.getMaximum(), metricValue.getTotal(),
-                metricValue.getCount()))
-            .collect(Collectors.toList());
+                metricValue.getCount()));
+        }
+
+        return metricValues;
     }
 
-    public static MetricNamespace mapMetricNamespace(com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace namespaceImpl) {
+    public static MetricNamespace mapMetricNamespace(
+        com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace namespaceImpl) {
         MetricNamespace metricNamespace = new MetricNamespace();
         NamespaceClassification classification = namespaceImpl.getClassification() == null
             ? null
@@ -166,15 +184,18 @@ public final class MetricsHelper {
         return metricNamespace;
     }
 
-    public static MetricDefinition mapToMetricDefinition(com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition definition) {
+    public static MetricDefinition mapToMetricDefinition(
+        com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition definition) {
         MetricDefinition metricDefinition = new MetricDefinition();
         List<String> dimensions = null;
         if (!CoreUtils.isNullOrEmpty(definition.getDimensions())) {
             dimensions = definition.getDimensions().stream().map(LocalizableString::getValue)
                 .collect(Collectors.toList());
         }
-        MetricClass metricClass = definition.getMetricClass() == null ? null : MetricClass.fromString(definition.getMetricClass().toString());
-        MetricUnit metricUnit = definition.getUnit() == null ? null : MetricUnit.fromString(definition.getUnit().toString());
+        MetricClass metricClass = definition.getMetricClass() == null ? null
+            : MetricClass.fromString(definition.getMetricClass().toString());
+        MetricUnit metricUnit = definition.getUnit() == null ? null
+            : MetricUnit.fromString(definition.getUnit().toString());
         AggregationType primaryAggregationType = definition.getPrimaryAggregationType() == null
             ? null
             : AggregationType.fromString(definition.getPrimaryAggregationType().toString());
@@ -194,14 +215,19 @@ public final class MetricsHelper {
         return metricDefinition;
     }
 
-    private static List<MetricAvailability> mapMetricAvailabilities(List<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability> metricAvailabilities) {
-        return metricAvailabilities.stream()
-            .map(availabilityImpl -> {
-                MetricAvailability metricAvailability = new MetricAvailability();
-                MetricsHelper.setMetricAvailabilityProperties(metricAvailability, availabilityImpl.getRetention(),
-                    availabilityImpl.getTimeGrain());
-                return metricAvailability;
-            }).collect(Collectors.toList());
+    private static List<MetricAvailability> mapMetricAvailabilities(
+        List<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability> metricAvailabilities) {
+        List<MetricAvailability> mappedMetricAvailabilities = new ArrayList<>(metricAvailabilities.size());
+
+        for (com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability availabilityImpl
+            : metricAvailabilities) {
+            MetricAvailability metricAvailability = new MetricAvailability();
+            MetricsHelper.setMetricAvailabilityProperties(metricAvailability, availabilityImpl.getRetention(),
+                availabilityImpl.getTimeGrain());
+            mappedMetricAvailabilities.add(metricAvailability);
+        }
+
+        return mappedMetricAvailabilities;
     }
 
     private MetricsHelper() {

@@ -5,49 +5,48 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /** An single request in a batch. */
 @Fluent
-public final class BatchQueryRequest {
+public final class BatchQueryRequest implements JsonSerializable<BatchQueryRequest> {
     /*
      * The error details.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * Dictionary of <string>
      */
-    @JsonProperty(value = "headers")
     private Map<String, String> headers;
 
     /*
      * The Analytics query. Learn more about the [Analytics query
      * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
      */
-    @JsonProperty(value = "body", required = true)
-    private QueryBody body;
+    private final QueryBody body;
 
     /*
      * The path property.
      */
-    @JsonProperty(value = "path")
     private String path = "/query";
 
     /*
      * The method property.
      */
-    @JsonProperty(value = "method")
     private String method = "POST";
 
     /*
      * Workspace Id to be included in the query
      */
-    @JsonProperty(value = "workspace", required = true)
-    private String workspace;
+    private final String workspace;
 
     /**
      * Creates an instance of BatchQueryRequest class.
@@ -56,11 +55,7 @@ public final class BatchQueryRequest {
      * @param body the body value to set.
      * @param workspace the workspace value to set.
      */
-    @JsonCreator
-    public BatchQueryRequest(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "body", required = true) QueryBody body,
-            @JsonProperty(value = "workspace", required = true) String workspace) {
+    public BatchQueryRequest(String id, QueryBody body, String workspace) {
         path = "/query";
         method = "POST";
         this.id = id;
@@ -173,5 +168,85 @@ public final class BatchQueryRequest {
         if (getWorkspace() == null) {
             throw new IllegalArgumentException("Missing required property workspace in model BatchQueryRequest");
         }
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeStringField("workspace", this.workspace);
+        jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("method", this.method);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchQueryRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchQueryRequest if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchQueryRequest.
+     */
+    public static BatchQueryRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean idFound = false;
+                    String id = null;
+                    boolean bodyFound = false;
+                    QueryBody body = null;
+                    boolean workspaceFound = false;
+                    String workspace = null;
+                    Map<String, String> headers = null;
+                    String path = null;
+                    String method = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("id".equals(fieldName)) {
+                            id = reader.getString();
+                            idFound = true;
+                        } else if ("body".equals(fieldName)) {
+                            body = QueryBody.fromJson(reader);
+                            bodyFound = true;
+                        } else if ("workspace".equals(fieldName)) {
+                            workspace = reader.getString();
+                            workspaceFound = true;
+                        } else if ("headers".equals(fieldName)) {
+                            headers = reader.readMap(reader1 -> reader1.getString());
+                        } else if ("path".equals(fieldName)) {
+                            path = reader.getString();
+                        } else if ("method".equals(fieldName)) {
+                            method = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (idFound && bodyFound && workspaceFound) {
+                        BatchQueryRequest deserializedBatchQueryRequest = new BatchQueryRequest(id, body, workspace);
+                        deserializedBatchQueryRequest.headers = headers;
+                        deserializedBatchQueryRequest.path = path;
+                        deserializedBatchQueryRequest.method = method;
+
+                        return deserializedBatchQueryRequest;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!idFound) {
+                        missingProperties.add("id");
+                    }
+                    if (!bodyFound) {
+                        missingProperties.add("body");
+                    }
+                    if (!workspaceFound) {
+                        missingProperties.add("workspace");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

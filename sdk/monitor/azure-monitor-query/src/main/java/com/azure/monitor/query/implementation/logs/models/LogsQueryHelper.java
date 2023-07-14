@@ -8,7 +8,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.monitor.query.LogsQueryAsyncClient;
@@ -59,6 +58,7 @@ public final class LogsQueryHelper {
 
     /**
      * Sets the accessor instance.
+     *
      * @param batchQueryAccessor the accessor instance
      */
     public static void setAccessor(final BatchQueryAccessor batchQueryAccessor) {
@@ -67,6 +67,7 @@ public final class LogsQueryHelper {
 
     /**
      * Returns the list of batch queries.
+     *
      * @param query the {@link LogsBatchQuery} to access {@link @BatchQueryRequest} from.
      * @return the list of batch queries.
      */
@@ -98,7 +99,7 @@ public final class LogsQueryHelper {
             sb.append(options.getServerTimeout().getSeconds());
         }
 
-        return sb.toString().isEmpty() ? null : sb.toString();
+        return sb.length() == 0 ? null : sb.toString();
     }
 
     /**
@@ -106,62 +107,62 @@ public final class LogsQueryHelper {
      * reflectively accessible and the names should match the column names. If the table row contains columns that
      * are not available on the object, they are ignored and similarly if the fields in the object are not found in
      * the table columns, they will be null.
+     *
      * @param table The table that contains the query result.
-     * @param type The type of the object to be returned
-     * @param <T> The class type.
+     * @param type  The type of the object to be returned
+     * @param <T>   The class type.
      * @return A list of objects that table is mapped to.
      * @throws IllegalArgumentException if an instance of the object cannot be created.
      */
     public static <T> List<T> toObject(LogsTable table, Class<T> type) {
-        List<T> result = new ArrayList<>();
+        List<T> result = new ArrayList<>(table.getRows().size());
+
+        Map<String, Field> declaredFieldMapping = Arrays.stream(type.getDeclaredFields())
+            .collect(Collectors.toMap(field -> field.getName().toLowerCase(Locale.ROOT), field -> field));
+
         for (LogsTableRow tableRow : table.getRows()) {
             try {
                 T t = type.newInstance();
 
-                Map<String, Field> declaredFieldMapping = Arrays.stream(type.getDeclaredFields())
-                        .collect(Collectors.toMap(field -> field.getName().toLowerCase(Locale.ROOT), field -> field));
-
-                tableRow.getRow().stream()
-                        .forEach(tableCell -> {
-                            String columnName = tableCell.getColumnName();
-                            try {
-                                Field field = declaredFieldMapping.get(columnName.toLowerCase(Locale.ROOT));
-                                if (field == null) {
-                                    return;
-                                }
-                                field.setAccessible(true);
-                                if (tableCell.getColumnType() == LogsColumnType.BOOL) {
-                                    field.set(t, tableCell.getValueAsBoolean());
-                                } else if (tableCell.getColumnType() == LogsColumnType.DATETIME) {
-                                    field.set(t, tableCell.getValueAsDateTime());
-                                } else if (tableCell.getColumnType() == LogsColumnType.DYNAMIC) {
-                                    if (tableCell.getValueAsDynamic() != null) {
-                                        field.set(t,
-                                                tableCell.getValueAsDynamic()
-                                                        .toObject(TypeReference.createInstance(field.getType())));
-                                    }
-                                } else if (tableCell.getColumnType() == LogsColumnType.INT) {
-                                    field.set(t, tableCell.getValueAsInteger());
-                                } else if (tableCell.getColumnType() == LogsColumnType.LONG) {
-                                    field.set(t, tableCell.getValueAsLong());
-                                } else if (tableCell.getColumnType() == LogsColumnType.REAL
-                                        || tableCell.getColumnType() == LogsColumnType.DECIMAL) {
-                                    field.set(t, tableCell.getValueAsDouble());
-                                } else if (tableCell.getColumnType() == LogsColumnType.STRING
-                                        || tableCell.getColumnType() == LogsColumnType.GUID
-                                        || tableCell.getColumnType() == LogsColumnType.TIMESPAN) {
-                                    field.set(t, tableCell.getValueAsString());
-                                }
-                                field.setAccessible(false);
-                            } catch (IllegalAccessException ex) {
-                                throw LOGGER.logExceptionAsError(
-                                        new IllegalArgumentException("Failed to set column value for " + columnName, ex));
+                tableRow.getRow().forEach(tableCell -> {
+                    String columnName = tableCell.getColumnName();
+                    try {
+                        Field field = declaredFieldMapping.get(columnName.toLowerCase(Locale.ROOT));
+                        if (field == null) {
+                            return;
+                        }
+                        field.setAccessible(true);
+                        if (tableCell.getColumnType() == LogsColumnType.BOOL) {
+                            field.set(t, tableCell.getValueAsBoolean());
+                        } else if (tableCell.getColumnType() == LogsColumnType.DATETIME) {
+                            field.set(t, tableCell.getValueAsDateTime());
+                        } else if (tableCell.getColumnType() == LogsColumnType.DYNAMIC) {
+                            if (tableCell.getValueAsDynamic() != null) {
+                                field.set(t, tableCell.getValueAsDynamic()
+                                    .toObject(TypeReference.createInstance(field.getType())));
                             }
-                        });
+                        } else if (tableCell.getColumnType() == LogsColumnType.INT) {
+                            field.set(t, tableCell.getValueAsInteger());
+                        } else if (tableCell.getColumnType() == LogsColumnType.LONG) {
+                            field.set(t, tableCell.getValueAsLong());
+                        } else if (tableCell.getColumnType() == LogsColumnType.REAL
+                            || tableCell.getColumnType() == LogsColumnType.DECIMAL) {
+                            field.set(t, tableCell.getValueAsDouble());
+                        } else if (tableCell.getColumnType() == LogsColumnType.STRING
+                            || tableCell.getColumnType() == LogsColumnType.GUID
+                            || tableCell.getColumnType() == LogsColumnType.TIMESPAN) {
+                            field.set(t, tableCell.getValueAsString());
+                        }
+                        field.setAccessible(false);
+                    } catch (IllegalAccessException ex) {
+                        throw LOGGER.logExceptionAsError(
+                            new IllegalArgumentException("Failed to set column value for " + columnName, ex));
+                    }
+                });
                 result.add(t);
             } catch (InstantiationException | IllegalAccessException ex) {
                 throw LOGGER.logExceptionAsError(
-                        new IllegalArgumentException("Cannot create an instance of class " + type.getName(), ex));
+                    new IllegalArgumentException("Cannot create an instance of class " + type.getName(), ex));
             }
         }
         return result;
@@ -181,7 +182,7 @@ public final class LogsQueryHelper {
             return timeInterval.getStartTime() + "/" + timeInterval.getDuration();
         }
 
-        if (timeInterval.getDuration()!= null && timeInterval.getEndTime() != null) {
+        if (timeInterval.getDuration() != null && timeInterval.getEndTime() != null) {
             return timeInterval.getDuration() + "/" + timeInterval.getEndTime();
         }
 
@@ -213,18 +214,19 @@ public final class LogsQueryHelper {
     }
 
     public static LogsQueryResult getLogsQueryResult(List<Table> innerTables, Object innerStats,
-                                               Object innerVisualization, ErrorInfo innerError) {
+                                                     Object innerVisualization, ErrorInfo innerError) {
         List<LogsTable> tables = null;
 
         if (innerTables != null) {
-            tables = new ArrayList<>();
+            tables = new ArrayList<>(innerTables.size());
             for (Table table : innerTables) {
+                List<List<Object>> rows = table.getRows();
+
                 List<LogsTableCell> tableCells = new ArrayList<>();
                 List<LogsTableRow> tableRows = new ArrayList<>();
                 List<LogsTableColumn> tableColumns = new ArrayList<>();
                 LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
                 tables.add(logsTable);
-                List<List<Object>> rows = table.getRows();
 
                 for (int i = 0; i < rows.size(); i++) {
                     List<Object> row = rows.get(i);
@@ -255,9 +257,7 @@ public final class LogsQueryHelper {
             queryVisualization = BinaryData.fromObject(innerVisualization);
         }
 
-        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, queryStatistics, queryVisualization,
-            mapLogsQueryError(innerError));
-        return logsQueryResult;
+        return new LogsQueryResult(tables, queryStatistics, queryVisualization, mapLogsQueryError(innerError));
     }
 
     public static ResponseError mapLogsQueryError(ErrorInfo errors) {

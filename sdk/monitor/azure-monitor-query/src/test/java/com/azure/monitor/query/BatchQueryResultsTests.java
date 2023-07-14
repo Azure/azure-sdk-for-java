@@ -2,20 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.monitor.query;
 
-import com.azure.monitor.query.implementation.logs.models.BatchQueryResponse;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.monitor.query.implementation.logs.models.BatchQueryResults;
+import com.azure.monitor.query.implementation.logs.models.BatchResponse;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Unit test using JSON from a live test run where {@link BatchQueryResponse} failed to deserialize.
+ * Unit test using JSON from a live test run where {@link BatchQueryResults} failed to deserialize.
  */
-public class BatchQueryResponseTests {
+public class BatchQueryResultsTests {
     @Test
     public void failingJsonDeserialization() throws IOException {
-        try (InputStream json = BatchQueryResponseTests.class.getResourceAsStream("FailingBatchQueryResultsJson.json")) {
-
+        ClassLoader classLoader = getClass().getClassLoader();
+        try (InputStream json = classLoader.getResourceAsStream("FailingBatchQueryResultsJson.json");
+             JsonReader jsonReader = JsonProviders.createReader(json)) {
+            BatchResponse batchQueryResults = BatchResponse.fromJson(jsonReader);
         }
     }
 }

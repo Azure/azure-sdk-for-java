@@ -5,8 +5,12 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,24 +18,21 @@ import java.util.List;
  * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
  */
 @Fluent
-public final class QueryBody {
+public final class QueryBody implements JsonSerializable<QueryBody> {
     /*
      * The query to execute.
      */
-    @JsonProperty(value = "query", required = true)
-    private String query;
+    private final String query;
 
     /*
      * Optional. The timespan over which to query data. This is an ISO8601 time period value.  This timespan is applied
      * in addition to any that are specified in the query expression.
      */
-    @JsonProperty(value = "timespan")
     private String timespan;
 
     /*
      * A list of workspaces that are included in the query.
      */
-    @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
     /**
@@ -39,8 +40,7 @@ public final class QueryBody {
      *
      * @param query the query value to set.
      */
-    @JsonCreator
-    public QueryBody(@JsonProperty(value = "query", required = true) String query) {
+    public QueryBody(String query) {
         this.query = query;
     }
 
@@ -104,5 +104,62 @@ public final class QueryBody {
         if (getQuery() == null) {
             throw new IllegalArgumentException("Missing required property query in model QueryBody");
         }
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("timespan", this.timespan);
+        jsonWriter.writeArrayField("workspaces", this.workspaces, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryBody from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryBody if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryBody.
+     */
+    public static QueryBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean queryFound = false;
+                    String query = null;
+                    String timespan = null;
+                    List<String> workspaces = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("query".equals(fieldName)) {
+                            query = reader.getString();
+                            queryFound = true;
+                        } else if ("timespan".equals(fieldName)) {
+                            timespan = reader.getString();
+                        } else if ("workspaces".equals(fieldName)) {
+                            workspaces = reader.readArray(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (queryFound) {
+                        QueryBody deserializedQueryBody = new QueryBody(query);
+                        deserializedQueryBody.timespan = timespan;
+                        deserializedQueryBody.workspaces = workspaces;
+
+                        return deserializedQueryBody;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!queryFound) {
+                        missingProperties.add("query");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
