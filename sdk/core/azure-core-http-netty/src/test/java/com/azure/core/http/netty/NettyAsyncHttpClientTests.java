@@ -3,18 +3,36 @@
 
 package com.azure.core.http.netty;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestUtils;
-import com.azure.core.util.*;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,7 +61,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ForkJoinPool;
@@ -52,7 +74,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class NettyAsyncHttpClientTests {

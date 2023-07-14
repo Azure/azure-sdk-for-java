@@ -3,7 +3,13 @@
 
 package com.azure.core.http.vertx;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.util.Context;
 import io.vertx.core.http.HttpClosedException;
@@ -35,7 +41,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class VertxAsyncHttpClientTests {

@@ -3,11 +3,23 @@
 
 package com.azure.core.http.jdk.httpclient;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestUtils;
-import com.azure.core.util.*;
-import org.junit.jupiter.api.*;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.UrlBuilder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
@@ -20,7 +32,12 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
 import javax.servlet.ServletException;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -39,7 +56,9 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD)
