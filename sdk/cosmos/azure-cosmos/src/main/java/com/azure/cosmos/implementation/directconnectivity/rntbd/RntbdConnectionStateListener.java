@@ -133,9 +133,7 @@ public class RntbdConnectionStateListener {
                 addressUri,
                 this.endpoint.getMinChannelsRequired()
             ))
-            .doFinally(signalType -> {
-                this.endpointValidationInProgress.compareAndSet(true, false);
-            })
+            .doFinally(signalType -> this.endpointValidationInProgress.compareAndSet(true, false))
             .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
             .subscribe();
         }
@@ -207,9 +205,7 @@ public class RntbdConnectionStateListener {
                 .subscribe(
                     ignoreResult -> {
                     },
-                    throwable -> {
-                        logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable);
-                    }
+                    throwable -> logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable)
                 );
         }
     }
