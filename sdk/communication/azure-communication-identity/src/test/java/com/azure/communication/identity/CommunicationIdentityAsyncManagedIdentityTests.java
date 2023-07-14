@@ -43,8 +43,8 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         // Action & Assert
         Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
         StepVerifier.create(response)
-            .assertNext(this::verifyUserNotEmpty)
-            .verifyComplete();
+                .assertNext(this::verifyUserNotEmpty)
+                .verifyComplete();
     }
 
     @Test
@@ -55,11 +55,11 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         // Action & Assert
         Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUserWithResponse();
         StepVerifier.create(response)
-            .assertNext(item -> {
-                assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
-                verifyUserNotEmpty(item.getValue());
-            })
-            .verifyComplete();
+                .assertNext(item -> {
+                    assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
+                    verifyUserNotEmpty(item.getValue());
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -102,11 +102,11 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        return asyncClient.deleteUser(communicationUser);
-                    }))
-            .verifyComplete();
+                        asyncClient.createUser()
+                                .flatMap(communicationUser -> {
+                                    return asyncClient.deleteUser(communicationUser);
+                                }))
+                .verifyComplete();
     }
 
     @Test
@@ -116,14 +116,14 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        return asyncClient.deleteUserWithResponse(communicationUser);
-                    }))
-            .assertNext(item -> {
-                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
-            })
-            .verifyComplete();
+                        asyncClient.createUser()
+                                .flatMap(communicationUser -> {
+                                    return asyncClient.deleteUserWithResponse(communicationUser);
+                                }))
+                .assertNext(item -> {
+                    assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -133,14 +133,14 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        return asyncClient.getToken(communicationUser, SCOPES)
-                            .flatMap(communicationUserToken -> {
-                                return asyncClient.revokeTokens(communicationUser);
-                            });
-                    }))
-            .verifyComplete();
+                        asyncClient.createUser()
+                                .flatMap(communicationUser -> {
+                                    return asyncClient.getToken(communicationUser, SCOPES)
+                                            .flatMap(communicationUserToken -> {
+                                                return asyncClient.revokeTokens(communicationUser);
+                                            });
+                                }))
+                .verifyComplete();
     }
 
     @Test
@@ -150,17 +150,17 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        return asyncClient.getToken(communicationUser, SCOPES)
-                            .flatMap(communicationUserToken -> {
-                                return asyncClient.revokeTokensWithResponse(communicationUser);
-                            });
-                    }))
-            .assertNext(item -> {
-                assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
-            })
-            .verifyComplete();
+                        asyncClient.createUser()
+                                .flatMap(communicationUser -> {
+                                    return asyncClient.getToken(communicationUser, SCOPES)
+                                            .flatMap(communicationUserToken -> {
+                                                return asyncClient.revokeTokensWithResponse(communicationUser);
+                                            });
+                                }))
+                .assertNext(item -> {
+                    assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
+                })
+                .verifyComplete();
     }
 
     @ParameterizedTest
@@ -176,8 +176,8 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-            .assertNext(this::verifyTokenNotEmpty)
-            .verifyComplete();
+                .assertNext(this::verifyTokenNotEmpty)
+                .verifyComplete();
     }
 
     @ParameterizedTest
@@ -193,10 +193,10 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         // Action & Assert
         Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(options);
         StepVerifier.create(response)
-            .assertNext(issuedTokenResponse -> {
-                verifyTokenNotEmpty(issuedTokenResponse.getValue());
-                assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
-            })
-            .verifyComplete();
+                .assertNext(issuedTokenResponse -> {
+                    verifyTokenNotEmpty(issuedTokenResponse.getValue());
+                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
+                })
+                .verifyComplete();
     }
 }

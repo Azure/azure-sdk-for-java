@@ -214,7 +214,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUserAndToken(null))
+            asyncClient.createUserAndToken(null))
             .verifyError(NullPointerException.class);
     }
 
@@ -225,7 +225,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUserAndTokenWithResponse(null))
+            asyncClient.createUserAndTokenWithResponse(null))
             .verifyError(NullPointerException.class);
     }
 
@@ -236,10 +236,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        return asyncClient.deleteUser(communicationUser);
-                    }))
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.deleteUser(communicationUser);
+                }))
             .verifyComplete();
     }
 
@@ -250,10 +250,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        return asyncClient.deleteUserWithResponse(communicationUser);
-                    }))
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.deleteUserWithResponse(communicationUser);
+                }))
             .assertNext(item -> {
                 assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
             })
@@ -267,7 +267,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.deleteUser(null))
+            asyncClient.deleteUser(null))
             .verifyError(NullPointerException.class);
     }
 
@@ -278,7 +278,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.deleteUserWithResponse(null))
+            asyncClient.deleteUserWithResponse(null))
             .verifyError(NullPointerException.class);
     }
 
@@ -289,13 +289,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap((CommunicationUserIdentifier communicationUser) -> {
-                        return asyncClient.getToken(communicationUser, SCOPES)
-                            .flatMap((AccessToken communicationUserToken) -> {
-                                return asyncClient.revokeTokens(communicationUser);
-                            });
-                    }))
+            asyncClient.createUser()
+                .flatMap((CommunicationUserIdentifier communicationUser) -> {
+                    return asyncClient.getToken(communicationUser, SCOPES)
+                        .flatMap((AccessToken communicationUserToken) -> {
+                            return asyncClient.revokeTokens(communicationUser);
+                        });
+                }))
             .verifyComplete();
     }
 
@@ -306,13 +306,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap((CommunicationUserIdentifier communicationUser) -> {
-                        return asyncClient.getToken(communicationUser, SCOPES)
-                            .flatMap((AccessToken communicationUserToken) -> {
-                                return asyncClient.revokeTokensWithResponse(communicationUser);
-                            });
-                    }))
+            asyncClient.createUser()
+                .flatMap((CommunicationUserIdentifier communicationUser) -> {
+                    return asyncClient.getToken(communicationUser, SCOPES)
+                        .flatMap((AccessToken communicationUserToken) -> {
+                            return asyncClient.revokeTokensWithResponse(communicationUser);
+                        });
+                }))
             .assertNext(item -> {
                 assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
             })
@@ -326,7 +326,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.revokeTokens(null))
+            asyncClient.revokeTokens(null))
             .verifyError(NullPointerException.class);
     }
 
@@ -337,7 +337,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.revokeTokensWithResponse(null))
+            asyncClient.revokeTokensWithResponse(null))
             .verifyError(NullPointerException.class);
     }
 
@@ -475,10 +475,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES);
-                    }))
+            asyncClient.createUser()
+                .flatMap(communicationUser -> {
+                    return asyncClient.getTokenWithResponse(communicationUser, SCOPES);
+                }))
             .assertNext(issuedToken -> {
                 verifyTokenNotEmpty(issuedToken.getValue());
                 assertEquals(issuedToken.getStatusCode(), 200);
@@ -493,7 +493,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.getToken(null, SCOPES))
+            asyncClient.getToken(null, SCOPES))
             .verifyError(NullPointerException.class);
     }
 
@@ -514,7 +514,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-                asyncClient.getTokenWithResponse(null, SCOPES))
+            asyncClient.getTokenWithResponse(null, SCOPES))
             .verifyError(NullPointerException.class);
     }
 
@@ -530,8 +530,8 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-            .assertNext(this::verifyTokenNotEmpty)
-            .verifyComplete();
+                .assertNext(this::verifyTokenNotEmpty)
+                .verifyComplete();
     }
 
     @ParameterizedTest
@@ -546,11 +546,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Action & Assert
         Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(options);
         StepVerifier.create(response)
-            .assertNext(issuedTokenResponse -> {
-                verifyTokenNotEmpty(issuedTokenResponse.getValue());
-                assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
-            })
-            .verifyComplete();
+                .assertNext(issuedTokenResponse -> {
+                    verifyTokenNotEmpty(issuedTokenResponse.getValue());
+                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
+                })
+                .verifyComplete();
     }
 
     @ParameterizedTest(name = "when {1} is null")
@@ -565,10 +565,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-            .verifyErrorSatisfies(throwable -> {
-                assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().contains(exceptionMessage));
-            });
+                .verifyErrorSatisfies(throwable -> {
+                    assertNotNull(throwable.getMessage());
+                    assertTrue(throwable.getMessage().contains(exceptionMessage));
+                });
     }
 
     @ParameterizedTest(name = "{0}")
@@ -601,10 +601,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-            .verifyErrorSatisfies(throwable -> {
-                assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().contains("400"));
-            });
+                .verifyErrorSatisfies(throwable -> {
+                    assertNotNull(throwable.getMessage());
+                    assertTrue(throwable.getMessage().contains("400"));
+                });
     }
 
     @ParameterizedTest(name = "{0}")
@@ -619,9 +619,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-            .verifyErrorSatisfies(throwable -> {
-                assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().contains("400"));
-            });
+                .verifyErrorSatisfies(throwable -> {
+                    assertNotNull(throwable.getMessage());
+                    assertTrue(throwable.getMessage().contains("400"));
+                });
     }
 }

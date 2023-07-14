@@ -34,7 +34,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
     private static final String REDACTED = "REDACTED";
     private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+            .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected HttpClient httpClient;
 
@@ -105,8 +105,8 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
     protected CommunicationIdentityClientBuilder createClientBuilderUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
-            .connectionString(CONNECTION_STRING)
-            .httpClient(httpClient);
+                .connectionString(CONNECTION_STRING)
+                .httpClient(httpClient);
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -150,14 +150,14 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+                .flatMap(httpResponse -> {
+                    final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                return Mono.just(bufferedResponse);
-            });
+                    // Should sanitize printed reponse url
+                    System.out.println("MS-CV header for " + testName + " request "
+                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                    return Mono.just(bufferedResponse);
+                });
     }
 
     protected void verifyTokenNotEmpty(AccessToken issuedToken) {
