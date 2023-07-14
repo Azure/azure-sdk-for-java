@@ -125,7 +125,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         // different values when a new group is created.
         this.preserveOrdering = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
-            .getPreserveOrdering(cosmosBulkExecutionOptions);
+            .getPreserveOrdering(cosmosBulkExecutionOptions); // validate concurrency inside the cosmosBulkExectionOptions
         this.preserveOrderingIndex = new AtomicInteger(0);
         // keeps track of the failed items with same id and partition key combination when preserve ordering is true
         this.failedItems = new ConcurrentHashMap<>();
@@ -277,6 +277,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         Mono<Integer> maxConcurrentCosmosPartitionsMono;
         if (preserveOrdering) {
             maxConcurrentCosmosPartitionsMono = Mono.just(1);
+            // remove
         } else {
             maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ?
                 Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
@@ -355,7 +356,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     })
                     .mergeWith(mainSink.asFlux())
                     .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                    .flatMapSequential(
+                    .flatMapSequential( // change back
                         operation -> {
                             logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
                                 getItemOperationDiagnostics(operation),
@@ -455,6 +456,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         int microBatchConcurrency;
         if (preserveOrdering) {
             microBatchConcurrency = 1;
+            // throw exception
         } else {
             microBatchConcurrency = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
                 .getCosmosBulkExecutionOptionsAccessor()
@@ -465,8 +467,8 @@ public final class BulkExecutor<TContext> implements Disposable {
         return partitionedGroupFluxOfInputOperations
             .mergeWith(groupFluxProcessor)
             .onBackpressureBuffer()
-            .window(5) //How am I supposed to come up with this value. I am also confused why this works ------------------------------------------------
-            .flatMapSequential(Flux::sort)
+//            .window(5) //How am I supposed to come up with this value. I am also confused why this works ---------------------------
+//            .flatMapSequential(Flux::sort)
             .timestamp()
             .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
             .bufferUntil((Tuple2<Long, CosmosItemOperation> timeStampItemOperationTuple) -> {
@@ -1160,7 +1162,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         @Override
         public int hashCode() {
             return Objects.hash(id, partitionKey.toString());
-        }
+        } // make pr to change in kafka
     }
 
     /**

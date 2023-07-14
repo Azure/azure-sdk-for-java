@@ -35,7 +35,7 @@ public class BulkExecutorTest extends BatchTestBase {
     private CosmosAsyncDatabase database;
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuilders") // change ---------------------------------------------------------------
     public BulkExecutorTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder.directMode());
     }
