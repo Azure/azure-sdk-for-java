@@ -5,6 +5,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: TestPipeline
+    type: boolean
+    default: false
   - name: Artifacts
     type: object
     default: []
@@ -16,6 +19,9 @@ parameters:
     default: []
   - name: Matrix
     type: object
+  - name: CloudConfig
+    type: object
+    default: {}
   - name: DependsOn
     type: string
     default: ''
