@@ -14,7 +14,7 @@ import java.util.Map;
  *  Custom context details.
  */
 @Fluent
-final class CustomContext {
+public final class CustomContext {
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
     private final ClientLogger logger;
