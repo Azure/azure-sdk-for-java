@@ -407,6 +407,135 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosDatabase.createContainerPartitionKey
     }
 
+    public void databaseCreateContainerIfNotExistsSample() {
+        String containerId = "passengers";
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerId, partitionKeyDefinition);
+        CosmosContainerResponse container = cosmosDatabase.createContainerIfNotExists(containerProperties);
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists
+
+    }
+
+    public void databaseCreateContainerIfNotExistsPropsSample() {
+        String containerId = "passengers";
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        int autoScaleMaxThroughput = 1000;
+
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsProps
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerId, partitionKeyDefinition);
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(autoScaleMaxThroughput);
+        CosmosContainerResponse container = cosmosDatabase.createContainerIfNotExists(
+            containerProperties,
+            throughputProperties
+        );
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsProps
+    }
+
+    public void databaseCreateContainerIfNotExistsPartitionKeySample() {
+        String containerId = "passengers";
+        String partitionKeyPath = "/id";
+        int autoscaledThroughput = 1000;
+
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsPartitionKey
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(autoscaledThroughput);
+        CosmosContainerResponse container = cosmosDatabase.createContainerIfNotExists(
+            containerId,
+            partitionKeyPath,
+            throughputProperties
+        );
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsPartitionKey
+    }
+
+    public void readAllContainersSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllContainers
+        CosmosPagedIterable<CosmosContainerProperties> cosmosContainersList =
+            cosmosDatabase.readAllContainers();
+        cosmosContainersList.forEach(cosmosContainerProperties -> {
+            System.out.println(cosmosContainerProperties);
+        });
+        // END: com.azure.cosmos.CosmosDatabase.readAllContainers
+    }
+
+    public void queryContainersSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryContainers
+        CosmosPagedIterable<CosmosContainerProperties> cosmosContainersList =
+            cosmosDatabase.queryContainers("SELECT * FROM DB_NAME");
+        cosmosContainersList.forEach(cosmosContainerProperties -> {
+            System.out.println(cosmosContainerProperties);
+        });
+        // END: com.azure.cosmos.CosmosDatabase.queryContainers
+    }
+
+    public void createUserSample() {
+        String userId = "userId";
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createUser
+        CosmosUserProperties userProperties = new CosmosUserProperties();
+        userProperties.setId(userId);
+        cosmosDatabase.createUser(userProperties);
+        // END: com.azure.cosmos.CosmosDatabase.createUser
+    }
+
+    public void upsertUserSample() {
+        String userId = "userId";
+        // BEGIN: com.azure.cosmos.CosmosDatabase.upsertUser
+        CosmosUserProperties userProperties = new CosmosUserProperties();
+        userProperties.setId(userId);
+        cosmosDatabase.upsertUser(userProperties);
+        // END: com.azure.cosmos.CosmosDatabase.upsertUser
+    }
+
+    public void readAllUsersSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllUsers
+        CosmosPagedIterable<CosmosUserProperties> cosmosUserProperties = cosmosDatabase.readAllUsers();
+        cosmosUserProperties.forEach(userProperties -> {
+            System.out.println(userProperties);
+        });
+        // END: com.azure.cosmos.CosmosDatabase.readAllUsers
+    }
+
+    public void queryUsersSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryUsers
+        CosmosPagedIterable<CosmosUserProperties> userPropertiesList =
+            cosmosDatabase.queryUsers("SELECT * FROM DB_NAME");
+        userPropertiesList.forEach(userProperties -> {
+            System.out.println(userProperties);
+        });
+        // END: com.azure.cosmos.CosmosDatabase.queryUsers
+    }
+
+    public void replaceThroughputSample() {
+        int autoScaleMaxThroughput = 3000;
+        // BEGIN: com.azure.cosmos.CosmosDatabase.replaceThroughput
+        ThroughputProperties throughputProperties = ThroughputProperties
+            .createAutoscaledThroughput(autoScaleMaxThroughput);
+
+        ThroughputResponse throughputResponse = cosmosDatabase.replaceThroughput(throughputProperties);
+        System.out.println(throughputResponse);
+        // END: com.azure.cosmos.CosmosDatabase.replaceThroughput
+    }
+
+    public void readThroughputSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readThroughput
+        ThroughputResponse throughputResponse = cosmosDatabase.readThroughput();
+        System.out.println(throughputResponse);
+        // END: com.azure.cosmos.CosmosDatabase.readThroughput
+    }
+
+    public void readAllClientEncryptionKeysSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys
+        CosmosPagedIterable<CosmosClientEncryptionKeyProperties> clientEncryptionKeys =
+            cosmosDatabase.readAllClientEncryptionKeys();
+        clientEncryptionKeys.forEach(encryptionKeyProperties ->
+            System.out.println(clientEncryptionKeys)
+        );
+        // END: com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys
+    }
+
     static final class Passenger {
         private final String id;
         private final String email;

@@ -3,12 +3,18 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.MyFunctionCallArguments;
+import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -18,6 +24,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,8 +58,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        // TODO: use the parameterized serviceVersion once we have a service release that responds with valid data
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_05_15);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
                 .recordWith(ArrayList::new)
@@ -161,8 +167,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        // TODO: use the parameterized serviceVersion once we have a service release that responds with valid data
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_05_15);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)))
                 .recordWith(ArrayList::new)
@@ -223,8 +228,94 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getImageGenerationRunner(options ->
-            StepVerifier.create(client.generateImage(options))
+            StepVerifier.create(client.getImages(options))
                 .assertNext(OpenAIClientTestBase::assertImageResponse)
                 .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.AUTO);
+            StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
+                .assertNext(chatCompletions -> {
+                    assertEquals(1, chatCompletions.getChoices().size());
+                    ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+                    MyFunctionCallArguments arguments = assertFunctionCall(
+                        chatChoice,
+                        "MyFunction",
+                        MyFunctionCallArguments.class);
+                    assertEquals(arguments.getLocation(), "San Francisco, CA");
+                    assertEquals(arguments.getUnit(), "CELSIUS");
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.NONE);
+            StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
+                .assertNext(chatCompletions -> {
+                    assertChatCompletions(1, "stop", ChatRole.ASSISTANT, chatCompletions);
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
+            StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
+                .verifyErrorSatisfies(throwable -> {
+                    assertInstanceOf(HttpResponseException.class, throwable);
+                    HttpResponseException httpResponseException = (HttpResponseException) throwable;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertTrue(httpResponseException.getMessage().contains("Invalid value for 'function_call'"));
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
+                .assertNext(chatCompletions -> {
+                    assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
+                    assertEquals(1, chatCompletions.getChoices().size());
+                    ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+                    assertSafeContentFilterResults(chatChoice.getContentFilterResults());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
+        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        getCompletionsContentFilterRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
+            // work around for this model, there seem to be some issues with Completions in gpt-turbo models
+            completionsOptions.setMaxTokens(2000);
+            StepVerifier.create(client.getCompletions(modelId, completionsOptions))
+                .assertNext(completions -> {
+                    assertCompletions(1, completions);
+                    ContentFilterResults contentFilterResults = completions.getPromptFilterResults().get(0).getContentFilterResults();
+                    assertSafeContentFilterResults(contentFilterResults);
+                    assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
+                }).verifyComplete();
+        });
     }
 }

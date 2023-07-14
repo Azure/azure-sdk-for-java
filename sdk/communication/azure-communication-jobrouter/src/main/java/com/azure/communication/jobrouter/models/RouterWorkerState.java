@@ -6,7 +6,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /** Defines values for RouterWorkerState. */
