@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LogsQueryClientTest extends TestProxyTestBase {
 
     private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
-            .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
+            .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
     private LogsQueryClient client;
     private static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
             + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
