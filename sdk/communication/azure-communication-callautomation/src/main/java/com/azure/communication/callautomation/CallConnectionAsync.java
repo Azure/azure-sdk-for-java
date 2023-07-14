@@ -240,11 +240,11 @@ public final class CallConnectionAsync {
     public Mono<TransferCallResult> transferCallToParticipant(CommunicationIdentifier targetParticipant) {
 
         if (targetParticipant instanceof CommunicationUserIdentifier) {
-            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant)).flatMap(FluxUtil::toMono);
         } else if (targetParticipant instanceof PhoneNumberIdentifier) {
-            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((PhoneNumberIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((PhoneNumberIdentifier) targetParticipant)).flatMap(FluxUtil::toMono);
         } else if (targetParticipant instanceof MicrosoftTeamsUserIdentifier) {
-            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((MicrosoftTeamsUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((MicrosoftTeamsUserIdentifier) targetParticipant)).flatMap(FluxUtil::toMono);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("targetParticipant type is invalid."));
         }
@@ -273,10 +273,10 @@ public final class CallConnectionAsync {
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant()))
                 .setOperationContext(transferCallToParticipantOptions.getOperationContext());
 
-            if (transferCallToParticipantOptions.getSipHeaders() != null || transferCallToParticipantOptions.getVoipHeaders() != null) {
+            if (transferCallToParticipantOptions.getCustomContext().getSipHeaders() != null || transferCallToParticipantOptions.getCustomContext().getVoipHeaders() != null) {
                 request.setCustomContext(new CustomContext()
-                            .setSipHeaders(transferCallToParticipantOptions.getSipHeaders())
-                            .setVoipHeaders(transferCallToParticipantOptions.getVoipHeaders()));
+                            .setSipHeaders(transferCallToParticipantOptions.getCustomContext().getSipHeaders())
+                            .setVoipHeaders(transferCallToParticipantOptions.getCustomContext().getVoipHeaders()));
             }
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(
