@@ -18,8 +18,7 @@ public abstract class MonitorQueryTestUtils {
     };
 
     public static String getLogEndpoint() {
-        return ENDPOINTS.get(Configuration.getGlobalConfiguration().get(
-            Configuration.PROPERTY_AZURE_CLOUD));
+        return ENDPOINTS.get(Configuration.getGlobalConfiguration().get("MONITOR_RESOURCE_MANAGER_URL"));
     }
 
     public static String getMetricEndpoint() {
