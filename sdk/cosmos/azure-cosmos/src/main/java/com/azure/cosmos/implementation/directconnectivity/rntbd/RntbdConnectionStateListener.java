@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.channel.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,7 @@ public class RntbdConnectionStateListener {
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final AddressSelector addressSelector;
     private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
+    private final Set<PartitionKeyRangeIdentity> partitionsUnderRefresh;
 
 
     // endregion
@@ -53,6 +55,7 @@ public class RntbdConnectionStateListener {
         this.addressUris = ConcurrentHashMap.newKeySet();
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         this.addressSelector = addressSelector;
+        this.partitionsUnderRefresh = ConcurrentHashMap.newKeySet();
     }
 
     // endregion
@@ -173,6 +176,8 @@ public class RntbdConnectionStateListener {
             return;
         }
 
+        final PartitionKeyRangeIdentity pkrId = request.getPartitionKeyRangeIdentity();
+
         AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
 
         if (isRequestCancelledOnTimeout == null
@@ -183,19 +188,30 @@ public class RntbdConnectionStateListener {
 
         final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
 
-        this.addressSelector
-            .resolveAddressesAsync(request, forceAddressRefresh)
-            .subscribeOn(Schedulers.boundedElastic())
-            .doOnSubscribe(ignore -> {
-                logger.debug("Background refresh of addresses started!");
-            })
-            .subscribe(
-                ignoreResult -> {
-                },
-                throwable -> {
-                    logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable);
-                }
-            );
+        if (pkrId == null || !partitionsUnderRefresh.contains(pkrId)) {
+            this.addressSelector
+                .resolveAddressesAsync(request, forceAddressRefresh)
+                .subscribeOn(Schedulers.boundedElastic())
+                .doOnSubscribe(ignore -> {
+                    logger.debug("Background refresh of addresses started!");
+                    if (pkrId != null) {
+                        partitionsUnderRefresh.add(pkrId);
+                    }
+                })
+                .doFinally(signalType -> {
+                    logger.debug("Background refresh of addresses finished!");
+                    if (pkrId != null) {
+                        partitionsUnderRefresh.remove(pkrId);
+                    }
+                })
+                .subscribe(
+                    ignoreResult -> {
+                    },
+                    throwable -> {
+                        logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable);
+                    }
+                );
+        }
     }
     // endregion
 
