@@ -200,12 +200,10 @@ public class RntbdConnectionStateListener {
     // endregion
 
     private boolean shouldRefreshForException(Exception exception) {
-        return (
-            exception instanceof ConnectTimeoutException
+        return exception instanceof ConnectTimeoutException
                 || exception instanceof InvalidPartitionException
                 || exception instanceof PartitionIsMigratingException
                 || exception instanceof PartitionKeyRangeIsSplittingException
-                || exception instanceof GoneException
-        );
+                || exception instanceof GoneException;
     }
 }
