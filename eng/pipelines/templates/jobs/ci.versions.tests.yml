@@ -54,7 +54,7 @@ jobs:
       - pwsh: |
           Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
           Write-Host "##vso[task.setvariable variable=TestVersionSupport]true"
-        diplayName: "Set version override variables"
+        displayName: "Set version override variables"
 
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
