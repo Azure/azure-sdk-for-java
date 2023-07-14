@@ -232,21 +232,42 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected void assertAppRunning(String hostname) {
         if (!isPlaybackMode()) {
+            Response<String> response = null;
+
             final int retryMax = 10;
             for (int retryCount = 0; retryCount <= retryMax; ++retryCount) {
                 // wait
                 ResourceManagerUtils.sleep(Duration.ofMinutes(1));
-                Response<String> response = curl("https://" + hostname);
-                Assertions.assertEquals(200, response.getStatusCode());
-                String body = response.getValue();
-                if (body != null && body.contains("Hello world from linux 4")) {
+                response = curl("https://" + hostname);
+
+                if (response.getStatusCode() == 200) {
                     break;
-                } else if (retryCount == retryMax) {
-                    Assertions.assertNotNull(body);
-                    Assertions.assertTrue(body.contains("Hello world from linux 4"));
                 }
             }
+
+            Assertions.assertEquals(200, response.getStatusCode());
+            Assertions.assertNotNull(response.getValue());
+            Assertions.assertTrue(response.getValue().contains("Hello world from linux 4"));
         }
+    }
+
+    protected Response<String> getAppResponse(String hostname) {
+        Response<String> response = null;
+        final int retryMax = 10;
+        for (int retryCount = 0; retryCount <= retryMax; ++retryCount) {
+            // wait
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+            response = curl("https://" + hostname);
+
+
+            if (response.getStatusCode() == 200) {
+                break;
+            }
+        }
+
+        Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertNotNull(response.getValue());
+        return response;
     }
 
     private static Mono<Response<String>> stringResponse(Mono<HttpResponse> responseMono) {
