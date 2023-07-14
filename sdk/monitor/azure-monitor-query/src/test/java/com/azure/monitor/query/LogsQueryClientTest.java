@@ -59,6 +59,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @BeforeEach
     public void setup() {
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
+            .endpoint(MonitorQueryTestUtils.getLogEndpoint())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
@@ -81,7 +82,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
                     .credential(getCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
-            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
         this.client = clientBuilder
                 .buildClient();

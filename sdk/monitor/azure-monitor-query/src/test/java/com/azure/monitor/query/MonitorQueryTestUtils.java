@@ -18,7 +18,7 @@ public abstract class MonitorQueryTestUtils {
     };
 
     public static String getLogEndpoint() {
-        return ENDPOINTS.get(Configuration.getGlobalConfiguration().get("MONITOR_RESOURCE_MANAGER_URL"));
+        return ENDPOINTS.get(Configuration.getGlobalConfiguration().get("MONITOR_ENVIRONMENT"));
     }
 
     public static String getMetricEndpoint() {
