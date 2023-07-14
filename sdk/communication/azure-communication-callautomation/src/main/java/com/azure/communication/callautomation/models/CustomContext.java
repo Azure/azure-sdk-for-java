@@ -5,9 +5,10 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.Map;
-
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.util.Map;
 
 /**
  *  Custom context details.
@@ -16,6 +17,7 @@ import com.azure.core.annotation.Fluent;
 final class CustomContext {
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
+    private final ClientLogger logger;
 
     /**
      * Create a CustomContext object with SIP and VOIP headers
@@ -25,10 +27,11 @@ final class CustomContext {
     CustomContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
         this.sipHeaders = sipHeaders;
         this.voipHeaders = voipHeaders;
+        this.logger = new ClientLogger(CustomContext.class);
     }
 
     /**
-     *  get list of custom context SIP headers
+     * Get list of custom context SIP headers
      * @return list of custom context SIP headers
      */
     public Map<String, String> getSipHeaders() {
@@ -36,10 +39,43 @@ final class CustomContext {
     }
 
     /**
-     *  get list of custom context VOIP headers
+     * Get list of custom context VOIP headers
      * @return list of custom context VOIP headers
      */
     public Map<String, String> getVoipHeaders() {
         return voipHeaders;
+    }
+
+    /**
+     * Add a custom context header
+     * @param header the custom context SIP UUI, SIP custom or VOIP header
+     * @throws IllegalStateException If sipHeaders or voipHeaders is null
+     */
+    public void add(CustomContextHeader header) {
+        if (header instanceof SIPUUIHeader) {
+            if (sipHeaders == null) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot add sip header, SipHeaders is null."));
+            }
+            SIPUUIHeader sipUUIHeader = (SIPUUIHeader) header;
+            sipHeaders.put(sipUUIHeader.getKey(), sipUUIHeader.getValue());
+        } else if (header instanceof SIPCustomHeader) {
+            if (sipHeaders == null) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot add sip header, SipHeaders is null."));
+            }
+            SIPCustomHeader sipCustomHeader = (SIPCustomHeader) header;
+            sipHeaders.put(sipCustomHeader.getKey(), sipCustomHeader.getValue());
+        } else if (header instanceof VoipHeader) {
+            if (voipHeaders == null) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot add voip header, VoipHeaders is null."));
+            }
+            VoipHeader voipHeader = (VoipHeader) header;
+            voipHeaders.put(voipHeader.getKey(), voipHeader.getValue());
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Unknown custom context header type."));
+        }
     }
 }
