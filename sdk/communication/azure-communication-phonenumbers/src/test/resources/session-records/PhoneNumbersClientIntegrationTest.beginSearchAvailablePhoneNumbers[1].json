@@ -32,7 +32,7 @@
         "Location": "/availablePhoneNumbers/searchResults/6ab7e74d-e1bf-4124-8f13-067e99bfe036?api-version=2022-12-01",
         "MS-CV": "DucSK0\u002B\u002BgUCKP/fDWQo3jA.0",
         "operation-id": "search_6ab7e74d-e1bf-4124-8f13-067e99bfe036",
-        "Operation-Location": "/phoneNumbers/operations/search_6ab7e74d-e1bf-4124-8f13-067e99bfe036?api-version=2022-12-01",
+        "Operation-Location": "/phoneNumbers/REDACTED/search_6ab7e74d-e1bf-4124-8f13-067e99bfe036?api-version=2022-12-01",
         "search-id": "6ab7e74d-e1bf-4124-8f13-067e99bfe036",
         "Strict-Transport-Security": "max-age=2592000",
         "X-Azure-Ref": "0gaaxZAAAAADLZ5sSdGlLR4BndBHiGgTcV1NURURHRTAxMTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",

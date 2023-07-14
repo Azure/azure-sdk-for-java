@@ -40,9 +40,9 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        // if (!interceptorManager.isLiveMode()) {
-        //     addTestProxySanitizer();
-        // }
+        if (!interceptorManager.isLiveMode()) {
+            addTestProxySanitizer();
+        }
 
         if (interceptorManager.isPlaybackMode()) {
             addTestProxyMatchers();

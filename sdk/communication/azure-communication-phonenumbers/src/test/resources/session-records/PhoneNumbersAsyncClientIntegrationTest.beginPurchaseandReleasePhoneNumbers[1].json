@@ -32,7 +32,7 @@
         "Location": "/availablePhoneNumbers/searchResults/5d315a67-ba63-4014-90df-57c4bbcc2304?api-version=2022-12-01",
         "MS-CV": "kEG\u002BdJNFNEKoEKlNmw\u002BnEg.0",
         "operation-id": "search_5d315a67-ba63-4014-90df-57c4bbcc2304",
-        "Operation-Location": "/phoneNumbers/operations/search_5d315a67-ba63-4014-90df-57c4bbcc2304?api-version=2022-12-01",
+        "Operation-Location": "/phoneNumbers/REDACTED/search_5d315a67-ba63-4014-90df-57c4bbcc2304?api-version=2022-12-01",
         "search-id": "5d315a67-ba63-4014-90df-57c4bbcc2304",
         "Strict-Transport-Security": "max-age=2592000",
         "X-Azure-Ref": "0PKixZAAAAADnM0ie57cjR6aK27al29fhV1NURURHRTAxMTgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",

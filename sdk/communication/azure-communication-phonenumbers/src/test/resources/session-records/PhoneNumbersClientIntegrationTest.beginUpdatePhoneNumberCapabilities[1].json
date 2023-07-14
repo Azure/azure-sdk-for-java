@@ -73,7 +73,7 @@
         "Location": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
         "MS-CV": "eb2KKLawBkysQ6MkdjBk/Q.0",
         "operation-id": "capabilities_26c799d0-904c-4815-8283-5ff3692c05fc",
-        "Operation-Location": "/phoneNumbers/operations/capabilities_26c799d0-904c-4815-8283-5ff3692c05fc?api-version=2022-12-01",
+        "Operation-Location": "/phoneNumbers/REDACTED/capabilities_26c799d0-904c-4815-8283-5ff3692c05fc?api-version=2022-12-01",
         "Strict-Transport-Security": "max-age=2592000",
         "X-Azure-Ref": "0haaxZAAAAADAqWXQozSFSqD9\u002Bruh4AM0V1NURURHRTA4MTAAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",

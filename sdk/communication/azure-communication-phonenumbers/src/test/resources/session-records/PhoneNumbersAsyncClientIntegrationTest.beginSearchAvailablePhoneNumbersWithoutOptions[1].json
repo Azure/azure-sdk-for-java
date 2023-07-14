@@ -31,7 +31,7 @@
         "Location": "/availablePhoneNumbers/searchResults/206ee89d-387b-4222-9792-1c939a8f8222?api-version=2022-12-01",
         "MS-CV": "Wmm5yOSc0kGpetkJP2sAnw.0",
         "operation-id": "search_206ee89d-387b-4222-9792-1c939a8f8222",
-        "Operation-Location": "/phoneNumbers/operations/search_206ee89d-387b-4222-9792-1c939a8f8222?api-version=2022-12-01",
+        "Operation-Location": "/phoneNumbers/REDACTED/search_206ee89d-387b-4222-9792-1c939a8f8222?api-version=2022-12-01",
         "search-id": "206ee89d-387b-4222-9792-1c939a8f8222",
         "Strict-Transport-Security": "max-age=2592000",
         "X-Azure-Ref": "0OaixZAAAAABC\u002BtVgVbswTY0Hy9yJg5V\u002BV1NURURHRTA4MTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",

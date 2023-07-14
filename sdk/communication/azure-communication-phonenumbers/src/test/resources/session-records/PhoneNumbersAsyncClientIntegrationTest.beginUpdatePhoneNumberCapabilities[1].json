@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/REDACTED?api-version=2022-12-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -27,8 +27,8 @@
         "X-Processing-Time": "1266ms"
       },
       "ResponseBody": {
-        "id": "18332321221",
-        "phoneNumber": "\u002B18332321221",
+        "id": "REDACTED",
+        "phoneNumber": "REDACTED",
         "countryCode": "US",
         "phoneNumberType": "tollFree",
         "capabilities": {
@@ -45,7 +45,7 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/\u002B18332321221/capabilities?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/\u002BREDACTED/capabilities?api-version=2022-12-01",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -70,10 +70,10 @@
         "Content-Length": "63",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Fri, 14 Jul 2023 20:03:59 GMT",
-        "Location": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "Location": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "MS-CV": "NtpRpb3dE0KsH\u002BqCYFEXFg.0",
         "operation-id": "capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7",
-        "Operation-Location": "/phoneNumbers/operations/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
+        "Operation-Location": "/phoneNumbers/REDACTED/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
         "Strict-Transport-Security": "max-age=2592000",
         "X-Azure-Ref": "0LaqxZAAAAACXDDVMuKNBQJ3o5nCLbyDFV1NURURHRTAxMTcAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
@@ -84,7 +84,7 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/operations/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/REDACTED/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -103,7 +103,7 @@
         "api-supported-versions": "2021-03-07, 2022-01-11-preview2, 2022-06-01-preview, 2022-11-15-preview, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Fri, 14 Jul 2023 20:03:59 GMT",
-        "Location": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "Location": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "MS-CV": "jXzp4cl9bEWsw3xrIp9oVA.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
@@ -114,14 +114,14 @@
       "ResponseBody": {
         "operationType": "updatePhoneNumberCapabilities",
         "status": "running",
-        "resourceLocation": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "resourceLocation": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "createdDateTime": "2023-07-14T20:03:59.1951985\u002B00:00",
         "id": "capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7",
         "lastActionDateTime": "0001-01-01T00:00:00\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/operations/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/REDACTED/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -140,7 +140,7 @@
         "api-supported-versions": "2021-03-07, 2022-01-11-preview2, 2022-06-01-preview, 2022-11-15-preview, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Fri, 14 Jul 2023 20:04:00 GMT",
-        "Location": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "Location": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "MS-CV": "wvD/e3hJvUeHENINkkB3LQ.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
@@ -151,14 +151,14 @@
       "ResponseBody": {
         "operationType": "updatePhoneNumberCapabilities",
         "status": "running",
-        "resourceLocation": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "resourceLocation": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "createdDateTime": "2023-07-14T20:03:59.1951985\u002B00:00",
         "id": "capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7",
         "lastActionDateTime": "0001-01-01T00:00:00\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/operations/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/REDACTED/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -177,7 +177,7 @@
         "api-supported-versions": "2021-03-07, 2022-01-11-preview2, 2022-06-01-preview, 2022-11-15-preview, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Fri, 14 Jul 2023 20:04:02 GMT",
-        "Location": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "Location": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "MS-CV": "vUC0ITGmIkG3aPQyniMSQA.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
@@ -188,14 +188,14 @@
       "ResponseBody": {
         "operationType": "updatePhoneNumberCapabilities",
         "status": "running",
-        "resourceLocation": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "resourceLocation": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "createdDateTime": "2023-07-14T20:03:59.1951985\u002B00:00",
         "id": "capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7",
         "lastActionDateTime": "0001-01-01T00:00:00\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/operations/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/REDACTED/capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7?api-version=2022-12-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -214,7 +214,7 @@
         "api-supported-versions": "2021-03-07, 2022-01-11-preview2, 2022-06-01-preview, 2022-11-15-preview, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Fri, 14 Jul 2023 20:04:03 GMT",
-        "Location": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "Location": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "MS-CV": "eRlguSCli0KmrEyRqa5iVQ.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
@@ -225,14 +225,14 @@
       "ResponseBody": {
         "operationType": "updatePhoneNumberCapabilities",
         "status": "succeeded",
-        "resourceLocation": "/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+        "resourceLocation": "/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
         "createdDateTime": "2023-07-14T20:03:59.1951985\u002B00:00",
         "id": "capabilities_bab5d3ea-3c67-49cd-99a3-00a8a7d6abe7",
         "lastActionDateTime": "0001-01-01T00:00:00\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/\u002BREDACTED?api-version=2022-12-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -258,8 +258,8 @@
         "X-Processing-Time": "1337ms"
       },
       "ResponseBody": {
-        "id": "18332321221",
-        "phoneNumber": "\u002B18332321221",
+        "id": "REDACTED",
+        "phoneNumber": "\u002BREDACTED",
         "countryCode": "US",
         "phoneNumberType": "tollFree",
         "capabilities": {

@@ -37,7 +37,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumber(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumber")
                         .getPurchasedPhoneNumber(phoneNumber))
@@ -51,7 +51,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         StepVerifier.create(
                 this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAAD")
                         .getPurchasedPhoneNumber(phoneNumber))
@@ -65,7 +65,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponse")
                         .getPurchasedPhoneNumberWithResponse(phoneNumber))
