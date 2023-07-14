@@ -428,22 +428,6 @@ public final class JobRouterAdministrationClient {
     }
 
     /**
-     * Update an exception policy.
-     *
-     * @param exceptionPolicyId Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
-     * @param context The context to associate with this operation.
-     * @return a policy that defines actions to execute when exception are triggered.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> updateExceptionPolicyWithResponse(String exceptionPolicyId, ExceptionPolicyInternal exceptionPolicy, Context context) {
-        return this.client.upsertExceptionPolicyWithResponse(exceptionPolicyId, exceptionPolicy, context).block();
-    }
-
-    /**
      * Retrieves an existing exception policy by Id.
      *
      * @param exceptionPolicyId Id of the exception policy to retrieve.
