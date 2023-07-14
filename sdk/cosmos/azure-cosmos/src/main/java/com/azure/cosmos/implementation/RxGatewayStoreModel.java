@@ -249,12 +249,13 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
 
-            if (this.gatewayServerErrorInjector != null) {
-                httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
-            }
-
             MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManager);
             metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+            if (this.gatewayServerErrorInjector != null) {
+                Mono<HttpResponse> faultInjectedHttpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
+                return BackoffRetryUtility.executeRetry(() -> toDocumentServiceResponse(faultInjectedHttpResponseMono, request, httpRequest), metadataRequestRetryPolicy);
+            }
 
             return BackoffRetryUtility.executeRetry(() -> toDocumentServiceResponse(httpResponseMono, request, httpRequest), metadataRequestRetryPolicy);
 
