@@ -498,6 +498,44 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosDatabase.readAllUsers
     }
 
+    public void queryUsersSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryUsers
+        CosmosPagedIterable<CosmosUserProperties> userPropertiesList =
+            cosmosDatabase.queryUsers("SELECT * FROM DB_NAME");
+        userPropertiesList.forEach(userProperties -> {
+            System.out.println(userProperties);
+        });
+        // END: com.azure.cosmos.CosmosDatabase.queryUsers
+    }
+
+    public void replaceThroughputSample() {
+        int autoScaleMaxThroughput = 3000;
+        // BEGIN: com.azure.cosmos.CosmosDatabase.replaceThroughput
+        ThroughputProperties throughputProperties = ThroughputProperties
+            .createAutoscaledThroughput(autoScaleMaxThroughput);
+
+        ThroughputResponse throughputResponse = cosmosDatabase.replaceThroughput(throughputProperties);
+        System.out.println(throughputResponse);
+        // END: com.azure.cosmos.CosmosDatabase.replaceThroughput
+    }
+
+    public void readThroughputSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readThroughput
+        ThroughputResponse throughputResponse = cosmosDatabase.readThroughput();
+        System.out.println(throughputResponse);
+        // END: com.azure.cosmos.CosmosDatabase.readThroughput
+    }
+
+    public void readAllClientEncryptionKeysSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys
+        CosmosPagedIterable<CosmosClientEncryptionKeyProperties> clientEncryptionKeys =
+            cosmosDatabase.readAllClientEncryptionKeys();
+        clientEncryptionKeys.forEach(encryptionKeyProperties ->
+            System.out.println(clientEncryptionKeys)
+        );
+        // END: com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys
+    }
+
     static final class Passenger {
         private final String id;
         private final String email;
