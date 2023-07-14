@@ -1,26 +1,62 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries/US/areaCodes?phoneNumberType=tollFree&assignmentType=application&api-version=2022-12-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "db0939de-ec60-4dbb-96e4-435fb7e7bc1c"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2021-03-07, 2022-12-01",
-      "X-Processing-Time" : "2881ms",
-      "MS-CV" : "kXhgiK9rlU+6dGJOEfJ8MA.0",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0MaSkYwAAAACABorCic+kQboMOEXc3T8RTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "StatusCode" : "200",
-      "Body" : "{\"areaCodes\":[{\"areaCode\":\"888\"},{\"areaCode\":\"877\"},{\"areaCode\":\"866\"},{\"areaCode\":\"855\"},{\"areaCode\":\"844\"},{\"areaCode\":\"800\"},{\"areaCode\":\"833\"},{\"areaCode\":\"88\"}],\"nextLink\":null}",
-      "Date" : "Thu, 22 Dec 2022 18:38:43 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/availablePhoneNumbers/countries/US/areaCodes?phoneNumberType=tollFree\u0026assignmentType=application\u0026api-version=2022-12-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b3db8575-1ce0-4841-a46a-282c0878dd28",
+        "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
+        "x-ms-date": "Fri, 14 Jul 2023 19:48:13 GMT",
+        "x-ms-hmac-string-to-sign-base64": "R0VUCi9hdmFpbGFibGVQaG9uZU51bWJlcnMvY291bnRyaWVzL1VTL2FyZWFDb2Rlcz9waG9uZU51bWJlclR5cGU9dG9sbEZyZWUmYXNzaWdubWVudFR5cGU9YXBwbGljYXRpb24mYXBpLXZlcnNpb249MjAyMi0xMi0wMQpGcmksIDE0IEp1bCAyMDIzIDE5OjQ4OjEzIEdNVDtzbXN0ZXN0YXBwLmNvbW11bmljYXRpb24uYXp1cmUuY29tOzQ3REVRcGo4SEJTYSsvVEltVys1SkNldVFlUmttNU5NcEpXWkczaFN1RlU9"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-03-07, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
+        "Cache-Control": "max-age=21600, private, stale-while-revalidate=86400",
+        "Content-Length": "182",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 14 Jul 2023 19:48:21 GMT",
+        "MS-CV": "GzwyY05h4UmDA6S0QaD5Bw.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "X-Azure-Ref": "0faaxZAAAAACJy5vHDgYPRZbBjokxaAfuV1NURURHRTA4MTAAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "7755ms"
+      },
+      "ResponseBody": {
+        "areaCodes": [
+          {
+            "areaCode": "888"
+          },
+          {
+            "areaCode": "877"
+          },
+          {
+            "areaCode": "866"
+          },
+          {
+            "areaCode": "855"
+          },
+          {
+            "areaCode": "844"
+          },
+          {
+            "areaCode": "800"
+          },
+          {
+            "areaCode": "833"
+          },
+          {
+            "areaCode": "88"
+          }
+        ],
+        "nextLink": null
+      }
+    }
+  ],
+  "Variables": {}
 }

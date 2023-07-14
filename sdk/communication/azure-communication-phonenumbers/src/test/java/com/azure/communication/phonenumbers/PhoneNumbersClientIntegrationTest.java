@@ -40,7 +40,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumber(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PurchasedPhoneNumber number = this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberSync")
                 .getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
@@ -61,7 +61,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         Response<PurchasedPhoneNumber> response = this
                 .getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponseSync")
                 .getPurchasedPhoneNumberWithResponse(phoneNumber, Context.NONE);

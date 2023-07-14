@@ -1,26 +1,158 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries?api-version=2022-12-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "28fce975-8e34-4e45-8f5f-aebb0136b83c"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2022-12-01",
-      "X-Processing-Time" : "2275ms",
-      "MS-CV" : "SBd8wxeYyUanCwIbNOYhuQ.0",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0fqOkYwAAAABKoe8noWTsT4y8Zh0ddStuTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "StatusCode" : "200",
-      "Body" : "{\"countries\":[{\"localizedName\":\"Canada\",\"countryCode\":\"CA\"},{\"localizedName\":\"Denmark\",\"countryCode\":\"DK\"},{\"localizedName\":\"Ireland\",\"countryCode\":\"IE\"},{\"localizedName\":\"Italy\",\"countryCode\":\"IT\"},{\"localizedName\":\"Puerto Rico\",\"countryCode\":\"PR\"},{\"localizedName\":\"Sweden\",\"countryCode\":\"SE\"},{\"localizedName\":\"United Kingdom\",\"countryCode\":\"GB\"},{\"localizedName\":\"United States\",\"countryCode\":\"US\"}],\"nextLink\":null}",
-      "Date" : "Thu, 22 Dec 2022 18:35:44 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/availablePhoneNumbers/countries?api-version=2022-12-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "224669e0-2bb7-49a3-a63f-64864dd3c003",
+        "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
+        "x-ms-date": "Fri, 14 Jul 2023 19:55:41 GMT",
+        "x-ms-hmac-string-to-sign-base64": "R0VUCi9hdmFpbGFibGVQaG9uZU51bWJlcnMvY291bnRyaWVzP2FwaS12ZXJzaW9uPTIwMjItMTItMDEKRnJpLCAxNCBKdWwgMjAyMyAxOTo1NTo0MSBHTVQ7c21zdGVzdGFwcC5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTs0N0RFUXBqOEhCU2ErL1RJbVcrNUpDZXVRZVJrbTVOTXBKV1pHM2hTdUZVPQ=="
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
+        "Cache-Control": "max-age=21600, private, stale-while-revalidate=86400",
+        "Content-Length": "1487",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 14 Jul 2023 19:55:43 GMT",
+        "MS-CV": "Ak1BB33s1EqELoq8pcTbdw.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "X-Azure-Ref": "0PaixZAAAAAB7yLIeIEK5QKlGbg6jBIW1V1NURURHRTAxMTcAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "1967ms"
+      },
+      "ResponseBody": {
+        "countries": [
+          {
+            "localizedName": "Argentina",
+            "countryCode": "AR"
+          },
+          {
+            "localizedName": "Brazil",
+            "countryCode": "BR"
+          },
+          {
+            "localizedName": "Canada",
+            "countryCode": "CA"
+          },
+          {
+            "localizedName": "Chile",
+            "countryCode": "CL"
+          },
+          {
+            "localizedName": "China",
+            "countryCode": "CN"
+          },
+          {
+            "localizedName": "Colombia",
+            "countryCode": "CO"
+          },
+          {
+            "localizedName": "Denmark",
+            "countryCode": "DK"
+          },
+          {
+            "localizedName": "Finland",
+            "countryCode": "FI"
+          },
+          {
+            "localizedName": "France",
+            "countryCode": "FR"
+          },
+          {
+            "localizedName": "Hong Kong SAR",
+            "countryCode": "HK"
+          },
+          {
+            "localizedName": "Indonesia",
+            "countryCode": "ID"
+          },
+          {
+            "localizedName": "Ireland",
+            "countryCode": "IE"
+          },
+          {
+            "localizedName": "Israel",
+            "countryCode": "IL"
+          },
+          {
+            "localizedName": "Italy",
+            "countryCode": "IT"
+          },
+          {
+            "localizedName": "Korea",
+            "countryCode": "KR"
+          },
+          {
+            "localizedName": "Malaysia",
+            "countryCode": "MY"
+          },
+          {
+            "localizedName": "Mexico",
+            "countryCode": "MX"
+          },
+          {
+            "localizedName": "Netherlands",
+            "countryCode": "NL"
+          },
+          {
+            "localizedName": "New Zealand",
+            "countryCode": "NZ"
+          },
+          {
+            "localizedName": "Philippines",
+            "countryCode": "PH"
+          },
+          {
+            "localizedName": "Poland",
+            "countryCode": "PL"
+          },
+          {
+            "localizedName": "Puerto Rico",
+            "countryCode": "PR"
+          },
+          {
+            "localizedName": "Singapore",
+            "countryCode": "SG"
+          },
+          {
+            "localizedName": "South Africa",
+            "countryCode": "ZA"
+          },
+          {
+            "localizedName": "Sweden",
+            "countryCode": "SE"
+          },
+          {
+            "localizedName": "Taiwan",
+            "countryCode": "TW"
+          },
+          {
+            "localizedName": "Thailand",
+            "countryCode": "TH"
+          },
+          {
+            "localizedName": "United Arab Emirates",
+            "countryCode": "AE"
+          },
+          {
+            "localizedName": "United Kingdom",
+            "countryCode": "GB"
+          },
+          {
+            "localizedName": "United States",
+            "countryCode": "US"
+          }
+        ],
+        "nextLink": null
+      }
+    }
+  ],
+  "Variables": {}
 }

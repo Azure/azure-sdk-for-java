@@ -19,7 +19,6 @@ import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -133,8 +132,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
                             return result.getFinalResult()
                                     .flatMap((PhoneNumberSearchResult searchResult) -> {
-                                        String phoneNumber = redactIfPlaybackMode(
-                                                searchResult.getPhoneNumbers().get(0));
+                                        String phoneNumber = searchResult.getPhoneNumbers().get(0);
                                         return beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(),
                                                 "beginPurchasePhoneNumbers").last()
                                                 .flatMap((
@@ -442,9 +440,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     private PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumberHelper(
             HttpClient httpClient, String phoneNumber, String testName) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            phoneNumber = "+REDACTED";
-        }
         return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
                 .beginReleasePhoneNumber(phoneNumber));
     }

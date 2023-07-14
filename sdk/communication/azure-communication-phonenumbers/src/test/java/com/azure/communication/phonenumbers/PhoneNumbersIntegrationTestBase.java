@@ -3,9 +3,6 @@
 package com.azure.communication.phonenumbers;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -17,12 +14,11 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
@@ -40,26 +36,32 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
                 .addPolicy(getOverrideMSUserAgentPolicy())
                 .connectionString(CONNECTION_STRING);
 
-        if (shouldRecord()) {
-            builder.addPolicy(getRecordPolicy());
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        if (!interceptorManager.isLiveMode()) {
-
-            // sanitize phone numbers
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("^[\\\\+]?[(]?[0-9]{3}[)]?[-\\\\s\\\\.]?[0-9]{3}[-\\\\s\\\\.]?[0-9]{4,6}$",
-                    "REDACTED", TestProxySanitizerType.URL), new TestProxySanitizer("id", null,"REDACTED",
-                    TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("phoneNumber", null,"REDACTED",
-                    TestProxySanitizerType.BODY_KEY)));
-        }
+        // if (!interceptorManager.isLiveMode()) {
+        //     addTestProxySanitizer();
+        // }
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+            addTestProxyMatchers();
         }
 
         return builder;
+    }
+
+    private void addTestProxyMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(
+            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+    }
+
+    private void addTestProxySanitizer() {
+        // sanitize phone numbers
+        interceptorManager.addSanitizers(Arrays.asList(
+            new TestProxySanitizer("(?<=/phoneNumbers/)([^/?]+)", "REDACTED", TestProxySanitizerType.URL),
+            new TestProxySanitizer("id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
@@ -70,21 +72,18 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
                 .addPolicy(getOverrideMSUserAgentPolicy())
                 .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
-        } else {
+        if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         if (!interceptorManager.isLiveMode()) {
-
-            // sanitize phone numbers
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("", "(?<=/phoneNumbers/)([^/?]+)",
-                "REDACTED", TestProxySanitizerType.URL)));
+            addTestProxySanitizer();
         }
 
-        if (shouldRecord()) {
-            builder.addPolicy(getRecordPolicy());
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
+            addTestProxyMatchers();
         }
 
         return builder;
@@ -114,17 +113,9 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
 
     protected String redactIfPlaybackMode(String phoneNumber) {
         if (getTestMode() == TestMode.PLAYBACK) {
-            phoneNumber = "+REDACTED";
+            phoneNumber = "REDACTED";
         }
         return phoneNumber;
-    }
-
-    private boolean shouldRecord() {
-        return getTestMode() == TestMode.RECORD;
-    }
-
-    private HttpPipelinePolicy getRecordPolicy() {
-        return interceptorManager.getRecordPolicy();
     }
 
     private HttpPipelinePolicy getOverrideMSUserAgentPolicy() {
@@ -146,13 +137,6 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
                             + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                     return Mono.just(bufferedResponse);
                 });
-    }
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
     }
 
     private String getDefaultPhoneNumber() {
