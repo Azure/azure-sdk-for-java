@@ -19,8 +19,8 @@ final class CustomContext {
 
     /**
      * Create a CustomContext object with SIP and VOIP headers
-     * @param sipHeaders
-     * @param voipHeaders
+     * @param sipHeaders custom context SIP headers
+     * @param voipHeaders custom context VOIP headers
      */
     CustomContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
         this.sipHeaders = sipHeaders;
