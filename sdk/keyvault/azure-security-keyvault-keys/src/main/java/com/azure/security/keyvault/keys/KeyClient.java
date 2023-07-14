@@ -438,7 +438,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Prints out the details of the newly {@link KeyVaultKey created key}.</p>
-     * <!-- src_embed com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions -->
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions -->
      * <pre>
      * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
      *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
@@ -447,7 +447,7 @@ public final class KeyClient {
      *
      * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, octKey.getName&#40;&#41;, octKey.getId&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions -->
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -479,7 +479,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Prints out the details of the newly {@link KeyVaultKey created key}.</p>
-     * <!-- src_embed com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
      * <pre>
      * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
      *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
@@ -490,7 +490,7 @@ public final class KeyClient {
      * System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createOctKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *     createOctKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -849,7 +849,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
-        return implClient.beginDeleteKeyAsync(name).getSyncPoller();
+        return implClient.beginDeleteKey(name, Context.NONE);
     }
 
     /**
@@ -995,7 +995,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return implClient.beginRecoverDeletedKeyAsync(name).getSyncPoller();
+        return implClient.beginRecoverDeletedKey(name, Context.NONE);
     }
 
     /**
@@ -1243,7 +1243,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeys(Context context) {
-        return new PagedIterable<>(implClient.listPropertiesOfKeys(context));
+        return implClient.listPropertiesOfKeys(context);
     }
 
     /**
@@ -1322,7 +1322,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
-        return new PagedIterable<>(implClient.listDeletedKeys(context));
+        return implClient.listDeletedKeys(context);
     }
 
     /**
@@ -1421,7 +1421,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
-        return new PagedIterable<>(implClient.listPropertiesOfKeyVersions(name, context));
+        return implClient.listPropertiesOfKeyVersions(name, context);
     }
 
     /**
@@ -1529,7 +1529,7 @@ public final class KeyClient {
      *
      * @param name The name of the {@link KeyVaultKey key} to release.
      * @param version The version of the key to release. If this is empty or {@code null}, this call is equivalent to
-     * calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being released.
+     * calling {@link KeyClient#releaseKey(String, String)}, with the latest key version being released.
      * @param targetAttestationToken The attestation assertion for the target of the {@link KeyVaultKey key} release.
      *
      * @return The key release result containing the {@link KeyVaultKey released key}.
@@ -1571,7 +1571,7 @@ public final class KeyClient {
      *
      * @param name The name of the {@link KeyVaultKey key} to release.
      * @param version The version of the {@link KeyVaultKey key} to release. If this is empty or {@code null}, this call
-     * is equivalent to calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being
+     * is equivalent to calling {@link KeyClient#releaseKey(String, String)}, with the latest key version being
      * released.
      * @param targetAttestationToken The attestation assertion for the target of the key release.
      * @param releaseKeyOptions Additional {@link ReleaseKeyOptions options} for releasing a {@link KeyVaultKey key}.

@@ -35,7 +35,7 @@ public final class ClusterManagersCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"analyticsWorkspaceId\":\"ntuygdhgaqipir\",\"availabilityZones\":[\"rqofulopmjnlexwh\"],\"clusterVersions\":[],\"detailedStatus\":\"UpdateFailed\",\"detailedStatusMessage\":\"k\",\"fabricControllerId\":\"phuuuerctato\",\"managedResourceGroupConfiguration\":{\"location\":\"tqpbrlcy\",\"name\":\"uczkgofxyfsruc\"},\"managerExtendedLocation\":{\"name\":\"rrp\",\"type\":\"jttbstv\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"nrmvvfkoxmlghk\"},\"location\":\"idvrmaz\",\"tags\":{\"wvqsgny\":\"wwexymzvlazipbh\",\"patlbijp\":\"uuzivensrpmeyyvp\"},\"id\":\"gsksrfhf\",\"name\":\"olmk\",\"type\":\"bnxwc\"}";
+            "{\"properties\":{\"analyticsWorkspaceId\":\"linhmdptysprqs\",\"availabilityZones\":[\"xojpslsvjgp\",\"iufiqwo\",\"xqvapcohh\"],\"clusterVersions\":[],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"oj\",\"fabricControllerId\":\"cxzrzdcgdzben\",\"managedResourceGroupConfiguration\":{\"location\":\"cawetzqddt\",\"name\":\"fljhznamtua\"},\"managerExtendedLocation\":{\"name\":\"zwcjjncqtj\",\"type\":\"mizvgbgatzuuvbx\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"bwggahtt\"},\"location\":\"swvajqfu\",\"tags\":{\"unwqr\":\"joqza\"},\"id\":\"zfrgqhaohcm\",\"name\":\"uocnjrohmbpyr\",\"type\":\"xameblydyvkfkm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,26 +66,26 @@ public final class ClusterManagersCreateOrUpdateMockTests {
         ClusterManager response =
             manager
                 .clusterManagers()
-                .define("tzqdd")
-                .withRegion("yvk")
-                .withExistingResourceGroup("rzdcgdzbenribcaw")
-                .withFabricControllerId("x")
-                .withTags(mapOf("tod", "rocxnehvs"))
-                .withAnalyticsWorkspaceId("wflj")
-                .withAvailabilityZones(Arrays.asList("amtuatmzwcjjnc", "tjzmi", "vgbgatzuuvbxng"))
+                .define("s")
+                .withRegion("mjel")
+                .withExistingResourceGroup("a")
+                .withFabricControllerId("oawjqoyueay")
+                .withTags(mapOf("kjopwbeon", "cigeleohdbvqvw", "soqfyiaseqchkrt", "lkwzdqybxceakxcp"))
+                .withAnalyticsWorkspaceId("xrblmliowxihs")
+                .withAvailabilityZones(Arrays.asList("wqagnepzwa", "lsbs", "qqqagwwrxaomzi"))
                 .withManagedResourceGroupConfiguration(
-                    new ManagedResourceGroupConfiguration().withLocation("zasunwqrjzfrgq").withName("ohcmbu"))
-                .withVmSize("l")
+                    new ManagedResourceGroupConfiguration().withLocation("cmsp").withName("yrrueqth"))
+                .withVmSize("xubmdnafcbqw")
                 .create();
 
-        Assertions.assertEquals("idvrmaz", response.location());
-        Assertions.assertEquals("wwexymzvlazipbh", response.tags().get("wvqsgny"));
-        Assertions.assertEquals("ntuygdhgaqipir", response.analyticsWorkspaceId());
-        Assertions.assertEquals("rqofulopmjnlexwh", response.availabilityZones().get(0));
-        Assertions.assertEquals("phuuuerctato", response.fabricControllerId());
-        Assertions.assertEquals("tqpbrlcy", response.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("uczkgofxyfsruc", response.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("nrmvvfkoxmlghk", response.vmSize());
+        Assertions.assertEquals("swvajqfu", response.location());
+        Assertions.assertEquals("joqza", response.tags().get("unwqr"));
+        Assertions.assertEquals("linhmdptysprqs", response.analyticsWorkspaceId());
+        Assertions.assertEquals("xojpslsvjgp", response.availabilityZones().get(0));
+        Assertions.assertEquals("cxzrzdcgdzben", response.fabricControllerId());
+        Assertions.assertEquals("cawetzqddt", response.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("fljhznamtua", response.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("bwggahtt", response.vmSize());
     }
 
     @SuppressWarnings("unchecked")

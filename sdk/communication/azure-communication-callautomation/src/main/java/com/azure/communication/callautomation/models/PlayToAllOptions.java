@@ -5,6 +5,9 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Collections;
+import java.util.List;
+
 /** The PlayToAllOptions model. */
 @Fluent
 public final class PlayToAllOptions {
@@ -25,10 +28,27 @@ public final class PlayToAllOptions {
 
     /**
      * Constructor
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     */
+    public PlayToAllOptions(List<PlaySource> playSources) {
+        this(playSources.get(0));
+    }
+
+    /**
+     * Constructor
      * @param playSource A {@link PlaySource} representing the source to play.
      */
     public PlayToAllOptions(PlaySource playSource) {
         this.playSource = playSource;
+    }
+
+    /**
+     * Get the play sources.
+     *
+     * @return the playSource value.
+     */
+    public List<PlaySource> getPlaySources() {
+        return Collections.singletonList(playSource);
     }
 
     /**

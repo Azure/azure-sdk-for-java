@@ -3,82 +3,94 @@
 
 package com.azure.core.test;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.http.PlaybackClient;
-import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
  * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
+ * <p>
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
     // BEGIN: readme-sample-createATestClass
+
     /**
      * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
-     * live. By default, tests are run in playback mode.
+     * record. By default, tests are run in playback mode.
      */
-    public class SessionTests extends TestBase {
+    public static class ClientTests extends TestProxyTestBase {
 
         /**
-         * Use JUnit or TestNG annotation here for your testcase
+         * Use JUnit annotation here for your testcase
          */
-        public void fooTest() {
-            // Do some network calls.
+        public void testMethodName() {
+            HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
+            if (interceptorManager.isRecordMode()) {
+                // Add a policy to record network calls.
+                pipelineBuilder.policies(interceptorManager.getRecordPolicy());
+            }
+            if (interceptorManager.isPlaybackMode()) {
+                // Use a playback client when running in playback mode
+                pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
+            }
+
+            Mono<HttpResponse> response =
+                pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
+
+            // Validate test results.
+            assertEquals(200, response.block().getStatusCode());
+        }
+        // END: readme-sample-createATestClass
+
+
+        /**
+         * Sample code for adding sanitizer and matcher to the interceptor manager.
+         */
+        public void testAddSanitizersAndMatchers() {
+            HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
+            // BEGIN: readme-sample-add-sanitizer-matcher
+
+            List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+            // sanitize value for key: "modelId" in response json body
+            customSanitizer.add(
+                new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
+
+            if (interceptorManager.isRecordMode()) {
+                // Add a policy to record network calls.
+                pipelineBuilder.policies(interceptorManager.getRecordPolicy());
+            }
+            if (interceptorManager.isPlaybackMode()) {
+                // Use a playback client when running in playback mode
+                pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
+                // Add matchers only in playback mode
+                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+                    .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
+            }
+            if (!interceptorManager.isLiveMode()) {
+                // Add sanitizers when running in playback or record mode
+                interceptorManager.addSanitizers(customSanitizer);
+            }
+            // END: readme-sample-add-sanitizer-matcher
+
+            Mono<HttpResponse> response =
+                pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
+
+            // Validate test results.
+            assertEquals(200, response.block().getStatusCode());
         }
     }
-    // END: readme-sample-createATestClass
-
-    // BEGIN: readme-sample-recordNetworkCalls
-    /**
-     * Sample code for recording network calls.
-     */
-    public class Foo {
-        public void recordNetworkCalls() {
-            // All network calls are kept in the recordedData variable.
-            RecordedData recordedData = new RecordedData();
-            HttpPipeline pipeline = new HttpPipelineBuilder()
-                .policies(new RecordNetworkCallPolicy(recordedData))
-                .build();
-
-            // Send requests through the HttpPipeline.
-            pipeline.send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
-
-            // Get a record that was sent through the pipeline.
-            NetworkCallRecord networkCall = recordedData.findFirstAndRemoveNetworkCall(record -> {
-                return record.getUri().equals("http://bing.com");
-            });
-        }
-    }
-    // END: readme-sample-recordNetworkCalls
-
-    // BEGIN: readme-sample-playbackSessionRecords
-    /**
-     * Sample code for using playback to test.
-     */
-    public class FooBar {
-        public void playbackNetworkCalls() {
-            RecordedData recordedData = new RecordedData();
-
-            // Add some network calls to be replayed by playbackClient
-
-            // Creates a HTTP client that plays back responses in recordedData.
-            HttpClient playbackClient = new PlaybackClient(recordedData, null);
-
-            // Send an HTTP GET request to http://bing.com. If recordedData contains a NetworkCallRecord with a matching HTTP
-            // method and matching URL, it is returned as a response.
-            Mono<HttpResponse> response = playbackClient.send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
-        }
-    }
-    // END: readme-sample-playbackSessionRecords
 }

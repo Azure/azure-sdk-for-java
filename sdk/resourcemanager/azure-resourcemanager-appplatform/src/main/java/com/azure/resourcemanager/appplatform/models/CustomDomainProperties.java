@@ -28,6 +28,12 @@ public final class CustomDomainProperties {
     @JsonProperty(value = "certName")
     private String certName;
 
+    /*
+     * Provisioning state of the Domain
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private CustomDomainResourceProvisioningState provisioningState;
+
     /**
      * Get the thumbprint property: The thumbprint of bound certificate.
      *
@@ -75,6 +81,15 @@ public final class CustomDomainProperties {
     public CustomDomainProperties withCertName(String certName) {
         this.certName = certName;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Domain.
+     *
+     * @return the provisioningState value.
+     */
+    public CustomDomainResourceProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**

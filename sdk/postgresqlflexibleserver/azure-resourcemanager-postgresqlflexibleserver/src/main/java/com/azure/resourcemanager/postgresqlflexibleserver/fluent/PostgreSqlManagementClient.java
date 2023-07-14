@@ -66,6 +66,13 @@ public interface PostgreSqlManagementClient {
     LocationBasedCapabilitiesClient getLocationBasedCapabilities();
 
     /**
+     * Gets the ServerCapabilitiesClient object to access its operations.
+     *
+     * @return the ServerCapabilitiesClient object.
+     */
+    ServerCapabilitiesClient getServerCapabilities();
+
+    /**
      * Gets the CheckNameAvailabilitiesClient object to access its operations.
      *
      * @return the CheckNameAvailabilitiesClient object.
@@ -108,6 +115,20 @@ public interface PostgreSqlManagementClient {
     ServersClient getServers();
 
     /**
+     * Gets the MigrationsClient object to access its operations.
+     *
+     * @return the MigrationsClient object.
+     */
+    MigrationsClient getMigrations();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -129,9 +150,30 @@ public interface PostgreSqlManagementClient {
     ReplicasClient getReplicas();
 
     /**
+     * Gets the LogFilesClient object to access its operations.
+     *
+     * @return the LogFilesClient object.
+     */
+    LogFilesClient getLogFiles();
+
+    /**
      * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
      *
      * @return the VirtualNetworkSubnetUsagesClient object.
      */
     VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages();
+
+    /**
+     * Gets the FlexibleServersClient object to access its operations.
+     *
+     * @return the FlexibleServersClient object.
+     */
+    FlexibleServersClient getFlexibleServers();
+
+    /**
+     * Gets the LtrBackupOperationsClient object to access its operations.
+     *
+     * @return the LtrBackupOperationsClient object.
+     */
+    LtrBackupOperationsClient getLtrBackupOperations();
 }

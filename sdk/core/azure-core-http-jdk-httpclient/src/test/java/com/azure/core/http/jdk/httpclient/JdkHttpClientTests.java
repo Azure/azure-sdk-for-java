@@ -8,14 +8,13 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.http.Fault;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,12 +22,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import javax.servlet.ServletException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -44,21 +47,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.binaryEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
+@Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientTests {
 
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
@@ -67,27 +70,46 @@ public class JdkHttpClientTests {
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
         .initialRequest(0);
 
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     @BeforeAll
     public static void beforeClass() {
-        server = new WireMockServer(WireMockConfiguration.options()
-            .dynamicPort()
-            .disableRequestJournal()
-            .gzipDisabled(true));
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
+            boolean post = "POST".equalsIgnoreCase(req.getMethod());
 
-        server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(get("/long").willReturn(aResponse().withBody(LONG_BODY)));
-        server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
-        server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(get("/connectionClose").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
+            if (get && "/short".equals(path)) {
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && "/long".equals(path)) {
+                resp.setContentLength(LONG_BODY.length);
+                resp.getOutputStream().write(LONG_BODY);
+            } else if (get && "/error".equals(path)) {
+                resp.setStatus(500);
+                resp.setContentLength(5);
+                resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
+            } else if (post && "/shortPost".equals(path)) {
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && "/connectionClose".equals(path)) {
+                resp.getHttpChannel().getConnection().close();
+            } else if (post && "/shortPostWithBodyValidation".equals(path)) {
+                if (!Arrays.equals(LONG_BODY, 1, 43, requestBody, 0, 42)) {
+                    resp.sendError(400, "Request body does not match expected value");
+                }
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+            }
+        });
+
         server.start();
     }
 
     @AfterAll
     public static void afterClass() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
@@ -115,7 +137,7 @@ public class JdkHttpClientTests {
     public void testBufferResponseSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/long").buffer()) {
-            Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            TestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -124,7 +146,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/long"));
         try (HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true))) {
-            Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            TestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -175,8 +197,8 @@ public class JdkHttpClientTests {
     public void testMultipleGetBinaryDataSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/short")) {
-            Assertions.assertArrayEquals(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
-            Assertions.assertArrayEquals(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -272,57 +294,32 @@ public class JdkHttpClientTests {
 
     @Test
     public void testFileUploadSync() throws IOException {
-        WireMockServer local = new WireMockServer(WireMockConfiguration.options()
-            .dynamicPort()
-            .maxRequestJournalEntries(1)
-            .gzipDisabled(true));
-
-        local.stubFor(post("/shortPost").willReturn(aResponse().withStatus(200).withBody(SHORT_BODY)));
-        local.start();
-
         Path tempFile = writeToTempFile(LONG_BODY);
         tempFile.toFile().deleteOnExit();
         BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
 
         HttpClient client = new JdkHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/shortPost"))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPostWithBodyValidation"))
             .setBody(body);
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
         }
-
-        local.verify(postRequestedFor(urlEqualTo("/shortPost")).withRequestBody(binaryEqualTo(body.toBytes())));
-        local.shutdown();
     }
 
     @Test
     public void testStreamUploadAsync() {
-        WireMockServer local = new WireMockServer(WireMockConfiguration.options()
-            .dynamicPort()
-            .maxRequestJournalEntries(1)
-            .gzipDisabled(true));
-
-        local.stubFor(post("/post").willReturn(aResponse().withStatus(200).withBody(SHORT_BODY)));
-        local.start();
-
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        InputStream requestBody = new ByteArrayInputStream(SHORT_BODY);
-        BinaryData body = BinaryData.fromStream(requestBody, (long) SHORT_BODY.length);
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/post"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length))
+        InputStream requestBody = new ByteArrayInputStream(LONG_BODY, 1, 42);
+        BinaryData body = BinaryData.fromStream(requestBody, 42L);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPostWithBodyValidation"))
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "42")
             .setBody(body);
 
         StepVerifier.create(client.send(request))
-            .consumeNextWith(r -> {
-                assertEquals(200, r.getStatusCode());
-                local.verify(postRequestedFor(urlEqualTo("/post")).withRequestBody(binaryEqualTo(SHORT_BODY)));
-            })
-            .expectComplete()
-            .verify();
-
-        local.shutdown();
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
@@ -398,54 +395,62 @@ public class JdkHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(25)
+        ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
+            .parallel()
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> doRequest(client, "/long")
-                .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
-            .sequential()
-            .map(buffer -> (long) buffer.length)
-            .reduce(0L, Long::sum);
+                .flatMap(HttpResponse::getBodyAsByteArray));
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
+        StepVerifier.create(responses)
+            .thenConsumeWhile(response -> {
+                TestUtils.assertArraysEqual(LONG_BODY, response);
+                return true;
+            })
             .expectComplete()
             .verify(Duration.ofSeconds(60));
     }
 
     @Test
-    public void testConcurrentRequestsSync() {
+    public void testConcurrentRequestsSync() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(25)
-            .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> {
+        ForkJoinPool pool = new ForkJoinPool();
+        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
                 try (HttpResponse response = doRequestSync(client, "/long")) {
                     byte[] body = response.getBodyAsBinaryData().toBytes();
-                    assertArrayEquals(LONG_BODY, body);
-                    return Flux.just((long) body.length);
+                    TestUtils.assertArraysEqual(LONG_BODY, body);
+                    return null;
                 }
-            })
-            .sequential()
-            .reduce(0L, Long::sum);
+            });
+        }
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
-            .expectComplete()
-            .verify(Duration.ofSeconds(60));
+        pool.invokeAll(requests);
+        pool.shutdown();
+        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
-    private Mono<HttpResponse> getResponse(String path) {
+    @Test
+    public void testIOExceptionInWriteBodyTo() {
+        HttpClient client = new JdkHttpClientProvider().createInstance();
+
+        assertThrows(IOException.class, () -> {
+            try (HttpResponse response = doRequestSync(client, "/long")) {
+                response.writeBodyTo(new ThrowingWritableByteChannel());
+            }
+        });
+    }
+
+    private static Mono<HttpResponse> getResponse(String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         return doRequest(client, path);
     }
 
-    private static URL url(WireMockServer server, String path) {
+    private static URL url(LocalTestServer server, String path) {
         try {
-            return UrlBuilder.parse("http://localhost:" + server.port() + path).toUrl();
+            return UrlBuilder.parse(server.getHttpUri() + path).toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -456,35 +461,36 @@ public class JdkHttpClientTests {
         byte[] longBody = new byte[duplicateBytes.length * 100000];
 
         for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length,
+                duplicateBytes.length);
         }
 
         return longBody;
     }
 
-    private void checkBodyReceived(byte[] expectedBody, String path) {
+    private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> Assertions.assertArrayEquals(expectedBody, bytes))
+            .assertNext(bytes -> TestUtils.assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 
-    private void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {
+    private static void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, path)) {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             WritableByteChannel body = Channels.newChannel(outStream);
             response.writeBodyTo(body);
-            Assertions.assertArrayEquals(expectedBody, outStream.toByteArray());
+            TestUtils.assertArraysEqual(expectedBody, outStream.toByteArray());
         }
     }
 
-    private Mono<HttpResponse> doRequest(HttpClient client, String path) {
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.send(request);
     }
 
-    private HttpResponse doRequestSync(HttpClient client, String path) {
+    private static HttpResponse doRequestSync(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.sendSync(request, Context.NONE);
     }
@@ -497,5 +503,31 @@ public class JdkHttpClientTests {
         outputStream.write(body);
         outputStream.close();
         return tempFile;
+    }
+
+    private static final class ThrowingWritableByteChannel implements WritableByteChannel {
+        private boolean open = true;
+        int writeCount = 0;
+
+        @Override
+        public int write(ByteBuffer src) throws IOException {
+            if (writeCount++ < 3) {
+                int remaining = src.remaining();
+                src.position(src.position() + remaining);
+                return remaining;
+            } else {
+                throw new IOException();
+            }
+        }
+
+        @Override
+        public boolean isOpen() {
+            return open;
+        }
+
+        @Override
+        public void close() throws IOException {
+            open = false;
+        }
     }
 }

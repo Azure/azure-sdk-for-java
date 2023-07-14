@@ -3,6 +3,7 @@
 ### 1.0.0-beta.4 (Unreleased)
 
 #### Features Added
+* Added fault injection support for Gateway connection mode - See [PR 35378](https://github.com/Azure/azure-sdk-for-java/pull/35378)
 
 #### Breaking Changes
 

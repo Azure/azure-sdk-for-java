@@ -57,6 +57,7 @@ public final class ServiceTimeoutPolicy implements HttpPipelinePolicy {
             }
         }
     }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if (applyTimeout) {
@@ -89,6 +90,7 @@ public final class ServiceTimeoutPolicy implements HttpPipelinePolicy {
      *
      * @return The position to place the policy.
      */
+    @Override
     public HttpPipelinePosition getPipelinePosition() {
         return HttpPipelinePosition.PER_CALL;
     }

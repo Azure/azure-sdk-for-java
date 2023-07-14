@@ -2,9 +2,9 @@
 {{- define "stress.java-servicebus" -}}
 metadata:
   labels:
-    testInstance: "servicebus-{{ .Release.Name }}-{{ .Release.Revision }}"
-    testName: servicebus-stress-test
-    chaos: "true"
+    testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testName: java-sb-stress
+    chaos: "{{ default false .Stress.chaos }}"
 spec:
   containers:
     - name: sender
@@ -16,18 +16,18 @@ spec:
           set -a &&
           source $ENV_FILE &&
           export CONTAINER_NAME=sender &&
+          export AZURE_LOG_LEVEL=1 &&
           export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
-          "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=MessageSender
+          export APPLICATIONINSIGHTS_ROLE_INSTANCE=sender-{{ .Stress.BaseName }} &&
+          export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL=DEBUG &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
+          -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar \
+          --TEST_CLASS=MessageSenderAsync
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
         requests:
           memory: "1G"
           cpu: "1"
-        limits:
-          memory: "2G"
-          cpu: "2"
     - name: receiver
       image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
@@ -37,17 +37,113 @@ spec:
           set -a &&
           source $ENV_FILE &&
           export CONTAINER_NAME=receiver &&
+          export AZURE_LOG_LEVEL=1 &&
           export APPLICATIONINSIGHTS_ROLE_NAME=receiver &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+          export APPLICATIONINSIGHTS_ROLE_INSTANCE=receiver-{{ .Stress.BaseName }} &&
+          export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL=DEBUG &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
           -Dreactor.schedulers.defaultBoundedElasticSize=100 \
-          "org.springframework.boot.loader.JarLauncher" \
+          -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar \
           --TEST_CLASS=MessageProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
         requests:
           memory: "1G"
           cpu: "1"
-        limits:
-          memory: "2G"
-          cpu: "2"
+{{- end -}}
+
+{{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}
+{{- define "stress.network-chaos" -}}
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Workflow
+metadata:
+  name: servicebus-killer-workflow
+spec:
+  entry: parallel-profile
+  templates:
+    - name: parallel-profile
+      templateType: Parallel
+      deadline: 1h
+      children:
+        - loss
+        - delay
+        - bandwidth
+    - name: loss
+      templateType: NetworkChaos
+      networkChaos:
+        direction: to
+        externalTargets:
+          - {{ .Stress.BaseName }}.servicebus.windows.net
+        mode: all
+        selector:
+          namespaces:
+            - {{ .Release.Namespace }}
+          labelSelectors:
+            testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+            chaos: "true"
+        action: loss
+        loss:
+          loss: '20'
+          correlation: '60'
+        target:
+          selector:
+            namespaces:
+              - {{ .Release.Namespace }}
+            labelSelectors:
+              testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+              chaos: "true"
+          mode: all
+    - name: delay
+      templateType: NetworkChaos
+      networkChaos:
+        deadline: 1h
+        direction: to
+        externalTargets:
+          - {{ .Stress.BaseName }}.servicebus.windows.net
+        mode: all
+        selector:
+          namespaces:
+            - {{ .Release.Namespace }}
+          labelSelectors:
+            testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+            chaos: "true"
+        action: delay
+        delay:
+          latency: '200ms'
+          correlation: '60'
+          jitter: '2000ms'
+        target:
+          selector:
+            namespaces:
+              - {{ .Release.Namespace }}
+            labelSelectors:
+              testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+              chaos: "true"
+          mode: all
+    - name: bandwidth
+      templateType: NetworkChaos
+      networkChaos:
+        direction: to
+        externalTargets:
+          - {{ .Stress.BaseName }}.servicebus.windows.net
+        mode: all
+        selector:
+          namespaces:
+            - {{ .Release.Namespace }}
+          labelSelectors:
+            testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+            chaos: "true"
+        action: bandwidth
+        bandwidth:
+          rate: '10kbps'
+          limit: 50000  #recommended to set to at least 2 * rate * latency (2 * 10kbps * 2sec at max = 40kb at max)
+          buffer: 100000 #100kb
+        target:
+          selector:
+            namespaces:
+              - {{ .Release.Namespace }}
+            labelSelectors:
+              testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+              chaos: "true"
+          mode: all
 {{- end -}}

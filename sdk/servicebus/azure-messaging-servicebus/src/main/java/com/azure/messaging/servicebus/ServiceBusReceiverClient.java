@@ -286,7 +286,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session state could not be acquired.
      */
     public byte[] getSessionState() {
-        return this.getSessionState(asyncClient.getReceiverOptions().getSessionId());
+        return asyncClient.getSessionState().block(operationTimeout);
     }
 
     /**
@@ -661,7 +661,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session lock cannot be renewed.
      */
     public OffsetDateTime renewSessionLock() {
-        return asyncClient.renewSessionLock(asyncClient.getReceiverOptions().getSessionId()).block(operationTimeout);
+        return asyncClient.renewSessionLock().block(operationTimeout);
     }
 
     /**
@@ -688,7 +688,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session state cannot be set.
      */
     public void setSessionState(byte[] sessionState) {
-        this.setSessionState(asyncClient.getReceiverOptions().getSessionId(), sessionState);
+        asyncClient.setSessionState(sessionState).block(operationTimeout);
     }
 
     /**
@@ -837,14 +837,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             v -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
             throwableConsumer,
             () -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
-    }
-
-    void setSessionState(String sessionId, byte[] sessionState) {
-        asyncClient.setSessionState(sessionId, sessionState).block(operationTimeout);
-    }
-
-    byte[] getSessionState(String sessionId) {
-        return asyncClient.getSessionState(sessionId).block(operationTimeout);
     }
 
     private <T> IterableStream<T> fromFluxAndSubscribe(Flux<T> flux)  {
