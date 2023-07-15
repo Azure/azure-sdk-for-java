@@ -1154,14 +1154,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             request.requestContext.forceRefreshAddressCache = true;
         } else if (exception instanceof InvalidPartitionException) {
             request.forceNameCacheRefresh = true;
-            request.requestContext.quorumSelectedLSN = -1;
             request.requestContext.resolvedPartitionKeyRange = null;
-            request.requestContext.quorumSelectedStoreResponse = null;
-            request.requestContext.globalCommittedSelectedLSN = -1;
         } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
             request.requestContext.resolvedPartitionKeyRange = null;
-            request.requestContext.quorumSelectedLSN = -1;
-            request.requestContext.quorumSelectedStoreResponse = null;
             request.forcePartitionKeyRangeRefresh = true;
         } else if (exception instanceof GoneException) {
             request.requestContext.forceRefreshAddressCache = true;

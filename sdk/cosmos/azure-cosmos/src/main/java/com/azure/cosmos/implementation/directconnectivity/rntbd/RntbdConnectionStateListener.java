@@ -32,15 +32,12 @@ public class RntbdConnectionStateListener {
     // region Fields
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
-
     private final RntbdEndpoint endpoint;
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final AddressSelector addressSelector;
     private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
-    private final Set<PartitionKeyRangeIdentity> partitionsUnderRefresh;
-
 
     // endregion
 
@@ -55,7 +52,6 @@ public class RntbdConnectionStateListener {
         this.addressUris = ConcurrentHashMap.newKeySet();
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         this.addressSelector = addressSelector;
-        this.partitionsUnderRefresh = ConcurrentHashMap.newKeySet();
     }
 
     // endregion
@@ -174,8 +170,6 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        final PartitionKeyRangeIdentity pkrId = request.getPartitionKeyRangeIdentity();
-
         AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
 
         if (isRequestCancelledOnTimeout == null
@@ -186,36 +180,28 @@ public class RntbdConnectionStateListener {
 
         final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
 
-        if (pkrId == null || !partitionsUnderRefresh.contains(pkrId)) {
-            this.addressSelector
-                .resolveAddressesAsync(request, forceAddressRefresh)
-                .subscribeOn(Schedulers.boundedElastic())
-                .doOnSubscribe(ignore -> {
-                    logger.debug("Background refresh of addresses started!");
-                    if (pkrId != null) {
-                        partitionsUnderRefresh.add(pkrId);
-                    }
-                })
-                .doFinally(signalType -> {
-                    logger.debug("Background refresh of addresses finished!");
-                    if (pkrId != null) {
-                        partitionsUnderRefresh.remove(pkrId);
-                    }
-                })
-                .subscribe(
-                    ignoreResult -> {
-                    },
-                    throwable -> logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable)
-                );
-        }
+        this.addressSelector
+            .resolveAddressesAsync(request, forceAddressRefresh)
+            .subscribeOn(Schedulers.boundedElastic())
+            .doOnSubscribe(ignore -> {
+                logger.debug("Background refresh of addresses started!");
+            })
+            .doFinally(signalType -> {
+                logger.debug("Background refresh of addresses finished!");
+            })
+            .subscribe(
+                ignoreResult -> {
+                },
+                throwable -> logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable)
+            );
     }
     // endregion
 
     private boolean shouldRefreshForException(Exception exception) {
         return exception instanceof ConnectTimeoutException
-                || exception instanceof InvalidPartitionException
-                || exception instanceof PartitionIsMigratingException
-                || exception instanceof PartitionKeyRangeIsSplittingException
-                || exception instanceof GoneException;
+            || exception instanceof InvalidPartitionException
+            || exception instanceof PartitionIsMigratingException
+            || exception instanceof PartitionKeyRangeIsSplittingException
+            || exception instanceof GoneException;
     }
 }

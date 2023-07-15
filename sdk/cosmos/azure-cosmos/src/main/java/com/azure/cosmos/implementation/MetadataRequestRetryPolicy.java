@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import org.slf4j.Logger;
@@ -20,11 +21,11 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
     public MetadataRequestRetryPolicy(GlobalEndpointManager globalEndpointManager) {
         this.globalEndpointManager = globalEndpointManager;
-        this.webExceptionRetryPolicy = new WebExceptionRetryPolicy();
     }
 
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.request = request;
+        this.webExceptionRetryPolicy = new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics));
     }
 
     private static boolean shouldMarkRegionAsUnavailable(CosmosException exception) {
@@ -42,30 +43,34 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
         return webExceptionRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
 
-            if (this.request == null) {
-                logger.error("onBeforeSendRequest has not been invoked with the MetadataRequestRetryPolicy...");
-                return Mono.just(ShouldRetryResult.error(e));
-            }
-
-            // Bubble up to downstream retry policy
-            if (!(e instanceof CosmosException)) {
-                logger.debug("exception is not an instance of CosmosException...");
-                return Mono.just(ShouldRetryResult.error(e));
-            }
-
-            CosmosException cosmosException = Utils.as(e, CosmosException.class);
-
-            if (shouldMarkRegionAsUnavailable(cosmosException)) {
-                URI locationEndpointToRoute = request.requestContext.locationEndpointToRoute;
-
-                if (request.isReadOnlyRequest()) {
-                    this.globalEndpointManager.markEndpointUnavailableForRead(locationEndpointToRoute);
-                } else {
-                    this.globalEndpointManager.markEndpointUnavailableForWrite(locationEndpointToRoute);
+            if (!shouldRetryResult.shouldRetry) {
+                if (this.request == null) {
+                    logger.error("onBeforeSendRequest has not been invoked with the MetadataRequestRetryPolicy...");
+                    return Mono.just(ShouldRetryResult.error(e));
                 }
+
+                // Bubble up to downstream retry policy
+                if (!(e instanceof CosmosException)) {
+                    logger.debug("exception is not an instance of CosmosException...");
+                    return Mono.just(ShouldRetryResult.error(e));
+                }
+
+                CosmosException cosmosException = Utils.as(e, CosmosException.class);
+
+                if (shouldMarkRegionAsUnavailable(cosmosException)) {
+                    URI locationEndpointToRoute = request.requestContext.locationEndpointToRoute;
+
+                    if (request.isReadOnlyRequest()) {
+                        this.globalEndpointManager.markEndpointUnavailableForRead(locationEndpointToRoute);
+                    } else {
+                        this.globalEndpointManager.markEndpointUnavailableForWrite(locationEndpointToRoute);
+                    }
+                }
+
+                return Mono.just(ShouldRetryResult.error(cosmosException));
             }
 
-            return Mono.just(ShouldRetryResult.error(cosmosException));
+            return Mono.just(shouldRetryResult);
         });
     }
 

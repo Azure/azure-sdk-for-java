@@ -249,15 +249,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
 
-            MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManager);
-            metadataRequestRetryPolicy.onBeforeSendRequest(request);
-
             if (this.gatewayServerErrorInjector != null) {
-                Mono<HttpResponse> faultInjectedHttpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
-                return BackoffRetryUtility.executeRetry(() -> toDocumentServiceResponse(faultInjectedHttpResponseMono, request, httpRequest), metadataRequestRetryPolicy);
+                httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
+                return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
             }
 
-            return BackoffRetryUtility.executeRetry(() -> toDocumentServiceResponse(httpResponseMono, request, httpRequest), metadataRequestRetryPolicy);
+            return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {
             return Mono.error(e);
@@ -525,9 +522,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics)));
+
+        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
+        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+        return BackoffRetryUtility.executeRetry(funcDelegate, metadataRequestRetryPolicy);
     }
 
     @Override
