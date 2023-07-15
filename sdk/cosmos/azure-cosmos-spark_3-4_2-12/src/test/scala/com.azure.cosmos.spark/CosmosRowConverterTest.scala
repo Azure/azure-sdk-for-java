@@ -31,7 +31,7 @@ class CosmosRowConverterTest extends UnitSpec with BasicLoggingTrait {
         )
 
 
-    "date and time in spark row" should "translate to ObjectNode" in {
+    "date and time and TimestampNTZType in spark row" should "translate to ObjectNode" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
         val colName3 = "testCol3"
@@ -39,9 +39,7 @@ class CosmosRowConverterTest extends UnitSpec with BasicLoggingTrait {
         val currentMillis = System.currentTimeMillis()
         val colVal1 = new Date(currentMillis)
         val timestampNTZType =  "2021-07-01T08:43:28.037"
-        //val colVal2 = new Timestamp(colVal1.getTime)
         val colVal2 = LocalDateTime.parse(timestampNTZType, DateTimeFormatter.ISO_DATE_TIME)
-
         val colVal3 = currentMillis.toInt
 
         val row = new GenericRowWithSchema(

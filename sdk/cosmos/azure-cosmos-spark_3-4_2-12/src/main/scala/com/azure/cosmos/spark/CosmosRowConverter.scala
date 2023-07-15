@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 // scalastyle:off underscore.import
 import com.fasterxml.jackson.databind.node._
@@ -174,6 +175,7 @@ private[cosmos] class CosmosRowConverter(private val objectMapper: ObjectMapper,
                             ).toEpochMilli)
                 }
             case TimestampType => convertToJsonNodeConditionally(rowData.asInstanceOf[Timestamp].getTime)
+            case TimestampNTZType => convertToJsonNodeConditionally(rowData.asInstanceOf[java.time.LocalDateTime].toString)
             case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] =>
                 val arrayDataValue = rowData.asInstanceOf[ArrayData]
                 if (isDefaultValue(arrayDataValue)) {
@@ -283,7 +285,7 @@ private[cosmos] class CosmosRowConverter(private val objectMapper: ObjectMapper,
                             classOf[JsonNode])
                 }
             case DateType => objectMapper.convertValue(rowData.asInstanceOf[Date].getTime, classOf[JsonNode])
-            case TimestampType | TimestampNTZType if rowData.isInstanceOf[java.lang.Long] =>
+            case TimestampType if rowData.isInstanceOf[java.lang.Long] =>
                 serializationConfig.serializationDateTimeConversionMode match {
                     case SerializationDateTimeConversionModes.Default =>
                         objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
@@ -299,7 +301,7 @@ private[cosmos] class CosmosRowConverter(private val objectMapper: ObjectMapper,
                             ).toEpochMilli,
                             classOf[JsonNode])
                 }
-            case TimestampType | TimestampNTZType if rowData.isInstanceOf[java.lang.Integer] =>
+            case TimestampType if rowData.isInstanceOf[java.lang.Integer] =>
                 serializationConfig.serializationDateTimeConversionMode match {
                     case SerializationDateTimeConversionModes.Default =>
                         objectMapper.convertValue(rowData.asInstanceOf[java.lang.Integer], classOf[JsonNode])
