@@ -79,6 +79,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketAddress;
@@ -827,10 +828,13 @@ public final class RntbdTransportClientTest {
     }
 
     @Test(groups = "unit")
-    public void cancelRequestMono() throws InterruptedException, URISyntaxException, IllegalAccessException {
+    public void cancelRequestMono() throws InterruptedException, URISyntaxException, IllegalAccessException, SSLException {
         RxDocumentServiceRequest request =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         URI locationToRoute = new URI("http://localhost-west:8080");
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
+        final SslContext sslContext = SslContextBuilder.forClient().build();
         request.requestContext.locationEndpointToRoute = locationToRoute;
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
@@ -841,7 +845,14 @@ public final class RntbdTransportClientTest {
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
 
-        RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
+        RntbdTransportClient transportClient = new RntbdTransportClient(
+            options,
+            sslContext,
+            null,
+            null,
+            null);
+
+        ReflectionUtils.setEndpointProvider(transportClient, endpointProvider);
         AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
         Mockito.when(endpointProvider.createIfAbsent(locationToRoute, addressUri, transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector)).thenReturn(rntbdEndpoint);
@@ -879,7 +890,10 @@ public final class RntbdTransportClientTest {
             throw new AssertionError(String.format("%s: %s", error.getClass(), error.getMessage()));
         }
 
-        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected, null));
+        RntbdTransportClient rntbdTransportClient = new RntbdTransportClient(options, sslContext, null, null, null);
+        FakeEndpoint.Provider endpointProvider = new FakeEndpoint.Provider(options, sslContext, expected, null);
+        ReflectionUtils.setEndpointProvider(rntbdTransportClient, endpointProvider);
+        return rntbdTransportClient;
     }
 
     private void validateFailure(final Mono<? extends StoreResponse> responseMono, final FailureValidator validator) {
