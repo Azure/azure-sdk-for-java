@@ -122,7 +122,12 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
             {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
             {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, false}
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, false},
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, false},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, false}
 //            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, true},
 //            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, true}
         };
@@ -134,10 +139,21 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         RxDocumentServiceRequest createRequest = RxDocumentServiceRequest.create(
             mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
 
+        createRequest.setAddressRefresh(true, true);
+
         RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
             mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
+        readRequest.setAddressRefresh(true, true);
+
         return new Object[][]{
+            {
+                new SocketException("Socket has been closed"),
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                createRequest,
+                true /* isNetworkFailure */
+            },
             {
                 new SocketException("Socket has been closed"),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,

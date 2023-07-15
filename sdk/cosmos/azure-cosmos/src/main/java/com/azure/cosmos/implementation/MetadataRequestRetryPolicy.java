@@ -28,7 +28,11 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
         this.webExceptionRetryPolicy = new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics));
     }
 
-    private static boolean shouldMarkRegionAsUnavailable(CosmosException exception) {
+    private boolean shouldMarkRegionAsUnavailable(CosmosException exception) {
+
+        if (!(request.isAddressRefresh() || request.isMetadataRequest())) {
+            return false;
+        }
 
         // check for network issues or connectivity issues
         if (WebExceptionUtility.isNetworkFailure(exception)) {
