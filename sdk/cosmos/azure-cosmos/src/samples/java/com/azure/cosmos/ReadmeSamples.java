@@ -34,6 +34,8 @@ public class ReadmeSamples {
         .getDatabase("<YOUR DATABASE NAME>");
     private final CosmosContainer cosmosContainer = cosmosDatabase
         .getContainer("<YOUR CONTAINER NAME>");
+    private final CosmosAsyncStoredProcedure cosmosAsyncStoredProcedure = new CosmosAsyncStoredProcedure("id", cosmosAsyncContainer);
+    private final CosmosAsyncTrigger cosmosAsyncTrigger = new CosmosAsyncTrigger("id", cosmosAsyncContainer);
 
     public void createCosmosAsyncClient() {
         // BEGIN: readme-sample-createCosmosAsyncClient
@@ -405,6 +407,402 @@ public class ReadmeSamples {
             System.out.println("Failed to create container: " + ce);
         }
         // END: com.azure.cosmos.CosmosDatabase.createContainerPartitionKey
+    }
+
+    public void getDatabaseSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.getDatabase
+        String databaseId = "<YOUR DATABASE NAME>";
+
+        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase(databaseId);
+        // END: com.azure.cosmos.CosmosAsyncClient.getDatabase
+    }
+
+    public void createGlobalThroughputControlConfigBuilderSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createGlobalThroughputControlConfigBuilder
+        String databaseId = "<YOUR DATABASE NAME>";
+        String containerId = "<YOUR CONTAINER NAME>";
+
+        GlobalThroughputControlConfig config =
+            cosmosAsyncClient.createGlobalThroughputControlConfigBuilder(databaseId, containerId)
+                .build();
+        // END: com.azure.cosmos.CosmosAsyncClient.createGlobalThroughputControlConfigBuilder
+    }
+
+    public void readConflictSample() {
+        CosmosAsyncClient asyncClient = new CosmosClientBuilder().buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncConflict.read
+        String conflictId = "CONFLICT_ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(conflictId, asyncClient);
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(conflictId, cosmosAsyncDatabase);
+        CosmosConflictRequestOptions options =
+            new CosmosConflictRequestOptions();
+        CosmosAsyncConflict conflict =
+            new CosmosAsyncConflict(conflictId, cosmosAsyncContainer);
+
+        Mono<CosmosConflictResponse> conflictResponseMono = conflict.read(options);
+        // END: com.azure.cosmos.CosmosAsyncConflict.read
+    }
+
+    public void CosmosAsyncProcedureReadSample() {
+        String id = "ID";
+        CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, client);
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.read
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+        CosmosAsyncStoredProcedure procedure =
+            new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
+
+        Mono<CosmosStoredProcedureResponse> response = procedure.read();
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.read
+    }
+
+    public void CosmosAsyncProcedureDeleteSample() {
+        String id = "ID";
+        CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, client);
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.delete
+        CosmosAsyncStoredProcedure procedure =
+            new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
+        CosmosStoredProcedureRequestOptions options =
+            new CosmosStoredProcedureRequestOptions();
+
+        Mono<CosmosStoredProcedureResponse> response = procedure.delete();
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.delete
+    }
+
+    public void CosmosAsyncProcedureExecuteSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.execute
+        String id = "ID";
+        CosmosAsyncStoredProcedure procedure =
+            new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
+        CosmosStoredProcedureRequestOptions options =
+            new CosmosStoredProcedureRequestOptions();
+        List procedureParams = Collections.emptyList();
+
+        Mono<CosmosStoredProcedureResponse> response =
+            procedure.execute(procedureParams, options);
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.execute
+    }
+
+    public void CosmosAsyncProcedureReplaceSample() {
+        String idTemp = "temp";
+        CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.replace
+        String id = "ID";
+        String body = "BODY";
+        CosmosAsyncStoredProcedure procedure =
+            new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
+        CosmosStoredProcedureRequestOptions options =
+            new CosmosStoredProcedureRequestOptions();
+        CosmosStoredProcedureProperties properties =
+            new CosmosStoredProcedureProperties(id, body);
+
+        procedure.replace(properties, options);
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.replace
+    }
+
+    public void CosmosAsyncTriggerReadSample() {
+        String temp = "ID";
+        // BEGIN: com.azure.cosmos.CosmosAsyncTrigger.read
+        String id = "ID";
+        CosmosAsyncTrigger trigger =
+            new CosmosAsyncTrigger(id, cosmosAsyncContainer);
+
+        Mono<CosmosTriggerResponse> response = trigger.read();
+        // END: com.azure.cosmos.CosmosAsyncTrigger.read
+    }
+
+    public void CosmosAsyncTriggerReplaceSample() {
+        String id = "ID";
+        String body = "BODY";
+        // BEGIN: com.azure.cosmos.CosmosAsyncTrigger.replace
+        CosmosAsyncTrigger trigger =
+            new CosmosAsyncTrigger(id, cosmosAsyncContainer);
+        CosmosTriggerProperties properties =
+            new CosmosTriggerProperties(id, body);
+
+        Mono<CosmosTriggerResponse> response =
+            trigger.replace(properties);
+        // END: com.azure.cosmos.CosmosAsyncTrigger.replace
+    }
+
+    public void CosmosAsyncTriggerDeleteSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncTrigger.delete
+        String id = "ID";
+        CosmosAsyncTrigger trigger =
+            new CosmosAsyncTrigger(id, cosmosAsyncContainer);
+
+        Mono<CosmosTriggerResponse> response = trigger.delete();
+        // END: com.azure.cosmos.CosmosAsyncTrigger.delete
+    }
+
+    public void CosmosAsyncUserReadSample() {
+        String id = "ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(id, new CosmosClientBuilder().buildAsyncClient());
+        // BEGIN: com.azure.cosmos.CosmosAsyncUser.read
+        CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
+
+        Mono<CosmosUserResponse> response = user.read();
+        // END: com.azure.cosmos.CosmosAsyncUser.read
+    }
+
+    public void CosmosAsyncUserReplaceSample() {
+        String id = "ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(id, new CosmosClientBuilder().buildAsyncClient());
+        // BEGIN: com.azure.cosmos.CosmosAsyncUser.replace
+        CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
+        CosmosUserProperties properties = new CosmosUserProperties();
+
+        Mono<CosmosUserResponse> response = user.replace(properties);
+        // END: com.azure.cosmos.CosmosAsyncUser.replace
+    }
+
+    public void CosmosAsyncUserDeleteSample() {
+        String id = "ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(id, new CosmosClientBuilder().buildAsyncClient());
+        // BEGIN: com.azure.cosmos.CosmosAsyncUser.delete
+        CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
+
+        Mono<CosmosUserResponse> response = user.delete();
+        // END: com.azure.cosmos.CosmosAsyncUser.delete
+    }
+    public void CosmosAsyncUserCreatePermissionSample() {
+        String id = "ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(id, new CosmosClientBuilder().buildAsyncClient());
+        // BEGIN: com.azure.cosmos.CosmosAsyncUser.createPermission
+        CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
+        CosmosPermissionProperties properties =
+            new CosmosPermissionProperties();
+        CosmosPermissionRequestOptions requestOptions =
+            new CosmosPermissionRequestOptions();
+
+        Mono<CosmosPermissionResponse> response =
+            user.createPermission(properties, requestOptions);
+        // END: com.azure.cosmos.CosmosAsyncUser.createPermission
+    }
+    public void CosmosAsyncUserUpsertPermissionSample() {
+        String id = "ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(id, new CosmosClientBuilder().buildAsyncClient());
+        // BEGIN: com.azure.cosmos.CosmosAsyncUser.upsertPermission
+        CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
+        CosmosPermissionProperties properties =
+            new CosmosPermissionProperties();
+        CosmosPermissionRequestOptions requestOptions =
+            new CosmosPermissionRequestOptions();
+
+        Mono<CosmosPermissionResponse> response =
+            user.upsertPermission(properties, requestOptions);
+        // END: com.azure.cosmos.CosmosAsyncUser.upsertPermission
+    }
+    public void CosmosAsyncUserReadPermissionsSample() {
+        String id = "ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(id, new CosmosClientBuilder().buildAsyncClient());
+        // BEGIN: com.azure.cosmos.CosmosAsyncUser.readAllPermissions
+        CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
+
+        CosmosPagedFlux<CosmosPermissionProperties> permissions =
+            user.readAllPermissions();
+        // END: com.azure.cosmos.CosmosAsyncUser.readAllPermissions
+    }
+    public void CosmosAsyncUserQueryPermissionsSample() {
+        String id = "ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(id, new CosmosClientBuilder().buildAsyncClient());
+        // BEGIN: com.azure.cosmos.CosmosAsyncUser.queryPermissions
+        CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
+        String query = "YOUR_QUERY";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosPagedFlux<CosmosPermissionProperties> permissions =
+            user.queryPermissions(query, options);
+        // END: com.azure.cosmos.CosmosAsyncUser.queryPermissions
+    }
+
+    public void CosmosAsyncUserFuncReadSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosAsyncUserDefinedFunction.read
+        CosmosAsyncUserDefinedFunction userFunction =
+            new CosmosAsyncUserDefinedFunction(id, cosmosAsyncContainer);
+
+        Mono<CosmosUserDefinedFunctionResponse> response =
+            userFunction.read();
+        // END: com.azure.cosmos.CosmosAsyncUserDefinedFunction.read
+    }
+
+    public void CosmosAsyncUserFuncReplaceSample() {
+        String id = "ID";
+        String body = "BODY";
+        // BEGIN: com.azure.cosmos.CosmosAsyncUserDefinedFunction.replace
+        CosmosAsyncUserDefinedFunction userFunction =
+            new CosmosAsyncUserDefinedFunction(id, cosmosAsyncContainer);
+        CosmosUserDefinedFunctionProperties properties =
+            new CosmosUserDefinedFunctionProperties(id, body);
+
+        Mono<CosmosUserDefinedFunctionResponse> response =
+            userFunction.replace(properties);
+        // END: com.azure.cosmos.CosmosAsyncUserDefinedFunction.replace
+    }
+
+    public void CosmosAsyncUserFuncDeleteSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosAsyncUserDefinedFunction.delete
+        CosmosAsyncUserDefinedFunction userFunction =
+            new CosmosAsyncUserDefinedFunction(id, cosmosAsyncContainer);
+
+        Mono<CosmosUserDefinedFunctionResponse> response = userFunction.delete();
+        // END: com.azure.cosmos.CosmosAsyncUserDefinedFunction.delete
+    }
+
+    public void deleteConflictSample() {
+        String conflictId = "CONFLICT_ID";
+        CosmosAsyncClient asyncClient = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(conflictId, asyncClient);
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(conflictId, cosmosAsyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosAsyncConflict.delete
+        CosmosConflictRequestOptions options =
+            new CosmosConflictRequestOptions();
+        CosmosAsyncConflict conflict =
+            new CosmosAsyncConflict(conflictId, cosmosAsyncContainer);
+
+        Mono<CosmosConflictResponse> conflictResponseMono = conflict.delete(options);
+        // END: com.azure.cosmos.CosmosAsyncConflict.delete
+    }
+
+    public void CosmosStoredProcedureReadSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosStoredProcedure.read
+        CosmosStoredProcedure procedure = new CosmosStoredProcedure(id, cosmosContainer, cosmosAsyncStoredProcedure);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+
+        CosmosStoredProcedureResponse response = procedure.read(options);
+        // END: com.azure.cosmos.CosmosStoredProcedure.read
+    }
+
+    public void CosmosStoredProcedureDeleteSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosStoredProcedure.delete
+        CosmosStoredProcedure procedure = new CosmosStoredProcedure(id, cosmosContainer, cosmosAsyncStoredProcedure);
+
+        CosmosStoredProcedureResponse response = procedure.delete();
+        // END: com.azure.cosmos.CosmosStoredProcedure.delete
+    }
+
+    public void CosmosStoredProcedureExecuteSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosStoredProcedure.execute
+        CosmosStoredProcedure procedure = new CosmosStoredProcedure(id, cosmosContainer, cosmosAsyncStoredProcedure);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        List<Object> procedureParams = new ArrayList<>();
+
+        CosmosStoredProcedureResponse response = procedure.execute(procedureParams, options);
+        // END: com.azure.cosmos.CosmosStoredProcedure.execute
+    }
+
+    public void CosmosStoredProcedureReplaceSample() {
+        String id = "ID";
+        String body = "BODY";
+        // BEGIN: com.azure.cosmos.CosmosStoredProcedure.replace
+        CosmosStoredProcedure procedure = new CosmosStoredProcedure(id, cosmosContainer, cosmosAsyncStoredProcedure);
+        CosmosStoredProcedureProperties properties = new CosmosStoredProcedureProperties(id, body);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+
+        CosmosStoredProcedureResponse response = procedure.replace(properties, options);
+        // END: com.azure.cosmos.CosmosStoredProcedure.replace
+    }
+
+    public void CosmosTriggerReadSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosTrigger.read
+        CosmosTrigger trigger = new CosmosTrigger(id, cosmosContainer, cosmosAsyncTrigger);
+
+        CosmosTriggerResponse response = trigger.read();
+        // END: com.azure.cosmos.CosmosTrigger.read
+    }
+
+    public void CosmosTriggerReplaceSample() {
+        String id = "ID";
+        String body = "BODY";
+        // BEGIN: com.azure.cosmos.CosmosTrigger.replace
+        CosmosTrigger trigger = new CosmosTrigger(id, cosmosContainer, cosmosAsyncTrigger);
+        CosmosTriggerProperties properties = new CosmosTriggerProperties(id, body);
+
+        CosmosTriggerResponse response = trigger.replace(properties);
+        // END: com.azure.cosmos.CosmosTrigger.replace
+    }
+
+    public void CosmosTriggerDeleteSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosTrigger.delete
+        CosmosTrigger trigger = new CosmosTrigger(id, cosmosContainer, cosmosAsyncTrigger);
+
+        CosmosTriggerResponse response = trigger.delete();
+        // END: com.azure.cosmos.CosmosTrigger.delete
+    }
+
+    public void CosmosUserGetIdSample() {
+        String id = "ID";
+        CosmosAsyncDatabase asyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosAsyncUser asyncUser = new CosmosAsyncUser(id, asyncDatabase);
+        CosmosDatabase cosmosDatabase = new CosmosDatabase(id, cosmosClient, asyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosUser.getId
+        CosmosUser user = new CosmosUser(asyncUser, cosmosDatabase, id);
+
+        String userId = user.getId();
+        // END: com.azure.cosmos.CosmosUser.getId
+    }
+
+    public void CosmosUserReadSample() {
+        String id = "ID";
+        CosmosAsyncDatabase asyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosAsyncUser asyncUser = new CosmosAsyncUser(id, asyncDatabase);
+        CosmosDatabase cosmosDatabase = new CosmosDatabase(id, cosmosClient, asyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosUser.read
+        CosmosUser user = new CosmosUser(asyncUser, cosmosDatabase, id);
+
+        CosmosUserResponse response = user.read();
+        // END: com.azure.cosmos.CosmosUser.read
+    }
+
+    public void CosmosUserReplaceSample() {
+        String id = "ID";
+        CosmosAsyncDatabase asyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosAsyncUser asyncUser = new CosmosAsyncUser(id, asyncDatabase);
+        CosmosDatabase cosmosDatabase = new CosmosDatabase(id, cosmosClient, asyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosUser.replace
+        CosmosUser user = new CosmosUser(asyncUser, cosmosDatabase, id);
+        CosmosUserProperties properties = new CosmosUserProperties();
+
+        CosmosUserResponse response = user.replace(properties);
+        // END: com.azure.cosmos.CosmosUser.replace
+    }
+
+    public void CosmosUserDeleteSample() {
+        String id = "ID";
+        CosmosAsyncDatabase asyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosAsyncUser asyncUser = new CosmosAsyncUser(id, asyncDatabase);
+        CosmosDatabase cosmosDatabase = new CosmosDatabase(id, cosmosClient, asyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosUser.delete
+        CosmosUser user = new CosmosUser(asyncUser, cosmosDatabase, id);
+
+        CosmosUserResponse response = user.delete();
+        // END: com.azure.cosmos.CosmosUser.delete
     }
 
     static final class Passenger {
