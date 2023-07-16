@@ -1158,6 +1158,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
             request.requestContext.resolvedPartitionKeyRange = null;
             request.forcePartitionKeyRangeRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
         } else if (exception instanceof GoneException) {
             request.requestContext.forceRefreshAddressCache = true;
         }

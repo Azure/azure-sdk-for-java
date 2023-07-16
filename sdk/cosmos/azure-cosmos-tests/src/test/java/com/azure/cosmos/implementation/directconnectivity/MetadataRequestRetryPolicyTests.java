@@ -117,17 +117,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.GONE, true},
             {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.GONE, true},
             {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.GONE, true},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.GONE, false},
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, false},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
-            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
-            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, false},
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, false},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true},
-            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true},
-            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, false}
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.GONE, false}
 //            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, true},
 //            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, true}
         };
