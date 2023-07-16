@@ -182,7 +182,7 @@ public class RntbdConnectionStateListener {
 
         this.addressSelector
             .resolveAddressesAsync(request, forceAddressRefresh)
-            .subscribeOn(Schedulers.boundedElastic())
+            .publishOn(Schedulers.boundedElastic())
             .doOnSubscribe(ignore -> {
                 logger.debug("Background refresh of addresses started!");
             })

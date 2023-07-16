@@ -1062,7 +1062,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
-                            handleGoneException(serviceRequest, cause);
                             break;
                         default:
                             GoneException goneExceptionFromService =
