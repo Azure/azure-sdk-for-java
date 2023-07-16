@@ -51,7 +51,14 @@ public class CosmosAsyncPermission {
 
     /**
      * Reads a permission.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncPermission.read -->
+     * <pre>
+     * CosmosAsyncPermission permission = new CosmosAsyncPermission&#40;id, cosmosAsyncUser&#41;;
+     * CosmosPermissionRequestOptions options = new CosmosPermissionRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosPermissionResponse&gt; permissionResponse = permission.read&#40;options&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncPermission.read -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read permission.
      * In case of failure the {@link Mono} will error.
@@ -70,7 +77,15 @@ public class CosmosAsyncPermission {
 
     /**
      * Replaces a permission.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncPermission.replace -->
+     * <pre>
+     * CosmosAsyncPermission permission = new CosmosAsyncPermission&#40;id, cosmosAsyncUser&#41;;
+     * CosmosPermissionProperties properties = new CosmosPermissionProperties&#40;&#41;;
+     * CosmosPermissionRequestOptions options = new CosmosPermissionRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosPermissionResponse&gt; permissionResponse = permission.replace&#40;properties, options&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncPermission.replace -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced permission.
      * In case of failure the {@link Mono} will error.
@@ -91,7 +106,14 @@ public class CosmosAsyncPermission {
 
     /**
      * Deletes a permission.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncPermission.delete -->
+     * <pre>
+     * CosmosAsyncPermission permission = new CosmosAsyncPermission&#40;id, cosmosAsyncUser&#41;;
+     * CosmosPermissionRequestOptions options = new CosmosPermissionRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosPermissionResponse&gt; permissionResponse = permission.delete&#40;options&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncPermission.delete -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted permission.
      * In case of failure the {@link Mono} will error.

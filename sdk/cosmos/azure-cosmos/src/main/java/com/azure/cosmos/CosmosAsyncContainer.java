@@ -167,7 +167,14 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads the current container.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.read -->
+     * <pre>
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerRequestOptions options = new CosmosContainerRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; containerResponse = container.read&#40;options&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.read -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single Cosmos container response with
      * the read container. In case of failure the {@link Mono} will error.
@@ -181,7 +188,14 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads the current container while specifying additional options such as If-Match.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.read -->
+     * <pre>
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerRequestOptions options = new CosmosContainerRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; containerResponse = container.read&#40;options&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.read -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single Cosmos container response with
      * the read container. In case of failure the {@link Mono} will error.
@@ -197,7 +211,14 @@ public class CosmosAsyncContainer {
 
     /**
      * Deletes the container
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.delete -->
+     * <pre>
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerRequestOptions options = new CosmosContainerRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; containerResponse = container.delete&#40;options&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.delete -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single Cosmos container response for the
      * deleted database. In case of failure the {@link Mono} will error.
@@ -213,7 +234,14 @@ public class CosmosAsyncContainer {
 
     /**
      * Deletes the current container.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.delete -->
+     * <pre>
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerRequestOptions options = new CosmosContainerRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; containerResponse = container.delete&#40;options&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.delete -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single Cosmos container response for the
      * deleted container. In case of failure the {@link Mono} will error.
@@ -227,7 +255,15 @@ public class CosmosAsyncContainer {
 
     /**
      * Replaces the current container's properties.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replace -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; containerResponse = container.replace&#40;properties&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replace -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single Cosmos container response with
      * the replaced container properties. In case of failure the {@link Mono} will
@@ -243,7 +279,15 @@ public class CosmosAsyncContainer {
 
     /**
      * Replaces the current container properties while using non-default request options.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replace -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; containerResponse = container.replace&#40;properties&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replace -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single Cosmos container response with
      * the replaced container properties. In case of failure the {@link Mono} will
@@ -265,7 +309,16 @@ public class CosmosAsyncContainer {
 
     /**
      * Creates an item.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.createItem -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     *
+     * Mono&lt;CosmosItemResponse&lt;CosmosContainerProperties&gt;&gt; containerResponse =
+     *      container.createItem&#40;properties&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.createItem -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response with the
      * created Cosmos item. In case of failure the {@link Mono} will error.
@@ -281,7 +334,16 @@ public class CosmosAsyncContainer {
 
     /**
      * Creates an item.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.createItem -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     *
+     * Mono&lt;CosmosItemResponse&lt;CosmosContainerProperties&gt;&gt; containerResponse =
+     *      container.createItem&#40;properties&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.createItem -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response with the
      * created Cosmos item. In case of failure the {@link Mono} will error.
@@ -305,7 +367,16 @@ public class CosmosAsyncContainer {
 
     /**
      * Creates a Cosmos item.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.createItem -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncContainer container = new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
      *
+     * Mono&lt;CosmosItemResponse&lt;CosmosContainerProperties&gt;&gt; containerResponse =
+     *      container.createItem&#40;properties&#41;;
+     * <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.createItem -->
      * @param <T> the type parameter.
      * @param item the item.
      * @param options the item request options.
