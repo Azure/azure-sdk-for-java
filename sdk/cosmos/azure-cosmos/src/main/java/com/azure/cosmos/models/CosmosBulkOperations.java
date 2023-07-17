@@ -36,22 +36,6 @@ public final class CosmosBulkOperations {
         return getCreateItemOperation(item, partitionKey, new CosmosBulkItemRequestOptions(), null);
     }
 
-    /**
-     * Instantiate an operation for Creating item in Bulk execution.
-     *
-     * @param id The id of the item for the operation.
-     * @param item A JSON serializable object that must contain an id property.
-     * @param partitionKey the partition key for the operation.
-     * @param <T> The type of item to be created.
-     *
-     * @return The bulk operation.
-     *
-     */
-    public static <T> CosmosItemOperation getCreateItemOperation(String id, T item, PartitionKey partitionKey) {
-        checkNotNull(item, "expected non-null item");
-        checkNotNull(partitionKey, "expected non-null partitionKey");
-        return getCreateItemOperation(id, item, partitionKey, new CosmosBulkItemRequestOptions(), null);
-    }
 
 
     /**
@@ -134,29 +118,6 @@ public final class CosmosBulkOperations {
         );
     }
 
-    public static <T, TContext> CosmosItemOperation getCreateItemOperation(
-        String id,
-        T item,
-        PartitionKey partitionKey,
-        CosmosBulkItemRequestOptions requestOptions,
-        TContext context) {
-
-        checkNotNull(item, "expected non-null item");
-        checkNotNull(partitionKey, "expected non-null partitionKey");
-
-        if (requestOptions == null) {
-            requestOptions = new CosmosBulkItemRequestOptions();
-        }
-
-        return new ItemBulkOperation<>(
-            CosmosItemOperationType.CREATE,
-            id,
-            partitionKey,
-            requestOptions.toRequestOptions(),
-            item,
-            context
-        );
-    }
 
     /**
      * Instantiate an operation for deleting item in Bulk execution.

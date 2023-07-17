@@ -361,6 +361,7 @@ public class FaultInjectionRuleProcessor {
             case REPLACE_ITEM:
             case DELETE_ITEM:
             case PATCH_ITEM:
+            case BATCH_ITEM:
             case METADATA_REQUEST_QUERY_PLAN:
                 return ResourceType.Document;
             case METADATA_REQUEST_CONTAINER:

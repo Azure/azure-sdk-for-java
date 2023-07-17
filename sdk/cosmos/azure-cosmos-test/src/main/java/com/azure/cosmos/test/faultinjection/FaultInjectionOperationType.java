@@ -38,8 +38,7 @@ public enum FaultInjectionOperationType {
     /**
      * Batch item.
      */
-    BATCH_ITEM
-
+    BATCH_ITEM,
     // Add support for metadata request type
     /**
      * Read container request.

@@ -16,11 +16,11 @@ import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorResultBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
-import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
 import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -54,7 +54,7 @@ public class BulkExecutorTest extends BatchTestBase {
     private CosmosAsyncDatabase database;
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public BulkExecutorTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder.directMode());
     }
@@ -151,7 +151,7 @@ public class BulkExecutorTest extends BatchTestBase {
 
     // Write operations should not be retried on a gone exception because the operation might have succeeded.
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void executeBulk_OnConnectionDelayFailure() throws InterruptedException {
+    public void executeBulk_OnGoneFailure() throws InterruptedException {
         this.container = createContainer(database);
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
@@ -160,7 +160,7 @@ public class BulkExecutorTest extends BatchTestBase {
 
         BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(id, 2, 4, "type1",
             duplicatePK);
-        CosmosItemOperation createOperation = (CosmosBulkOperations.getCreateItemOperation(id, eventDoc,
+        CosmosItemOperation createOperation = (CosmosBulkOperations.getCreateItemOperation(eventDoc,
             new PartitionKey(duplicatePK)));
         cosmosItemOperations.add(createOperation);
 
@@ -169,7 +169,8 @@ public class BulkExecutorTest extends BatchTestBase {
         cosmosItemOperations.toArray(itemOperationsArray);
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
-        FaultInjectionRule rule = injectFailure("ConnectionDelayed", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.CONNECTION_DELAY);
+        FaultInjectionRule rule = injectConnectionFailure("Gone Exception", this.container,
+            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionConnectionErrorType.CONNECTION_CLOSE);
 
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
@@ -206,15 +207,14 @@ public class BulkExecutorTest extends BatchTestBase {
         rule.disable();
     }
 
-    private FaultInjectionRule injectFailure(String id,
+    private FaultInjectionRule injectConnectionFailure(String id,
                                              CosmosAsyncContainer createdContainer,
-                                             FaultInjectionOperationType operationType, FaultInjectionServerErrorType serverErrorType) {
+                                             FaultInjectionOperationType operationType, FaultInjectionConnectionErrorType connectionErrorType) {
 
 
-        FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
-            .getResultBuilder(serverErrorType)
-            .delay(Duration.ofMillis(1500))
-            .times(1);
+        FaultInjectionConnectionErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
+            .interval(Duration.ofMillis(1500));
 
 
         IFaultInjectionResult result = faultInjectionResultBuilder.build();
