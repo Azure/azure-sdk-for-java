@@ -63,7 +63,6 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     @BeforeEach
     public void setup() {
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
                     public int getMaxRetries() {
