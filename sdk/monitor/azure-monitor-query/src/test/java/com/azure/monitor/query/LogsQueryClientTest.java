@@ -7,8 +7,6 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.Response;
@@ -40,7 +38,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.azure.monitor.query.LogsQueryAsyncClientTest.RESOURCE_ID;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@link LogsQueryClient}
@@ -60,7 +57,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     public void setup() {
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
             .endpoint(MonitorQueryTestUtils.getLogEndpoint())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
                     public int getMaxRetries() {
