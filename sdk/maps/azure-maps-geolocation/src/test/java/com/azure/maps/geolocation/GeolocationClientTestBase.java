@@ -81,7 +81,7 @@ public class GeolocationClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("subscription-key")));
+            customMatchers.add(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }
 
