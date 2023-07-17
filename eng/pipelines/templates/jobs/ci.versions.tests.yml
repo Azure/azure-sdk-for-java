@@ -63,6 +63,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
+          OSVmImage: 'MMSUbuntu20.04'
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
