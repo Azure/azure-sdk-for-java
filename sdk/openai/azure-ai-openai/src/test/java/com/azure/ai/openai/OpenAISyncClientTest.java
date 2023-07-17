@@ -27,7 +27,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -263,24 +263,23 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             IterableStream<ChatCompletions> messageList = client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages));
 
             int i = 0;
-            List<ChatCompletions> chatCompletionsList = messageList.stream().toList();
-            for (ChatCompletions chatCompletions : chatCompletionsList) {
+            int totalMessages = messageList.stream().toArray().length;
+            for (Iterator<ChatCompletions> it = messageList.iterator(); it.hasNext();) {
+                ChatCompletions chatCompletions = it.next();
                 assertChatCompletionsStream(chatCompletions);
-                // The first stream message has the prompt filter result
-                if(i == 0) {
+                if (i == 0) {
+                    // The first stream message has the prompt filter result
                     assertEquals(1, chatCompletions.getPromptFilterResults().size());
                     assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
-                }
-                // The second message no longer has the prompt filter result, but contains a ChatChoice
-                // filter result with all the filter set to null. The roll is also ASSISTANT
-                else if (i == 1) {
+                } else if (i == 1) {
+                    // The second message no longer has the prompt filter result, but contains a ChatChoice
+                    // filter result with all the filter set to null. The roll is also ASSISTANT
                     assertEquals(ChatRole.ASSISTANT, chatCompletions.getChoices().get(0).getDelta().getRole());
                     assertNull(chatCompletions.getPromptFilterResults());
                     ContentFilterResults contentFilterResults = chatCompletions.getChoices().get(0).getContentFilterResults();
                     assertEmptyContentFilterResults(contentFilterResults);
-                }
-                // The last stream message is empty with all the filters set to null
-                else if (i == chatCompletionsList.size() - 1) {
+                } else if (i == totalMessages - 1) {
+                    // The last stream message is empty with all the filters set to null
                     assertEquals(1, chatCompletions.getChoices().size());
                     ChatChoice chatChoice = chatCompletions.getChoices().get(0);
 
@@ -290,9 +289,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
                     ContentFilterResults contentFilterResults = chatChoice.getContentFilterResults();
                     assertEmptyContentFilterResults(contentFilterResults);
-                }
-                // The rest of the intermediary messages have the text generation content filter set
-                else {
+                } else {
+                    // The rest of the intermediary messages have the text generation content filter set
                     assertNull(chatCompletions.getPromptFilterResults());
                     assertNotNull(chatCompletions.getChoices().get(0).getDelta());
                     assertSafeContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
@@ -328,16 +326,16 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             int i = 0;
-            List<Completions> completionsList =resultCompletions.stream().toList();
-            for (Completions completions : completionsList) {
+            int totalCompletions = resultCompletions.stream().toArray().length;
+            for (Iterator<Completions> it = resultCompletions.iterator(); it.hasNext();) {
+                Completions completions = it.next();
                 assertCompletionsStream(completions);
-                // The first stream message has the prompt filter result
-                if(i == 0) {
+                if (i == 0) {
+                    // The first stream message has the prompt filter result
                     assertEquals(1, completions.getPromptFilterResults().size());
                     assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
-                }
-                // The last stream message is empty with all the filters set to null
-                else if (i == completionsList.size() - 1) {
+                } else if (i == totalCompletions - 1) {
+                    // The last stream message is empty with all the filters set to null
                     assertEquals(1, completions.getChoices().size());
                     Choice choice = completions.getChoices().get(0);
 
@@ -346,9 +344,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
                     ContentFilterResults contentFilterResults = choice.getContentFilterResults();
                     assertEmptyContentFilterResults(contentFilterResults);
-                }
-                // The rest of the intermediary messages have the text generation content filter set
-                else {
+                } else {
+                    // The rest of the intermediary messages have the text generation content filter set
                     assertNull(completions.getPromptFilterResults());
                     assertNotNull(completions.getChoices().get(0));
                     assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());

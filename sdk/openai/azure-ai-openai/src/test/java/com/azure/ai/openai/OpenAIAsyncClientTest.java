@@ -16,7 +16,6 @@ import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
-import com.azure.ai.openai.models.PromptFilterResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -28,8 +27,7 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Iterator;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -321,23 +319,21 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertTrue(messageList.size() > 1);
 
                     int i = 0;
-                    List<ChatCompletions> chatCompletionsList = messageList.stream().toList();
-                    for (ChatCompletions chatCompletions : chatCompletionsList) {
-                        // The first stream message has the prompt filter result
-                        if(i == 0) {
+                    for (Iterator<ChatCompletions> it = messageList.iterator(); it.hasNext();) {
+                        ChatCompletions chatCompletions = it.next();
+                        if (i == 0) {
+                            // The first stream message has the prompt filter result
                             assertEquals(1, chatCompletions.getPromptFilterResults().size());
                             assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
-                        }
-                        // The second message no longer has the prompt filter result, but contains a ChatChoice
-                        // filter result with all the filter set to null. The roll is also ASSISTANT
-                        else if (i == 1) {
+                        } else if (i == 1) {
+                            // The second message no longer has the prompt filter result, but contains a ChatChoice
+                            // filter result with all the filter set to null. The roll is also ASSISTANT
                             assertEquals(ChatRole.ASSISTANT, chatCompletions.getChoices().get(0).getDelta().getRole());
                             assertNull(chatCompletions.getPromptFilterResults());
                             ContentFilterResults contentFilterResults = chatCompletions.getChoices().get(0).getContentFilterResults();
                             assertEmptyContentFilterResults(contentFilterResults);
-                        }
-                        // The last stream message is empty with all the filters set to null
-                        else if (i == chatCompletionsList.size() - 1) {
+                        } else if (i == messageList.size() - 1) {
+                            // The last stream message is empty with all the filters set to null
                             assertEquals(1, chatCompletions.getChoices().size());
                             ChatChoice chatChoice = chatCompletions.getChoices().get(0);
 
@@ -347,9 +343,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
                             ContentFilterResults contentFilterResults = chatChoice.getContentFilterResults();
                             assertEmptyContentFilterResults(contentFilterResults);
-                        }
-                        // The rest of the intermediary messages have the text generation content filter set
-                        else {
+                        } else {
+                            // The rest of the intermediary messages have the text generation content filter set
                             assertNull(chatCompletions.getPromptFilterResults());
                             assertNotNull(chatCompletions.getChoices().get(0).getDelta());
                             assertSafeContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
@@ -399,15 +394,14 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertTrue(messageList.size() > 1);
 
                     int i = 0;
-                    List<Completions> completionsList = messageList.stream().toList();
-                    for (Completions completions : completionsList) {
-                        // The first stream message has the prompt filter result
-                        if(i == 0) {
+                    for (Iterator<Completions> it = messageList.iterator(); it.hasNext();) {
+                        Completions completions = it.next();
+                        if (i == 0) {
+                            // The first stream message has the prompt filter result
                             assertEquals(1, completions.getPromptFilterResults().size());
                             assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
-                        }
-                        // The last stream message is empty with all the filters set to null
-                        else if (i == completionsList.size() - 1) {
+                        } else if (i == messageList.size() - 1) {
+                            // The last stream message is empty with all the filters set to null
                             assertEquals(1, completions.getChoices().size());
                             Choice choice = completions.getChoices().get(0);
 
@@ -416,9 +410,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
                             ContentFilterResults contentFilterResults = choice.getContentFilterResults();
                             assertEmptyContentFilterResults(contentFilterResults);
-                        }
+                        } else {
                         // The rest of the intermediary messages have the text generation content filter set
-                        else {
                             assertNull(completions.getPromptFilterResults());
                             assertNotNull(completions.getChoices().get(0));
                             assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
