@@ -22,18 +22,18 @@ param(
 # Loop over each file changed and determine which directory to check out and add a leading '/' if needed.
 $changedFiles = ForEach-Object {
     $changedFile = $_
-    if ($changedFile -matches 'sdk/.*?/') {
+    if ($changedFile -match "sdk/.*?/") {
         $changedFile = $matches[0]
-    } elseif ($changedFile -matches '.*/.*?/') {
+    } elseif ($changedFile -match ".*/.*?/") {
         $changedFile = $matches[0]
-    } elseif ($changedFile -notmatch '.*/.*?') {
+    } elseif ($changedFile -match ".*/.*?") {
         $changedFile = $matches[0]
     }
 
-    if ($changedFile.StartsWith('/')) {
+    if ($changedFile.StartsWith("/")) {
         $changedFile
     } else {
-        '/' + $changedFile
+        "/$changedFile"
     }
 }
 
