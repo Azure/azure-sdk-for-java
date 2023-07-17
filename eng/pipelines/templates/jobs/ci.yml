@@ -429,7 +429,7 @@ jobs:
         - pwsh: |
             $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
             $changedFiles = $changedFiles | ForEach-Object {
-              if ($_.StartsWith("/") {
+              if ($_.StartsWith("/")) {
                 $_
               } else {
                 "/$_"
