@@ -8,6 +8,7 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
@@ -291,6 +292,22 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
+                .assertNext(chatCompletions -> {
+                    assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
+                    assertEquals(1, chatCompletions.getChoices().size());
+                    ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+                    assertSafeContentFilterResults(chatChoice.getContentFilterResults());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
@@ -346,22 +363,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
-            StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
-                .assertNext(chatCompletions -> {
-                    assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
-                    assertEquals(1, chatCompletions.getChoices().size());
-                    ChatChoice chatChoice = chatCompletions.getChoices().get(0);
-                    assertSafeContentFilterResults(chatChoice.getContentFilterResults());
-                })
-                .verifyComplete();
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
         client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
@@ -376,6 +377,56 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertSafeContentFilterResults(contentFilterResults);
                     assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
                 }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
+        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        getCompletionsContentFilterRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
+            // work around for this model, there seem to be some issues with Completions in gpt-turbo models
+            completionsOptions.setMaxTokens(2000);
+            StepVerifier.create(client.getCompletionsStream(modelId, completionsOptions))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> {
+                    assertCompletionsStream(chatCompletions);
+                    return true;
+                })
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+
+                    int i = 0;
+                    List<Completions> completionsList = messageList.stream().toList();
+                    for (Completions completions : completionsList) {
+                        // The first stream message has the prompt filter result
+                        if(i == 0) {
+                            assertEquals(1, completions.getPromptFilterResults().size());
+                            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
+                        }
+                        // The last stream message is empty with all the filters set to null
+                        else if (i == completionsList.size() - 1) {
+                            assertEquals(1, completions.getChoices().size());
+                            Choice choice = completions.getChoices().get(0);
+
+                            assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
+                            assertNotNull(choice.getText());
+
+                            ContentFilterResults contentFilterResults = choice.getContentFilterResults();
+                            assertEmptyContentFilterResults(contentFilterResults);
+                        }
+                        // The rest of the intermediary messages have the text generation content filter set
+                        else {
+                            assertNull(completions.getPromptFilterResults());
+                            assertNotNull(completions.getChoices().get(0));
+                            assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
+                        }
+                        i++;
+                    }
+                })
+                .verifyComplete();
         });
     }
 }
