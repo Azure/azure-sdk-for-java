@@ -10,9 +10,9 @@ import java.time.OffsetDateTime;
  */
 public class RouterJobNote {
     /**
-     * Time the note is written.
+     * The time at which the note was added in UTC.
      */
-    private OffsetDateTime time;
+    private OffsetDateTime addedAt;
 
     /**
      * Message for the note.
@@ -21,20 +21,20 @@ public class RouterJobNote {
 
     /**
      * setter for time.
-     * @param time time the note is written.
+     * @param addedAt time at which the note was added in UTC.
      * @return this
      */
-    public RouterJobNote setTime(OffsetDateTime time) {
-        this.time = time;
+    public RouterJobNote setAddedAt(OffsetDateTime addedAt) {
+        this.addedAt = addedAt;
         return this;
     }
 
     /**
-     * getter for time.
-     * @return time
+     * getter for addedAt.
+     * @return addedAt
      */
-    public OffsetDateTime getTime() {
-        return time;
+    public OffsetDateTime getAddedAt() {
+        return addedAt;
     }
 
     /**
