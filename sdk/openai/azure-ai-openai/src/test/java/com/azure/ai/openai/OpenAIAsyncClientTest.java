@@ -9,11 +9,13 @@ import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.PromptFilterResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -25,11 +27,14 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
@@ -281,6 +286,69 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
                     assertTrue(httpResponseException.getMessage().contains("Invalid value for 'function_call'"));
                 });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages)))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> {
+                    assertChatCompletionsStream(chatCompletions);
+                    return true;
+                })
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+
+                    int i = 0;
+                    List<ChatCompletions> chatCompletionsList = messageList.stream().toList();
+                    for (ChatCompletions chatCompletions : chatCompletionsList) {
+                        // The first stream message has the prompt filter result
+                        if(i == 0) {
+                            assertEquals(1, chatCompletions.getPromptFilterResults().size());
+                            assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
+                        }
+                        // The second message no longer has the prompt filter result, but contains a ChatChoice
+                        // filter result with all the filter set to null. The roll is also ASSISTANT
+                        else if (i == 1) {
+                            assertEquals(ChatRole.ASSISTANT, chatCompletions.getChoices().get(0).getDelta().getRole());
+                            assertNull(chatCompletions.getPromptFilterResults());
+                            ContentFilterResults contentFilterResults = chatCompletions.getChoices().get(0).getContentFilterResults();
+                            assertNotNull(contentFilterResults);
+                            assertNull(contentFilterResults.getHate());
+                            assertNull(contentFilterResults.getSexual());
+                            assertNull(contentFilterResults.getViolence());
+                            assertNull(contentFilterResults.getSelfHarm());
+                        }
+                        // The last stream message is empty with all the filters set to null
+                        else if (i == chatCompletionsList.size() - 1) {
+                            assertEquals(1, chatCompletions.getChoices().size());
+                            ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+
+                            assertEquals(CompletionsFinishReason.fromString("stop"), chatChoice.getFinishReason());
+                            assertNotNull(chatChoice.getDelta());
+                            assertNull(chatChoice.getDelta().getContent());
+
+                            ContentFilterResults contentFilterResults = chatChoice.getContentFilterResults();
+                            assertNotNull(contentFilterResults);
+                            assertNull(contentFilterResults.getHate());
+                            assertNull(contentFilterResults.getSexual());
+                            assertNull(contentFilterResults.getViolence());
+                            assertNull(contentFilterResults.getSelfHarm());
+                        }
+                        // All the stream message choices with ChatRole user have content filtering set
+                        else {
+                            assertNull(chatCompletions.getPromptFilterResults());
+                            assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+                            assertSafeContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
+                        }
+                        i++;
+                    }
+                })
+                .verifyComplete();
         });
     }
 
