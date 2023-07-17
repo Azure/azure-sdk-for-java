@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -34,6 +35,17 @@ public final class ChangeFeedMetaData {
     public Instant getConflictResolutionTimestamp() {
         return conflictResolutionTimestamp;
     }
+
+    /**
+     * Gets the conflict resolution timestamp as long
+     *
+     * @return conflict resolution timestamp as long
+     */
+    @JsonGetter("crts")
+    long getConflictResolutionTimestampAsLong() {
+        return conflictResolutionTimestamp.getEpochSecond();
+    }
+
 
     /**
      * Gets the current logical sequence number
