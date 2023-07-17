@@ -30,16 +30,16 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
+
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIClient.class);
 
     @Generated private final OpenAIClientImpl serviceClient;
@@ -481,22 +481,23 @@ public final class OpenAIClient {
     public ImageResponse getImages(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-
         if (openAIServiceClient != null) {
             return openAIServiceClient
-                .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
-                .getValue()
-                .toObject(ImageResponse.class);
+                    .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
+                    .getValue()
+                    .toObject(ImageResponse.class);
         } else {
-            // TODO: Currently, we use async client block() to avoid a unknown LRO status "notRunning" which Azure Core will
+            // TODO: Currently, we use async client block() to avoid a unknown LRO status "notRunning" which Azure Core
+            // will
             //       fix the issue in August release and we will reuse the method
             //       "SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration()" after.
             try {
-                return this.serviceClient.beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData,
-                        requestOptions)
-                    .last()
-                    .flatMap(it -> it.getFinalResult())
-                    .map(it -> it.toObject(ImageOperationResponse.class).getResult()).block();
+                return this.serviceClient
+                        .beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData, requestOptions)
+                        .last()
+                        .flatMap(it -> it.getFinalResult())
+                        .map(it -> it.toObject(ImageOperationResponse.class).getResult())
+                        .block();
             } catch (Exception e) {
                 Throwable unwrapped = Exceptions.unwrap(e);
                 if (unwrapped instanceof RuntimeException) {

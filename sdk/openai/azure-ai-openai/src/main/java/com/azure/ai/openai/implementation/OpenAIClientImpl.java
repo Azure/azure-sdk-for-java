@@ -483,7 +483,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: int (Required)
+     *     created: long (Required)
      *     prompt_annotations (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
@@ -596,7 +596,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: int (Required)
+     *     created: long (Required)
      *     prompt_annotations (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
@@ -680,7 +680,7 @@ public final class OpenAIClientImpl {
      *     messages (Required): [
      *          (Required){
      *             role: String(system/assistant/user/function) (Required)
-     *             content: String (Optional)
+     *             content: String (Required)
      *             name: String (Optional)
      *             function_call (Optional): {
      *                 name: String (Required)
@@ -719,12 +719,12 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: int (Required)
+     *     created: long (Required)
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
      *                 role: String(system/assistant/user/function) (Required)
-     *                 content: String (Optional)
+     *                 content: String (Required)
      *                 name: String (Optional)
      *                 function_call (Optional): {
      *                     name: String (Required)
@@ -799,7 +799,7 @@ public final class OpenAIClientImpl {
      *     messages (Required): [
      *          (Required){
      *             role: String(system/assistant/user/function) (Required)
-     *             content: String (Optional)
+     *             content: String (Required)
      *             name: String (Optional)
      *             function_call (Optional): {
      *                 name: String (Required)
@@ -838,12 +838,12 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: int (Required)
+     *     created: long (Required)
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
      *                 role: String(system/assistant/user/function) (Required)
-     *                 content: String (Optional)
+     *                 content: String (Required)
      *                 name: String (Optional)
      *                 function_call (Optional): {
      *                     name: String (Required)
