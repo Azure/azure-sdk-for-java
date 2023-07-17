@@ -437,6 +437,7 @@ jobs:
             }
             $tmp = ConvertTo-Json @($changedFiles | Sort-Object | Get-Unique) -Compress
             Write-Host "##vso[task.setvariable variable=SparseCheckoutDirectories;]$tmp"
+          displayName: 'Determine files changed in PR for sparse-checkout'
       - ${{else}}:
         - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
           parameters:
