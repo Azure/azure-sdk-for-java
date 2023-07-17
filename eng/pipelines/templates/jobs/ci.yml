@@ -426,10 +426,11 @@ jobs:
       # For PullRequests CredScan will be run against the files changed in the PR.
       # For non-pull requests CredScan
       - ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-        - pwsh: |
-            $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
-            eng/pipelines/scripts/Set-CredScanCheckoutDirectories.ps1 -ChangedFiles $changedFiles
+        - task: PowerShell@2
           displayName: 'Determine files changed in PR for sparse-checkout'
+          inputs:
+            pwsh: true
+            filePath: eng/pipelines/scripts/Set-CredScanCheckoutDirectories.ps1
       - ${{else}}:
         - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
           parameters:

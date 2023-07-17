@@ -9,15 +9,9 @@ Given a list of file paths modified in a PR this script will:
 - When many files have changed this will compact individual files to whole directory check outs.
 
 At the end of processing this will set the DevOps variable 'SparseCheckoutDirectories'.
-
-.PARAMETER ChangedFiles
-The files changed in the PR.
 #>
 
-param(
-  [Parameter(Mandatory = $true)]
-  $ChangedFiles
-)
+$changedFiles = eng/common/scripts/get-changedfiles.ps1
 
 # Loop over each file changed and determine which directory to check out and add a leading '/' if needed.
 $changedFiles = ForEach-Object {
