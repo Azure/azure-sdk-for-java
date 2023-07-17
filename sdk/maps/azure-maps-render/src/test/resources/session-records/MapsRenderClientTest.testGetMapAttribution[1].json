@@ -1,24 +1,32 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/map/attribution?api-version=2022-08-01&tilesetId=microsoft.base&zoom=6&bounds=-122.414162%2C47.57949%2C-122.247157%2C47.668372",
-    "Headers" : {
-      "user-agent" : "azsdk-java-JavaRenderSDK/2.1 (17.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "Content-Length" : "98",
-      "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 500CB7E1F13F4E70AE29E3DA983279B6 Ref B: TPE30EDGE0913 Ref C: 2023-06-26T11:48:42Z",
-      "Body" : "{\"copyrights\":[\"<a data-azure-maps-attribution-tileset=\\\"microsoft.base\\\">&copy;2023 TomTom</a>\"]}",
-      "Date" : "Mon, 26 Jun 2023 11:48:42 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/map/attribution?api-version=2022-08-01\u0026tilesetId=microsoft.base\u0026zoom=6\u0026bounds=-122.414162%2C47.57949%2C-122.247157%2C47.668372",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "98",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Jul 2023 23:37:13 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 22F00F050B0C4E5F8619DFAD8E172304 Ref B: STBEDGE0206 Ref C: 2023-07-17T23:37:14Z"
+      },
+      "ResponseBody": {
+        "copyrights": [
+          "\u003Ca data-azure-maps-attribution-tileset=\u0022microsoft.base\u0022\u003E\u0026copy;2023 TomTom\u003C/a\u003E"
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }
