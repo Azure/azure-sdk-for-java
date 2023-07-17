@@ -14,7 +14,7 @@ At the end of processing this will set the DevOps variable 'SparseCheckoutDirect
 $changedFiles = eng/common/scripts/get-changedfiles.ps1
 
 # Loop over each file changed and determine which directory to check out and add a leading '/' if needed.
-$changedFiles = ForEach-Object {
+$changedFiles = changedFiles | ForEach-Object {
     $changedFile = $_
     if ($changedFile -match "sdk/.*?/") {
         $changedFile = $matches[0]
