@@ -341,7 +341,7 @@ public class TargetingFilterTest {
         excludedUsers.put("0", "Doe");
         
         excludes.put(USERS, excludedUsers);
-        parameters.put("exclusion", excludes);
+        parameters.put("Exclusion", excludes);
         
         context.setParameters(parameters);
         
@@ -380,7 +380,7 @@ public class TargetingFilterTest {
         excludedGroups.put("0", "g1");
         
         excludes.put(GROUPS, excludedGroups);
-        parameters.put("exclusion", excludes);
+        parameters.put("Exclusion", excludes);
         
         context.setParameters(parameters);
         
