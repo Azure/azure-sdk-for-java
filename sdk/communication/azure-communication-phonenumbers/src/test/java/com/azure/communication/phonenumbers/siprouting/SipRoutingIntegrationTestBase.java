@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -37,6 +37,12 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     protected static final SipTrunkRoute SET_TRUNK_ROUTE =
         new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN);
 
+    private static String RANDOM_GUID = UUID.randomUUID().toString().replace("-", "");
+
+    protected static final List<String> FQDNS = Arrays.asList("first" + RANDOM_GUID + "." + AZURE_TEST_DOMAIN,
+        "second"  + RANDOM_GUID + "." + AZURE_TEST_DOMAIN, "third",
+        "fourth", "fifth",
+        "sixth");
     protected static final String FIRST_FQDN = getUniqueFqdn("first");
     protected static final String SECOND_FQDN = getUniqueFqdn("second");
     protected static final String THIRD_FQDN = getUniqueFqdn("third");
@@ -118,12 +124,16 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
+        if (interceptorManager.isPlaybackMode()) {
+            addTestProxyMatchers();
+        }
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\" +
-                ".com|\\.net)", "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("id", null,
-                "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("phoneNumber", null, "REDACTED",
-                TestProxySanitizerType.BODY_KEY)));
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer(AZURE_TEST_DOMAIN,
+                    "testdomain.com", TestProxySanitizerType.BODY_REGEX),
+                new TestProxySanitizer("id", null,
+                    "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("phoneNumber", null, "REDACTED",
+                    TestProxySanitizerType.BODY_KEY)));
         }
 
         return builder;
@@ -144,12 +154,16 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
+        if (interceptorManager.isPlaybackMode()) {
+            addTestProxyMatchers();
+        }
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer(null, "(-[0-9a-f]{32}\\.[0-9a-z\\" +
-                ".]*(\\.com|\\.net))", "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("id", null,
-                "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("phoneNumber", null, "REDACTED",
-                TestProxySanitizerType.BODY_KEY)));
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer(AZURE_TEST_DOMAIN,
+                "testdomain.com", TestProxySanitizerType.BODY_REGEX),
+                new TestProxySanitizer("id", null,
+                    "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("phoneNumber", null, "REDACTED",
+                    TestProxySanitizerType.BODY_KEY)));
         }
 
         return builder;
@@ -161,6 +175,12 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         }
         return httpClient;
     }
+
+    private void addTestProxyMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(
+            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256"))));
+    }
+
 
     protected SipRoutingClientBuilder addLoggingPolicy(SipRoutingClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
@@ -179,10 +199,11 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     }
 
     private static String getUniqueFqdn(String order) {
-        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
-            return order + ".redacted.com";
-        }
+        // if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
+        //     return order + ".redacted.com";
+        // }
+
         String unique = UUID.randomUUID().toString().replace("-", "");
-        return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
+        return order + "-" + RANDOM_GUID + "." + AZURE_TEST_DOMAIN;
     }
 }
