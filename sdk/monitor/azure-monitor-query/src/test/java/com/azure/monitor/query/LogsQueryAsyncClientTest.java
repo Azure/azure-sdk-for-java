@@ -7,8 +7,6 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestMode;
@@ -69,7 +67,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
                     public int getMaxRetries() {
-                        return 10;
+                        return 0;
                     }
 
                     @Override
