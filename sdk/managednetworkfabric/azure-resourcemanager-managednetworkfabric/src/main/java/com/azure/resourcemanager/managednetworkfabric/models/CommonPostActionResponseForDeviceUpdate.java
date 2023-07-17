@@ -11,13 +11,6 @@ import java.util.List;
 /** An immutable client-side representation of CommonPostActionResponseForDeviceUpdate. */
 public interface CommonPostActionResponseForDeviceUpdate {
     /**
-     * Gets the error property: The error object.
-     *
-     * @return the error value.
-     */
-    ManagementError error();
-
-    /**
      * Gets the configurationState property: Gets the configuration state.
      *
      * @return the configurationState value.
@@ -37,6 +30,13 @@ public interface CommonPostActionResponseForDeviceUpdate {
      * @return the failedDevices value.
      */
     List<String> failedDevices();
+
+    /**
+     * Gets the error property: The error object.
+     *
+     * @return the error value.
+     */
+    ManagementError error();
 
     /**
      * Gets the inner

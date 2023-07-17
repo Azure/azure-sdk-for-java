@@ -10,18 +10,18 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostAc
 /** An immutable client-side representation of CommonPostActionResponseForStateUpdate. */
 public interface CommonPostActionResponseForStateUpdate {
     /**
-     * Gets the error property: The error object.
-     *
-     * @return the error value.
-     */
-    ManagementError error();
-
-    /**
      * Gets the configurationState property: Gets the configuration state.
      *
      * @return the configurationState value.
      */
     ConfigurationState configurationState();
+
+    /**
+     * Gets the error property: The error object.
+     *
+     * @return the error value.
+     */
+    ManagementError error();
 
     /**
      * Gets the inner

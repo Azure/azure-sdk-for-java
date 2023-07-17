@@ -32,7 +32,7 @@ public final class InternetGatewaysGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"ipv4Address\":\"rtzpuvfssr\",\"port\":249679675,\"type\":\"Infrastructure\",\"networkFabricControllerId\":\"fnquollouurmuz\",\"provisioningState\":\"Failed\",\"internetGatewayRuleId\":\"qieh\",\"annotation\":\"jofywwnaxoxl\"},\"location\":\"xgslqc\",\"tags\":{\"spmlutyj\":\"hvpaglyyhrgma\"},\"id\":\"kk\",\"name\":\"dputo\",\"type\":\"rbfgqi\"}";
+            "{\"properties\":{\"ipv4Address\":\"u\",\"port\":491610361,\"type\":\"Infrastructure\",\"networkFabricControllerId\":\"vo\",\"provisioningState\":\"Succeeded\",\"internetGatewayRuleId\":\"pwmgwxwukfjv\",\"annotation\":\"laxseisv\"},\"location\":\"gyphheovejkpalec\",\"tags\":{\"s\":\"thrtzpuv\",\"uo\":\"rgrqefn\",\"ehdhjofywwna\":\"louurmuzembqq\"},\"id\":\"oxlorxgsl\",\"name\":\"c\",\"type\":\"u\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,14 @@ public final class InternetGatewaysGetByResourceGroupWithResponseMockTests {
         InternetGateway response =
             manager
                 .internetGateways()
-                .getByResourceGroupWithResponse("yphheovejkp", "lecztl", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("yoxmyqzyqepg", "bzd", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xgslqc", response.location());
-        Assertions.assertEquals("hvpaglyyhrgma", response.tags().get("spmlutyj"));
+        Assertions.assertEquals("gyphheovejkpalec", response.location());
+        Assertions.assertEquals("thrtzpuv", response.tags().get("s"));
         Assertions.assertEquals(GatewayType.INFRASTRUCTURE, response.typePropertiesType());
-        Assertions.assertEquals("fnquollouurmuz", response.networkFabricControllerId());
-        Assertions.assertEquals("qieh", response.internetGatewayRuleId());
-        Assertions.assertEquals("jofywwnaxoxl", response.annotation());
+        Assertions.assertEquals("vo", response.networkFabricControllerId());
+        Assertions.assertEquals("pwmgwxwukfjv", response.internetGatewayRuleId());
+        Assertions.assertEquals("laxseisv", response.annotation());
     }
 }

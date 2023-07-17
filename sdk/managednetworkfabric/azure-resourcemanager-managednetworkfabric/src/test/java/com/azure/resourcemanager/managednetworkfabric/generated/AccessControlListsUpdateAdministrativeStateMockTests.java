@@ -32,7 +32,7 @@ public final class AccessControlListsUpdateAdministrativeStateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"configurationState\":\"ErrorProvisioning\"}";
+        String responseStr = "{\"configurationState\":\"ErrorDeprovisioning\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +64,11 @@ public final class AccessControlListsUpdateAdministrativeStateMockTests {
             manager
                 .accessControlLists()
                 .updateAdministrativeState(
-                    "nozf",
-                    "ywjiaaosla",
+                    "peawzzkvfccozv",
+                    "xsp",
                     new UpdateAdministrativeState()
-                        .withResourceIds(Arrays.asList("akk", "bjortztkajqhsns", "jplislx"))
-                        .withState(EnableDisableState.DISABLE),
+                        .withResourceIds(Arrays.asList("trmsukxt"))
+                        .withState(EnableDisableState.ENABLE),
                     com.azure.core.util.Context.NONE);
     }
 }

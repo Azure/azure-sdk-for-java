@@ -21,12 +21,12 @@ public final class CommonPostActionResponseForStateUpdateImpl implements CommonP
         this.serviceManager = serviceManager;
     }
 
-    public ManagementError error() {
-        return this.innerModel().error();
-    }
-
     public ConfigurationState configurationState() {
         return this.innerModel().configurationState();
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
     }
 
     public CommonPostActionResponseForStateUpdateInner innerModel() {

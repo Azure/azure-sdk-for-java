@@ -30,7 +30,7 @@ public final class AccessControlListsValidateConfigurationMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"configurationState\":\"ErrorProvisioning\",\"url\":\"ukxtuytgcp\"}";
+        String responseStr = "{\"configurationState\":\"ErrorDeprovisioning\",\"url\":\"ylxtebvse\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,8 +59,8 @@ public final class AccessControlListsValidateConfigurationMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ValidateConfigurationResponse response =
-            manager.accessControlLists().validateConfiguration("vfccozvqxsphtr", "i", com.azure.core.util.Context.NONE);
+            manager.accessControlLists().validateConfiguration("yjom", "wrvp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ukxtuytgcp", response.url());
+        Assertions.assertEquals("ylxtebvse", response.url());
     }
 }

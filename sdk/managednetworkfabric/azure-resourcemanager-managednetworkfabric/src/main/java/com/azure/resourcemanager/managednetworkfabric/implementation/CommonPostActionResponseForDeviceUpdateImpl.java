@@ -23,10 +23,6 @@ public final class CommonPostActionResponseForDeviceUpdateImpl implements Common
         this.serviceManager = serviceManager;
     }
 
-    public ManagementError error() {
-        return this.innerModel().error();
-    }
-
     public ConfigurationState configurationState() {
         return this.innerModel().configurationState();
     }
@@ -47,6 +43,10 @@ public final class CommonPostActionResponseForDeviceUpdateImpl implements Common
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
     }
 
     public CommonPostActionResponseForDeviceUpdateInner innerModel() {

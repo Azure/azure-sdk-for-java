@@ -29,7 +29,7 @@ public final class AccessControlListsResyncMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"configurationState\":\"Accepted\"}";
+        String responseStr = "{\"configurationState\":\"Succeeded\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,6 +58,6 @@ public final class AccessControlListsResyncMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CommonPostActionResponseForStateUpdate response =
-            manager.accessControlLists().resync("bkdw", "fjwxgvtkjctvrpea", com.azure.core.util.Context.NONE);
+            manager.accessControlLists().resync("cptctxpoegyckme", "fvrcclcl", com.azure.core.util.Context.NONE);
     }
 }

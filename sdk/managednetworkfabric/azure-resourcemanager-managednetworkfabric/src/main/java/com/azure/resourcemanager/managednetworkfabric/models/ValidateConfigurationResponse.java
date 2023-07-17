@@ -10,13 +10,6 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConf
 /** An immutable client-side representation of ValidateConfigurationResponse. */
 public interface ValidateConfigurationResponse {
     /**
-     * Gets the error property: The error object.
-     *
-     * @return the error value.
-     */
-    ManagementError error();
-
-    /**
      * Gets the configurationState property: Gets the configuration state.
      *
      * @return the configurationState value.
@@ -29,6 +22,13 @@ public interface ValidateConfigurationResponse {
      * @return the url value.
      */
     String url();
+
+    /**
+     * Gets the error property: The error object.
+     *
+     * @return the error value.
+     */
+    ManagementError error();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner

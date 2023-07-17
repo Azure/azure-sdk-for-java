@@ -7,12 +7,11 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
-import com.azure.resourcemanager.managednetworkfabric.models.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response of the action validate configuration. */
 @Fluent
-public final class ValidateConfigurationResponseInner extends ErrorResponse {
+public final class ValidateConfigurationResponseInner {
     /*
      * Gets the configuration state.
      */
@@ -24,6 +23,12 @@ public final class ValidateConfigurationResponseInner extends ErrorResponse {
      */
     @JsonProperty(value = "url")
     private String url;
+
+    /*
+     * The error object.
+     */
+    @JsonProperty(value = "error")
+    private ManagementError error;
 
     /** Creates an instance of ValidateConfigurationResponseInner class. */
     public ValidateConfigurationResponseInner() {
@@ -58,10 +63,23 @@ public final class ValidateConfigurationResponseInner extends ErrorResponse {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the error property: The error object.
+     *
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.error;
+    }
+
+    /**
+     * Set the error property: The error object.
+     *
+     * @param error the error value to set.
+     * @return the ValidateConfigurationResponseInner object itself.
+     */
     public ValidateConfigurationResponseInner withError(ManagementError error) {
-        super.withError(error);
+        this.error = error;
         return this;
     }
 
@@ -70,8 +88,6 @@ public final class ValidateConfigurationResponseInner extends ErrorResponse {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

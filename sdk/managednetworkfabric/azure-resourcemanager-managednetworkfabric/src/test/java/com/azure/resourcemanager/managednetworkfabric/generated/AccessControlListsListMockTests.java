@@ -34,7 +34,7 @@ public final class AccessControlListsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-05-25T14:53:32Z\",\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"MAT\",\"configurationType\":\"Inline\",\"aclsUrl\":\"hitrnw\",\"matchConfigurations\":[{\"matchConfigurationName\":\"bthb\",\"sequenceNumber\":8164533128411792173,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{}]}],\"annotation\":\"lmdcnutiexmizu\"},\"location\":\"bqvioyn\",\"tags\":{\"rj\":\"qhhvvwz\",\"tlocnwmefzvzuzq\":\"aaiaibtvavlya\",\"o\":\"rl\"},\"id\":\"v\",\"name\":\"zgyhen\",\"type\":\"sfyqncowm\"}]}";
+            "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-07-17T20:34:59Z\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"configurationType\":\"Inline\",\"aclsUrl\":\"olngsfmhwdxqupy\",\"matchConfigurations\":[{\"matchConfigurationName\":\"lmnjqzm\",\"sequenceNumber\":6179342709153587202,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"q\",\"sequenceNumber\":6471796079746395246,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"jo\",\"sequenceNumber\":3660511499393161300,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"qeiaddp\",\"sequenceNumber\":6395873061735067904,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{}]}],\"annotation\":\"nzbqvioynctfq\"},\"location\":\"vvwzprjaaaiaib\",\"tags\":{\"wmefzvzuz\":\"vlyaqtloc\",\"zgyhen\":\"crlkorv\",\"nozf\":\"sfyqncowm\",\"agwaakktbjort\":\"ywjiaaosla\"},\"id\":\"tkajqhsnsej\",\"name\":\"lislxyljzbkd\",\"type\":\"lfjwxgvtkjctv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,17 @@ public final class AccessControlListsListMockTests {
 
         PagedIterable<AccessControlList> response = manager.accessControlLists().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bqvioyn", response.iterator().next().location());
-        Assertions.assertEquals("qhhvvwz", response.iterator().next().tags().get("rj"));
+        Assertions.assertEquals("vvwzprjaaaiaib", response.iterator().next().location());
+        Assertions.assertEquals("vlyaqtloc", response.iterator().next().tags().get("wmefzvzuz"));
         Assertions.assertEquals(ConfigurationType.INLINE, response.iterator().next().configurationType());
-        Assertions.assertEquals("hitrnw", response.iterator().next().aclsUrl());
+        Assertions.assertEquals("olngsfmhwdxqupy", response.iterator().next().aclsUrl());
         Assertions
-            .assertEquals("bthb", response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
+            .assertEquals("lmnjqzm", response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
         Assertions
             .assertEquals(
-                8164533128411792173L, response.iterator().next().matchConfigurations().get(0).sequenceNumber());
+                6179342709153587202L, response.iterator().next().matchConfigurations().get(0).sequenceNumber());
         Assertions
             .assertEquals(IpAddressType.IPV6, response.iterator().next().matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("lmdcnutiexmizu", response.iterator().next().annotation());
+        Assertions.assertEquals("nzbqvioynctfq", response.iterator().next().annotation());
     }
 }

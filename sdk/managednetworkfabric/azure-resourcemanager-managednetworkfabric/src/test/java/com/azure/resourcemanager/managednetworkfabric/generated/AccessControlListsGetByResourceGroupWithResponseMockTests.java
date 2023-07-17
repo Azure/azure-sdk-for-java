@@ -33,7 +33,7 @@ public final class AccessControlListsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"lastSyncedTime\":\"2021-02-16T05:30:01Z\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"RMA\",\"configurationType\":\"Inline\",\"aclsUrl\":\"jchxzjdc\",\"matchConfigurations\":[{\"matchConfigurationName\":\"cyfyixe\",\"sequenceNumber\":8326652805634676657,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"aojeeyvfxb\",\"sequenceNumber\":5343521375502580504,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{}]}],\"annotation\":\"dzuiygtcyzcjef\"},\"location\":\"baldjcgldryv\",\"tags\":{\"mxcaujbfomfbozpj\":\"kbhzi\"},\"id\":\"xefppq\",\"name\":\"wdnnjjthpsnxebyc\",\"type\":\"mpohxubnnpnsebcx\"}";
+            "{\"properties\":{\"lastSyncedTime\":\"2021-09-23T22:30:34Z\",\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"configurationType\":\"File\",\"aclsUrl\":\"uzscyfyi\",\"matchConfigurations\":[{\"matchConfigurationName\":\"asjnfgngxaojeeyv\",\"sequenceNumber\":4807900032809026267,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{},{}]}],\"annotation\":\"kjcdzuiygtcyzcje\"},\"location\":\"ubaldjcgldryvlr\",\"tags\":{\"jbfomfbozpjyxe\":\"hzirmxca\",\"jthp\":\"ppqcwdnn\"},\"id\":\"nxebycympohx\",\"name\":\"bnnpnsebcxnous\",\"type\":\"dyzssjlmykdygj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +64,16 @@ public final class AccessControlListsGetByResourceGroupWithResponseMockTests {
         AccessControlList response =
             manager
                 .accessControlLists()
-                .getByResourceGroupWithResponse("uqvirluns", "kydigt", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("tuqvirlun", "skydigtvjxsocsv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("baldjcgldryv", response.location());
-        Assertions.assertEquals("kbhzi", response.tags().get("mxcaujbfomfbozpj"));
-        Assertions.assertEquals(ConfigurationType.INLINE, response.configurationType());
-        Assertions.assertEquals("jchxzjdc", response.aclsUrl());
-        Assertions.assertEquals("cyfyixe", response.matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(8326652805634676657L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals("ubaldjcgldryvlr", response.location());
+        Assertions.assertEquals("hzirmxca", response.tags().get("jbfomfbozpjyxe"));
+        Assertions.assertEquals(ConfigurationType.FILE, response.configurationType());
+        Assertions.assertEquals("uzscyfyi", response.aclsUrl());
+        Assertions.assertEquals("asjnfgngxaojeeyv", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(4807900032809026267L, response.matchConfigurations().get(0).sequenceNumber());
         Assertions.assertEquals(IpAddressType.IPV4, response.matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("dzuiygtcyzcjef", response.annotation());
+        Assertions.assertEquals("kjcdzuiygtcyzcje", response.annotation());
     }
 }

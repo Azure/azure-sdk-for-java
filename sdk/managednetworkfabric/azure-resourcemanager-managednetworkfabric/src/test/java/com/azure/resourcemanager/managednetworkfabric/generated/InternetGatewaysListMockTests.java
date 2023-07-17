@@ -33,7 +33,7 @@ public final class InternetGatewaysListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"ipv4Address\":\"r\",\"port\":2026976978,\"type\":\"Workload\",\"networkFabricControllerId\":\"tjvcszbdbr\",\"provisioningState\":\"Succeeded\",\"internetGatewayRuleId\":\"ltyo\",\"annotation\":\"cbibtk\"},\"location\":\"ecupmwxdsokr\",\"tags\":{\"iulddgiqlnhcxw\":\"peylf\",\"xrmeatrtcqyfj\":\"wvunknsgvx\"},\"id\":\"ifbmojt\",\"name\":\"hqyoyt\",\"type\":\"coufk\"}]}";
+            "{\"value\":[{\"properties\":{\"ipv4Address\":\"rlb\",\"port\":1053159639,\"type\":\"Workload\",\"networkFabricControllerId\":\"yolacbibtkeie\",\"provisioningState\":\"Accepted\",\"internetGatewayRuleId\":\"wxdsokrlnr\",\"annotation\":\"y\"},\"location\":\"iiul\",\"tags\":{\"xwwwvunknsgvxhx\":\"iqlnh\"},\"id\":\"meatrtcqyfjvifb\",\"name\":\"ojtehqyo\",\"type\":\"trcoufk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class InternetGatewaysListMockTests {
 
         PagedIterable<InternetGateway> response = manager.internetGateways().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ecupmwxdsokr", response.iterator().next().location());
-        Assertions.assertEquals("peylf", response.iterator().next().tags().get("iulddgiqlnhcxw"));
+        Assertions.assertEquals("iiul", response.iterator().next().location());
+        Assertions.assertEquals("iqlnh", response.iterator().next().tags().get("xwwwvunknsgvxhx"));
         Assertions.assertEquals(GatewayType.WORKLOAD, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("tjvcszbdbr", response.iterator().next().networkFabricControllerId());
-        Assertions.assertEquals("ltyo", response.iterator().next().internetGatewayRuleId());
-        Assertions.assertEquals("cbibtk", response.iterator().next().annotation());
+        Assertions.assertEquals("yolacbibtkeie", response.iterator().next().networkFabricControllerId());
+        Assertions.assertEquals("wxdsokrlnr", response.iterator().next().internetGatewayRuleId());
+        Assertions.assertEquals("y", response.iterator().next().annotation());
     }
 }

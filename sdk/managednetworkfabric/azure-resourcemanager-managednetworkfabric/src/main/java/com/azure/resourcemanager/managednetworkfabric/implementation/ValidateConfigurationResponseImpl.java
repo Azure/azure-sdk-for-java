@@ -21,16 +21,16 @@ public final class ValidateConfigurationResponseImpl implements ValidateConfigur
         this.serviceManager = serviceManager;
     }
 
-    public ManagementError error() {
-        return this.innerModel().error();
-    }
-
     public ConfigurationState configurationState() {
         return this.innerModel().configurationState();
     }
 
     public String url() {
         return this.innerModel().url();
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
     }
 
     public ValidateConfigurationResponseInner innerModel() {

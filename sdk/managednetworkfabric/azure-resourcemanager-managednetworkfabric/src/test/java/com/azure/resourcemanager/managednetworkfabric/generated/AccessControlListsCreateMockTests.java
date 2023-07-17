@@ -43,7 +43,7 @@ public final class AccessControlListsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"lastSyncedTime\":\"2021-01-28T13:59:49Z\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationType\":\"File\",\"aclsUrl\":\"rhqdoxd\",\"matchConfigurations\":[{\"matchConfigurationName\":\"dedpkwdtobpgdc\",\"sequenceNumber\":8870845631075658054,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{}],\"actions\":[{},{}]},{\"matchConfigurationName\":\"dlirqqclsaqifep\",\"sequenceNumber\":587862432137506834,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]}],\"annotation\":\"blt\"},\"location\":\"vnpbgcesfddfclmo\",\"tags\":{\"wweoblbtdqz\":\"ofofkbcjz\",\"yoxmyqzyqepg\":\"ixccnkfsog\",\"luokc\":\"bzd\"},\"id\":\"vo\",\"name\":\"dddpwmgwxwukfj\",\"type\":\"qglaxseisvvv\"}";
+            "{\"properties\":{\"lastSyncedTime\":\"2021-02-05T15:09:47Z\",\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationType\":\"File\",\"aclsUrl\":\"zwgdpvhwiril\",\"matchConfigurations\":[{\"matchConfigurationName\":\"rhqdoxd\",\"sequenceNumber\":4989762918343425516,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]}],\"annotation\":\"dpd\"},\"location\":\"er\",\"tags\":{\"ure\":\"dlirqqclsaqifep\",\"fpxeswctlfytb\":\"vivkiglioklsu\",\"ddfclmowu\":\"tytvnpbgces\"},\"id\":\"ofofkbcjz\",\"name\":\"wweoblbtdqz\",\"type\":\"ixccnkfsog\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -74,62 +74,32 @@ public final class AccessControlListsCreateMockTests {
         AccessControlList response =
             manager
                 .accessControlLists()
-                .define("kmemfvrcc")
-                .withRegion("enegg")
-                .withExistingResourceGroup("txpoegy")
+                .define("dcyandblkb")
+                .withRegion("lhxsoanguhbnho")
+                .withExistingResourceGroup("zvvpaysqwh")
                 .withTags(
                     mapOf(
-                        "udupehskvsdfvhry",
-                        "yzpxlitwkejmge",
-                        "ammpkapvnpeukgnm",
-                        "e",
-                        "vktfp",
-                        "akeqnitromlc",
-                        "fxjtxla",
-                        "rowsh"))
+                        "zpxlitwkejmgemud",
+                        "zreneggpdt",
+                        "pezammpkapvnpeu",
+                        "pehskvsdfvhr",
+                        "svktfps",
+                        "gnmfakeqnitroml"))
                 .withConfigurationType(ConfigurationType.FILE)
-                .withAclsUrl("wrvp")
+                .withAclsUrl("ctfvxuos")
                 .withMatchConfigurations(
                     Arrays
                         .asList(
                             new AccessControlListMatchConfiguration()
-                                .withMatchConfigurationName("ylxtebvse")
-                                .withSequenceNumber(2183915733675733571L)
-                                .withIpAddressType(IpAddressType.IPV4)
-                                .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()))
-                                .withActions(Arrays.asList(new AccessControlListAction())),
-                            new AccessControlListMatchConfiguration()
-                                .withMatchConfigurationName("hzdcyan")
-                                .withSequenceNumber(4653274371655119499L)
-                                .withIpAddressType(IpAddressType.IPV4)
-                                .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()))
-                                .withActions(
-                                    Arrays
-                                        .asList(
-                                            new AccessControlListAction(),
-                                            new AccessControlListAction(),
-                                            new AccessControlListAction())),
-                            new AccessControlListMatchConfiguration()
-                                .withMatchConfigurationName("dfmoqqctfvxuosq")
-                                .withSequenceNumber(996348824044944418L)
-                                .withIpAddressType(IpAddressType.IPV6)
-                                .withMatchConditions(
-                                    Arrays
-                                        .asList(
-                                            new AccessControlListMatchCondition(),
-                                            new AccessControlListMatchCondition()))
-                                .withActions(Arrays.asList(new AccessControlListAction())),
-                            new AccessControlListMatchConfiguration()
-                                .withMatchConfigurationName("zzjsnyfo")
-                                .withSequenceNumber(1984029344419433302L)
+                                .withMatchConfigurationName("a")
+                                .withSequenceNumber(7453371447000048334L)
                                 .withIpAddressType(IpAddressType.IPV4)
                                 .withMatchConditions(
                                     Arrays
                                         .asList(
                                             new AccessControlListMatchCondition(),
                                             new AccessControlListMatchCondition()))
-                                .withActions(
-                                    Arrays.asList(new AccessControlListAction(), new AccessControlListAction()))))
+                                .withActions(Arrays.asList(new AccessControlListAction()))))
                 .withDynamicMatchConfigurations(
                     Arrays
                         .asList(
@@ -140,22 +110,6 @@ public final class AccessControlListsCreateMockTests {
                                         .asList(
                                             new VlanGroupProperties(),
                                             new VlanGroupProperties(),
-                                            new VlanGroupProperties()))
-                                .withPortGroups(
-                                    Arrays
-                                        .asList(
-                                            new PortGroupProperties(),
-                                            new PortGroupProperties(),
-                                            new PortGroupProperties())),
-                            new CommonDynamicMatchConfiguration()
-                                .withIpGroups(
-                                    Arrays
-                                        .asList(
-                                            new IpGroupProperties(), new IpGroupProperties(), new IpGroupProperties()))
-                                .withVlanGroups(
-                                    Arrays
-                                        .asList(
-                                            new VlanGroupProperties(),
                                             new VlanGroupProperties(),
                                             new VlanGroupProperties()))
                                 .withPortGroups(Arrays.asList(new PortGroupProperties())),
@@ -164,25 +118,19 @@ public final class AccessControlListsCreateMockTests {
                                     Arrays
                                         .asList(
                                             new IpGroupProperties(), new IpGroupProperties(), new IpGroupProperties()))
-                                .withVlanGroups(
-                                    Arrays
-                                        .asList(
-                                            new VlanGroupProperties(),
-                                            new VlanGroupProperties(),
-                                            new VlanGroupProperties(),
-                                            new VlanGroupProperties()))
-                                .withPortGroups(Arrays.asList(new PortGroupProperties()))))
-                .withAnnotation("nhogse")
+                                .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties()))
+                                .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties()))))
+                .withAnnotation("beqkittl")
                 .create();
 
-        Assertions.assertEquals("vnpbgcesfddfclmo", response.location());
-        Assertions.assertEquals("ofofkbcjz", response.tags().get("wweoblbtdqz"));
+        Assertions.assertEquals("er", response.location());
+        Assertions.assertEquals("dlirqqclsaqifep", response.tags().get("ure"));
         Assertions.assertEquals(ConfigurationType.FILE, response.configurationType());
-        Assertions.assertEquals("rhqdoxd", response.aclsUrl());
-        Assertions.assertEquals("dedpkwdtobpgdc", response.matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(8870845631075658054L, response.matchConfigurations().get(0).sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV4, response.matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("blt", response.annotation());
+        Assertions.assertEquals("zwgdpvhwiril", response.aclsUrl());
+        Assertions.assertEquals("rhqdoxd", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(4989762918343425516L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV6, response.matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("dpd", response.annotation());
     }
 
     @SuppressWarnings("unchecked")
