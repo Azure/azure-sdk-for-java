@@ -736,6 +736,8 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   }
 }
 
+# "Validate-${Language}-DocMsPackages"
+# $ValidateDocsMsPackagesFn
 function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
   # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
   if (!$PackageInfos) {
@@ -744,9 +746,10 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
 
   if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
     Write-Error "Package validation failed" -ErrorAction Continue
+    return $false
   }
 
-  return
+  return $true
 }
 
 function Get-java-EmitterName() {

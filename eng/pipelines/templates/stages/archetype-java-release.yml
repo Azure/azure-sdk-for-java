@@ -473,6 +473,7 @@ stages:
                 - metadata/
               DocValidationImageId: "$(DocValidationImageId)"
 
+          # TODO: How do we exclude packages that fail validation?
           - ${{ each artifact in parameters.Artifacts }}:
             - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
               - template: /eng/pipelines/templates/steps/fetch-package-list.yml
@@ -483,3 +484,13 @@ stages:
                   DocRepoLocation: $(DocRepoLocation)
                   TargetDocRepoName: ${{parameters.TargetDocRepoName}}
                   TargetDocRepoOwner: "azure-sdk"
+
+          # Fail the build if any of the packages failed validation
+          - pwsh: |
+              if ($(DocsMsPackagesAllValid)) { 
+                Write-Host "All packages passed validation."
+              } else {
+                Write-Error "Some packages failed validation."
+                exit 1
+              }
+            displayName: Check package validation results
