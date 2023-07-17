@@ -28,11 +28,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.paging.PageRetriever;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,15 +36,6 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 /**
  * Client for Rooms operations of Azure Communication Room Service
@@ -324,7 +311,7 @@ public final class RoomsClient {
             Response<Object> response = this.participantsClient
                 .updateWithResponse(roomId, updateRequest, context);
 
-                return new SimpleResponse<RemoveParticipantsResult>(
+            return new SimpleResponse<RemoveParticipantsResult>(
                 response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } catch (JsonProcessingException ex) {
             ex.printStackTrace();
