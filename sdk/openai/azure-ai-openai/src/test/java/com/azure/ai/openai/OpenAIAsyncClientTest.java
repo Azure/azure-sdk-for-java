@@ -317,11 +317,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             assertEquals(ChatRole.ASSISTANT, chatCompletions.getChoices().get(0).getDelta().getRole());
                             assertNull(chatCompletions.getPromptFilterResults());
                             ContentFilterResults contentFilterResults = chatCompletions.getChoices().get(0).getContentFilterResults();
-                            assertNotNull(contentFilterResults);
-                            assertNull(contentFilterResults.getHate());
-                            assertNull(contentFilterResults.getSexual());
-                            assertNull(contentFilterResults.getViolence());
-                            assertNull(contentFilterResults.getSelfHarm());
+                            assertEmptyContentFilterResults(contentFilterResults);
                         }
                         // The last stream message is empty with all the filters set to null
                         else if (i == chatCompletionsList.size() - 1) {
@@ -333,13 +329,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             assertNull(chatChoice.getDelta().getContent());
 
                             ContentFilterResults contentFilterResults = chatChoice.getContentFilterResults();
-                            assertNotNull(contentFilterResults);
-                            assertNull(contentFilterResults.getHate());
-                            assertNull(contentFilterResults.getSexual());
-                            assertNull(contentFilterResults.getViolence());
-                            assertNull(contentFilterResults.getSelfHarm());
+                            assertEmptyContentFilterResults(contentFilterResults);
                         }
-                        // All the stream message choices with ChatRole user have content filtering set
+                        // The rest of the intermediary messages have the text generation content filter set
                         else {
                             assertNull(chatCompletions.getPromptFilterResults());
                             assertNotNull(chatCompletions.getChoices().get(0).getDelta());

@@ -42,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
@@ -310,5 +311,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
         assertFalse(contentFilterResults.getViolence().isFiltered());
         assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+    }
+
+    static void assertEmptyContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertNull(contentFilterResults.getHate());
+        assertNull(contentFilterResults.getSexual());
+        assertNull(contentFilterResults.getViolence());
+        assertNull(contentFilterResults.getSelfHarm());
     }
 }
