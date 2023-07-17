@@ -230,11 +230,9 @@ function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation) {
   Set-Content -Path $readmeLocation -Value $outputReadmeContent
 }
 
-$succeeded = $true
-
+$allSucceeded = $true
 foreach ($packageInfoLocation in $PackageInfoJsonLocations) {
 
-  # For daily update and release, validate DocsMS publishing using the language-specific validation function
   if ($ValidateDocsMsPackagesFn -and (Test-Path "Function:$ValidateDocsMsPackagesFn")) {
     Write-Host "Validating the packages..."
 
@@ -246,24 +244,24 @@ foreach ($packageInfoLocation in $PackageInfoJsonLocations) {
       -DocValidationImageId $DocValidationImageId `
       -DocRepoLocation $DocRepoLocation
 
-    # TODO: Refactor call to UpdateDocsMsMetadataForPackage to avoid duplicate
-    if ($isValid) { 
-      Write-Host "Updating metadata for package: $packageInfoLocation"
-      UpdateDocsMsMetadataForPackage $packageInfoLocation
-    } else {
+    if (!$isValid) {
       Write-Host "Package validation failed for package: $packageInfoLocation"
-      $succeeded = $false
+      $allSucceeded = $false
+
+      # Skip the later call to UpdateDocsMsMetadataForPackage because this 
+      # package has not passed validation
+      continue
     }
-  } else { 
-    Write-Host "Updating metadata for package: $packageInfoLocation"
-    # Convert package metadata json file to metadata json property.
-    UpdateDocsMsMetadataForPackage $packageInfoLocation
   }
+
+  Write-Host "Updating metadata for package: $packageInfoLocation"
+  # Convert package metadata json file to metadata json property.
+  UpdateDocsMsMetadataForPackage $packageInfoLocation
 }
 
 # Set a variable which will be used by the pipeline later to fail the build if
 # any packages failed validation
-if ($succeeded) {
+if ($allSucceeded) {
   Write-Host "##vso[task.setvariable variable=DocsMsPackagesAllValid;]1"
 } else { 
   Write-Host "##vso[task.setvariable variable=DocsMsPackagesAllValid;]0"
