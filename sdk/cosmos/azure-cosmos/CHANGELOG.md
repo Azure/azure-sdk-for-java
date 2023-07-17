@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.37.2 (2023-07-17)
+### 4.37.2-hotfix (2023-07-17)
 #### Bugs Fixed
 * Fixed an issue with deserialization of `conflictResolutionTimestamp` for All versions and deletes change feed mode. - See [PR 35912](https://github.com/Azure/azure-sdk-for-java/pull/35912)
 
