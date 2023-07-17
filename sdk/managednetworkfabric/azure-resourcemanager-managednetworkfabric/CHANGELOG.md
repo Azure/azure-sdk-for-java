@@ -783,8 +783,6 @@
 
 * `models.NetworkTapRulesListResult` was added
 
-* `models.ErrorResponse` was added
-
 * `models.IpPrefixPatchableProperties` was added
 
 * `models.L3IsolationDomainPatchableProperties` was added
