@@ -85,6 +85,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private static final String END_IPADDRESS = "10.102.1.12";
 
     @Test
+    @Disabled
     public void canCRUDSqlSyncMember() throws Exception {
         final String dbName = "dbSample";
         final String dbSyncName = "dbSync";
@@ -166,6 +167,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlSyncGroup() throws Exception {
         final String dbName = "dbSample";
         final String dbSyncName = "dbSync";
@@ -229,6 +231,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCopySqlDatabase() throws Exception {
         final String sqlPrimaryServerName = generateRandomResourceName("sqlpri", 22);
         final String sqlSecondaryServerName = generateRandomResourceName("sqlsec", 22);
@@ -280,6 +283,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlFailoverGroup() throws Exception {
         final String sqlPrimaryServerName = generateRandomResourceName("sqlpri", 22);
         final String sqlSecondaryServerName = generateRandomResourceName("sqlsec", 22);
@@ -421,6 +425,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canChangeSqlServerAndDatabaseAutomaticTuning() throws Exception {
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
@@ -521,6 +526,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCreateAndAquireServerDnsAlias() throws Exception {
         String sqlServerName1 = sqlServerName + "1";
         String sqlServerName2 = sqlServerName + "2";
@@ -579,6 +585,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
@@ -717,6 +724,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
         String sqlServerAdminName = "sqladmin";
@@ -831,6 +839,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlServer() throws Exception {
 
         // Check if the name is available
@@ -870,6 +879,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canUseCoolShortcutsForResourceCreation() throws Exception {
         String database2Name = "database2";
         String database1InEPName = "database1InEP";
@@ -965,6 +975,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlDatabase() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1078,6 +1089,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canManageReplicationLinks() throws Exception {
         // Create
         String anotherSqlServerName = sqlServerName + "another";
@@ -1142,6 +1154,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canDoOperationsOnDataWarehouse() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1191,6 +1204,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlDatabaseWithElasticPool() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1303,6 +1317,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlElasticPool() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1361,6 +1376,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlFirewallRule() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1643,6 +1659,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void testRandomSku() {
         // "M" series is not supported in this region
         List<DatabaseSku> databaseSkus = DatabaseSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));

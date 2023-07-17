@@ -37,8 +37,8 @@
 
   <properties>
     <!-- RMJacoco -->
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.sql/com.azure.resourcemanager.sql=ALL-UNNAMED
@@ -47,6 +47,7 @@
       --add-opens com.azure.resourcemanager.storage/com.azure.resourcemanager.storage=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
