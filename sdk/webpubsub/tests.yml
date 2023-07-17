@@ -1,0 +1,21 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: webpubsub
+      Artifacts:
+        - name: azure-messaging-webpubsub
+          groupId: com.azure
+          safeName: azuremessagingwebpubsub
+        - name: azure-messaging-webpubsub-client
+          groupId: com.azure
+          safeName: azuremessagingwebpubsubclient
+      TimeoutInMinutes: 60
+      SupportedClouds: 'Public,UsGov,China'
+      EnvVars:
+        AZURE_LOG_LEVEL: 2
+        AZURE_CLIENT_ID: $(WEBPUBSUB_CLIENT_ID)
+        AZURE_CLIENT_SECRET: $(WEBPUBSUB_CLIENT_SECRET)
+        AZURE_TENANT_ID: $(WEBPUBSUB_TENANT_ID)
+        AZURE_SUBSCRIPTION_ID: $(WEBPUBSUB_SUBSCRIPTION_ID)
