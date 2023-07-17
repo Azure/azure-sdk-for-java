@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.search.documents.implementation.batching;
 
 import com.azure.core.exception.HttpResponseException;
@@ -33,24 +30,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.batchAvailableForProcessing;
-import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.calculateRetryDelay;
-import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.createDocumentHitRetryLimitException;
-import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.createDocumentTooLargeException;
-import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.isRetryable;
-import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.isSuccess;
-
 /**
  * Internal helper class that manages sending automatic document batches to Azure Search Documents.
  *
- * @param <T> Type of the document in the batch.
+ * @param <T> The type of document in the batch.
  */
-public final class SearchIndexingPublisher<T> {
+public final class SearchIndexingSyncPublisher<T> {
+    private static final double JITTER_FACTOR = 0.05;
+    private static final String BATCH_SIZE_SCALED_DOWN =
+        "Scaling down batch size due to 413 (Payload too large) response.{}Scaled down from {} to {}";
+
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingPublisher.class);
 
     private final SearchIndexClientImpl restClient;
@@ -59,8 +54,8 @@ public final class SearchIndexingPublisher<T> {
     private final boolean autoFlush;
     private int batchActionCount;
     private final int maxRetries;
-    private final long throttlingDelayNanos;
-    private final long maxThrottlingDelayNanos;
+    private final Duration throttlingDelay;
+    private final Duration maxThrottlingDelay;
 
     private final Consumer<OnActionAddedOptions<T>> onActionAddedConsumer;
     private final Consumer<OnActionSentOptions<T>> onActionSentConsumer;
@@ -72,7 +67,6 @@ public final class SearchIndexingPublisher<T> {
 
     private final Object actionsMutex = new Object();
     private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
-
     /*
      * This queue keeps track of documents that are currently being sent to the service for indexing. This queue is
      * resilient against cases where the request timeouts or is cancelled by an external operation, preventing the
@@ -85,13 +79,13 @@ public final class SearchIndexingPublisher<T> {
     volatile AtomicInteger backoffCount = new AtomicInteger();
     volatile Duration currentRetryDelay = Duration.ZERO;
 
-    public SearchIndexingPublisher(SearchIndexClientImpl restClient, JsonSerializer serializer,
-        Function<T, String> documentKeyRetriever, boolean autoFlush, int initialBatchActionCount,
-        int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
-        Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
-        Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
-        Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
-        Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+    public SearchIndexingSyncPublisher(SearchIndexClientImpl restClient, JsonSerializer serializer,
+                                   Function<T, String> documentKeyRetriever, boolean autoFlush, int initialBatchActionCount,
+                                   int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
+                                   Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
+                                   Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
+                                   Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
+                                   Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
         this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
             "'documentKeyRetriever' cannot be null");
 
@@ -101,10 +95,10 @@ public final class SearchIndexingPublisher<T> {
         this.autoFlush = autoFlush;
         this.batchActionCount = initialBatchActionCount;
         this.maxRetries = maxRetriesPerAction;
-        this.throttlingDelayNanos = throttlingDelay.toNanos();
-        this.maxThrottlingDelayNanos = (maxThrottlingDelay.compareTo(throttlingDelay) < 0)
-            ? this.throttlingDelayNanos
-            : maxThrottlingDelay.toNanos();
+        this.throttlingDelay = throttlingDelay;
+        this.maxThrottlingDelay = (maxThrottlingDelay.compareTo(this.throttlingDelay) < 0)
+            ? this.throttlingDelay
+            : maxThrottlingDelay;
 
         this.onActionAddedConsumer = onActionAddedConsumer;
         this.onActionSentConsumer = onActionSentConsumer;
@@ -135,7 +129,7 @@ public final class SearchIndexingPublisher<T> {
     }
 
     public synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context,
-        Runnable rescheduleFlush) {
+                                              Runnable rescheduleFlush) {
         actions.stream()
             .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
             .forEach(action -> {
@@ -147,7 +141,7 @@ public final class SearchIndexingPublisher<T> {
 
         LOGGER.verbose("Actions added, new pending queue size: {}.", this.actions.size());
 
-        if (autoFlush && batchAvailableForProcessing(actions.size(), inFlightActions.size(), batchActionCount)) {
+        if (autoFlush && batchAvailableForProcessing()) {
             rescheduleFlush.run();
             LOGGER.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
             return flush(false, false, context);
@@ -172,10 +166,9 @@ public final class SearchIndexingPublisher<T> {
 
     private Mono<Void> flushLoop(boolean isClosed, Context context) {
         return createAndProcessBatch(context)
-            .expand(ignored -> Flux.defer(() ->
-                (batchAvailableForProcessing(actions.size(), inFlightActions.size(), batchActionCount) || isClosed)
-                    ? createAndProcessBatch(context)
-                    : Flux.empty()))
+            .expand(ignored -> Flux.defer(() -> (batchAvailableForProcessing() || isClosed)
+                ? createAndProcessBatch(context)
+                : Flux.empty()))
             .then();
     }
 
@@ -228,7 +221,7 @@ public final class SearchIndexingPublisher<T> {
     }
 
     private int fillFromQueue(List<TryTrackingIndexAction<T>> batch, List<TryTrackingIndexAction<T>> queue,
-        int requested, Set<String> duplicateKeyTracker) {
+                              int requested, Set<String> duplicateKeyTracker) {
         int offset = 0;
         int actionsAdded = 0;
         int queueSize = queue.size();
@@ -270,7 +263,7 @@ public final class SearchIndexingPublisher<T> {
         }
 
         return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
-            response.getValue().getResults(), actions.size(), false))
+                response.getValue().getResults(), actions.size(), false))
             .doOnCancel(() -> {
                 LOGGER.warning("Request was cancelled before response, adding all in-flight documents back to queue.");
                 inFlightActions.addAll(batchActions);
@@ -383,8 +376,7 @@ public final class SearchIndexingPublisher<T> {
         }
 
         if (has503) {
-            currentRetryDelay = calculateRetryDelay(backoffCount.getAndIncrement(), throttlingDelayNanos,
-                maxThrottlingDelayNanos);
+            currentRetryDelay = calculateRetryDelay(backoffCount.getAndIncrement());
         } else {
             backoffCount.set(0);
             currentRetryDelay = Duration.ZERO;
@@ -402,5 +394,34 @@ public final class SearchIndexingPublisher<T> {
                 this.actions.push(actionsToRetry.get(i));
             }
         }
+    }
+
+    private boolean batchAvailableForProcessing() {
+        return (actions.size() + inFlightActions.size()) >= batchActionCount;
+    }
+
+    private static boolean isSuccess(int statusCode) {
+        return statusCode == 200 || statusCode == 201;
+    }
+
+    private static boolean isRetryable(int statusCode) {
+        return statusCode == 409 || statusCode == 422 || statusCode == 503;
+    }
+
+    private Duration calculateRetryDelay(int backoffCount) {
+        // Introduce a small amount of jitter to base delay
+        long delayWithJitterInNanos = ThreadLocalRandom.current()
+            .nextLong((long) (throttlingDelay.toNanos() * (1 - JITTER_FACTOR)),
+                (long) (throttlingDelay.toNanos() * (1 + JITTER_FACTOR)));
+
+        return Duration.ofNanos(Math.min((1L << backoffCount) * delayWithJitterInNanos, maxThrottlingDelay.toNanos()));
+    }
+
+    private static RuntimeException createDocumentTooLargeException() {
+        return new RuntimeException("Document is too large to be indexed and won't be tried again.");
+    }
+
+    private static RuntimeException createDocumentHitRetryLimitException() {
+        return new RuntimeException("Document has reached retry limit and won't be tried again.");
     }
 }
