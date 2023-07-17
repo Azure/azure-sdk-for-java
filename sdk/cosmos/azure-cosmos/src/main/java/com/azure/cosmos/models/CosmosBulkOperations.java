@@ -36,8 +36,6 @@ public final class CosmosBulkOperations {
         return getCreateItemOperation(item, partitionKey, new CosmosBulkItemRequestOptions(), null);
     }
 
-
-
     /**
      * Instantiate an operation for Creating item in Bulk execution.
      *
@@ -117,7 +115,6 @@ public final class CosmosBulkOperations {
             context
         );
     }
-
 
     /**
      * Instantiate an operation for deleting item in Bulk execution.
