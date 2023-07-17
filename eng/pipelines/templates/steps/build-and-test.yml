@@ -35,10 +35,16 @@ parameters:
   - name: ExcludeProjectList
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
+  - name: VersionOverride
+    type: string
+    default: ''
 
 steps:
   - task: Maven@3
-    displayName: 'Build for non-From Source run'
+    ${{ if ne(parameters.VersionOverride, '') }}:
+      displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
+    ${{ else }}:
+      displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
       options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
@@ -50,17 +56,17 @@ steps:
       goals: 'install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Update external dependency versions'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type external_dependency --build-type client --sr --vo $(VersionOverrides)'
+      arguments: '--update-type external_dependency --build-type client --sr --vo ${{ parameters.VersionOverride }}'
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@3
-    displayName: 'Re-build for version override run'
+    displayName: '${{ parameters.VersionOverride }} - Re-build for version override run'
     inputs:
       mavenPomFile: pom.xml
       options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList)
@@ -69,13 +75,16 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'install'
+      goals: 'clean install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@3
-    displayName: 'Run tests'
+    ${{ if ne(parameters.VersionOverride, '') }}:
+      displayName: '${{ parameters.VersionOverride }} - Run tests'
+    ${{ else }}:
+      displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
       options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
@@ -151,9 +160,12 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: ../steps/upload-repository-on-failure.yml
-
-  - template: ../steps/retain-heap-dump-hprofs.yml
+  - ${{ if ne(parameters.VersionOverride, '') }}:
+    - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
+      parameters:
+        OomArtifactName: 'oom-vo-${{ parameters.VersionOverride }}'
+  - ${{ else }}:
+    - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
     condition: always()
@@ -162,7 +174,10 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
-      testRunTitle: $(Agent.JobName)
+      ${{ if ne(parameters.VersionOverride, '') }}:
+        testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}'
+      ${{ else }}:
+        testRunTitle: $(Agent.JobName)
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 
