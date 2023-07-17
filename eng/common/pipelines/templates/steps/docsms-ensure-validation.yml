@@ -7,4 +7,4 @@ steps:
         Write-Error "Some packages failed validation."
         exit 1
     }
-displayName: Check package validation results
+  displayName: Check package validation results
