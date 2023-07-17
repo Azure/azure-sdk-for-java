@@ -9,10 +9,17 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListConditionProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatch;
-import com.azure.resourcemanager.managednetworkfabric.models.AddressFamily;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -52,12 +59,32 @@ public final class AccessControlListImpl
         return this.innerModel().systemData();
     }
 
-    public AddressFamily addressFamily() {
-        return this.innerModel().addressFamily();
+    public OffsetDateTime lastSyncedTime() {
+        return this.innerModel().lastSyncedTime();
     }
 
-    public List<AccessControlListConditionProperties> conditions() {
-        List<AccessControlListConditionProperties> inner = this.innerModel().conditions();
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
+    }
+
+    public ConfigurationType configurationType() {
+        return this.innerModel().configurationType();
+    }
+
+    public String aclsUrl() {
+        return this.innerModel().aclsUrl();
+    }
+
+    public List<AccessControlListMatchConfiguration> matchConfigurations() {
+        List<AccessControlListMatchConfiguration> inner = this.innerModel().matchConfigurations();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -65,8 +92,13 @@ public final class AccessControlListImpl
         }
     }
 
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
+    public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
+        List<CommonDynamicMatchConfiguration> inner = this.innerModel().dynamicMatchConfigurations();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String annotation() {
@@ -109,8 +141,7 @@ public final class AccessControlListImpl
             serviceManager
                 .serviceClient()
                 .getAccessControlLists()
-                .createWithResponse(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE)
-                .getValue();
+                .create(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -119,8 +150,7 @@ public final class AccessControlListImpl
             serviceManager
                 .serviceClient()
                 .getAccessControlLists()
-                .createWithResponse(resourceGroupName, accessControlListName, this.innerModel(), context)
-                .getValue();
+                .create(resourceGroupName, accessControlListName, this.innerModel(), context);
         return this;
     }
 
@@ -141,8 +171,7 @@ public final class AccessControlListImpl
             serviceManager
                 .serviceClient()
                 .getAccessControlLists()
-                .updateWithResponse(resourceGroupName, accessControlListName, updateBody, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, accessControlListName, updateBody, Context.NONE);
         return this;
     }
 
@@ -151,8 +180,7 @@ public final class AccessControlListImpl
             serviceManager
                 .serviceClient()
                 .getAccessControlLists()
-                .updateWithResponse(resourceGroupName, accessControlListName, updateBody, context)
-                .getValue();
+                .update(resourceGroupName, accessControlListName, updateBody, context);
         return this;
     }
 
@@ -185,6 +213,37 @@ public final class AccessControlListImpl
         return this;
     }
 
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager
+            .accessControlLists()
+            .updateAdministrativeState(resourceGroupName, accessControlListName, body);
+    }
+
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
+            .accessControlLists()
+            .updateAdministrativeState(resourceGroupName, accessControlListName, body, context);
+    }
+
+    public CommonPostActionResponseForStateUpdate resync() {
+        return serviceManager.accessControlLists().resync(resourceGroupName, accessControlListName);
+    }
+
+    public CommonPostActionResponseForStateUpdate resync(Context context) {
+        return serviceManager.accessControlLists().resync(resourceGroupName, accessControlListName, context);
+    }
+
+    public ValidateConfigurationResponse validateConfiguration() {
+        return serviceManager.accessControlLists().validateConfiguration(resourceGroupName, accessControlListName);
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(Context context) {
+        return serviceManager
+            .accessControlLists()
+            .validateConfiguration(resourceGroupName, accessControlListName, context);
+    }
+
     public AccessControlListImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -195,32 +254,54 @@ public final class AccessControlListImpl
         return this;
     }
 
-    public AccessControlListImpl withAddressFamily(AddressFamily addressFamily) {
-        if (isInCreateMode()) {
-            this.innerModel().withAddressFamily(addressFamily);
-            return this;
-        } else {
-            this.updateBody.withAddressFamily(addressFamily);
-            return this;
-        }
-    }
-
-    public AccessControlListImpl withConditions(List<AccessControlListConditionProperties> conditions) {
-        if (isInCreateMode()) {
-            this.innerModel().withConditions(conditions);
-            return this;
-        } else {
-            this.updateBody.withConditions(conditions);
-            return this;
-        }
-    }
-
     public AccessControlListImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
             return this;
         } else {
             this.updateBody.withTags(tags);
+            return this;
+        }
+    }
+
+    public AccessControlListImpl withConfigurationType(ConfigurationType configurationType) {
+        if (isInCreateMode()) {
+            this.innerModel().withConfigurationType(configurationType);
+            return this;
+        } else {
+            this.updateBody.withConfigurationType(configurationType);
+            return this;
+        }
+    }
+
+    public AccessControlListImpl withAclsUrl(String aclsUrl) {
+        if (isInCreateMode()) {
+            this.innerModel().withAclsUrl(aclsUrl);
+            return this;
+        } else {
+            this.updateBody.withAclsUrl(aclsUrl);
+            return this;
+        }
+    }
+
+    public AccessControlListImpl withMatchConfigurations(
+        List<AccessControlListMatchConfiguration> matchConfigurations) {
+        if (isInCreateMode()) {
+            this.innerModel().withMatchConfigurations(matchConfigurations);
+            return this;
+        } else {
+            this.updateBody.withMatchConfigurations(matchConfigurations);
+            return this;
+        }
+    }
+
+    public AccessControlListImpl withDynamicMatchConfigurations(
+        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+        if (isInCreateMode()) {
+            this.innerModel().withDynamicMatchConfigurations(dynamicMatchConfigurations);
+            return this;
+        } else {
+            this.updateBody.withDynamicMatchConfigurations(dynamicMatchConfigurations);
             return this;
         }
     }

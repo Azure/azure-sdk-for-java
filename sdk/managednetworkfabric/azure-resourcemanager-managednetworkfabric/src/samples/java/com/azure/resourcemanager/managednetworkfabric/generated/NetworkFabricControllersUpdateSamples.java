@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for NetworkFabricControllers Update. */
 public final class NetworkFabricControllersUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkFabricControllers_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabricControllers_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabricControllers_Update_MaximumSet_Gen.
@@ -24,16 +24,23 @@ public final class NetworkFabricControllersUpdateSamples {
             manager
                 .networkFabricControllers()
                 .getByResourceGroupWithResponse(
-                    "resourceGroupName", "networkFabricControllerName", com.azure.core.util.Context.NONE)
+                    "example-rg", "example-networkController", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
+            .withInfrastructureExpressRouteConnections(
+                Arrays
+                    .asList(
+                        new ExpressRouteConnectionInformation()
+                            .withExpressRouteCircuitId(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
+                            .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
             .withWorkloadExpressRouteConnections(
                 Arrays
                     .asList(
                         new ExpressRouteConnectionInformation()
                             .withExpressRouteCircuitId(
-                                "/subscriptions/xxxxx/resourceGroups/resourceGroupName/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
                             .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
             .apply();
     }

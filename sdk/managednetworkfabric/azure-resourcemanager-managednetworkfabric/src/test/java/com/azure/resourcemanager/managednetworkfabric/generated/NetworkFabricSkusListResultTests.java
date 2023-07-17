@@ -16,10 +16,11 @@ public final class NetworkFabricSkusListResultTests {
         NetworkFabricSkusListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"type\":\"bbc\",\"maxComputeRacks\":990480911,\"minSupportedVer\":\"gtltdhlf\",\"maxSupportedVer\":\"ojpykvgtrdc\",\"detailsUri\":\"fmzzsdymbrny\",\"provisioningState\":\"Canceled\"},\"id\":\"prafwgckhoc\",\"name\":\"vdff\",\"type\":\"wafqroud\"},{\"properties\":{\"type\":\"pavehhr\",\"maxComputeRacks\":221531853,\"minSupportedVer\":\"n\",\"maxSupportedVer\":\"zudhcxg\",\"detailsUri\":\"oyxcdyuib\",\"provisioningState\":\"Deleting\"},\"id\":\"nbzydvfvfcj\",\"name\":\"aeoisrvh\",\"type\":\"gorf\"}],\"nextLink\":\"kiscvwmzhwpl\"}")
+                    "{\"value\":[{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":844024628,\"maximumServerCount\":1036553043,\"supportedVersions\":[\"sgfy\",\"skyekgafxczv\",\"cckwrtwle\"],\"details\":\"veszrtlhpdhw\",\"provisioningState\":\"Canceled\"},\"id\":\"tacz\",\"name\":\"njfmbbfnvjxit\",\"type\":\"ovnkrtiklsmnihql\"},{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":688911413,\"maximumServerCount\":357291580,\"supportedVersions\":[\"hyxwbgbud\",\"vqdorbccqcd\"],\"details\":\"hojvlirkn\",\"provisioningState\":\"Failed\"},\"id\":\"sawrdtn\",\"name\":\"gzlgpyaixihz\",\"type\":\"jjtsm\"}],\"nextLink\":\"dqftt\"}")
                 .toObject(NetworkFabricSkusListResult.class);
-        Assertions.assertEquals(990480911, model.value().get(0).maxComputeRacks());
-        Assertions.assertEquals("kiscvwmzhwpl", model.nextLink());
+        Assertions.assertEquals(844024628, model.value().get(0).maxComputeRacks());
+        Assertions.assertEquals(1036553043, model.value().get(0).maximumServerCount());
+        Assertions.assertEquals("dqftt", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,11 +30,16 @@ public final class NetworkFabricSkusListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new NetworkFabricSkuInner().withMaxComputeRacks(990480911),
-                            new NetworkFabricSkuInner().withMaxComputeRacks(221531853)))
-                .withNextLink("kiscvwmzhwpl");
+                            new NetworkFabricSkuInner()
+                                .withMaxComputeRacks(844024628)
+                                .withMaximumServerCount(1036553043),
+                            new NetworkFabricSkuInner()
+                                .withMaxComputeRacks(688911413)
+                                .withMaximumServerCount(357291580)))
+                .withNextLink("dqftt");
         model = BinaryData.fromObject(model).toObject(NetworkFabricSkusListResult.class);
-        Assertions.assertEquals(990480911, model.value().get(0).maxComputeRacks());
-        Assertions.assertEquals("kiscvwmzhwpl", model.nextLink());
+        Assertions.assertEquals(844024628, model.value().get(0).maxComputeRacks());
+        Assertions.assertEquals(1036553043, model.value().get(0).maximumServerCount());
+        Assertions.assertEquals("dqftt", model.nextLink());
     }
 }

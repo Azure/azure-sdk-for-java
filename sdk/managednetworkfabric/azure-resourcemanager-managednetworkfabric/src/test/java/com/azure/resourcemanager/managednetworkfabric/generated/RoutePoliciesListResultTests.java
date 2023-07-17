@@ -6,7 +6,12 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
+import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePoliciesListResult;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyActionType;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StatementActionProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StatementConditionProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,12 +23,18 @@ public final class RoutePoliciesListResultTests {
         RoutePoliciesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"statements\":[],\"provisioningState\":\"Canceled\",\"annotation\":\"xqmul\"},\"location\":\"lxqzvn\",\"tags\":{\"brqbsmswzi\":\"bycucrwnamikz\",\"vhczznvfby\":\"gfuhokzrusw\",\"vumwmxqh\":\"jsxjwwix\",\"hflzokxco\":\"dvnoamldsehaohdj\"},\"id\":\"pelnjetag\",\"name\":\"tsxoatftgz\",\"type\":\"npbs\"},{\"properties\":{\"statements\":[],\"provisioningState\":\"Failed\",\"annotation\":\"loccsrmozihm\"},\"location\":\"g\",\"tags\":{\"xgrytfmp\":\"xxpkyjcxc\"},\"id\":\"ycilrmcaykggnox\",\"name\":\"ztrksxwpndf\",\"type\":\"pfnznthjtwkj\"},{\"properties\":{\"statements\":[],\"provisioningState\":\"Updating\",\"annotation\":\"xuzvoamktcqi\"},\"location\":\"mgbzahgxqdlyrtl\",\"tags\":{\"nbsoqeqalarv\":\"prltzkatbhjmz\"},\"id\":\"agunbtgfebw\",\"name\":\"nbmhyree\",\"type\":\"dzqavbpdqmjxlyyz\"},{\"properties\":{\"statements\":[],\"provisioningState\":\"Failed\",\"annotation\":\"uwt\"},\"location\":\"jjyuojqtobax\",\"tags\":{\"snkq\":\"ytunlbfjkwr\"},\"id\":\"hsyrqunj\",\"name\":\"hdenxaulk\",\"type\":\"akdkifmjnnawtqab\"}],\"nextLink\":\"uckpggqoweyir\"}")
+                    "{\"value\":[{\"properties\":{\"networkFabricId\":\"mrvnuvqkrrsguogk\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"statements\":[{\"sequenceNumber\":300365337719306636,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"wpftvvqtmvifgcvs\"}],\"annotation\":\"alb\"},\"location\":\"icxgosnx\",\"tags\":{\"zxaoxlhmvjcnnls\":\"tcdf\"},\"id\":\"nucqxhpaqo\",\"name\":\"bvejo\",\"type\":\"soxovlznkleld\"},{\"properties\":{\"networkFabricId\":\"qdlqqhntqrykkxak\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Disabled\",\"statements\":[{\"sequenceNumber\":6972584664296828431,\"condition\":{},\"action\":{\"actionType\":\"Permit\"},\"annotation\":\"ccnpxiemacmzt\"}],\"annotation\":\"kxsnnbrysgkt\"},\"location\":\"ocnqbblr\",\"tags\":{\"hocqxugjx\":\"fzghfuifwxudyn\",\"hmhurosdjlzb\":\"gdcrrfbpl\",\"dghq\":\"m\"},\"id\":\"uyaorservpv\",\"name\":\"sorsbegcl\",\"type\":\"ex\"}],\"nextLink\":\"jqzyhzydy\"}")
                 .toObject(RoutePoliciesListResult.class);
-        Assertions.assertEquals("lxqzvn", model.value().get(0).location());
-        Assertions.assertEquals("bycucrwnamikz", model.value().get(0).tags().get("brqbsmswzi"));
-        Assertions.assertEquals("xqmul", model.value().get(0).annotation());
-        Assertions.assertEquals("uckpggqoweyir", model.nextLink());
+        Assertions.assertEquals("icxgosnx", model.value().get(0).location());
+        Assertions.assertEquals("tcdf", model.value().get(0).tags().get("zxaoxlhmvjcnnls"));
+        Assertions.assertEquals("mrvnuvqkrrsguogk", model.value().get(0).networkFabricId());
+        Assertions.assertEquals(AddressFamilyType.IPV6, model.value().get(0).addressFamilyType());
+        Assertions.assertEquals("wpftvvqtmvifgcvs", model.value().get(0).statements().get(0).annotation());
+        Assertions.assertEquals(300365337719306636L, model.value().get(0).statements().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(RoutePolicyActionType.DENY, model.value().get(0).statements().get(0).action().actionType());
+        Assertions.assertEquals("alb", model.value().get(0).annotation());
+        Assertions.assertEquals("jqzyhzydy", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,40 +45,50 @@ public final class RoutePoliciesListResultTests {
                     Arrays
                         .asList(
                             new RoutePolicyInner()
-                                .withLocation("lxqzvn")
+                                .withLocation("icxgosnx")
+                                .withTags(mapOf("zxaoxlhmvjcnnls", "tcdf"))
+                                .withNetworkFabricId("mrvnuvqkrrsguogk")
+                                .withAddressFamilyType(AddressFamilyType.IPV6)
+                                .withStatements(
+                                    Arrays
+                                        .asList(
+                                            new RoutePolicyStatementProperties()
+                                                .withAnnotation("wpftvvqtmvifgcvs")
+                                                .withSequenceNumber(300365337719306636L)
+                                                .withCondition(new StatementConditionProperties())
+                                                .withAction(
+                                                    new StatementActionProperties()
+                                                        .withActionType(RoutePolicyActionType.DENY))))
+                                .withAnnotation("alb"),
+                            new RoutePolicyInner()
+                                .withLocation("ocnqbblr")
                                 .withTags(
-                                    mapOf(
-                                        "brqbsmswzi",
-                                        "bycucrwnamikz",
-                                        "vhczznvfby",
-                                        "gfuhokzrusw",
-                                        "vumwmxqh",
-                                        "jsxjwwix",
-                                        "hflzokxco",
-                                        "dvnoamldsehaohdj"))
-                                .withStatements(Arrays.asList())
-                                .withAnnotation("xqmul"),
-                            new RoutePolicyInner()
-                                .withLocation("g")
-                                .withTags(mapOf("xgrytfmp", "xxpkyjcxc"))
-                                .withStatements(Arrays.asList())
-                                .withAnnotation("loccsrmozihm"),
-                            new RoutePolicyInner()
-                                .withLocation("mgbzahgxqdlyrtl")
-                                .withTags(mapOf("nbsoqeqalarv", "prltzkatbhjmz"))
-                                .withStatements(Arrays.asList())
-                                .withAnnotation("xuzvoamktcqi"),
-                            new RoutePolicyInner()
-                                .withLocation("jjyuojqtobax")
-                                .withTags(mapOf("snkq", "ytunlbfjkwr"))
-                                .withStatements(Arrays.asList())
-                                .withAnnotation("uwt")))
-                .withNextLink("uckpggqoweyir");
+                                    mapOf("hocqxugjx", "fzghfuifwxudyn", "hmhurosdjlzb", "gdcrrfbpl", "dghq", "m"))
+                                .withNetworkFabricId("qdlqqhntqrykkxak")
+                                .withAddressFamilyType(AddressFamilyType.IPV6)
+                                .withStatements(
+                                    Arrays
+                                        .asList(
+                                            new RoutePolicyStatementProperties()
+                                                .withAnnotation("ccnpxiemacmzt")
+                                                .withSequenceNumber(6972584664296828431L)
+                                                .withCondition(new StatementConditionProperties())
+                                                .withAction(
+                                                    new StatementActionProperties()
+                                                        .withActionType(RoutePolicyActionType.PERMIT))))
+                                .withAnnotation("kxsnnbrysgkt")))
+                .withNextLink("jqzyhzydy");
         model = BinaryData.fromObject(model).toObject(RoutePoliciesListResult.class);
-        Assertions.assertEquals("lxqzvn", model.value().get(0).location());
-        Assertions.assertEquals("bycucrwnamikz", model.value().get(0).tags().get("brqbsmswzi"));
-        Assertions.assertEquals("xqmul", model.value().get(0).annotation());
-        Assertions.assertEquals("uckpggqoweyir", model.nextLink());
+        Assertions.assertEquals("icxgosnx", model.value().get(0).location());
+        Assertions.assertEquals("tcdf", model.value().get(0).tags().get("zxaoxlhmvjcnnls"));
+        Assertions.assertEquals("mrvnuvqkrrsguogk", model.value().get(0).networkFabricId());
+        Assertions.assertEquals(AddressFamilyType.IPV6, model.value().get(0).addressFamilyType());
+        Assertions.assertEquals("wpftvvqtmvifgcvs", model.value().get(0).statements().get(0).annotation());
+        Assertions.assertEquals(300365337719306636L, model.value().get(0).statements().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(RoutePolicyActionType.DENY, model.value().get(0).statements().get(0).action().actionType());
+        Assertions.assertEquals("alb", model.value().get(0).annotation());
+        Assertions.assertEquals("jqzyhzydy", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")
