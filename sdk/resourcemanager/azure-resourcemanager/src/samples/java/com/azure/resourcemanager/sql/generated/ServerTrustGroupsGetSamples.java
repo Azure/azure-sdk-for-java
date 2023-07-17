@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerTrustGroups Get. */
 public final class ServerTrustGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustGroupGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerTrustGroupGet.json
      */
     /**
      * Sample code: Get server trust group.
@@ -22,6 +20,6 @@ public final class ServerTrustGroupsGetSamples {
             .manager()
             .serviceClient()
             .getServerTrustGroups()
-            .getWithResponse("Default", "Japan East", "server-trust-group-test", Context.NONE);
+            .getWithResponse("Default", "Japan East", "server-trust-group-test", com.azure.core.util.Context.NONE);
     }
 }

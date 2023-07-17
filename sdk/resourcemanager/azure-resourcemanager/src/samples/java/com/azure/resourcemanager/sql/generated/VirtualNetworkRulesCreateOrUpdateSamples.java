@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.VirtualNetworkRuleInner;
 
 /** Samples for VirtualNetworkRules CreateOrUpdate. */
 public final class VirtualNetworkRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualNetworkRulesCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualNetworkRulesCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a virtual network rule.
@@ -31,6 +30,6 @@ public final class VirtualNetworkRulesCreateOrUpdateSamples {
                     .withVirtualNetworkSubnetId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet")
                     .withIgnoreMissingVnetServiceEndpoint(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

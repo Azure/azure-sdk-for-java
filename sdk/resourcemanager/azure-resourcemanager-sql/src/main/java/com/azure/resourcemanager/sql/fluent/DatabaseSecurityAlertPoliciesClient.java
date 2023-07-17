@@ -17,55 +17,6 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in DatabaseSecurityAlertPoliciesClient. */
 public interface DatabaseSecurityAlertPoliciesClient {
     /**
-     * Gets a list of database's security alert policies.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database for which the security alert policy is defined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database's security alert policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets a list of database's security alert policies.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database for which the security alert policy is defined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets a list of database's security alert policies.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database for which the security alert policy is defined.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
-
-    /**
      * Gets a database's security alert policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -236,4 +187,53 @@ public interface DatabaseSecurityAlertPoliciesClient {
         String databaseName,
         SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters);
+
+    /**
+     * Gets a list of database's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database for which the security alert policy is defined.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database's security alert policies as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
+        String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets a list of database's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database for which the security alert policy is defined.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
+        String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets a list of database's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database for which the security alert policy is defined.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
+        String resourceGroupName, String serverName, String databaseName, Context context);
 }

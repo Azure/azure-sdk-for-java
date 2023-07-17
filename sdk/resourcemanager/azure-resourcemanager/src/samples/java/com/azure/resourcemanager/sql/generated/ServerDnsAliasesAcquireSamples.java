@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ServerDnsAliasAcquisition;
 
 /** Samples for ServerDnsAliases Acquire. */
 public final class ServerDnsAliasesAcquireSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDnsAliasAcquire.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDnsAliasAcquire.json
      */
     /**
      * Sample code: Acquire server DNS alias.
@@ -30,6 +29,6 @@ public final class ServerDnsAliasesAcquireSamples {
                 new ServerDnsAliasAcquisition()
                     .withOldServerDnsAliasId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/dns-alias-old-server/dnsAliases/dns-alias-name-1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

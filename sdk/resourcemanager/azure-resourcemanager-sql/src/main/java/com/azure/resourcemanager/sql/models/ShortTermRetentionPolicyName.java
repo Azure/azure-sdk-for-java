@@ -14,6 +14,15 @@ public final class ShortTermRetentionPolicyName extends ExpandableStringEnum<Sho
     public static final ShortTermRetentionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ShortTermRetentionPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShortTermRetentionPolicyName() {
+    }
+
+    /**
      * Creates or finds a ShortTermRetentionPolicyName from its string representation.
      *
      * @param name a name to look for.

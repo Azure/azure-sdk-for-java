@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SyncMembers RefreshMemberSchema. */
 public final class SyncMembersRefreshMemberSchemaSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberRefreshSchema.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberRefreshSchema.json
      */
     /**
      * Sample code: Refresh a sync member database schema.
@@ -28,6 +26,6 @@ public final class SyncMembersRefreshMemberSchemaSamples {
                 "syncgroupcrud-4328",
                 "syncgroupcrud-3187",
                 "syncgroupcrud-4879",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

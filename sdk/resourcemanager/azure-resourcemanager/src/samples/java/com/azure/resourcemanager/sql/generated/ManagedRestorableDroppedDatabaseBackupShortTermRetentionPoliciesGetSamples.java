@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ManagedShortTermRetentionPolicyName;
 
 /** Samples for ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies Get. */
 public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetManagedShortTermRetentionPolicyRestorableDropped.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetManagedShortTermRetentionPolicyRestorableDropped.json
      */
     /**
      * Sample code: Get the short term retention policy for the database.
@@ -29,6 +28,6 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                 "testsvr",
                 "testdb,131403269876900000",
                 ManagedShortTermRetentionPolicyName.DEFAULT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

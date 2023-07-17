@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobCredentials Delete. */
 public final class JobCredentialsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteJobCredential.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteJobCredential.json
      */
     /**
      * Sample code: Delete a credential.
@@ -22,6 +20,6 @@ public final class JobCredentialsDeleteSamples {
             .manager()
             .serviceClient()
             .getJobCredentials()
-            .deleteWithResponse("group1", "server1", "agent1", "cred1", Context.NONE);
+            .deleteWithResponse("group1", "server1", "agent1", "cred1", com.azure.core.util.Context.NONE);
     }
 }

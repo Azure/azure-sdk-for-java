@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.LogicalDatabaseTransparentDataEncryptionInner;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 /** Samples for TransparentDataEncryptions CreateOrUpdate. */
 public final class TransparentDataEncryptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/TransparentDataEncryptionUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/TransparentDataEncryptionUpdate.json
      */
     /**
      * Sample code: Update a database's Transparent Data Encryption state with minimal parameters.
@@ -32,6 +31,6 @@ public final class TransparentDataEncryptionsCreateOrUpdateSamples {
                 "testdb",
                 TransparentDataEncryptionName.CURRENT,
                 new LogicalDatabaseTransparentDataEncryptionInner().withState(TransparentDataEncryptionState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

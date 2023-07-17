@@ -58,8 +58,7 @@ public final class DatabaseUsagesClientImpl implements DatabaseUsagesClient {
     public interface DatabaseUsagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/usages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseUsageListResult>> listByDatabase(
@@ -120,6 +119,7 @@ public final class DatabaseUsagesClientImpl implements DatabaseUsagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -131,7 +131,7 @@ public final class DatabaseUsagesClientImpl implements DatabaseUsagesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DatabaseUsageInner>>map(
@@ -184,6 +184,7 @@ public final class DatabaseUsagesClientImpl implements DatabaseUsagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -193,7 +194,7 @@ public final class DatabaseUsagesClientImpl implements DatabaseUsagesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(

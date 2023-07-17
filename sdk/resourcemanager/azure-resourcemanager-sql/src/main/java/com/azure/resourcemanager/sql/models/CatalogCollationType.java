@@ -17,6 +17,15 @@ public final class CatalogCollationType extends ExpandableStringEnum<CatalogColl
     public static final CatalogCollationType SQL_LATIN1_GENERAL_CP1_CI_AS = fromString("SQL_Latin1_General_CP1_CI_AS");
 
     /**
+     * Creates a new instance of CatalogCollationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CatalogCollationType() {
+    }
+
+    /**
      * Creates or finds a CatalogCollationType from its string representation.
      *
      * @param name a name to look for.

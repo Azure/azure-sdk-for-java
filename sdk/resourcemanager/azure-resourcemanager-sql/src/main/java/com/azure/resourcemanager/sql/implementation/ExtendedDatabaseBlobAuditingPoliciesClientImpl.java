@@ -68,8 +68,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
     public interface ExtendedDatabaseBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/extendedAuditingSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedDatabaseBlobAuditingPolicyListResult>> listByDatabase(
@@ -84,8 +83,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedDatabaseBlobAuditingPolicyInner>> get(
@@ -101,8 +99,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedDatabaseBlobAuditingPolicyInner>> createOrUpdate(
@@ -166,6 +163,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -177,7 +175,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ExtendedDatabaseBlobAuditingPolicyInner>>map(
@@ -231,6 +229,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -240,7 +239,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -371,6 +370,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -383,7 +383,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                             databaseName,
                             blobAuditingPolicyName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -429,6 +429,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -439,7 +440,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                 databaseName,
                 blobAuditingPolicyName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -548,6 +549,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
             parameters.validate();
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -560,7 +562,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                             databaseName,
                             blobAuditingPolicyName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -617,6 +619,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
             parameters.validate();
         }
         final String blobAuditingPolicyName = "default";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -627,7 +630,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
                 databaseName,
                 blobAuditingPolicyName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);

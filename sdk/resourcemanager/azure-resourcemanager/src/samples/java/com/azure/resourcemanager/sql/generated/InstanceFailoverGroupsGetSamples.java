@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InstanceFailoverGroups Get. */
 public final class InstanceFailoverGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/InstanceFailoverGroupGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/InstanceFailoverGroupGet.json
      */
     /**
      * Sample code: Get failover group.
@@ -22,6 +20,6 @@ public final class InstanceFailoverGroupsGetSamples {
             .manager()
             .serviceClient()
             .getInstanceFailoverGroups()
-            .getWithResponse("Default", "Japan East", "failover-group-test", Context.NONE);
+            .getWithResponse("Default", "Japan East", "failover-group-test", com.azure.core.util.Context.NONE);
     }
 }

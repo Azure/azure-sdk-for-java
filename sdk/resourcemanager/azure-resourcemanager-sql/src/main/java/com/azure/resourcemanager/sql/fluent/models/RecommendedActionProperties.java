@@ -14,7 +14,6 @@ import com.azure.resourcemanager.sql.models.RecommendedActionMetricInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +75,7 @@ public final class RecommendedActionProperties {
      * Gets the time taken for applying this recommended action on user resource. e.g., time taken for index creation
      */
     @JsonProperty(value = "executeActionDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration executeActionDuration;
+    private String executeActionDuration;
 
     /*
      * Gets the time when system started reverting changes of this recommended action on user resource. e.g., time when
@@ -90,7 +89,7 @@ public final class RecommendedActionProperties {
      * dropping the created index.
      */
     @JsonProperty(value = "revertActionDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration revertActionDuration;
+    private String revertActionDuration;
 
     /*
      * Gets if approval for applying this recommended action was given by user/system.
@@ -261,7 +260,7 @@ public final class RecommendedActionProperties {
      *
      * @return the executeActionDuration value.
      */
-    public Duration executeActionDuration() {
+    public String executeActionDuration() {
         return this.executeActionDuration;
     }
 
@@ -281,7 +280,7 @@ public final class RecommendedActionProperties {
      *
      * @return the revertActionDuration value.
      */
-    public Duration revertActionDuration() {
+    public String revertActionDuration() {
         return this.revertActionDuration;
     }
 

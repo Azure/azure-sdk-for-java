@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.SyncMemberInner;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 /** Samples for SyncMembers CreateOrUpdate. */
 public final class SyncMembersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberCreate.json
      */
     /**
      * Sample code: Create a new sync member.
@@ -40,11 +39,11 @@ public final class SyncMembersCreateOrUpdateSamples {
                     .withDatabaseName("syncgroupcrud-7421")
                     .withUsername("myUser")
                     .withSyncDirection(SyncDirection.BIDIRECTIONAL),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberUpdate.json
      */
     /**
      * Sample code: Update a sync member.
@@ -72,6 +71,6 @@ public final class SyncMembersCreateOrUpdateSamples {
                     .withDatabaseName("syncgroupcrud-7421")
                     .withUsername("myUser")
                     .withSyncDirection(SyncDirection.BIDIRECTIONAL),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

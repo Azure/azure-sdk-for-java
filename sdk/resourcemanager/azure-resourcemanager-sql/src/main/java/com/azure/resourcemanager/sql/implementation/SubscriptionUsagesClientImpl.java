@@ -119,6 +119,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -128,7 +129,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
                             this.client.getEndpoint(),
                             locationName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<SubscriptionUsageInner>>map(
@@ -172,16 +173,12 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByLocation(
-                this.client.getEndpoint(),
-                locationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
+                this.client.getEndpoint(), locationName, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -284,6 +281,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -294,7 +292,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
                             locationName,
                             usageName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -332,6 +330,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -340,7 +339,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
                 locationName,
                 usageName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

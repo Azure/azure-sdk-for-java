@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IPv6FirewallRules Delete. */
 public final class IPv6FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/IPv6FirewallRuleDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/IPv6FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete an IPv6 firewall rule.
@@ -23,6 +21,9 @@ public final class IPv6FirewallRulesDeleteSamples {
             .serviceClient()
             .getIPv6FirewallRules()
             .deleteWithResponse(
-                "firewallrulecrudtest-9886", "firewallrulecrudtest-2368", "firewallrulecrudtest-7011", Context.NONE);
+                "firewallrulecrudtest-9886",
+                "firewallrulecrudtest-2368",
+                "firewallrulecrudtest-7011",
+                com.azure.core.util.Context.NONE);
     }
 }

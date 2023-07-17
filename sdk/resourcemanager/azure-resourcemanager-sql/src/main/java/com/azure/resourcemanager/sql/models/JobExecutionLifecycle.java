@@ -42,6 +42,15 @@ public final class JobExecutionLifecycle extends ExpandableStringEnum<JobExecuti
     public static final JobExecutionLifecycle SKIPPED = fromString("Skipped");
 
     /**
+     * Creates a new instance of JobExecutionLifecycle value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobExecutionLifecycle() {
+    }
+
+    /**
      * Creates or finds a JobExecutionLifecycle from its string representation.
      *
      * @param name a name to look for.

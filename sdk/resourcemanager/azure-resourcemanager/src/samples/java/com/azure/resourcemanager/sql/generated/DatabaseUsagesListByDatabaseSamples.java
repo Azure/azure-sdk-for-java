@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseUsages ListByDatabase. */
 public final class DatabaseUsagesListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetDatabaseUsages.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/GetDatabaseUsages.json
      */
     /**
      * Sample code: Gets database usages.
@@ -22,6 +20,6 @@ public final class DatabaseUsagesListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getDatabaseUsages()
-            .listByDatabase("Default-SQL-SouthEastAsia", "testsvr", "testdb", Context.NONE);
+            .listByDatabase("Default-SQL-SouthEastAsia", "testsvr", "testdb", com.azure.core.util.Context.NONE);
     }
 }

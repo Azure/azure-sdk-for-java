@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobExecutions ListByJob. */
 public final class JobExecutionsListByJobSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionsByJob.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByJob.json
      */
     /**
      * Sample code: List a job's executions.
@@ -22,6 +20,18 @@ public final class JobExecutionsListByJobSamples {
             .manager()
             .serviceClient()
             .getJobExecutions()
-            .listByJob("group1", "server1", "agent1", "job1", null, null, null, null, null, null, null, Context.NONE);
+            .listByJob(
+                "group1",
+                "server1",
+                "agent1",
+                "job1",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

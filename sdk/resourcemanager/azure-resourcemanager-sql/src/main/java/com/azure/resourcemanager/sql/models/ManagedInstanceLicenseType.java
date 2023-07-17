@@ -20,6 +20,15 @@ public final class ManagedInstanceLicenseType extends ExpandableStringEnum<Manag
     public static final ManagedInstanceLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of ManagedInstanceLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstanceLicenseType() {
+    }
+
+    /**
      * Creates or finds a ManagedInstanceLicenseType from its string representation.
      *
      * @param name a name to look for.

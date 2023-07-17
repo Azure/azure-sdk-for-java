@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataWarehouseUserActivitiesOperation ListByDatabase. */
 public final class DataWarehouseUserActivitiesOperationListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListDataWarehouseUserActivities.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListDataWarehouseUserActivities.json
      */
     /**
      * Sample code: List of the user activities of a data warehouse.
@@ -22,6 +20,6 @@ public final class DataWarehouseUserActivitiesOperationListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getDataWarehouseUserActivitiesOperations()
-            .listByDatabase("Default-SQL-SouthEastAsia", "testsvr", "testdb", Context.NONE);
+            .listByDatabase("Default-SQL-SouthEastAsia", "testsvr", "testdb", com.azure.core.util.Context.NONE);
     }
 }

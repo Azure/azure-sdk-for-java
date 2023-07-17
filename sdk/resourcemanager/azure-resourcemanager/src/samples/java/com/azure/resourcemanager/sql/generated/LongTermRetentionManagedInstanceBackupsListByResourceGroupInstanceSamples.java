@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LongTermRetentionManagedInstanceBackups ListByResourceGroupInstance. */
 public final class LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
      */
     /**
      * Sample code: Get all long term retention backups under the managed instance.
@@ -23,6 +21,7 @@ public final class LongTermRetentionManagedInstanceBackupsListByResourceGroupIns
             .manager()
             .serviceClient()
             .getLongTermRetentionManagedInstanceBackups()
-            .listByResourceGroupInstance("testResourceGroup", "japaneast", "testInstance", null, null, Context.NONE);
+            .listByResourceGroupInstance(
+                "testResourceGroup", "japaneast", "testInstance", null, null, com.azure.core.util.Context.NONE);
     }
 }

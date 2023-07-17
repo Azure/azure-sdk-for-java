@@ -69,8 +69,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     public interface FailoverGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FailoverGroupListResult>> listByServer(
@@ -84,8 +83,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FailoverGroupInner>> get(
@@ -100,8 +98,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -117,8 +114,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -132,8 +128,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -149,8 +144,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failover(
@@ -165,11 +159,25 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLoss(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups/{failoverGroupName}/tryPlannedBeforeForcedFailover")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> tryPlannedBeforeForcedFailover(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
@@ -223,6 +231,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -233,7 +242,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<FailoverGroupInner>>map(
@@ -282,6 +291,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -290,7 +300,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -414,6 +424,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -425,7 +436,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                             serverName,
                             failoverGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -470,6 +481,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -479,7 +491,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 serverName,
                 failoverGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -582,6 +594,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -593,7 +606,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                             serverName,
                             failoverGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -649,6 +662,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -658,7 +672,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 serverName,
                 failoverGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -738,7 +752,9 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -762,7 +778,8 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         String failoverGroupName,
         FailoverGroupInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context)
             .getSyncPoller();
     }
 
@@ -894,6 +911,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -904,7 +922,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                             serverName,
                             failoverGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -948,6 +966,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -956,7 +975,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 serverName,
                 failoverGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1022,7 +1041,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginDeleteAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
     }
 
     /**
@@ -1041,7 +1060,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
     }
 
     /**
@@ -1161,6 +1180,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1172,7 +1192,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                             serverName,
                             failoverGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1228,6 +1248,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1237,7 +1258,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 serverName,
                 failoverGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1317,7 +1338,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(
         String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -1341,7 +1362,9 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
         String failoverGroupName,
         FailoverGroupUpdate parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1472,6 +1495,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1483,7 +1507,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                             serverName,
                             failoverGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1528,6 +1552,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1537,7 +1562,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 serverName,
                 failoverGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -1609,7 +1634,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
         String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginFailoverAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
     }
 
     /**
@@ -1628,7 +1653,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
         String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
     }
 
     /**
@@ -1746,6 +1771,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1757,7 +1783,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                             serverName,
                             failoverGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1802,6 +1828,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1811,7 +1838,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
                 serverName,
                 failoverGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -1883,7 +1910,9 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
+        return this
+            .beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName)
+            .getSyncPoller();
     }
 
     /**
@@ -1902,7 +1931,8 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName, context)
+        return this
+            .beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName, context)
             .getSyncPoller();
     }
 
@@ -1982,6 +2012,297 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
     public FailoverGroupInner forceFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String failoverGroupName, Context context) {
         return forceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName, context).block();
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> tryPlannedBeforeForcedFailoverWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (failoverGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .tryPlannedBeforeForcedFailover(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> tryPlannedBeforeForcedFailoverWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (failoverGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .tryPlannedBeforeForcedFailover(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                failoverGroupName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailoverAsync(
+        String resourceGroupName, String serverName, String failoverGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            tryPlannedBeforeForcedFailoverWithResponseAsync(resourceGroupName, serverName, failoverGroupName);
+        return this
+            .client
+            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                FailoverGroupInner.class,
+                FailoverGroupInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailoverAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            tryPlannedBeforeForcedFailoverWithResponseAsync(resourceGroupName, serverName, failoverGroupName, context);
+        return this
+            .client
+            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
+                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, context);
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailover(
+        String resourceGroupName, String serverName, String failoverGroupName) {
+        return this
+            .beginTryPlannedBeforeForcedFailoverAsync(resourceGroupName, serverName, failoverGroupName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailover(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
+        return this
+            .beginTryPlannedBeforeForcedFailoverAsync(resourceGroupName, serverName, failoverGroupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FailoverGroupInner> tryPlannedBeforeForcedFailoverAsync(
+        String resourceGroupName, String serverName, String failoverGroupName) {
+        return beginTryPlannedBeforeForcedFailoverAsync(resourceGroupName, serverName, failoverGroupName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<FailoverGroupInner> tryPlannedBeforeForcedFailoverAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
+        return beginTryPlannedBeforeForcedFailoverAsync(resourceGroupName, serverName, failoverGroupName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FailoverGroupInner tryPlannedBeforeForcedFailover(
+        String resourceGroupName, String serverName, String failoverGroupName) {
+        return tryPlannedBeforeForcedFailoverAsync(resourceGroupName, serverName, failoverGroupName).block();
+    }
+
+    /**
+     * Fails over from the current primary server to this server. This operation tries planned before forced failover
+     * but might still result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param failoverGroupName The name of the failover group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FailoverGroupInner tryPlannedBeforeForcedFailover(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
+        return tryPlannedBeforeForcedFailoverAsync(resourceGroupName, serverName, failoverGroupName, context).block();
     }
 
     /**

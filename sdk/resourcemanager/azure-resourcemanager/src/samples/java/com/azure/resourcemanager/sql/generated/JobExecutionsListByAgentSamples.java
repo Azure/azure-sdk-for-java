@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.time.OffsetDateTime;
 
 /** Samples for JobExecutions ListByAgent. */
 public final class JobExecutionsListByAgentSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionsByAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgent.json
      */
     /**
      * Sample code: List all job executions in a job agent.
@@ -23,11 +22,22 @@ public final class JobExecutionsListByAgentSamples {
             .manager()
             .serviceClient()
             .getJobExecutions()
-            .listByAgent("group1", "server1", "agent1", null, null, null, null, null, null, null, Context.NONE);
+            .listByAgent(
+                "group1",
+                "server1",
+                "agent1",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionsByAgentWithFilter.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgentWithFilter.json
      */
     /**
      * Sample code: List all job executions in a job agent with filtering.
@@ -52,6 +62,6 @@ public final class JobExecutionsListByAgentSamples {
                 false,
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

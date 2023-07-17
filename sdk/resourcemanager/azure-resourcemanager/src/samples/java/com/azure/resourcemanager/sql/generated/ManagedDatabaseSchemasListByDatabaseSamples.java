@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseSchemas ListByDatabase. */
 public final class ManagedDatabaseSchemasListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseSchemaListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSchemaListByDatabase.json
      */
     /**
      * Sample code: List managed database schemas.
@@ -22,6 +20,6 @@ public final class ManagedDatabaseSchemasListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getManagedDatabaseSchemas()
-            .listByDatabase("myRG", "myManagedInstanceName", "myDatabase", null, Context.NONE);
+            .listByDatabase("myRG", "myManagedInstanceName", "myDatabase", null, com.azure.core.util.Context.NONE);
     }
 }

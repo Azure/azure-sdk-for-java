@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadGroups Delete. */
 public final class WorkloadGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteWorkloadGroup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteWorkloadGroup.json
      */
     /**
      * Sample code: Delete a workload group.
@@ -22,6 +20,11 @@ public final class WorkloadGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getWorkloadGroups()
-            .delete("Default-SQL-SouthEastAsia", "testsvr", "testdb", "wlm_workloadgroup", Context.NONE);
+            .delete(
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb",
+                "wlm_workloadgroup",
+                com.azure.core.util.Context.NONE);
     }
 }

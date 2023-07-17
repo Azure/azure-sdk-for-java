@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobExecutions Create. */
 public final class JobExecutionsCreateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateJobExecution.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateJobExecution.json
      */
     /**
      * Sample code: Start a job execution.
@@ -22,6 +20,6 @@ public final class JobExecutionsCreateSamples {
             .manager()
             .serviceClient()
             .getJobExecutions()
-            .create("group1", "server1", "agent1", "job1", Context.NONE);
+            .create("group1", "server1", "agent1", "job1", com.azure.core.util.Context.NONE);
     }
 }

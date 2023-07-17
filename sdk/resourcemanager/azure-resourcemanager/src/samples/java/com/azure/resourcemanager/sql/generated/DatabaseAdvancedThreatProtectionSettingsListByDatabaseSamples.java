@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAdvancedThreatProtectionSettings ListByDatabase. */
 public final class DatabaseAdvancedThreatProtectionSettingsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAdvancedThreatProtectionSettingsListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/DatabaseAdvancedThreatProtectionSettingsListByDatabase.json
      */
     /**
      * Sample code: Lists the database's Advanced Threat Protection settings.
@@ -23,6 +21,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsListByDatabaseSamples
             .manager()
             .serviceClient()
             .getDatabaseAdvancedThreatProtectionSettings()
-            .listByDatabase("threatprotection-6852", "threatprotection-2080", "testdb", Context.NONE);
+            .listByDatabase(
+                "threatprotection-6852", "threatprotection-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }

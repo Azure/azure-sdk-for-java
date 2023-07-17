@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.RecommendedActionInner;
 import com.azure.resourcemanager.sql.models.RecommendedActionCurrentState;
 import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
 /** Samples for DatabaseRecommendedActions Update. */
 public final class DatabaseRecommendedActionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRecommendedActionUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseRecommendedActionUpdate.json
      */
     /**
      * Sample code: Update database recommended action.
@@ -34,6 +33,6 @@ public final class DatabaseRecommendedActionsUpdateSamples {
                 new RecommendedActionInner()
                     .withState(
                         new RecommendedActionStateInfo().withCurrentValue(RecommendedActionCurrentState.PENDING)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

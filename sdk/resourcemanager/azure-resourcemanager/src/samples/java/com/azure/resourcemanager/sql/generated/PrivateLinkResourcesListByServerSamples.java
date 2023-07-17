@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources ListByServer. */
 public final class PrivateLinkResourcesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/PrivateLinkResourcesList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: Gets private link resources for SQL.
@@ -22,6 +20,6 @@ public final class PrivateLinkResourcesListByServerSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkResources()
-            .listByServer("Default", "test-svr", Context.NONE);
+            .listByServer("Default", "test-svr", com.azure.core.util.Context.NONE);
     }
 }

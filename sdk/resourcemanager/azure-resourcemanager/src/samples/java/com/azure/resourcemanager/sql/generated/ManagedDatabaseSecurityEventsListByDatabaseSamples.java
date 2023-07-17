@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseSecurityEvents ListByDatabase. */
 public final class ManagedDatabaseSecurityEventsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseSecurityEventsGetMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityEventsGetMin.json
      */
     /**
      * Sample code: Get the managed database's security events with minimal parameters.
@@ -23,11 +21,11 @@ public final class ManagedDatabaseSecurityEventsListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getManagedDatabaseSecurityEvents()
-            .listByDatabase("testrg", "testcl", "database1", null, null, null, null, Context.NONE);
+            .listByDatabase("testrg", "testcl", "database1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseSecurityEventsGetMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityEventsGetMax.json
      */
     /**
      * Sample code: Get the managed database's security events with maximal parameters.
@@ -46,9 +44,9 @@ public final class ManagedDatabaseSecurityEventsListByDatabaseSamples {
                 "testcl",
                 "database1",
                 "ShowServerRecords eq true",
-                0L,
-                1L,
+                0,
+                1,
                 "eyJCbG9iTmFtZURhdGVUaW1lIjoiXC9EYXRlKDE1MTIyODg4MTIwMTArMDIwMClcLyIsIkJsb2JOYW1lUm9sbG92ZXJJbmRleCI6IjAiLCJFbmREYXRlIjoiXC9EYXRlKDE1MTI0NjYyMDA1MjkpXC8iLCJJc1NraXBUb2tlblNldCI6ZmFsc2UsIklzVjJCbG9iVGltZUZvcm1hdCI6dHJ1ZSwiU2hvd1NlcnZlclJlY29yZHMiOmZhbHNlLCJTa2lwVmFsdWUiOjAsIlRha2VWYWx1ZSI6MTB9",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

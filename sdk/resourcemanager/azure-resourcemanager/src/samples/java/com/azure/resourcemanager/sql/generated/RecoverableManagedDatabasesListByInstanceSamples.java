@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RecoverableManagedDatabases ListByInstance. */
 public final class RecoverableManagedDatabasesListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListRecoverableManagedDatabasesByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListRecoverableManagedDatabasesByServer.json
      */
     /**
      * Sample code: List recoverable databases by managed instances.
@@ -23,6 +21,6 @@ public final class RecoverableManagedDatabasesListByInstanceSamples {
             .manager()
             .serviceClient()
             .getRecoverableManagedDatabases()
-            .listByInstance("Test1", "managedInstance", Context.NONE);
+            .listByInstance("Test1", "managedInstance", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for ManagedDatabases Update. */
 public final class ManagedDatabasesUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseUpdateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseUpdateMax.json
      */
     /**
      * Sample code: Updates a managed database with maximal properties.
@@ -30,12 +29,12 @@ public final class ManagedDatabasesUpdateSamples {
                 "Default-SQL-SouthEastAsia",
                 "managedInstance",
                 "testdb",
-                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "TagValue1")),
-                Context.NONE);
+                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseUpdateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseUpdateMin.json
      */
     /**
      * Sample code: Updates a managed database with minimal properties.
@@ -53,8 +52,8 @@ public final class ManagedDatabasesUpdateSamples {
                 "Default-SQL-SouthEastAsia",
                 "managedInstance",
                 "testdb",
-                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "TagValue1")),
-                Context.NONE);
+                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

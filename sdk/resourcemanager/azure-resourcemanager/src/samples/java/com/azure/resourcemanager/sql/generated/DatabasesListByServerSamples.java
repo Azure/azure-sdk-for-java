@@ -4,12 +4,28 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Databases ListByServer. */
 public final class DatabasesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListVCoreDatabasesByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ListVCoreDatabasesEnclaveTypeByServer.json
+     */
+    /**
+     * Sample code: Gets a list of databases configured with enclave type.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getsAListOfDatabasesConfiguredWithEnclaveType(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .sqlServers()
+            .manager()
+            .serviceClient()
+            .getDatabases()
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ListVCoreDatabasesByServer.json
      */
     /**
      * Sample code: Gets a list of databases.
@@ -22,6 +38,6 @@ public final class DatabasesListByServerSamples {
             .manager()
             .serviceClient()
             .getDatabases()
-            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, Context.NONE);
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, com.azure.core.util.Context.NONE);
     }
 }

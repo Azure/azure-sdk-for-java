@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OutboundFirewallRules Delete. */
 public final class OutboundFirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/OutboundFirewallRuleDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/OutboundFirewallRuleDelete.json
      */
     /**
      * Sample code: Deletes a outbound firewall rule with a given name.
@@ -23,6 +21,10 @@ public final class OutboundFirewallRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getOutboundFirewallRules()
-            .delete("sqlcrudtest-7398", "sqlcrudtest-6661", "server.database.windows.net", Context.NONE);
+            .delete(
+                "sqlcrudtest-7398",
+                "sqlcrudtest-6661",
+                "server.database.windows.net",
+                com.azure.core.util.Context.NONE);
     }
 }

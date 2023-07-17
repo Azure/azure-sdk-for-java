@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseSecurityAlertPolicies ListByDatabase. */
 public final class DatabaseSecurityAlertPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseSecurityAlertListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseSecurityAlertListByDatabase.json
      */
     /**
      * Sample code: Get the database's threat detection policies.
@@ -22,6 +20,6 @@ public final class DatabaseSecurityAlertPoliciesListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getDatabaseSecurityAlertPolicies()
-            .listByDatabase("securityalert-6852", "securityalert-2080", "testdb", Context.NONE);
+            .listByDatabase("securityalert-6852", "securityalert-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }

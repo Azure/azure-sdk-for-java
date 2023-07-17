@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.util.UUID;
 
 /** Samples for JobTargetExecutions Get. */
 public final class JobTargetExecutionsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobExecutionTarget.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobExecutionTarget.json
      */
     /**
      * Sample code: Get a job step target execution.
@@ -31,6 +30,6 @@ public final class JobTargetExecutionsGetSamples {
                 UUID.fromString("5A86BF65-43AC-F258-2524-9E92992F97CA"),
                 "step1",
                 UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

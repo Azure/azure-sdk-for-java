@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SyncAgents Delete. */
 public final class SyncAgentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentDelete.json
      */
     /**
      * Sample code: Delete a sync agent.
@@ -22,6 +20,7 @@ public final class SyncAgentsDeleteSamples {
             .manager()
             .serviceClient()
             .getSyncAgents()
-            .delete("syncagentcrud-65440", "syncagentcrud-8475", "syncagentcrud-3187", Context.NONE);
+            .delete(
+                "syncagentcrud-65440", "syncagentcrud-8475", "syncagentcrud-3187", com.azure.core.util.Context.NONE);
     }
 }

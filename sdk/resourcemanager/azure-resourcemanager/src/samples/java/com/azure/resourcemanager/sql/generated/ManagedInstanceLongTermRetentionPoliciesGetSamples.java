@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLongTermRetentionPolicyName;
 
 /** Samples for ManagedInstanceLongTermRetentionPolicies Get. */
 public final class ManagedInstanceLongTermRetentionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceLongTermRetentionPolicyGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceLongTermRetentionPolicyGet.json
      */
     /**
      * Sample code: Get the long term retention policy for the managed database.
@@ -29,6 +28,6 @@ public final class ManagedInstanceLongTermRetentionPoliciesGetSamples {
                 "testInstance",
                 "testDatabase",
                 ManagedInstanceLongTermRetentionPolicyName.DEFAULT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ElasticPoolOperations ListByElasticPool. */
 public final class ElasticPoolOperationsListByElasticPoolSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListElasticPoolOperations.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListElasticPoolOperations.json
      */
     /**
      * Sample code: List the elastic pool management operations.
@@ -22,6 +20,6 @@ public final class ElasticPoolOperationsListByElasticPoolSamples {
             .manager()
             .serviceClient()
             .getElasticPoolOperations()
-            .listByElasticPool("sqlcrudtestgroup", "sqlcrudtestserver", "testpool", Context.NONE);
+            .listByElasticPool("sqlcrudtestgroup", "sqlcrudtestserver", "testpool", com.azure.core.util.Context.NONE);
     }
 }

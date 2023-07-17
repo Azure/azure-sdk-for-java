@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerOperations ListByServer. */
 public final class ServerOperationsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListServerOperations.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListServerOperations.json
      */
     /**
      * Sample code: List the server management operations.
@@ -22,6 +20,6 @@ public final class ServerOperationsListByServerSamples {
             .manager()
             .serviceClient()
             .getServerOperations()
-            .listByServer("sqlcrudtest-7398", "sqlcrudtest-4645", Context.NONE);
+            .listByServer("sqlcrudtest-7398", "sqlcrudtest-4645", com.azure.core.util.Context.NONE);
     }
 }

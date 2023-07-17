@@ -64,8 +64,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
     public interface RestorableDroppedManagedDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableDroppedManagedDatabaseListResult>> listByInstance(
@@ -79,8 +78,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableDroppedManagedDatabaseInner>> get(
@@ -139,6 +137,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -149,7 +148,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<RestorableDroppedManagedDatabaseInner>>map(
@@ -200,6 +199,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -208,7 +208,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -338,6 +338,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -349,7 +350,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                             managedInstanceName,
                             restorableDroppedDatabaseId,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -398,6 +399,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -407,7 +409,7 @@ public final class RestorableDroppedManagedDatabasesClientImpl implements Restor
                 managedInstanceName,
                 restorableDroppedDatabaseId,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** The state of the geo backup policy. */
 public enum GeoBackupPolicyState {
-    /** Enum value Enabled. */
-    ENABLED("Enabled"),
-
     /** Enum value Disabled. */
-    DISABLED("Disabled");
+    DISABLED("Disabled"),
+
+    /** Enum value Enabled. */
+    ENABLED("Enabled");
 
     /** The actual serialized value for a GeoBackupPolicyState instance. */
     private final String value;

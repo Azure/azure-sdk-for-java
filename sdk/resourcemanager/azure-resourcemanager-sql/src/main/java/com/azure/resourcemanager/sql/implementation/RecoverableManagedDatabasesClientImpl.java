@@ -60,8 +60,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
     public interface RecoverableManagedDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/recoverableDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableManagedDatabaseListResult>> listByInstance(
@@ -75,8 +74,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/recoverableDatabases/{recoverableDatabaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases/{recoverableDatabaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableManagedDatabaseInner>> get(
@@ -135,6 +133,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -145,7 +144,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<RecoverableManagedDatabaseInner>>map(
@@ -196,6 +195,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -204,7 +204,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -332,6 +332,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -343,7 +344,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                             managedInstanceName,
                             recoverableDatabaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -390,6 +391,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -399,7 +401,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 managedInstanceName,
                 recoverableDatabaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

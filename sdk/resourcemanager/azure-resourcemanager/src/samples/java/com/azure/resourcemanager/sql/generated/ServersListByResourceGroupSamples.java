@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Servers ListByResourceGroup. */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerListByResourceGroup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListByResourceGroup.json
      */
     /**
      * Sample code: List servers by resource group.
@@ -22,11 +20,11 @@ public final class ServersListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getServers()
-            .listByResourceGroup("sqlcrudtest-7398", null, Context.NONE);
+            .listByResourceGroup("sqlcrudtest-7398", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerListByResourceGroupWithExpandEqualsAdministrators.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListByResourceGroupWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: List servers by resource group with $expand=administrators/activedirectory.
@@ -40,6 +38,6 @@ public final class ServersListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getServers()
-            .listByResourceGroup("sqlcrudtest-7398", null, Context.NONE);
+            .listByResourceGroup("sqlcrudtest-7398", null, com.azure.core.util.Context.NONE);
     }
 }

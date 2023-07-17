@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DistributedAvailabilityGroups Delete. */
 public final class DistributedAvailabilityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DistributedAvailabilityGroupsDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/DistributedAvailabilityGroupsDelete.json
      */
     /**
      * Sample code: Initiate a distributed availability group drop.
@@ -22,6 +20,6 @@ public final class DistributedAvailabilityGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getDistributedAvailabilityGroups()
-            .delete("testrg", "testcl", "dag", Context.NONE);
+            .delete("testrg", "testcl", "dag", com.azure.core.util.Context.NONE);
     }
 }

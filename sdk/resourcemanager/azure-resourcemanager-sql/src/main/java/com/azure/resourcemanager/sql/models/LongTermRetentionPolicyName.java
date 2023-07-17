@@ -14,6 +14,15 @@ public final class LongTermRetentionPolicyName extends ExpandableStringEnum<Long
     public static final LongTermRetentionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of LongTermRetentionPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LongTermRetentionPolicyName() {
+    }
+
+    /**
      * Creates or finds a LongTermRetentionPolicyName from its string representation.
      *
      * @param name a name to look for.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IPv6FirewallRules Get. */
 public final class IPv6FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/IPv6FirewallRuleGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/IPv6FirewallRuleGet.json
      */
     /**
      * Sample code: Get IPv6 Firewall Rule.
@@ -23,6 +21,9 @@ public final class IPv6FirewallRulesGetSamples {
             .serviceClient()
             .getIPv6FirewallRules()
             .getWithResponse(
-                "firewallrulecrudtest-12", "firewallrulecrudtest-6285", "firewallrulecrudtest-2304", Context.NONE);
+                "firewallrulecrudtest-12",
+                "firewallrulecrudtest-6285",
+                "firewallrulecrudtest-2304",
+                com.azure.core.util.Context.NONE);
     }
 }

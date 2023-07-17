@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
+import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.CatalogCollationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
 import com.azure.resourcemanager.sql.models.DatabaseLicenseType;
 import com.azure.resourcemanager.sql.models.DatabaseReadScale;
 import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecondaryType;
 import com.azure.resourcemanager.sql.models.Sku;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 /** The database's properties. */
@@ -209,7 +214,7 @@ public final class DatabaseProperties {
     private Integer highAvailabilityReplicaCount;
 
     /*
-     * The secondary type of the database if it is a secondary.  Valid values are Geo and Named.
+     * The secondary type of the database if it is a secondary.  Valid values are Geo, Named and Standby.
      */
     @JsonProperty(value = "secondaryType")
     private SecondaryType secondaryType;
@@ -286,6 +291,25 @@ public final class DatabaseProperties {
     private UUID federatedClientId;
 
     /*
+     * The resource ids of the user assigned identities to use
+     */
+    @JsonProperty(value = "keys")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, DatabaseKey> keys;
+
+    /*
+     * The azure key vault URI of the database if it's configured with per Database Customer Managed Keys.
+     */
+    @JsonProperty(value = "encryptionProtector")
+    private String encryptionProtector;
+
+    /*
+     * Type of enclave requested on the database i.e. Default or VBS enclaves.
+     */
+    @JsonProperty(value = "preferredEnclaveType")
+    private AlwaysEncryptedEnclaveType preferredEnclaveType;
+
+    /*
      * The resource identifier of the source associated with the create operation of this database.
      *
      * This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
@@ -309,6 +333,42 @@ public final class DatabaseProperties {
      */
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
+
+    /*
+     * Whether or not customer controlled manual cutover needs to be done during Update Database operation to
+     * Hyperscale tier.
+     *
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier.
+     *
+     * When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale
+     * database.
+     *
+     * To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+     */
+    @JsonProperty(value = "manualCutover")
+    private Boolean manualCutover;
+
+    /*
+     * To trigger customer controlled manual cutover during the wait state while Scaling operation is in progress.
+     *
+     * This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover'
+     * parameter.
+     *
+     * This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier is already in progress.
+     *
+     * When performCutover is specified, the scaling operation will trigger cutover and perform role-change to
+     * Hyperscale database.
+     */
+    @JsonProperty(value = "performCutover")
+    private Boolean performCutover;
+
+    /*
+     * Specifies the availability zone the database is pinned to.
+     */
+    @JsonProperty(value = "availabilityZone")
+    private AvailabilityZoneType availabilityZone;
 
     /** Creates an instance of DatabaseProperties class. */
     public DatabaseProperties() {
@@ -809,8 +869,8 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
-     * Named.
+     * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo,
+     * Named and Standby.
      *
      * @return the secondaryType value.
      */
@@ -819,8 +879,8 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
-     * Named.
+     * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo,
+     * Named and Standby.
      *
      * @param secondaryType the secondaryType value to set.
      * @return the DatabaseProperties object itself.
@@ -1010,6 +1070,68 @@ public final class DatabaseProperties {
     }
 
     /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     *
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.keys;
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     *
+     * @param keys the keys value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withKeys(Map<String, DatabaseKey> keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    /**
+     * Get the encryptionProtector property: The azure key vault URI of the database if it's configured with per
+     * Database Customer Managed Keys.
+     *
+     * @return the encryptionProtector value.
+     */
+    public String encryptionProtector() {
+        return this.encryptionProtector;
+    }
+
+    /**
+     * Set the encryptionProtector property: The azure key vault URI of the database if it's configured with per
+     * Database Customer Managed Keys.
+     *
+     * @param encryptionProtector the encryptionProtector value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withEncryptionProtector(String encryptionProtector) {
+        this.encryptionProtector = encryptionProtector;
+        return this;
+    }
+
+    /**
+     * Get the preferredEnclaveType property: Type of enclave requested on the database i.e. Default or VBS enclaves.
+     *
+     * @return the preferredEnclaveType value.
+     */
+    public AlwaysEncryptedEnclaveType preferredEnclaveType() {
+        return this.preferredEnclaveType;
+    }
+
+    /**
+     * Set the preferredEnclaveType property: Type of enclave requested on the database i.e. Default or VBS enclaves.
+     *
+     * @param preferredEnclaveType the preferredEnclaveType value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withPreferredEnclaveType(AlwaysEncryptedEnclaveType preferredEnclaveType) {
+        this.preferredEnclaveType = preferredEnclaveType;
+        return this;
+    }
+
+    /**
      * Get the sourceResourceId property: The resource identifier of the source associated with the create operation of
      * this database.
      *
@@ -1070,6 +1192,104 @@ public final class DatabaseProperties {
     }
 
     /**
+     * Get the manualCutover property: Whether or not customer controlled manual cutover needs to be done during Update
+     * Database operation to Hyperscale tier.
+     *
+     * <p>This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier.
+     *
+     * <p>When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to
+     * Hyperscale database.
+     *
+     * <p>To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+     *
+     * @return the manualCutover value.
+     */
+    public Boolean manualCutover() {
+        return this.manualCutover;
+    }
+
+    /**
+     * Set the manualCutover property: Whether or not customer controlled manual cutover needs to be done during Update
+     * Database operation to Hyperscale tier.
+     *
+     * <p>This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier.
+     *
+     * <p>When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to
+     * Hyperscale database.
+     *
+     * <p>To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+     *
+     * @param manualCutover the manualCutover value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withManualCutover(Boolean manualCutover) {
+        this.manualCutover = manualCutover;
+        return this;
+    }
+
+    /**
+     * Get the performCutover property: To trigger customer controlled manual cutover during the wait state while
+     * Scaling operation is in progress.
+     *
+     * <p>This property parameter is only applicable for scaling operations that are initiated along with
+     * 'manualCutover' parameter.
+     *
+     * <p>This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier is already in progress.
+     *
+     * <p>When performCutover is specified, the scaling operation will trigger cutover and perform role-change to
+     * Hyperscale database.
+     *
+     * @return the performCutover value.
+     */
+    public Boolean performCutover() {
+        return this.performCutover;
+    }
+
+    /**
+     * Set the performCutover property: To trigger customer controlled manual cutover during the wait state while
+     * Scaling operation is in progress.
+     *
+     * <p>This property parameter is only applicable for scaling operations that are initiated along with
+     * 'manualCutover' parameter.
+     *
+     * <p>This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard
+     * tier to Hyperscale tier is already in progress.
+     *
+     * <p>When performCutover is specified, the scaling operation will trigger cutover and perform role-change to
+     * Hyperscale database.
+     *
+     * @param performCutover the performCutover value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withPerformCutover(Boolean performCutover) {
+        this.performCutover = performCutover;
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Specifies the availability zone the database is pinned to.
+     *
+     * @return the availabilityZone value.
+     */
+    public AvailabilityZoneType availabilityZone() {
+        return this.availabilityZone;
+    }
+
+    /**
+     * Set the availabilityZone property: Specifies the availability zone the database is pinned to.
+     *
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withAvailabilityZone(AvailabilityZoneType availabilityZone) {
+        this.availabilityZone = availabilityZone;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1077,6 +1297,16 @@ public final class DatabaseProperties {
     public void validate() {
         if (currentSku() != null) {
             currentSku().validate();
+        }
+        if (keys() != null) {
+            keys()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerKeys Get. */
 public final class ServerKeysGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerKeyGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerKeyGet.json
      */
     /**
      * Sample code: Get the server key.
@@ -26,6 +24,6 @@ public final class ServerKeysGetSamples {
                 "sqlcrudtest-7398",
                 "sqlcrudtest-4645",
                 "someVault_someKey_01234567890123456789012345678901",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EndpointCertificates Get. */
 public final class EndpointCertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EndpointCertificatesGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/EndpointCertificatesGet.json
      */
     /**
      * Sample code: Gets an endpoint certificate.
@@ -22,6 +20,6 @@ public final class EndpointCertificatesGetSamples {
             .manager()
             .serviceClient()
             .getEndpointCertificates()
-            .getWithResponse("testrg", "testcl", "DATABASE_MIRRORING", Context.NONE);
+            .getWithResponse("testrg", "testcl", "DATABASE_MIRRORING", com.azure.core.util.Context.NONE);
     }
 }

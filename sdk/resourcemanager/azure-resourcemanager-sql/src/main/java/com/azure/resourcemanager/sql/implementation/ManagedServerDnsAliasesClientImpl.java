@@ -70,8 +70,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
     public interface ManagedServerDnsAliasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/dnsAliases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedServerDnsAliasListResult>> listByManagedInstance(
@@ -85,8 +84,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedServerDnsAliasInner>> get(
@@ -101,8 +99,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -118,8 +115,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -133,8 +129,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}/acquire")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dnsAliases/{dnsAliasName}/acquire")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> acquire(
@@ -194,6 +189,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -204,7 +200,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ManagedServerDnsAliasInner>>map(
@@ -255,6 +251,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -263,7 +260,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -391,6 +388,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -402,7 +400,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                             managedInstanceName,
                             dnsAliasName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -447,6 +445,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -456,7 +455,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                 managedInstanceName,
                 dnsAliasName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -563,6 +562,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -574,7 +574,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                             managedInstanceName,
                             dnsAliasName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -630,6 +630,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -639,7 +640,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                 managedInstanceName,
                 dnsAliasName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -729,7 +730,8 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         String managedInstanceName,
         String dnsAliasName,
         ManagedServerDnsAliasCreation parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters)
             .getSyncPoller();
     }
 
@@ -754,7 +756,8 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         String dnsAliasName,
         ManagedServerDnsAliasCreation parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters, context)
             .getSyncPoller();
     }
 
@@ -892,6 +895,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -902,7 +906,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                             managedInstanceName,
                             dnsAliasName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -946,6 +950,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -954,7 +959,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                 managedInstanceName,
                 dnsAliasName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1020,7 +1025,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String dnsAliasName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, dnsAliasName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, dnsAliasName).getSyncPoller();
     }
 
     /**
@@ -1039,7 +1044,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String dnsAliasName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, dnsAliasName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, dnsAliasName, context).getSyncPoller();
     }
 
     /**
@@ -1162,6 +1167,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1173,7 +1179,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                             managedInstanceName,
                             dnsAliasName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1229,6 +1235,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1238,7 +1245,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                 managedInstanceName,
                 dnsAliasName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1328,7 +1335,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         String managedInstanceName,
         String dnsAliasName,
         ManagedServerDnsAliasAcquisition parameters) {
-        return beginAcquireAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters).getSyncPoller();
+        return this.beginAcquireAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters).getSyncPoller();
     }
 
     /**
@@ -1352,7 +1359,8 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         String dnsAliasName,
         ManagedServerDnsAliasAcquisition parameters,
         Context context) {
-        return beginAcquireAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters, context)
+        return this
+            .beginAcquireAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters, context)
             .getSyncPoller();
     }
 

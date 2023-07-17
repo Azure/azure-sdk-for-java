@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InstancePools GetByResourceGroup. */
 public final class InstancePoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetInstancePool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetInstancePool.json
      */
     /**
      * Sample code: Get an instance pool.
@@ -22,6 +20,6 @@ public final class InstancePoolsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getInstancePools()
-            .getByResourceGroupWithResponse("group1", "testIP", Context.NONE);
+            .getByResourceGroupWithResponse("group1", "testIP", com.azure.core.util.Context.NONE);
     }
 }

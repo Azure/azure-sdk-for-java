@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabases Delete. */
 public final class ManagedDatabasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseDelete.json
      */
     /**
      * Sample code: Delete managed database.
@@ -22,6 +20,6 @@ public final class ManagedDatabasesDeleteSamples {
             .manager()
             .serviceClient()
             .getManagedDatabases()
-            .delete("Default-SQL-SouthEastAsia", "managedInstance", "testdb", Context.NONE);
+            .delete("Default-SQL-SouthEastAsia", "managedInstance", "testdb", com.azure.core.util.Context.NONE);
     }
 }

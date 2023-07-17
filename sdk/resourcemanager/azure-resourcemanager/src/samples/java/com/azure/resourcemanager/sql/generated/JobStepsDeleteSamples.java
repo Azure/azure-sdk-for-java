@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobSteps Delete. */
 public final class JobStepsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteJobStep.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteJobStep.json
      */
     /**
      * Sample code: Delete a job step.
@@ -22,6 +20,6 @@ public final class JobStepsDeleteSamples {
             .manager()
             .serviceClient()
             .getJobSteps()
-            .deleteWithResponse("group1", "server1", "agent1", "job1", "step1", Context.NONE);
+            .deleteWithResponse("group1", "server1", "agent1", "job1", "step1", com.azure.core.util.Context.NONE);
     }
 }

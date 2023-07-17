@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerConnectionPolicies ListByServer. */
 public final class ServerConnectionPoliciesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerConnectionPoliciesList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ServerConnectionPoliciesList.json
      */
     /**
      * Sample code: Lists a servers connection policies.
@@ -22,6 +20,6 @@ public final class ServerConnectionPoliciesListByServerSamples {
             .manager()
             .serviceClient()
             .getServerConnectionPolicies()
-            .listByServer("rgtest-12", "servertest-6285", Context.NONE);
+            .listByServer("rgtest-12", "servertest-6285", com.azure.core.util.Context.NONE);
     }
 }

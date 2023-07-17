@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ManagedServerDnsAliasCreation;
 
 /** Samples for ManagedServerDnsAliases CreateOrUpdate. */
 public final class ManagedServerDnsAliasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerDnsAliasCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedServerDnsAliasCreateOrUpdate.json
      */
     /**
      * Sample code: Create managed server DNS alias.
@@ -23,6 +22,11 @@ public final class ManagedServerDnsAliasesCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getManagedServerDnsAliases()
-            .createOrUpdate("Default", "dns-mi", "dns-alias-mi", new ManagedServerDnsAliasCreation(), Context.NONE);
+            .createOrUpdate(
+                "Default",
+                "dns-mi",
+                "dns-alias-mi",
+                new ManagedServerDnsAliasCreation(),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -17,6 +17,15 @@ public final class ElasticPoolLicenseType extends ExpandableStringEnum<ElasticPo
     public static final ElasticPoolLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of ElasticPoolLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ElasticPoolLicenseType() {
+    }
+
+    /**
      * Creates or finds a ElasticPoolLicenseType from its string representation.
      *
      * @param name a name to look for.

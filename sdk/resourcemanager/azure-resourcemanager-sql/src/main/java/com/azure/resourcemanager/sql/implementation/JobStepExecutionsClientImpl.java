@@ -60,8 +60,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
     public interface JobStepExecutionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByJobExecution(
@@ -76,8 +75,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
             @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
             @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$top") Integer top,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -85,8 +84,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionInner>> get(
@@ -146,8 +144,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -176,6 +174,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -196,7 +195,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                             skip,
                             top,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<JobExecutionInner>>map(
@@ -245,8 +244,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -276,6 +275,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -294,7 +294,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                 skip,
                 top,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -341,8 +341,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         return new PagedFlux<>(
             () ->
                 listByJobExecutionSinglePageAsync(
@@ -383,8 +383,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedFlux<>(
             () ->
                 listByJobExecutionSinglePageAsync(
@@ -437,8 +437,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedFlux<>(
             () ->
@@ -481,8 +481,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedIterable<>(
             listByJobExecutionAsync(
                 resourceGroupName,
@@ -533,8 +533,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedIterable<>(
             listByJobExecutionAsync(
@@ -607,6 +607,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -621,7 +622,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                             jobExecutionId,
                             stepName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -683,6 +684,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -695,7 +697,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                 jobExecutionId,
                 stepName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

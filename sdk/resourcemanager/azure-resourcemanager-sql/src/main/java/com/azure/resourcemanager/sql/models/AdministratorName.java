@@ -14,6 +14,15 @@ public final class AdministratorName extends ExpandableStringEnum<AdministratorN
     public static final AdministratorName ACTIVE_DIRECTORY = fromString("ActiveDirectory");
 
     /**
+     * Creates a new instance of AdministratorName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdministratorName() {
+    }
+
+    /**
      * Creates or finds a AdministratorName from its string representation.
      *
      * @param name a name to look for.

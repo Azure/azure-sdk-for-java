@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExtendedDatabaseBlobAuditingPolicies Get. */
 public final class ExtendedDatabaseBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ExtendedDatabaseBlobAuditingGet.json
      */
     /**
      * Sample code: Get an extended database's blob auditing policy.
@@ -22,6 +20,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesGetSamples {
             .manager()
             .serviceClient()
             .getExtendedDatabaseBlobAuditingPolicies()
-            .getWithResponse("blobauditingtest-6852", "blobauditingtest-2080", "testdb", Context.NONE);
+            .getWithResponse(
+                "blobauditingtest-6852", "blobauditingtest-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }

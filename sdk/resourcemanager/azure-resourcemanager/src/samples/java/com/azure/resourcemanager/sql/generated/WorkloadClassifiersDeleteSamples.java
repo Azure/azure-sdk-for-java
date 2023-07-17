@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadClassifiers Delete. */
 public final class WorkloadClassifiersDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteWorkloadClassifier.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteWorkloadClassifier.json
      */
     /**
      * Sample code: Delete a workload classifier.
@@ -28,6 +26,6 @@ public final class WorkloadClassifiersDeleteSamples {
                 "testdb",
                 "wlm_workloadgroup",
                 "wlm_workloadclassifier",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

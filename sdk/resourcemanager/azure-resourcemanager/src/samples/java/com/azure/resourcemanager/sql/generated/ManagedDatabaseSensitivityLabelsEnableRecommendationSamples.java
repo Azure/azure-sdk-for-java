@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseSensitivityLabels EnableRecommendation. */
 public final class ManagedDatabaseSensitivityLabelsEnableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseRecommendedColumnSensitivityLabelEnable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseRecommendedColumnSensitivityLabelEnable.json
      */
     /**
      * Sample code: Enables the sensitivity recommendations on a given column.
@@ -24,6 +22,12 @@ public final class ManagedDatabaseSensitivityLabelsEnableRecommendationSamples {
             .serviceClient()
             .getManagedDatabaseSensitivityLabels()
             .enableRecommendationWithResponse(
-                "myRG", "myManagedInstanceName", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+                "myRG",
+                "myManagedInstanceName",
+                "myDatabase",
+                "dbo",
+                "myTable",
+                "myColumn",
+                com.azure.core.util.Context.NONE);
     }
 }

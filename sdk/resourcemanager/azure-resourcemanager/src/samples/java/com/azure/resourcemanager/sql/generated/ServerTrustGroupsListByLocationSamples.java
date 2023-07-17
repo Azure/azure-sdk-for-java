@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerTrustGroups ListByLocation. */
 public final class ServerTrustGroupsListByLocationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustGroupList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerTrustGroupList.json
      */
     /**
      * Sample code: List server trust groups.
@@ -22,6 +20,6 @@ public final class ServerTrustGroupsListByLocationSamples {
             .manager()
             .serviceClient()
             .getServerTrustGroups()
-            .listByLocation("Default", "Japan East", Context.NONE);
+            .listByLocation("Default", "Japan East", com.azure.core.util.Context.NONE);
     }
 }

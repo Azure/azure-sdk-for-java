@@ -10,8 +10,17 @@ import java.util.Collection;
 
 /** Defines values for SecurityAlertPolicyName. */
 public final class SecurityAlertPolicyName extends ExpandableStringEnum<SecurityAlertPolicyName> {
-    /** Static value default for SecurityAlertPolicyName. */
-    public static final SecurityAlertPolicyName DEFAULT = fromString("default");
+    /** Static value Default for SecurityAlertPolicyName. */
+    public static final SecurityAlertPolicyName DEFAULT = fromString("Default");
+
+    /**
+     * Creates a new instance of SecurityAlertPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityAlertPolicyName() {
+    }
 
     /**
      * Creates or finds a SecurityAlertPolicyName from its string representation.

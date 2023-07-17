@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseStartMoveDefinition;
 import com.azure.resourcemanager.sql.models.MoveOperationMode;
 
 /** Samples for ManagedDatabases StartMove. */
 public final class ManagedDatabasesStartMoveSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseStartMoveMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseStartMoveMax.json
      */
     /**
      * Sample code: Starts a managed database move with all optional parameters specified.
@@ -31,13 +30,13 @@ public final class ManagedDatabasesStartMoveSamples {
                 "testDatabase",
                 new ManagedDatabaseStartMoveDefinition()
                     .withDestinationManagedDatabaseId(
-                        "subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase")
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase")
                     .withOperationMode(MoveOperationMode.COPY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseStartMoveMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseStartMoveMin.json
      */
     /**
      * Sample code: Starts a managed database move with no optional parameters specified.
@@ -57,7 +56,7 @@ public final class ManagedDatabasesStartMoveSamples {
                 "testDatabase",
                 new ManagedDatabaseStartMoveDefinition()
                     .withDestinationManagedDatabaseId(
-                        "subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
-                Context.NONE);
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
+                com.azure.core.util.Context.NONE);
     }
 }

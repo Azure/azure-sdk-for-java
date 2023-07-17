@@ -76,26 +76,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
     public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedBackupShortTermRetentionPolicyListResult>> listByRestorableDroppedDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> get(
@@ -111,9 +92,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -130,9 +109,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -148,6 +125,21 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedBackupShortTermRetentionPolicyListResult>> listByRestorableDroppedDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -156,227 +148,6 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>>
-        listByRestorableDroppedDatabaseSinglePageAsync(
-            String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (restorableDroppedDatabaseId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByRestorableDroppedDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            restorableDroppedDatabaseId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>>
-        listByRestorableDroppedDatabaseSinglePageAsync(
-            String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (restorableDroppedDatabaseId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByRestorableDroppedDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                restorableDroppedDatabaseId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
-        return new PagedFlux<>(
-            () ->
-                listByRestorableDroppedDatabaseSinglePageAsync(
-                    resourceGroupName, managedInstanceName, restorableDroppedDatabaseId),
-            nextLink -> listByRestorableDroppedDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByRestorableDroppedDatabaseSinglePageAsync(
-                    resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context),
-            nextLink -> listByRestorableDroppedDatabaseNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
-        return new PagedIterable<>(
-            listByRestorableDroppedDatabaseAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId));
-    }
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
-        return new PagedIterable<>(
-            listByRestorableDroppedDatabaseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context));
     }
 
     /**
@@ -428,6 +199,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -440,7 +212,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                             restorableDroppedDatabaseId,
                             policyName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -497,6 +269,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -507,7 +280,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                 restorableDroppedDatabaseId,
                 policyName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -640,6 +413,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -652,7 +426,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                             restorableDroppedDatabaseId,
                             policyName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -716,6 +490,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -726,7 +501,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                 restorableDroppedDatabaseId,
                 policyName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -830,7 +605,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             String restorableDroppedDatabaseId,
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters)
             .getSyncPoller();
     }
@@ -860,7 +636,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters, context)
             .getSyncPoller();
     }
@@ -1030,6 +807,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1042,7 +820,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                             restorableDroppedDatabaseId,
                             policyName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1106,6 +884,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1116,7 +895,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                 restorableDroppedDatabaseId,
                 policyName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1220,7 +999,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             String restorableDroppedDatabaseId,
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters)
             .getSyncPoller();
     }
@@ -1250,7 +1030,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters, context)
             .getSyncPoller();
     }
@@ -1362,6 +1143,229 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         return updateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters, context)
             .block();
+    }
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>>
+        listByRestorableDroppedDatabaseSinglePageAsync(
+            String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (restorableDroppedDatabaseId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByRestorableDroppedDatabase(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            restorableDroppedDatabaseId,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>>
+        listByRestorableDroppedDatabaseSinglePageAsync(
+            String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (restorableDroppedDatabaseId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByRestorableDroppedDatabase(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                restorableDroppedDatabaseId,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
+        return new PagedFlux<>(
+            () ->
+                listByRestorableDroppedDatabaseSinglePageAsync(
+                    resourceGroupName, managedInstanceName, restorableDroppedDatabaseId),
+            nextLink -> listByRestorableDroppedDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByRestorableDroppedDatabaseSinglePageAsync(
+                    resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context),
+            nextLink -> listByRestorableDroppedDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
+        return new PagedIterable<>(
+            listByRestorableDroppedDatabaseAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId));
+    }
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
+        return new PagedIterable<>(
+            listByRestorableDroppedDatabaseAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context));
     }
 
     /**

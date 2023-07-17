@@ -26,6 +26,15 @@ public final class LogSizeUnit extends ExpandableStringEnum<LogSizeUnit> {
     public static final LogSizeUnit PERCENT = fromString("Percent");
 
     /**
+     * Creates a new instance of LogSizeUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogSizeUnit() {
+    }
+
+    /**
      * Creates or finds a LogSizeUnit from its string representation.
      *
      * @param name a name to look for.

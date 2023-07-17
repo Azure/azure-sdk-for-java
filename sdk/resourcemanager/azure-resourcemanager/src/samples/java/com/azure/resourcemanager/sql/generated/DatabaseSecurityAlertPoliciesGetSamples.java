@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 
 /** Samples for DatabaseSecurityAlertPolicies Get. */
 public final class DatabaseSecurityAlertPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseSecurityAlertGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseSecurityAlertGet.json
      */
     /**
      * Sample code: Get a database's threat detection policy.
@@ -24,6 +23,10 @@ public final class DatabaseSecurityAlertPoliciesGetSamples {
             .serviceClient()
             .getDatabaseSecurityAlertPolicies()
             .getWithResponse(
-                "securityalert-6852", "securityalert-2080", "testdb", SecurityAlertPolicyName.DEFAULT, Context.NONE);
+                "securityalert-6852",
+                "securityalert-2080",
+                "testdb",
+                SecurityAlertPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

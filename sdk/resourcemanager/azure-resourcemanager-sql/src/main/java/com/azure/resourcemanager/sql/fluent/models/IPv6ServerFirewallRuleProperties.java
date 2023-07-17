@@ -17,7 +17,7 @@ public final class IPv6ServerFirewallRuleProperties {
     private String startIPv6Address;
 
     /*
-     * The end IP address of the firewall rule. Must be IPv6 format. Must be greater than or equal to startIpAddress.
+     * The end IP address of the firewall rule. Must be IPv6 format. Must be greater than or equal to startIpv6Address.
      */
     @JsonProperty(value = "endIPv6Address")
     private String endIPv6Address;
@@ -48,7 +48,7 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Get the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
+     * than or equal to startIpv6Address.
      *
      * @return the endIPv6Address value.
      */
@@ -58,7 +58,7 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Set the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
+     * than or equal to startIpv6Address.
      *
      * @param endIPv6Address the endIPv6Address value to set.
      * @return the IPv6ServerFirewallRuleProperties object itself.

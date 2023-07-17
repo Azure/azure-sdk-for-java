@@ -26,6 +26,15 @@ public final class PrivateEndpointProvisioningState extends ExpandableStringEnum
     public static final PrivateEndpointProvisioningState REJECTING = fromString("Rejecting");
 
     /**
+     * Creates a new instance of PrivateEndpointProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointProvisioningState() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointProvisioningState from its string representation.
      *
      * @param name a name to look for.

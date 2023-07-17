@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
 import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for DatabaseAutomaticTuning Update. */
 public final class DatabaseAutomaticTuningUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningUpdateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseAutomaticTuningUpdateMax.json
      */
     /**
      * Sample code: Updates database automatic tuning settings with all properties.
@@ -43,11 +42,11 @@ public final class DatabaseAutomaticTuningUpdateSamples {
                             new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.ON),
                             "forceLastGoodPlan",
                             new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.DEFAULT))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningUpdateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseAutomaticTuningUpdateMin.json
      */
     /**
      * Sample code: Updates database automatic tuning settings with minimal properties.
@@ -66,7 +65,7 @@ public final class DatabaseAutomaticTuningUpdateSamples {
                 "testsvr11",
                 "db1",
                 new DatabaseAutomaticTuningInner().withDesiredState(AutomaticTuningMode.AUTO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

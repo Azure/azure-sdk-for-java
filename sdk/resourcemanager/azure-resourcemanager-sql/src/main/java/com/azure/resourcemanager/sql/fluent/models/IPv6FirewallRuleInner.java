@@ -62,7 +62,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Get the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
+     * than or equal to startIpv6Address.
      *
      * @return the endIPv6Address value.
      */
@@ -72,7 +72,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Set the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
+     * than or equal to startIpv6Address.
      *
      * @param endIPv6Address the endIPv6Address value to set.
      * @return the IPv6FirewallRuleInner object itself.

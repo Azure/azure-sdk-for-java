@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.SyncAgentInner;
 
 /** Samples for SyncAgents CreateOrUpdate. */
 public final class SyncAgentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentCreate.json
      */
     /**
      * Sample code: Create a new sync agent.
@@ -30,11 +29,11 @@ public final class SyncAgentsCreateOrUpdateSamples {
                 new SyncAgentInner()
                     .withSyncDatabaseId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentUpdate.json
      */
     /**
      * Sample code: Update a sync agent.
@@ -54,6 +53,6 @@ public final class SyncAgentsCreateOrUpdateSamples {
                 new SyncAgentInner()
                     .withSyncDatabaseId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedServerDnsAliases ListByManagedInstance. */
 public final class ManagedServerDnsAliasesListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerDnsAliasList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedServerDnsAliasList.json
      */
     /**
      * Sample code: List managed server DNS aliases.
@@ -22,6 +20,6 @@ public final class ManagedServerDnsAliasesListByManagedInstanceSamples {
             .manager()
             .serviceClient()
             .getManagedServerDnsAliases()
-            .listByManagedInstance("Default", "dns-mi", Context.NONE);
+            .listByManagedInstance("Default", "dns-mi", com.azure.core.util.Context.NONE);
     }
 }

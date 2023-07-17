@@ -11,12 +11,19 @@ import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReadWriteEndpoi
 import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ManagedInstancePairInfo;
 import com.azure.resourcemanager.sql.models.PartnerRegionInfo;
+import com.azure.resourcemanager.sql.models.SecondaryInstanceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a instance failover group. */
 @Fluent
 public final class InstanceFailoverGroupProperties {
+    /*
+     * Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR option only.
+     */
+    @JsonProperty(value = "secondaryType")
+    private SecondaryInstanceType secondaryType;
+
     /*
      * Read-write endpoint of the failover group instance.
      */
@@ -55,6 +62,28 @@ public final class InstanceFailoverGroupProperties {
 
     /** Creates an instance of InstanceFailoverGroupProperties class. */
     public InstanceFailoverGroupProperties() {
+    }
+
+    /**
+     * Get the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     *
+     * @return the secondaryType value.
+     */
+    public SecondaryInstanceType secondaryType() {
+        return this.secondaryType;
+    }
+
+    /**
+     * Set the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     *
+     * @param secondaryType the secondaryType value to set.
+     * @return the InstanceFailoverGroupProperties object itself.
+     */
+    public InstanceFailoverGroupProperties withSecondaryType(SecondaryInstanceType secondaryType) {
+        this.secondaryType = secondaryType;
+        return this;
     }
 
     /**

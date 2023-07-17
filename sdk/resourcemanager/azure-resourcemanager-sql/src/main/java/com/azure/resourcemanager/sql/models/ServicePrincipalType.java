@@ -17,6 +17,15 @@ public final class ServicePrincipalType extends ExpandableStringEnum<ServicePrin
     public static final ServicePrincipalType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
+     * Creates a new instance of ServicePrincipalType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServicePrincipalType() {
+    }
+
+    /**
      * Creates or finds a ServicePrincipalType from its string representation.
      *
      * @param name a name to look for.

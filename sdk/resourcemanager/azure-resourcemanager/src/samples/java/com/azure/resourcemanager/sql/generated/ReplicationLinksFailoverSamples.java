@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationLinks Failover. */
 public final class ReplicationLinksFailoverSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ReplicationLinkFailover.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ReplicationLinkFailover.json
      */
     /**
      * Sample code: Planned failover of a replication link.
@@ -22,6 +20,11 @@ public final class ReplicationLinksFailoverSamples {
             .manager()
             .serviceClient()
             .getReplicationLinks()
-            .failover("Default", "sourcesvr", "gamma-db", "4891ca10-ebd0-47d7-9182-c722651780fb", Context.NONE);
+            .failover(
+                "Default",
+                "sourcesvr",
+                "gamma-db",
+                "4891ca10-ebd0-47d7-9182-c722651780fb",
+                com.azure.core.util.Context.NONE);
     }
 }

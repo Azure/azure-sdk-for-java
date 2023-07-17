@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FirewallRules Get. */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FirewallRuleGet.json
      */
     /**
      * Sample code: Get Firewall Rule.
@@ -23,6 +21,9 @@ public final class FirewallRulesGetSamples {
             .serviceClient()
             .getFirewallRules()
             .getWithResponse(
-                "firewallrulecrudtest-12", "firewallrulecrudtest-6285", "firewallrulecrudtest-2304", Context.NONE);
+                "firewallrulecrudtest-12",
+                "firewallrulecrudtest-6285",
+                "firewallrulecrudtest-2304",
+                com.azure.core.util.Context.NONE);
     }
 }

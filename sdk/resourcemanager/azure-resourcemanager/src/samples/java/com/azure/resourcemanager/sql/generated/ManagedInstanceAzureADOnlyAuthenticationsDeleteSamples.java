@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.AuthenticationName;
 
 /** Samples for ManagedInstanceAzureADOnlyAuthentications Delete. */
 public final class ManagedInstanceAzureADOnlyAuthenticationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAzureADOnlyAuthDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceAzureADOnlyAuthDelete.json
      */
     /**
      * Sample code: Deletes Azure Active Directory only authentication object.
@@ -24,6 +23,10 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsDeleteSamples {
             .manager()
             .serviceClient()
             .getManagedInstanceAzureADOnlyAuthentications()
-            .delete("Default-SQL-SouthEastAsia", "managedInstance", AuthenticationName.DEFAULT, Context.NONE);
+            .delete(
+                "Default-SQL-SouthEastAsia",
+                "managedInstance",
+                AuthenticationName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

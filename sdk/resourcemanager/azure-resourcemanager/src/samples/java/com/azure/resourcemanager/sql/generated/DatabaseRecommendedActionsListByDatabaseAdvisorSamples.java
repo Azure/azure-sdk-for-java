@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseRecommendedActions ListByDatabaseAdvisor. */
 public final class DatabaseRecommendedActionsListByDatabaseAdvisorSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRecommendedActionList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseRecommendedActionList.json
      */
     /**
      * Sample code: List of database recommended actions.
@@ -23,6 +21,10 @@ public final class DatabaseRecommendedActionsListByDatabaseAdvisorSamples {
             .serviceClient()
             .getDatabaseRecommendedActions()
             .listByDatabaseAdvisorWithResponse(
-                "workloadinsight-demos", "misosisvr", "IndexAdvisor_test_3", "CreateIndex", Context.NONE);
+                "workloadinsight-demos",
+                "misosisvr",
+                "IndexAdvisor_test_3",
+                "CreateIndex",
+                com.azure.core.util.Context.NONE);
     }
 }

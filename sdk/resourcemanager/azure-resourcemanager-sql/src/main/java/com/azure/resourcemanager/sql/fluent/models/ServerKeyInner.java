@@ -96,8 +96,6 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      *
      * @return the uri value.
      */
@@ -107,8 +105,6 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      *
      * @param uri the uri value to set.
      * @return the ServerKeyInner object itself.

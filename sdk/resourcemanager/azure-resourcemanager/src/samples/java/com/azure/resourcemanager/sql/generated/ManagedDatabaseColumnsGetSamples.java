@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseColumns Get. */
 public final class ManagedDatabaseColumnsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseColumnGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseColumnGet.json
      */
     /**
      * Sample code: Get managed database column.
@@ -22,6 +20,13 @@ public final class ManagedDatabaseColumnsGetSamples {
             .manager()
             .serviceClient()
             .getManagedDatabaseColumns()
-            .getWithResponse("myRG", "myManagedInstanceName", "myDatabase", "dbo", "table1", "column1", Context.NONE);
+            .getWithResponse(
+                "myRG",
+                "myManagedInstanceName",
+                "myDatabase",
+                "dbo",
+                "table1",
+                "column1",
+                com.azure.core.util.Context.NONE);
     }
 }

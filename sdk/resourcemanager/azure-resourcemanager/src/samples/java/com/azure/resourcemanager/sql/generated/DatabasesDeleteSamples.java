@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Databases Delete. */
 public final class DatabasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/DeleteDatabase.json
      */
     /**
      * Sample code: Deletes a database.
@@ -22,6 +20,6 @@ public final class DatabasesDeleteSamples {
             .manager()
             .serviceClient()
             .getDatabases()
-            .delete("Default-SQL-SouthEastAsia", "testsvr", "testdb", Context.NONE);
+            .delete("Default-SQL-SouthEastAsia", "testsvr", "testdb", com.azure.core.util.Context.NONE);
     }
 }

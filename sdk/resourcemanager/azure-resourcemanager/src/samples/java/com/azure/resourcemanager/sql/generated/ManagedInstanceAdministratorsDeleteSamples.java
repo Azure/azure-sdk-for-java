@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 
 /** Samples for ManagedInstanceAdministrators Delete. */
 public final class ManagedInstanceAdministratorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceAdministratorDelete.json
      */
     /**
      * Sample code: Delete administrator of managed instance.
@@ -23,6 +22,10 @@ public final class ManagedInstanceAdministratorsDeleteSamples {
             .manager()
             .serviceClient()
             .getManagedInstanceAdministrators()
-            .delete("Default-SQL-SouthEastAsia", "managedInstance", AdministratorName.ACTIVE_DIRECTORY, Context.NONE);
+            .delete(
+                "Default-SQL-SouthEastAsia",
+                "managedInstance",
+                AdministratorName.ACTIVE_DIRECTORY,
+                com.azure.core.util.Context.NONE);
     }
 }

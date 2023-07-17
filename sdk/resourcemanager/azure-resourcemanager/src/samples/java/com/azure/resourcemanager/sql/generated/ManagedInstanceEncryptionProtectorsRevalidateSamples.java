@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 
 /** Samples for ManagedInstanceEncryptionProtectors Revalidate. */
 public final class ManagedInstanceEncryptionProtectorsRevalidateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceEncryptionProtectorRevalidate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceEncryptionProtectorRevalidate.json
      */
     /**
      * Sample code: Revalidates the encryption protector.
@@ -23,6 +22,10 @@ public final class ManagedInstanceEncryptionProtectorsRevalidateSamples {
             .manager()
             .serviceClient()
             .getManagedInstanceEncryptionProtectors()
-            .revalidate("sqlcrudtest-7398", "sqlcrudtest-4645", EncryptionProtectorName.CURRENT, Context.NONE);
+            .revalidate(
+                "sqlcrudtest-7398",
+                "sqlcrudtest-4645",
+                EncryptionProtectorName.CURRENT,
+                com.azure.core.util.Context.NONE);
     }
 }

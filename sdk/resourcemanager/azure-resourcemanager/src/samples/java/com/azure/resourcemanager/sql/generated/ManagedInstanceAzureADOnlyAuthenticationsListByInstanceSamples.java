@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedInstanceAzureADOnlyAuthentications ListByInstance. */
 public final class ManagedInstanceAzureADOnlyAuthenticationsListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAzureADOnlyAuthListByInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceAzureADOnlyAuthListByInstance.json
      */
     /**
      * Sample code: Gets a list of Azure Active Directory only authentication object.
@@ -23,6 +21,6 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsListByInstanceSample
             .manager()
             .serviceClient()
             .getManagedInstanceAzureADOnlyAuthentications()
-            .listByInstance("Default-SQL-SouthEastAsia", "managedInstance", Context.NONE);
+            .listByInstance("Default-SQL-SouthEastAsia", "managedInstance", com.azure.core.util.Context.NONE);
     }
 }

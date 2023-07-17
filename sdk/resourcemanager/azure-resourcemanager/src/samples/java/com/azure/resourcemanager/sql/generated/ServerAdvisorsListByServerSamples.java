@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerAdvisors ListByServer. */
 public final class ServerAdvisorsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAdvisorList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAdvisorList.json
      */
     /**
      * Sample code: List of server advisors.
@@ -22,11 +20,11 @@ public final class ServerAdvisorsListByServerSamples {
             .manager()
             .serviceClient()
             .getServerAdvisors()
-            .listByServerWithResponse("workloadinsight-demos", "misosisvr", null, Context.NONE);
+            .listByServerWithResponse("workloadinsight-demos", "misosisvr", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerRecommendedActionListExpand.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerRecommendedActionListExpand.json
      */
     /**
      * Sample code: List of server recommended actions for all advisors.
@@ -40,6 +38,7 @@ public final class ServerAdvisorsListByServerSamples {
             .manager()
             .serviceClient()
             .getServerAdvisors()
-            .listByServerWithResponse("workloadinsight-demos", "misosisvr", "recommendedActions", Context.NONE);
+            .listByServerWithResponse(
+                "workloadinsight-demos", "misosisvr", "recommendedActions", com.azure.core.util.Context.NONE);
     }
 }

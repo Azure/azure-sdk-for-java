@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerTrustGroups Delete. */
 public final class ServerTrustGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustGroupDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerTrustGroupDelete.json
      */
     /**
      * Sample code: Drop server trust group.
@@ -22,6 +20,6 @@ public final class ServerTrustGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getServerTrustGroups()
-            .delete("Default", "Japan East", "server-trust-group-test", Context.NONE);
+            .delete("Default", "Japan East", "server-trust-group-test", com.azure.core.util.Context.NONE);
     }
 }

@@ -68,8 +68,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
     public interface TransparentDataEncryptionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/transparentDataEncryption")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalDatabaseTransparentDataEncryptionListResult>> listByDatabase(
@@ -84,8 +83,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalDatabaseTransparentDataEncryptionInner>> get(
@@ -101,8 +99,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -166,6 +163,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -177,7 +175,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<LogicalDatabaseTransparentDataEncryptionInner>>map(
@@ -231,6 +229,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -240,7 +239,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -378,6 +377,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -390,7 +390,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                             databaseName,
                             tdeName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -443,6 +443,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -453,7 +454,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                 databaseName,
                 tdeName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -573,6 +574,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -585,7 +587,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                             databaseName,
                             tdeName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -646,6 +648,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -656,7 +659,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                 databaseName,
                 tdeName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -758,7 +761,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             String databaseName,
             TransparentDataEncryptionName tdeName,
             LogicalDatabaseTransparentDataEncryptionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, tdeName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, tdeName, parameters)
             .getSyncPoller();
     }
 
@@ -787,7 +791,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             TransparentDataEncryptionName tdeName,
             LogicalDatabaseTransparentDataEncryptionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, tdeName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, tdeName, parameters, context)
             .getSyncPoller();
     }
 

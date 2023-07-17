@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.MetricType;
 import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
 
 /** Samples for ManagedInstances ListByManagedInstance. */
 public final class ManagedInstancesListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceTopQueriesList.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries.
@@ -35,11 +34,11 @@ public final class ManagedInstancesListByManagedInstanceSamples {
                 QueryTimeGrainType.PT1H,
                 null,
                 MetricType.DURATION,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesListMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceTopQueriesListMax.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries. Full-blown request and response.
@@ -63,11 +62,11 @@ public final class ManagedInstancesListByManagedInstanceSamples {
                 QueryTimeGrainType.P1D,
                 null,
                 MetricType.CPU,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesListMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceTopQueriesListMin.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries. Minimal request and response.
@@ -82,6 +81,15 @@ public final class ManagedInstancesListByManagedInstanceSamples {
             .serviceClient()
             .getManagedInstances()
             .listByManagedInstance(
-                "sqlcrudtest-7398", "sqlcrudtest-4645", null, null, null, null, null, null, null, Context.NONE);
+                "sqlcrudtest-7398",
+                "sqlcrudtest-4645",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

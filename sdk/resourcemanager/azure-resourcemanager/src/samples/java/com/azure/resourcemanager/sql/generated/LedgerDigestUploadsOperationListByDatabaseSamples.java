@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LedgerDigestUploadsOperation ListByDatabase. */
 public final class LedgerDigestUploadsOperationListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LedgerDigestUploadsList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/LedgerDigestUploadsList.json
      */
     /**
      * Sample code: Gets list of ledger digest upload settings on a database.
@@ -23,6 +21,6 @@ public final class LedgerDigestUploadsOperationListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getLedgerDigestUploadsOperations()
-            .listByDatabase("ledgertestrg", "ledgertestserver", "testdb", Context.NONE);
+            .listByDatabase("ledgertestrg", "ledgertestserver", "testdb", com.azure.core.util.Context.NONE);
     }
 }

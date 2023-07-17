@@ -68,8 +68,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
     public interface EncryptionProtectorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/encryptionProtector")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EncryptionProtectorListResult>> listByServer(
@@ -83,8 +82,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/encryptionProtector/{encryptionProtectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector/{encryptionProtectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EncryptionProtectorInner>> get(
@@ -99,8 +97,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/encryptionProtector/{encryptionProtectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector/{encryptionProtectorName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +113,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/encryptionProtector/{encryptionProtectorName}/revalidate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/encryptionProtector/{encryptionProtectorName}/revalidate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> revalidate(
@@ -174,6 +170,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -184,7 +181,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<EncryptionProtectorInner>>map(
@@ -234,6 +231,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -242,7 +240,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -367,6 +365,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -378,7 +377,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                             serverName,
                             encryptionProtectorName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -424,6 +423,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -433,7 +433,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                 serverName,
                 encryptionProtectorName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -542,6 +542,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -553,7 +554,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                             serverName,
                             encryptionProtectorName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -610,6 +611,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -619,7 +621,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                 serverName,
                 encryptionProtectorName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -710,7 +712,8 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
         String serverName,
         EncryptionProtectorName encryptionProtectorName,
         EncryptionProtectorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters)
             .getSyncPoller();
     }
 
@@ -735,7 +738,8 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
         EncryptionProtectorName encryptionProtectorName,
         EncryptionProtectorInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context)
             .getSyncPoller();
     }
 
@@ -874,6 +878,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -884,7 +889,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                             serverName,
                             encryptionProtectorName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -929,6 +934,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .revalidate(
@@ -937,7 +943,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                 serverName,
                 encryptionProtectorName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1003,7 +1009,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
-        return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName).getSyncPoller();
+        return this.beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName).getSyncPoller();
     }
 
     /**
@@ -1022,7 +1028,9 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
-        return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context).getSyncPoller();
+        return this
+            .beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context)
+            .getSyncPoller();
     }
 
     /**

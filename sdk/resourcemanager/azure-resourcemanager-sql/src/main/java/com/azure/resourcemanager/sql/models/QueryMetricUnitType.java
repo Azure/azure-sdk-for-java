@@ -23,6 +23,15 @@ public final class QueryMetricUnitType extends ExpandableStringEnum<QueryMetricU
     public static final QueryMetricUnitType COUNT = fromString("count");
 
     /**
+     * Creates a new instance of QueryMetricUnitType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryMetricUnitType() {
+    }
+
+    /**
      * Creates or finds a QueryMetricUnitType from its string representation.
      *
      * @param name a name to look for.

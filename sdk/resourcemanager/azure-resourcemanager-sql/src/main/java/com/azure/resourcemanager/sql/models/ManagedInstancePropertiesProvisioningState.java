@@ -57,6 +57,15 @@ public final class ManagedInstancePropertiesProvisioningState
     public static final ManagedInstancePropertiesProvisioningState TIMED_OUT = fromString("TimedOut");
 
     /**
+     * Creates a new instance of ManagedInstancePropertiesProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstancePropertiesProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ManagedInstancePropertiesProvisioningState from its string representation.
      *
      * @param name a name to look for.

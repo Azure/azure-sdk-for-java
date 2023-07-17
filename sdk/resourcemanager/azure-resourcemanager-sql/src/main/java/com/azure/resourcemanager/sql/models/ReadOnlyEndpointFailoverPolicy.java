@@ -17,6 +17,15 @@ public final class ReadOnlyEndpointFailoverPolicy extends ExpandableStringEnum<R
     public static final ReadOnlyEndpointFailoverPolicy ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of ReadOnlyEndpointFailoverPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReadOnlyEndpointFailoverPolicy() {
+    }
+
+    /**
      * Creates or finds a ReadOnlyEndpointFailoverPolicy from its string representation.
      *
      * @param name a name to look for.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerConnectionPolicyInner;
 import com.azure.resourcemanager.sql.models.ConnectionPolicyName;
 import com.azure.resourcemanager.sql.models.ServerConnectionType;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ServerConnectionType;
 /** Samples for ServerConnectionPolicies CreateOrUpdate. */
 public final class ServerConnectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerConnectionPoliciesUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ServerConnectionPoliciesUpdate.json
      */
     /**
      * Sample code: Updates a server connection policy.
@@ -30,6 +29,6 @@ public final class ServerConnectionPoliciesCreateOrUpdateSamples {
                 "testserver",
                 ConnectionPolicyName.DEFAULT,
                 new ServerConnectionPolicyInner().withConnectionType(ServerConnectionType.REDIRECT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -14,6 +14,15 @@ public final class PauseDelayTimeUnit extends ExpandableStringEnum<PauseDelayTim
     public static final PauseDelayTimeUnit MINUTES = fromString("Minutes");
 
     /**
+     * Creates a new instance of PauseDelayTimeUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PauseDelayTimeUnit() {
+    }
+
+    /**
      * Creates or finds a PauseDelayTimeUnit from its string representation.
      *
      * @param name a name to look for.

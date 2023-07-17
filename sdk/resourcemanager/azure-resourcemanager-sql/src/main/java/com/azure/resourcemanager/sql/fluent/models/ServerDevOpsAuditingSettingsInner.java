@@ -94,6 +94,29 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     }
 
     /**
+     * Get the isManagedIdentityInUse property: Specifies whether Managed Identity is used to access blob storage.
+     *
+     * @return the isManagedIdentityInUse value.
+     */
+    public Boolean isManagedIdentityInUse() {
+        return this.innerProperties() == null ? null : this.innerProperties().isManagedIdentityInUse();
+    }
+
+    /**
+     * Set the isManagedIdentityInUse property: Specifies whether Managed Identity is used to access blob storage.
+     *
+     * @param isManagedIdentityInUse the isManagedIdentityInUse value to set.
+     * @return the ServerDevOpsAuditingSettingsInner object itself.
+     */
+    public ServerDevOpsAuditingSettingsInner withIsManagedIdentityInUse(Boolean isManagedIdentityInUse) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerDevOpsAuditSettingsProperties();
+        }
+        this.innerProperties().withIsManagedIdentityInUse(isManagedIdentityInUse);
+        return this;
+    }
+
+    /**
      * Get the state property: Specifies the state of the audit. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
      *

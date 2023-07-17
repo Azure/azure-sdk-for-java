@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Samples for ManagedInstances Update. */
 public final class ManagedInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceUpdateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceUpdateMin.json
      */
     /**
      * Sample code: Update managed instance with minimal properties.
@@ -33,12 +32,12 @@ public final class ManagedInstancesUpdateSamples {
             .update(
                 "testrg",
                 "testinstance",
-                new ManagedInstanceUpdate().withTags(mapOf("tagKey1", "TagValue1")),
-                Context.NONE);
+                new ManagedInstanceUpdate().withTags(mapOf("tagKey1", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceUpdateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceUpdateMax.json
      */
     /**
      * Sample code: Update managed instance with all properties.
@@ -56,7 +55,7 @@ public final class ManagedInstancesUpdateSamples {
                 "testinstance",
                 new ManagedInstanceUpdate()
                     .withSku(new Sku().withName("GP_Gen4").withTier("GeneralPurpose").withCapacity(8))
-                    .withTags(mapOf("tagKey1", "TagValue1"))
+                    .withTags(mapOf("tagKey1", "fakeTokenPlaceholder"))
                     .withAdministratorLogin("dummylogin")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withLicenseType(ManagedInstanceLicenseType.BASE_PRICE)
@@ -69,11 +68,11 @@ public final class ManagedInstancesUpdateSamples {
                         "/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1")
                     .withMinimalTlsVersion("1.2")
                     .withRequestedBackupStorageRedundancy(BackupStorageRedundancy.GEO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceRemoveMaintenanceConfiguration.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceRemoveMaintenanceConfiguration.json
      */
     /**
      * Sample code: Remove maintenance policy from managed instance (select default maintenance policy).
@@ -93,7 +92,7 @@ public final class ManagedInstancesUpdateSamples {
                 new ManagedInstanceUpdate()
                     .withMaintenanceConfigurationId(
                         "/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

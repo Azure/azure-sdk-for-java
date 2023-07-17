@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseTables ListBySchema. */
 public final class DatabaseTablesListBySchemaSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseTableListBySchema.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseTableListBySchema.json
      */
     /**
      * Sample code: List database tables.
@@ -22,6 +20,6 @@ public final class DatabaseTablesListBySchemaSamples {
             .manager()
             .serviceClient()
             .getDatabaseTables()
-            .listBySchema("myRG", "serverName", "myDatabase", "dbo", null, Context.NONE);
+            .listBySchema("myRG", "serverName", "myDatabase", "dbo", null, com.azure.core.util.Context.NONE);
     }
 }

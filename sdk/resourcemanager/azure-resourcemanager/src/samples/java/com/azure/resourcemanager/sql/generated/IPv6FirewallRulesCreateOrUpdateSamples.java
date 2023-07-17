@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.IPv6FirewallRuleInner;
 
 /** Samples for IPv6FirewallRules CreateOrUpdate. */
 public final class IPv6FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/IPv6FirewallRuleUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/IPv6FirewallRuleUpdate.json
      */
     /**
      * Sample code: Update an IPv6 firewall rule max/min.
@@ -30,11 +29,11 @@ public final class IPv6FirewallRulesCreateOrUpdateSamples {
                 new IPv6FirewallRuleInner()
                     .withStartIPv6Address("0000:0000:0000:0000:0000:ffff:0000:0001")
                     .withEndIPv6Address("0000:0000:0000:0000:0000:ffff:0000:0001"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/IPv6FirewallRuleCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/IPv6FirewallRuleCreate.json
      */
     /**
      * Sample code: Create an IPv6 firewall rule max/min.
@@ -54,6 +53,6 @@ public final class IPv6FirewallRulesCreateOrUpdateSamples {
                 new IPv6FirewallRuleInner()
                     .withStartIPv6Address("0000:0000:0000:0000:0000:ffff:0000:0003")
                     .withEndIPv6Address("0000:0000:0000:0000:0000:ffff:0000:0003"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

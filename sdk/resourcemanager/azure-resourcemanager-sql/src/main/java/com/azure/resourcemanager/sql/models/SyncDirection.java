@@ -20,6 +20,15 @@ public final class SyncDirection extends ExpandableStringEnum<SyncDirection> {
     public static final SyncDirection ONE_WAY_HUB_TO_MEMBER = fromString("OneWayHubToMember");
 
     /**
+     * Creates a new instance of SyncDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncDirection() {
+    }
+
+    /**
      * Creates or finds a SyncDirection from its string representation.
      *
      * @param name a name to look for.

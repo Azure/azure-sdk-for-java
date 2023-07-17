@@ -24,6 +24,15 @@ public final class ManagedServerCreateMode extends ExpandableStringEnum<ManagedS
     public static final ManagedServerCreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
     /**
+     * Creates a new instance of ManagedServerCreateMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedServerCreateMode() {
+    }
+
+    /**
      * Creates or finds a ManagedServerCreateMode from its string representation.
      *
      * @param name a name to look for.

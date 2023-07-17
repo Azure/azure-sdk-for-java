@@ -4,12 +4,34 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorableDroppedDatabases Get. */
 public final class RestorableDroppedDatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetRestorableDroppedDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/GetRestorableDroppedDatabaseWithExpandEqualsKeys.json
+     */
+    /**
+     * Sample code: Gets a restorable dropped database with expand equals keys.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getsARestorableDroppedDatabaseWithExpandEqualsKeys(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .sqlServers()
+            .manager()
+            .serviceClient()
+            .getRestorableDroppedDatabases()
+            .getWithResponse(
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb,131403269876900000",
+                "keys",
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/GetRestorableDroppedDatabase.json
      */
     /**
      * Sample code: Gets a restorable dropped database.
@@ -22,6 +44,12 @@ public final class RestorableDroppedDatabasesGetSamples {
             .manager()
             .serviceClient()
             .getRestorableDroppedDatabases()
-            .getWithResponse("Default-SQL-SouthEastAsia", "testsvr", "testdb,131403269876900000", Context.NONE);
+            .getWithResponse(
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb,131403269876900000",
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 
 /** Samples for FirewallRules CreateOrUpdate. */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FirewallRuleCreate.json
      */
     /**
      * Sample code: Create a firewall rule max/min.
@@ -28,11 +27,11 @@ public final class FirewallRulesCreateOrUpdateSamples {
                 "firewallrulecrudtest-6285",
                 "firewallrulecrudtest-5370",
                 new FirewallRuleInner().withStartIpAddress("0.0.0.3").withEndIpAddress("0.0.0.3"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FirewallRuleUpdate.json
      */
     /**
      * Sample code: Update a firewall rule max/min.
@@ -50,6 +49,6 @@ public final class FirewallRulesCreateOrUpdateSamples {
                 "firewallrulecrudtest-6285",
                 "firewallrulecrudtest-3927",
                 new FirewallRuleInner().withStartIpAddress("0.0.0.1").withEndIpAddress("0.0.0.1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

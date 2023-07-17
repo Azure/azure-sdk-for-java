@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseExtensionsOperation Get. */
 public final class DatabaseExtensionsOperationGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetDatabaseExtensions.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/GetDatabaseExtensions.json
      */
     /**
      * Sample code: Get database extensions.
@@ -27,6 +25,6 @@ public final class DatabaseExtensionsOperationGetSamples {
                 "srv_65858e0f-b1d1-4bdc-8351-a7da86ca4939",
                 "11aa6c5e-58ed-4693-b303-3b8e3131deaa",
                 "polybaseimport",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

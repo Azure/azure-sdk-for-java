@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.LongTermRetentionPolicyName;
 
 /** Samples for LongTermRetentionPolicies Get. */
 public final class LongTermRetentionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionPolicyGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/LongTermRetentionPolicyGet.json
      */
     /**
      * Sample code: Get the long term retention policy for the database.
@@ -25,6 +24,10 @@ public final class LongTermRetentionPoliciesGetSamples {
             .serviceClient()
             .getLongTermRetentionPolicies()
             .getWithResponse(
-                "resourceGroup", "testserver", "testDatabase", LongTermRetentionPolicyName.DEFAULT, Context.NONE);
+                "resourceGroup",
+                "testserver",
+                "testDatabase",
+                LongTermRetentionPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

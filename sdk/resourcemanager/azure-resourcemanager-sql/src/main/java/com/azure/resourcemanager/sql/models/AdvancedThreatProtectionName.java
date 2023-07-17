@@ -14,6 +14,15 @@ public final class AdvancedThreatProtectionName extends ExpandableStringEnum<Adv
     public static final AdvancedThreatProtectionName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of AdvancedThreatProtectionName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdvancedThreatProtectionName() {
+    }
+
+    /**
      * Creates or finds a AdvancedThreatProtectionName from its string representation.
      *
      * @param name a name to look for.

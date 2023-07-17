@@ -14,6 +14,15 @@ public final class JobStepActionType extends ExpandableStringEnum<JobStepActionT
     public static final JobStepActionType TSQL = fromString("TSql");
 
     /**
+     * Creates a new instance of JobStepActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobStepActionType() {
+    }
+
+    /**
      * Creates or finds a JobStepActionType from its string representation.
      *
      * @param name a name to look for.

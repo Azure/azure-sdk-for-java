@@ -14,6 +14,15 @@ public final class DataWarehouseUserActivityName extends ExpandableStringEnum<Da
     public static final DataWarehouseUserActivityName CURRENT = fromString("current");
 
     /**
+     * Creates a new instance of DataWarehouseUserActivityName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataWarehouseUserActivityName() {
+    }
+
+    /**
      * Creates or finds a DataWarehouseUserActivityName from its string representation.
      *
      * @param name a name to look for.

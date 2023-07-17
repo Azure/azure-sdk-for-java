@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAzureADOnlyAuthenticationInner;
 import com.azure.resourcemanager.sql.models.AuthenticationName;
 
 /** Samples for ManagedInstanceAzureADOnlyAuthentications CreateOrUpdate. */
 public final class ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAzureADOnlyAuthCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceAzureADOnlyAuthCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates Azure Active Directory only authentication object.
@@ -30,6 +29,6 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateSample
                 "managedInstance",
                 AuthenticationName.DEFAULT,
                 new ManagedInstanceAzureADOnlyAuthenticationInner().withAzureADOnlyAuthentication(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -13,7 +13,6 @@ import com.azure.resourcemanager.sql.models.RecommendedActionInitiatedBy;
 import com.azure.resourcemanager.sql.models.RecommendedActionMetricInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -164,7 +163,7 @@ public final class RecommendedActionInner extends ProxyResource {
      *
      * @return the executeActionDuration value.
      */
-    public Duration executeActionDuration() {
+    public String executeActionDuration() {
         return this.innerProperties() == null ? null : this.innerProperties().executeActionDuration();
     }
 
@@ -184,7 +183,7 @@ public final class RecommendedActionInner extends ProxyResource {
      *
      * @return the revertActionDuration value.
      */
-    public Duration revertActionDuration() {
+    public String revertActionDuration() {
         return this.innerProperties() == null ? null : this.innerProperties().revertActionDuration();
     }
 

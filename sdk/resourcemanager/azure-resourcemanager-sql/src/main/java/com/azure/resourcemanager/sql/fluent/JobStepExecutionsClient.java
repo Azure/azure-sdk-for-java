@@ -50,8 +50,8 @@ public interface JobStepExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top);
+        Integer skip,
+        Integer top);
 
     /**
      * Lists the step executions of a job execution.
@@ -123,8 +123,8 @@ public interface JobStepExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context);
 
     /**

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedServerDnsAliases Delete. */
 public final class ManagedServerDnsAliasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerDnsAliasDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedServerDnsAliasDelete.json
      */
     /**
      * Sample code: Delete managed server DNS alias.
@@ -22,6 +20,6 @@ public final class ManagedServerDnsAliasesDeleteSamples {
             .manager()
             .serviceClient()
             .getManagedServerDnsAliases()
-            .delete("Default", "dns-mi", "dns-alias-mi", Context.NONE);
+            .delete("Default", "dns-mi", "dns-alias-mi", com.azure.core.util.Context.NONE);
     }
 }

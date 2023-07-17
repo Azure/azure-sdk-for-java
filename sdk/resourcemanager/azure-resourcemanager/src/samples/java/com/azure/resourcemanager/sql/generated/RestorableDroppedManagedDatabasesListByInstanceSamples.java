@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorableDroppedManagedDatabases ListByInstance. */
 public final class RestorableDroppedManagedDatabasesListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RestorableDroppedManagedDatabaseListByManagedInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/RestorableDroppedManagedDatabaseListByManagedInstance.json
      */
     /**
      * Sample code: List restorable dropped databases by managed instances.
@@ -23,6 +21,6 @@ public final class RestorableDroppedManagedDatabasesListByInstanceSamples {
             .manager()
             .serviceClient()
             .getRestorableDroppedManagedDatabases()
-            .listByInstance("Test1", "managedInstance", Context.NONE);
+            .listByInstance("Test1", "managedInstance", com.azure.core.util.Context.NONE);
     }
 }

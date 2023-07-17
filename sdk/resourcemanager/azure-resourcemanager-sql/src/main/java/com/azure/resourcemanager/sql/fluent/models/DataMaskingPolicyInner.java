@@ -9,9 +9,15 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.DataMaskingState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A database data masking policy. */
+/** Represents a database data masking policy. */
 @Fluent
 public final class DataMaskingPolicyInner extends ProxyResource {
+    /*
+     * The properties of the data masking policy.
+     */
+    @JsonProperty(value = "properties")
+    private DataMaskingPolicyProperties innerProperties;
+
     /*
      * The location of the data masking policy.
      */
@@ -19,19 +25,22 @@ public final class DataMaskingPolicyInner extends ProxyResource {
     private String location;
 
     /*
-     * The kind of Data Masking Policy. Metadata, used for Azure portal.
+     * The kind of data masking policy. Metadata, used for Azure portal.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
-    /*
-     * Resource properties.
-     */
-    @JsonProperty(value = "properties")
-    private DataMaskingPolicyProperties innerProperties;
-
     /** Creates an instance of DataMaskingPolicyInner class. */
     public DataMaskingPolicyInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties of the data masking policy.
+     *
+     * @return the innerProperties value.
+     */
+    private DataMaskingPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -44,21 +53,12 @@ public final class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: The kind of Data Masking Policy. Metadata, used for Azure portal.
+     * Get the kind property: The kind of data masking policy. Metadata, used for Azure portal.
      *
      * @return the kind value.
      */
     public String kind() {
         return this.kind;
-    }
-
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
-     */
-    private DataMaskingPolicyProperties innerProperties() {
-        return this.innerProperties;
     }
 
     /**

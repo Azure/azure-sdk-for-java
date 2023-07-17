@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseTables Get. */
 public final class ManagedDatabaseTablesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseTableGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseTableGet.json
      */
     /**
      * Sample code: Get managed database table.
@@ -22,6 +20,7 @@ public final class ManagedDatabaseTablesGetSamples {
             .manager()
             .serviceClient()
             .getManagedDatabaseTables()
-            .getWithResponse("myRG", "myManagedInstanceName", "myDatabase", "dbo", "table1", Context.NONE);
+            .getWithResponse(
+                "myRG", "myManagedInstanceName", "myDatabase", "dbo", "table1", com.azure.core.util.Context.NONE);
     }
 }

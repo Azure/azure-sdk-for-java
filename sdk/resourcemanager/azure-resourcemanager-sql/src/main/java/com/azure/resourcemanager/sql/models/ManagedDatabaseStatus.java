@@ -31,6 +31,30 @@ public final class ManagedDatabaseStatus extends ExpandableStringEnum<ManagedDat
     /** Static value Updating for ManagedDatabaseStatus. */
     public static final ManagedDatabaseStatus UPDATING = fromString("Updating");
 
+    /** Static value Stopping for ManagedDatabaseStatus. */
+    public static final ManagedDatabaseStatus STOPPING = fromString("Stopping");
+
+    /** Static value Stopped for ManagedDatabaseStatus. */
+    public static final ManagedDatabaseStatus STOPPED = fromString("Stopped");
+
+    /** Static value Starting for ManagedDatabaseStatus. */
+    public static final ManagedDatabaseStatus STARTING = fromString("Starting");
+
+    /** Static value DbMoving for ManagedDatabaseStatus. */
+    public static final ManagedDatabaseStatus DB_MOVING = fromString("DbMoving");
+
+    /** Static value DbCopying for ManagedDatabaseStatus. */
+    public static final ManagedDatabaseStatus DB_COPYING = fromString("DbCopying");
+
+    /**
+     * Creates a new instance of ManagedDatabaseStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedDatabaseStatus() {
+    }
+
     /**
      * Creates or finds a ManagedDatabaseStatus from its string representation.
      *
