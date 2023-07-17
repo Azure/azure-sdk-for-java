@@ -54,7 +54,8 @@ public class TargetingFilter implements FeatureFilter {
     /**
      * Audience that always returns false
      */
-    protected static final String EXCLUSION = "Exclusion";
+    protected static final String EXCLUSION = "exclusion";
+    private static final String EXCLUSION_CAMEL = "Exclusion";
 
     /**
      * Error message for when the total Audience value is greater than 100 percent.
@@ -128,7 +129,7 @@ public class TargetingFilter implements FeatureFilter {
 
         Audience audience = new Audience();
         Map<String, List<String>> exclusionMap;
-        String exclusionValue = getKeyFormat(parameters, EXCLUSION);
+        String exclusionValue = getKeyFormat(parameters, EXCLUSION_CAMEL);
         String exclusionUserValue = getKeyFormat((Map<String, Object>) parameters.get(exclusionValue), "Users");
         String exclusionGroupsValue = getKeyFormat((Map<String, Object>) parameters.get(exclusionValue), "Groups");
 
