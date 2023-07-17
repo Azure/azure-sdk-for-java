@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -127,7 +128,7 @@ public class TargetingFilter implements FeatureFilter {
         updateValueFromMapToList(parameters, USERS);
         updateValueFromMapToList(parameters, GROUPS);
 
-        Audience audience = new Audience();
+        Audience audience;
         Map<String, List<String>> exclusionMap;
         String exclusionValue = getKeyFormat(parameters, EXCLUSION_CAMEL);
         String exclusionUserValue = getKeyFormat((Map<String, Object>) parameters.get(exclusionValue), "Users");
@@ -202,7 +203,7 @@ public class TargetingFilter implements FeatureFilter {
         if (parameters != null && parameters.containsKey(key)) {
             return key;
         }
-        return key.toLowerCase();
+        return key.toLowerCase(Locale.getDefault());
     }
 
     private boolean targetUser(String userId, List<String> users) {
