@@ -1,10 +1,10 @@
 steps:
-    # Fail the build if any of the packages failed validation
-    - pwsh: |
-        if ($(DocsMsPackagesAllValid)) { 
-            Write-Host "All packages passed validation."
-        } else {
-            Write-Error "Some packages failed validation."
-            exit 1
-        }
-    displayName: Check package validation results
+# Fail the build if any of the packages failed validation
+- pwsh: |
+    if ($(DocsMsPackagesAllValid)) {
+        Write-Host "All packages passed validation."
+    } else {
+        Write-Error "Some packages failed validation."
+        exit 1
+    }
+displayName: Check package validation results
