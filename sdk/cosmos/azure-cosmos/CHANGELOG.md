@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.48.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.48.0 (2023-07-18)
 
 #### Bugs Fixed
 * Fixed an issue with deserialization of `conflictResolutionTimestamp` for All versions and deletes change feed mode. - See [PR 35909](https://github.com/Azure/azure-sdk-for-java/pull/35909)
