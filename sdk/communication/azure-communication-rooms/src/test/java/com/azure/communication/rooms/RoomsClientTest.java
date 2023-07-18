@@ -651,6 +651,25 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRoomWithValidUntilInPast(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomWithValidUntilInPast");
+        assertNotNull(roomsClient);
+
+        RoomParticipant firstParticipant = new RoomParticipant(communicationClient.createUser());
+        List<RoomParticipant> participants = Arrays.asList(firstParticipant);
+
+        CreateRoomOptions roomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL.minusMonths(6))
+                .setParticipants(participants);
+
+        assertThrows(HttpResponseException.class, () -> {
+            roomsClient.createRoomWithResponse(roomOptions, Context.NONE);
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateRoomSyncWithResponseOnlyValidFrom(HttpClient httpClient) {
         roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithResponseOnlyValidFrom");
         assertNotNull(roomsClient);
