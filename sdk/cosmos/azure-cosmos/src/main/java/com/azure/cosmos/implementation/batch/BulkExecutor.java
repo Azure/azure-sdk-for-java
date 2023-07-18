@@ -287,8 +287,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         Integer nullableMaxConcurrentCosmosPartitions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
             .getMaxConcurrentCosmosPartitions(cosmosBulkExecutionOptions);
-        Mono<Integer> maxConcurrentCosmosPartitionsMono;
-        maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ? Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
+        Mono<Integer> maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ? Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
             this.container.getFeedRanges().map(ranges -> Math.max(256, ranges.size() * 2));
 
 
@@ -712,7 +711,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             if (itemOperation instanceof ItemBulkOperation<?, ?>) {
 
                 ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
-                IdAndPartitionKey idAndPartitionKey = new IdAndPartitionKey(itemOperation.getId(), itemOperation.getPartitionKeyValue());
+                IdAndPartitionKey idAndPartitionKey = createIdAndPartitionKey(itemOperation);
                 if (preserveOrdering) {
                     failedItems.compute(idAndPartitionKey, (key, statusQueue) -> {
                         if (statusQueue == null) {

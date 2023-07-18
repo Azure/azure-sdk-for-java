@@ -113,7 +113,7 @@ public final class CosmosBulkOperations {
             requestOptions.toRequestOptions(),
             item,
             context
-        ); // why is this null??
+        );
     }
 
     /**
