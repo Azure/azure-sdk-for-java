@@ -22,8 +22,8 @@
         "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
         "TestFromSource": false,
         "RunAggregateReports": true,
-        "CoverageArg": "--disablecov",
         "TestGoals": "surefire:test",
+        "CoverageArg": "--disablecov",
         "TestOptions": ""
     },
     "include": [
@@ -37,7 +37,6 @@
             "JavaTestVersion": "1.11",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": true,
-            "RunAggregateReports": true,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "CoverageArg": "",
@@ -54,7 +53,6 @@
             "JavaTestVersion": "1.11",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": false,
-            "RunAggregateReports": true,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "CoverageArg": "--disablecov",
