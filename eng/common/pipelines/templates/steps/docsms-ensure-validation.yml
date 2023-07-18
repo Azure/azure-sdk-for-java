@@ -13,7 +13,7 @@ steps:
         }
 
         Write-Host "All packages passed validation"
-    } catch {
+    } catch [FormatException] {
         Write-Host "Failed to parse DocsMsPackagesAllValid value '$value' as a boolean."
         Write-Error $_
         exit 1
