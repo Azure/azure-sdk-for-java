@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import io.opentelemetry.instrumentation.reactor.v3_1.ContextPropagationOperator;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -164,6 +165,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readItem() throws Exception {
+        ContextPropagationOperator.create().registerOnEachOperator();
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
 

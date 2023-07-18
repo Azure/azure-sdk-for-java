@@ -119,6 +119,11 @@ Licensed under the MIT License.
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-reactor-3.1</artifactId>
+      <version>1.27.1-SuppressInstrumentationOnAssembly-alpha</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+    </dependency>
+    <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.5</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
