@@ -59,7 +59,7 @@ directive:
 ```
 
 
-## Form Recognizer Service 2023-02-28-preview
+## Form Recognizer Service 2023-07-31
 ### To run, use `autorest --tag:formrecognizer-documentanalysis README.md`
 ``` yaml $(tag) == 'formrecognizer-documentanalysis'
 use: '@autorest/java@4.1.13'

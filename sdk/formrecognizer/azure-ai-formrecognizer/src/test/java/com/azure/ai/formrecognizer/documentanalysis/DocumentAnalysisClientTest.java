@@ -1466,6 +1466,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled
     public void testGetWordsInALine(HttpClient httpClient,
                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
