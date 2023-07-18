@@ -128,8 +128,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             addTestProxyMatchers();
         }
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer(AZURE_TEST_DOMAIN,
-                    "testdomain.com", TestProxySanitizerType.BODY_REGEX),
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}[^/?]+)",
+                    ".redacted.com", TestProxySanitizerType.BODY_REGEX),
                 new TestProxySanitizer("id", null,
                     "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("phoneNumber", null, "REDACTED",
@@ -158,8 +158,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             addTestProxyMatchers();
         }
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer(AZURE_TEST_DOMAIN,
-                "testdomain.com", TestProxySanitizerType.BODY_REGEX),
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}[^/?]+)",
+                    ".redacted.com", TestProxySanitizerType.BODY_REGEX),
                 new TestProxySanitizer("id", null,
                     "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("phoneNumber", null, "REDACTED",
