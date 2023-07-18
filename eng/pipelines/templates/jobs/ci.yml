@@ -416,6 +416,9 @@ jobs:
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - '**/*.xml'
 
       # For PullRequests CredScan will be run against the files changed in the PR.
       # For non-pull requests CredScan
