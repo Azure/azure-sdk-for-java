@@ -7,10 +7,8 @@ import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
-import java.util.Locale;
 
 /**
  * Change Feed response meta data
