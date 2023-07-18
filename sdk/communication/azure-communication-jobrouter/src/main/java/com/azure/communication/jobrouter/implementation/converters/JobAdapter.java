@@ -62,7 +62,7 @@ public class JobAdapter {
             .collect(Collectors.toList()) : null;
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
-            .collect(Collectors.toMap(note -> note.getTime().toString(), note -> note.getMessage())) : null;
+            .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;
 
         return new RouterJobInternal()
             .setChannelId(createJobOptions.getChannelId())
@@ -97,7 +97,7 @@ public class JobAdapter {
             .collect(Collectors.toList()) : new ArrayList<>();
         List<RouterJobNote> jobNotes = updateJobOptions.getNotes();
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
-            .collect(Collectors.toMap(note -> note.getTime().toString(), note -> note.getMessage())) : new HashMap<>();
+            .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : new HashMap<>();
 
         return new RouterJobInternal()
             .setChannelId(updateJobOptions.getChannelId())

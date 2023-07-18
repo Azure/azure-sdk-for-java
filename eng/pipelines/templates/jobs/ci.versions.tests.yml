@@ -17,17 +17,9 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: Matrix
-    type: object
   - name: CloudConfig
     type: object
     default: {}
-  - name: DependsOn
-    type: string
-    default: ''
-  - name: UsePlatformContainer
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -43,27 +35,27 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: VersionOverrides
+    type: object
+    default: []
 
 jobs:
-  - job: 'Test'
-    dependsOn: ${{ parameters.DependsOn }}
-    condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
-
-    strategy:
-      matrix: $[ ${{ parameters.Matrix }} ]
+  - job:
+    condition: ne(variables['Skip.Test'], 'true')
 
     pool:
-      name: $(Pool)
-      vmImage: $(OSVmImage)
-
-    ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
-      # Add a default so the job doesn't fail when the matrix is empty
-      container: $[ variables['Container'] ]
+      name: 'azsdk-pool-mms-ubuntu-2004-general'
+      vmImage: 'MMSUbuntu20.04'
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
 
     steps:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
+          Write-Host "##vso[task.setvariable variable=TestVersionSupport]true"
+        displayName: "Set version override variables"
+
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
@@ -71,6 +63,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
+          OSVmImage: 'MMSUbuntu20.04'
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
@@ -98,15 +91,22 @@ jobs:
 
       - ${{ parameters.PreTestSteps }}
 
-      - template: /eng/pipelines/templates/steps/build-and-test.yml
-        parameters:
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ParallelTestPlayback: 'true'
-          TestGoals: ${{ parameters.TestGoals }}
-          TestOptions: ${{ parameters.TestOptions }}
-          TestParallelization: ${{ parameters.TestParallelization }}
-          BuildParallelization: ${{ parameters.BuildParallelization }}
+      - ${{ each versionOverride in parameters.VersionOverrides }}:
+        - template: /eng/pipelines/templates/steps/build-and-test.yml
+          parameters:
+            SDKType: ${{ parameters.SDKType }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            ParallelTestPlayback: 'true'
+            TestGoals: ${{ parameters.TestGoals }}
+            TestOptions: ${{ parameters.TestOptions }}
+            TestParallelization: ${{ parameters.TestParallelization }}
+            BuildParallelization: ${{ parameters.BuildParallelization }}
+            VersionOverride: ${{ versionOverride }}
+
+        - pwsh: |
+            git checkout -- .
+            Write-Host "##vso[task.setvariable variable=FirstTestOverrideRan]true"
+          displayName: "Reset version override changes"
 
       - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
