@@ -5,3 +5,8 @@ stages:
     parameters:
       PackageName: azure-communication-phonenumbers
       SafeName: azurecommunicationphonenumbers
+      MatrixConfigs:
+        - Name: PhoneNumbers_java_livetest_matrix
+          Path: sdk/communication/azure-communication-phonenumbers/phone-numbers-livetest-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
