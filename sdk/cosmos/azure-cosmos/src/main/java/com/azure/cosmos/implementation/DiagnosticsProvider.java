@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
@@ -44,7 +43,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -221,31 +219,6 @@ public final class DiagnosticsProvider {
         return reactor.util.context.Context.of(
             REACTOR_TRACING_CONTEXT_KEY, traceContext,
             "io.opentelemetry.instrumentation.reactor.suppressInstrumentation", true);
-    }
-
-    public static <T> Mono<T> withContextAndSuppressedInstrumentation(Function<Context, Mono<T>> serviceCall) {
-        return withContextAndSuppressedInstrumentation(serviceCall, Collections.emptyMap());
-    }
-
-    public static <T> Mono<T> withContextAndSuppressedInstrumentation(Function<Context, Mono<T>> serviceCall, Map<String, String> contextAttributes) {
-        Mono<T> mono = Mono.deferContextual((context) -> {
-            Context[] azureContext = new Context[]{Context.NONE};
-            if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
-                contextAttributes.forEach((key, value) -> {
-                    azureContext[0] = azureContext[0].addData(key, value);
-                });
-            }
-
-            if (!context.isEmpty()) {
-                context.stream().forEach((entry) -> {
-                    azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue());
-                });
-            }
-
-            return (Mono)serviceCall.apply(azureContext[0]);
-        });
-
-        return mono.contextWrite(ctx -> ctx.put("io.opentelemetry.instrumentation.reactor.suppressInstrumentation", true));
     }
 
     /**
