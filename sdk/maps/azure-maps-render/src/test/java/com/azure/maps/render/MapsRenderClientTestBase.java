@@ -30,7 +30,6 @@ import com.azure.maps.render.models.CopyrightCaption;
 import com.azure.maps.render.models.MapAttribution;
 import com.azure.maps.render.models.MapTileset;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,12 +116,12 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
             .build();
     }
 
-    static void validateGetMapTile(byte[] actual) throws IOException {
+    static void validateGetMapTile(byte[] actual) {
         assertNotNull(actual);
         assertTrue(actual.length > 0);
     }
 
-    static void validateGetMapTileWithResponse(int expectedStatusCode, Response<BinaryData> response) throws IOException {
+    static void validateGetMapTileWithResponse(int expectedStatusCode, Response<BinaryData> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetMapTile(response.getValue().toBytes());
@@ -183,12 +182,12 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
         validateGetCopyrightCaptionFromBoundingBox(expected, response.getValue());
     }
 
-    static void validateGetMapStaticImage(byte[] actual) throws IOException {
+    static void validateGetMapStaticImage(byte[] actual) {
         assertNotNull(actual);
         assertTrue(actual.length > 0);
     }
 
-    static void validateGetMapStaticImageWithResponse(int expectedStatusCode, Response<BinaryData> response) throws IOException {
+    static void validateGetMapStaticImageWithResponse(int expectedStatusCode, Response<BinaryData> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetMapStaticImage(response.getValue().toBytes());
