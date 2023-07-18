@@ -5,7 +5,6 @@ package com.azure.storage.file.datalake.specialized;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
-import com.azure.storage.file.datalake.APISpec;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeTestBase;
@@ -26,7 +25,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -421,371 +419,272 @@ public class LeaseApiTests extends DataLakeTestBase {
             .getStatusCode());
     }
 
-    @Unroll
-    def "Acquire file system lease AC fail"() {
-        setup:
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void acquireFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        when:
-        createLeaseClient(fsc).acquireLeaseWithResponse(-1, mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient)
+            .acquireLeaseWithResponse(-1, mac, null, null));
     }
 
-    def "Acquire file system lease error"() {
-        setup:
-        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-
-        when:
-        createLeaseClient(fsc).acquireLease(50)
-
-        then:
-        thrown(DataLakeStorageException)
+    private static Stream<Arguments> invalidModifiedConditions() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null),
+            Arguments.of(null, OLD_DATE)
+        );
     }
 
-    def "Renew file system lease"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def leaseClient = createLeaseClient(fsc, leaseID)
+    @Test
+    public void acquireFileSystemLeaseError() {
+        DataLakeFileSystemClient fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        when:
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(fsc).acquireLease(50));
+    }
+
+    @Test
+    public void renewFileSystemLease() {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        DataLakeLeaseClient leaseClient = createLeaseClient(dataLakeFileSystemClient, leaseID);
+
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000)
-        def renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null, null)
+        sleepIfRunningAgainstService(16000);
+        Response<String> renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null, null);
 
-        then:
-        fsc.getProperties().getLeaseState() == LeaseStateType.LEASED
-        validateBasicHeaders(renewLeaseResponse.getHeaders())
-        renewLeaseResponse.getValue() == leaseClient.getLeaseId()
+        assertEquals(LeaseStateType.LEASED, dataLakeFileSystemClient.getProperties().getLeaseState());
+        validateBasicHeaders(renewLeaseResponse.getHeaders());
+        assertEquals(leaseClient.getLeaseId(), renewLeaseResponse.getValue());
     }
 
-    def "Renew file system lease min"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+    @Test
+    public void renewFileSystemLeaseMin() {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        expect:
-        createLeaseClient(fsc, leaseID).renewLeaseWithResponse(null, null, null).getStatusCode() == 200
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .renewLeaseWithResponse(null, null, null).getStatusCode());
     }
 
-    @Unroll
-    def "Renew file system lease AC"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void renewFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        expect:
-        createLeaseClient(fsc, leaseID).renewLeaseWithResponse(mac, null, null).getStatusCode() == 200
-
-        where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .renewLeaseWithResponse(mac, null, null).getStatusCode());
     }
 
-    @Unroll
-    def "Renew file system lease AC fail"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        when:
-        createLeaseClient(fsc, leaseID).renewLeaseWithResponse(mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+    private static Stream<Arguments> validModifiedConditions() {
+        return Stream.of(
+            Arguments.of(null, null),
+            Arguments.of(OLD_DATE, null),
+            Arguments.of(null, NEW_DATE)
+        );
     }
 
-    @Unroll
-    def "Renew file system lease AC illegal"() {
-        setup:
-        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void renewFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        when:
-        createLeaseClient(fsc, APISpec.receivedEtag).renewLeaseWithResponse(mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .renewLeaseWithResponse(mac, null, null));
     }
 
-    def "Renew file system lease error"() {
-        setup:
-        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void renewFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        when:
-        createLeaseClient(fsc, "id").renewLease()
-
-        then:
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, RECEIVED_ETAG)
+            .renewLeaseWithResponse(mac, null, null));
     }
 
-    def "Release file system lease"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-
-        def releaseLeaseResponse = createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(null, null, null)
-
-        expect:
-        fsc.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
-        validateBasicHeaders(releaseLeaseResponse.getHeaders())
+    private static Stream<Arguments> invalidMatchConditions() {
+        return Stream.of(
+            Arguments.of(RECEIVED_ETAG, null),
+            Arguments.of(null, GARBAGE_ETAG)
+        );
     }
 
-    def "Release file system lease min"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+    @Test
+    public void renewFileSystemLeaseError() {
+        DataLakeFileSystemClient fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        expect:
-        createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(fsc, "id").renewLease());
     }
 
-    @Unroll
-    def "Release file system lease AC"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @Test
+    public void releaseFileSystemLease() {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        expect:
-        createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(mac, null, null).getStatusCode() == 200
+        Response<Void> releaseLeaseResponse = createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .releaseLeaseWithResponse(null, null, null);
 
-        where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        assertEquals(LeaseStateType.AVAILABLE, dataLakeFileSystemClient.getProperties().getLeaseState());
+        validateBasicHeaders(releaseLeaseResponse.getHeaders());
     }
 
-    @Unroll
-    def "Release file system lease AC fail"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @Test
+    public void releaseFileSystemLeaseMin() {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        when:
-        createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .releaseLeaseWithResponse(null, null, null).getStatusCode());
     }
 
-    @Unroll
-    def "Release file system lease AC illegal"() {
-        setup:
-        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void releaseFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        when:
-        createLeaseClient(fsc, APISpec.receivedLeaseID).releaseLeaseWithResponse(mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .releaseLeaseWithResponse(mac, null, null).getStatusCode());
     }
 
-    def "Release file system lease error"() {
-        setup:
-        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void releaseFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        when:
-        createLeaseClient(fsc, "id").releaseLease()
-
-        then:
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .releaseLeaseWithResponse(mac, null, null));
     }
 
-    @Unroll
-    def "Break file system lease"() {
-        setup:
-        def leaseClient = createLeaseClient(fsc, namer.getRandomUuid())
-        leaseClient.acquireLease(leaseTime)
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void releaseFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(breakPeriod, null, null, null)
-        def state = fsc.getProperties().getLeaseState()
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, RECEIVED_ETAG)
+            .releaseLeaseWithResponse(mac, null, null));
+    }
 
-        expect:
-        state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
-        breakLeaseResponse.getValue() <= remainingTime
-        validateBasicHeaders(breakLeaseResponse.getHeaders())
+    @Test
+    public void releaseFileSystemLeaseError() {
+        DataLakeFileSystemClient fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
+
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(fsc, "id").releaseLease());
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"-1,null,0", "-1,20,25", "20,15,16"}, nullValues = "null")
+    public void breakFileSystemLease(int leaseTime, Integer breakPeriod, int remainingTime) {
+        DataLakeLeaseClient leaseClient = createLeaseClient(dataLakeFileSystemClient, testResourceNamer.randomUuid());
+        leaseClient.acquireLease(leaseTime);
+
+        Response<Integer> breakLeaseResponse = leaseClient.breakLeaseWithResponse(breakPeriod, null, null, null);
+        LeaseStateType state = dataLakeFileSystemClient.getProperties().getLeaseState();
+
+        assertTrue(state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING);
+        assertTrue(breakLeaseResponse.getValue() <= remainingTime);
+        validateBasicHeaders(breakLeaseResponse.getHeaders());
+
         if (breakPeriod != null) {
             // If running in live mode wait for the lease to break so we can delete the file system after the test completes
-            sleepIfRecord(breakPeriod * 1000)
+            sleepIfRunningAgainstService(breakPeriod * 1000);;
         }
-
-        where:
-        leaseTime | breakPeriod | remainingTime
-                                  -1        | null        | 0
-                                                            -1        | 20          | 25
-        20        | 15          | 16
-
     }
 
-    def "Break file system lease min"() {
-        setup:
-        setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+    @Test
+    public void breakFileSystemLeaseMin() {
+        setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        expect:
-        createLeaseClient(fsc).breakLeaseWithResponse(null, null, null, null).getStatusCode() == 202
+        assertEquals(202, createLeaseClient(dataLakeFileSystemClient)
+            .breakLeaseWithResponse(null, null, null, null).getStatusCode());
     }
 
-    @Unroll
-    def "Break file system lease AC"() {
-        setup:
-        setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void breakFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        expect:
-        createLeaseClient(fsc).breakLeaseWithResponse(null, mac, null, null).getStatusCode() == 202
-
-        where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        assertEquals(202, createLeaseClient(dataLakeFileSystemClient)
+            .breakLeaseWithResponse(null, mac, null, null).getStatusCode());
     }
 
-    @Unroll
-    def "Break file system lease AC fail"() {
-        setup:
-        setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void breakFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        when:
-        createLeaseClient(fsc).breakLeaseWithResponse(null, mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient)
+            .breakLeaseWithResponse(null, mac, null, null));
     }
 
-    @Unroll
-    def "Break file system lease AC illegal"() {
-        setup:
-        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void breakFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        when:
-        createLeaseClient(fsc).breakLeaseWithResponse(null, mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient)
+            .breakLeaseWithResponse(null, mac, null, null));
     }
 
-    def "Break file system lease error"() {
-        setup:
-        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+    @Test
+    public void breakFileSystemLeaseError() {
+        DataLakeFileSystemClient fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        when:
-        createLeaseClient(fsc).breakLease()
-
-        then:
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(fsc).breakLease());
     }
 
-    def "Change file system lease"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def leaseClient = createLeaseClient(fsc, leaseID)
+    @Test
+    public void changeFileSystemLease() {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        DataLakeLeaseClient leaseClient = createLeaseClient(dataLakeFileSystemClient, leaseID);
 
-        when:
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(namer.getRandomUuid(), null, null, null)
-        def newLeaseId = changeLeaseResponse.getValue()
+        Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(testResourceNamer.randomUuid(), null,
+            null, null);
+        String newLeaseId = changeLeaseResponse.getValue();
 
-        then:
-        validateBasicHeaders(changeLeaseResponse.getHeaders())
-        newLeaseId == leaseClient.getLeaseId()
+        validateBasicHeaders(changeLeaseResponse.getHeaders());
+        assertEquals(leaseClient.getLeaseId(), newLeaseId);
 
-        expect:
-        createLeaseClient(fsc, newLeaseId).releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, newLeaseId).releaseLeaseWithResponse(null, null,
+            null).getStatusCode());
     }
 
-    def "Change file system lease min"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+    @Test
+    public void changeFileSystemLeaseMin() {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        expect:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), null, null, null).getStatusCode() == 200
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .changeLeaseWithResponse(testResourceNamer.randomUuid(), null, null, null).getStatusCode());
     }
 
-    @Unroll
-    def "Change file system lease AC"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void changeFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        expect:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null).getStatusCode() == 200
-
-        where:
-        modified        | unmodified
-        null            | null
-        APISpec.oldDate | null
-        null            | APISpec.newDate
+        assertEquals(200, createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac, null, null).getStatusCode());
     }
 
-    @Unroll
-    def "Change file system lease AC fail"() {
-        setup:
-        def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
-        def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void changeFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        when:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        modified        | unmodified
-        APISpec.newDate | null
-        null            | APISpec.oldDate
+        assertThrows(DataLakeStorageException.class, () -> createLeaseClient(dataLakeFileSystemClient, leaseID)
+            .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac, null, null));
     }
 
-    @Unroll
-    def "Change file system lease AC illegal"() {
-        setup:
-        def mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void changeFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        when:
-        createLeaseClient(fsc, APISpec.receivedLeaseID).changeLeaseWithResponse(APISpec.garbageLeaseID, mac, null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        match                | noneMatch
-        APISpec.receivedEtag | null
-        null                 | APISpec.garbageEtag
+        assertThrows(DataLakeStorageException.class, () ->
+            createLeaseClient(dataLakeFileSystemClient, RECEIVED_LEASE_ID)
+                .changeLeaseWithResponse(GARBAGE_LEASE_ID, mac, null, null));
     }
 
     @Test
