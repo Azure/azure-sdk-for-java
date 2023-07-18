@@ -89,10 +89,6 @@ public final class ChangeFeedProcessorItem {
             this.changeFeedProcessorItemAsJsonNode = constructChangeFeedProcessorItemAsJsonNode();
         }
 
-        if (this.changeFeedMetaDataInternal == null) {
-            this.changeFeedMetaDataInternal = Utils.getSimpleObjectMapper().convertValue(this.changeFeedMetaData, ChangeFeedMetaData.class);
-        }
-
         return this.changeFeedProcessorItemAsJsonNode;
     }
 
