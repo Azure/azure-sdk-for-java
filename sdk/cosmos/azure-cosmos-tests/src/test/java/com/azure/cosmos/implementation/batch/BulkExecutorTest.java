@@ -129,10 +129,7 @@ public class BulkExecutorTest extends BatchTestBase {
             inputFlux,
             cosmosBulkExecutionOptions);
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
-            Flux.deferContextual(context -> executor.execute()).flatMap(response -> {
-                logger.debug(String.valueOf(response.getResponse().getCosmosDiagnostics()));
-                return Mono.just(response);
-            });;
+            Flux.deferContextual(context -> executor.execute());
 
         Disposable disposable = bulkResponseFlux.subscribe();
         disposable.dispose();
@@ -180,7 +177,12 @@ public class BulkExecutorTest extends BatchTestBase {
             inputFlux,
             cosmosBulkExecutionOptions);
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
-            Flux.deferContextual(context -> executor.execute());
+            Flux.deferContextual(context -> executor.execute()).flatMap(response -> {
+                if (response.getResponse() != null) {
+                    logger.debug(String.valueOf(response.getResponse().getCosmosDiagnostics()));
+                }
+                return Mono.just(response);
+            });
 
 
         Mono<List<CosmosBulkOperationResponse<BulkExecutorTest>>> convertToListMono = bulkResponseFlux
