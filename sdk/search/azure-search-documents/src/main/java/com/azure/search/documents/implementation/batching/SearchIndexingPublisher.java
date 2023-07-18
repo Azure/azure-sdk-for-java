@@ -38,6 +38,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.BATCH_SIZE_SCALED_DOWN;
 import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.batchAvailableForProcessing;
 import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.calculateRetryDelay;
 import static com.azure.search.documents.implementation.batching.SearchBatchingUtils.createDocumentHitRetryLimitException;
@@ -136,18 +137,16 @@ public final class SearchIndexingPublisher<T> {
 
     public synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context,
         Runnable rescheduleFlush) {
-        actions.stream()
-            .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
-            .forEach(action -> {
-                if (onActionAddedConsumer != null) {
-                    onActionAddedConsumer.accept(new OnActionAddedOptions<>(action.getAction()));
-                }
-                this.actions.add(action);
-            });
+        for (IndexAction<T> action : actions) {
+            if (onActionAddedConsumer != null) {
+                onActionAddedConsumer.accept(new OnActionAddedOptions<>(action));
+            }
+            this.actions.add(new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())));
+        }
 
         LOGGER.verbose("Actions added, new pending queue size: {}.", this.actions.size());
 
-        if (autoFlush && batchAvailableForProcessing(actions.size(), inFlightActions.size(), batchActionCount)) {
+        if (autoFlush && batchAvailableForProcessing(this.actions.size(), inFlightActions.size(), batchActionCount)) {
             rescheduleFlush.run();
             LOGGER.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
             return flush(false, false, context);

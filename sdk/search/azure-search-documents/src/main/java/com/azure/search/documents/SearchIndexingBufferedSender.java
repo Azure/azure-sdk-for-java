@@ -5,12 +5,30 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.batching.SearchIndexingSyncPublisher;
+import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import reactor.core.publisher.Mono;
+import com.azure.search.documents.options.OnActionAddedOptions;
+import com.azure.search.documents.options.OnActionErrorOptions;
+import com.azure.search.documents.options.OnActionSentOptions;
+import com.azure.search.documents.options.OnActionSucceededOptions;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * This class provides a buffered sender that contains operations for conveniently indexing documents to an Azure Search
@@ -20,10 +38,35 @@ import java.util.Collection;
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchIndexingBufferedSender<T> {
-    final SearchIndexingBufferedAsyncSender<T> client;
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingBufferedSender.class);
 
-    SearchIndexingBufferedSender(SearchIndexingBufferedAsyncSender<T> client) {
-        this.client = client;
+    private static final ExecutorService THREAD_POOL = Utility.getThreadPoolWithShutdownHook();
+
+    private final boolean autoFlush;
+    private final long flushWindowMillis;
+
+    final SearchIndexingSyncPublisher<T> publisher;
+
+    private Timer autoFlushTimer;
+    private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
+
+    private volatile boolean isClosed = false;
+
+    SearchIndexingBufferedSender(SearchIndexClientImpl restClient, JsonSerializer serializer,
+        Function<T, String> documentKeyRetriever, boolean autoFlush, Duration autoFlushInterval,
+        int initialBatchActionCount, int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
+        Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
+        Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
+        Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
+        Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+        this.publisher = new SearchIndexingSyncPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
+            initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay, onActionAddedConsumer,
+            onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
+
+        this.autoFlush = autoFlush;
+        this.flushWindowMillis = Math.max(0, autoFlushInterval.toMillis());
+        this.autoFlushTimer = (this.autoFlush && this.flushWindowMillis > 0) ? new Timer() : null;
+
     }
 
     /**
@@ -32,7 +75,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @return The list of {@link IndexAction IndexActions} in the batch that are ready to be indexed.
      */
     public Collection<IndexAction<T>> getActions() {
-        return client.getActions();
+        return publisher.getActions();
     }
 
     /**
@@ -43,7 +86,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @return The number of documents required before a flush is triggered.
      */
     int getBatchActionCount() {
-        return client.getBatchActionCount();
+        return publisher.getBatchActionCount();
     }
 
     /**
@@ -69,7 +112,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addUploadActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.UPLOAD, context), timeout);
+        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.UPLOAD, context), timeout);
     }
 
     /**
@@ -95,7 +138,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addDeleteActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.DELETE, context), timeout);
+        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.DELETE, context), timeout);
     }
 
     /**
@@ -121,7 +164,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addMergeActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.MERGE, context), timeout);
+        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.MERGE, context), timeout);
     }
 
     /**
@@ -147,7 +190,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addMergeOrUploadActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context),
+        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context),
             timeout);
     }
 
@@ -174,7 +217,17 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addActions(Collection<IndexAction<T>> actions, Duration timeout, Context context) {
-        blockWithOptionalTimeout(client.addActions(actions, context), timeout);
+        blockWithOptionalTimeout(() -> addActions(actions, context), timeout);
+    }
+
+    void createAndAddActions(Collection<T> documents, IndexActionType actionType, Context context) {
+        addActions(createDocumentActions(documents, actionType), context);
+    }
+
+    void addActions(Collection<IndexAction<T>> actions, Context context) {
+        ensureOpen();
+
+        publisher.addActions(actions, context, this::rescheduleFlushTask);
     }
 
     /**
@@ -191,7 +244,35 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void flush(Duration timeout, Context context) {
-        blockWithOptionalTimeout(client.flush(context), timeout);
+        blockWithOptionalTimeout(() -> flush(context), timeout);
+    }
+
+    void flush(Context context) {
+        ensureOpen();
+
+        rescheduleFlushTask();
+        publisher.flush(false, false, context);
+    }
+
+    private void rescheduleFlushTask() {
+        if (!autoFlush) {
+            return;
+        }
+
+        TimerTask newTask = new TimerTask() {
+            @Override
+            public void run() {
+                publisher.flush(false, false, Context.NONE);
+            }
+        };
+
+        // If the previous flush task exists cancel it. If it has already executed cancel does nothing.
+        TimerTask previousTask = this.flushTask.getAndSet(newTask);
+        if (previousTask != null) {
+            previousTask.cancel();
+        }
+
+        this.autoFlushTimer.schedule(newTask, flushWindowMillis);
     }
 
     /**
@@ -214,14 +295,57 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void close(Duration timeout, Context context) {
-        blockWithOptionalTimeout(client.close(context), timeout);
+        blockWithOptionalTimeout(() -> close(context), timeout);
     }
 
-    private static void blockWithOptionalTimeout(Mono<?> operation, Duration timeout) {
-        if (timeout == null) {
-            operation.block();
+    void close(Context context) {
+        if (!isClosed) {
+            synchronized (this) {
+                if (!isClosed) {
+                    isClosed = true;
+                    if (this.autoFlush) {
+                        TimerTask currentTask = flushTask.getAndSet(null);
+                        if (currentTask != null) {
+                            currentTask.cancel();
+                        }
+
+                        autoFlushTimer.purge();
+                        autoFlushTimer.cancel();
+                        autoFlushTimer = null;
+                    }
+
+                    publisher.flush(true, true, context);
+                }
+            }
+        }
+    }
+
+    private synchronized void ensureOpen() {
+        if (isClosed) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Buffered sender has been closed."));
+        }
+    }
+
+    private static <T> Collection<IndexAction<T>> createDocumentActions(Collection<T> documents,
+        IndexActionType actionType) {
+        Collection<IndexAction<T>> actions = new ArrayList<>(documents.size());
+
+        for (T document : documents) {
+            actions.add(new IndexAction<T>().setActionType(actionType).setDocument(document));
+        }
+
+        return actions;
+    }
+
+    private static void blockWithOptionalTimeout(Runnable call, Duration timeout) {
+        if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
+            try {
+                THREAD_POOL.submit(call).get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         } else {
-            operation.block(timeout);
+            call.run();
         }
     }
 }

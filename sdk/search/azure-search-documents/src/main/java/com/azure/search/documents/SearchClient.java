@@ -673,7 +673,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDocuments()
-            .countWithResponse(null, Utility.enableSyncRestProxy(context)));
+            .countWithResponse(null, Utility.enableSyncRestProxy(context)), LOGGER);
     }
 
     /**
@@ -774,18 +774,19 @@ public final class SearchClient {
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SearchDocumentsResult> response = restClient.getDocuments().searchPostWithResponse(requestToUse, null, Utility.enableSyncRestProxy(context));
+            Response<SearchDocumentsResult> response = restClient.getDocuments()
+                .searchPostWithResponse(requestToUse, null, Utility.enableSyncRestProxy(context));
             SearchDocumentsResult result = response.getValue();
             SearchPagedResponse page = new SearchPagedResponse(
                 new SimpleResponse<>(response, getSearchResults(result, serializer)),
                 createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(), 
+                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
                 result.getSemanticPartialResponseType());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
             }
             return page;
-        });
+        }, LOGGER);
     }
 
     /**
@@ -858,11 +859,12 @@ public final class SearchClient {
 
     private SuggestPagedResponse suggest(SuggestRequest suggestRequest, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SuggestDocumentsResult> response = restClient.getDocuments().suggestPostWithResponse(suggestRequest, null, Utility.enableSyncRestProxy(context));
+            Response<SuggestDocumentsResult> response = restClient.getDocuments()
+                .suggestPostWithResponse(suggestRequest, null, Utility.enableSyncRestProxy(context));
             SuggestDocumentsResult result = response.getValue();
             return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result, serializer)),
                 result.getCoverage());
-        });
+        }, LOGGER);
     }
 
     /**
@@ -924,8 +926,9 @@ public final class SearchClient {
 
     private AutocompletePagedResponse autocomplete(AutocompleteRequest request, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<AutocompleteResult> response = restClient.getDocuments().autocompletePostWithResponse(request, null, Utility.enableSyncRestProxy(context));
+            Response<AutocompleteResult> response = restClient.getDocuments()
+                .autocompletePostWithResponse(request, null, Utility.enableSyncRestProxy(context));
             return new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue()));
-        });
+        }, LOGGER);
     }
 }

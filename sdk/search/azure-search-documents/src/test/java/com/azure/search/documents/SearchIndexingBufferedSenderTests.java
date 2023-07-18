@@ -26,6 +26,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -111,6 +114,31 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     /**
+     * Tests that flushing the batch sends the documents to the service.
+     */
+    @Test
+    public void flushBatchAsync() {
+        setupIndex();
+
+        SearchClient client = clientBuilder.buildClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON))
+            .then(batchingClient.flush()))
+            .verifyComplete();
+
+        waitForIndexing();
+
+        assertEquals(10, client.getDocumentCount());
+
+        StepVerifier.create(batchingClient.close()).verifyComplete();
+    }
+
+    /**
      * Tests that the batch will automatically flush when the configured batch size is reached, if configured for auto
      * flushing.
      */
@@ -132,6 +160,31 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         assertEquals(10, client.getDocumentCount());
         batchingClient.close();
+    }
+
+    /**
+     * Tests that the batch will automatically flush when the configured batch size is reached, if configured for auto
+     * flushing.
+     */
+    @Test
+    public void autoFlushBatchOnSizeAsync() {
+        setupIndex();
+
+        SearchClient client = clientBuilder.buildClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlushInterval(Duration.ofMinutes(5))
+            .initialBatchActionCount(10)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        waitForIndexing();
+
+        assertEquals(10, client.getDocumentCount());
+        StepVerifier.create(batchingClient.close()).verifyComplete();
     }
 
     /**
@@ -158,6 +211,30 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     /**
+     * Tests that batching will automatically flush when the flush windows completes, if configured for auto flushing.
+     */
+    @Test
+    public void autoFlushBatchOnDelayAsync() {
+        setupIndex();
+
+        SearchClient client = clientBuilder.buildClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .initialBatchActionCount(10)
+            .autoFlushInterval(Duration.ofSeconds(3))
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        waitForIndexing();
+
+        assertEquals(10, client.getDocumentCount());
+        StepVerifier.create(batchingClient.close()).verifyComplete();
+    }
+
+    /**
      * Tests that the batch will flush when the client is closed and documents still exist in the batch.
      */
     @Test
@@ -172,6 +249,28 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.close();
+
+        waitForIndexing();
+
+        assertEquals(10, client.getDocumentCount());
+    }
+
+    /**
+     * Tests that the batch will flush when the client is closed and documents still exist in the batch.
+     */
+    @Test
+    public void batchFlushesOnCloseAsync() {
+        setupIndex();
+
+        SearchClient client = clientBuilder.buildClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON))
+            .then(batchingClient.close()))
+            .verifyComplete();
 
         waitForIndexing();
 
@@ -200,6 +299,31 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         assertEquals(0, client.getDocumentCount());
         batchingClient.close();
+    }
+
+    /**
+     * Tests that when a batch has documents added but flush, auto-flush, or close is never called the documents don't
+     * get indexed.
+     */
+    @Test
+    public void batchGetsDocumentsButNeverFlushesAsync() {
+        setupIndex();
+
+        SearchClient client = clientBuilder.buildClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlushInterval(Duration.ofMinutes(5))
+            .initialBatchActionCount(1000)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        waitForIndexing();
+
+        assertEquals(0, client.getDocumentCount());
+        StepVerifier.create(batchingClient.close()).verifyComplete();
     }
 
     @Test
@@ -238,6 +362,50 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         }
 
         batchingClient.close();
+
+        sleepIfRunningAgainstService(10000);
+
+        assertEquals(1000, successCount.get());
+        assertEquals(0, failedCount.get());
+        assertTrue(requestCount.get() >= 100);
+        assertEquals(1000, client.getDocumentCount());
+    }
+
+    @Test
+    public void indexManyDocumentsSmallDocumentSetsAsync() {
+        setupIndex();
+
+        AtomicInteger requestCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger failedCount = new AtomicInteger();
+
+        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+            requestCount.incrementAndGet();
+            return next.process();
+        });
+
+        SearchClient client = builder.buildClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlushInterval(Duration.ofSeconds(5))
+            .initialBatchActionCount(10)
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> failedCount.incrementAndGet())
+            .buildAsyncSender();
+
+        List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
+        for (int i = 0; i < 100; i++) {
+            final int offset = i;
+            StepVerifier.create(batchingClient.addUploadActions(documents.stream()
+                .map(HashMap::new)
+                .peek(document -> document.put("HotelId",
+                    String.valueOf((offset * 10) + Integer.parseInt(document.get("HotelId").toString()))))
+                .collect(Collectors.toList())))
+                .verifyComplete();
+        }
+
+        StepVerifier.create(batchingClient.close()).verifyComplete();
 
         sleepIfRunningAgainstService(10000);
 
@@ -293,6 +461,53 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(1000, client.getDocumentCount());
     }
 
+    @Test
+    public void indexManyDocumentsOneLargeDocumentSetAsync() {
+        setupIndex();
+
+        AtomicInteger requestCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger failedCount = new AtomicInteger();
+
+        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+            requestCount.incrementAndGet();
+            return next.process();
+        });
+
+        SearchClient client = builder.buildClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = builder
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlushInterval(Duration.ofSeconds(5))
+            .initialBatchActionCount(10)
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> failedCount.incrementAndGet())
+            .buildAsyncSender();
+
+        List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
+        List<Map<String, Object>> documentBatch = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            final int offset = i;
+            documents.stream().map(HashMap::new)
+                .forEach(document -> {
+                    int originalId = Integer.parseInt(document.get("HotelId").toString());
+                    document.put("HotelId", String.valueOf((offset * 10) + originalId));
+                    documentBatch.add(document);
+                });
+        }
+
+        StepVerifier.create(batchingClient.addUploadActions(documentBatch)
+            .then(batchingClient.close()))
+            .verifyComplete();
+
+        sleepIfRunningAgainstService(10000);
+
+        assertEquals(1000, successCount.get());
+        assertEquals(0, failedCount.get());
+        assertTrue(requestCount.get() >= 100);
+        assertEquals(1000, client.getDocumentCount());
+    }
+
     /**
      * Tests that an empty batch doesn't attempt to index.
      */
@@ -315,6 +530,28 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     /**
+     * Tests that an empty batch doesn't attempt to index.
+     */
+    @Test
+    public void emptyBatchIsNeverSentAsync() {
+        AtomicInteger requestCount = new AtomicInteger();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        // flushInternal should never be called if the batch doesn't have any documents.
+        assertEquals(0, requestCount.get());
+
+        StepVerifier.create(batchingClient.close()).verifyComplete();
+    }
+
+    /**
      * Tests that a batch can timeout while indexing.
      */
     @Test
@@ -330,6 +567,26 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
         assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(1), Context.NONE));
+    }
+
+    /**
+     * Tests that a batch can timeout while indexing.
+     */
+    @Test
+    public void flushTimesOutAsync() {
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> Mono.<HttpResponse>just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                createMockResponseData(0, 200))).delayElement(Duration.ofSeconds(5)))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1)))
+            .verifyComplete();
+
+        StepVerifier.create(batchingClient.flush().timeout(Duration.ofSeconds(1)))
+            .verifyError(TimeoutException.class);
     }
 
     /**
@@ -377,6 +634,55 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(10, successCount.get());
     }
 
+
+    /**
+     * Tests that a batch will retain in-flight documents if the request is cancelled before the response is handled.
+     */
+    @Test
+    public void inFlightDocumentsAreRetriedAsync() {
+        AtomicInteger callCount = new AtomicInteger(0);
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> {
+                Mono<HttpResponse> response = Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                    createMockResponseData(0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200)));
+                if (callCount.getAndIncrement() == 0) {
+                    return response.delayElement(Duration.ofSeconds(5));
+                } else {
+                    return response;
+                }
+            })
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        // First request is setup to timeout.
+        StepVerifier.create(batchingClient.flush().timeout(Duration.ofSeconds(3)))
+            .verifyError(TimeoutException.class);
+
+        // Second request shouldn't timeout.
+        StepVerifier.create(batchingClient.flush().timeout(Duration.ofSeconds(3)))
+            .verifyComplete();
+
+        // Then validate that we have the expected number of requests sent and responded.
+        assertEquals(10, addedCount.get());
+        assertEquals(20, sentCount.get());
+        assertEquals(0, errorCount.get());
+        assertEquals(10, successCount.get());
+    }
+
     /**
      * Tests that when a batch has some failures the indexing hook is properly notified.
      */
@@ -416,6 +722,45 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     /**
+     * Tests that when a batch has some failures the indexing hook is properly notified.
+     */
+    @Test
+    public void batchHasSomeFailuresAsync() {
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                createMockResponseData(0, 201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .onActionAdded(options -> addedCount.incrementAndGet())
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> errorCount.incrementAndGet())
+            .onActionSent(options -> sentCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        // Exceptions are propagated into the onActionError.
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        assertEquals(10, addedCount.get());
+        assertEquals(5, successCount.get());
+        assertEquals(5, errorCount.get());
+        assertEquals(10, sentCount.get());
+
+        /*
+         * No documents failed with retryable errors, so we should expect zero documents are added back into the batch.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    /**
      * Tests that a batch will retry documents that fail with retryable status code.
      */
     @Test
@@ -441,6 +786,45 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         // Exceptions are propagated into the onActionError.
         assertDoesNotThrow((Executable) batchingClient::flush);
+
+        assertEquals(10, addedCount.get());
+        assertEquals(10, sentCount.get());
+        assertEquals(5, successCount.get());
+        assertEquals(0, errorCount.get());
+
+        /*
+         * 5 documents failed with retryable errors, so we should expect 5 documents are added back into the batch.
+         */
+        assertEquals(5, batchingClient.getActions().size());
+    }
+
+    /**
+     * Tests that a batch will retry documents that fail with retryable status code.
+     */
+    @Test
+    public void retryableDocumentsAreAddedBackToTheBatchAsync() {
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                createMockResponseData(0, 201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .onActionAdded(options -> addedCount.incrementAndGet())
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> errorCount.incrementAndGet())
+            .onActionSent(options -> sentCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        // Exceptions are propagated into the onActionError.
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
 
         assertEquals(10, addedCount.get());
         assertEquals(10, sentCount.get());
@@ -503,6 +887,56 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     /**
+     * Tests that a batch splits if the service responds with a 413.
+     */
+    @Test
+    public void batchSplitsAsync() {
+        AtomicInteger callCount = new AtomicInteger();
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 413));
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 0, 5);
+                } else if (count == 2) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .initialBatchActionCount(10)
+            .onActionAdded(options -> addedCount.incrementAndGet())
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> errorCount.incrementAndGet())
+            .onActionSent(options -> sentCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        // No exception is thrown as the batch splits and retries successfully.
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        assertEquals(10, addedCount.get());
+        assertEquals(10, successCount.get());
+        assertEquals(0, errorCount.get());
+        assertEquals(20, sentCount.get());
+
+        /*
+         * No documents failed, so we should expect zero documents are added back into the batch.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    /**
      * Tests that flushing a batch doesn't include duplicate keys.
      */
     @Test
@@ -535,6 +969,47 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(1, batchingClient.getActions().size());
 
         assertDoesNotThrow((Executable) batchingClient::flush);
+
+        /*
+         * No documents should remain as no duplicate keys exists.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    /**
+     * Tests that flushing a batch doesn't include duplicate keys.
+     */
+    @Test
+    public void batchTakesAllNonDuplicateKeysAsync() {
+        AtomicInteger callCount = new AtomicInteger();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 200, 200, 200, 200, 200, 200, 200, 200, 200)));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 200)));
+                }
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .buildAsyncSender();
+
+        List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
+        documents.get(9).put("HotelId", "1");
+
+        StepVerifier.create(batchingClient.addUploadActions(documents))
+            .verifyComplete();
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        /*
+         * One document shouldn't have been sent as it contains a duplicate key from an earlier document.
+         */
+        assertEquals(1, batchingClient.getActions().size());
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
 
         /*
          * No documents should remain as no duplicate keys exists.
@@ -581,6 +1056,52 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         assertDoesNotThrow((Executable) batchingClient::flush);
         assertDoesNotThrow((Executable) batchingClient::close);
+
+        /*
+         * No documents should remain as no duplicate keys exists.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    @Test
+    public void batchWithDuplicateKeysBeingRetriedTakesAllNonDuplicateKeysAsync() {
+        AtomicInteger callCount = new AtomicInteger();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                        createMockResponseData(0, 503, 200, 200, 200, 200, 200, 200, 200, 200)));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 200)));
+                }
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .buildAsyncSender();
+
+        List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
+        documents.get(9).put("HotelId", "1");
+
+        StepVerifier.create(batchingClient.addUploadActions(documents)).verifyComplete();
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        /*
+         * Two documents should be in the batch as one failed with a retryable status code and another wasn't sent as it
+         * used a duplicate key from the batch that was sent.
+         */
+        assertEquals(2, batchingClient.getActions().size());
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        /*
+         * One document should remain in the batch as it had the same key as another document in the batch.
+         */
+        assertEquals(1, batchingClient.getActions().size());
+
+        StepVerifier.create(batchingClient.flush().then(batchingClient.close()))
+            .verifyComplete();
 
         /*
          * No documents should remain as no duplicate keys exists.
@@ -637,6 +1158,55 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     /**
+     * Tests that an operation will be dumped into a "dead letter" queue if it is retried too many times.
+     */
+    @Test
+    public void batchRetriesUntilLimitAsync() {
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                createMockResponseData(0, 409))))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .maxRetriesPerAction(10)
+            .onActionAdded(options -> addedCount.incrementAndGet())
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> errorCount.incrementAndGet())
+            .onActionSent(options -> sentCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1)))
+            .verifyComplete();
+
+        // Batch split until it was size of one and failed.
+        for (int i = 0; i < 10; i++) {
+            StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+            // Document should be added back into the batch as it is retryable.
+            assertEquals(1, batchingClient.getActions().size());
+        }
+
+        // Final call which will trigger the retry limit for the document but doesn't throw.
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        assertEquals(1, addedCount.get());
+        // Document gets sent 10 times for the number of retries that happen.
+        assertEquals(11, sentCount.get());
+        assertEquals(1, errorCount.get());
+        assertEquals(0, successCount.get());
+
+        /*
+         * All documents failed, so we should expect zero documents are added back into the batch.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    /**
      * Tests that a batch will split until it is a size of one if the service continues returning 413. When the service
      * returns 413 on a batch size of one it will be deemed a final error state.
      */
@@ -663,6 +1233,46 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         // Batch split until it was size of one and fails but doesn't throw.
         assertDoesNotThrow((Executable) batchingClient::flush);
+
+        assertEquals(2, addedCount.get());
+        assertEquals(2, errorCount.get());
+        assertEquals(0, successCount.get());
+        assertEquals(4, sentCount.get());
+
+        /*
+         * No documents failed, so we should expect zero documents are added back into the batch.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    /**
+     * Tests that a batch will split until it is a size of one if the service continues returning 413. When the service
+     * returns 413 on a batch size of one it will be deemed a final error state.
+     */
+    @Test
+    public void batchSplitsUntilOneAndFailsAsync() {
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .initialBatchActionCount(2)
+            .onActionAdded(options -> addedCount.incrementAndGet())
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> errorCount.incrementAndGet())
+            .onActionSent(options -> sentCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2)))
+            .verifyComplete();
+
+        // Batch split until it was size of one and fails but doesn't throw.
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
 
         assertEquals(2, addedCount.get());
         assertEquals(2, errorCount.get());
@@ -705,6 +1315,49 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         // Batch split until it was size of one and fails but doesn't throw.
         assertDoesNotThrow((Executable) batchingClient::flush);
+
+        assertEquals(2, addedCount.get());
+        assertEquals(1, errorCount.get());
+        assertEquals(1, successCount.get());
+        assertEquals(4, sentCount.get());
+
+        /*
+         * No documents failed, so we should expect zero documents are added back into the batch.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    /**
+     * Tests that a batch will split until all sub-batches are one document and some of the sub batches fail with 413
+     * while others do not.
+     */
+    @Test
+    public void batchSplitsUntilOneAndPartiallyFailsAsync() {
+        AtomicInteger callCount = new AtomicInteger();
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> (callCount.getAndIncrement() < 2)
+                ? Mono.just(new MockHttpResponse(request, 413))
+                : createMockBatchSplittingResponse(request, 1, 1))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .initialBatchActionCount(2)
+            .onActionAdded(options -> addedCount.incrementAndGet())
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> errorCount.incrementAndGet())
+            .onActionSent(options -> sentCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2)))
+            .verifyComplete();
+
+        // Batch split until it was size of one and fails but doesn't throw.
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
 
         assertEquals(2, addedCount.get());
         assertEquals(1, errorCount.get());
@@ -762,6 +1415,39 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("operationsThrowAfterClientIsClosedAsyncSupplier")
+    public void operationsThrowAfterClientIsClosedAsync(
+        Function<SearchIndexingBufferedAsyncSender<Map<String, Object>>, Mono<Void>> operation) {
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.close()).verifyComplete();
+
+        StepVerifier.create(operation.apply(batchingClient)).verifyError(IllegalStateException.class);
+    }
+
+    static Stream<Function<SearchIndexingBufferedAsyncSender<Map<String, Object>>, Mono<Void>>> operationsThrowAfterClientIsClosedAsyncSupplier() {
+        List<Map<String, Object>> simpleDocuments = Collections.singletonList(Collections.singletonMap("key", "value"));
+        List<IndexAction<Map<String, Object>>> actions = simpleDocuments.stream()
+            .map(document -> new IndexAction<Map<String, Object>>()
+                .setDocument(document)
+                .setActionType(IndexActionType.UPLOAD))
+            .collect(Collectors.toList());
+
+        return Stream.of(
+            client -> client.addActions(actions),
+            client -> client.addUploadActions(simpleDocuments),
+            client -> client.addMergeOrUploadActions(simpleDocuments),
+            client -> client.addMergeActions(simpleDocuments),
+            client -> client.addDeleteActions(simpleDocuments),
+            SearchIndexingBufferedAsyncSender::flush
+        );
+    }
+
     @Test
     public void closingTwiceDoesNotThrow() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
@@ -776,7 +1462,68 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     @Test
+    public void closingTwiceDoesNotThrowAsync() {
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.close()).verifyComplete();
+        StepVerifier.create(batchingClient.close()).verifyComplete();
+    }
+
+    @Test
     public void concurrentFlushesOnlyAllowsOneProcessor() throws InterruptedException {
+        AtomicInteger callCount = new AtomicInteger();
+
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return createMockBatchSplittingResponse(request, 0, 5)
+                        .delayElement(Duration.ofSeconds(2))
+                        .map(Function.identity());
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .initialBatchActionCount(5)
+            .buildSender();
+
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
+
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
+            try {
+                batchingClient.flush();
+            } finally {
+                firstFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            }
+        });
+
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
+            try {
+                batchingClient.flush();
+            } finally {
+                secondFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            }
+        });
+
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get());
+    }
+
+    @Test
+    public void concurrentFlushesOnlyAllowsOneProcessorAsync() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
@@ -822,6 +1569,55 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
+        AtomicInteger callCount = new AtomicInteger();
+
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return createMockBatchSplittingResponse(request, 0, 5)
+                        .delayElement(Duration.ofSeconds(2))
+                        .map(Function.identity());
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .initialBatchActionCount(5)
+            .buildSender();
+
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
+
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
+            try {
+                batchingClient.flush();
+            } finally {
+                firstFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            }
+        });
+
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
+            try {
+                batchingClient.flush();
+            } finally {
+                secondFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            }
+        });
+
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
+    }
+
+    @Test
+    public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunningAsync() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
@@ -910,6 +1706,51 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     @Test
+    public void serverBusyResponseRetriesAsync() {
+        AtomicInteger callCount = new AtomicInteger();
+        AtomicInteger addedCount = new AtomicInteger();
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count < 1) {
+                    return Mono.just(new MockHttpResponse(request, 503));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 201, 200, 201, 200, 200, 200, 201, 201, 200, 201)));
+                }
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .onActionAdded(options -> addedCount.incrementAndGet())
+            .onActionSucceeded(options -> successCount.incrementAndGet())
+            .onActionError(options -> errorCount.incrementAndGet())
+            .onActionSent(options -> sentCount.incrementAndGet())
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        // No exception is thrown as the batch splits and retries successfully.
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+
+        assertEquals(10, addedCount.get());
+        assertEquals(10, successCount.get());
+        assertEquals(0, errorCount.get());
+        assertEquals(20, sentCount.get());
+
+        /*
+         * No documents failed, so we should expect zero documents are added back into the batch.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    @Test
     public void delayGrowsWith503Response() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
@@ -922,11 +1763,32 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        Duration retryDuration = batchingClient.client.publisher.getCurrentRetryDelay();
+        Duration retryDuration = batchingClient.publisher.getCurrentRetryDelay();
         assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        assertTrue(batchingClient.client.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
+        assertTrue(batchingClient.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
+    }
+
+    @Test
+    public void delayGrowsWith503ResponseAsync() {
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 503)))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)))
+            .verifyComplete();
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        Duration retryDuration = batchingClient.publisher.getCurrentRetryDelay();
+        assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        assertTrue(batchingClient.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
     }
 
     @Test
@@ -943,11 +1805,33 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        Duration retryDuration = batchingClient.client.publisher.getCurrentRetryDelay();
+        Duration retryDuration = batchingClient.publisher.getCurrentRetryDelay();
         assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        assertTrue(batchingClient.client.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
+        assertTrue(batchingClient.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
+    }
+
+    @Test
+    public void delayGrowsWith503BatchOperationAsync() {
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                createMockResponseData(0, 503))))
+            .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1)))
+            .verifyComplete();
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        Duration retryDuration = batchingClient.publisher.getCurrentRetryDelay();
+        assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        assertTrue(batchingClient.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
     }
 
     @Test
@@ -971,11 +1855,40 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        Duration retryDuration = batchingClient.client.publisher.getCurrentRetryDelay();
+        Duration retryDuration = batchingClient.publisher.getCurrentRetryDelay();
         assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        assertEquals(Duration.ZERO, batchingClient.client.publisher.getCurrentRetryDelay());
+        assertEquals(Duration.ZERO, batchingClient.publisher.getCurrentRetryDelay());
+    }
+
+    @Test
+    public void delayResetsAfterNo503sAsync() {
+        AtomicInteger callCount = new AtomicInteger();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+            .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 503));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 200)));
+                }
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+            .autoFlush(false)
+            .buildAsyncSender();
+
+        StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1)))
+            .verifyComplete();
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        Duration retryDuration = batchingClient.publisher.getCurrentRetryDelay();
+        assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
+
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        assertEquals(Duration.ZERO, batchingClient.publisher.getCurrentRetryDelay());
     }
 
     /*

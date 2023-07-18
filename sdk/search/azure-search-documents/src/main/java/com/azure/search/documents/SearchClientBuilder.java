@@ -543,7 +543,20 @@ public final class SearchClientBuilder implements
          * and {@link #retryPolicy(RetryPolicy)} have been set.
          */
         public SearchIndexingBufferedSender<T> buildSender() {
-            return new SearchIndexingBufferedSender<>(buildAsyncSender());
+            validateIndexNameAndEndpoint();
+            Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
+
+            SearchServiceVersion buildVersion = (serviceVersion == null)
+                ? SearchServiceVersion.getLatest()
+                : serviceVersion;
+
+            JsonSerializer serializer = (jsonSerializer == null)
+                ? JsonSerializerProviders.createInstance(true)
+                : jsonSerializer;
+            return new SearchIndexingBufferedSender<>(buildRestClient(buildVersion, endpoint, indexName,
+                getHttpPipeline()), serializer, documentKeyRetriever, autoFlush, autoFlushInterval,
+                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
+                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }
 
         /**

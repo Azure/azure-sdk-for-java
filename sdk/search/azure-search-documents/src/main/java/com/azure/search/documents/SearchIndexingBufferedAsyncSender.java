@@ -18,6 +18,7 @@ import com.azure.search.documents.options.OnActionSucceededOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -243,9 +244,12 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
     private static <T> Collection<IndexAction<T>> createDocumentActions(Collection<T> documents,
         IndexActionType actionType) {
-        return documents.stream().map(document -> new IndexAction<T>()
-            .setActionType(actionType)
-            .setDocument(document))
-            .collect(Collectors.toList());
+        Collection<IndexAction<T>> actions = new ArrayList<>(documents.size());
+
+        for (T document : documents) {
+            actions.add(new IndexAction<T>().setActionType(actionType).setDocument(document));
+        }
+
+        return actions;
     }
 }

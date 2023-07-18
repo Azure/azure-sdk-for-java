@@ -51,6 +51,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -78,6 +81,8 @@ public final class Utility {
     private static final String CLIENT_VERSION;
     private static final Context STATIC_ENABLE_REST_PROXY_CONTEXT;
 
+    private static final long THREAD_POOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
+
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
@@ -85,14 +90,20 @@ public final class Utility {
         STATIC_ENABLE_REST_PROXY_CONTEXT = Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
-    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-        Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
-        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, SearchAudience audience,
-        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient,
+    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions,
+        HttpLogOptions logOptions,
+        Configuration configuration,
+        RetryPolicy retryPolicy,
+        RetryOptions retryOptions,
+        AzureKeyCredential azureKeyCredential,
+        TokenCredential tokenCredential,
+        SearchAudience audience,
+        List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies,
+        HttpClient httpClient,
         ClientLogger logger) {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         ClientOptions buildClientOptions = (clientOptions == null) ? DEFAULT_CLIENT_OPTIONS : clientOptions;
         HttpLogOptions buildLogOptions = (logOptions == null) ? DEFAULT_LOG_OPTIONS : logOptions;
@@ -113,8 +124,8 @@ public final class Utility {
         httpPipelinePolicies.add(new AddDatePolicy());
 
         if (azureKeyCredential != null && tokenCredential != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Builder has both AzureKeyCredential and "
-                + "TokenCredential supplied. Only one may be supplied."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Builder has both AzureKeyCredential and TokenCredential supplied. Only one may be supplied."));
         } else if (azureKeyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
         } else if (tokenCredential != null) {
@@ -122,7 +133,7 @@ public final class Utility {
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audienceUrl + "/.default"));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Builder doesn't have a credential "
-                + "configured. Supply either an AzureKeyCredential or TokenCredential."));
+                                                                          + "configured. Supply either an AzureKeyCredential or TokenCredential."));
         }
 
         httpPipelinePolicies.addAll(perRetryPolicies);
@@ -144,34 +155,42 @@ public final class Utility {
     }
 
     public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponseAsync(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
-        Context context, ClientLogger logger) {
+        List<com.azure.search.documents.implementation.models.IndexAction> actions,
+        boolean throwOnAnyError,
+        Context context,
+        ClientLogger logger) {
         try {
-            return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
+            return restClient
+                .getDocuments()
+                .indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
-                    ? Mono.error(new IndexBatchException(response.getValue()))
-                    : Mono.just(response));
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) ? Mono.error(
+                    new IndexBatchException(response.getValue())) : Mono.just(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     public static Response<IndexDocumentsResult> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
-        Context context, ClientLogger logger) {
+        List<com.azure.search.documents.implementation.models.IndexAction> actions,
+        boolean throwOnAnyError,
+        Context context,
+        ClientLogger logger) {
         return executeRestCallWithExceptionHandling(() -> {
-            Response<IndexDocumentsResult> response = restClient.getDocuments()
+            Response<IndexDocumentsResult> response = restClient
+                .getDocuments()
                 .indexWithResponse(new IndexBatch(actions), null, enableSyncRestProxy(context));
             if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
-                throw new IndexBatchException(response.getValue());
+                throw logger.logExceptionAsError(new IndexBatchException(response.getValue()));
             }
             return response;
-        });
+        }, logger);
     }
 
-    public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
-        String indexName, HttpPipeline httpPipeline) {
+    public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion,
+        String endpoint,
+        String indexName,
+        HttpPipeline httpPipeline) {
         return new SearchIndexClientImpl(httpPipeline, endpoint, indexName, serviceVersion.getVersion());
     }
 
@@ -187,15 +206,17 @@ public final class Utility {
         }
     }
 
-    public static  <T> T executeRestCallWithExceptionHandling(Supplier<T> supplier) {
+    public static <T> T executeRestCallWithExceptionHandling(Supplier<T> supplier, ClientLogger logger) {
         try {
             return supplier.get();
         } catch (com.azure.search.documents.indexes.implementation.models.SearchErrorException exception) {
-            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
+                exception.getResponse()));
         } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
-            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
+            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
+                exception.getResponse()));
         } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
+            throw logger.logExceptionAsError(ex);
         }
     }
 
@@ -242,6 +263,30 @@ public final class Utility {
             return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
         }
         return new HttpResponseException(exception.getMessage(), exception.getResponse());
+    }
+
+    public static ExecutorService getThreadPoolWithShutdownHook() {
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        registerShutdownHook(threadPool);
+        return threadPool;
+    }
+
+    static Thread registerShutdownHook(ExecutorService threadPool) {
+        long halfTimeout = TimeUnit.SECONDS.toNanos(THREAD_POOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+        return hook;
     }
 
     private Utility() {
