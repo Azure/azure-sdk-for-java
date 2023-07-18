@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
+import java.util.Locale;
 
 /**
  * Change Feed response meta data
@@ -39,7 +40,7 @@ public final class ChangeFeedMetaData {
         this.logSequenceNumber = lsnJsonNode != null ? lsnJsonNode.asLong() : -1;
 
         if (operationTypeJsonNode != null) {
-            String operationTypeAsString = operationTypeJsonNode.asText().toLowerCase();
+            String operationTypeAsString = operationTypeJsonNode.asText().toLowerCase(Locale.ROOT);
 
             switch (operationTypeAsString) {
                 case "create":
