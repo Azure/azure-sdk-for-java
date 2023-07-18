@@ -63,15 +63,15 @@ public final class ChangeFeedProcessorItem {
     @JsonIgnore
     public ChangeFeedMetaData getChangeFeedMetaData() {
 
-        if (changeFeedProcessorItemAsJsonNode == null) {
+        if (this.changeFeedProcessorItemAsJsonNode == null) {
             this.changeFeedProcessorItemAsJsonNode = constructChangeFeedProcessorItemAsJsonNode();
         }
 
-        if (changeFeedMetaDataInternal == null) {
-            changeFeedMetaDataInternal = Utils.getSimpleObjectMapper().convertValue(this.changeFeedMetaData, ChangeFeedMetaData.class);
+        if (this.changeFeedMetaDataInternal == null) {
+            this.changeFeedMetaDataInternal = Utils.getSimpleObjectMapper().convertValue(this.changeFeedMetaData, ChangeFeedMetaData.class);
         }
 
-        return changeFeedMetaDataInternal;
+        return this.changeFeedMetaDataInternal;
     }
 
     /**
@@ -100,7 +100,7 @@ public final class ChangeFeedProcessorItem {
     public String toString() {
         try {
 
-            if (changeFeedProcessorItemAsJsonNode == null) {
+            if (this.changeFeedProcessorItemAsJsonNode == null) {
                 this.changeFeedProcessorItemAsJsonNode = constructChangeFeedProcessorItemAsJsonNode();
             }
 
