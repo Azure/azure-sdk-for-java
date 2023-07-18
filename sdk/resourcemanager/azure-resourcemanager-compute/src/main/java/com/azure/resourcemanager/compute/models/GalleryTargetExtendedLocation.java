@@ -32,7 +32,7 @@ public final class GalleryTargetExtendedLocation {
      * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
     @JsonProperty(value = "storageAccountType")
-    private StorageAccountType storageAccountType;
+    private EdgeZoneStorageAccountType storageAccountType;
 
     /*
      * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
@@ -113,7 +113,7 @@ public final class GalleryTargetExtendedLocation {
      *
      * @return the storageAccountType value.
      */
-    public StorageAccountType storageAccountType() {
+    public EdgeZoneStorageAccountType storageAccountType() {
         return this.storageAccountType;
     }
 
@@ -124,7 +124,7 @@ public final class GalleryTargetExtendedLocation {
      * @param storageAccountType the storageAccountType value to set.
      * @return the GalleryTargetExtendedLocation object itself.
      */
-    public GalleryTargetExtendedLocation withStorageAccountType(StorageAccountType storageAccountType) {
+    public GalleryTargetExtendedLocation withStorageAccountType(EdgeZoneStorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
         return this;
     }
