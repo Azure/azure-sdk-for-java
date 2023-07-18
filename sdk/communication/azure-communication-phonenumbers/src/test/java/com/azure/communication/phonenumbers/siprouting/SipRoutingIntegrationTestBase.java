@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
@@ -20,9 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -36,13 +35,6 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     protected static final String SET_TRUNK_ROUTE_NUMBER_PATTERN = "99.*";
     protected static final SipTrunkRoute SET_TRUNK_ROUTE =
         new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN);
-
-    private static String RANDOM_GUID = UUID.randomUUID().toString().replace("-", "");
-
-    protected static final List<String> FQDNS = Arrays.asList("first" + RANDOM_GUID + "." + AZURE_TEST_DOMAIN,
-        "second"  + RANDOM_GUID + "." + AZURE_TEST_DOMAIN, "third",
-        "fourth", "fifth",
-        "sixth");
     protected static final String FIRST_FQDN = getUniqueFqdn("first");
     protected static final String SECOND_FQDN = getUniqueFqdn("second");
     protected static final String THIRD_FQDN = getUniqueFqdn("third");
@@ -93,17 +85,6 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         new SipTrunkRoute("route21", "7.*").setDescription("desc92"),
         new SipTrunkRoute("route24", "4.*").setDescription("desc44")
     );
-
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
-        new StringJoiner("\":\"|\"", "\"", "\":\"")
-            .add("id")
-            .add("phoneNumber");
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN =
-        Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
-    private static final Pattern UUID_FQDN_REDACTION_PATTERN =
-        Pattern.compile("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\.com|\\.net)", Pattern.CASE_INSENSITIVE);
-
     protected static final String MESSAGE_DUPLICATE_ROUTES =
         "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"DuplicatedRoute\",\"message\":\"There is a duplicated route.\"}}}\"";
     protected static final String MESSAGE_DUPLICATE_TRUNKS =
@@ -128,15 +109,19 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             addTestProxyMatchers();
         }
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}[^/?]+)",
-                    ".redacted.com", TestProxySanitizerType.BODY_REGEX),
-                new TestProxySanitizer("id", null,
-                    "REDACTED", TestProxySanitizerType.BODY_KEY),
-                new TestProxySanitizer("phoneNumber", null, "REDACTED",
-                    TestProxySanitizerType.BODY_KEY)));
+            addTestProxySanitizers();
         }
 
         return builder;
+    }
+
+    private void addTestProxySanitizers() {
+        interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(-[0-9a-fA-F]{32}.[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}[^/?]+)",
+                ".redacted.com", TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer("id", null,
+                "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("phoneNumber", null, "REDACTED",
+                TestProxySanitizerType.BODY_KEY)));
     }
 
     protected SipRoutingClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
@@ -158,12 +143,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             addTestProxyMatchers();
         }
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}[^/?]+)",
-                    ".redacted.com", TestProxySanitizerType.BODY_REGEX),
-                new TestProxySanitizer("id", null,
-                    "REDACTED", TestProxySanitizerType.BODY_KEY),
-                new TestProxySanitizer("phoneNumber", null, "REDACTED",
-                    TestProxySanitizerType.BODY_KEY)));
+            addTestProxySanitizers();
         }
 
         return builder;
@@ -199,11 +179,11 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     }
 
     private static String getUniqueFqdn(String order) {
-        // if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
-        //     return order + ".redacted.com";
-        // }
+        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
+            return order  + ".redacted.com";
+        }
 
         String unique = UUID.randomUUID().toString().replace("-", "");
-        return order + "-" + RANDOM_GUID + "." + AZURE_TEST_DOMAIN;
+        return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
     }
 }
