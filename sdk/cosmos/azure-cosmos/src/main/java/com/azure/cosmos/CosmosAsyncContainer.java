@@ -1302,8 +1302,7 @@ public class CosmosAsyncContainer {
 
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        return DiagnosticsProvider.withContextAndSuppressedInstrumentation(
-            context -> readItemInternal(itemId, requestOptions, itemType, context));
+        return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
     }
 
     /**
