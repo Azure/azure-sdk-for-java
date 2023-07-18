@@ -7,6 +7,7 @@ import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
 
@@ -25,6 +26,39 @@ public final class ChangeFeedMetaData {
     private long previousLogSequenceNumber;
     @JsonProperty("timeToLiveExpired")
     private boolean timeToLiveExpired;
+
+    ChangeFeedMetaData(JsonNode changeFeedMetaDataAsJson) {
+
+        JsonNode crtsJsonNode = changeFeedMetaDataAsJson.get("crts");
+        JsonNode lsnJsonNode = changeFeedMetaDataAsJson.get("lsn");
+        JsonNode operationTypeJsonNode = changeFeedMetaDataAsJson.get("operationType");
+        JsonNode previousImageLsnJsonNode = changeFeedMetaDataAsJson.get("previousImageLSN");
+        JsonNode timeToLiveExpiredJsonNode = changeFeedMetaDataAsJson.get("timeToLiveExpired");
+
+        this.conflictResolutionTimestamp = crtsJsonNode != null ? crtsJsonNode.asLong() : -1;
+        this.logSequenceNumber = lsnJsonNode != null ? lsnJsonNode.asLong() : -1;
+
+        if (operationTypeJsonNode != null) {
+            String operationTypeAsString = operationTypeJsonNode.asText();
+
+            switch (operationTypeAsString) {
+                case "create":
+                    this.operationType = ChangeFeedOperationType.CREATE;
+                    break;
+                case "replace":
+                    this.operationType = ChangeFeedOperationType.REPLACE;
+                    break;
+                case "delete":
+                    this.operationType = ChangeFeedOperationType.DELETE;
+                    break;
+                default:
+                    throw new IllegalStateException("The operationType is not a valid operation!");
+            }
+        }
+
+        this.previousLogSequenceNumber = previousImageLsnJsonNode != null ? previousImageLsnJsonNode.asLong() : -1;
+        this.timeToLiveExpired = timeToLiveExpiredJsonNode != null ? timeToLiveExpiredJsonNode.asBoolean() : false;
+    }
 
     /**
      * Gets the conflict resolution timestamp

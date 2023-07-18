@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,7 +26,9 @@ public final class ChangeFeedProcessorItem {
     private JsonNode previous;
     @JsonProperty("metadata")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private ChangeFeedMetaData changeFeedMetaData;
+    private JsonNode changeFeedMetaData;
+    private ChangeFeedMetaData changeFeedMetaDataInternal;
+    private final Object monitor = new Object();
 
     /**
      * Gets the change feed current item.
@@ -55,8 +58,14 @@ public final class ChangeFeedProcessorItem {
      * @return change feed metadata.
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @JsonIgnore
     public ChangeFeedMetaData getChangeFeedMetaData() {
-        return changeFeedMetaData;
+        synchronized (monitor) {
+            if (changeFeedMetaDataInternal == null) {
+                changeFeedMetaDataInternal = new ChangeFeedMetaData(changeFeedMetaData);
+            }
+            return changeFeedMetaDataInternal;
+        }
     }
 
     /**
