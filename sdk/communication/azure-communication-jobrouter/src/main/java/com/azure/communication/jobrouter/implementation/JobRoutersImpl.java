@@ -4,24 +4,24 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferRequest;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterJobCollection;
-import com.azure.communication.jobrouter.models.RouterJobItem;
-import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
-import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
-import com.azure.communication.jobrouter.models.RouterQueueStatistics;
-import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.models.RouterWorkerCollection;
-import com.azure.communication.jobrouter.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
+import com.azure.communication.jobrouter.implementation.models.RouterJobCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterJobItemInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterJobPositionDetailsInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterJobStatusSelectorInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueStatisticsInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerItemInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerStateSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
-import com.azure.communication.jobrouter.models.UnassignJobResult;
+import com.azure.communication.jobrouter.implementation.models.UnassignJobResultInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -45,8 +45,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /** An instance of this class provides access to all the operations defined in JobRouters. */
 public final class JobRoutersImpl {
@@ -77,18 +78,18 @@ public final class JobRoutersImpl {
         @Patch("/routing/jobs/{id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJob>> upsertJob(
+        Mono<Response<RouterJobInternal>> upsertJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterJob patch,
+                @BodyParam("application/merge-patch+json") RouterJobInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/jobs/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJob>> getJob(
+        Mono<Response<RouterJobInternal>> getJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -152,15 +153,15 @@ public final class JobRoutersImpl {
         @Get("/routing/jobs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJobCollection>> listJobs(
+        Mono<Response<RouterJobCollectionInternal>> listJobs(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("status") RouterJobStatusSelector status,
+                @QueryParam("status") RouterJobStatusSelectorInternal status,
                 @QueryParam("queueId") String queueId,
                 @QueryParam("channelId") String channelId,
                 @QueryParam("classificationPolicyId") String classificationPolicyId,
                 @QueryParam("scheduledBefore") OffsetDateTime scheduledBefore,
                 @QueryParam("scheduledAfter") OffsetDateTime scheduledAfter,
-                @QueryParam("maxpagesize") Integer maxpagesize,
+                @QueryParam("maxpagesize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -168,7 +169,7 @@ public final class JobRoutersImpl {
         @Get("/routing/jobs/{id}/position")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJobPositionDetails>> getInQueuePosition(
+        Mono<Response<RouterJobPositionDetailsInternal>> getInQueuePosition(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -178,7 +179,7 @@ public final class JobRoutersImpl {
         @Post("/routing/jobs/{id}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<UnassignJobResult>> unassignJobAction(
+        Mono<Response<UnassignJobResultInternal>> unassignJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @PathParam("assignmentId") String assignmentId,
@@ -190,7 +191,7 @@ public final class JobRoutersImpl {
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcceptJobOfferResult>> acceptJobAction(
+        Mono<Response<AcceptJobOfferResultInternal>> acceptJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @PathParam("offerId") String offerId,
@@ -213,7 +214,7 @@ public final class JobRoutersImpl {
         @Get("/routing/queues/{id}/statistics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterQueueStatistics>> getQueueStatistics(
+        Mono<Response<RouterQueueStatisticsInternal>> getQueueStatistics(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -223,18 +224,18 @@ public final class JobRoutersImpl {
         @Patch("/routing/workers/{workerId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorker>> upsertWorker(
+        Mono<Response<RouterWorkerInternal>> upsertWorker(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterWorker patch,
+                @BodyParam("application/merge-patch+json") RouterWorkerInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/workers/{workerId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorker>> getWorker(
+        Mono<Response<RouterWorkerInternal>> getWorker(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @QueryParam("api-version") String apiVersion,
@@ -254,13 +255,13 @@ public final class JobRoutersImpl {
         @Get("/routing/workers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorkerCollection>> listWorkers(
+        Mono<Response<RouterWorkerCollectionInternal>> listWorkers(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("state") RouterWorkerStateSelector state,
+                @QueryParam("state") RouterWorkerStateSelectorInternal state,
                 @QueryParam("channelId") String channelId,
                 @QueryParam("queueId") String queueId,
                 @QueryParam("hasCapacity") Boolean hasCapacity,
-                @QueryParam("maxpagesize") Integer maxpagesize,
+                @QueryParam("maxpagesize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -268,7 +269,7 @@ public final class JobRoutersImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJobCollection>> listJobsNext(
+        Mono<Response<RouterJobCollectionInternal>> listJobsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -277,7 +278,7 @@ public final class JobRoutersImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorkerCollection>> listWorkersNext(
+        Mono<Response<RouterWorkerCollectionInternal>> listWorkersNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -296,7 +297,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch) {
+    public Mono<Response<RouterJobInternal>> upsertJobWithResponseAsync(String id, RouterJobInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -317,7 +318,8 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch, Context context) {
+    public Mono<Response<RouterJobInternal>> upsertJobWithResponseAsync(
+            String id, RouterJobInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertJob(this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
     }
@@ -334,7 +336,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch) {
+    public Mono<RouterJobInternal> upsertJobAsync(String id, RouterJobInternal patch) {
         return upsertJobWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -351,24 +353,8 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch, Context context) {
+    public Mono<RouterJobInternal> upsertJobAsync(String id, RouterJobInternal patch, Context context) {
         return upsertJobWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a router job.
-     *
-     * @param id Id of the job.
-     * @param patch Model of job properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob upsertJob(String id, RouterJob patch) {
-        return upsertJobAsync(id, patch).block();
     }
 
     /**
@@ -384,8 +370,24 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> upsertJobWithResponse(String id, RouterJob patch, Context context) {
+    public Response<RouterJobInternal> upsertJobWithResponse(String id, RouterJobInternal patch, Context context) {
         return upsertJobWithResponseAsync(id, patch, context).block();
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param id Id of the job.
+     * @param patch Model of job properties to be created or patched. See also:
+     *     https://datatracker.ietf.org/doc/html/rfc7386.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJobInternal upsertJob(String id, RouterJobInternal patch) {
+        return upsertJobWithResponse(id, patch, Context.NONE).getValue();
     }
 
     /**
@@ -398,7 +400,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> getJobWithResponseAsync(String id) {
+    public Mono<Response<RouterJobInternal>> getJobWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.getJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
@@ -415,7 +417,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> getJobWithResponseAsync(String id, Context context) {
+    public Mono<Response<RouterJobInternal>> getJobWithResponseAsync(String id, Context context) {
         final String accept = "application/json";
         return service.getJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
@@ -430,7 +432,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> getJobAsync(String id) {
+    public Mono<RouterJobInternal> getJobAsync(String id) {
         return getJobWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -445,22 +447,8 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> getJobAsync(String id, Context context) {
+    public Mono<RouterJobInternal> getJobAsync(String id, Context context) {
         return getJobWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing job by Id.
-     *
-     * @param id Id of the job to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob getJob(String id) {
-        return getJobAsync(id).block();
     }
 
     /**
@@ -474,8 +462,22 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> getJobWithResponse(String id, Context context) {
+    public Response<RouterJobInternal> getJobWithResponse(String id, Context context) {
         return getJobWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Retrieves an existing job by Id.
+     *
+     * @param id Id of the job to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJobInternal getJob(String id) {
+        return getJobWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -544,19 +546,6 @@ public final class JobRoutersImpl {
      * Deletes a job and all of its traces.
      *
      * @param id Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJob(String id) {
-        deleteJobAsync(id).block();
-    }
-
-    /**
-     * Deletes a job and all of its traces.
-     *
-     * @param id Id of the job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -566,6 +555,19 @@ public final class JobRoutersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String id, Context context) {
         return deleteJobWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Deletes a job and all of its traces.
+     *
+     * @param id Id of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteJob(String id) {
+        deleteJobWithResponse(id, Context.NONE);
     }
 
     /**
@@ -649,21 +651,6 @@ public final class JobRoutersImpl {
      *
      * @param id Id of the job.
      * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object reclassifyJobAction(String id, Object reclassifyJobRequest) {
-        return reclassifyJobActionAsync(id, reclassifyJobRequest).block();
-    }
-
-    /**
-     * Reclassify a job.
-     *
-     * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -673,6 +660,21 @@ public final class JobRoutersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest, Context context) {
         return reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context).block();
+    }
+
+    /**
+     * Reclassify a job.
+     *
+     * @param id Id of the job.
+     * @param reclassifyJobRequest Request object for reclassifying a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object reclassifyJobAction(String id, Object reclassifyJobRequest) {
+        return reclassifyJobActionWithResponse(id, reclassifyJobRequest, Context.NONE).getValue();
     }
 
     /**
@@ -780,23 +782,6 @@ public final class JobRoutersImpl {
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      *     provided, default value of "Cancelled" is set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object cancelJobAction(String id, String note, String dispositionCode) {
-        return cancelJobActionAsync(id, note, dispositionCode).block();
-    }
-
-    /**
-     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     *
-     * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -807,6 +792,23 @@ public final class JobRoutersImpl {
     public Response<Object> cancelJobActionWithResponse(
             String id, String note, String dispositionCode, Context context) {
         return cancelJobActionWithResponseAsync(id, note, dispositionCode, context).block();
+    }
+
+    /**
+     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     *
+     * @param id Id of the job.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
+     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
+     *     provided, default value of "Cancelled" is set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object cancelJobAction(String id, String note, String dispositionCode) {
+        return cancelJobActionWithResponse(id, note, dispositionCode, Context.NONE).getValue();
     }
 
     /**
@@ -901,22 +903,6 @@ public final class JobRoutersImpl {
      * @param id Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object completeJobAction(String id, String assignmentId, String note) {
-        return completeJobActionAsync(id, assignmentId, note).block();
-    }
-
-    /**
-     * Completes an assigned job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -927,6 +913,22 @@ public final class JobRoutersImpl {
     public Response<Object> completeJobActionWithResponse(
             String id, String assignmentId, String note, Context context) {
         return completeJobActionWithResponseAsync(id, assignmentId, note, context).block();
+    }
+
+    /**
+     * Completes an assigned job.
+     *
+     * @param id Id of the job.
+     * @param assignmentId The assignment within the job to complete.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object completeJobAction(String id, String assignmentId, String note) {
+        return completeJobActionWithResponse(id, assignmentId, note, Context.NONE).getValue();
     }
 
     /**
@@ -1053,26 +1055,6 @@ public final class JobRoutersImpl {
      * @param closeAt If not provided, worker capacity is released immediately along with a JobClosedEvent notification.
      *     If provided, worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object closeJobAction(
-            String id, String assignmentId, String dispositionCode, OffsetDateTime closeAt, String note) {
-        return closeJobActionAsync(id, assignmentId, dispositionCode, closeAt, note).block();
-    }
-
-    /**
-     * Closes a completed job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeAt If not provided, worker capacity is released immediately along with a JobClosedEvent notification.
-     *     If provided, worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1091,6 +1073,26 @@ public final class JobRoutersImpl {
     }
 
     /**
+     * Closes a completed job.
+     *
+     * @param id Id of the job.
+     * @param assignmentId The assignment within which the job is to be closed.
+     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
+     * @param closeAt If not provided, worker capacity is released immediately along with a JobClosedEvent notification.
+     *     If provided, worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object closeJobAction(
+            String id, String assignmentId, String dispositionCode, OffsetDateTime closeAt, String note) {
+        return closeJobActionWithResponse(id, assignmentId, dispositionCode, closeAt, note, Context.NONE).getValue();
+    }
+
+    /**
      * Retrieves list of jobs based on filter parameters.
      *
      * @param status If specified, filter jobs by status.
@@ -1101,21 +1103,21 @@ public final class JobRoutersImpl {
      *     (-Inf, scheduledBefore].
      * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
      *     [scheduledAfter, +Inf).
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
-            RouterJobStatusSelector status,
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsSinglePageAsync(
+            RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
             String classificationPolicyId,
             OffsetDateTime scheduledBefore,
             OffsetDateTime scheduledAfter,
-            Integer maxpagesize) {
+            Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -1127,7 +1129,7 @@ public final class JobRoutersImpl {
                                         classificationPolicyId,
                                         scheduledBefore,
                                         scheduledAfter,
-                                        maxpagesize,
+                                        maxPageSize,
                                         this.client.getApiVersion(),
                                         accept,
                                         context))
@@ -1153,7 +1155,7 @@ public final class JobRoutersImpl {
      *     (-Inf, scheduledBefore].
      * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
      *     [scheduledAfter, +Inf).
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1161,14 +1163,14 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
-            RouterJobStatusSelector status,
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsSinglePageAsync(
+            RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
             String classificationPolicyId,
             OffsetDateTime scheduledBefore,
             OffsetDateTime scheduledAfter,
-            Integer maxpagesize,
+            Integer maxPageSize,
             Context context) {
         final String accept = "application/json";
         return service.listJobs(
@@ -1179,7 +1181,7 @@ public final class JobRoutersImpl {
                         classificationPolicyId,
                         scheduledBefore,
                         scheduledAfter,
-                        maxpagesize,
+                        maxPageSize,
                         this.client.getApiVersion(),
                         accept,
                         context)
@@ -1205,21 +1207,21 @@ public final class JobRoutersImpl {
      *     (-Inf, scheduledBefore].
      * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
      *     [scheduledAfter, +Inf).
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobsAsync(
-            RouterJobStatusSelector status,
+    public PagedFlux<RouterJobItemInternal> listJobsAsync(
+            RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
             String classificationPolicyId,
             OffsetDateTime scheduledBefore,
             OffsetDateTime scheduledAfter,
-            Integer maxpagesize) {
+            Integer maxPageSize) {
         return new PagedFlux<>(
                 () ->
                         listJobsSinglePageAsync(
@@ -1229,7 +1231,7 @@ public final class JobRoutersImpl {
                                 classificationPolicyId,
                                 scheduledBefore,
                                 scheduledAfter,
-                                maxpagesize),
+                                maxPageSize),
                 nextLink -> listJobsNextSinglePageAsync(nextLink));
     }
 
@@ -1244,7 +1246,7 @@ public final class JobRoutersImpl {
      *     (-Inf, scheduledBefore].
      * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
      *     [scheduledAfter, +Inf).
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1252,14 +1254,14 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobsAsync(
-            RouterJobStatusSelector status,
+    public PagedFlux<RouterJobItemInternal> listJobsAsync(
+            RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
             String classificationPolicyId,
             OffsetDateTime scheduledBefore,
             OffsetDateTime scheduledAfter,
-            Integer maxpagesize,
+            Integer maxPageSize,
             Context context) {
         return new PagedFlux<>(
                 () ->
@@ -1270,7 +1272,7 @@ public final class JobRoutersImpl {
                                 classificationPolicyId,
                                 scheduledBefore,
                                 scheduledAfter,
-                                maxpagesize,
+                                maxPageSize,
                                 context),
                 nextLink -> listJobsNextSinglePageAsync(nextLink, context));
     }
@@ -1286,30 +1288,30 @@ public final class JobRoutersImpl {
      *     (-Inf, scheduledBefore].
      * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
      *     [scheduledAfter, +Inf).
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
+     * @return a paged collection of jobs along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItem> listJobs(
-            RouterJobStatusSelector status,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterJobItemInternal> listJobsSinglePage(
+            RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
             String classificationPolicyId,
             OffsetDateTime scheduledBefore,
             OffsetDateTime scheduledAfter,
-            Integer maxpagesize) {
-        return new PagedIterable<>(
-                listJobsAsync(
+            Integer maxPageSize) {
+        return listJobsSinglePageAsync(
                         status,
                         queueId,
                         channelId,
                         classificationPolicyId,
                         scheduledBefore,
                         scheduledAfter,
-                        maxpagesize));
+                        maxPageSize)
+                .block();
     }
 
     /**
@@ -1323,7 +1325,84 @@ public final class JobRoutersImpl {
      *     (-Inf, scheduledBefore].
      * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
      *     [scheduledAfter, +Inf).
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of jobs along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterJobItemInternal> listJobsSinglePage(
+            RouterJobStatusSelectorInternal status,
+            String queueId,
+            String channelId,
+            String classificationPolicyId,
+            OffsetDateTime scheduledBefore,
+            OffsetDateTime scheduledAfter,
+            Integer maxPageSize,
+            Context context) {
+        return listJobsSinglePageAsync(
+                        status,
+                        queueId,
+                        channelId,
+                        classificationPolicyId,
+                        scheduledBefore,
+                        scheduledAfter,
+                        maxPageSize,
+                        context)
+                .block();
+    }
+
+    /**
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * @param status If specified, filter jobs by status.
+     * @param queueId If specified, filter jobs by queue.
+     * @param channelId If specified, filter jobs by channel.
+     * @param classificationPolicyId If specified, filter jobs by classificationPolicy.
+     * @param scheduledBefore If specified, filter on jobs that was scheduled before or at given timestamp. Range:
+     *     (-Inf, scheduledBefore].
+     * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
+     *     [scheduledAfter, +Inf).
+     * @param maxPageSize Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RouterJobItemInternal> listJobs(
+            RouterJobStatusSelectorInternal status,
+            String queueId,
+            String channelId,
+            String classificationPolicyId,
+            OffsetDateTime scheduledBefore,
+            OffsetDateTime scheduledAfter,
+            Integer maxPageSize) {
+        return new PagedIterable<>(
+                listJobsAsync(
+                        status,
+                        queueId,
+                        channelId,
+                        classificationPolicyId,
+                        scheduledBefore,
+                        scheduledAfter,
+                        maxPageSize));
+    }
+
+    /**
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * @param status If specified, filter jobs by status.
+     * @param queueId If specified, filter jobs by queue.
+     * @param channelId If specified, filter jobs by channel.
+     * @param classificationPolicyId If specified, filter jobs by classificationPolicy.
+     * @param scheduledBefore If specified, filter on jobs that was scheduled before or at given timestamp. Range:
+     *     (-Inf, scheduledBefore].
+     * @param scheduledAfter If specified, filter on jobs that was scheduled at or after given value. Range:
+     *     [scheduledAfter, +Inf).
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1331,14 +1410,14 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItem> listJobs(
-            RouterJobStatusSelector status,
+    public PagedIterable<RouterJobItemInternal> listJobs(
+            RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
             String classificationPolicyId,
             OffsetDateTime scheduledBefore,
             OffsetDateTime scheduledAfter,
-            Integer maxpagesize,
+            Integer maxPageSize,
             Context context) {
         return new PagedIterable<>(
                 listJobsAsync(
@@ -1348,7 +1427,7 @@ public final class JobRoutersImpl {
                         classificationPolicyId,
                         scheduledBefore,
                         scheduledAfter,
-                        maxpagesize,
+                        maxPageSize,
                         context));
     }
 
@@ -1362,7 +1441,7 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJobPositionDetails>> getInQueuePositionWithResponseAsync(String id) {
+    public Mono<Response<RouterJobPositionDetailsInternal>> getInQueuePositionWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1381,7 +1460,8 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJobPositionDetails>> getInQueuePositionWithResponseAsync(String id, Context context) {
+    public Mono<Response<RouterJobPositionDetailsInternal>> getInQueuePositionWithResponseAsync(
+            String id, Context context) {
         final String accept = "application/json";
         return service.getInQueuePosition(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
@@ -1396,7 +1476,7 @@ public final class JobRoutersImpl {
      * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJobPositionDetails> getInQueuePositionAsync(String id) {
+    public Mono<RouterJobPositionDetailsInternal> getInQueuePositionAsync(String id) {
         return getInQueuePositionWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1411,22 +1491,8 @@ public final class JobRoutersImpl {
      * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJobPositionDetails> getInQueuePositionAsync(String id, Context context) {
+    public Mono<RouterJobPositionDetailsInternal> getInQueuePositionAsync(String id, Context context) {
         return getInQueuePositionWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a job's position details.
-     *
-     * @param id Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJobPositionDetails getInQueuePosition(String id) {
-        return getInQueuePositionAsync(id).block();
     }
 
     /**
@@ -1440,8 +1506,22 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJobPositionDetails> getInQueuePositionWithResponse(String id, Context context) {
+    public Response<RouterJobPositionDetailsInternal> getInQueuePositionWithResponse(String id, Context context) {
         return getInQueuePositionWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Gets a job's position details.
+     *
+     * @param id Id of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job's position details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJobPositionDetailsInternal getInQueuePosition(String id) {
+        return getInQueuePositionWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -1457,7 +1537,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(
+    public Mono<Response<UnassignJobResultInternal>> unassignJobActionWithResponseAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1486,7 +1566,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(
+    public Mono<Response<UnassignJobResultInternal>> unassignJobActionWithResponseAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest, Context context) {
         final String accept = "application/json";
         return service.unassignJobAction(
@@ -1511,7 +1591,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJobActionAsync(
+    public Mono<UnassignJobResultInternal> unassignJobActionAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest) {
         return unassignJobActionWithResponseAsync(id, assignmentId, unassignJobRequest)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1530,26 +1610,10 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJobActionAsync(
+    public Mono<UnassignJobResultInternal> unassignJobActionAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest, Context context) {
         return unassignJobActionWithResponseAsync(id, assignmentId, unassignJobRequest, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Un-assign a job.
-     *
-     * @param id Id of the job to un-assign.
-     * @param assignmentId Id of the assignment to un-assign.
-     * @param unassignJobRequest Request body for unassign route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload after a job has been successfully unassigned.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnassignJobResult unassignJobAction(String id, String assignmentId, UnassignJobRequest unassignJobRequest) {
-        return unassignJobActionAsync(id, assignmentId, unassignJobRequest).block();
     }
 
     /**
@@ -1565,9 +1629,26 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnassignJobResult> unassignJobActionWithResponse(
+    public Response<UnassignJobResultInternal> unassignJobActionWithResponse(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest, Context context) {
         return unassignJobActionWithResponseAsync(id, assignmentId, unassignJobRequest, context).block();
+    }
+
+    /**
+     * Un-assign a job.
+     *
+     * @param id Id of the job to un-assign.
+     * @param assignmentId Id of the assignment to un-assign.
+     * @param unassignJobRequest Request body for unassign route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload after a job has been successfully unassigned.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UnassignJobResultInternal unassignJobAction(
+            String id, String assignmentId, UnassignJobRequest unassignJobRequest) {
+        return unassignJobActionWithResponse(id, assignmentId, unassignJobRequest, Context.NONE).getValue();
     }
 
     /**
@@ -1582,7 +1663,8 @@ public final class JobRoutersImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(String workerId, String offerId) {
+    public Mono<Response<AcceptJobOfferResultInternal>> acceptJobActionWithResponseAsync(
+            String workerId, String offerId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1608,7 +1690,7 @@ public final class JobRoutersImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(
+    public Mono<Response<AcceptJobOfferResultInternal>> acceptJobActionWithResponseAsync(
             String workerId, String offerId, Context context) {
         final String accept = "application/json";
         return service.acceptJobAction(
@@ -1627,7 +1709,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId) {
+    public Mono<AcceptJobOfferResultInternal> acceptJobActionAsync(String workerId, String offerId) {
         return acceptJobActionWithResponseAsync(workerId, offerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1644,24 +1726,9 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId, Context context) {
+    public Mono<AcceptJobOfferResultInternal> acceptJobActionAsync(String workerId, String offerId, Context context) {
         return acceptJobActionWithResponseAsync(workerId, offerId, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResult acceptJobAction(String workerId, String offerId) {
-        return acceptJobActionAsync(workerId, offerId).block();
     }
 
     /**
@@ -1677,9 +1744,24 @@ public final class JobRoutersImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResult> acceptJobActionWithResponse(
+    public Response<AcceptJobOfferResultInternal> acceptJobActionWithResponse(
             String workerId, String offerId, Context context) {
         return acceptJobActionWithResponseAsync(workerId, offerId, context).block();
+    }
+
+    /**
+     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
+     *
+     * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AcceptJobOfferResultInternal acceptJobAction(String workerId, String offerId) {
+        return acceptJobActionWithResponse(workerId, offerId, Context.NONE).getValue();
     }
 
     /**
@@ -1778,22 +1860,6 @@ public final class JobRoutersImpl {
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
      * @param declineJobOfferRequest Request model for declining offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object declineJobAction(String workerId, String offerId, DeclineJobOfferRequest declineJobOfferRequest) {
-        return declineJobActionAsync(workerId, offerId, declineJobOfferRequest).block();
-    }
-
-    /**
-     * Declines an offer to work on a job.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @param declineJobOfferRequest Request model for declining offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1807,6 +1873,22 @@ public final class JobRoutersImpl {
     }
 
     /**
+     * Declines an offer to work on a job.
+     *
+     * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
+     * @param declineJobOfferRequest Request model for declining offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object declineJobAction(String workerId, String offerId, DeclineJobOfferRequest declineJobOfferRequest) {
+        return declineJobActionWithResponse(workerId, offerId, declineJobOfferRequest, Context.NONE).getValue();
+    }
+
+    /**
      * Retrieves a queue's statistics.
      *
      * @param id Id of the queue to retrieve statistics.
@@ -1816,7 +1898,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterQueueStatistics>> getQueueStatisticsWithResponseAsync(String id) {
+    public Mono<Response<RouterQueueStatisticsInternal>> getQueueStatisticsWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1835,7 +1917,8 @@ public final class JobRoutersImpl {
      * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterQueueStatistics>> getQueueStatisticsWithResponseAsync(String id, Context context) {
+    public Mono<Response<RouterQueueStatisticsInternal>> getQueueStatisticsWithResponseAsync(
+            String id, Context context) {
         final String accept = "application/json";
         return service.getQueueStatistics(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
@@ -1850,7 +1933,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueueStatistics> getQueueStatisticsAsync(String id) {
+    public Mono<RouterQueueStatisticsInternal> getQueueStatisticsAsync(String id) {
         return getQueueStatisticsWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1865,22 +1948,8 @@ public final class JobRoutersImpl {
      * @return statistics for the queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueueStatistics> getQueueStatisticsAsync(String id, Context context) {
+    public Mono<RouterQueueStatisticsInternal> getQueueStatisticsAsync(String id, Context context) {
         return getQueueStatisticsWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a queue's statistics.
-     *
-     * @param id Id of the queue to retrieve statistics.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterQueueStatistics getQueueStatistics(String id) {
-        return getQueueStatisticsAsync(id).block();
     }
 
     /**
@@ -1894,8 +1963,22 @@ public final class JobRoutersImpl {
      * @return statistics for the queue along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterQueueStatistics> getQueueStatisticsWithResponse(String id, Context context) {
+    public Response<RouterQueueStatisticsInternal> getQueueStatisticsWithResponse(String id, Context context) {
         return getQueueStatisticsWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Retrieves a queue's statistics.
+     *
+     * @param id Id of the queue to retrieve statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for the queue.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterQueueStatisticsInternal getQueueStatistics(String id) {
+        return getQueueStatisticsWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -1910,7 +1993,8 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(String workerId, RouterWorker patch) {
+    public Mono<Response<RouterWorkerInternal>> upsertWorkerWithResponseAsync(
+            String workerId, RouterWorkerInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1936,8 +2020,8 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(
-            String workerId, RouterWorker patch, Context context) {
+    public Mono<Response<RouterWorkerInternal>> upsertWorkerWithResponseAsync(
+            String workerId, RouterWorkerInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertWorker(
                 this.client.getEndpoint(), workerId, this.client.getApiVersion(), patch, accept, context);
@@ -1955,7 +2039,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch) {
+    public Mono<RouterWorkerInternal> upsertWorkerAsync(String workerId, RouterWorkerInternal patch) {
         return upsertWorkerWithResponseAsync(workerId, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1972,24 +2056,8 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch, Context context) {
+    public Mono<RouterWorkerInternal> upsertWorkerAsync(String workerId, RouterWorkerInternal patch, Context context) {
         return upsertWorkerWithResponseAsync(workerId, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a worker.
-     *
-     * @param workerId Id of the worker.
-     * @param patch Model of worker properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker upsertWorker(String workerId, RouterWorker patch) {
-        return upsertWorkerAsync(workerId, patch).block();
     }
 
     /**
@@ -2005,8 +2073,25 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> upsertWorkerWithResponse(String workerId, RouterWorker patch, Context context) {
+    public Response<RouterWorkerInternal> upsertWorkerWithResponse(
+            String workerId, RouterWorkerInternal patch, Context context) {
         return upsertWorkerWithResponseAsync(workerId, patch, context).block();
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of the worker.
+     * @param patch Model of worker properties to be created or patched. See also:
+     *     https://datatracker.ietf.org/doc/html/rfc7386.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterWorkerInternal upsertWorker(String workerId, RouterWorkerInternal patch) {
+        return upsertWorkerWithResponse(workerId, patch, Context.NONE).getValue();
     }
 
     /**
@@ -2019,7 +2104,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId) {
+    public Mono<Response<RouterWorkerInternal>> getWorkerWithResponseAsync(String workerId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -2038,7 +2123,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId, Context context) {
+    public Mono<Response<RouterWorkerInternal>> getWorkerWithResponseAsync(String workerId, Context context) {
         final String accept = "application/json";
         return service.getWorker(this.client.getEndpoint(), workerId, this.client.getApiVersion(), accept, context);
     }
@@ -2053,7 +2138,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> getWorkerAsync(String workerId) {
+    public Mono<RouterWorkerInternal> getWorkerAsync(String workerId) {
         return getWorkerWithResponseAsync(workerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2068,22 +2153,8 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> getWorkerAsync(String workerId, Context context) {
+    public Mono<RouterWorkerInternal> getWorkerAsync(String workerId, Context context) {
         return getWorkerWithResponseAsync(workerId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing worker by Id.
-     *
-     * @param workerId Id of the worker to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker getWorker(String workerId) {
-        return getWorkerAsync(workerId).block();
     }
 
     /**
@@ -2097,8 +2168,22 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> getWorkerWithResponse(String workerId, Context context) {
+    public Response<RouterWorkerInternal> getWorkerWithResponse(String workerId, Context context) {
         return getWorkerWithResponseAsync(workerId, context).block();
+    }
+
+    /**
+     * Retrieves an existing worker by Id.
+     *
+     * @param workerId Id of the worker to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterWorkerInternal getWorker(String workerId) {
+        return getWorkerWithResponse(workerId, Context.NONE).getValue();
     }
 
     /**
@@ -2168,19 +2253,6 @@ public final class JobRoutersImpl {
      * Deletes a worker and all of its traces.
      *
      * @param workerId Id of the worker to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteWorker(String workerId) {
-        deleteWorkerAsync(workerId).block();
-    }
-
-    /**
-     * Deletes a worker and all of its traces.
-     *
-     * @param workerId Id of the worker to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2193,27 +2265,40 @@ public final class JobRoutersImpl {
     }
 
     /**
+     * Deletes a worker and all of its traces.
+     *
+     * @param workerId Id of the worker to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteWorker(String workerId) {
+        deleteWorkerWithResponse(workerId, Context.NONE);
+    }
+
+    /**
      * Retrieves existing workers.
      *
-     * @param state If specified, select workers by worker status.
+     * @param state If specified, select workers by worker state.
      * @param channelId If specified, select workers who have a channel configuration with this channel.
      * @param queueId If specified, select workers who are assigned to this queue.
      * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
      *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
      *     workers without any capacity for jobs. Defaults to false.
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
-            RouterWorkerStateSelector state,
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersSinglePageAsync(
+            RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
             Boolean hasCapacity,
-            Integer maxpagesize) {
+            Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -2223,7 +2308,7 @@ public final class JobRoutersImpl {
                                         channelId,
                                         queueId,
                                         hasCapacity,
-                                        maxpagesize,
+                                        maxPageSize,
                                         this.client.getApiVersion(),
                                         accept,
                                         context))
@@ -2241,13 +2326,13 @@ public final class JobRoutersImpl {
     /**
      * Retrieves existing workers.
      *
-     * @param state If specified, select workers by worker status.
+     * @param state If specified, select workers by worker state.
      * @param channelId If specified, select workers who have a channel configuration with this channel.
      * @param queueId If specified, select workers who are assigned to this queue.
      * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
      *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
      *     workers without any capacity for jobs. Defaults to false.
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2255,12 +2340,12 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
-            RouterWorkerStateSelector state,
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersSinglePageAsync(
+            RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
             Boolean hasCapacity,
-            Integer maxpagesize,
+            Integer maxPageSize,
             Context context) {
         final String accept = "application/json";
         return service.listWorkers(
@@ -2269,7 +2354,7 @@ public final class JobRoutersImpl {
                         channelId,
                         queueId,
                         hasCapacity,
-                        maxpagesize,
+                        maxPageSize,
                         this.client.getApiVersion(),
                         accept,
                         context)
@@ -2287,40 +2372,40 @@ public final class JobRoutersImpl {
     /**
      * Retrieves existing workers.
      *
-     * @param state If specified, select workers by worker status.
+     * @param state If specified, select workers by worker state.
      * @param channelId If specified, select workers who have a channel configuration with this channel.
      * @param queueId If specified, select workers who are assigned to this queue.
      * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
      *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
      *     workers without any capacity for jobs. Defaults to false.
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkersAsync(
-            RouterWorkerStateSelector state,
+    public PagedFlux<RouterWorkerItemInternal> listWorkersAsync(
+            RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
             Boolean hasCapacity,
-            Integer maxpagesize) {
+            Integer maxPageSize) {
         return new PagedFlux<>(
-                () -> listWorkersSinglePageAsync(state, channelId, queueId, hasCapacity, maxpagesize),
+                () -> listWorkersSinglePageAsync(state, channelId, queueId, hasCapacity, maxPageSize),
                 nextLink -> listWorkersNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves existing workers.
      *
-     * @param state If specified, select workers by worker status.
+     * @param state If specified, select workers by worker state.
      * @param channelId If specified, select workers who have a channel configuration with this channel.
      * @param queueId If specified, select workers who are assigned to this queue.
      * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
      *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
      *     workers without any capacity for jobs. Defaults to false.
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2328,53 +2413,105 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkersAsync(
-            RouterWorkerStateSelector state,
+    public PagedFlux<RouterWorkerItemInternal> listWorkersAsync(
+            RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
             Boolean hasCapacity,
-            Integer maxpagesize,
+            Integer maxPageSize,
             Context context) {
         return new PagedFlux<>(
-                () -> listWorkersSinglePageAsync(state, channelId, queueId, hasCapacity, maxpagesize, context),
+                () -> listWorkersSinglePageAsync(state, channelId, queueId, hasCapacity, maxPageSize, context),
                 nextLink -> listWorkersNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves existing workers.
      *
-     * @param state If specified, select workers by worker status.
+     * @param state If specified, select workers by worker state.
      * @param channelId If specified, select workers who have a channel configuration with this channel.
      * @param queueId If specified, select workers who are assigned to this queue.
      * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
      *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
      *     workers without any capacity for jobs. Defaults to false.
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of workers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterWorkerItemInternal> listWorkersSinglePage(
+            RouterWorkerStateSelectorInternal state,
+            String channelId,
+            String queueId,
+            Boolean hasCapacity,
+            Integer maxPageSize) {
+        return listWorkersSinglePageAsync(state, channelId, queueId, hasCapacity, maxPageSize).block();
+    }
+
+    /**
+     * Retrieves existing workers.
+     *
+     * @param state If specified, select workers by worker state.
+     * @param channelId If specified, select workers who have a channel configuration with this channel.
+     * @param queueId If specified, select workers who are assigned to this queue.
+     * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
+     *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
+     *     workers without any capacity for jobs. Defaults to false.
+     * @param maxPageSize Number of objects to return per page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of workers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterWorkerItemInternal> listWorkersSinglePage(
+            RouterWorkerStateSelectorInternal state,
+            String channelId,
+            String queueId,
+            Boolean hasCapacity,
+            Integer maxPageSize,
+            Context context) {
+        return listWorkersSinglePageAsync(state, channelId, queueId, hasCapacity, maxPageSize, context).block();
+    }
+
+    /**
+     * Retrieves existing workers.
+     *
+     * @param state If specified, select workers by worker state.
+     * @param channelId If specified, select workers who have a channel configuration with this channel.
+     * @param queueId If specified, select workers who are assigned to this queue.
+     * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
+     *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
+     *     workers without any capacity for jobs. Defaults to false.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItem> listWorkers(
-            RouterWorkerStateSelector state,
+    public PagedIterable<RouterWorkerItemInternal> listWorkers(
+            RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
             Boolean hasCapacity,
-            Integer maxpagesize) {
-        return new PagedIterable<>(listWorkersAsync(state, channelId, queueId, hasCapacity, maxpagesize));
+            Integer maxPageSize) {
+        return new PagedIterable<>(listWorkersAsync(state, channelId, queueId, hasCapacity, maxPageSize));
     }
 
     /**
      * Retrieves existing workers.
      *
-     * @param state If specified, select workers by worker status.
+     * @param state If specified, select workers by worker state.
      * @param channelId If specified, select workers who have a channel configuration with this channel.
      * @param queueId If specified, select workers who are assigned to this queue.
      * @param hasCapacity If set to true, select only workers who have capacity for the channel specified by `channelId`
      *     or for any channel if `channelId` not specified. If set to false, then will return all workers including
      *     workers without any capacity for jobs. Defaults to false.
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2382,27 +2519,28 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItem> listWorkers(
-            RouterWorkerStateSelector state,
+    public PagedIterable<RouterWorkerItemInternal> listWorkers(
+            RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
             Boolean hasCapacity,
-            Integer maxpagesize,
+            Integer maxPageSize,
             Context context) {
-        return new PagedIterable<>(listWorkersAsync(state, channelId, queueId, hasCapacity, maxpagesize, context));
+        return new PagedIterable<>(listWorkersAsync(state, channelId, queueId, hasCapacity, maxPageSize, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2420,7 +2558,8 @@ public final class JobRoutersImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2428,7 +2567,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
@@ -2445,14 +2584,46 @@ public final class JobRoutersImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of jobs along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterJobItemInternal> listJobsNextSinglePage(String nextLink) {
+        return listJobsNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of jobs along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterJobItemInternal> listJobsNextSinglePage(String nextLink, Context context) {
+        return listJobsNextSinglePageAsync(nextLink, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2470,7 +2641,8 @@ public final class JobRoutersImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2478,7 +2650,8 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersNextSinglePageAsync(
+            String nextLink, Context context) {
         final String accept = "application/json";
         return service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
@@ -2490,5 +2663,36 @@ public final class JobRoutersImpl {
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of workers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterWorkerItemInternal> listWorkersNextSinglePage(String nextLink) {
+        return listWorkersNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of workers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterWorkerItemInternal> listWorkersNextSinglePage(String nextLink, Context context) {
+        return listWorkersNextSinglePageAsync(nextLink, context).block();
     }
 }

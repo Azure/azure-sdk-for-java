@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
-/** Describes a set of label selectors that will be attached if the given condition resolves to true. */
+/** Describes a set of queue selectors that will be attached if the given condition resolves to true. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("conditional")
 @Fluent
@@ -30,10 +30,10 @@ public final class ConditionalQueueSelector extends QueueSelectorAttachment {
     private RouterRule condition;
 
     /*
-     * The label selectors to attach
+     * The queue selectors to attach
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<QueueSelector> labelSelectors;
+    @JsonProperty(value = "queueSelectors", required = true)
+    private List<RouterQueueSelector> queueSelectors;
 
     /**
      * Get the condition property: A rule of one of the following types:
@@ -64,22 +64,22 @@ public final class ConditionalQueueSelector extends QueueSelectorAttachment {
     }
 
     /**
-     * Get the labelSelectors property: The label selectors to attach.
+     * Get the queueSelectors property: The queue selectors to attach.
      *
-     * @return the labelSelectors value.
+     * @return the queueSelectors value.
      */
-    public List<QueueSelector> getLabelSelectors() {
-        return this.labelSelectors;
+    public List<RouterQueueSelector> getQueueSelectors() {
+        return this.queueSelectors;
     }
 
     /**
-     * Set the labelSelectors property: The label selectors to attach.
+     * Set the queueSelectors property: The queue selectors to attach.
      *
-     * @param labelSelectors the labelSelectors value to set.
+     * @param queueSelectors the queueSelectors value to set.
      * @return the ConditionalQueueSelector object itself.
      */
-    public ConditionalQueueSelector setLabelSelectors(List<QueueSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
+    public ConditionalQueueSelector setQueueSelectors(List<RouterQueueSelector> queueSelectors) {
+        this.queueSelectors = queueSelectors;
         return this;
     }
 }
