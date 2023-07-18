@@ -23,7 +23,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/metrics?metricname=VirtualUsers&metricNamespace=LoadTestRunMetrics&timespan=2022-12-18T18%3A58%3A32.998Z/2022-12-18T18%3A59%3A19.623Z&api-version=2022-11-01",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/metrics?api-version=2022-11-01&metricName=VirtualUsers&metricNamespace=LoadTestRunMetrics&timespan=2022-12-18T18%3A58%3A32.998Z/2022-12-18T18%3A59%3A19.623Z",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
       "x-ms-client-request-id" : "21cd1b59-95b2-45bc-adcd-9436dcea829a",

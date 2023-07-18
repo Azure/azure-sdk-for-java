@@ -27,9 +27,11 @@ import com.azure.developer.loadtesting.models.FileInfo;
 import com.azure.developer.loadtesting.models.Interval;
 import com.azure.developer.loadtesting.models.MetricDefinitionCollection;
 import com.azure.developer.loadtesting.models.MetricNamespaceCollection;
+import com.azure.developer.loadtesting.models.MetricRequestPayload;
 import com.azure.developer.loadtesting.models.TestRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunServerMetricConfig;
+import com.azure.developer.loadtesting.models.TimeSeriesElement;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -247,87 +249,6 @@ public final class LoadTestRunAsyncClient {
     public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateAppComponentsWithResponseAsync(testRunId, body, requestOptions);
-    }
-
-    /**
-     * List the metric values for a load test run.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
-     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     filters (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             values (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             data (Optional): [
-     *                  (Optional){
-     *                     timestamp: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             ]
-     *             dimensionValues (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param metricName Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     *     'startDateTime_ISO/endDateTime_ISO'.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listMetrics(
-            String testRunId,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            RequestOptions requestOptions) {
-        if (requestOptions == null) {
-            requestOptions = new RequestOptions();
-        }
-        // Content-Type header required even though body can be null
-        requestOptions.setHeader("Content-Type", "application/json");
-        return this.serviceClient.listMetricsAsync(testRunId, metricName, metricNamespace, timespan, requestOptions);
     }
 
     /**
@@ -1649,5 +1570,202 @@ public final class LoadTestRunAsyncClient {
     public Mono<Response<BinaryData>> getMetricDefinitionsWithResponse(
             String testRunId, String metricNamespace, RequestOptions requestOptions) {
         return this.serviceClient.getMetricDefinitionsWithResponseAsync(testRunId, metricNamespace, requestOptions);
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     filters (Optional): [
+     *          (Optional){
+     *             name: String (Optional)
+     *             values (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *          (Optional){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: String (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response to a metrics query as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMetrics(
+        String testRunId,
+        String metricName,
+        String metricNamespace,
+        String timespan,
+        RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+        // Content-Type header required even though body can be null
+        requestOptions.setHeader("Content-Type", "application/json");
+        return this.serviceClient.listMetricsAsync(testRunId, metricName, metricNamespace, timespan, requestOptions);
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param aggregation The aggregation.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @param body Metric dimension filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TimeSeriesElement> listMetrics(
+            String testRunId,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            String aggregation,
+            Interval interval,
+            MetricRequestPayload body) {
+        // Generated convenience method for listMetrics
+        RequestOptions requestOptions = new RequestOptions();
+        if (aggregation != null) {
+            requestOptions.addQueryParam("aggregation", aggregation, false);
+        }
+        if (interval != null) {
+            requestOptions.addQueryParam("interval", interval.toString(), false);
+        }
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        PagedFlux<BinaryData> pagedFluxResponse =
+                listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, TimeSeriesElement>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    TimeSeriesElement.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TimeSeriesElement> listMetrics(
+            String testRunId, String metricName, String metricNamespace, String timespan) {
+        // Generated convenience method for listMetrics
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse =
+                listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, TimeSeriesElement>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    TimeSeriesElement.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 }
