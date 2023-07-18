@@ -29,7 +29,7 @@ public final class CloseJobOptions {
     /**
      * A future time determined to close the job.
      */
-    private OffsetDateTime closeTime;
+    private OffsetDateTime closeAt;
 
     /**
      * Note attached to job.
@@ -58,11 +58,11 @@ public final class CloseJobOptions {
 
     /**
      * Sets closeTime.
-     * @param closeTime A future time determined to close the job.
+     * @param closeAt A future time determined to close the job.
      * @return object of type CloseJobOptions.
      */
-    public CloseJobOptions setCloseTime(OffsetDateTime closeTime) {
-        this.closeTime = closeTime;
+    public CloseJobOptions setCloseAt(OffsetDateTime closeAt) {
+        this.closeAt = closeAt;
         return this;
     }
 
@@ -101,11 +101,11 @@ public final class CloseJobOptions {
     }
 
     /**
-     * Gets closeTime.
-     * @return closeTime
+     * Gets closeAt.
+     * @return closeAt
      */
-    public OffsetDateTime getCloseTime() {
-        return this.closeTime;
+    public OffsetDateTime getCloseAt() {
+        return this.closeAt;
     }
 
     /**

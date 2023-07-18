@@ -28,13 +28,43 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import java.nio.ByteBuffer;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClient.class);
+
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
+    }
 
     /**
      * Return the embeddings for a given prompt.
@@ -435,30 +465,6 @@ public final class OpenAIClient {
         return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
     }
 
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
-    /**
-     * Initializes an instance of OpenAIClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
-        this.serviceClient = null;
-        openAIServiceClient = serviceClient;
-    }
-
     /**
      * Starts the generation of a batch of images from a text caption.
      *
@@ -469,22 +475,39 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ImageOperationResponse} for polling of status details for long running operations.
+     * @return the {@link ImageResponse} for the image generation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageResponse generateImage(ImageGenerationOptions imageGenerationOptions) {
+    public ImageResponse getImages(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        return openAIServiceClient != null
-                ? openAIServiceClient
-                        .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
-                        .getValue()
-                        .toObject(ImageResponse.class)
-                : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
-                        .waitForCompletion()
-                        .getValue()
-                        .toObject(ImageOperationResponse.class)
-                        .getResult();
+
+        if (openAIServiceClient != null) {
+            return openAIServiceClient
+                .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
+                .getValue()
+                .toObject(ImageResponse.class);
+        } else {
+            // TODO: Currently, we use async client block() to avoid a unknown LRO status "notRunning" which Azure Core will
+            //       fix the issue in August release and we will reuse the method
+            //       "SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration()" after.
+            try {
+                return this.serviceClient.beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData,
+                        requestOptions)
+                    .last()
+                    .flatMap(it -> it.getFinalResult())
+                    .map(it -> it.toObject(ImageOperationResponse.class).getResult()).block();
+            } catch (Exception e) {
+                Throwable unwrapped = Exceptions.unwrap(e);
+                if (unwrapped instanceof RuntimeException) {
+                    throw LOGGER.logExceptionAsError((RuntimeException) unwrapped);
+                } else if (unwrapped instanceof IOException) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) unwrapped));
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(unwrapped));
+                }
+            }
+        }
     }
 
     /**

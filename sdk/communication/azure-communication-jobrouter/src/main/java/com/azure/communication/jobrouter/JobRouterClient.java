@@ -3,23 +3,26 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
-import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CloseJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
+import com.azure.communication.jobrouter.models.ListJobsOptions;
+import com.azure.communication.jobrouter.models.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.CloseJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.ListJobsOptions;
-import com.azure.communication.jobrouter.models.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 import com.azure.core.annotation.ReturnType;
@@ -33,16 +36,16 @@ import com.azure.core.util.Context;
  * Sync Client that supports job router operations.
  *
  * <p><strong>Instantiating a synchronous JobRouter Client</strong></p>
- * <!-- src_embed com.azure.communication.jobrouter.routerclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.jobrouterclient.instantiation -->
  * <pre>
- * &#47;&#47; Initialize the router client builder
+ * &#47;&#47; Initialize the jobrouter client builder
  * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
- * &#47;&#47; Build the router client
+ * &#47;&#47; Build the jobrouter client
  * JobRouterClient jobRouterClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.jobrouter.routerclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.jobrouterclient.instantiation -->
  *
  * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -89,8 +92,8 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, Context context) {
-        RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        return this.client.upsertJobWithResponse(createJobOptions.getId(), routerJob, context).block();
+        RouterJobInternal routerJobInternal = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        return this.client.upsertJobWithResponse(createJobOptions.getId(), routerJobInternal, context).block();
     }
 
     /**
@@ -119,7 +122,7 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> updateJobWithResponse(UpdateJobOptions updateJobOptions, Context context) {
-        RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+        RouterJobInternal routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
         return this.client.upsertJobWithResponse(updateJobOptions.getId(), routerJob, context).block();
     }
 
@@ -435,22 +438,20 @@ public final class JobRouterClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void declineJobOffer(String workerId, String offerId) {
-        this.client.declineJobOffer(workerId, offerId).block();
+    public void declineJobOffer(DeclineJobOfferOptions options) {
+        this.client.declineJobOffer(options).block();
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @param context The context to associate with this operation.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,8 +459,8 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
-        return this.client.declineJobOfferWithResponse(workerId, offerId, context).block();
+    public Response<Void> declineJobOfferWithResponse(DeclineJobOfferOptions options, Context context) {
+        return this.client.declineJobOfferWithResponse(options, context).block();
     }
 
     /**
@@ -517,7 +518,7 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions, Context context) {
-        RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+        RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         return this.client.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context).block();
     }
 
@@ -547,7 +548,7 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> updateWorkerWithResponse(UpdateWorkerOptions updateWorkerOptions, Context context) {
-        RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+        RouterWorkerInternal routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
         return this.client.upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context).block();
     }
 

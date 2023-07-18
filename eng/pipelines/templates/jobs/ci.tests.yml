@@ -127,4 +127,6 @@ jobs:
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
 
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+
       - template: /eng/common/testproxy/publish-proxy-logs.yml

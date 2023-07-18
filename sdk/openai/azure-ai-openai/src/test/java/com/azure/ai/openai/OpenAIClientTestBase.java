@@ -5,9 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.models.ContentFilterResults;
-import com.azure.ai.openai.models.ContentFilterSeverity;
-import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.implementation.models.FunctionDefinition;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -15,10 +13,12 @@ import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterSeverity;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.implementation.models.FunctionDefinition;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
@@ -42,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
@@ -310,5 +311,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
         assertFalse(contentFilterResults.getViolence().isFiltered());
         assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+    }
+
+    static void assertEmptyContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertNull(contentFilterResults.getHate());
+        assertNull(contentFilterResults.getSexual());
+        assertNull(contentFilterResults.getViolence());
+        assertNull(contentFilterResults.getSelfHarm());
     }
 }

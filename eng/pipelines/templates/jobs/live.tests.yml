@@ -114,6 +114,8 @@ jobs:
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
       - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
