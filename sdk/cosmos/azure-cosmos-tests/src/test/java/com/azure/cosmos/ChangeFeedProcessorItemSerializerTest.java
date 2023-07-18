@@ -21,11 +21,19 @@ public class ChangeFeedProcessorItemSerializerTest {
     @Test(groups = { "unit" })
     public void testChangeFeedMetaDataDeSerializer() throws JsonProcessingException {
         String json = "{\"lsn\":68,\"crts\":1689555410,\"operationType\":\"replace\",\"previousImageLSN\":66}";
+        ChangeFeedMetaData changeFeedMetaData = simpleObjectMapper.readValue(json, ChangeFeedMetaData.class);
         JsonNode jsonNode = simpleObjectMapper.readValue(json, JsonNode.class);
+        Assertions.assertThat(changeFeedMetaData.getConflictResolutionTimestamp()).isEqualTo(Instant.ofEpochSecond(1689555410));
+        Assertions.assertThat(jsonNode.get("crts").asText()).isEqualTo("1689555410");
+        jsonNode = simpleObjectMapper.convertValue(changeFeedMetaData, JsonNode.class);
         Assertions.assertThat(jsonNode.get("crts").asText()).isEqualTo("1689555410");
 
         json = "{\"lsn\":68,\"crts\":1689555412,\"operationType\":\"replace\",\"previousImageLSN\":66}";
+        changeFeedMetaData = simpleObjectMapper.readValue(json, ChangeFeedMetaData.class);
         jsonNode = simpleObjectMapper.readValue(json, JsonNode.class);
+        Assertions.assertThat(changeFeedMetaData.getConflictResolutionTimestamp()).isEqualTo(Instant.ofEpochSecond(1689555412));
+        Assertions.assertThat(jsonNode.get("crts").asText()).isEqualTo("1689555412");
+        jsonNode = simpleObjectMapper.convertValue(changeFeedMetaData, JsonNode.class);
         Assertions.assertThat(jsonNode.get("crts").asText()).isEqualTo("1689555412");
     }
 
