@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum DocumentAnalysisServiceVersion implements ServiceVersion {
 
-    /**
+     /**
      * Service version {@code "2022-08-31"}.
      */
     V2022_08_31("2022-08-31"),
