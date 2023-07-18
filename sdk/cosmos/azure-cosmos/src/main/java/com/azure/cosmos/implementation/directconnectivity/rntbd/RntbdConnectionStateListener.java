@@ -4,10 +4,19 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import io.netty.channel.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -23,22 +32,26 @@ public class RntbdConnectionStateListener {
     // region Fields
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
-
     private final RntbdEndpoint endpoint;
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+    private final AddressSelector addressSelector;
     private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+    public RntbdConnectionStateListener(
+        final RntbdEndpoint endpoint,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+        final AddressSelector addressSelector) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
+        this.addressSelector = addressSelector;
     }
 
     // endregion
@@ -116,9 +129,7 @@ public class RntbdConnectionStateListener {
                 addressUri,
                 this.endpoint.getMinChannelsRequired()
             ))
-            .doFinally(signalType -> {
-                this.endpointValidationInProgress.compareAndSet(true, false);
-            })
+            .doFinally(signalType -> this.endpointValidationInProgress.compareAndSet(true, false))
             .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
             .subscribe();
         }
@@ -152,5 +163,45 @@ public class RntbdConnectionStateListener {
 
         return 0;
     }
+
+    public void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, Exception exception) {
+
+        if (request.requestContext == null) {
+            return;
+        }
+
+        AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
+
+        if (isRequestCancelledOnTimeout == null
+            || !isRequestCancelledOnTimeout.get()
+            || !shouldRefreshForException(exception)) {
+            return;
+        }
+
+        final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
+
+        this.addressSelector
+            .resolveAddressesAsync(request, forceAddressRefresh)
+            .publishOn(Schedulers.boundedElastic())
+            .doOnSubscribe(ignore -> {
+                logger.debug("Background refresh of addresses started!");
+            })
+            .doFinally(signalType -> {
+                logger.debug("Background refresh of addresses finished!");
+            })
+            .subscribe(
+                ignoreResult -> {
+                },
+                throwable -> logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable)
+            );
+    }
     // endregion
+
+    private boolean shouldRefreshForException(Exception exception) {
+        return exception instanceof ConnectTimeoutException
+            || exception instanceof InvalidPartitionException
+            || exception instanceof PartitionIsMigratingException
+            || exception instanceof PartitionKeyRangeIsSplittingException
+            || exception instanceof GoneException;
+    }
 }

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -100,7 +101,7 @@ public class ReadManySplitTest {
                                                             String resourceLink, String rewrittenQuery,
                                                             UUID correlatedActivityId) {
             super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions,
-                resourceLink, rewrittenQuery, correlatedActivityId, false);
+                resourceLink, rewrittenQuery, correlatedActivityId, false, new AtomicBoolean(false));
         }
 
         @Override
