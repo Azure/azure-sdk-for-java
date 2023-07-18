@@ -147,7 +147,7 @@ class JobRouterTestBase extends TestProxyTestBase {
                         new RouterWorkerSelector()
                             .setKey("Some-skill")
                             .setLabelOperator(LabelOperator.GREATER_THAN)
-                            .setValue(10);
+                            .setValue(new LabelValue(10));
                     }
                 }
             );

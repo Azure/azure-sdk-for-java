@@ -5,7 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -13,10 +13,12 @@ import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterSeverity;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.implementation.models.FunctionDefinition;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
@@ -40,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
@@ -146,12 +149,28 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-4", getChatMessagesWithFunction());
     }
 
+    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-4", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept("gpt-35-turbo", "What is 3 times 4?");
+    }
+
+    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-0613", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, String> testRunner) {
+        testRunner.accept("text-davinci-002", "What is 3 times 4?");
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
         return chatMessages;
     }
 
@@ -162,7 +181,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the weather like in San Francisco in Celsius?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the weather like in San Francisco in Celsius?"));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionOptions.setFunctions(functions);
@@ -280,5 +299,25 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(functionName, functionCall.getName());
         BinaryData argumentJson = BinaryData.fromString(functionCall.getArguments());
         return argumentJson.toObject(myPropertiesClazz);
+    }
+
+    static void assertSafeContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertFalse(contentFilterResults.getHate().isFiltered());
+        assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSexual().isFiltered());
+        assertEquals(contentFilterResults.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSelfHarm().isFiltered());
+        assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getViolence().isFiltered());
+        assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+    }
+
+    static void assertEmptyContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertNull(contentFilterResults.getHate());
+        assertNull(contentFilterResults.getSexual());
+        assertNull(contentFilterResults.getViolence());
+        assertNull(contentFilterResults.getSelfHarm());
     }
 }

@@ -8,10 +8,21 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 7.14.2 (2023-07-17)
+
+### Bugs Fixed
+
 - Fixed `NullPointerException` that happens when session receiver encounters an error and distributed tracing is enabled.
   ([#35660](https://github.com/Azure/azure-sdk-for-java/issues/35660))
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+- Upgraded `azure-core-amqp` from `2.8.6` to `2.8.7`.
+- Upgraded `azure-identity` from `1.9.1` to `1.9.2`.
 
 ## 7.15.0-beta.1 (2023-06-13)
 
