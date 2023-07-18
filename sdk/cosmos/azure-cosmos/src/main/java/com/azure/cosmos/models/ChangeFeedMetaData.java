@@ -54,6 +54,8 @@ public final class ChangeFeedMetaData {
                 default:
                     throw new IllegalStateException("The operationType is not a valid operation!");
             }
+        } else {
+            this.operationType = null;
         }
 
         this.previousLogSequenceNumber = previousImageLsnJsonNode != null ? previousImageLsnJsonNode.asLong() : -1;

@@ -35,6 +35,10 @@ public class ChangeFeedProcessorItemSerializerTest {
         ChangeFeedProcessorItem changeFeedProcessorItem = simpleObjectMapper.readValue(json, ChangeFeedProcessorItem.class);
         JsonNode jsonNode = changeFeedProcessorItem.toJsonNode();
         Assertions.assertThat(jsonNode.get("metadata").get("crts").asText()).isEqualTo("1689561600");
+        Assertions.assertThat(jsonNode.get("metadata").get("lsn").asText()).isEqualTo("176");
+        Assertions.assertThat(jsonNode.get("metadata").get("operationType").asText()).isEqualTo("create");
+        Assertions.assertThat(jsonNode.get("metadata").get("previousImageLSN")).isNull();
+        Assertions.assertThat(jsonNode.get("metadata").get("timeToLiveExpired")).isNull();
 
         ChangeFeedMetaData changeFeedMetaDataCaseOne = changeFeedProcessorItem.getChangeFeedMetaData();
 
@@ -43,11 +47,16 @@ public class ChangeFeedProcessorItemSerializerTest {
         Assertions.assertThat(changeFeedMetaDataCaseOne.getOperationType()).isEqualTo(ChangeFeedOperationType.CREATE);
         Assertions.assertThat(changeFeedMetaDataCaseOne.getLogSequenceNumber()).isEqualTo(176);
         Assertions.assertThat(changeFeedMetaDataCaseOne.getPreviousLogSequenceNumber()).isEqualTo(-1);
+        Assertions.assertThat(changeFeedMetaDataCaseOne.isTimeToLiveExpired()).isEqualTo(false);
 
         json = "{\"current\":{\"id\":\"1946c04a-070b-48c0-8e36-517c8d2f92ed\",\"mypk\":\"mypk-1\",\"prop\":\"Johnson\",\"_rid\":\"NopBALG34lcBAAAAAAAAAA==\",\"_self\":\"dbs/NopBAA==/colls/NopBALG34lc=/docs/NopBALG34lcBAAAAAAAAAA==/\",\"_etag\":\"\\\"00000000-0000-0000-b857-fd9e73fb01d9\\\"\",\"_attachments\":\"attachments/\",\"_ts\":1689561604},\"metadata\":{\"lsn\":176,\"crts\":1689561605,\"operationType\":\"create\"}}";
         changeFeedProcessorItem = simpleObjectMapper.readValue(json, ChangeFeedProcessorItem.class);
         jsonNode = changeFeedProcessorItem.toJsonNode();
         Assertions.assertThat(jsonNode.get("metadata").get("crts").asText()).isEqualTo("1689561605");
+        Assertions.assertThat(jsonNode.get("metadata").get("lsn").asText()).isEqualTo("176");
+        Assertions.assertThat(jsonNode.get("metadata").get("operationType").asText()).isEqualTo("create");
+        Assertions.assertThat(jsonNode.get("metadata").get("previousImageLSN")).isNull();
+        Assertions.assertThat(jsonNode.get("metadata").get("timeToLiveExpired")).isNull();
 
         ChangeFeedMetaData changeFeedMetaDataCaseTwo = changeFeedProcessorItem.getChangeFeedMetaData();
 
@@ -56,14 +65,19 @@ public class ChangeFeedProcessorItemSerializerTest {
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getOperationType()).isEqualTo(ChangeFeedOperationType.CREATE);
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getLogSequenceNumber()).isEqualTo(176);
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getPreviousLogSequenceNumber()).isEqualTo(-1);
+        Assertions.assertThat(changeFeedMetaDataCaseTwo.isTimeToLiveExpired()).isEqualTo(false);
     }
 
     @Test(groups = { "unit" })
     public void testReplaceChangeFeedProcessorItemDeSerializer() throws JsonProcessingException {
-        String json = "{\"current\":{\"id\":\"1946c04a-070b-48c0-8e36-517c8d2f92ed\",\"mypk\":\"mypk-1\",\"prop\":\"Gates\",\"_rid\":\"NopBALG34lcBAAAAAAAAAA==\",\"_self\":\"dbs/NopBAA==/colls/NopBALG34lc=/docs/NopBALG34lcBAAAAAAAAAA==/\",\"_etag\":\"\\\"00000000-0000-0000-b857-fda256f201d9\\\"\",\"_attachments\":\"attachments/\",\"_ts\":1689561604},\"metadata\":{\"lsn\":178,\"crts\":1689561600,\"operationType\":\"replace\",\"previousImageLSN\":176}}";
+        String json = "{\"current\":{\"id\":\"1946c04a-070b-48c0-8e36-517c8d2f92ed\",\"mypk\":\"mypk-1\",\"prop\":\"Gates\",\"_rid\":\"NopBALG34lcBAAAAAAAAAA==\",\"_self\":\"dbs/NopBAA==/colls/NopBALG34lc=/docs/NopBALG34lcBAAAAAAAAAA==/\",\"_etag\":\"\\\"00000000-0000-0000-b857-fda256f201d9\\\"\",\"_attachments\":\"attachments/\",\"_ts\":1689561604},\"metadata\":{\"lsn\":178,\"crts\":1689561600,\"operationType\":\"replace\",\"previousImageLSN\":176,\"timeToLiveExpired\": true}}";
         ChangeFeedProcessorItem changeFeedProcessorItem = simpleObjectMapper.readValue(json, ChangeFeedProcessorItem.class);
         JsonNode jsonNode = changeFeedProcessorItem.toJsonNode();
         Assertions.assertThat(jsonNode.get("metadata").get("crts").asText()).isEqualTo("1689561600");
+        Assertions.assertThat(jsonNode.get("metadata").get("lsn").asText()).isEqualTo("178");
+        Assertions.assertThat(jsonNode.get("metadata").get("operationType").asText()).isEqualTo("replace");
+        Assertions.assertThat(jsonNode.get("metadata").get("previousImageLSN").asText()).isEqualTo("176");
+        Assertions.assertThat(jsonNode.get("metadata").get("timeToLiveExpired").asText()).isEqualTo("true");
 
         ChangeFeedMetaData changeFeedMetaDataCaseOne = changeFeedProcessorItem.getChangeFeedMetaData();
 
@@ -72,11 +86,16 @@ public class ChangeFeedProcessorItemSerializerTest {
         Assertions.assertThat(changeFeedMetaDataCaseOne.getOperationType()).isEqualTo(ChangeFeedOperationType.REPLACE);
         Assertions.assertThat(changeFeedMetaDataCaseOne.getLogSequenceNumber()).isEqualTo(178);
         Assertions.assertThat(changeFeedMetaDataCaseOne.getPreviousLogSequenceNumber()).isEqualTo(176);
+        Assertions.assertThat(changeFeedMetaDataCaseOne.isTimeToLiveExpired()).isEqualTo(true);
 
-        json = "{\"current\":{\"id\":\"1946c04a-070b-48c0-8e36-517c8d2f92ed\",\"mypk\":\"mypk-1\",\"prop\":\"Gates\",\"_rid\":\"NopBALG34lcBAAAAAAAAAA==\",\"_self\":\"dbs/NopBAA==/colls/NopBALG34lc=/docs/NopBALG34lcBAAAAAAAAAA==/\",\"_etag\":\"\\\"00000000-0000-0000-b857-fda256f201d9\\\"\",\"_attachments\":\"attachments/\",\"_ts\":1689561604},\"metadata\":{\"lsn\":178,\"crts\":1689561608,\"operationType\":\"replace\",\"previousImageLSN\":176}}";
+        json = "{\"current\":{\"id\":\"1946c04a-070b-48c0-8e36-517c8d2f92ed\",\"mypk\":\"mypk-1\",\"prop\":\"Gates\",\"_rid\":\"NopBALG34lcBAAAAAAAAAA==\",\"_self\":\"dbs/NopBAA==/colls/NopBALG34lc=/docs/NopBALG34lcBAAAAAAAAAA==/\",\"_etag\":\"\\\"00000000-0000-0000-b857-fda256f201d9\\\"\",\"_attachments\":\"attachments/\",\"_ts\":1689561604},\"metadata\":{\"lsn\":178,\"crts\":1689561608,\"operationType\":\"replace\",\"previousImageLSN\":176,\"timeToLiveExpired\": false}}";
         changeFeedProcessorItem = simpleObjectMapper.readValue(json, ChangeFeedProcessorItem.class);
         jsonNode = changeFeedProcessorItem.toJsonNode();
         Assertions.assertThat(jsonNode.get("metadata").get("crts").asText()).isEqualTo("1689561608");
+        Assertions.assertThat(jsonNode.get("metadata").get("lsn").asText()).isEqualTo("178");
+        Assertions.assertThat(jsonNode.get("metadata").get("operationType").asText()).isEqualTo("replace");
+        Assertions.assertThat(jsonNode.get("metadata").get("previousImageLSN").asText()).isEqualTo("176");
+        Assertions.assertThat(jsonNode.get("metadata").get("timeToLiveExpired").asText()).isEqualTo("false");
 
         ChangeFeedMetaData changeFeedMetaDataCaseTwo = changeFeedProcessorItem.getChangeFeedMetaData();
 
@@ -85,6 +104,7 @@ public class ChangeFeedProcessorItemSerializerTest {
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getOperationType()).isEqualTo(ChangeFeedOperationType.REPLACE);
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getLogSequenceNumber()).isEqualTo(178);
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getPreviousLogSequenceNumber()).isEqualTo(176);
+        Assertions.assertThat(changeFeedMetaDataCaseTwo.isTimeToLiveExpired()).isEqualTo(false);
     }
 
     @Test(groups = { "unit" })
@@ -93,6 +113,10 @@ public class ChangeFeedProcessorItemSerializerTest {
         ChangeFeedProcessorItem changeFeedProcessorItem = simpleObjectMapper.readValue(json, ChangeFeedProcessorItem.class);
         JsonNode jsonNode = changeFeedProcessorItem.toJsonNode();
         Assertions.assertThat(jsonNode.get("metadata").get("crts").asText()).isEqualTo("1689561600");
+        Assertions.assertThat(jsonNode.get("metadata").get("lsn").asText()).isEqualTo("178");
+        Assertions.assertThat(jsonNode.get("metadata").get("operationType").asText()).isEqualTo("delete");
+        Assertions.assertThat(jsonNode.get("metadata").get("previousImageLSN").asText()).isEqualTo("176");
+        Assertions.assertThat(jsonNode.get("metadata").get("timeToLiveExpired")).isNull();
 
         ChangeFeedMetaData changeFeedMetaDataCaseOne = changeFeedProcessorItem.getChangeFeedMetaData();
 
@@ -106,6 +130,10 @@ public class ChangeFeedProcessorItemSerializerTest {
         changeFeedProcessorItem = simpleObjectMapper.readValue(json, ChangeFeedProcessorItem.class);
         jsonNode = changeFeedProcessorItem.toJsonNode();
         Assertions.assertThat(jsonNode.get("metadata").get("crts").asText()).isEqualTo("1689561608");
+        Assertions.assertThat(jsonNode.get("metadata").get("lsn").asText()).isEqualTo("178");
+        Assertions.assertThat(jsonNode.get("metadata").get("operationType").asText()).isEqualTo("delete");
+        Assertions.assertThat(jsonNode.get("metadata").get("previousImageLSN").asText()).isEqualTo("176");
+        Assertions.assertThat(jsonNode.get("metadata").get("timeToLiveExpired")).isNull();
 
         ChangeFeedMetaData changeFeedMetaDataCaseTwo = changeFeedProcessorItem.getChangeFeedMetaData();
 
