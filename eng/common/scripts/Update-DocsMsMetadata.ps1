@@ -262,7 +262,7 @@ foreach ($packageInfoLocation in $PackageInfoJsonLocations) {
 # Set a variable which will be used by the pipeline later to fail the build if
 # any packages failed validation
 if ($allSucceeded) {
-  Write-Host "##vso[task.setvariable variable=DocsMsPackagesAllValid;]1"
+  Write-Host "##vso[task.setvariable variable=DocsMsPackagesAllValid;]$true"
 } else { 
-  Write-Host "##vso[task.setvariable variable=DocsMsPackagesAllValid;]0"
+  Write-Host "##vso[task.setvariable variable=DocsMsPackagesAllValid;]$false"
 }
