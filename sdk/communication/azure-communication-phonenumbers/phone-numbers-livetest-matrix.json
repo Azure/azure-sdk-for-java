@@ -7,13 +7,11 @@
             "ubuntu-20.04": {
                 "OSVmImage": "MMSUbuntu20.04",
                 "Pool": "azsdk-pool-mms-ubuntu-2004-general",
-                "JavaTestVersion": "1.17",
                 "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA8"
             },
             "macos-11": {
                 "OSVmImage": "macos-11",
                 "Pool": "Azure Pipelines",
-                "JavaTestVersion": "1.11",
                 "AZURE_TEST_AGENT": "MACOS_1015_JAVA11"
             }
         },
