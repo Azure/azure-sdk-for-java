@@ -13,15 +13,18 @@
 ### 5.3.0 (2023-06-28)
 
 #### Features Added
-* Support Spring Data Commons 3 [34878](https://github.com/Azure/azure-sdk-for-java/pull/34878).
+* Support Spring Boot 3 - See [PR 34874](https://github.com/Azure/azure-sdk-for-java/pull/34874).
+* Support Spring Data Commons 3 - See [PR 34878](https://github.com/Azure/azure-sdk-for-java/pull/34878).
 
 #### Other Changes
 * Optimized default implementation of `findById(ID id)` from `CrudRepository` so that it will execute point reads where id is also the partition key, and log a warning where it is not. The new behavior is more optimal, especially for large containers with many partitions - see [PR 35403](https://github.com/Azure/azure-sdk-for-java/pull/35403).
+* Updated `azure-cosmos` to version `4.46.0`.
 
 ### 3.35.0 (2023-05-25)
 
 #### Other Changes
 * The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
+* Updated `azure-cosmos` to version `4.45.1`.
 
 ### 3.34.0 (2023-04-21)
 #### Breaking Changes
