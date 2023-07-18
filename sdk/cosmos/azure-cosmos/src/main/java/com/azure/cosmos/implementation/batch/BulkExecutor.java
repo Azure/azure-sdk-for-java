@@ -28,8 +28,20 @@ import reactor.core.publisher.UnicastProcessor;
 import reactor.util.function.Tuple2;
 
 import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -96,7 +108,8 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final boolean preserveOrdering;
     private final Map<IdAndPartitionKey, StatusQueue> failedItems;
 
-    private AtomicInteger preserveOrderingIndex;
+    private final AtomicInteger preserveOrderingIndex;
+    private final String preserveOrderingExceptionMessage = "Failed due to a previous operation failing with an exception that should not be retried with the same id and partition key. This is unique to the preserve ordering flag.";
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -125,7 +138,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         // different values when a new group is created.
         this.preserveOrdering = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
-            .getPreserveOrdering(cosmosBulkExecutionOptions); // validate concurrency inside the cosmosBulkExectionOptions
+            .getPreserveOrdering(cosmosBulkExecutionOptions);
         this.preserveOrderingIndex = new AtomicInteger(0);
         // keeps track of the failed items with same id and partition key combination when preserve ordering is true
         this.failedItems = new ConcurrentHashMap<>();
@@ -275,14 +288,8 @@ public final class BulkExecutor<TContext> implements Disposable {
             .getCosmosBulkExecutionOptionsAccessor()
             .getMaxConcurrentCosmosPartitions(cosmosBulkExecutionOptions);
         Mono<Integer> maxConcurrentCosmosPartitionsMono;
-        if (preserveOrdering) {
-            maxConcurrentCosmosPartitionsMono = Mono.just(1);
-            // remove
-        } else {
-            maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ?
-                Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
-                this.container.getFeedRanges().map(ranges -> Math.max(256, ranges.size() * 2));
-        }
+        maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ? Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
+            this.container.getFeedRanges().map(ranges -> Math.max(256, ranges.size() * 2));
 
 
         return
@@ -356,7 +363,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     })
                     .mergeWith(mainSink.asFlux())
                     .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                    .flatMapSequential( // change back
+                    .flatMap(
                         operation -> {
                             logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
                                 getItemOperationDiagnostics(operation),
@@ -369,7 +376,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
 
                             // resolve partition key range id again for operations which comes in main sink due to gone retry.
-                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation, preserveOrdering)
+                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
                                                    .map((String pkRangeId) -> {
                                                        PartitionScopeThresholds partitionScopeThresholds =
                                                            this.partitionScopeThresholds.computeIfAbsent(
@@ -454,24 +461,19 @@ public final class BulkExecutor<TContext> implements Disposable {
         AtomicInteger currentTotalSerializedLength = new AtomicInteger(0);
         Set<IdAndPartitionKey> pastIdAndPK = ConcurrentHashMap.newKeySet();
         int microBatchConcurrency;
-        if (preserveOrdering) {
-            microBatchConcurrency = 1;
-            // throw exception
-        } else {
-            microBatchConcurrency = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                .getCosmosBulkExecutionOptionsAccessor()
-                .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions);
-        }
+        microBatchConcurrency = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions);
 
 
         return partitionedGroupFluxOfInputOperations
             .mergeWith(groupFluxProcessor)
             .onBackpressureBuffer()
-            .window(5) //How am I supposed to come up with this value. I am also confused why this works ---------------------------
+            .window(5)
             .flatMapSequential(Flux::sort)
             .timestamp()
             .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-            .bufferUntil((Tuple2<Long, CosmosItemOperation> timeStampItemOperationTuple) -> {
+            .bufferUntil(timeStampItemOperationTuple -> {
                 long timestamp = timeStampItemOperationTuple.getT1();
                 CosmosItemOperation itemOperation = timeStampItemOperationTuple.getT2();
 
@@ -504,7 +506,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     return false;
                 }
 
-                IdAndPartitionKey idPartitionKey = new IdAndPartitionKey(itemOperation.getId(), itemOperation.getPartitionKeyValue());
+                IdAndPartitionKey idPartitionKey = createIdAndPartitionKey(itemOperation);
                 boolean isItemAbsent = pastIdAndPK.add(idPartitionKey);
                 firstRecordTimeStamp.compareAndSet(-1, timestamp);
                 long age = timestamp - firstRecordTimeStamp.get();
@@ -592,17 +594,14 @@ public final class BulkExecutor<TContext> implements Disposable {
             List<CosmosItemOperation> newOperations = new ArrayList<>();
             AtomicBoolean failFast = new AtomicBoolean(false);
             for (CosmosItemOperation operation : operations) {
-                IdAndPartitionKey idPartitionKey = new IdAndPartitionKey(operation.getId(), operation.getPartitionKeyValue());
+                IdAndPartitionKey idPartitionKey = createIdAndPartitionKey(operation);
                 if (operation instanceof ItemBulkOperation<?, ?>) {
                     AtomicBoolean ignore = new AtomicBoolean(false);
 
                     ItemBulkOperation<?, ?> bulkOperation = (ItemBulkOperation<?, ?>) operation;
                     failedItems.computeIfPresent(idPartitionKey, (key, statusQueue) -> {
-                        if (statusQueue.getQueue().isEmpty()) {
-                            return statusQueue;
-                        }
                         switch (statusQueue.getStatus()) {
-                            case Split: // --------------------------------------------------- Won't this happen naturally
+                            case Split:
                             case Retry:
                                 if (!statusQueue.isInitialFailedItem(bulkOperation)) {
                                     statusQueue.add(bulkOperation);
@@ -626,7 +625,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     .fromIterable(newOperations)
                     .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
                     .flatMap((CosmosItemOperation itemOperation) -> {
-                        IdAndPartitionKey idPartitionKey = new IdAndPartitionKey(itemOperation.getId(), itemOperation.getPartitionKeyValue());
+                        IdAndPartitionKey idPartitionKey = createIdAndPartitionKey(itemOperation);
                         if (failedItems.containsKey(idPartitionKey) && failedItems.get(idPartitionKey).getStatus() == StatusQueue.Status.NoRetry) {
                             return  Flux.just((CosmosBulkOperationResponse<TContext>) failedItems.get(idPartitionKey).getResponse());
                             //Do a custom response
@@ -743,8 +742,9 @@ public final class BulkExecutor<TContext> implements Disposable {
                             if (preserveOrdering) {
                                 StatusQueue statusQueue = failedItems.get(idAndPartitionKey);
                                 statusQueue.setStatus(StatusQueue.Status.NoRetry);
+                                CosmosException preserveOrderingException = BridgeInternal.createCosmosException(cosmosBulkItemResponse.getStatusCode(), preserveOrderingExceptionMessage, cosmosBulkItemResponse.getResponseHeaders(), null);
                                 statusQueue.setResponse(ModelBridgeInternal.createCosmosBulkOperationResponse(
-                                    itemOperation, cosmosBulkItemResponse, actualContext));
+                                    itemOperation, preserveOrderingException, actualContext));
                             }
                             // reduce log noise level for commonly expected/normal status codes
                             if (response.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
@@ -780,12 +780,12 @@ public final class BulkExecutor<TContext> implements Disposable {
             }
         }
         if (preserveOrdering) {
-            IdAndPartitionKey idPartitionKey = new IdAndPartitionKey(itemOperation.getId(), itemOperation.getPartitionKeyValue());
+            IdAndPartitionKey idPartitionKey = createIdAndPartitionKey(itemOperation);
             failedItems.computeIfPresent(idPartitionKey, (key, statusQueue) -> {
-                if (statusQueue.getQueue().isEmpty()) {
+                statusQueue.poll();
+                if (statusQueue.isEmpty()) {
                     return statusQueue;
                 }
-                statusQueue.poll();
                 CosmosItemOperation nextOperation = statusQueue.getQueue().peek();
                 if (nextOperation != null) {
                     if (statusQueue.getStatus() == StatusQueue.Status.Retry) {
@@ -796,6 +796,10 @@ public final class BulkExecutor<TContext> implements Disposable {
                 }
                 return statusQueue;
             });
+            StatusQueue statusQueue = failedItems.get(idPartitionKey);
+            if (statusQueue != null && statusQueue.isEmpty()) {
+                failedItems.remove(idPartitionKey);
+            }
         }
         thresholds.recordSuccessfulOperation();
         return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
@@ -840,7 +844,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         if (exception instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?, ?>) {
             CosmosException cosmosException = (CosmosException) exception;
             ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
-            IdAndPartitionKey idAndPartitionKey = new IdAndPartitionKey(itemOperation.getId(), itemOperation.getPartitionKeyValue());
+            IdAndPartitionKey idAndPartitionKey = createIdAndPartitionKey(itemOperation);
             if (preserveOrdering) {
                 failedItems.compute(idAndPartitionKey, (key, statusQueue) -> {
                     if (statusQueue == null) {
@@ -916,7 +920,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         }
     }
 
-    public static boolean isTransientFailure(int statusCode, int substatusCode) {
+    private static boolean isTransientFailure(int statusCode, int substatusCode) {
         return statusCode == HttpConstants.StatusCodes.GONE
             || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
             || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
@@ -926,7 +930,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
     }
 
-    public static boolean isTransientFailure(Exception e) {
+    private static boolean isTransientFailure(Exception e) {
         if (e instanceof CosmosException) {
             return isTransientFailure(((CosmosException) e).getStatusCode(), ((CosmosException) e).getSubStatusCode());
         }
@@ -934,19 +938,17 @@ public final class BulkExecutor<TContext> implements Disposable {
         return false;
     }
 
-    private Mono<CosmosBulkOperationResponse<TContext>> enqueueAllForRetry(
-        FluxSink<CosmosItemOperation> groupSink,
-        Queue<CosmosItemOperation> itemOperations,
-        PartitionScopeThresholds thresholds) {
-
-        thresholds.recordEnqueuedRetry();
-        CosmosItemOperation itemOperation = itemOperations.poll();
-        while (itemOperation != null) {
-            groupSink.next(itemOperation);
-            itemOperation = itemOperations.poll();
+    private IdAndPartitionKey createIdAndPartitionKey(CosmosItemOperation itemOperation) {
+        IdAndPartitionKey idPartitionKey;
+        if (itemOperation.getId() != null) {
+            idPartitionKey = new IdAndPartitionKey(itemOperation.getId(), itemOperation.getPartitionKeyValue());
+        } else {
+            String id = Utils.getSimpleObjectMapper().valueToTree(itemOperation.getItem()).get("id").toString().replace("\"", "");
+            idPartitionKey = new IdAndPartitionKey(id, itemOperation.getPartitionKeyValue());
         }
-        return Mono.empty();
+        return idPartitionKey;
     }
+
 
     private Mono<CosmosBulkOperationResponse<TContext>> retryOtherExceptions(
         CosmosItemOperation itemOperation,
@@ -958,23 +960,22 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         TContext actualContext = this.getActualContext(itemOperation);
         return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
-            IdAndPartitionKey idAndPartitionKey = new IdAndPartitionKey(itemOperation.getId(), itemOperation.getPartitionKeyValue()); // might be useful to make a map instead of constant creating -----------------------------------------
-            if (result.shouldRetry) { // -------------------------------- We never retry transient exceptions because it happens in batch I assume
+            IdAndPartitionKey idAndPartitionKey = createIdAndPartitionKey(itemOperation);
+            if (result.shouldRetry) {
                 if (preserveOrdering) {
                     failedItems.get(idAndPartitionKey).setStatus(StatusQueue.Status.Retry);
                 }
                 return this.enqueueForRetry(result.backOffTime, groupSink, itemBulkOperation, thresholds);
             } else {
                  if (preserveOrdering) {
-
-                    if (!isTransientFailure(exception)) { // Used your code Annie and not sure if this is what we want------------------------------------------------------------------------------------------
+                    if (!isTransientFailure(exception)) {
                         failedItems.remove(idAndPartitionKey);
                     } else {
-                        StatusQueue statusQueue = failedItems.get(idAndPartitionKey);  // At this stage we don't retry transient exceptions -----------------------------
+                        StatusQueue statusQueue = failedItems.get(idAndPartitionKey);
                         statusQueue.setStatus(StatusQueue.Status.NoRetry);
+                        CosmosException preserveOrderingException = BridgeInternal.createCosmosException(cosmosException.getStatusCode(), preserveOrderingExceptionMessage, cosmosException.getResponseHeaders(), exception);
                         statusQueue.setResponse(ModelBridgeInternal.createCosmosBulkOperationResponse(
-                            itemOperation, exception, actualContext));
-//                        return this.enqueueForRetry(result.backOffTime, groupSink, itemBulkOperation, thresholds);
+                            itemOperation, preserveOrderingException, actualContext));
                     }
                 }
                 return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
@@ -1166,7 +1167,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     }
 
     /**
-     * Queue that keeps track of the status for retries and all of the failed items for a specific partition key and id combination
+     * Queue that keeps track of the status for retries and all the failed items for a specific partition key and id combination
      */
     private static class StatusQueue {
 
@@ -1202,6 +1203,9 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         public CosmosItemOperation poll() {
             return queue.poll();
+        }
+        public boolean isEmpty() {
+            return queue.isEmpty();
         }
 
         public Status getStatus() {

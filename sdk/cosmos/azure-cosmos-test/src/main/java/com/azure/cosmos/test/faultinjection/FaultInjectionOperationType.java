@@ -40,6 +40,5 @@ public enum FaultInjectionOperationType {
      */
     BATCH_ITEM
 
-
     // Add support for metadata request type
 }

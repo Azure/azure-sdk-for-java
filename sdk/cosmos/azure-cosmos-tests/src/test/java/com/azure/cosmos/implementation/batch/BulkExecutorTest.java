@@ -2,13 +2,33 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.*;
+
+import com.azure.cosmos.BatchTestBase;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.ServiceUnavailableException;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.models.*;
-import com.azure.cosmos.test.faultinjection.*;
+
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
@@ -22,7 +42,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,9 +59,9 @@ public class BulkExecutorTest extends BatchTestBase {
     private CosmosAsyncDatabase database;
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "clientBuilders") // change ---------------------------------------------------------------
+    @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public BulkExecutorTest(CosmosClientBuilder clientBuilder) {
-        super(clientBuilder.directMode());
+        super(clientBuilder);
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -139,7 +163,7 @@ public class BulkExecutorTest extends BatchTestBase {
             if (i == 0) {
                 BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(id, 2, 4, "type1",
                     duplicatePK);
-                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(id, eventDoc,
+                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(eventDoc,
                     new PartitionKey(duplicatePK)));
             } else {
                 cosmosItemOperations.add(CosmosBulkOperations.getPatchItemOperation(id,
@@ -213,7 +237,7 @@ public class BulkExecutorTest extends BatchTestBase {
             if (i == 0) {
                 BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(id, 2, 4, "type1",
                     duplicatePK);
-                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(id, eventDoc,
+                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(eventDoc,
                     new PartitionKey(duplicatePK)));
             } else {
                 cosmosItemOperations.add(CosmosBulkOperations.getPatchItemOperation(id,
@@ -231,7 +255,7 @@ public class BulkExecutorTest extends BatchTestBase {
 
         FaultInjectionRule rule = injectFailure("RequestRateTooLarge", this.container,
             FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, 10);
-//        FaultInjectionRule rule2 = injectFailure("PartitionSplit", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING); // Never triggers partition splitting flow ----------------
+//        FaultInjectionRule rule2 = injectFailure("PartitionSplit", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING);
 
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
@@ -301,7 +325,7 @@ public class BulkExecutorTest extends BatchTestBase {
             if (i == 0) {
                 BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(duplicateId, 2, 4, "type1",
                     duplicatePK);
-                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(duplicateId, eventDoc,
+                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(eventDoc,
                     duplicatePartitionKey));
             } else {
                 cosmosItemOperations.add(CosmosBulkOperations.getPatchItemOperation(duplicateId,

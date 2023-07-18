@@ -164,10 +164,17 @@ public final class CosmosBulkExecutionOptions {
      * @return the bulk processing options.
      */
     public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
-        checkArgument(
-            maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
-            "maxMicroBatchConcurrency should be between [1, 5]");
-        this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
+        if (preserveOrdering) {
+            checkArgument(
+                maxMicroBatchConcurrency == 1,
+                "maxMicroBatchConcurrency has to be 1 when preserve ordering is enabled.");
+            this.maxMicroBatchConcurrency = 1;
+        } else {
+            checkArgument(
+                maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
+                "maxMicroBatchConcurrency should be between [1, 5]");
+            this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
+        }
         return this;
     }
 

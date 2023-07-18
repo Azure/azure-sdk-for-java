@@ -105,7 +105,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     }
 
     public void setIndex(int index) {
-        if (index == 0) {
+        if (this.index == 0) {
             this.index = index;
         }
     }
