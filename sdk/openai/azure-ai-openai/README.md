@@ -18,6 +18,7 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Chat completions sample](#chat-completions "Chat completions")
 * [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
 * [Embeddings sample](#text-embeddings "Text Embeddings")
+* [Image Generation sample](#image-generation "Image Generation")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -148,6 +149,7 @@ The following sections provide several code snippets covering some of the most c
 * [Chat completions sample](#chat-completions "Chat completions")
 * [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
 * [Embeddings sample](#text-embeddings "Text Embeddings")
+* [Image Generation sample](#image-generation "Image Generation")
 
 ### Text completions
 
@@ -200,6 +202,9 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
     System.out.println(message.getContent());
 }
 ```
+
+For `function call` sample, see sample [function call][sample_chat_completion_function_call].
+
 Please refer to the service documentation for a conceptual discussion of [text completion][microsoft_docs_openai_completion].
 
 ### Streaming chat completions
@@ -251,6 +256,26 @@ for (EmbeddingItem item : embeddings.getData()) {
 ```
 Please refer to the service documentation for a conceptual discussion of [openAI embedding][microsoft_docs_openai_embedding].
 
+### Image Generation
+
+```java readme-sample-imageGeneration
+ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
+    "A drawing of the Seattle skyline in the style of Van Gogh");
+ImageResponse images = client.getImages(imageGenerationOptions);
+
+for (ImageLocation imageLocation : images.getData()) {
+    ResponseError error = imageLocation.getError();
+    if (error != null) {
+        System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
+            error.getCode(), error.getMessage());
+    } else {
+        System.out.printf(
+            "Image location URL that provides temporary access to download the generated image is %s.%n",
+            imageLocation.getUrl());
+    }
+}
+```
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -299,6 +324,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
+[sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java

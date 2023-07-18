@@ -18,10 +18,14 @@ import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageLocation;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -199,5 +203,25 @@ public final class ReadmeSamples {
             }
         }
         // END: readme-sample-getEmbedding
+    }
+
+    public void imageGeneration() {
+        // BEGIN: readme-sample-imageGeneration
+        ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
+            "A drawing of the Seattle skyline in the style of Van Gogh");
+        ImageResponse images = client.getImages(imageGenerationOptions);
+
+        for (ImageLocation imageLocation : images.getData()) {
+            ResponseError error = imageLocation.getError();
+            if (error != null) {
+                System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
+                    error.getCode(), error.getMessage());
+            } else {
+                System.out.printf(
+                    "Image location URL that provides temporary access to download the generated image is %s.%n",
+                    imageLocation.getUrl());
+            }
+        }
+        // END: readme-sample-imageGeneration
     }
 }
