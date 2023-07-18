@@ -59,7 +59,7 @@ public final class RemoveParticipantOptions {
      *
      * @return the callbackUriOverride
      */
-    public String  getCallbackUriOverride() {
+    public String getCallbackUrlOverride() {
         return callbackUriOverride;
     }
 

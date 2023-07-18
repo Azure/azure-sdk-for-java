@@ -67,7 +67,7 @@ public final class AddParticipantOptions {
      *
      * @return the callbackUriOverride
      */
-    public String getCallbackUriOverride() {
+    public String getCallbackUrlOverride() {
         return callbackUriOverride;
     }
 
