@@ -755,7 +755,6 @@ public class RoomsClientTest extends RoomsTestBase {
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
             .assertSync()
             .build();
     }
