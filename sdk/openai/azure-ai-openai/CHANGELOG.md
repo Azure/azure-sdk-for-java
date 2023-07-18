@@ -2,9 +2,15 @@
 
 ## 1.0.0-beta.3 (2023-07-18)
 
+### Features Added
+
 - Added methods and models to support DALL-E
 - Added methods and models to support Functions
 - Added models supporting ResponsibleAI annotations
+
+### Bugs Fixed
+
+- Fixed garbled characters issue in the returned data of `getChatCompletionsStream`.
 
 ### Other Changes
 
