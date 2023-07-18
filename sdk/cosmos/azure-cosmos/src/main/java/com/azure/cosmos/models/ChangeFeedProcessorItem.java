@@ -114,9 +114,17 @@ public final class ChangeFeedProcessorItem {
     private JsonNode constructChangeFeedProcessorItemAsJsonNode() {
         ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
 
-        objectNode.set("previous", this.previous);
-        objectNode.set("current", this.current);
-        objectNode.set("metadata", this.changeFeedMetaData);
+        if (this.previous != null) {
+            objectNode.set("previous", this.previous);
+        }
+
+        if (this.current != null) {
+            objectNode.set("current", this.current);
+        }
+
+        if (this.changeFeedMetaData != null) {
+            objectNode.set("metadata", this.changeFeedMetaData);
+        }
 
         return objectNode;
     }
