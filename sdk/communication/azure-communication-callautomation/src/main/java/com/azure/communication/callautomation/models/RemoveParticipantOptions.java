@@ -25,7 +25,7 @@ public final class RemoveParticipantOptions {
     /**
      * Callback URI override
      */
-    private String callbackUriOverride;
+    private String callbackUrlOverride;
 
     /**
      * Constructor
@@ -60,7 +60,7 @@ public final class RemoveParticipantOptions {
      * @return the callbackUriOverride
      */
     public String getCallbackUrlOverride() {
-        return callbackUriOverride;
+        return callbackUrlOverride;
     }
 
     /**
@@ -77,11 +77,11 @@ public final class RemoveParticipantOptions {
     /**
      * Set the callbackUriOverride.
      *
-     * @param callbackUriOverride the callbackUriOverride to set
+     * @param callbackUrlOverride the callbackUriOverride to set
      * @return the RemoveParticipantOptions object itself.
      */
-    public RemoveParticipantOptions setCallbackUriOverride(String callbackUriOverride) {
-        this.callbackUriOverride = callbackUriOverride;
+    public RemoveParticipantOptions setCallbackUrlOverride(String callbackUrlOverride) {
+        this.callbackUrlOverride = callbackUrlOverride;
         return this;
     }
 }
