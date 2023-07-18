@@ -670,20 +670,8 @@ public final class DiagnosticsProvider {
         // Interface method doesn't have type parameter, so we can't add it either.
         @SuppressWarnings("rawtypes")
         public Object scanUnsafe(Attr attr) {
-            if (attr == Attr.NAME) {
-                String suffix = "";
-                if (this.sourceScannable != null) {
-                    suffix = "." + this.sourceScannable.name() + "(" + this.sourceScannable.stepName() + ")";
-                }
-                if (this.isSuppressed) {
-                    return "beginInstrumentationSuppression" + suffix;
-                }
-
-                return "endInstrumentationSuppression" + suffix;
-            }
-
-            if (this.sourceScannable != null) {
-                return this.sourceScannable.scanUnsafe(attr);
+            if (attr == Attr.PARENT) {
+                return this.sourceScannable;
             }
 
             return null;
