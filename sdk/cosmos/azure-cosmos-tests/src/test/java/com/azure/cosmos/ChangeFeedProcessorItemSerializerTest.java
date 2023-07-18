@@ -46,7 +46,7 @@ public class ChangeFeedProcessorItemSerializerTest {
         Assertions.assertThat(changeFeedMetaDataCaseOne.getConflictResolutionTimestamp()).isEqualTo(Instant.ofEpochSecond(1689561600));
         Assertions.assertThat(changeFeedMetaDataCaseOne.getOperationType()).isEqualTo(ChangeFeedOperationType.CREATE);
         Assertions.assertThat(changeFeedMetaDataCaseOne.getLogSequenceNumber()).isEqualTo(176);
-        Assertions.assertThat(changeFeedMetaDataCaseOne.getPreviousLogSequenceNumber()).isEqualTo(-1);
+        Assertions.assertThat(changeFeedMetaDataCaseOne.getPreviousLogSequenceNumber()).isEqualTo(0);
         Assertions.assertThat(changeFeedMetaDataCaseOne.isTimeToLiveExpired()).isEqualTo(false);
 
         json = "{\"current\":{\"id\":\"1946c04a-070b-48c0-8e36-517c8d2f92ed\",\"mypk\":\"mypk-1\",\"prop\":\"Johnson\",\"_rid\":\"NopBALG34lcBAAAAAAAAAA==\",\"_self\":\"dbs/NopBAA==/colls/NopBALG34lc=/docs/NopBALG34lcBAAAAAAAAAA==/\",\"_etag\":\"\\\"00000000-0000-0000-b857-fd9e73fb01d9\\\"\",\"_attachments\":\"attachments/\",\"_ts\":1689561604},\"metadata\":{\"lsn\":176,\"crts\":1689561605,\"operationType\":\"create\"}}";
@@ -64,7 +64,7 @@ public class ChangeFeedProcessorItemSerializerTest {
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getConflictResolutionTimestamp()).isEqualTo(Instant.ofEpochSecond(1689561605));
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getOperationType()).isEqualTo(ChangeFeedOperationType.CREATE);
         Assertions.assertThat(changeFeedMetaDataCaseTwo.getLogSequenceNumber()).isEqualTo(176);
-        Assertions.assertThat(changeFeedMetaDataCaseTwo.getPreviousLogSequenceNumber()).isEqualTo(-1);
+        Assertions.assertThat(changeFeedMetaDataCaseTwo.getPreviousLogSequenceNumber()).isEqualTo(0);
         Assertions.assertThat(changeFeedMetaDataCaseTwo.isTimeToLiveExpired()).isEqualTo(false);
     }
 

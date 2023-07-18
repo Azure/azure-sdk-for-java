@@ -29,46 +29,6 @@ public final class ChangeFeedMetaData {
     private boolean timeToLiveExpired;
 
     /**
-     * Constructor
-     * */
-    public ChangeFeedMetaData() {}
-
-    ChangeFeedMetaData(JsonNode changeFeedMetaDataAsJsonNode) {
-
-        JsonNode crtsJsonNode = changeFeedMetaDataAsJsonNode.get("crts");
-        JsonNode lsnJsonNode = changeFeedMetaDataAsJsonNode.get("lsn");
-        JsonNode operationTypeJsonNode = changeFeedMetaDataAsJsonNode.get("operationType");
-        JsonNode previousImageLsnJsonNode = changeFeedMetaDataAsJsonNode.get("previousImageLSN");
-        JsonNode timeToLiveExpiredJsonNode = changeFeedMetaDataAsJsonNode.get("timeToLiveExpired");
-
-        this.conflictResolutionTimestamp = crtsJsonNode != null ? crtsJsonNode.asLong() : -1;
-        this.logSequenceNumber = lsnJsonNode != null ? lsnJsonNode.asLong() : -1;
-
-        if (operationTypeJsonNode != null) {
-            String operationTypeAsString = operationTypeJsonNode.asText().toLowerCase(Locale.ROOT);
-
-            switch (operationTypeAsString) {
-                case "create":
-                    this.operationType = ChangeFeedOperationType.CREATE;
-                    break;
-                case "replace":
-                    this.operationType = ChangeFeedOperationType.REPLACE;
-                    break;
-                case "delete":
-                    this.operationType = ChangeFeedOperationType.DELETE;
-                    break;
-                default:
-                    throw new IllegalStateException("The operationType is not a valid operation!");
-            }
-        } else {
-            this.operationType = null;
-        }
-
-        this.previousLogSequenceNumber = previousImageLsnJsonNode != null ? previousImageLsnJsonNode.asLong() : -1;
-        this.timeToLiveExpired = timeToLiveExpiredJsonNode != null ? timeToLiveExpiredJsonNode.asBoolean() : false;
-    }
-
-    /**
      * Gets the conflict resolution timestamp
      *
      * @return conflict resolution timestamp
