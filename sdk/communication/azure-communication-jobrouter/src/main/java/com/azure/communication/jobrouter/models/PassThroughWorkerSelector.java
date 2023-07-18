@@ -30,8 +30,8 @@ public final class PassThroughWorkerSelector extends WorkerSelectorAttachment {
     /*
      * Describes how long the attached label selector is valid in seconds.
      */
-    @JsonProperty(value = "ttlSeconds")
-    private Double ttlSeconds;
+    @JsonProperty(value = "expiresAfterSeconds")
+    private Double expiresAfterSeconds;
 
     /**
      * Get the key property: The label key to query against.
@@ -74,22 +74,22 @@ public final class PassThroughWorkerSelector extends WorkerSelectorAttachment {
     }
 
     /**
-     * Get the ttlSeconds property: Describes how long the attached label selector is valid in seconds.
+     * Get the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
      *
-     * @return the ttlSeconds value.
+     * @return the expiresAfterSeconds value.
      */
-    public Double getTtlSeconds() {
-        return this.ttlSeconds;
+    public Double getExpiresAfterSeconds() {
+        return this.expiresAfterSeconds;
     }
 
     /**
-     * Set the ttlSeconds property: Describes how long the attached label selector is valid in seconds.
+     * Set the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
      *
-     * @param ttlSeconds the ttlSeconds value to set.
+     * @param expiresAfterSeconds the expiresAfterSeconds value to set.
      * @return the PassThroughWorkerSelector object itself.
      */
-    public PassThroughWorkerSelector setTtlSeconds(Double ttlSeconds) {
-        this.ttlSeconds = ttlSeconds;
+    public PassThroughWorkerSelector setExpiresAfterSeconds(Double expiresAfterSeconds) {
+        this.expiresAfterSeconds = expiresAfterSeconds;
         return this;
     }
 }

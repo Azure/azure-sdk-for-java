@@ -61,7 +61,7 @@ jobs:
       container: $[ variables['Container'] ]
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
 
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
@@ -90,7 +90,7 @@ jobs:
         displayName: Dump Test-Proxy Logs
         condition: succeededOrFailed()
 
-      - template: ../steps/install-reporting-tools.yml
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
 
@@ -107,5 +107,7 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml

@@ -135,12 +135,12 @@ To initialize the JobRouter Client, the connection string can be used to instant
 Alternatively, you can also use Active Directory authentication using DefaultAzureCredential.
 
 ```java 
-RouterClient jobRouterClient = new RouterClientBuilder()
-    .connectionString(connectionString);
-    .buildClient();
+JobRouterClient jobRouterClient = new JobRouterClientBuilder()
+            .connectionString(connectionString)
+            .buildClient();
 ```
 
-Using `RouterClient` created from builder, create Job Router entities as described below.
+Using `JobRouterClient` created from builder, create Job Router entities as described below.
 
 ### Create a Distribution Policy
 
@@ -159,7 +159,7 @@ DistributionPolicy distributionPolicy = jobRouterClient.createDistributionPolicy
 
 ```java 
 CreateQueueOptions createQueueOptions = new CreateQueueOptions("queue-id", distributionPolicy.getId());
-JobQueue jobQueue = jobRouterClient.createQueue(createQueueOptions);
+RouterQueue jobQueue = jobRouterClient.createQueue(createQueueOptions);
 ```
 
 ### Create a Job
@@ -170,7 +170,7 @@ CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel
             .setChannelReference("12345")
             .setRequestedWorkerSelectors(
                 new ArrayList<>() {{
-                    new WorkerSelector()
+                    new RouterWorkerSelector()
                         .setKey("Some-skill")
                         .setLabelOperator(LabelOperator.GREATER_THAN)
                         .setValue(10);

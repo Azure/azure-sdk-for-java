@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a label selector that will always be attached. */
+/** Describes a queue selector that will always be attached. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Fluent
@@ -22,20 +22,20 @@ public final class StaticQueueSelector extends QueueSelectorAttachment {
     private RouterQueueSelector queueSelector;
 
     /**
-     * Get the labelSelector property: Describes a condition that must be met against a set of labels for queue
+     * Get the queueSelector property: Describes a condition that must be met against a set of labels for queue
      * selection.
      *
-     * @return the labelSelector value.
+     * @return the queueSelector value.
      */
     public RouterQueueSelector getQueueSelector() {
         return this.queueSelector;
     }
 
     /**
-     * Set the labelSelector property: Describes a condition that must be met against a set of labels for queue
+     * Set the queueSelector property: Describes a condition that must be met against a set of labels for queue
      * selection.
      *
-     * @param queueSelector the labelSelector value to set.
+     * @param queueSelector the queueSelector value to set.
      * @return the StaticQueueSelector object itself.
      */
     public StaticQueueSelector setQueueSelector(RouterQueueSelector queueSelector) {
