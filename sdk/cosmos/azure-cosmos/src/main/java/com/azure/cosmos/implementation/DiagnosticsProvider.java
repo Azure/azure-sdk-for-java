@@ -36,6 +36,7 @@ import reactor.core.publisher.Signal;
 import reactor.core.publisher.SignalType;
 import reactor.util.context.ContextView;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -667,13 +668,14 @@ public final class DiagnosticsProvider {
         }
 
         @Override
+        @Nullable
         // Interface method doesn't have type parameter, so we can't add it either.
         @SuppressWarnings("rawtypes")
         public Object scanUnsafe(Attr attr) {
             if (attr == Attr.NAME) {
                 String suffix = "";
                 if (this.sourceScannable != null) {
-                    suffix = "." + this.sourceScannable.name() + "(" + this.sourceScannable.stepName() + ")";
+                    suffix = "." + this.sourceScannable.name() + "(" + this.sourceScannable.operatorName() + ")";
                 }
                 if (this.isSuppressed) {
                     return "beginInstrumentationSuppression" + suffix;
