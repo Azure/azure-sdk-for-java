@@ -82,7 +82,7 @@ public class MapsRouteTestBase extends TestProxyTestBase {
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
         httpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient;
 
-        if (interceptorManager.isRecordMode()) {
+        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
             interceptorManager.addSanitizers(
                 Collections.singletonList(
                     new TestProxySanitizer("subscription-key", ".+", "REDACTED", TestProxySanitizerType.HEADER)));
