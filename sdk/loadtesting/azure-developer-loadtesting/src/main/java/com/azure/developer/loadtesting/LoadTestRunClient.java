@@ -959,50 +959,6 @@ public final class LoadTestRunClient {
     }
 
     /**
-     * List the dimension values for the given metric dimension name.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     *     <tr><td>metricName</td><td>String</td><td>No</td><td>Metric name</td></tr>
-     *     <tr><td>timespan</td><td>String</td><td>No</td><td>The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique test run name as identifier.
-     * @param name Dimension name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DimensionValueList items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMetricDimensionValues(
-            String testRunId, String name, String metricNamespace, RequestOptions requestOptions) {
-        return new PagedIterable<>(
-                this.client.listMetricDimensionValues(testRunId, name, metricNamespace, requestOptions));
-    }
-
-    /**
      * Delete a test run by its name.
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
@@ -1107,60 +1063,6 @@ public final class LoadTestRunClient {
         // Generated convenience method for getTestRunFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTestRunFileWithResponse(testRunId, fileName, requestOptions).getValue().toObject(FileInfo.class);
-    }
-
-    /**
-     * List the dimension values for the given metric dimension name.
-     *
-     * @param testRunId Unique test run name as identifier.
-     * @param name Dimension name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricName Metric name.
-     * @param timespan The timespan of the query. It is a string with the following format
-     *     'startDateTime_ISO/endDateTime_ISO'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DimensionValueList items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DimensionValueList> listMetricDimensionValues(
-            String testRunId,
-            String name,
-            String metricNamespace,
-            Interval interval,
-            String metricName,
-            String timespan) {
-        // Generated convenience method for listMetricDimensionValues
-        return new PagedIterable<>(
-                client.listMetricDimensionValues(testRunId, name, metricNamespace, interval, metricName, timespan));
-    }
-
-    /**
-     * List the dimension values for the given metric dimension name.
-     *
-     * @param testRunId Unique test run name as identifier.
-     * @param name Dimension name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DimensionValueList items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DimensionValueList> listMetricDimensionValues(
-            String testRunId, String name, String metricNamespace) {
-        // Generated convenience method for listMetricDimensionValues
-        return new PagedIterable<>(client.listMetricDimensionValues(testRunId, name, metricNamespace));
     }
 
     /**
@@ -1507,5 +1409,113 @@ public final class LoadTestRunClient {
             String testRunId, String metricName, String metricNamespace, String timespan) {
         // Generated convenience method for listMetrics
         return new PagedIterable<>(client.listMetrics(testRunId, metricName, metricNamespace, timespan));
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique test run name as identifier.
+     * @param name Dimension name.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DimensionValueList items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMetricDimensionValues(
+            String testRunId,
+            String name,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return new PagedIterable<>(
+                this.client.listMetricDimensionValues(
+                        testRunId, name, metricName, metricNamespace, timespan, requestOptions));
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     *
+     * @param testRunId Unique test run name as identifier.
+     * @param name Dimension name.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DimensionValueList items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DimensionValueList> listMetricDimensionValues(
+            String testRunId,
+            String name,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            Interval interval) {
+        // Generated convenience method for listMetricDimensionValues
+        return new PagedIterable<>(
+                client.listMetricDimensionValues(testRunId, name, metricName, metricNamespace, timespan, interval));
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     *
+     * @param testRunId Unique test run name as identifier.
+     * @param name Dimension name.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DimensionValueList items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DimensionValueList> listMetricDimensionValues(
+            String testRunId, String name, String metricName, String metricNamespace, String timespan) {
+        // Generated convenience method for listMetricDimensionValues
+        return new PagedIterable<>(
+                client.listMetricDimensionValues(testRunId, name, metricName, metricNamespace, timespan));
     }
 }

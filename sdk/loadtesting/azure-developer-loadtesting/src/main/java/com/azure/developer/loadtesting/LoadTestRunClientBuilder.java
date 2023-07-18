@@ -181,7 +181,7 @@ public final class LoadTestRunClientBuilder
     /*
      * Service version
      */
-    @Generated private AzureLoadTestingServiceVersion serviceVersion;
+    @Generated private LoadTestingServiceVersion serviceVersion;
 
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
@@ -208,8 +208,8 @@ public final class LoadTestRunClientBuilder
     @Generated
     private LoadTestRunClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AzureLoadTestingServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : AzureLoadTestingServiceVersion.getLatest();
+        LoadTestingServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : LoadTestingServiceVersion.getLatest();
         LoadTestRunClientImpl client =
                 new LoadTestRunClientImpl(
                         localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
@@ -281,6 +281,8 @@ public final class LoadTestRunClientBuilder
     private static final Map<String, String> PROPERTIES =
             CoreUtils.getProperties("azure-developer-loadtesting.properties");
 
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestRunClientBuilder.class);
+
     /**
      * Sets Service version.
      *
@@ -288,10 +290,8 @@ public final class LoadTestRunClientBuilder
      * @return the LoadTestRunClientBuilder.
      */
     @Generated
-    public LoadTestRunClientBuilder serviceVersion(AzureLoadTestingServiceVersion serviceVersion) {
+    public LoadTestRunClientBuilder serviceVersion(LoadTestingServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(LoadTestRunClientBuilder.class);
 }

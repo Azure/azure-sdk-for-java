@@ -40,7 +40,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.developer.loadtesting.AzureLoadTestingServiceVersion;
+import com.azure.developer.loadtesting.LoadTestingServiceVersion;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,14 +64,14 @@ public final class LoadTestRunClientImpl {
     }
 
     /** Service version. */
-    private final AzureLoadTestingServiceVersion serviceVersion;
+    private final LoadTestingServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public AzureLoadTestingServiceVersion getServiceVersion() {
+    public LoadTestingServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -105,7 +105,7 @@ public final class LoadTestRunClientImpl {
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public LoadTestRunClientImpl(String endpoint, AzureLoadTestingServiceVersion serviceVersion) {
+    public LoadTestRunClientImpl(String endpoint, LoadTestingServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
@@ -120,8 +120,7 @@ public final class LoadTestRunClientImpl {
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public LoadTestRunClientImpl(
-            HttpPipeline httpPipeline, String endpoint, AzureLoadTestingServiceVersion serviceVersion) {
+    public LoadTestRunClientImpl(HttpPipeline httpPipeline, String endpoint, LoadTestingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -137,7 +136,7 @@ public final class LoadTestRunClientImpl {
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            AzureLoadTestingServiceVersion serviceVersion) {
+            LoadTestingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -336,7 +335,9 @@ public final class LoadTestRunClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testRunId") String testRunId,
                 @PathParam("name") String name,
+                @QueryParam("metricName") String metricName,
                 @QueryParam("metricNamespace") String metricNamespace,
+                @QueryParam("timespan") String timespan,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -1863,9 +1864,6 @@ public final class LoadTestRunClientImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     *     <tr><td>metricName</td><td>String</td><td>No</td><td>Metric name</td></tr>
-     *     <tr><td>timespan</td><td>String</td><td>No</td><td>The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1882,7 +1880,10 @@ public final class LoadTestRunClientImpl {
      *
      * @param testRunId Unique test run name as identifier.
      * @param name Dimension name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1893,7 +1894,12 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listMetricDimensionValuesSinglePageAsync(
-            String testRunId, String name, String metricNamespace, RequestOptions requestOptions) {
+            String testRunId,
+            String name,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -1902,7 +1908,9 @@ public final class LoadTestRunClientImpl {
                                         this.getServiceVersion().getVersion(),
                                         testRunId,
                                         name,
+                                        metricName,
                                         metricNamespace,
+                                        timespan,
                                         accept,
                                         requestOptions,
                                         context))
@@ -1926,9 +1934,6 @@ public final class LoadTestRunClientImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     *     <tr><td>metricName</td><td>String</td><td>No</td><td>Metric name</td></tr>
-     *     <tr><td>timespan</td><td>String</td><td>No</td><td>The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1945,7 +1950,10 @@ public final class LoadTestRunClientImpl {
      *
      * @param testRunId Unique test run name as identifier.
      * @param name Dimension name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1955,14 +1963,21 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listMetricDimensionValuesAsync(
-            String testRunId, String name, String metricNamespace, RequestOptions requestOptions) {
+            String testRunId,
+            String name,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listMetricDimensionValuesSinglePageAsync(testRunId, name, metricNamespace, requestOptions),
+                () ->
+                        listMetricDimensionValuesSinglePageAsync(
+                                testRunId, name, metricName, metricNamespace, timespan, requestOptions),
                 nextLink -> listMetricDimensionValuesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
@@ -1975,9 +1990,6 @@ public final class LoadTestRunClientImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     *     <tr><td>metricName</td><td>String</td><td>No</td><td>Metric name</td></tr>
-     *     <tr><td>timespan</td><td>String</td><td>No</td><td>The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1994,7 +2006,10 @@ public final class LoadTestRunClientImpl {
      *
      * @param testRunId Unique test run name as identifier.
      * @param name Dimension name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2004,8 +2019,14 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listMetricDimensionValues(
-            String testRunId, String name, String metricNamespace, RequestOptions requestOptions) {
-        return new PagedIterable<>(listMetricDimensionValuesAsync(testRunId, name, metricNamespace, requestOptions));
+            String testRunId,
+            String name,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return new PagedIterable<>(
+                listMetricDimensionValuesAsync(testRunId, name, metricName, metricNamespace, timespan, requestOptions));
     }
 
     /**

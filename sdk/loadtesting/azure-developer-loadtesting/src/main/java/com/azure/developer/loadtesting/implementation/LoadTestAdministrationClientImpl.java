@@ -39,7 +39,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.developer.loadtesting.AzureLoadTestingServiceVersion;
+import com.azure.developer.loadtesting.LoadTestingServiceVersion;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,14 +63,14 @@ public final class LoadTestAdministrationClientImpl {
     }
 
     /** Service version. */
-    private final AzureLoadTestingServiceVersion serviceVersion;
+    private final LoadTestingServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public AzureLoadTestingServiceVersion getServiceVersion() {
+    public LoadTestingServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -104,7 +104,7 @@ public final class LoadTestAdministrationClientImpl {
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public LoadTestAdministrationClientImpl(String endpoint, AzureLoadTestingServiceVersion serviceVersion) {
+    public LoadTestAdministrationClientImpl(String endpoint, LoadTestingServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
@@ -120,7 +120,7 @@ public final class LoadTestAdministrationClientImpl {
      * @param serviceVersion Service version.
      */
     public LoadTestAdministrationClientImpl(
-            HttpPipeline httpPipeline, String endpoint, AzureLoadTestingServiceVersion serviceVersion) {
+            HttpPipeline httpPipeline, String endpoint, LoadTestingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -136,7 +136,7 @@ public final class LoadTestAdministrationClientImpl {
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            AzureLoadTestingServiceVersion serviceVersion) {
+            LoadTestingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

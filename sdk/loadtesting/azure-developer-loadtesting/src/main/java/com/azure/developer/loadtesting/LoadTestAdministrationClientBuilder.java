@@ -181,7 +181,7 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * Service version
      */
-    @Generated private AzureLoadTestingServiceVersion serviceVersion;
+    @Generated private LoadTestingServiceVersion serviceVersion;
 
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
@@ -208,8 +208,8 @@ public final class LoadTestAdministrationClientBuilder
     @Generated
     private LoadTestAdministrationClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AzureLoadTestingServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : AzureLoadTestingServiceVersion.getLatest();
+        LoadTestingServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : LoadTestingServiceVersion.getLatest();
         LoadTestAdministrationClientImpl client =
                 new LoadTestAdministrationClientImpl(
                         localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
@@ -281,6 +281,8 @@ public final class LoadTestAdministrationClientBuilder
     private static final Map<String, String> PROPERTIES =
             CoreUtils.getProperties("azure-developer-loadtesting.properties");
 
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationClientBuilder.class);
+
     /**
      * Sets Service version.
      *
@@ -288,10 +290,8 @@ public final class LoadTestAdministrationClientBuilder
      * @return the LoadTestAdministrationClientBuilder.
      */
     @Generated
-    public LoadTestAdministrationClientBuilder serviceVersion(AzureLoadTestingServiceVersion serviceVersion) {
+    public LoadTestAdministrationClientBuilder serviceVersion(LoadTestingServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationClientBuilder.class);
 }
