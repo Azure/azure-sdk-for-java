@@ -10,10 +10,11 @@ import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, 
 import com.azure.cosmos.models.{CosmosItemRequestOptions, CosmosItemResponse, CosmosPatchItemRequestOptions, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
-import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, PatchOperation, ReplaceOperation, SparkTaskContext, UpsertOperation}
+import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, PatchOperation, PatchUpdateOperation, ReplaceOperation, SparkTaskContext, UpsertOperation}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
+import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.util.UUID
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
@@ -68,7 +69,8 @@ class PointWriter(container: CosmosAsyncContainer,
     "PointWriter")
 
   private val cosmosPatchHelpOpt = cosmosWriteConfig.itemWriteStrategy match {
-    case ItemWriteStrategy.ItemPatch => Some(new CosmosPatchHelper(diagnosticsConfig, cosmosWriteConfig.patchConfigs.get))
+    case ItemWriteStrategy.ItemPatch || ItemWriteStrategy.ItemPatchUpdate =>
+        Some(new CosmosPatchHelper(diagnosticsConfig, cosmosWriteConfig.patchConfigs.get))
     case _ => None
   }
 
@@ -91,6 +93,8 @@ class PointWriter(container: CosmosAsyncContainer,
         deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=true)
       case ItemWriteStrategy.ItemPatch =>
         patchWithRetryAsync(partitionKeyValue, objectNode)
+      case ItemWriteStrategy.ItemPatchUpdate =>
+        patchUpdateWithRetry(partitionKeyValue, objectNode)
     }
   }
 
@@ -331,6 +335,62 @@ class PointWriter(container: CosmosAsyncContainer,
     throw exceptionOpt.get
   }
   // scalastyle:on return
+
+  // scalastyle:on multiple.string.literals
+  private def patchUpdateWithRetry(
+                                      partitionKeyValue: PartitionKey,
+                                      objectNode: ObjectNode): Unit = {
+
+      var exceptionOpt = Option.empty[Exception]
+      val patchUpdateOperation = PatchUpdateOperation(taskDiagnosticsContext,
+          CosmosItemIdentifier(objectNode.get(CosmosConstants.Properties.Id).asText(), partitionKeyValue))
+
+      for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+          try {
+              patchUpdateItem(container, partitionKeyValue, objectNode)
+              return
+          } catch {
+              case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
+                  log.logWarning(
+                      s"patch update item $patchUpdateOperation attempt #$attempt max remaining retries "
+                          + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+                  exceptionOpt = Option.apply(e)
+          }
+      }
+
+      log.logItemWriteFailure(patchUpdateOperation, exceptionOpt.get)
+      assert(exceptionOpt.isDefined)
+      exceptionOpt.get.printStackTrace()
+      throw exceptionOpt.get
+  }
+  // scalastyle:on return
+
+  private[this] def patchUpdateItem(container: CosmosAsyncContainer,
+                                    partitionKey: PartitionKey,
+                                    objectNode: ObjectNode): CosmosItemResponse[ObjectNode] = {
+      assert(cosmosPatchHelpOpt.isDefined)
+
+      val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
+      val patchUpdateOperations = cosmosPatchHelpOpt.get.createCosmosPatchUpdateOperations(partitionKeyDefinition, objectNode)
+
+      container
+          .readItem(itemId, partitionKey, classOf[ObjectNode])
+          .flatMap(response => {
+              val updatedNode = cosmosPatchHelpOpt.get.patchUpdateItem(Some(response.getItem), patchUpdateOperations)
+              val cosmosItemRequestOptions = new CosmosItemRequestOptions().setIfMatchETag(response.getETag)
+              container.replaceItem(updatedNode, itemId, partitionKey, cosmosItemRequestOptions)
+          })
+          .asScala
+          .onErrorResume(throwable => {
+              throwable match {
+                  case e: CosmosException if Exceptions.isNotFoundException(e) =>
+                      val updatedNode = cosmosPatchHelpOpt.get.patchUpdateItem(None, patchUpdateOperations)
+                      container.createItem(updatedNode, partitionKey, new CosmosItemRequestOptions()).asScala
+              }
+          })
+          .block()
+
+  }
 
   private[this] def patchItem(container: CosmosAsyncContainer,
                               partitionKey: PartitionKey,

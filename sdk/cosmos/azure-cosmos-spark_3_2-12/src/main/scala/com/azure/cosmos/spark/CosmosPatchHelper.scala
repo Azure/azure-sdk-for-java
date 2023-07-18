@@ -3,13 +3,14 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
+import com.azure.cosmos.implementation.patch.{PatchOperationCore, PatchOperationType}
+import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.fasterxml.jackson.databind.node._
+import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 
 import java.io.IOException
 
@@ -162,4 +163,75 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
    throw new IllegalArgumentException(s"Increment operation is not supported for non-numeric type ${jsonNode.getClass}")
   }
  }
+
+  def createCosmosPatchUpdateOperations(partitionKeyDefinition: PartitionKeyDefinition,
+                                        objectNode: ObjectNode): CosmosPatchOperations = {
+
+      val cosmosPatchOperations = CosmosPatchOperations.create()
+      val fieldIterator = objectNode.fields()
+      while (fieldIterator.hasNext) {
+          val fieldEntry = fieldIterator.next()
+
+          // check whether there is customized mapping path
+          cosmosPatchConfigs.columnConfigsMap.get(fieldEntry.getKey) match {
+              case Some(userDefinedColumnConfig) =>
+                  if (isAllowedProperty(userDefinedColumnConfig.mappingPath, partitionKeyDefinition)) {
+                      val node = fieldEntry.getValue
+                      val effectiveNode = if (userDefinedColumnConfig.isRawJson) {
+                          objectMapper.readTree(node.asText())
+                      } else {
+                          node
+                      }
+
+                      userDefinedColumnConfig.operationType match {
+                          case CosmosPatchOperationTypes.Set =>
+                              cosmosPatchOperations.set(userDefinedColumnConfig.mappingPath, effectiveNode)
+                          case _ => throw new IllegalArgumentException(s"Patch operation type is not supported for patch update write strategy")
+                      }
+                  }
+
+              case None =>
+                  if (isAllowedProperty(fieldEntry.getKey, partitionKeyDefinition)) {
+                      cosmosPatchOperations.set(fieldEntry.getKey, fieldEntry.getValue)
+                  }
+          }
+      }
+
+      cosmosPatchOperations
+  }
+
+  def patchUpdateItem(itemResponse: Option[ObjectNode], cosmosPatchOperations: CosmosPatchOperations): ObjectNode = {
+      val operations =
+          ImplementationBridgeHelpers
+              .CosmosPatchOperationsHelper
+              .getCosmosPatchOperationsAccessor
+              .getPatchOperations(cosmosPatchOperations)
+
+      val rootNode = itemResponse.getOrElse(Utils.getSimpleObjectMapper().createObjectNode())
+      operations.forEach(patchOperation => {
+          val patchOperationCore = patchOperation.asInstanceOf[PatchOperationCore[ObjectNode]]
+          patchUpdateField(rootNode, patchOperationCore.getOperationType, patchOperationCore.getPath, patchOperationCore.getResource)
+      })
+
+      rootNode
+  }
+
+  private[this] def patchUpdateField(rootNode: ObjectNode, patchOperationType: PatchOperationType, path: String, pathValue: ObjectNode): Unit = {
+      patchOperationType match {
+          case CosmosPatchOperationTypes.Set =>
+              val pathArray = path.stripPrefix("/").split("/")
+              var parentNode: ObjectNode = rootNode
+              for (pathIndex <- 0 until pathArray.size - 1) {
+                  if (parentNode.get(pathArray(pathIndex)) isMissingNode) {
+                      parentNode.set(pathArray(pathIndex), Utils.getSimpleObjectMapper().createObjectNode())
+                  }
+
+                  parentNode = parentNode.get(pathArray(pathIndex)).asInstanceOf[ObjectNode]
+              }
+
+              // after looping through the structure, now the field value
+              parentNode.set(pathArray(pathArray.size - 1), pathValue)
+          case _ => // do not support other path update operation type yet
+      }
+  }
 }
