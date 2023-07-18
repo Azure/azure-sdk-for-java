@@ -10,7 +10,7 @@ To build the project, run maven commands.
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git 
-cd sdk/cosmos/azure-cosmos-spark_3-3_2.12
+cd sdk/cosmos/azure-cosmos-spark_3-4_2.12
 mvn clean install
 ```
 
