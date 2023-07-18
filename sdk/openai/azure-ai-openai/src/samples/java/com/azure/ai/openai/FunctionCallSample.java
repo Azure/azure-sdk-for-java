@@ -42,7 +42,7 @@ public class FunctionCallSample {
         );
 
         List<ChatMessage> chatMessages = Arrays.asList(
-            new ChatMessage(ChatRole.USER).setContent("What's the weather like in San Francisco in Celsius?")
+            new ChatMessage(ChatRole.USER, "What's the weather like in San Francisco in Celsius?")
         );
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages)
