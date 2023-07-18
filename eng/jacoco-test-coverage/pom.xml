@@ -123,12 +123,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.42.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.9.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>2.9.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -138,12 +138,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.41</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.42</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -163,7 +163,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-apache</artifactId>
-      <version>1.0.0-beta.37</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+      <version>1.0.0-beta.38</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -178,7 +178,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.37</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+      <version>1.0.0-beta.38</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -193,7 +193,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.5.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -253,7 +253,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.15.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.14.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -268,7 +268,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+      <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -278,7 +278,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.6.0-beta.7</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.6.0-beta.8</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -308,17 +308,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.22.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.23.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.24.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-batch</artifactId>
-      <version>12.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+      <version>12.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -328,7 +328,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.22.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -338,22 +338,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.16.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.8.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.18.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+      <version>12.19.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -609,7 +609,7 @@
             <bannedDependencies>
               <includes>
                 <!-- Track 2 library with a non-standard groupId -->
-                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.9]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.10]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
               </includes>
             </bannedDependencies>
           </rules>

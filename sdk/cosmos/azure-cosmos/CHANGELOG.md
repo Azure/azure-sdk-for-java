@@ -10,6 +10,7 @@
 
 #### Other Changes
 * Query metrics diagnostics changed to JSON format. - See [PR 35761](https://github.com/Azure/azure-sdk-for-java/pull/35761)
+* Added fault injection support for Gateway connection mode - See [PR 35378](https://github.com/Azure/azure-sdk-for-java/pull/35378)
 
 ### 4.47.0 (2023-06-26)
 

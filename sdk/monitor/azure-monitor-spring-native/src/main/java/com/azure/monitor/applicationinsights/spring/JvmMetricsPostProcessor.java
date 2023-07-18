@@ -4,12 +4,12 @@
 package com.azure.monitor.applicationinsights.spring;
 
 import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.instrumentation.runtimemetrics.BufferPools;
-import io.opentelemetry.instrumentation.runtimemetrics.Classes;
-import io.opentelemetry.instrumentation.runtimemetrics.Cpu;
-import io.opentelemetry.instrumentation.runtimemetrics.GarbageCollector;
-import io.opentelemetry.instrumentation.runtimemetrics.MemoryPools;
-import io.opentelemetry.instrumentation.runtimemetrics.Threads;
+import io.opentelemetry.instrumentation.runtimemetrics.java8.BufferPools;
+import io.opentelemetry.instrumentation.runtimemetrics.java8.Classes;
+import io.opentelemetry.instrumentation.runtimemetrics.java8.Cpu;
+import io.opentelemetry.instrumentation.runtimemetrics.java8.GarbageCollector;
+import io.opentelemetry.instrumentation.runtimemetrics.java8.MemoryPools;
+import io.opentelemetry.instrumentation.runtimemetrics.java8.Threads;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;

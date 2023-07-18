@@ -35,7 +35,7 @@ public final class GeolocationClient {
     /**
      * Initializes an instance of GeolocationClient client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
     GeolocationClient(GeolocationAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
@@ -43,13 +43,13 @@ public final class GeolocationClient {
 
     /**
      * Get Location
-     * 
+     *
      * <!-- src_embed com.azure.maps.geolocation.sync.get_ip_to_location -->
      * <pre>
      * client.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.sync.get_ip_to_location -->
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This service will return the ISO country code for the provided IP address. Developers can use this information
@@ -68,13 +68,13 @@ public final class GeolocationClient {
 
     /**
      * Get Location
-     * 
+     *
      * <!-- src_embed com.azure.maps.geolocation.sync.get_ip_to_location -->
      * <pre>
      * client.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.sync.get_ip_to_location -->
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This service will return the ISO country code for the provided IP address. Developers can use this information

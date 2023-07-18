@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
-
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class QuickPulseTestBase extends TestBase {

@@ -11,10 +11,10 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.SessionRetryOptions;
-import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -1998,6 +1998,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                                                   CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
                                                                                                   Mono<T> rxDocumentServiceResponseMono) {
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+            request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
             return rxDocumentServiceResponseMono
                 .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
                 .onErrorMap(throwable -> getCancellationException(request, throwable));
@@ -2238,8 +2239,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             collectionObs);
 
-        return requestObs.flatMap(req -> patch(request, retryPolicyInstance)
-            .map(resp -> toResourceResponse(resp, Document.class)));
+        Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(req -> {
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+            Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = patch(request, retryPolicyInstance);
+            return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
+        });
+
+        return responseObservable.map(resp -> toResourceResponse(resp, Document.class));
     }
 
     @Override
@@ -2284,9 +2290,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
 
-            return requestObs.flatMap(req -> this
-                .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
-                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+            Mono<RxDocumentServiceResponse> responseObservable =
+                requestObs.flatMap(req -> {
+                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                    Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = this
+                        .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                    return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
+                });
+
+            return responseObservable
+                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
@@ -2359,8 +2372,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
-
-            request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
 
             return requestObs.flatMap(req -> {
                 Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -4519,11 +4530,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+
         if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
-            this.storeModel.configureFaultInjectorProvider(injectorProvider);
-        } else {
-            throw new IllegalArgumentException("configureFaultInjectorProvider is not supported for gateway mode");
+            this.storeModel.configureFaultInjectorProvider(injectorProvider, this.configs);
+            this.addressResolver.configureFaultInjectorProvider(injectorProvider, this.configs);
         }
+
+        this.gatewayProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
     }
 
     @Override

@@ -103,10 +103,4 @@ public class AzureTelemetryConfig {
             GlobalLoggerProvider.set(loggerProvider);
         }
     }
-
-    @Bean
-    public OtelGlobalRegistrationPostProcessor otelGlobalRegistrationPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
-        return new OtelGlobalRegistrationPostProcessor(azureTelemetryActivation);
-    }
-
 }

@@ -146,24 +146,6 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     /**
-     * Gets the state of a session given its identifier.
-     *
-     * @param sessionId Identifier of session to get.
-     *
-     * @return The session state or an empty Mono if there is no state set for the session.
-     * @throws IllegalStateException if the receiver is a non-session receiver.
-     */
-    Mono<byte[]> getSessionState(String sessionId) {
-        return validateParameter(sessionId, "sessionId", "getSessionState").then(
-            getManagementNode().flatMap(channel -> {
-                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
-                final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
-
-                return channel.getSessionState(sessionId, associatedLinkName);
-            }));
-    }
-
-    /**
      * Gets a stream of messages from different sessions.
      *
      * @return A Flux of messages merged from different sessions.
@@ -190,7 +172,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @return The next expiration time for the session lock.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    Mono<OffsetDateTime> renewSessionLock(String sessionId) {
+    private Mono<OffsetDateTime> renewSessionLock(String sessionId) {
         return validateParameter(sessionId, "sessionId", "renewSessionLock").then(
             getManagementNode().flatMap(channel -> {
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
@@ -356,9 +338,10 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return existing;
                 }
 
-                return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
+                final Duration idleTimeout = disposeOnIdle ? sessionIdleTimeout : null;
+                return new ServiceBusSessionReceiver(sessionId, link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration, disposeOnIdle ? sessionIdleTimeout : null);
+                    maxSessionLockRenewDuration, idleTimeout);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 LOGGER.atVerbose()

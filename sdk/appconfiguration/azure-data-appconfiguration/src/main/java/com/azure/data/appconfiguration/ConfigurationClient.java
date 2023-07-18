@@ -43,7 +43,7 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
-import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
+import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.iterableToList;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
@@ -573,7 +573,7 @@ public final class ConfigurationClient {
         validateSetting(setting);
         final ResponseBase<PutKeyValueHeaders, KeyValue> response =
             serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getEtag(ifUnchanged, setting), null, toKeyValue(setting),
+                getETag(ifUnchanged, setting), null, toKeyValue(setting),
                 enableSyncRestProxy(addTracingNamespace(context)));
         return toConfigurationSettingWithResponse(response);
     }
@@ -720,7 +720,7 @@ public final class ConfigurationClient {
             final ResponseBase<GetKeyValueHeaders, KeyValue> response =
                 serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(),
                     acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                    getEtag(ifChanged, setting), null, enableSyncRestProxy(addTracingNamespace(context)));
+                    getETag(ifChanged, setting), null, enableSyncRestProxy(addTracingNamespace(context)));
             return toConfigurationSettingWithResponse(response);
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
@@ -846,7 +846,7 @@ public final class ConfigurationClient {
         validateSetting(setting);
         final ResponseBase<DeleteKeyValueHeaders, KeyValue> response =
             serviceClient.deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getEtag(ifUnchanged, setting), enableSyncRestProxy(addTracingNamespace(context)));
+                getETag(ifUnchanged, setting), enableSyncRestProxy(addTracingNamespace(context)));
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -1358,7 +1358,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} of {@link ConfigurationSettingSnapshot}.
@@ -1408,7 +1408,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()} ETag}
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag()} ETag}
      *                    is used as an IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} of {@link ConfigurationSettingSnapshot}.

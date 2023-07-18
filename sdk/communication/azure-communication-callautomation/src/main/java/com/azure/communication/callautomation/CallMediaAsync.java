@@ -69,6 +69,21 @@ public final class CallMediaAsync {
     /**
      * Play
      *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @param playTo the targets to play to
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful play request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        PlayOptions options = new PlayOptions(playSources.get(0), playTo);
+        return playWithResponse(options).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Play
+     *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -81,6 +96,19 @@ public final class CallMediaAsync {
         return playWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * Play to all participants
+     *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful playAll request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> playToAll(List<PlaySource> playSources) {
+        PlayToAllOptions options = new PlayToAllOptions(playSources.get(0));
+        return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
+    }
     /**
      * Play to all participants
      *
@@ -250,11 +278,10 @@ public final class CallMediaAsync {
 
     private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {
         FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUrl());
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+        return new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.FILE)
             .setFileSource(fileSourceInternal)
             .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
     }
 
     private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
@@ -268,21 +295,27 @@ public final class CallMediaAsync {
         if (playSource.getVoiceName() != null) {
             textSourceInternal.setVoiceName(playSource.getVoiceName());
         }
+        if (playSource.getCustomVoiceEndpointId() != null) {
+            textSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
+        }
 
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+        return new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.TEXT)
             .setTextSource(textSourceInternal)
             .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
     }
 
     private PlaySourceInternal getPlaySourceInternalFromSsmlSource(SsmlSource playSource) {
         SsmlSourceInternal ssmlSourceInternal = new SsmlSourceInternal().setSsmlText(playSource.getSsmlText());
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+
+        if (playSource.getCustomVoiceEndpointId() != null) {
+            ssmlSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
+        }
+
+        return new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.SSML)
             .setSsmlSource(ssmlSourceInternal)
             .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
     }
 
     private PlaySourceInternal convertPlaySourceToPlaySourceInternal(PlaySource playSource) {
@@ -291,6 +324,8 @@ public final class CallMediaAsync {
             playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
         } else if (playSource instanceof TextSource) {
             playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
+        } else if (playSource instanceof SsmlSource) {
+            playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) playSource);
         }
         return playSourceInternal;
     }
@@ -370,6 +405,12 @@ public final class CallMediaAsync {
             }
         }
 
+        if (choiceRecognizeOptions.getSpeechModelEndpointId() != null) {
+            if (!choiceRecognizeOptions.getSpeechModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechModelEndpointId());
+            }
+        }
+
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
         RecognizeRequest recognizeRequest = new RecognizeRequest()
@@ -393,6 +434,12 @@ public final class CallMediaAsync {
             .setTargetParticipant(CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
 
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+        if (speechRecognizeOptions.getSpeechModelEndpointId() != null) {
+            if (!speechRecognizeOptions.getSpeechModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechRecognizeOptions.getSpeechModelEndpointId());
+            }
+        }
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
@@ -431,6 +478,11 @@ public final class CallMediaAsync {
             .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
             .setTargetParticipant(CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
 
+        if (speechOrDtmfRecognizeOptions.getSpeechModelEndpointId() != null) {
+            if (!speechOrDtmfRecognizeOptions.getSpeechModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechOrDtmfRecognizeOptions.getSpeechModelEndpointId());
+            }
+        }
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);

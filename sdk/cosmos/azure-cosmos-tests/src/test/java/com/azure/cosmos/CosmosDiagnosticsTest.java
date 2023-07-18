@@ -229,7 +229,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
-        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
@@ -261,13 +261,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
+            System.out.println(exception.getDiagnostics());
             isValidJSON(exception.toString());
             isValidJSON(exception.getMessage());
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
-            assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+            assertThat(diagnostics).contains("gatewayStatisticsList");
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
@@ -714,7 +715,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String diagnostics = cosmosDiagnostics.toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
-        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
@@ -762,7 +763,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("responseStatisticsList");
-        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"userAgent\":\"" + userAgent + "\"");
         assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
@@ -770,7 +771,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     private void validateGatewayModeQueryDiagnostics(String diagnostics, String userAgent) {
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
-        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains(("gatewayStatisticsList"));
         assertThat(diagnostics).contains("\"operationType\":\"Query\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + userAgent + "\"");
         assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
