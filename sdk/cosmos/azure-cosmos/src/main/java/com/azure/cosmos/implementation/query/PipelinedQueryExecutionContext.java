@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -96,7 +97,8 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
-        ResourceType resourceTypeEnum) {
+        ResourceType resourceTypeEnum,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux =
             ParallelDocumentQueryExecutionContext.createReadManyQueryAsync(diagnosticsClientContext, queryClient,
@@ -104,7 +106,8 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
                 rangeQueryMap,
                 cosmosQueryRequestOptions, resourceId,
                 collectionLink, activityId, klass,
-                resourceTypeEnum);
+                resourceTypeEnum,
+                isQueryCancelledOnTimeout);
 
         final Function<JsonNode, T> factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
             cosmosQueryRequestOptions, false, klass);

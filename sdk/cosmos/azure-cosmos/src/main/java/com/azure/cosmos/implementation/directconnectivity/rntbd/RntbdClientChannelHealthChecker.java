@@ -380,7 +380,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         String errorMessage = StringUtils.EMPTY;
 
         if (this.idleConnectionTimeoutInNanos > 0L) {
-            if (Duration.between(currentTime, timestamps.lastChannelReadTime()).toNanos() > this.idleConnectionTimeoutInNanos) {
+            if (Duration.between(timestamps.lastChannelReadTime(), currentTime).toNanos() > this.idleConnectionTimeoutInNanos) {
                 errorMessage = MessageFormat.format(
                         "{0} health check failed due to idle connection timeout: [lastChannelWrite: {1}, lastChannelRead: {2}, "
                                 + "idleConnectionTimeout: {3}, currentTime: {4}]",

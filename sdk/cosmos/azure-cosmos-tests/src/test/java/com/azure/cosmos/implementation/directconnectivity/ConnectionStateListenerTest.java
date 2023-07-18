@@ -139,10 +139,11 @@ public class ConnectionStateListenerTest {
     public void connectionStateListenerOnException(Exception exception, boolean canHandle) {
         RntbdEndpoint endpointMock = Mockito.mock(RntbdEndpoint.class);
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        AddressSelector addressSelectorMock = Mockito.mock(AddressSelector.class);
 
         Uri testRequestUri = new Uri("http://127.0.0.1:1");
         testRequestUri.setConnected();
-        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock);
+        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock, addressSelectorMock);
 
         connectionStateListener.onBeforeSendRequest(testRequestUri);
         connectionStateListener.onException(exception);
