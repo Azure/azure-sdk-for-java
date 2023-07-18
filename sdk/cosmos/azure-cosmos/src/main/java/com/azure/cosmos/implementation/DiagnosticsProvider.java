@@ -216,9 +216,7 @@ public final class DiagnosticsProvider {
      * @return {@link reactor.util.context.Context} Reactor context with trace context.
      */
     public static reactor.util.context.Context setContextInReactor(Context traceContext) {
-        return reactor.util.context.Context.of(
-            REACTOR_TRACING_CONTEXT_KEY, traceContext,
-            "io.opentelemetry.instrumentation.reactor.suppressInstrumentation", true);
+        return reactor.util.context.Context.of(REACTOR_TRACING_CONTEXT_KEY, traceContext);
     }
 
     /**
