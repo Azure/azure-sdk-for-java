@@ -56,7 +56,7 @@ public class BulkExecutorTest extends BatchTestBase {
 
     @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public BulkExecutorTest(CosmosClientBuilder clientBuilder) {
-        super(clientBuilder.directMode());
+        super(clientBuilder);
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
