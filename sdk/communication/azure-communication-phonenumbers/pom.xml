@@ -134,6 +134,10 @@
         <configuration>
           <includes>
             <include>com/azure/communication/phonenumbers/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/converters/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/models/*.class</include>
+            <include>com/azure/communication/phonenumbers/models/*.class</include>
             <include>com/azure/communication/phonenumbers/siprouting/*.class</include>
           </includes>
         </configuration>
