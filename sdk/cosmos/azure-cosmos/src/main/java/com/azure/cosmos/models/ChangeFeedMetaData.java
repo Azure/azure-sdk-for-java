@@ -39,7 +39,7 @@ public final class ChangeFeedMetaData {
         this.logSequenceNumber = lsnJsonNode != null ? lsnJsonNode.asLong() : -1;
 
         if (operationTypeJsonNode != null) {
-            String operationTypeAsString = operationTypeJsonNode.asText();
+            String operationTypeAsString = operationTypeJsonNode.asText().toLowerCase();
 
             switch (operationTypeAsString) {
                 case "create":
