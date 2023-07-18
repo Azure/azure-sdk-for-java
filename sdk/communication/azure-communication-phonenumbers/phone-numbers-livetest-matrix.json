@@ -52,7 +52,7 @@
             "JavaTestVersion": "1.17",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": false,
-            "RunAggregateReports": false,
+            "RunAggregateReports": true,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
