@@ -175,28 +175,6 @@ public final class LoadTestAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/tests/{testId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateTestSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("content-type") String contentType,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/merge-patch+json") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
-
         @Patch("/tests/{testId}/app-components")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
@@ -210,28 +188,6 @@ public final class LoadTestAdministrationClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateAppComponents(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("content-type") String contentType,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/merge-patch+json") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Patch("/tests/{testId}/app-components")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateAppComponentsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -263,28 +219,6 @@ public final class LoadTestAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/tests/{testId}/server-metrics-config")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateServerMetricsConfigSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("content-type") String contentType,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/merge-patch+json") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/tests/{testId}/app-components")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -298,26 +232,6 @@ public final class LoadTestAdministrationClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAppComponents(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/tests/{testId}/app-components")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAppComponentsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
@@ -345,26 +259,6 @@ public final class LoadTestAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/tests/{testId}/server-metrics-config")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getServerMetricsConfigSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/tests/{testId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -378,26 +272,6 @@ public final class LoadTestAdministrationClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTest(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/tests/{testId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTestSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
@@ -426,27 +300,6 @@ public final class LoadTestAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/tests/{testId}/files/{fileName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTestFileSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("testId") String testId,
-                @PathParam("fileName") String fileName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/tests/{testId}/files")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -460,26 +313,6 @@ public final class LoadTestAdministrationClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTestFiles(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/tests/{testId}/files")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTestFilesSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
@@ -506,25 +339,6 @@ public final class LoadTestAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/tests")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTestsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Put("/tests/{testId}/files/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(
@@ -538,29 +352,6 @@ public final class LoadTestAdministrationClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadTestFile(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("content-type") String contentType,
-                @PathParam("testId") String testId,
-                @PathParam("fileName") String fileName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/octet-stream") BinaryData body,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Put("/tests/{testId}/files/{fileName}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> uploadTestFileSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -592,27 +383,6 @@ public final class LoadTestAdministrationClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/tests/{testId}/files/{fileName}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteTestFileSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("testId") String testId,
-                @PathParam("fileName") String fileName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Delete("/tests/{testId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -626,26 +396,6 @@ public final class LoadTestAdministrationClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTest(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("testId") String testId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete("/tests/{testId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteTestSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
@@ -684,45 +434,7 @@ public final class LoadTestAdministrationClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTestFilesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTestsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTestsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
@@ -1065,17 +777,7 @@ public final class LoadTestAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateTestWithResponse(
             String testId, BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "application/merge-patch+json";
-        final String accept = "application/json";
-        return service.createOrUpdateTestSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                contentType,
-                testId,
-                accept,
-                body,
-                requestOptions,
-                Context.NONE);
+        return createOrUpdateTestWithResponseAsync(testId, body, requestOptions).block();
     }
 
     /**
@@ -1217,17 +919,7 @@ public final class LoadTestAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
             String testId, BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "application/merge-patch+json";
-        final String accept = "application/json";
-        return service.createOrUpdateAppComponentsSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                contentType,
-                testId,
-                accept,
-                body,
-                requestOptions,
-                Context.NONE);
+        return createOrUpdateAppComponentsWithResponseAsync(testId, body, requestOptions).block();
     }
 
     /**
@@ -1373,17 +1065,7 @@ public final class LoadTestAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
             String testId, BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "application/merge-patch+json";
-        final String accept = "application/json";
-        return service.createOrUpdateServerMetricsConfigSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                contentType,
-                testId,
-                accept,
-                body,
-                requestOptions,
-                Context.NONE);
+        return createOrUpdateServerMetricsConfigWithResponseAsync(testId, body, requestOptions).block();
     }
 
     /**
@@ -1473,14 +1155,7 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getAppComponentsSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                testId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getAppComponentsWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -1572,14 +1247,7 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getServerMetricsConfigSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                testId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getServerMetricsConfigWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -1766,14 +1434,7 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestWithResponse(String testId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getTestSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                testId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getTestWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -1846,15 +1507,7 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getTestFileSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                testId,
-                fileName,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getTestFileWithResponseAsync(testId, fileName, requestOptions).block();
     }
 
     /**
@@ -1965,63 +1618,11 @@ public final class LoadTestAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all test files along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTestFilesSinglePage(String testId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listTestFilesSync(
-                        this.getEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        testId,
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get all test files.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     fileName: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *     validationFailureDetails: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     *     hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all test files as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTestFiles(String testId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listTestFilesSinglePage(testId, requestOptions),
-                nextLink -> listTestFilesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listTestFilesAsync(testId, requestOptions));
     }
 
     /**
@@ -2367,142 +1968,12 @@ public final class LoadTestAdministrationClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all load tests by the fully qualified resource Id e.g
-     *     subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} along with
-     *     {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTestsSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listTestsSync(
-                        this.getEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get all load tests by the fully qualified resource Id e.g
-     * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg:
-     * lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - displayName,
-     * createdBy. For example, to search for a test, with display name is Login Test,
-     * the search parameter can be Login.</td></tr>
-     *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to
-     * filter tests.</td></tr>
-     *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter
-     * tests.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     passFailCriteria (Optional): {
-     *         passFailMetrics (Optional): {
-     *             String (Optional): {
-     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
-     *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
-     *                 condition: String (Optional)
-     *                 requestName: String (Optional)
-     *                 value: Double (Optional)
-     *                 action: String(continue/stop) (Optional)
-     *                 actualValue: Double (Optional)
-     *                 result: String(passed/undetermined/failed) (Optional)
-     *             }
-     *         }
-     *     }
-     *     secrets (Optional): {
-     *         String (Optional): {
-     *             value: String (Optional)
-     *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
-     *         }
-     *     }
-     *     certificate (Optional): {
-     *         value: String (Optional)
-     *         type: String(AKV_CERT_URI) (Optional)
-     *         name: String (Optional)
-     *     }
-     *     environmentVariables (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     loadTestConfiguration (Optional): {
-     *         engineInstances: Integer (Optional)
-     *         splitAllCSVs: Boolean (Optional)
-     *         quickStartTest: Boolean (Optional)
-     *         optionalLoadTestConfig (Optional): {
-     *             endpointUrl: String (Optional)
-     *             virtualUsers: Integer (Optional)
-     *             rampUpTime: Integer (Optional)
-     *             duration: Integer (Optional)
-     *         }
-     *     }
-     *     inputArtifacts (Optional): {
-     *         configFileInfo (Optional): {
-     *             url: String (Optional)
-     *             fileName: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *             expireDateTime: OffsetDateTime (Optional)
-     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *             validationFailureDetails: String (Optional)
-     *         }
-     *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
-     *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
-     *         inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *         additionalFileInfo (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     *     testId: String (Optional)
-     *     description: String (Optional)
-     *     displayName: String (Optional)
-     *     subnetId: String (Optional)
-     *     keyvaultReferenceIdentityType: String (Optional)
-     *     keyvaultReferenceIdentityId: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all load tests by the fully qualified resource Id e.g
      *     subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} as
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTests(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listTestsSinglePage(requestOptions),
-                nextLink -> listTestsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listTestsAsync(requestOptions));
     }
 
     /**
@@ -2615,18 +2086,7 @@ public final class LoadTestAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> uploadTestFileWithResponse(
             String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "application/octet-stream";
-        final String accept = "application/json";
-        return service.uploadTestFileSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                contentType,
-                testId,
-                fileName,
-                accept,
-                body,
-                requestOptions,
-                Context.NONE);
+        return uploadTestFileWithResponseAsync(testId, fileName, body, requestOptions).block();
     }
 
     /**
@@ -2673,15 +2133,7 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteTestFileSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                testId,
-                fileName,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return deleteTestFileWithResponseAsync(testId, fileName, requestOptions).block();
     }
 
     /**
@@ -2724,14 +2176,7 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestWithResponse(String testId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteTestSync(
-                this.getEndpoint(),
-                this.getServiceVersion().getVersion(),
-                testId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return deleteTestWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -2778,47 +2223,6 @@ public final class LoadTestAdministrationClientImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
-    }
-
-    /**
-     * Get all test files.
-     *
-     * <p>Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     fileName: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *     validationFailureDetails: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return collection of files along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTestFilesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listTestFilesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
     }
 
     /**
@@ -2923,107 +2327,6 @@ public final class LoadTestAdministrationClientImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
-    }
-
-    /**
-     * Get all load tests by the fully qualified resource Id e.g
-     * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}.
-     *
-     * <p>Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     passFailCriteria (Optional): {
-     *         passFailMetrics (Optional): {
-     *             String (Optional): {
-     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
-     *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
-     *                 condition: String (Optional)
-     *                 requestName: String (Optional)
-     *                 value: Double (Optional)
-     *                 action: String(continue/stop) (Optional)
-     *                 actualValue: Double (Optional)
-     *                 result: String(passed/undetermined/failed) (Optional)
-     *             }
-     *         }
-     *     }
-     *     secrets (Optional): {
-     *         String (Optional): {
-     *             value: String (Optional)
-     *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
-     *         }
-     *     }
-     *     certificate (Optional): {
-     *         value: String (Optional)
-     *         type: String(AKV_CERT_URI) (Optional)
-     *         name: String (Optional)
-     *     }
-     *     environmentVariables (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     loadTestConfiguration (Optional): {
-     *         engineInstances: Integer (Optional)
-     *         splitAllCSVs: Boolean (Optional)
-     *         quickStartTest: Boolean (Optional)
-     *         optionalLoadTestConfig (Optional): {
-     *             endpointUrl: String (Optional)
-     *             virtualUsers: Integer (Optional)
-     *             rampUpTime: Integer (Optional)
-     *             duration: Integer (Optional)
-     *         }
-     *     }
-     *     inputArtifacts (Optional): {
-     *         configFileInfo (Optional): {
-     *             url: String (Optional)
-     *             fileName: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *             expireDateTime: OffsetDateTime (Optional)
-     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *             validationFailureDetails: String (Optional)
-     *         }
-     *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
-     *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
-     *         inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *         additionalFileInfo (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     *     testId: String (Optional)
-     *     description: String (Optional)
-     *     displayName: String (Optional)
-     *     subnetId: String (Optional)
-     *     keyvaultReferenceIdentityType: String (Optional)
-     *     keyvaultReferenceIdentityId: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return collection of tests along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTestsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listTestsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

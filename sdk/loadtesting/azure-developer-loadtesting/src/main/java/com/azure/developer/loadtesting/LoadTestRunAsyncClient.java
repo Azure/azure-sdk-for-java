@@ -1158,99 +1158,6 @@ public final class LoadTestRunAsyncClient {
     }
 
     /**
-     * List the metric definitions for a load test run.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>metricNamespace</td><td>String</td><td>No</td><td>Metric namespace to query metric definitions for.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             dimensions (Optional): [
-     *                  (Optional){
-     *                     description: String (Optional)
-     *                     name: String (Optional)
-     *                 }
-     *             ]
-     *             description: String (Optional)
-     *             name: String (Optional)
-     *             namespace: String (Optional)
-     *             primaryAggregationType: String(Average/Count/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
-     *             supportedAggregationTypes (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             unit: String(NotSpecified/Percent/Count/Seconds/Milliseconds/Bytes/BytesPerSecond/CountPerSecond) (Optional)
-     *             metricAvailabilities (Optional): [
-     *                  (Optional){
-     *                     timeGrain: String(PT5S/PT10S/PT1M/PT5M/PT1H) (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents collection of metric definitions along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDefinitionsWithResponse(
-            String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.listMetricDefinitionsWithResponseAsync(testRunId, requestOptions);
-    }
-
-    /**
-     * List the metric namespaces for a load test run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             name: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents collection of metric namespaces along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricNamespacesWithResponse(
-            String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.listMetricNamespacesWithResponseAsync(testRunId, requestOptions);
-    }
-
-    /**
      * Delete a test run by its name.
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
@@ -1476,79 +1383,6 @@ public final class LoadTestRunAsyncClient {
     }
 
     /**
-     * List the metric definitions for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricDefinitionCollection> listMetricDefinitions(String testRunId, String metricNamespace) {
-        // Generated convenience method for listMetricDefinitionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (metricNamespace != null) {
-            requestOptions.addQueryParam("metricNamespace", metricNamespace, false);
-        }
-        return listMetricDefinitionsWithResponse(testRunId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(MetricDefinitionCollection.class));
-    }
-
-    /**
-     * List the metric definitions for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricDefinitionCollection> listMetricDefinitions(String testRunId) {
-        // Generated convenience method for listMetricDefinitionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listMetricDefinitionsWithResponse(testRunId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(MetricDefinitionCollection.class));
-    }
-
-    /**
-     * List the metric namespaces for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricNamespaceCollection> listMetricNamespaces(String testRunId) {
-        // Generated convenience method for listMetricNamespacesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listMetricNamespacesWithResponse(testRunId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(MetricNamespaceCollection.class));
-    }
-
-    /**
      * Get all test runs with given filters.
      *
      * @param orderBy Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported
@@ -1685,5 +1519,135 @@ public final class LoadTestRunAsyncClient {
         return stopTestRunWithResponse(testRunId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(TestRun.class));
+    }
+
+    /**
+     * List the metric namespaces for a load test run.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             description: String (Optional)
+     *             name: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents collection of metric namespaces along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.serviceClient.getMetricNamespacesWithResponseAsync(testRunId, requestOptions);
+    }
+
+    /**
+     * List the metric definitions for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MetricDefinitionCollection> getMetricDefinitions(String testRunId, String metricNamespace) {
+        // Generated convenience method for getMetricDefinitionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(MetricDefinitionCollection.class));
+    }
+
+    /**
+     * List the metric namespaces for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MetricNamespaceCollection> getMetricNamespaces(String testRunId) {
+        // Generated convenience method for getMetricNamespacesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMetricNamespacesWithResponse(testRunId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(MetricNamespaceCollection.class));
+    }
+
+    /**
+     * List the metric definitions for a load test run.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             dimensions (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     name: String (Optional)
+     *                 }
+     *             ]
+     *             description: String (Optional)
+     *             name: String (Optional)
+     *             namespace: String (Optional)
+     *             primaryAggregationType: String(Average/Count/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
+     *             supportedAggregationTypes (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             unit: String(NotSpecified/Percent/Count/Seconds/Milliseconds/Bytes/BytesPerSecond/CountPerSecond) (Optional)
+     *             metricAvailabilities (Optional): [
+     *                  (Optional){
+     *                     timeGrain: String(PT5S/PT10S/PT1M/PT5M/PT1H) (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents collection of metric definitions along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMetricDefinitionsWithResponse(
+            String testRunId, String metricNamespace, RequestOptions requestOptions) {
+        return this.serviceClient.getMetricDefinitionsWithResponseAsync(testRunId, metricNamespace, requestOptions);
     }
 }

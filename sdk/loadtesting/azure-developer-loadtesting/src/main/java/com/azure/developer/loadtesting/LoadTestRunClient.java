@@ -17,7 +17,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl;
 import com.azure.developer.loadtesting.models.DimensionValueList;
 import com.azure.developer.loadtesting.models.FileInfo;
 import com.azure.developer.loadtesting.models.Interval;
@@ -99,7 +98,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateServerMetricsConfigWithResponse(testRunId, body, requestOptions);
+        return this.client.createOrUpdateServerMetricsConfigWithResponse(testRunId, body, requestOptions).block();
     }
 
     /**
@@ -184,7 +183,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions);
+        return this.client.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions).block();
     }
 
     /**
@@ -226,7 +225,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.getAppComponentsWithResponse(testRunId, requestOptions);
+        return this.client.getAppComponentsWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -268,7 +267,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.getServerMetricsConfigWithResponse(testRunId, requestOptions);
+        return this.client.getServerMetricsConfigWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -638,7 +637,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.getTestRunWithResponse(testRunId, requestOptions);
+        return this.client.getTestRunWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -656,7 +655,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTestRunWithResponse(testRunId, requestOptions);
+        return this.client.deleteTestRunWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -689,7 +688,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestRunFileWithResponse(
             String testRunId, String fileName, RequestOptions requestOptions) {
-        return this.serviceClient.getTestRunFileWithResponse(testRunId, fileName, requestOptions);
+        return this.client.getTestRunFileWithResponse(testRunId, fileName, requestOptions).block();
     }
 
     /**
@@ -831,7 +830,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTestRuns(RequestOptions requestOptions) {
-        return this.serviceClient.listTestRuns(requestOptions);
+        return new PagedIterable<>(this.client.listTestRuns(requestOptions));
     }
 
     /**
@@ -956,19 +955,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.stopTestRunWithResponse(testRunId, requestOptions);
-    }
-
-    @Generated private final LoadTestRunClientImpl serviceClient;
-
-    /**
-     * Initializes an instance of LoadTestRunClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    @Generated
-    LoadTestRunClient(LoadTestRunClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
+        return this.client.stopTestRunWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -1011,172 +998,8 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listMetricDimensionValues(
             String testRunId, String name, String metricNamespace, RequestOptions requestOptions) {
-        return this.serviceClient.listMetricDimensionValues(testRunId, name, metricNamespace, requestOptions);
-    }
-
-    /**
-     * List the metric definitions for a load test run.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>metricNamespace</td><td>String</td><td>No</td><td>Metric namespace to query metric definitions for.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             dimensions (Optional): [
-     *                  (Optional){
-     *                     description: String (Optional)
-     *                     name: String (Optional)
-     *                 }
-     *             ]
-     *             description: String (Optional)
-     *             name: String (Optional)
-     *             namespace: String (Optional)
-     *             primaryAggregationType: String(Average/Count/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
-     *             supportedAggregationTypes (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             unit: String(NotSpecified/Percent/Count/Seconds/Milliseconds/Bytes/BytesPerSecond/CountPerSecond) (Optional)
-     *             metricAvailabilities (Optional): [
-     *                  (Optional){
-     *                     timeGrain: String(PT5S/PT10S/PT1M/PT5M/PT1H) (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents collection of metric definitions along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricDefinitionsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.listMetricDefinitionsWithResponse(testRunId, requestOptions);
-    }
-
-    /**
-     * List the metric namespaces for a load test run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             name: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents collection of metric namespaces along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.listMetricNamespacesWithResponse(testRunId, requestOptions);
-    }
-
-    /**
-     * List the metric values for a load test run.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     filters (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             values (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     data (Optional): [
-     *          (Optional){
-     *             timestamp: String (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     ]
-     *     dimensionValues (Optional): [
-     *          (Optional){
-     *             name: String (Optional)
-     *             value: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param aggregation The aggregation.
-     * @param metricName Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     *     'startDateTime_ISO/endDateTime_ISO'.
-     * @param body Metric dimension filter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMetrics(
-            String testRunId,
-            String aggregation,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            BinaryData body,
-            RequestOptions requestOptions) {
-        return this.serviceClient.listMetrics(
-                testRunId, aggregation, metricName, metricNamespace, timespan, body, requestOptions);
+        return new PagedIterable<>(
+                this.client.listMetricDimensionValues(testRunId, name, metricNamespace, requestOptions));
     }
 
     /**
@@ -1314,19 +1137,8 @@ public final class LoadTestRunClient {
             String metricName,
             String timespan) {
         // Generated convenience method for listMetricDimensionValues
-        RequestOptions requestOptions = new RequestOptions();
-        if (interval != null) {
-            requestOptions.addQueryParam("interval", interval.toString(), false);
-        }
-        if (metricName != null) {
-            requestOptions.addQueryParam("metricName", metricName, false);
-        }
-        if (timespan != null) {
-            requestOptions.addQueryParam("timespan", timespan, false);
-        }
-        return serviceClient
-                .listMetricDimensionValues(testRunId, name, metricNamespace, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DimensionValueList.class));
+        return new PagedIterable<>(
+                client.listMetricDimensionValues(testRunId, name, metricNamespace, interval, metricName, timespan));
     }
 
     /**
@@ -1348,172 +1160,7 @@ public final class LoadTestRunClient {
     public PagedIterable<DimensionValueList> listMetricDimensionValues(
             String testRunId, String name, String metricNamespace) {
         // Generated convenience method for listMetricDimensionValues
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listMetricDimensionValues(testRunId, name, metricNamespace, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DimensionValueList.class));
-    }
-
-    /**
-     * List the metric definitions for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricDefinitionCollection listMetricDefinitions(String testRunId, String metricNamespace) {
-        // Generated convenience method for listMetricDefinitionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (metricNamespace != null) {
-            requestOptions.addQueryParam("metricNamespace", metricNamespace, false);
-        }
-        return listMetricDefinitionsWithResponse(testRunId, requestOptions)
-                .getValue()
-                .toObject(MetricDefinitionCollection.class);
-    }
-
-    /**
-     * List the metric definitions for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricDefinitionCollection listMetricDefinitions(String testRunId) {
-        // Generated convenience method for listMetricDefinitionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listMetricDefinitionsWithResponse(testRunId, requestOptions)
-                .getValue()
-                .toObject(MetricDefinitionCollection.class);
-    }
-
-    /**
-     * List the metric namespaces for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricNamespaceCollection listMetricNamespaces(String testRunId) {
-        // Generated convenience method for listMetricNamespacesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listMetricNamespacesWithResponse(testRunId, requestOptions)
-                .getValue()
-                .toObject(MetricNamespaceCollection.class);
-    }
-
-    /**
-     * List the metric values for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param aggregation The aggregation.
-     * @param metricName Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     *     'startDateTime_ISO/endDateTime_ISO'.
-     * @param body Metric dimension filter.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TimeSeriesElement> listMetrics(
-            String testRunId,
-            String aggregation,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            MetricRequestPayload body,
-            Interval interval) {
-        // Generated convenience method for listMetrics
-        RequestOptions requestOptions = new RequestOptions();
-        if (interval != null) {
-            requestOptions.addQueryParam("interval", interval.toString(), false);
-        }
-        return serviceClient
-                .listMetrics(
-                        testRunId,
-                        aggregation,
-                        metricName,
-                        metricNamespace,
-                        timespan,
-                        BinaryData.fromObject(body),
-                        requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(TimeSeriesElement.class));
-    }
-
-    /**
-     * List the metric values for a load test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param aggregation The aggregation.
-     * @param metricName Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     *     'startDateTime_ISO/endDateTime_ISO'.
-     * @param body Metric dimension filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TimeSeriesElement> listMetrics(
-            String testRunId,
-            String aggregation,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            MetricRequestPayload body) {
-        // Generated convenience method for listMetrics
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listMetrics(
-                        testRunId,
-                        aggregation,
-                        metricName,
-                        metricNamespace,
-                        timespan,
-                        BinaryData.fromObject(body),
-                        requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(TimeSeriesElement.class));
+        return new PagedIterable<>(client.listMetricDimensionValues(testRunId, name, metricNamespace));
     }
 
     /**
@@ -1547,31 +1194,8 @@ public final class LoadTestRunClient {
             String status,
             Integer maxPageSize) {
         // Generated convenience method for listTestRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby", orderBy, false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (testId != null) {
-            requestOptions.addQueryParam("testId", testId, false);
-        }
-        if (executionFrom != null) {
-            requestOptions.addQueryParam("executionFrom", String.valueOf(executionFrom), false);
-        }
-        if (executionTo != null) {
-            requestOptions.addQueryParam("executionTo", String.valueOf(executionTo), false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status, false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
-        }
-        return serviceClient
-                .listTestRuns(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(TestRun.class));
+        return new PagedIterable<>(
+                client.listTestRuns(orderBy, search, testId, executionFrom, executionTo, status, maxPageSize));
     }
 
     /**
@@ -1588,10 +1212,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TestRun> listTestRuns() {
         // Generated convenience method for listTestRuns
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient
-                .listTestRuns(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(TestRun.class));
+        return new PagedIterable<>(client.listTestRuns());
     }
 
     /**
@@ -1613,5 +1234,278 @@ public final class LoadTestRunClient {
         // Generated convenience method for stopTestRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return stopTestRunWithResponse(testRunId, requestOptions).getValue().toObject(TestRun.class);
+    }
+
+    /**
+     * List the metric namespaces for a load test run.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             description: String (Optional)
+     *             name: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents collection of metric namespaces along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.getMetricNamespacesWithResponse(testRunId, requestOptions).block();
+    }
+
+    /**
+     * List the metric definitions for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetricDefinitionCollection getMetricDefinitions(String testRunId, String metricNamespace) {
+        // Generated convenience method for getMetricDefinitionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions)
+                .getValue()
+                .toObject(MetricDefinitionCollection.class);
+    }
+
+    /**
+     * List the metric namespaces for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetricNamespaceCollection getMetricNamespaces(String testRunId) {
+        // Generated convenience method for getMetricNamespacesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMetricNamespacesWithResponse(testRunId, requestOptions)
+                .getValue()
+                .toObject(MetricNamespaceCollection.class);
+    }
+
+    @Generated private final LoadTestRunAsyncClient client;
+
+    /**
+     * Initializes an instance of LoadTestRunClient class.
+     *
+     * @param client the async client.
+     */
+    @Generated
+    LoadTestRunClient(LoadTestRunAsyncClient client) {
+        this.client = client;
+    }
+
+    /**
+     * List the metric definitions for a load test run.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             dimensions (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     name: String (Optional)
+     *                 }
+     *             ]
+     *             description: String (Optional)
+     *             name: String (Optional)
+     *             namespace: String (Optional)
+     *             primaryAggregationType: String(Average/Count/None/Total/Percentile90/Percentile95/Percentile99) (Optional)
+     *             supportedAggregationTypes (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             unit: String(NotSpecified/Percent/Count/Seconds/Milliseconds/Bytes/BytesPerSecond/CountPerSecond) (Optional)
+     *             metricAvailabilities (Optional): [
+     *                  (Optional){
+     *                     timeGrain: String(PT5S/PT10S/PT1M/PT5M/PT1H) (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents collection of metric definitions along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMetricDefinitionsWithResponse(
+            String testRunId, String metricNamespace, RequestOptions requestOptions) {
+        return this.client.getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions).block();
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     filters (Optional): [
+     *          (Optional){
+     *             name: String (Optional)
+     *             values (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     data (Optional): [
+     *          (Optional){
+     *             timestamp: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     ]
+     *     dimensionValues (Optional): [
+     *          (Optional){
+     *             name: String (Optional)
+     *             value: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMetrics(
+            String testRunId,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return new PagedIterable<>(
+                this.client.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions));
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param aggregation The aggregation.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @param body Metric dimension filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TimeSeriesElement> listMetrics(
+            String testRunId,
+            String metricName,
+            String metricNamespace,
+            String timespan,
+            String aggregation,
+            Interval interval,
+            MetricRequestPayload body) {
+        // Generated convenience method for listMetrics
+        return new PagedIterable<>(
+                client.listMetrics(testRunId, metricName, metricNamespace, timespan, aggregation, interval, body));
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricName Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TimeSeriesElement> listMetrics(
+            String testRunId, String metricName, String metricNamespace, String timespan) {
+        // Generated convenience method for listMetrics
+        return new PagedIterable<>(client.listMetrics(testRunId, metricName, metricNamespace, timespan));
     }
 }
