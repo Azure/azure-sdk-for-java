@@ -1,14 +1,18 @@
 # Release History
 
-## 2.9.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.9.0-beta.4 (2023-07-18)
 
 ### Bugs Fixed
 
+- Removing the unnecessary scheduling to Scheduler while waiting for receiver link activation, reducing the subscription count to receiver link endpoint states, addressing subscription leak when switching to the new receiver link.
+
+### Features Added
+
+- Adding common ReceiversPumpingScheduler for internal message pumping by the *ReactorReceiver types.
+
 ### Other Changes
+
+- Beta baselined to 2.9.0-beta.2.
 
 ## 2.8.7 (2023-07-10)
 
