@@ -50,7 +50,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PurchasedPhoneNumber number = this
                 .getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAADSync")
                 .getPurchasedPhoneNumber(phoneNumber);

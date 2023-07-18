@@ -116,7 +116,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     }
 
     private void addTestProxySanitizers() {
-        interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(-[0-9a-fA-F]{32}.[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}[^/?]+)",
+        interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(-[0-9a-fA-F]{32}" +
+                ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12}[^/?]+)",
                 ".redacted.com", TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer("id", null,
                 "REDACTED", TestProxySanitizerType.BODY_KEY),
