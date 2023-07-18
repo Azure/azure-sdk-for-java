@@ -112,7 +112,7 @@ public final class ReadmeSamples {
 
         Completions completions = client.getCompletions("{deploymentOrModelId}", new CompletionsOptions(prompt));
 
-        System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreatedAt());
+        System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
         for (Choice choice : completions.getChoices()) {
             System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
         }
@@ -128,7 +128,7 @@ public final class ReadmeSamples {
             .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
 
         completionsStream.forEach(completions -> {
-            System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreatedAt());
+            System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
             for (Choice choice : completions.getChoices()) {
                 System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
             }
@@ -147,7 +147,7 @@ public final class ReadmeSamples {
         ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
             new ChatCompletionsOptions(chatMessages));
 
-        System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
+        System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
         for (ChatChoice choice : chatCompletions.getChoices()) {
             ChatMessage message = choice.getMessage();
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
@@ -169,7 +169,7 @@ public final class ReadmeSamples {
             new ChatCompletionsOptions(chatMessages));
 
         chatCompletionsStream.forEach(chatCompletions -> {
-            System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
+            System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
             for (ChatChoice choice : chatCompletions.getChoices()) {
                 ChatMessage message = choice.getDelta();
                 if (message != null) {

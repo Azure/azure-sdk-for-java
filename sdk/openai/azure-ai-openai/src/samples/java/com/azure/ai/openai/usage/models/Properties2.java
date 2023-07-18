@@ -7,12 +7,15 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class Properties {
+public class Properties2 {
     @JsonProperty(value = "format")
     private Unit unit;
 
     @JsonProperty(value = "location")
     private Location location = new Location();
+
+    @JsonProperty(value = "num_days")
+    private NumDays numDays;
 
     @JsonGetter
     public Unit getUnit() {
@@ -20,7 +23,7 @@ public class Properties {
     }
 
     @JsonSetter
-    public Properties setUnit(Unit unit) {
+    public Properties2 setUnit(Unit unit) {
         this.unit = unit;
         return this;
     }
@@ -31,8 +34,19 @@ public class Properties {
     }
 
     @JsonSetter
-    public Properties setLocation(Location location) {
+    public Properties2 setLocation(Location location) {
         this.location = location;
+        return this;
+    }
+
+    @JsonGetter
+    public NumDays getNumDays() {
+        return this.numDays;
+    }
+
+    @JsonSetter
+    public Properties2 setNumDays(NumDays numDays) {
+        this.numDays = numDays;
         return this;
     }
 }

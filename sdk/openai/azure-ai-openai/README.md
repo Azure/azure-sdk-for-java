@@ -159,11 +159,13 @@ prompt.add("Say this is a test");
 
 Completions completions = client.getCompletions("{deploymentOrModelId}", new CompletionsOptions(prompt));
 
-System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreatedAt());
+System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
 for (Choice choice : completions.getChoices()) {
     System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
 }
 ```
+
+For a complete sample example, see sample [Text Completions][sample_get_completions].
 
 ### Streaming text completions
 
@@ -175,12 +177,14 @@ IterableStream<Completions> completionsStream = client
     .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
 
 completionsStream.forEach(completions -> {
-    System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreatedAt());
+    System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
     for (Choice choice : completions.getChoices()) {
         System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
     }
 });
 ```
+
+For a complete sample example, see sample [Streaming Text Completions][sample_get_completions_streaming].
 
 ### Chat completions
 
@@ -194,7 +198,7 @@ chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a 
 ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
     new ChatCompletionsOptions(chatMessages));
 
-System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
+System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
 for (ChatChoice choice : chatCompletions.getChoices()) {
     ChatMessage message = choice.getMessage();
     System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
@@ -202,6 +206,7 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
     System.out.println(message.getContent());
 }
 ```
+For a complete sample example, see sample [Chat Completions][sample_get_chat_completions].
 
 For `function call` sample, see sample [function call][sample_chat_completion_function_call].
 
@@ -220,7 +225,7 @@ IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletion
     new ChatCompletionsOptions(chatMessages));
 
 chatCompletionsStream.forEach(chatCompletions -> {
-    System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
+    System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
     for (ChatChoice choice : chatCompletions.getChoices()) {
         ChatMessage message = choice.getDelta();
         if (message != null) {
@@ -238,6 +243,7 @@ chatCompletionsStream.forEach(chatCompletions -> {
     }
 });
 ```
+For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
 ### Text embeddings
 
@@ -254,6 +260,8 @@ for (EmbeddingItem item : embeddings.getData()) {
     }
 }
 ```
+For a complete sample example, see sample [Embedding][sample_get_embedding].
+
 Please refer to the service documentation for a conceptual discussion of [openAI embedding][microsoft_docs_openai_embedding].
 
 ### Image Generation
@@ -275,6 +283,8 @@ for (ImageLocation imageLocation : images.getData()) {
     }
 }
 ```
+
+For a complete sample example, see sample [Image Generation][sample_image_generation].
 
 ## Troubleshooting
 ### Enable client logging
@@ -325,6 +335,12 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
+[sample_get_chat_completions]: https://Dgithub.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
+[sample_get_chat_completions_streaming]: https://Dgithub.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
+[sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
+[sample_get_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsStreamSample.java
+[sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetEmbeddingsSample.java
+[sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java

@@ -7,18 +7,12 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-import java.util.Arrays;
-import java.util.List;
+public class NumDays {
 
-public class Unit {
     @JsonProperty(value = "type")
-    private String type = "string";
-
-    @JsonProperty(value = "enum")
-    private List<String> enumValues = Arrays.asList("celsius", "fahrenheit");
-
+    private String type = "integer";
     @JsonProperty(value = "description")
-    private String description = "The temperature unit to use. Infer this from the users location.";
+    private String description = "The number of days to forecast";
 
     @JsonGetter
     public String getType() {
@@ -26,19 +20,8 @@ public class Unit {
     }
 
     @JsonSetter
-    public Unit setType(String type) {
+    public NumDays setType(String type) {
         this.type = type;
-        return this;
-    }
-
-    @JsonGetter
-    public List<String> getEnumValues() {
-        return enumValues;
-    }
-
-    @JsonSetter
-    public Unit setEnumValues(List<String> enumValues) {
-        this.enumValues = enumValues;
         return this;
     }
 
@@ -48,7 +31,7 @@ public class Unit {
     }
 
     @JsonSetter
-    public Unit setDescription(String description) {
+    public NumDays setDescription(String description) {
         this.description = description;
         return this;
     }

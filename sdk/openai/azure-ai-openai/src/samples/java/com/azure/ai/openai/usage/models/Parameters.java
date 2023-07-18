@@ -12,10 +12,10 @@ public class Parameters {
     @JsonProperty(value = "type")
     private String type = "object";
     @JsonProperty(value = "properties")
-    private Properties properties = new Properties();
+    private Object properties = new Properties();
     @JsonCreator
     public Parameters(@JsonProperty(value = "type") String type,
-                      @JsonProperty(value = "properties") Properties properties) {
+                      @JsonProperty(value = "properties") Object properties) {
         this.type = type;
         this.properties = properties;
     }
@@ -35,12 +35,12 @@ public class Parameters {
     }
 
     @JsonGetter
-    public Properties getProperties() {
+    public Object getProperties() {
         return properties;
     }
 
     @JsonSetter
-    public Parameters setProperties(Properties properties) {
+    public Parameters setProperties(Object properties) {
         this.properties = properties;
         return this;
     }
