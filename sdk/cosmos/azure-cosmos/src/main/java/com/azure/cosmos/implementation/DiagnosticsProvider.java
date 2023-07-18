@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
+import reactor.core.Scannable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
@@ -35,6 +36,7 @@ import reactor.core.publisher.Signal;
 import reactor.core.publisher.SignalType;
 import reactor.util.context.ContextView;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -625,6 +627,76 @@ public final class DiagnosticsProvider {
         return ThreadLocalRandom.current().nextDouble() >= samplingRate;
     }
 
+    static class BeginInstrumentationSuppressionMono extends InstrumentationSuppressionMono {
+
+        static <T> Mono<T> create(Mono<T> source) {
+            return new BeginInstrumentationSuppressionMono(source).flatMap(unused -> source);
+        }
+
+        private BeginInstrumentationSuppressionMono(Mono<?> source) {
+            super(source, true);
+        }
+    }
+
+    static class EndInstrumentationSuppressionMono extends InstrumentationSuppressionMono {
+
+        static <T> Mono<T> create(Mono<T> source) {
+            return new EndInstrumentationSuppressionMono(source).flatMap(unused -> source);
+        }
+
+        private EndInstrumentationSuppressionMono(Mono<?> source) {
+            super(source, false);
+        }
+    }
+
+    static class InstrumentationSuppressionMono extends Mono<Object> implements Scannable {
+        private static final Object VALUE = new Object();
+
+        static <T> Mono<T> create(Mono<T> source, boolean shouldSuppressInstrumentation) {
+            return new InstrumentationSuppressionMono(source, shouldSuppressInstrumentation).flatMap(unused -> source);
+        }
+        private final Scannable sourceScannable;
+        private final boolean isSuppressed;
+
+        private InstrumentationSuppressionMono(Mono<?> source, boolean shouldSuppressInstrumentation) {
+            this.isSuppressed = shouldSuppressInstrumentation;
+            if (source instanceof Scannable) {
+                this.sourceScannable = (Scannable)source;
+            } else {
+                this.sourceScannable = null;
+            }
+        }
+
+        @Override
+        @Nullable
+        // Interface method doesn't have type parameter, so we can't add it either.
+        @SuppressWarnings("rawtypes")
+        public Object scanUnsafe(Attr attr) {
+            if (attr == Attr.NAME) {
+                String suffix = "";
+                if (this.sourceScannable != null) {
+                    suffix = "." + this.sourceScannable.name() + "(" + this.sourceScannable.operatorName() + ")";
+                }
+                if (this.isSuppressed) {
+                    return "beginInstrumentationSuppression" + suffix;
+                }
+
+                return "endInstrumentationSuppression" + suffix;
+            }
+
+            if (this.sourceScannable != null) {
+                return this.sourceScannable.scanUnsafe(attr);
+            }
+
+            return null;
+        }
+
+        @Override
+        public void subscribe(CoreSubscriber<? super Object> actual) {
+            actual.onSubscribe(Operators.scalarSubscription(actual, VALUE));
+        }
+    }
+
     private <T> Mono<T> diagnosticsEnabledPublisher(
       CosmosDiagnosticsContext cosmosCtx,
       Mono<T> resultPublisher,
@@ -658,7 +730,7 @@ public final class DiagnosticsProvider {
         // propagatingMono ensures active span is propagated to the `resultPublisher`
         // subscription and hot path. OpenTelemetry reactor's instrumentation will
         // propagate it on the cold path.
-        return propagatingMono
+        return BeginInstrumentationSuppressionMono.create(propagatingMono)
             .flatMap(ignored -> resultPublisher)
             .doOnEach(signal -> {
                 switch (signal.getType()) {
