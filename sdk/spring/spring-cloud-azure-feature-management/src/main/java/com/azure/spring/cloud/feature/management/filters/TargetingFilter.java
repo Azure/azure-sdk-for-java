@@ -56,6 +56,7 @@ public class TargetingFilter implements FeatureFilter {
      * Audience that always returns false
      */
     protected static final String EXCLUSION = "exclusion";
+
     private static final String EXCLUSION_CAMEL = "Exclusion";
 
     /**
@@ -129,39 +130,33 @@ public class TargetingFilter implements FeatureFilter {
         updateValueFromMapToList(parameters, GROUPS);
 
         Audience audience;
-        Map<String, List<String>> exclusionMap;
-        String exclusionValue = getKeyFormat(parameters, EXCLUSION_CAMEL);
-        String exclusionUserValue = getKeyFormat((Map<String, Object>) parameters.get(exclusionValue), "Users");
-        String exclusionGroupsValue = getKeyFormat((Map<String, Object>) parameters.get(exclusionValue), "Groups");
+        String exclusionValue = getKeyCase(parameters, EXCLUSION_CAMEL);
+        String exclusionUserValue = getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Users");
+        String exclusionGroupsValue = getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
 
         if (((Map<String, Object>) parameters.getOrDefault(exclusionValue, new HashMap<>()))
             .get(exclusionUserValue) instanceof List) {
             audience = OBJECT_MAPPER.convertValue(parameters, Audience.class);
-            exclusionMap = (Map<String, List<String>>) parameters.get(exclusionValue);
         } else {
-            // When it comes from a file exclusions can be a list instead of a map.
-            exclusionMap = (Map<String, List<String>>) parameters.remove(exclusionValue);
-            audience = OBJECT_MAPPER.convertValue(parameters, Audience.class);
-            parameters.put(exclusionValue, exclusionMap);
-        }
+            // When it comes from a file exclusions can be a map instead of a list.
+            Map<String, List<String>> exclusionMap = (Map<String, List<String>>) parameters.remove(exclusionValue);
+            if (exclusionMap == null) {
+                exclusionMap = new HashMap<>();
+            }
 
-        if (exclusionMap != null) {
-            Map<String, List<String>> updatedExclusions = new HashMap<>();
+            audience = OBJECT_MAPPER.convertValue(parameters, Audience.class);
+
+            Exclusion exclusion = new Exclusion();
             Object users = exclusionMap.get(exclusionUserValue);
             Object groups = exclusionMap.get(exclusionGroupsValue);
+
             if (users instanceof Map) {
-                users = new ArrayList<>(((Map<String, String>) users).values());
+                exclusion.setUsers(new ArrayList<>(((Map<String, String>) users).values()));
             }
             if (groups instanceof Map) {
-                groups = new ArrayList<>(((Map<String, String>) groups).values());
-
+                exclusion.setGroups(new ArrayList<>(((Map<String, String>) groups).values()));
             }
-            updatedExclusions.put(USERS, (List<String>) users);
-            updatedExclusions.put(GROUPS, (List<String>) groups);
-            Exclusion exclusion = OBJECT_MAPPER.convertValue(updatedExclusions, Exclusion.class);
             audience.setExclusion(exclusion);
-        } else if (audience.getExclusion() == null) {
-            audience.setExclusion(new Exclusion());
         }
 
         validateSettings(audience);
@@ -199,7 +194,7 @@ public class TargetingFilter implements FeatureFilter {
         return isTargeted(defaultContextId, audience.getDefaultRolloutPercentage());
     }
 
-    private String getKeyFormat(Map<String, Object> parameters, String key) {
+    private String getKeyCase(Map<String, Object> parameters, String key) {
         if (parameters != null && parameters.containsKey(key)) {
             return key;
         }
