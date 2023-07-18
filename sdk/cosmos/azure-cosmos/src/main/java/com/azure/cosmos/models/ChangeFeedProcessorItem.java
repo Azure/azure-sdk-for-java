@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Change Feed processor item.
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedProcessorItem {
+    private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     @JsonProperty("current")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private JsonNode current;
@@ -28,7 +30,15 @@ public final class ChangeFeedProcessorItem {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private JsonNode changeFeedMetaData;
     private ChangeFeedMetaData changeFeedMetaDataInternal;
-    private final Object monitor = new Object();
+    private JsonNode changeFeedProcessorItemAsJsonNode;
+
+    public ChangeFeedProcessorItem() {}
+
+    ChangeFeedProcessorItem(JsonNode changeFeedProcessorItemAsJsonNode) {
+        this.current = changeFeedProcessorItemAsJsonNode.get("current");
+        this.previous = changeFeedProcessorItemAsJsonNode.get("previous");
+        this.changeFeedMetaData = changeFeedProcessorItemAsJsonNode.get("metadata");
+    }
 
     /**
      * Gets the change feed current item.
@@ -60,12 +70,10 @@ public final class ChangeFeedProcessorItem {
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @JsonIgnore
     public ChangeFeedMetaData getChangeFeedMetaData() {
-        synchronized (monitor) {
-            if (changeFeedMetaDataInternal == null) {
-                changeFeedMetaDataInternal = new ChangeFeedMetaData(changeFeedMetaData);
-            }
-            return changeFeedMetaDataInternal;
+        if (changeFeedMetaDataInternal == null) {
+            changeFeedMetaDataInternal = new ChangeFeedMetaData(this.changeFeedMetaData);
         }
+        return changeFeedMetaDataInternal;
     }
 
     /**
@@ -78,7 +86,18 @@ public final class ChangeFeedProcessorItem {
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode toJsonNode() {
-        return Utils.getSimpleObjectMapper().convertValue(this, JsonNode.class);
+
+        if (this.changeFeedProcessorItemAsJsonNode == null) {
+            this.changeFeedProcessorItemAsJsonNode = Utils.getSimpleObjectMapper().convertValue(this, JsonNode.class);
+        }
+
+        ChangeFeedProcessorItem changeFeedProcessorItem = new ChangeFeedProcessorItem(this.changeFeedProcessorItemAsJsonNode);
+
+        if (this.changeFeedMetaDataInternal == null) {
+            this.changeFeedMetaDataInternal = new ChangeFeedMetaData(changeFeedProcessorItem.changeFeedMetaData);
+        }
+
+        return Utils.getSimpleObjectMapper().convertValue(changeFeedProcessorItem, JsonNode.class);
     }
 
     @Override

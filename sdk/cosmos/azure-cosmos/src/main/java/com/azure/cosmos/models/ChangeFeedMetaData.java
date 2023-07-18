@@ -28,13 +28,15 @@ public final class ChangeFeedMetaData {
     @JsonProperty("timeToLiveExpired")
     private boolean timeToLiveExpired;
 
-    ChangeFeedMetaData(JsonNode changeFeedMetaDataAsJson) {
+    public ChangeFeedMetaData() {}
 
-        JsonNode crtsJsonNode = changeFeedMetaDataAsJson.get("crts");
-        JsonNode lsnJsonNode = changeFeedMetaDataAsJson.get("lsn");
-        JsonNode operationTypeJsonNode = changeFeedMetaDataAsJson.get("operationType");
-        JsonNode previousImageLsnJsonNode = changeFeedMetaDataAsJson.get("previousImageLSN");
-        JsonNode timeToLiveExpiredJsonNode = changeFeedMetaDataAsJson.get("timeToLiveExpired");
+    ChangeFeedMetaData(JsonNode changeFeedMetaDataAsJsonNode) {
+
+        JsonNode crtsJsonNode = changeFeedMetaDataAsJsonNode.get("crts");
+        JsonNode lsnJsonNode = changeFeedMetaDataAsJsonNode.get("lsn");
+        JsonNode operationTypeJsonNode = changeFeedMetaDataAsJsonNode.get("operationType");
+        JsonNode previousImageLsnJsonNode = changeFeedMetaDataAsJsonNode.get("previousImageLSN");
+        JsonNode timeToLiveExpiredJsonNode = changeFeedMetaDataAsJsonNode.get("timeToLiveExpired");
 
         this.conflictResolutionTimestamp = crtsJsonNode != null ? crtsJsonNode.asLong() : -1;
         this.logSequenceNumber = lsnJsonNode != null ? lsnJsonNode.asLong() : -1;
