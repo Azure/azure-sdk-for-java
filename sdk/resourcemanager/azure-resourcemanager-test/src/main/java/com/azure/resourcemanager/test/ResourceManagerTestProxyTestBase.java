@@ -243,22 +243,14 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         }
 
         if (isPlaybackMode()) {
-            if (interceptorManager.getRecordedData() == null) {
-                skipInPlayback();
-//                return;
-            }
-
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             httpPipeline = buildHttpPipeline(
                 request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 interceptorManager.getPlaybackClient());
-            textReplacementRules.put(PLAYBACK_URI_BASE + "1234", PLAYBACK_URI);
-            addTextReplacementRules(textReplacementRules);
         } else {
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
@@ -292,7 +284,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
-                policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
                 policies.add(this.interceptorManager.getRecordPolicy());
 
             }
@@ -306,18 +297,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 generateHttpClientWithProxy(null, null));
-
-            textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
-            textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
-            // ARM endpoint
-            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getResourceManagerEndpoint()), PLAYBACK_URI + "/");
-            // MSGraph endpoint
-            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint()), PLAYBACK_URI + "/");
-            // vault endpoint
-            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getKeyVaultDnsSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
-            // storage account endpoint
-            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getStorageEndpointSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
-            addTextReplacementRules(textReplacementRules);
         }
 
         if (!testContextManager.doNotRecordTest()) {
@@ -326,6 +305,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             // sanitize subscription id
             interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL)));
             interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL)));
+            // Retry-After
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)));
         }
         initializeClients(httpPipeline, testProfile);
     }
