@@ -32,6 +32,9 @@ public final class ChangeFeedProcessorItem {
     private ChangeFeedMetaData changeFeedMetaDataInternal;
     private JsonNode changeFeedProcessorItemAsJsonNode;
 
+    /**
+     * Constructor
+     * */
     public ChangeFeedProcessorItem() {}
 
     ChangeFeedProcessorItem(JsonNode changeFeedProcessorItemAsJsonNode) {

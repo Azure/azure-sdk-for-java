@@ -28,6 +28,9 @@ public final class ChangeFeedMetaData {
     @JsonProperty("timeToLiveExpired")
     private boolean timeToLiveExpired;
 
+    /**
+     * Constructor
+     * */
     public ChangeFeedMetaData() {}
 
     ChangeFeedMetaData(JsonNode changeFeedMetaDataAsJsonNode) {
