@@ -12,10 +12,11 @@ import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.FunctionDefinition;
-import com.azure.ai.openai.usage.models.Parameters;
-import com.azure.ai.openai.usage.models.Properties;
-import com.azure.ai.openai.usage.models.Properties2;
+import com.azure.ai.openai.models.Parameters;
+import com.azure.ai.openai.models.Properties;
+import com.azure.ai.openai.models.Properties2;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,9 +32,9 @@ public class FunctionCallSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = "gpt-4-0613";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
