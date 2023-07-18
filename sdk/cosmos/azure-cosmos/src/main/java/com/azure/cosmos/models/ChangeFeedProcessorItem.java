@@ -99,7 +99,13 @@ public final class ChangeFeedProcessorItem {
     @Override
     public String toString() {
         try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+
+            if (changeFeedProcessorItemAsJsonNode == null) {
+                this.changeFeedProcessorItemAsJsonNode = constructChangeFeedProcessorItemAsJsonNode();
+            }
+
+            return Utils.getSimpleObjectMapper().writeValueAsString(this.changeFeedProcessorItemAsJsonNode);
+
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert object to string", e);
         }
