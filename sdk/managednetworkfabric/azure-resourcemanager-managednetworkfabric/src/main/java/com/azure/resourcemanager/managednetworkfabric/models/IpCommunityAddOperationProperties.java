@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class IpCommunityAddOperationProperties {
     /*
-     * IP Community ID list properties.
+     * List of IP Community IDs.
      */
     @JsonProperty(value = "add")
     private IpCommunityIdList add;
@@ -21,7 +21,7 @@ public class IpCommunityAddOperationProperties {
     }
 
     /**
-     * Get the add property: IP Community ID list properties.
+     * Get the add property: List of IP Community IDs.
      *
      * @return the add value.
      */
@@ -30,7 +30,7 @@ public class IpCommunityAddOperationProperties {
     }
 
     /**
-     * Set the add property: IP Community ID list properties.
+     * Set the add property: List of IP Community IDs.
      *
      * @param add the add value to set.
      * @return the IpCommunityAddOperationProperties object itself.

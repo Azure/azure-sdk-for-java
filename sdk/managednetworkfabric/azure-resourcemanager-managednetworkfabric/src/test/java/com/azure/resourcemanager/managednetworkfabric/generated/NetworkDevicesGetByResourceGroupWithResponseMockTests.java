@@ -13,7 +13,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevice;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleTypes;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +31,7 @@ public final class NetworkDevicesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"version\":\"xn\",\"networkDeviceSku\":\"akizvoaikna\",\"networkDeviceRole\":\"NPB\",\"provisioningState\":\"Updating\",\"networkRackId\":\"iguyxlykwphv\",\"hostName\":\"cwxhmpej\",\"serialNumber\":\"ke\",\"annotation\":\"onwivkcqhrxhxkn\"},\"location\":\"crmmkyupijuby\",\"tags\":{\"em\":\"kakfqfr\"},\"id\":\"il\",\"name\":\"udxjascowv\",\"type\":\"djkpdxph\"}";
+            "{\"properties\":{\"version\":\"dgktl\",\"networkDeviceSku\":\"fiqgpqcpen\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"sbeespqbvva\",\"managementIpv4Address\":\"szsu\",\"managementIpv6Address\":\"sautbri\",\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"ntzunhyyqxckdlx\",\"serialNumber\":\"isrdnowinc\",\"annotation\":\"sfvijnubxfiiy\"},\"location\":\"xewjsyutezl\",\"tags\":{\"gecyqoytwssb\":\"voxdporxkivbkut\",\"dwdmuvya\":\"qnp\",\"blzrmiukothyfjbp\":\"rbqpwx\",\"cjni\":\"hdhfrvsizfwgn\"},\"id\":\"ffwcgjjio\",\"name\":\"wuuogdkpnmwrfu\",\"type\":\"jdebyxqucnbgib\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +62,14 @@ public final class NetworkDevicesGetByResourceGroupWithResponseMockTests {
         NetworkDevice response =
             manager
                 .networkDevices()
-                .getByResourceGroupWithResponse("nu", "tggmuwdchozfnkfe", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("ccvufjqv", "cfsssmyaemkrh", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("crmmkyupijuby", response.location());
-        Assertions.assertEquals("kakfqfr", response.tags().get("em"));
-        Assertions.assertEquals("akizvoaikna", response.networkDeviceSku());
-        Assertions.assertEquals(NetworkDeviceRoleTypes.NPB, response.networkDeviceRole());
-        Assertions.assertEquals("cwxhmpej", response.hostname());
-        Assertions.assertEquals("ke", response.serialNumber());
-        Assertions.assertEquals("onwivkcqhrxhxkn", response.annotation());
+        Assertions.assertEquals("xewjsyutezl", response.location());
+        Assertions.assertEquals("voxdporxkivbkut", response.tags().get("gecyqoytwssb"));
+        Assertions.assertEquals("fiqgpqcpen", response.networkDeviceSku());
+        Assertions.assertEquals("ntzunhyyqxckdlx", response.hostname());
+        Assertions.assertEquals("isrdnowinc", response.serialNumber());
+        Assertions.assertEquals("sfvijnubxfiiy", response.annotation());
     }
 }

@@ -10,20 +10,23 @@ import java.util.Collection;
 
 /** The current provisioning state. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
+    /** Static value Accepted for ProvisioningState. */
+    public static final ProvisioningState ACCEPTED = fromString("Accepted");
+
     /** Static value Succeeded for ProvisioningState. */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /** Static value Updating for ProvisioningState. */
     public static final ProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Canceled for ProvisioningState. */
-    public static final ProvisioningState CANCELED = fromString("Canceled");
-
     /** Static value Deleting for ProvisioningState. */
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /** Static value Failed for ProvisioningState. */
     public static final ProvisioningState FAILED = fromString("Failed");
+
+    /** Static value Canceled for ProvisioningState. */
+    public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of ProvisioningState value.
