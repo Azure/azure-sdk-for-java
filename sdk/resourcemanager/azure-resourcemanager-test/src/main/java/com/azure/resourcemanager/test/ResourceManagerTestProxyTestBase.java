@@ -364,12 +364,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         }
     }
 
-    private void addTextReplacementRules(Map<String, String> rules) {
-        for (Map.Entry<String, String> entry : rules.entrySet()) {
-            interceptorManager.addTextReplacementRule(entry.getKey(), entry.getValue());
-        }
-    }
-
     /**
      * Sets sdk context when running the tests
      *
