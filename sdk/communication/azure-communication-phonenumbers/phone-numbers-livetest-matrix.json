@@ -12,6 +12,8 @@
             "macos-11": {
                 "OSVmImage": "macos-11",
                 "Pool": "Azure Pipelines",
+                "JavaTestVersion": "1.17",
+                "AZURE_TEST_HTTP_CLIENTS": "netty",
                 "AZURE_TEST_AGENT": "MACOS_1015_JAVA11"
             }
         },

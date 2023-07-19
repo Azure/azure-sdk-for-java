@@ -30,21 +30,25 @@ import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlan
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentTiersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeletedAccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeploymentsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ModelsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.OperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceSkusImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.UsagesImpl;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
 import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
 import com.azure.resourcemanager.cognitiveservices.models.Deployments;
+import com.azure.resourcemanager.cognitiveservices.models.Models;
 import com.azure.resourcemanager.cognitiveservices.models.Operations;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResources;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceSkus;
+import com.azure.resourcemanager.cognitiveservices.models.Usages;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -60,11 +64,15 @@ public final class CognitiveServicesManager {
 
     private ResourceSkus resourceSkus;
 
+    private Usages usages;
+
     private Operations operations;
 
     private ResourceProviders resourceProviders;
 
     private CommitmentTiers commitmentTiers;
+
+    private Models models;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -239,7 +247,7 @@ public final class CognitiveServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.cognitiveservices")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -333,6 +341,18 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Gets the resource collection API of Usages.
+     *
+     * @return Resource collection API of Usages.
+     */
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(clientObject.getUsages(), this);
+        }
+        return usages;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
      *
      * @return Resource collection API of Operations.
@@ -366,6 +386,18 @@ public final class CognitiveServicesManager {
             this.commitmentTiers = new CommitmentTiersImpl(clientObject.getCommitmentTiers(), this);
         }
         return commitmentTiers;
+    }
+
+    /**
+     * Gets the resource collection API of Models.
+     *
+     * @return Resource collection API of Models.
+     */
+    public Models models() {
+        if (this.models == null) {
+            this.models = new ModelsImpl(clientObject.getModels(), this);
+        }
+        return models;
     }
 
     /**

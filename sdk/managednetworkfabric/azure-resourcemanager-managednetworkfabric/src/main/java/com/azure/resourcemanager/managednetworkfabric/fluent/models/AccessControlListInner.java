@@ -8,14 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListConditionProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.AddressFamily;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The AccessControlList resource definition. */
+/** The Access Control List resource definition. */
 @Fluent
 public final class AccessControlListInner extends Resource {
     /*
@@ -67,58 +71,133 @@ public final class AccessControlListInner extends Resource {
     }
 
     /**
-     * Get the addressFamily property: IP address family. Example: ipv4 | ipv6.
+     * Get the lastSyncedTime property: The last synced timestamp.
      *
-     * @return the addressFamily value.
+     * @return the lastSyncedTime value.
      */
-    public AddressFamily addressFamily() {
-        return this.innerProperties() == null ? null : this.innerProperties().addressFamily();
+    public OffsetDateTime lastSyncedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastSyncedTime();
     }
 
     /**
-     * Set the addressFamily property: IP address family. Example: ipv4 | ipv6.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @param addressFamily the addressFamily value to set.
-     * @return the AccessControlListInner object itself.
+     * @return the configurationState value.
      */
-    public AccessControlListInner withAddressFamily(AddressFamily addressFamily) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccessControlListProperties();
-        }
-        this.innerProperties().withAddressFamily(addressFamily);
-        return this;
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
     }
 
     /**
-     * Get the conditions property: Access Control List conditions.
-     *
-     * @return the conditions value.
-     */
-    public List<AccessControlListConditionProperties> conditions() {
-        return this.innerProperties() == null ? null : this.innerProperties().conditions();
-    }
-
-    /**
-     * Set the conditions property: Access Control List conditions.
-     *
-     * @param conditions the conditions value to set.
-     * @return the AccessControlListInner object itself.
-     */
-    public AccessControlListInner withConditions(List<AccessControlListConditionProperties> conditions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccessControlListProperties();
-        }
-        this.innerProperties().withConditions(conditions);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
+    }
+
+    /**
+     * Get the configurationType property: Input method to configure Access Control List.
+     *
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationType();
+    }
+
+    /**
+     * Set the configurationType property: Input method to configure Access Control List.
+     *
+     * @param configurationType the configurationType value to set.
+     * @return the AccessControlListInner object itself.
+     */
+    public AccessControlListInner withConfigurationType(ConfigurationType configurationType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListProperties();
+        }
+        this.innerProperties().withConfigurationType(configurationType);
+        return this;
+    }
+
+    /**
+     * Get the aclsUrl property: Access Control List file URL.
+     *
+     * @return the aclsUrl value.
+     */
+    public String aclsUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().aclsUrl();
+    }
+
+    /**
+     * Set the aclsUrl property: Access Control List file URL.
+     *
+     * @param aclsUrl the aclsUrl value to set.
+     * @return the AccessControlListInner object itself.
+     */
+    public AccessControlListInner withAclsUrl(String aclsUrl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListProperties();
+        }
+        this.innerProperties().withAclsUrl(aclsUrl);
+        return this;
+    }
+
+    /**
+     * Get the matchConfigurations property: List of match configurations.
+     *
+     * @return the matchConfigurations value.
+     */
+    public List<AccessControlListMatchConfiguration> matchConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().matchConfigurations();
+    }
+
+    /**
+     * Set the matchConfigurations property: List of match configurations.
+     *
+     * @param matchConfigurations the matchConfigurations value to set.
+     * @return the AccessControlListInner object itself.
+     */
+    public AccessControlListInner withMatchConfigurations(
+        List<AccessControlListMatchConfiguration> matchConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListProperties();
+        }
+        this.innerProperties().withMatchConfigurations(matchConfigurations);
+        return this;
+    }
+
+    /**
+     * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
+     *
+     * @return the dynamicMatchConfigurations value.
+     */
+    public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().dynamicMatchConfigurations();
+    }
+
+    /**
+     * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
+     *
+     * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
+     * @return the AccessControlListInner object itself.
+     */
+    public AccessControlListInner withDynamicMatchConfigurations(
+        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListProperties();
+        }
+        this.innerProperties().withDynamicMatchConfigurations(dynamicMatchConfigurations);
+        return this;
     }
 
     /**

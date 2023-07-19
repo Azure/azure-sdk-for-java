@@ -7,14 +7,13 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import java.util.List;
 
 /** Resource collection API of NetworkDevices. */
 public interface NetworkDevices {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -30,7 +29,7 @@ public interface NetworkDevices {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -125,12 +124,15 @@ public interface NetworkDevices {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void reboot(String resourceGroupName, String networkDeviceName);
+    CommonPostActionResponseForStateUpdate reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -138,226 +140,117 @@ public interface NetworkDevices {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void reboot(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restoreConfig(String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restoreConfig(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateVersion(String resourceGroupName, String networkDeviceName, UpdateVersionProperties body);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context);
+    CommonPostActionResponseForStateUpdate reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
+     * @return common response for the state updates.
      */
-    SupportPackageProperties generateSupportPackage(String resourceGroupName, String networkDeviceName);
+    CommonPostActionResponseForStateUpdate refreshConfiguration(String resourceGroupName, String networkDeviceName);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
+     * @return common response for the state updates.
      */
-    SupportPackageProperties generateSupportPackage(
+    CommonPostActionResponseForStateUpdate refreshConfiguration(
         String resourceGroupName, String networkDeviceName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updatePowerCycle(String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context);
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    GetDeviceStatusProperties getStatus(String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    GetDeviceStatusProperties getStatus(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps(
-        String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
-    List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName);
+    CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
-    List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context);
 
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -370,7 +263,7 @@ public interface NetworkDevices {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

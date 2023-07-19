@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkFabrics GetByResourceGroup. */
 public final class NetworkFabricsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkFabrics_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_Get_MaximumSet_Gen.
@@ -18,6 +18,6 @@ public final class NetworkFabricsGetByResourceGroupSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .networkFabrics()
-            .getByResourceGroupWithResponse("resourceGroupName", "FabricName", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
     }
 }

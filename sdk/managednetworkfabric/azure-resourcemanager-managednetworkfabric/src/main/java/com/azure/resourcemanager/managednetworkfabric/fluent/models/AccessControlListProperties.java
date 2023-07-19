@@ -5,86 +5,188 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListConditionProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.AddressFamily;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-/** AccessControlListProperties define the resource properties. */
+/** Access Control List Properties defines the resource properties. */
 @Fluent
 public final class AccessControlListProperties extends AnnotationResource {
     /*
-     * IP address family. Example: ipv4 | ipv6.
+     * The last synced timestamp.
      */
-    @JsonProperty(value = "addressFamily", required = true)
-    private AddressFamily addressFamily;
+    @JsonProperty(value = "lastSyncedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastSyncedTime;
 
     /*
-     * Access Control List conditions.
+     * Configuration state of the resource.
      */
-    @JsonProperty(value = "conditions", required = true)
-    private List<AccessControlListConditionProperties> conditions;
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
 
     /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
+
+    /*
+     * Input method to configure Access Control List.
+     */
+    @JsonProperty(value = "configurationType")
+    private ConfigurationType configurationType;
+
+    /*
+     * Access Control List file URL.
+     */
+    @JsonProperty(value = "aclsUrl")
+    private String aclsUrl;
+
+    /*
+     * List of match configurations.
+     */
+    @JsonProperty(value = "matchConfigurations")
+    private List<AccessControlListMatchConfiguration> matchConfigurations;
+
+    /*
+     * List of dynamic match configurations.
+     */
+    @JsonProperty(value = "dynamicMatchConfigurations")
+    private List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations;
 
     /** Creates an instance of AccessControlListProperties class. */
     public AccessControlListProperties() {
     }
 
     /**
-     * Get the addressFamily property: IP address family. Example: ipv4 | ipv6.
+     * Get the lastSyncedTime property: The last synced timestamp.
      *
-     * @return the addressFamily value.
+     * @return the lastSyncedTime value.
      */
-    public AddressFamily addressFamily() {
-        return this.addressFamily;
+    public OffsetDateTime lastSyncedTime() {
+        return this.lastSyncedTime;
     }
 
     /**
-     * Set the addressFamily property: IP address family. Example: ipv4 | ipv6.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @param addressFamily the addressFamily value to set.
-     * @return the AccessControlListProperties object itself.
+     * @return the configurationState value.
      */
-    public AccessControlListProperties withAddressFamily(AddressFamily addressFamily) {
-        this.addressFamily = addressFamily;
-        return this;
+    public ConfigurationState configurationState() {
+        return this.configurationState;
     }
 
     /**
-     * Get the conditions property: Access Control List conditions.
-     *
-     * @return the conditions value.
-     */
-    public List<AccessControlListConditionProperties> conditions() {
-        return this.conditions;
-    }
-
-    /**
-     * Set the conditions property: Access Control List conditions.
-     *
-     * @param conditions the conditions value to set.
-     * @return the AccessControlListProperties object itself.
-     */
-    public AccessControlListProperties withConditions(List<AccessControlListConditionProperties> conditions) {
-        this.conditions = conditions;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
+     * Get the configurationType property: Input method to configure Access Control List.
+     *
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.configurationType;
+    }
+
+    /**
+     * Set the configurationType property: Input method to configure Access Control List.
+     *
+     * @param configurationType the configurationType value to set.
+     * @return the AccessControlListProperties object itself.
+     */
+    public AccessControlListProperties withConfigurationType(ConfigurationType configurationType) {
+        this.configurationType = configurationType;
+        return this;
+    }
+
+    /**
+     * Get the aclsUrl property: Access Control List file URL.
+     *
+     * @return the aclsUrl value.
+     */
+    public String aclsUrl() {
+        return this.aclsUrl;
+    }
+
+    /**
+     * Set the aclsUrl property: Access Control List file URL.
+     *
+     * @param aclsUrl the aclsUrl value to set.
+     * @return the AccessControlListProperties object itself.
+     */
+    public AccessControlListProperties withAclsUrl(String aclsUrl) {
+        this.aclsUrl = aclsUrl;
+        return this;
+    }
+
+    /**
+     * Get the matchConfigurations property: List of match configurations.
+     *
+     * @return the matchConfigurations value.
+     */
+    public List<AccessControlListMatchConfiguration> matchConfigurations() {
+        return this.matchConfigurations;
+    }
+
+    /**
+     * Set the matchConfigurations property: List of match configurations.
+     *
+     * @param matchConfigurations the matchConfigurations value to set.
+     * @return the AccessControlListProperties object itself.
+     */
+    public AccessControlListProperties withMatchConfigurations(
+        List<AccessControlListMatchConfiguration> matchConfigurations) {
+        this.matchConfigurations = matchConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
+     *
+     * @return the dynamicMatchConfigurations value.
+     */
+    public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
+        return this.dynamicMatchConfigurations;
+    }
+
+    /**
+     * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
+     *
+     * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
+     * @return the AccessControlListProperties object itself.
+     */
+    public AccessControlListProperties withDynamicMatchConfigurations(
+        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+        this.dynamicMatchConfigurations = dynamicMatchConfigurations;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -102,21 +204,11 @@ public final class AccessControlListProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (addressFamily() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property addressFamily in model AccessControlListProperties"));
+        if (matchConfigurations() != null) {
+            matchConfigurations().forEach(e -> e.validate());
         }
-        if (conditions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property conditions in model AccessControlListProperties"));
-        } else {
-            conditions().forEach(e -> e.validate());
+        if (dynamicMatchConfigurations() != null) {
+            dynamicMatchConfigurations().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AccessControlListProperties.class);
 }

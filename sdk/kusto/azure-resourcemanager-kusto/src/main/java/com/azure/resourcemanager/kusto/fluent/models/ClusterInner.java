@@ -15,6 +15,7 @@ import com.azure.resourcemanager.kusto.models.EngineType;
 import com.azure.resourcemanager.kusto.models.Identity;
 import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
+import com.azure.resourcemanager.kusto.models.MigrationClusterProperties;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.PublicIpType;
@@ -644,6 +645,15 @@ public final class ClusterInner extends Resource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the migrationCluster property: Properties of the peer cluster involved in a migration to/from this cluster.
+     *
+     * @return the migrationCluster value.
+     */
+    public MigrationClusterProperties migrationCluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationCluster();
     }
 
     /**

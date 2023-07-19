@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRack;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +33,7 @@ public final class NetworkRacksListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"networkRackSku\":\"mxgaabjkdtfohfao\",\"networkFabricId\":\"zvkiwrsiwdy\",\"networkDevices\":[\"rykcrraueekcsue\",\"ogd\",\"acbcb\",\"ydl\"],\"provisioningState\":\"Updating\",\"annotation\":\"wmhmptyrilkfbnr\"},\"location\":\"xvztpbnfnqtxj\",\"tags\":{\"epl\":\"alswbnfd\"},\"id\":\"wqjnsfzygleexa\",\"name\":\"vmywhsbrcarycsjj\",\"type\":\"yvoaqajuvehzp\"}]}";
+            "{\"value\":[{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"empahyuxxeike\",\"networkDevices\":[\"wrnh\",\"afu\"],\"provisioningState\":\"Succeeded\",\"annotation\":\"phjkx\"},\"location\":\"mesxjeqqfy\",\"tags\":{\"hdncq\":\"kxtanlvoorv\",\"vxp\":\"uwtpssgqlnols\"},\"id\":\"egxlzd\",\"name\":\"atptzkmfvdrkcw\",\"type\":\"smnwsffia\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +62,12 @@ public final class NetworkRacksListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<NetworkRack> response =
-            manager.networkRacks().listByResourceGroup("nxakckyw", com.azure.core.util.Context.NONE);
+            manager.networkRacks().listByResourceGroup("pyfrtlukafq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xvztpbnfnqtxj", response.iterator().next().location());
-        Assertions.assertEquals("alswbnfd", response.iterator().next().tags().get("epl"));
-        Assertions.assertEquals("mxgaabjkdtfohfao", response.iterator().next().networkRackSku());
-        Assertions.assertEquals("zvkiwrsiwdy", response.iterator().next().networkFabricId());
-        Assertions.assertEquals("wmhmptyrilkfbnr", response.iterator().next().annotation());
+        Assertions.assertEquals("mesxjeqqfy", response.iterator().next().location());
+        Assertions.assertEquals("kxtanlvoorv", response.iterator().next().tags().get("hdncq"));
+        Assertions.assertEquals(NetworkRackType.COMBINED, response.iterator().next().networkRackType());
+        Assertions.assertEquals("empahyuxxeike", response.iterator().next().networkFabricId());
+        Assertions.assertEquals("phjkx", response.iterator().next().annotation());
     }
 }
