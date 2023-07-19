@@ -217,6 +217,14 @@ public class RoomsClientTest extends RoomsTestBase {
         PagedIterable<RoomParticipant> listParticipantsResponse4 = roomsClient.listParticipants(roomId);
         assertEquals(1, listParticipantsResponse4.stream().count());
 
+        // Remove participant with Incorrect MRI
+        List<CommunicationIdentifier> participantsIdentifiersForNonExistentParticipant = Arrays
+                .asList(new CommunicationUserIdentifier("8:acs:nonExistentParticipant"));
+
+        assertThrows(HttpResponseException.class, () -> {
+            roomsClient.removeParticipants(roomId, participantsIdentifiersForNonExistentParticipant);
+        });
+
         // Delete Room
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -541,6 +549,30 @@ public class RoomsClientTest extends RoomsTestBase {
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
                 .setValidFrom(VALID_FROM.plusDays(181))
                 .setValidUntil(VALID_UNTIL);
+
+        assertThrows(HttpResponseException.class, () -> {
+            roomsClient.updateRoom(roomId, updateRoomOptions);
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomSyncValidUntilInPast(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomSyncValidUntilInPast");
+        assertNotNull(roomsClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
+        assertHappyPath(createdRoom);
+
+        String roomId = createdRoom.getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
+                .setValidFrom(VALID_FROM.minusMonths(6))
+                .setValidUntil(VALID_FROM.minusMonths(3));
 
         assertThrows(HttpResponseException.class, () -> {
             roomsClient.updateRoom(roomId, updateRoomOptions);

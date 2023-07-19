@@ -396,8 +396,8 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         String roomId = response1.block().getValue().getRoomId();
 
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
-                .setValidFrom(VALID_FROM.minusMonths(3))
-                .setValidUntil(VALID_FROM);
+                .setValidFrom(VALID_FROM.minusMonths(6))
+                .setValidUntil(VALID_FROM.minusMonths(3));
 
         CommunicationErrorResponseException exception =
             assertThrows(CommunicationErrorResponseException.class, () -> {
@@ -517,6 +517,15 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(listParticipantsResponse4.count())
                 .expectNext(1L)
                 .verifyComplete();
+
+        // Remove participant that does not exist
+        List<CommunicationIdentifier> participantsIdentifiersForNonExistentParticipant = Arrays
+            .asList(new CommunicationUserIdentifier("8:acs:nonExistentParticipant"));
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.removeParticipants(roomId, participantsIdentifiersForNonExistentParticipant).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
 
         // // Delete Room
         // Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
