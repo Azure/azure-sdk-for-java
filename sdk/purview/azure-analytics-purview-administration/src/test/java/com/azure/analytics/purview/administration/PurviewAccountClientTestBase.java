@@ -5,13 +5,18 @@ package com.azure.analytics.purview.administration;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PurviewAccountClientTestBase extends TestProxyTestBase {
+    private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -34,6 +39,30 @@ public class PurviewAccountClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+        if (!interceptorManager.isLiveMode()) {
+            // sanitize response body keys
+            customSanitizer.add(new TestProxySanitizer("$..clientId", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..principalId", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..tenantId", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..createdBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..friendlyName", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..managedResourceGroupName", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..lastModifiedBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..catalog", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..scan", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..guardian", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..resourceGroup", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..storageAccount", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("name", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            // sanitize subscription id
+            customSanitizer.add(new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID,
+                TestProxySanitizerType.BODY_REGEX));
+
+            interceptorManager.addSanitizers(customSanitizer);
         }
 
         builder.endpoint(getEndpoint());
@@ -59,6 +88,16 @@ public class PurviewAccountClientTestBase extends TestProxyTestBase {
 
         builder.endpoint(getEndpoint());
 
+        List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+        if (!interceptorManager.isLiveMode()) {
+            // sanitize response body keys
+            customSanitizer.add(new TestProxySanitizer("$..createdBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..friendlyName", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..lastModifiedBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..name", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(customSanitizer);
+        }
+
         return Objects.requireNonNull(builder);
     }
 
@@ -79,6 +118,21 @@ public class PurviewAccountClientTestBase extends TestProxyTestBase {
         }
 
         builder.endpoint(getEndpoint());
+
+        List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+        if (!interceptorManager.isLiveMode()) {
+            // sanitize response body keys
+            customSanitizer.add(new TestProxySanitizer("$..attributeValueIncludedIn", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..referenceName", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..parentCollectionName", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..attributeValueIncludes", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..fromRule", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..attributeValueIncludes", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..name", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$...attributeRules..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(customSanitizer);
+        }
+
         return Objects.requireNonNull(builder);
     }
 }
