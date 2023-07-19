@@ -127,8 +127,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public AccessToken authenticateWithConfidentialClient(TokenRequestContext request) {
-        SynchronousAccessor<ConfidentialClientApplication> confidentialClientInstance = getConfidentialClientInstance(request);
-        ConfidentialClientApplication confidentialClient =  confidentialClientApplicationAccessor.getValue();
+        ConfidentialClientApplication confidentialClient =  getConfidentialClientInstance(request).getValue();
         ClientCredentialParameters.ClientCredentialParametersBuilder builder =
             ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                 .tenant(IdentityUtil
@@ -169,8 +168,7 @@ public class IdentitySyncClient extends IdentityClientBase {
 
 
     public AccessToken authenticateWithConfidentialClientCache(TokenRequestContext request) {
-        SynchronousAccessor<ConfidentialClientApplication> confidentialClientInstance = getConfidentialClientInstance(request);
-        ConfidentialClientApplication confidentialClientApplication = confidentialClientInstance.getValue();
+        ConfidentialClientApplication confidentialClientApplication = getConfidentialClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(new HashSet<>(request.getScopes()))
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
 
@@ -205,8 +203,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     @SuppressWarnings("deprecation")
     public MsalToken authenticateWithPublicClientCache(TokenRequestContext request, IAccount account) {
-        SynchronousAccessor<PublicClientApplication> publicClientInstance = getPublicClientInstance(request);
-        PublicClientApplication pc =  publicClientInstance.getValue();
+        PublicClientApplication pc =  getPublicClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
             new HashSet<>(request.getScopes()));
 
@@ -265,8 +262,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public MsalToken authenticateWithUsernamePassword(TokenRequestContext request,
                                                             String username, String password) {
-        SynchronousAccessor<PublicClientApplication> publicClientInstance = getPublicClientInstance(request);
-        PublicClientApplication pc =  publicClientInstance.getValue();
+        PublicClientApplication pc =  getPublicClientInstance(request).getValue();
         UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder =
             buildUsernamePasswordFlowParameters(request, username, password);
         try {
@@ -291,8 +287,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public MsalToken authenticateWithDeviceCode(TokenRequestContext request,
                                                       Consumer<DeviceCodeInfo> deviceCodeConsumer) {
-        SynchronousAccessor<PublicClientApplication> publicClientInstance = getPublicClientInstance(request);
-        PublicClientApplication pc =  publicClientInstance.getValue();
+        PublicClientApplication pc =  getPublicClientInstance(request).getValue();
         DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder = buildDeviceCodeFlowParameters(request, deviceCodeConsumer);
 
         try {
@@ -333,8 +328,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = buildInteractiveRequestParameters(request, loginHint, redirectUri);
-        SynchronousAccessor<PublicClientApplication> publicClientInstance = getPublicClientInstance(request);
-        PublicClientApplication pc =  publicClientInstance.getValue();
+        PublicClientApplication pc =  getPublicClientInstance(request).getValue();
         try {
             return new MsalToken(pc.acquireToken(builder.build()).get());
         } catch (Exception e) {
@@ -422,8 +416,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public AccessToken authenticateWithOBO(TokenRequestContext request) {
-        SynchronousAccessor<ConfidentialClientApplication> confidentialClientInstance = getConfidentialClientInstance(request);
-        ConfidentialClientApplication cc = confidentialClientInstance.getValue();
+        ConfidentialClientApplication cc = getConfidentialClientInstance(request).getValue();
         try {
             return new MsalToken(cc.acquireToken(buildOBOFlowParameters(request)).get());
         } catch (Exception e) {
