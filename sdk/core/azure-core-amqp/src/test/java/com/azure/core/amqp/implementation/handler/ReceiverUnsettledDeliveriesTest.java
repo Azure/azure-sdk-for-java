@@ -81,13 +81,23 @@ public class ReceiverUnsettledDeliveriesTest {
     }
 
     @Test
-    public void sendDispositionErrorsForUntrackedDelivery() {
+    public void sendDispositionEmitsDeliveryNotOnLinkExceptionForUntrackedDelivery() {
         try (ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries()) {
             final UUID deliveryTag = UUID.randomUUID();
             final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
             StepVerifier.create(dispositionMono)
-                .verifyError(IllegalArgumentException.class);
+                .verifyError(DeliveryNotOnLinkException.class);
         }
+    }
+
+    @Test
+    public void sendDispositionEmitsDeliveryNotOnLinkExceptionIfClosed() {
+        ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries();
+        deliveries.close();
+        final UUID deliveryTag = UUID.randomUUID();
+        final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
+        StepVerifier.create(dispositionMono)
+            .verifyError(DeliveryNotOnLinkException.class);
     }
 
     @Test
