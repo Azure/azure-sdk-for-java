@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 
 public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_WEST_CENTRAL;
+    private Region region = Region.US_WEST2;
     private final String vmName = "javavm";
 
     @Override

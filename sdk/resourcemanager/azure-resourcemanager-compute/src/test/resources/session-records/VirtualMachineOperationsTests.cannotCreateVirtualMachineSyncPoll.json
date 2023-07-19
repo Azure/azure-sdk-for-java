@@ -1,29 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "HEAD",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg53318?api-version=2022-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg18396?api-version=2022-09-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "811cd1f3-2124-4825-b059-4f24436e8de0",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17.0.7; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a3198907-689c-4cb0-b2a8-6238e5e28449",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11869",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
       "StatusCode" : "404",
-      "Date" : "Wed, 19 Apr 2023 03:59:30 GMT",
-      "x-ms-correlation-request-id" : "b3373b82-e634-412f-8a84-13d98e1d1abf",
+      "Date" : "Fri, 21 Jul 2023 01:35:33 GMT",
+      "x-ms-correlation-request-id" : "a68dff4e-7d6d-44b5-8ab4-e062cc563be8",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
       "x-ms-failure-cause" : "gateway",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230419T035930Z:b3373b82-e634-412f-8a84-13d98e1d1abf",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230721T013534Z:a68dff4e-7d6d-44b5-8ab4-e062cc563be8",
       "Expires" : "-1",
       "Content-Length" : "0",
-      "x-ms-request-id" : "b3373b82-e634-412f-8a84-13d98e1d1abf"
+      "x-ms-request-id" : "a68dff4e-7d6d-44b5-8ab4-e062cc563be8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "javacsmrg53318", "javacsmrg281390", "nic3824069906c", "vnet56789745b9" ]
+  "variables" : [ "javacsmrg18396", "javacsmrg212060", "nic003055a7961", "vnet094862fc72" ]
 }

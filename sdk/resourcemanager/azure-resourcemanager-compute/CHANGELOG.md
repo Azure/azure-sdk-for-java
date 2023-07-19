@@ -2,13 +2,18 @@
 
 ## 2.29.0-beta.1 (Unreleased)
 
-### Features Added
+### Features
 
-### Breaking Changes
-
-### Bugs Fixed
+- Type of property `identifier` in `CommunityGalleryImageInner` and `CommunityGalleryImageProperties` changed to the class `CommunityGalleryImageIdentifier`.
+- Type of property `storageAccountType` in `GalleryTargetExtendedLocation` changed from `StorageAccountType` to `EdgeZoneStorageAccountType`.
+- Supported `fileFormat` property in `GrantAccessData` to used to specify the file format when making request for SAS on a VHDX file format snapshot.
+- Property `STANDARD_SSD_LRS` removed from class `StorageAccountType`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of `Microsoft.Compute/disks` to `2023-01-02`.
 
 ## 2.28.0 (2023-06-25)
 

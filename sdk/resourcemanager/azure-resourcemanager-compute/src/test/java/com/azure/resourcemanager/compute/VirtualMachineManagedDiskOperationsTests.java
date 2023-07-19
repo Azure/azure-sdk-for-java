@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -29,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_EAST;
+    private Region region = Region.US_WEST2;
     private KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
 
     @Override
@@ -603,6 +604,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCreateVirtualMachineWithHibernationEnabledUsingOsDisk() {
         String diskWithOSImage = prepareLinuxDiskWithOSImage();
 

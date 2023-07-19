@@ -78,7 +78,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
     private String rgName2 = "";
     private final Region region = Region.US_EAST;
-    private final Region regionProxPlacementGroup = Region.US_WEST;
+    private final Region regionProxPlacementGroup = Region.US_WEST2;
     private final Region regionProxPlacementGroup2 = Region.US_EAST;
     private final String vmName = "javavm";
     private final String proxGroupName = "testproxgroup1";
@@ -1198,6 +1198,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canHibernateVirtualMachine() {
         // preview feature
 

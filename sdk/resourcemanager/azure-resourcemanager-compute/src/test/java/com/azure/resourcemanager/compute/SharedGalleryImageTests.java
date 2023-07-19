@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class SharedGalleryImageTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST_CENTRAL;
+    private final Region region = Region.US_WEST2;
     private final String vmName = "javavm";
 
     @Override
@@ -51,13 +51,14 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
     @Test
     public void canCreateUpdateListGetDeleteGallery() {
+        final String galleryName = generateRandomResourceName("jsim", 15);
         // Create a gallery
         //
         Gallery javaGallery =
             this
                 .computeManager
                 .galleries()
-                .define("JavaImageGallery")
+                .define(galleryName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 // Optionals - Start
@@ -66,7 +67,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .create();
 
         Assertions.assertNotNull(javaGallery.uniqueName());
-        Assertions.assertEquals("JavaImageGallery", javaGallery.name());
+        Assertions.assertEquals(galleryName, javaGallery.name());
         Assertions.assertEquals("java's image gallery", javaGallery.description());
         Assertions.assertNotNull(javaGallery.provisioningState());
         //
@@ -100,7 +101,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -221,7 +222,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -268,7 +269,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         Assertions.assertNotNull(imageVersion);
         Assertions.assertNotNull(imageVersion.innerModel());
         Assertions.assertNotNull(imageVersion.availableRegions());
-        Assertions.assertEquals(2, imageVersion.availableRegions().size());
+        Assertions.assertEquals(1, imageVersion.availableRegions().size());
         boolean found = false;
         String expectedRegion = "westus2";
         for (TargetRegion targetRegion : imageVersion.availableRegions()) {
@@ -295,7 +296,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         PagedIterable<GalleryImageVersion> versions = galleryImage.listVersions();
 
         Assertions.assertNotNull(versions);
-        Assertions.assertTrue(TestUtilities.getSize(versions) > 0);
+        Assertions.assertTrue((versions.stream().count() > 0));
 
         //
         // Delete the image version
@@ -315,7 +316,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();

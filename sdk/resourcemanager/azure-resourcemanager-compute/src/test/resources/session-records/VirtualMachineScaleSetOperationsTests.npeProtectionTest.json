@@ -1,111 +1,84 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg46221?api-version=2022-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg84447?api-version=2022-09-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
-      "x-ms-client-request-id" : "d172a02f-071e-4a32-b4ae-91d6ec27954d",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17.0.7; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "bea9413b-d309-4d24-babe-124ba85d85d7",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1180",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 13 Jan 2023 02:23:15 GMT",
-      "x-ms-correlation-request-id" : "c5e86621-fab1-4211-b966-f19d826799de",
+      "Date" : "Fri, 21 Jul 2023 01:37:08 GMT",
+      "x-ms-correlation-request-id" : "234b5cef-3184-469c-b3f7-b940719c833c",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230113T022316Z:c5e86621-fab1-4211-b966-f19d826799de",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230721T013708Z:234b5cef-3184-469c-b3f7-b940719c833c",
       "Expires" : "-1",
       "Content-Length" : "230",
-      "x-ms-request-id" : "c5e86621-fab1-4211-b966-f19d826799de",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg46221\",\"name\":\"javacsmrg46221\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus2euap\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-request-id" : "234b5cef-3184-469c-b3f7-b940719c833c",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg84447\",\"name\":\"javacsmrg84447\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus2euap\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg46221/providers/Microsoft.Compute/virtualMachineScaleSets/vmss34569?api-version=2023-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg84447/providers/Microsoft.Compute/virtualMachineScaleSets/vmss30342?api-version=2023-03-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
-      "x-ms-client-request-id" : "d7f587c1-7e4a-412c-bafd-a625249b21a9",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "X-Content-Type-Options" : "nosniff",
-      "Connection" : "close",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "503",
-      "Date" : "Fri, 13 Jan 2023 02:23:42 GMT",
-      "x-ms-correlation-request-id" : "4000ebec-7644-4ae0-9e5a-1d97abd0fc0e",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-failure-cause" : "gateway",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230113T022342Z:4000ebec-7644-4ae0-9e5a-1d97abd0fc0e",
-      "Expires" : "-1",
-      "Content-Length" : "294",
-      "x-ms-request-id" : "4000ebec-7644-4ae0-9e5a-1d97abd0fc0e",
-      "Body" : "{\"error\":{\"code\":\"ServerTimeout\",\"message\":\"The request timed out. Diagnostic information: timestamp '20230113T022342Z', subscription id '00000000-0000-0000-0000-000000000000', tracking id '4000ebec-7644-4ae0-9e5a-1d97abd0fc0e', request correlation id '4000ebec-7644-4ae0-9e5a-1d97abd0fc0e'.\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg46221/providers/Microsoft.Compute/virtualMachineScaleSets/vmss34569?api-version=2023-03-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
-      "x-ms-client-request-id" : "d7f587c1-7e4a-412c-bafd-a625249b21a9",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.29.0-beta.1 (17.0.7; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "af119f50-8f0f-4c4e-98d1-55434bc9544a",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1190",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 13 Jan 2023 02:23:54 GMT",
-      "x-ms-correlation-request-id" : "dbbc9858-61ee-4c05-8c90-f755da214110",
+      "Date" : "Fri, 21 Jul 2023 01:37:14 GMT",
+      "x-ms-correlation-request-id" : "bf4e88cb-4d07-464d-be73-eee4e9edb232",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230113T022354Z:dbbc9858-61ee-4c05-8c90-f755da214110",
-      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateVMScaleSet3Min;57,Microsoft.Compute/CreateVMScaleSet30Min;297",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230721T013715Z:bf4e88cb-4d07-464d-be73-eee4e9edb232",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateVMScaleSetSubscriptionMaximum;124,Microsoft.Compute/CreateVMScaleSetResource;3",
       "Expires" : "-1",
       "Content-Length" : "570",
-      "x-ms-request-id" : "e33b8d6e-7400-4583-b0f7-e00a095b2e81",
-      "Body" : "{\r\n  \"name\": \"vmss34569\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg46221/providers/Microsoft.Compute/virtualMachineScaleSets/vmss34569\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets\",\r\n  \"location\": \"eastus2euap\",\r\n  \"tags\": {\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"properties\": {\r\n    \"orchestrationMode\": \"Flexible\",\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"uniqueId\": \"6dd32dfc-69b8-4c15-9c1d-49312d4249bf\",\r\n    \"platformFaultDomainCount\": 1\r\n  }\r\n}",
-      "x-ms-client-request-id" : "d7f587c1-7e4a-412c-bafd-a625249b21a9",
+      "x-ms-request-id" : "cb3edd40-5c4c-4cda-99e0-0c1cb606a0ab",
+      "Body" : "{\r\n  \"name\": \"vmss30342\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg84447/providers/Microsoft.Compute/virtualMachineScaleSets/vmss30342\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets\",\r\n  \"location\": \"eastus2euap\",\r\n  \"tags\": {\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"properties\": {\r\n    \"orchestrationMode\": \"Flexible\",\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"uniqueId\": \"5f65d97f-27c6-4d45-8054-5d0554a46f90\",\r\n    \"platformFaultDomainCount\": 1\r\n  }\r\n}",
+      "x-ms-client-request-id" : "af119f50-8f0f-4c4e-98d1-55434bc9544a",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg46221?api-version=2022-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg84447?api-version=2022-09-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
-      "x-ms-client-request-id" : "cde66cd5-649e-4e22-ae97-540d9d18a65b",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.29.0-beta.1 (17.0.7; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6fd06a08-2bb2-48d8-a1f8-dda0c743470f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14996",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "StatusCode" : "202",
-      "Date" : "Fri, 13 Jan 2023 02:23:59 GMT",
-      "x-ms-correlation-request-id" : "329cb778-34bf-4170-8a36-d467abd1cc6f",
+      "Date" : "Fri, 21 Jul 2023 01:37:17 GMT",
+      "x-ms-correlation-request-id" : "10f62cae-3942-465b-a0d6-58fdf22526fa",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Retry-After" : "0",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230113T022359Z:329cb778-34bf-4170-8a36-d467abd1cc6f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230721T013718Z:10f62cae-3942-465b-a0d6-58fdf22526fa",
       "Expires" : "-1",
       "Content-Length" : "0",
-      "x-ms-request-id" : "329cb778-34bf-4170-8a36-d467abd1cc6f",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkc0NjIyMS1FQVNUVVMyRVVBUCIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMmV1YXAifQ?api-version=2021-01-01"
+      "x-ms-request-id" : "10f62cae-3942-465b-a0d6-58fdf22526fa",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkc4NDQ0Ny1FQVNUVVMyRVVBUCIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMmV1YXAifQ?api-version=2022-09-01"
     },
     "Exception" : null
   } ],
-  "variables" : [ "javacsmrg46221", "vmss34569" ]
+  "variables" : [ "javacsmrg84447", "vmss30342" ]
 }
