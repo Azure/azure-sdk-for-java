@@ -8,13 +8,21 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricInner;
-import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationPatchableProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabric;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricOperationalState;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatchParameters;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatchablePropertiesTerminalServerConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerPatchableProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +65,24 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return this.innerModel().networkFabricSku();
     }
 
-    public int rackCount() {
+    public String fabricVersion() {
+        return this.innerModel().fabricVersion();
+    }
+
+    public List<String> routerIds() {
+        List<String> inner = this.innerModel().routerIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String networkFabricControllerId() {
+        return this.innerModel().networkFabricControllerId();
+    }
+
+    public Integer rackCount() {
         return this.innerModel().rackCount();
     }
 
@@ -73,32 +98,16 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return this.innerModel().ipv6Prefix();
     }
 
-    public String routerId() {
-        return this.innerModel().routerId();
-    }
-
-    public int fabricAsn() {
+    public long fabricAsn() {
         return this.innerModel().fabricAsn();
-    }
-
-    public String networkFabricControllerId() {
-        return this.innerModel().networkFabricControllerId();
     }
 
     public TerminalServerConfiguration terminalServerConfiguration() {
         return this.innerModel().terminalServerConfiguration();
     }
 
-    public ManagementNetworkConfiguration managementNetworkConfiguration() {
+    public ManagementNetworkConfigurationProperties managementNetworkConfiguration() {
         return this.innerModel().managementNetworkConfiguration();
-    }
-
-    public NetworkFabricOperationalState operationalState() {
-        return this.innerModel().operationalState();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public List<String> racks() {
@@ -126,6 +135,18 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
     }
 
     public String annotation() {
@@ -156,7 +177,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
 
     private String networkFabricName;
 
-    private NetworkFabricPatchParameters updateBody;
+    private NetworkFabricPatch updateBody;
 
     public NetworkFabricImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -189,7 +210,7 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
     }
 
     public NetworkFabricImpl update() {
-        this.updateBody = new NetworkFabricPatchParameters();
+        this.updateBody = new NetworkFabricPatch();
         return this;
     }
 
@@ -240,20 +261,90 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         return this;
     }
 
-    public void provision() {
-        serviceManager.networkFabrics().provision(resourceGroupName, networkFabricName);
+    public CommonPostActionResponseForDeviceUpdate provision() {
+        return serviceManager.networkFabrics().provision(resourceGroupName, networkFabricName);
     }
 
-    public void provision(Context context) {
-        serviceManager.networkFabrics().provision(resourceGroupName, networkFabricName, context);
+    public CommonPostActionResponseForDeviceUpdate provision(Context context) {
+        return serviceManager.networkFabrics().provision(resourceGroupName, networkFabricName, context);
     }
 
-    public void deprovision() {
-        serviceManager.networkFabrics().deprovision(resourceGroupName, networkFabricName);
+    public CommonPostActionResponseForDeviceUpdate deprovision() {
+        return serviceManager.networkFabrics().deprovision(resourceGroupName, networkFabricName);
     }
 
-    public void deprovision(Context context) {
-        serviceManager.networkFabrics().deprovision(resourceGroupName, networkFabricName, context);
+    public CommonPostActionResponseForDeviceUpdate deprovision(Context context) {
+        return serviceManager.networkFabrics().deprovision(resourceGroupName, networkFabricName, context);
+    }
+
+    public CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body) {
+        return serviceManager.networkFabrics().upgrade(resourceGroupName, networkFabricName, body);
+    }
+
+    public CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body, Context context) {
+        return serviceManager.networkFabrics().upgrade(resourceGroupName, networkFabricName, body, context);
+    }
+
+    public CommonPostActionResponseForStateUpdate refreshConfiguration() {
+        return serviceManager.networkFabrics().refreshConfiguration(resourceGroupName, networkFabricName);
+    }
+
+    public CommonPostActionResponseForStateUpdate refreshConfiguration(Context context) {
+        return serviceManager.networkFabrics().refreshConfiguration(resourceGroupName, networkFabricName, context);
+    }
+
+    public CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
+        UpdateAdministrativeState body) {
+        return serviceManager
+            .networkFabrics()
+            .updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
+    }
+
+    public CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
+            .networkFabrics()
+            .updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body, context);
+    }
+
+    public CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
+        UpdateAdministrativeState body) {
+        return serviceManager
+            .networkFabrics()
+            .updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
+    }
+
+    public CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
+            .networkFabrics()
+            .updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body, context);
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body) {
+        return serviceManager.networkFabrics().validateConfiguration(resourceGroupName, networkFabricName, body);
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body, Context context) {
+        return serviceManager
+            .networkFabrics()
+            .validateConfiguration(resourceGroupName, networkFabricName, body, context);
+    }
+
+    public ValidateConfigurationResponse getTopology() {
+        return serviceManager.networkFabrics().getTopology(resourceGroupName, networkFabricName);
+    }
+
+    public ValidateConfigurationResponse getTopology(Context context) {
+        return serviceManager.networkFabrics().getTopology(resourceGroupName, networkFabricName, context);
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration() {
+        return serviceManager.networkFabrics().commitConfiguration(resourceGroupName, networkFabricName);
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(Context context) {
+        return serviceManager.networkFabrics().commitConfiguration(resourceGroupName, networkFabricName, context);
     }
 
     public NetworkFabricImpl withRegion(Region location) {
@@ -263,6 +354,47 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
 
     public NetworkFabricImpl withRegion(String location) {
         this.innerModel().withLocation(location);
+        return this;
+    }
+
+    public NetworkFabricImpl withNetworkFabricSku(String networkFabricSku) {
+        this.innerModel().withNetworkFabricSku(networkFabricSku);
+        return this;
+    }
+
+    public NetworkFabricImpl withNetworkFabricControllerId(String networkFabricControllerId) {
+        this.innerModel().withNetworkFabricControllerId(networkFabricControllerId);
+        return this;
+    }
+
+    public NetworkFabricImpl withServerCountPerRack(int serverCountPerRack) {
+        this.innerModel().withServerCountPerRack(serverCountPerRack);
+        return this;
+    }
+
+    public NetworkFabricImpl withIpv4Prefix(String ipv4Prefix) {
+        if (isInCreateMode()) {
+            this.innerModel().withIpv4Prefix(ipv4Prefix);
+            return this;
+        } else {
+            this.updateBody.withIpv4Prefix(ipv4Prefix);
+            return this;
+        }
+    }
+
+    public NetworkFabricImpl withFabricAsn(long fabricAsn) {
+        this.innerModel().withFabricAsn(fabricAsn);
+        return this;
+    }
+
+    public NetworkFabricImpl withTerminalServerConfiguration(TerminalServerConfiguration terminalServerConfiguration) {
+        this.innerModel().withTerminalServerConfiguration(terminalServerConfiguration);
+        return this;
+    }
+
+    public NetworkFabricImpl withManagementNetworkConfiguration(
+        ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
+        this.innerModel().withManagementNetworkConfiguration(managementNetworkConfiguration);
         return this;
     }
 
@@ -276,50 +408,24 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         }
     }
 
-    public NetworkFabricImpl withNetworkFabricSku(String networkFabricSku) {
-        this.innerModel().withNetworkFabricSku(networkFabricSku);
-        return this;
-    }
-
-    public NetworkFabricImpl withRackCount(int rackCount) {
-        this.innerModel().withRackCount(rackCount);
-        return this;
-    }
-
-    public NetworkFabricImpl withServerCountPerRack(int serverCountPerRack) {
-        this.innerModel().withServerCountPerRack(serverCountPerRack);
-        return this;
-    }
-
-    public NetworkFabricImpl withIpv4Prefix(String ipv4Prefix) {
-        this.innerModel().withIpv4Prefix(ipv4Prefix);
-        return this;
+    public NetworkFabricImpl withRackCount(Integer rackCount) {
+        if (isInCreateMode()) {
+            this.innerModel().withRackCount(rackCount);
+            return this;
+        } else {
+            this.updateBody.withRackCount(rackCount);
+            return this;
+        }
     }
 
     public NetworkFabricImpl withIpv6Prefix(String ipv6Prefix) {
-        this.innerModel().withIpv6Prefix(ipv6Prefix);
-        return this;
-    }
-
-    public NetworkFabricImpl withFabricAsn(int fabricAsn) {
-        this.innerModel().withFabricAsn(fabricAsn);
-        return this;
-    }
-
-    public NetworkFabricImpl withNetworkFabricControllerId(String networkFabricControllerId) {
-        this.innerModel().withNetworkFabricControllerId(networkFabricControllerId);
-        return this;
-    }
-
-    public NetworkFabricImpl withTerminalServerConfiguration(TerminalServerConfiguration terminalServerConfiguration) {
-        this.innerModel().withTerminalServerConfiguration(terminalServerConfiguration);
-        return this;
-    }
-
-    public NetworkFabricImpl withManagementNetworkConfiguration(
-        ManagementNetworkConfiguration managementNetworkConfiguration) {
-        this.innerModel().withManagementNetworkConfiguration(managementNetworkConfiguration);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIpv6Prefix(ipv6Prefix);
+            return this;
+        } else {
+            this.updateBody.withIpv6Prefix(ipv6Prefix);
+            return this;
+        }
     }
 
     public NetworkFabricImpl withAnnotation(String annotation) {
@@ -332,9 +438,25 @@ public final class NetworkFabricImpl implements NetworkFabric, NetworkFabric.Def
         }
     }
 
+    public NetworkFabricImpl withServerCountPerRack(Integer serverCountPerRack) {
+        this.updateBody.withServerCountPerRack(serverCountPerRack);
+        return this;
+    }
+
+    public NetworkFabricImpl withFabricAsn(Long fabricAsn) {
+        this.updateBody.withFabricAsn(fabricAsn);
+        return this;
+    }
+
     public NetworkFabricImpl withTerminalServerConfiguration(
-        TerminalServerPatchableProperties terminalServerConfiguration) {
+        NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration) {
         this.updateBody.withTerminalServerConfiguration(terminalServerConfiguration);
+        return this;
+    }
+
+    public NetworkFabricImpl withManagementNetworkConfiguration(
+        ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration) {
+        this.updateBody.withManagementNetworkConfiguration(managementNetworkConfiguration);
         return this;
     }
 

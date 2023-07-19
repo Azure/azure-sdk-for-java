@@ -62,15 +62,15 @@ public final class PricingTier {
 
     /** V3 Premium pricing tier with a small size. */
     public static final PricingTier PREMIUM_P1V3 =
-        COLLECTION.addValue(new PricingTier("PremiumV3", "P1v3"));
+        COLLECTION.addValue(new PricingTier(SkuName.PREMIUM_V3.toString(), "P1v3"));
 
     /** V3 Premium pricing tier with a medium size. */
     public static final PricingTier PREMIUM_P2V3 =
-        COLLECTION.addValue(new PricingTier("PremiumV3", "P2v3"));
+        COLLECTION.addValue(new PricingTier(SkuName.PREMIUM_V3.toString(), "P2v3"));
 
     /** V3 Premium pricing tier with a large size. */
     public static final PricingTier PREMIUM_P3V3 =
-        COLLECTION.addValue(new PricingTier("PremiumV3", "P3v3"));
+        COLLECTION.addValue(new PricingTier(SkuName.PREMIUM_V3.toString(), "P3v3"));
 
     /** Free pricing tier. This does not work with Linux web apps, host name bindings, and SSL bindings. */
     public static final PricingTier FREE_F1 =

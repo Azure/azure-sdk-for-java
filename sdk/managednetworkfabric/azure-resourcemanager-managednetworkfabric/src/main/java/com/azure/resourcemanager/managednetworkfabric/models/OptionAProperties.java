@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peering optionA properties. */
 @Fluent
-public final class OptionAProperties extends Layer3IpPrefixProperties {
+public class OptionAProperties {
     /*
      * MTU to use for option A peering.
      */
@@ -17,7 +17,7 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
     private Integer mtu;
 
     /*
-     * Vlan identifier. Example : 501
+     * Vlan Id.Example : 501
      */
     @JsonProperty(value = "vlanId")
     private Integer vlanId;
@@ -26,13 +26,13 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
      * Peer ASN number.Example : 28
      */
     @JsonProperty(value = "peerASN")
-    private Integer peerAsn;
+    private Long peerAsn;
 
     /*
      * BFD Configuration properties.
      */
     @JsonProperty(value = "bfdConfiguration")
-    private FabricBfdConfiguration bfdConfiguration;
+    private BfdConfiguration bfdConfiguration;
 
     /** Creates an instance of OptionAProperties class. */
     public OptionAProperties() {
@@ -59,7 +59,7 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
     }
 
     /**
-     * Get the vlanId property: Vlan identifier. Example : 501.
+     * Get the vlanId property: Vlan Id.Example : 501.
      *
      * @return the vlanId value.
      */
@@ -68,7 +68,7 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
     }
 
     /**
-     * Set the vlanId property: Vlan identifier. Example : 501.
+     * Set the vlanId property: Vlan Id.Example : 501.
      *
      * @param vlanId the vlanId value to set.
      * @return the OptionAProperties object itself.
@@ -83,7 +83,7 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
      *
      * @return the peerAsn value.
      */
-    public Integer peerAsn() {
+    public Long peerAsn() {
         return this.peerAsn;
     }
 
@@ -93,7 +93,7 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
      * @param peerAsn the peerAsn value to set.
      * @return the OptionAProperties object itself.
      */
-    public OptionAProperties withPeerAsn(Integer peerAsn) {
+    public OptionAProperties withPeerAsn(Long peerAsn) {
         this.peerAsn = peerAsn;
         return this;
     }
@@ -103,7 +103,7 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
      *
      * @return the bfdConfiguration value.
      */
-    public FabricBfdConfiguration bfdConfiguration() {
+    public BfdConfiguration bfdConfiguration() {
         return this.bfdConfiguration;
     }
 
@@ -113,36 +113,8 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
      * @param bfdConfiguration the bfdConfiguration value to set.
      * @return the OptionAProperties object itself.
      */
-    public OptionAProperties withBfdConfiguration(FabricBfdConfiguration bfdConfiguration) {
+    public OptionAProperties withBfdConfiguration(BfdConfiguration bfdConfiguration) {
         this.bfdConfiguration = bfdConfiguration;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public OptionAProperties withPrimaryIpv4Prefix(String primaryIpv4Prefix) {
-        super.withPrimaryIpv4Prefix(primaryIpv4Prefix);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public OptionAProperties withPrimaryIpv6Prefix(String primaryIpv6Prefix) {
-        super.withPrimaryIpv6Prefix(primaryIpv6Prefix);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public OptionAProperties withSecondaryIpv4Prefix(String secondaryIpv4Prefix) {
-        super.withSecondaryIpv4Prefix(secondaryIpv4Prefix);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public OptionAProperties withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
-        super.withSecondaryIpv6Prefix(secondaryIpv6Prefix);
         return this;
     }
 
@@ -151,9 +123,7 @@ public final class OptionAProperties extends Layer3IpPrefixProperties {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (bfdConfiguration() != null) {
             bfdConfiguration().validate();
         }

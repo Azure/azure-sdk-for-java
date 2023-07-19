@@ -4,17 +4,18 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelOperator;
-import com.azure.communication.jobrouter.models.QueueSelector;
+import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueSelector;
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.StaticQueueSelector;
-import com.azure.communication.jobrouter.models.StaticRule;
+import com.azure.communication.jobrouter.models.StaticRouterRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelector;
-import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
-import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,7 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClassificationPolicyLiveTests extends JobRouterTestBase {
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -36,7 +37,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-Queue", JAVA_LIVE_TESTS);
-        JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TESTS);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -45,10 +46,10 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create queue selectors.
          */
         StaticQueueSelector staticQueueSelector = new StaticQueueSelector()
-            .setLabelSelector(new QueueSelector()
+            .setQueueSelector(new RouterQueueSelector()
                 .setKey("queueId")
                 .setLabelOperator(LabelOperator.EQUAL)
-                .setValue(queueId));
+                .setValue(new LabelValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -61,10 +62,10 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create worker selectors.
          */
         StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector()
-            .setLabelSelector(new WorkerSelector()
+            .setWorkerSelector(new RouterWorkerSelector()
                 .setKey("key")
                 .setLabelOperator(LabelOperator.EQUAL)
-                .setValue("value"));
+                .setValue(new LabelValue("value")));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {
@@ -78,7 +79,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
             classificationPolicyId)
             .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRule().setValue(1))
+            .setPrioritizationRule(new StaticRouterRule().setValue(1))
             .setWorkerSelectors(workerSelectors)
             .setQueueSelectors(queueSelectors)
             .setFallbackQueueId(jobQueue.getId());

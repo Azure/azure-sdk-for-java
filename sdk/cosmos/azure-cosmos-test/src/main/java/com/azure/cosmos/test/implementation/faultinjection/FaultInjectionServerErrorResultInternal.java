@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
@@ -131,6 +132,19 @@ public class FaultInjectionServerErrorResultInternal {
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE));
                 cosmosException = new PartitionKeyRangeIsSplittingException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case SERVICE_UNAVAILABLE:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
+                cosmosException = new ServiceUnavailableException(null, null, null, HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+                break;
+
+            case STALED_ADDRESSES_SERVER_GONE:
+                GoneException staledAddressesException =
+                    new GoneException(this.getErrorMessage(RMResources.Gone), HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+                staledAddressesException.setIsBasedOn410ResponseFromService();
+                cosmosException = staledAddressesException;
                 break;
 
             default:

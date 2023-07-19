@@ -3,12 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

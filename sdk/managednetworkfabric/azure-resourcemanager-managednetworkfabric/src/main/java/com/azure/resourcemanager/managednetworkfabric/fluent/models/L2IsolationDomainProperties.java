@@ -6,59 +6,57 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** L2IsolationDomainProperties define the resource properties. */
+/** L2Isolation Domain Properties defines the properties of the resource. */
 @Fluent
 public final class L2IsolationDomainProperties extends AnnotationResource {
     /*
-     * Network Fabric ARM resource id.
+     * ARM Resource ID of the Network Fabric.
      */
     @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
-     * vlanId. Example: 501.
+     * Vlan Identifier of the Network Fabric. Example: 501.
      */
     @JsonProperty(value = "vlanId", required = true)
     private int vlanId;
 
     /*
-     * maximum transmission unit. Default value is 1500.
+     * Maximum transmission unit. Default value is 1500.
      */
     @JsonProperty(value = "mtu")
     private Integer mtu;
 
     /*
-     * List of resources the L2 Isolation Domain is disabled on. Can be either entire NetworkFabric or NetworkRack.
+     * Configuration state of the resource.
      */
-    @JsonProperty(value = "disabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> disabledOnResources;
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
 
     /*
-     * state. Example: Enabled | Disabled. It indicates administrative state of the isolationDomain, whether it is
-     * enabled or disabled. If enabled, the configuration is applied on the devices. If disabled, the configuration is
-     * removed from the devices
-     */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
-    private EnabledDisabledState administrativeState;
-
-    /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
 
     /** Creates an instance of L2IsolationDomainProperties class. */
     public L2IsolationDomainProperties() {
     }
 
     /**
-     * Get the networkFabricId property: Network Fabric ARM resource id.
+     * Get the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @return the networkFabricId value.
      */
@@ -67,7 +65,7 @@ public final class L2IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Set the networkFabricId property: Network Fabric ARM resource id.
+     * Set the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @param networkFabricId the networkFabricId value to set.
      * @return the L2IsolationDomainProperties object itself.
@@ -78,7 +76,7 @@ public final class L2IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Get the vlanId property: vlanId. Example: 501.
+     * Get the vlanId property: Vlan Identifier of the Network Fabric. Example: 501.
      *
      * @return the vlanId value.
      */
@@ -87,7 +85,7 @@ public final class L2IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Set the vlanId property: vlanId. Example: 501.
+     * Set the vlanId property: Vlan Identifier of the Network Fabric. Example: 501.
      *
      * @param vlanId the vlanId value to set.
      * @return the L2IsolationDomainProperties object itself.
@@ -98,7 +96,7 @@ public final class L2IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Get the mtu property: maximum transmission unit. Default value is 1500.
+     * Get the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @return the mtu value.
      */
@@ -107,7 +105,7 @@ public final class L2IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Set the mtu property: maximum transmission unit. Default value is 1500.
+     * Set the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @param mtu the mtu value to set.
      * @return the L2IsolationDomainProperties object itself.
@@ -118,33 +116,30 @@ public final class L2IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Get the disabledOnResources property: List of resources the L2 Isolation Domain is disabled on. Can be either
-     * entire NetworkFabric or NetworkRack.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the disabledOnResources value.
+     * @return the configurationState value.
      */
-    public List<String> disabledOnResources() {
-        return this.disabledOnResources;
+    public ConfigurationState configurationState() {
+        return this.configurationState;
     }
 
     /**
-     * Get the administrativeState property: state. Example: Enabled | Disabled. It indicates administrative state of
-     * the isolationDomain, whether it is enabled or disabled. If enabled, the configuration is applied on the devices.
-     * If disabled, the configuration is removed from the devices.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.administrativeState;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
     }
 
     /** {@inheritDoc} */

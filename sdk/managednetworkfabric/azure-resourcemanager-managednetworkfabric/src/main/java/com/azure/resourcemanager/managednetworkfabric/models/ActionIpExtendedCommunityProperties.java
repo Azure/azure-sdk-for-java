@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ActionIpExtendedCommunityProperties extends IpExtendedCommunityAddOperationProperties {
     /*
-     * IP Extended Community Id list properties.
+     * List of IP Extended Community IDs.
      */
     @JsonProperty(value = "delete")
     private IpExtendedCommunityIdList delete;
 
     /*
-     * IP Extended Community Id list properties.
+     * List of IP Extended Community IDs.
      */
     @JsonProperty(value = "set")
     private IpExtendedCommunityIdList set;
@@ -27,7 +27,7 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
     }
 
     /**
-     * Get the delete property: IP Extended Community Id list properties.
+     * Get the delete property: List of IP Extended Community IDs.
      *
      * @return the delete value.
      */
@@ -36,7 +36,7 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
     }
 
     /**
-     * Set the delete property: IP Extended Community Id list properties.
+     * Set the delete property: List of IP Extended Community IDs.
      *
      * @param delete the delete value to set.
      * @return the ActionIpExtendedCommunityProperties object itself.
@@ -47,7 +47,7 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
     }
 
     /**
-     * Get the set property: IP Extended Community Id list properties.
+     * Get the set property: List of IP Extended Community IDs.
      *
      * @return the set value.
      */
@@ -56,7 +56,7 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
     }
 
     /**
-     * Set the set property: IP Extended Community Id list properties.
+     * Set the set property: List of IP Extended Community IDs.
      *
      * @param set the set value to set.
      * @return the ActionIpExtendedCommunityProperties object itself.

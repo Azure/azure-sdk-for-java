@@ -16,27 +16,27 @@ public final class NetworkDevicePatchParametersTests {
         NetworkDevicePatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"hostName\":\"aojfm\",\"serialNumber\":\"cotmr\",\"annotation\":\"irctymoxoftpipiw\"},\"tags\":{\"a\":\"uh\"}}")
+                    "{\"properties\":{\"hostName\":\"awkikcdgfh\",\"serialNumber\":\"sd\",\"annotation\":\"ey\"},\"tags\":{\"gxsur\":\"dedecfiwh\",\"bgullc\":\"jqrshz\"}}")
                 .toObject(NetworkDevicePatchParameters.class);
-        Assertions.assertEquals("uh", model.tags().get("a"));
-        Assertions.assertEquals("aojfm", model.hostname());
-        Assertions.assertEquals("cotmr", model.serialNumber());
-        Assertions.assertEquals("irctymoxoftpipiw", model.annotation());
+        Assertions.assertEquals("dedecfiwh", model.tags().get("gxsur"));
+        Assertions.assertEquals("awkikcdgfh", model.hostname());
+        Assertions.assertEquals("sd", model.serialNumber());
+        Assertions.assertEquals("ey", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkDevicePatchParameters model =
             new NetworkDevicePatchParameters()
-                .withTags(mapOf("a", "uh"))
-                .withHostname("aojfm")
-                .withSerialNumber("cotmr")
-                .withAnnotation("irctymoxoftpipiw");
+                .withTags(mapOf("gxsur", "dedecfiwh", "bgullc", "jqrshz"))
+                .withHostname("awkikcdgfh")
+                .withSerialNumber("sd")
+                .withAnnotation("ey");
         model = BinaryData.fromObject(model).toObject(NetworkDevicePatchParameters.class);
-        Assertions.assertEquals("uh", model.tags().get("a"));
-        Assertions.assertEquals("aojfm", model.hostname());
-        Assertions.assertEquals("cotmr", model.serialNumber());
-        Assertions.assertEquals("irctymoxoftpipiw", model.annotation());
+        Assertions.assertEquals("dedecfiwh", model.tags().get("gxsur"));
+        Assertions.assertEquals("awkikcdgfh", model.hostname());
+        Assertions.assertEquals("sd", model.serialNumber());
+        Assertions.assertEquals("ey", model.annotation());
     }
 
     @SuppressWarnings("unchecked")

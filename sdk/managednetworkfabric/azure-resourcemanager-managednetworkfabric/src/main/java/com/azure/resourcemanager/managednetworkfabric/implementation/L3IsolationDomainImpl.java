@@ -8,18 +8,20 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainInner;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomain;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatch;
-import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class L3IsolationDomainImpl
@@ -61,30 +63,16 @@ public final class L3IsolationDomainImpl
         return this.innerModel().networkFabricId();
     }
 
-    public List<String> disabledOnResources() {
-        List<String> inner = this.innerModel().disabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public EnabledDisabledState administrativeState() {
-        return this.innerModel().administrativeState();
-    }
-
-    public List<String> optionBDisabledOnResources() {
-        List<String> inner = this.innerModel().optionBDisabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
     }
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
     }
 
     public RedistributeConnectedSubnets redistributeConnectedSubnets() {
@@ -99,11 +87,7 @@ public final class L3IsolationDomainImpl
         return this.innerModel().aggregateRouteConfiguration();
     }
 
-    public String description() {
-        return this.innerModel().description();
-    }
-
-    public L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
+    public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
         return this.innerModel().connectedSubnetRoutePolicy();
     }
 
@@ -219,42 +203,37 @@ public final class L3IsolationDomainImpl
         return this;
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager.l3IsolationDomains().updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body);
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager
+            .l3IsolationDomains()
+            .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body);
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
             .l3IsolationDomains()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context);
     }
 
-    public void updateOptionBAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
+    public ValidateConfigurationResponse validateConfiguration() {
+        return serviceManager.l3IsolationDomains().validateConfiguration(resourceGroupName, l3IsolationDomainName);
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(Context context) {
+        return serviceManager
             .l3IsolationDomains()
-            .updateOptionBAdministrativeState(resourceGroupName, l3IsolationDomainName, body);
+            .validateConfiguration(resourceGroupName, l3IsolationDomainName, context);
     }
 
-    public void updateOptionBAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate commitConfiguration() {
+        return serviceManager.l3IsolationDomains().commitConfiguration(resourceGroupName, l3IsolationDomainName);
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(Context context) {
+        return serviceManager
             .l3IsolationDomains()
-            .updateOptionBAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context);
-    }
-
-    public void clearArpTable(EnableDisableOnResources body) {
-        serviceManager.l3IsolationDomains().clearArpTable(resourceGroupName, l3IsolationDomainName, body);
-    }
-
-    public void clearArpTable(EnableDisableOnResources body, Context context) {
-        serviceManager.l3IsolationDomains().clearArpTable(resourceGroupName, l3IsolationDomainName, body, context);
-    }
-
-    public void clearNeighborTable(EnableDisableOnResources body) {
-        serviceManager.l3IsolationDomains().clearNeighborTable(resourceGroupName, l3IsolationDomainName, body);
-    }
-
-    public void clearNeighborTable(EnableDisableOnResources body, Context context) {
-        serviceManager.l3IsolationDomains().clearNeighborTable(resourceGroupName, l3IsolationDomainName, body, context);
+            .commitConfiguration(resourceGroupName, l3IsolationDomainName, context);
     }
 
     public L3IsolationDomainImpl withRegion(Region location) {
@@ -267,6 +246,11 @@ public final class L3IsolationDomainImpl
         return this;
     }
 
+    public L3IsolationDomainImpl withNetworkFabricId(String networkFabricId) {
+        this.innerModel().withNetworkFabricId(networkFabricId);
+        return this;
+    }
+
     public L3IsolationDomainImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -275,11 +259,6 @@ public final class L3IsolationDomainImpl
             this.updateBody.withTags(tags);
             return this;
         }
-    }
-
-    public L3IsolationDomainImpl withNetworkFabricId(String networkFabricId) {
-        this.innerModel().withNetworkFabricId(networkFabricId);
-        return this;
     }
 
     public L3IsolationDomainImpl withRedistributeConnectedSubnets(
@@ -314,18 +293,7 @@ public final class L3IsolationDomainImpl
         }
     }
 
-    public L3IsolationDomainImpl withDescription(String description) {
-        if (isInCreateMode()) {
-            this.innerModel().withDescription(description);
-            return this;
-        } else {
-            this.updateBody.withDescription(description);
-            return this;
-        }
-    }
-
-    public L3IsolationDomainImpl withConnectedSubnetRoutePolicy(
-        L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+    public L3IsolationDomainImpl withConnectedSubnetRoutePolicy(ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         if (isInCreateMode()) {
             this.innerModel().withConnectedSubnetRoutePolicy(connectedSubnetRoutePolicy);
             return this;
@@ -336,8 +304,13 @@ public final class L3IsolationDomainImpl
     }
 
     public L3IsolationDomainImpl withAnnotation(String annotation) {
-        this.innerModel().withAnnotation(annotation);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAnnotation(annotation);
+            return this;
+        } else {
+            this.updateBody.withAnnotation(annotation);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

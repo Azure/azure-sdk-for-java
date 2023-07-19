@@ -83,6 +83,12 @@ public final class FaultInjectionServerErrorResultBuilder {
             throw new IllegalArgumentException("Argument 'delay' is required for server error type " + this.serverErrorType);
         }
 
+        if (this.serverErrorType == FaultInjectionServerErrorType.STALED_ADDRESSES_SERVER_GONE) {
+            // for staled addresses errors, the error can only be cleared if forceRefresh address refresh request happened
+            // so default the times to max value
+            this.times = Integer.MAX_VALUE;
+        }
+
         return new FaultInjectionServerErrorResult(
             this.serverErrorType,
             this.times,
