@@ -4,12 +4,13 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.{ObjectNode}
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.TimestampNTZType
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAccessor
 import java.time.{LocalDateTime, OffsetDateTime}
 
 // scalastyle:off underscore.import
@@ -37,11 +38,11 @@ class CosmosRowConverterTest extends UnitSpec with BasicLoggingTrait {
         val colName3 = "testCol3"
         val colName4 = "testCol4"
         val currentMillis = System.currentTimeMillis()
+        val currentTimestampNTZ = OffsetDateTime.now().toLocalDateTime()
+        val currentMillis2 = currentTimestampNTZ.toEpochSecond(OffsetDateTime.now().getOffset)
         val colVal1 = new Date(currentMillis)
-        val timestampNTZType =  "2021-07-01T08:43:28.037"
-        val colVal2 = LocalDateTime.parse(timestampNTZType, DateTimeFormatter.ISO_DATE_TIME)
+        val colVal2 = LocalDateTime.from(currentTimestampNTZ)
         val colVal3 = currentMillis.toInt
-
         val row = new GenericRowWithSchema(
             Array(colVal1, colVal2, colVal3, colVal3),
             StructType(Seq(StructField(colName1, DateType),
@@ -51,7 +52,7 @@ class CosmosRowConverterTest extends UnitSpec with BasicLoggingTrait {
 
         val objectNode = defaultRowConverter.fromRowToObjectNode(row)
         objectNode.get(colName1).asLong() shouldEqual currentMillis
-        objectNode.get(colName2).asText() shouldEqual "2021-07-01T08:43:28.037"
+        objectNode.get(colName2).asLong() shouldEqual currentMillis2
         objectNode.get(colName3).asInt() shouldEqual colVal3
         objectNode.get(colName4).asInt() shouldEqual colVal3
     }
