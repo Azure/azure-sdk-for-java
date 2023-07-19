@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BatchTestBase;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -28,6 +29,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -150,6 +152,9 @@ public class BulkExecutorTest extends BatchTestBase {
     @Test(groups = { "emulator" })
     public void executeBulk_OnGoneFailure() throws InterruptedException {
         this.container = createContainer(database);
+        if (!ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor().getConnectionMode(this.client).equals(ConnectionMode.DIRECT.toString())) {
+            throw new SkipException("Failure injection for gone exception only supported for DIRECT mode");
+        }
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         String duplicatePK = UUID.randomUUID().toString();
