@@ -7,33 +7,34 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NetworkRackProperties define the resource properties. */
+/** Network Rack Properties defines the properties of the resource. */
 @Fluent
 public final class NetworkRackProperties extends AnnotationResource {
     /*
      * Network Rack SKU name.
      */
-    @JsonProperty(value = "networkRackSku", required = true)
-    private String networkRackSku;
+    @JsonProperty(value = "networkRackType")
+    private NetworkRackType networkRackType;
 
     /*
-     * Network Fabric ARM resource id.
+     * ARM resource ID of the Network Fabric.
      */
     @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
-     * List of network device ARM resource ids.
+     * List of network device ARM resource IDs.
      */
     @JsonProperty(value = "networkDevices", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkDevices;
 
     /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -43,27 +44,27 @@ public final class NetworkRackProperties extends AnnotationResource {
     }
 
     /**
-     * Get the networkRackSku property: Network Rack SKU name.
+     * Get the networkRackType property: Network Rack SKU name.
      *
-     * @return the networkRackSku value.
+     * @return the networkRackType value.
      */
-    public String networkRackSku() {
-        return this.networkRackSku;
+    public NetworkRackType networkRackType() {
+        return this.networkRackType;
     }
 
     /**
-     * Set the networkRackSku property: Network Rack SKU name.
+     * Set the networkRackType property: Network Rack SKU name.
      *
-     * @param networkRackSku the networkRackSku value to set.
+     * @param networkRackType the networkRackType value to set.
      * @return the NetworkRackProperties object itself.
      */
-    public NetworkRackProperties withNetworkRackSku(String networkRackSku) {
-        this.networkRackSku = networkRackSku;
+    public NetworkRackProperties withNetworkRackType(NetworkRackType networkRackType) {
+        this.networkRackType = networkRackType;
         return this;
     }
 
     /**
-     * Get the networkFabricId property: Network Fabric ARM resource id.
+     * Get the networkFabricId property: ARM resource ID of the Network Fabric.
      *
      * @return the networkFabricId value.
      */
@@ -72,7 +73,7 @@ public final class NetworkRackProperties extends AnnotationResource {
     }
 
     /**
-     * Set the networkFabricId property: Network Fabric ARM resource id.
+     * Set the networkFabricId property: ARM resource ID of the Network Fabric.
      *
      * @param networkFabricId the networkFabricId value to set.
      * @return the NetworkRackProperties object itself.
@@ -83,7 +84,7 @@ public final class NetworkRackProperties extends AnnotationResource {
     }
 
     /**
-     * Get the networkDevices property: List of network device ARM resource ids.
+     * Get the networkDevices property: List of network device ARM resource IDs.
      *
      * @return the networkDevices value.
      */
@@ -92,7 +93,7 @@ public final class NetworkRackProperties extends AnnotationResource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -115,12 +116,6 @@ public final class NetworkRackProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (networkRackSku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkRackSku in model NetworkRackProperties"));
-        }
         if (networkFabricId() == null) {
             throw LOGGER
                 .logExceptionAsError(

@@ -183,12 +183,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.48.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.49.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>2.3.0</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -253,7 +253,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.15.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.15.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -394,7 +394,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
+      <version>2.29.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>

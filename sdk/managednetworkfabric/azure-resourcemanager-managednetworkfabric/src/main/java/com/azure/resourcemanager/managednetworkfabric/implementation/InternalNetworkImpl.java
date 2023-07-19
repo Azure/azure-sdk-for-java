@@ -7,12 +7,19 @@ package com.azure.resourcemanager.managednetworkfabric.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.InternalNetworkInner;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.BgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnet;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.Extension;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.InternalNetwork;
 import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesBgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesStaticRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -40,52 +47,28 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
         return this.innerModel().systemData();
     }
 
-    public List<String> disabledOnResources() {
-        List<String> inner = this.innerModel().disabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public int vlanId() {
+        return this.innerModel().vlanId();
     }
 
-    public EnabledDisabledState administrativeState() {
-        return this.innerModel().administrativeState();
+    public InternalNetworkPropertiesBgpConfiguration bgpConfiguration() {
+        return this.innerModel().bgpConfiguration();
     }
 
-    public List<String> bgpDisabledOnResources() {
-        List<String> inner = this.innerModel().bgpDisabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration() {
+        return this.innerModel().staticRouteConfiguration();
     }
 
-    public List<String> bfdDisabledOnResources() {
-        List<String> inner = this.innerModel().bfdDisabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<String> bfdForStaticRoutesDisabledOnResources() {
-        List<String> inner = this.innerModel().bfdForStaticRoutesDisabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
     }
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
-    public int vlanId() {
-        return this.innerModel().vlanId();
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
     }
 
     public Integer mtu() {
@@ -110,20 +93,36 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
         }
     }
 
-    public StaticRouteConfiguration staticRouteConfiguration() {
-        return this.innerModel().staticRouteConfiguration();
-    }
-
-    public BgpConfiguration bgpConfiguration() {
-        return this.innerModel().bgpConfiguration();
-    }
-
     public String importRoutePolicyId() {
         return this.innerModel().importRoutePolicyId();
     }
 
     public String exportRoutePolicyId() {
         return this.innerModel().exportRoutePolicyId();
+    }
+
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.innerModel().importRoutePolicy();
+    }
+
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.innerModel().exportRoutePolicy();
+    }
+
+    public String ingressAclId() {
+        return this.innerModel().ingressAclId();
+    }
+
+    public String egressAclId() {
+        return this.innerModel().egressAclId();
+    }
+
+    public IsMonitoringEnabled isMonitoringEnabled() {
+        return this.innerModel().isMonitoringEnabled();
+    }
+
+    public Extension extension() {
+        return this.innerModel().extension();
     }
 
     public String annotation() {
@@ -234,83 +233,61 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
         return this;
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager
             .internalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
             .internalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
     }
 
-    public void updateBgpAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager
             .internalNetworks()
             .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
     }
 
-    public void updateBgpAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
             .internalNetworks()
             .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
     }
 
-    public void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
+        UpdateAdministrativeState body) {
+        return serviceManager
             .internalNetworks()
-            .updateBfdForBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-    }
-
-    public void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
-            .internalNetworks()
-            .updateBfdForBgpAdministrativeState(
-                resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
-    }
-
-    public void clearIpv6Neighbors(EnableDisableOnResources body) {
-        serviceManager
-            .internalNetworks()
-            .clearIpv6Neighbors(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-    }
-
-    public void clearIpv6Neighbors(EnableDisableOnResources body, Context context) {
-        serviceManager
-            .internalNetworks()
-            .clearIpv6Neighbors(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
-    }
-
-    public void clearArpEntries(EnableDisableOnResources body) {
-        serviceManager
-            .internalNetworks()
-            .clearArpEntries(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
-    }
-
-    public void clearArpEntries(EnableDisableOnResources body, Context context) {
-        serviceManager
-            .internalNetworks()
-            .clearArpEntries(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
-    }
-
-    public void updateBfdForStaticRouteAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
-            .internalNetworks()
-            .updateBfdForStaticRouteAdministrativeState(
+            .updateStaticRouteBfdAdministrativeState(
                 resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
     }
 
-    public void updateBfdForStaticRouteAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
             .internalNetworks()
-            .updateBfdForStaticRouteAdministrativeState(
+            .updateStaticRouteBfdAdministrativeState(
                 resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
     }
 
     public InternalNetworkImpl withVlanId(int vlanId) {
         this.innerModel().withVlanId(vlanId);
+        return this;
+    }
+
+    public InternalNetworkImpl withBgpConfiguration(InternalNetworkPropertiesBgpConfiguration bgpConfiguration) {
+        this.innerModel().withBgpConfiguration(bgpConfiguration);
+        return this;
+    }
+
+    public InternalNetworkImpl withStaticRouteConfiguration(
+        InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
+        this.innerModel().withStaticRouteConfiguration(staticRouteConfiguration);
         return this;
     }
 
@@ -344,26 +321,6 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
         }
     }
 
-    public InternalNetworkImpl withStaticRouteConfiguration(StaticRouteConfiguration staticRouteConfiguration) {
-        if (isInCreateMode()) {
-            this.innerModel().withStaticRouteConfiguration(staticRouteConfiguration);
-            return this;
-        } else {
-            this.updateBody.withStaticRouteConfiguration(staticRouteConfiguration);
-            return this;
-        }
-    }
-
-    public InternalNetworkImpl withBgpConfiguration(BgpConfiguration bgpConfiguration) {
-        if (isInCreateMode()) {
-            this.innerModel().withBgpConfiguration(bgpConfiguration);
-            return this;
-        } else {
-            this.updateBody.withBgpConfiguration(bgpConfiguration);
-            return this;
-        }
-    }
-
     public InternalNetworkImpl withImportRoutePolicyId(String importRoutePolicyId) {
         if (isInCreateMode()) {
             this.innerModel().withImportRoutePolicyId(importRoutePolicyId);
@@ -384,6 +341,61 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
         }
     }
 
+    public InternalNetworkImpl withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withImportRoutePolicy(importRoutePolicy);
+            return this;
+        } else {
+            this.updateBody.withImportRoutePolicy(importRoutePolicy);
+            return this;
+        }
+    }
+
+    public InternalNetworkImpl withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withExportRoutePolicy(exportRoutePolicy);
+            return this;
+        } else {
+            this.updateBody.withExportRoutePolicy(exportRoutePolicy);
+            return this;
+        }
+    }
+
+    public InternalNetworkImpl withIngressAclId(String ingressAclId) {
+        if (isInCreateMode()) {
+            this.innerModel().withIngressAclId(ingressAclId);
+            return this;
+        } else {
+            this.updateBody.withIngressAclId(ingressAclId);
+            return this;
+        }
+    }
+
+    public InternalNetworkImpl withEgressAclId(String egressAclId) {
+        if (isInCreateMode()) {
+            this.innerModel().withEgressAclId(egressAclId);
+            return this;
+        } else {
+            this.updateBody.withEgressAclId(egressAclId);
+            return this;
+        }
+    }
+
+    public InternalNetworkImpl withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled) {
+        if (isInCreateMode()) {
+            this.innerModel().withIsMonitoringEnabled(isMonitoringEnabled);
+            return this;
+        } else {
+            this.updateBody.withIsMonitoringEnabled(isMonitoringEnabled);
+            return this;
+        }
+    }
+
+    public InternalNetworkImpl withExtension(Extension extension) {
+        this.innerModel().withExtension(extension);
+        return this;
+    }
+
     public InternalNetworkImpl withAnnotation(String annotation) {
         if (isInCreateMode()) {
             this.innerModel().withAnnotation(annotation);
@@ -392,6 +404,16 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
             this.updateBody.withAnnotation(annotation);
             return this;
         }
+    }
+
+    public InternalNetworkImpl withBgpConfiguration(BgpConfiguration bgpConfiguration) {
+        this.updateBody.withBgpConfiguration(bgpConfiguration);
+        return this;
+    }
+
+    public InternalNetworkImpl withStaticRouteConfiguration(StaticRouteConfiguration staticRouteConfiguration) {
+        this.updateBody.withStaticRouteConfiguration(staticRouteConfiguration);
+        return this;
     }
 
     private boolean isInCreateMode() {
