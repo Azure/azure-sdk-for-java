@@ -189,9 +189,9 @@ com.azure:azure-identity-extensions;1.1.5;1.2.0-beta.2
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.2;1.0.0-beta.3
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.8.0;4.9.0
 com.azure.spring:spring-cloud-azure-appconfiguration-config;4.8.0;4.9.0
-com.azure.spring:spring-cloud-azure-feature-management-web;4.8.0;4.9.1
-com.azure.spring:spring-cloud-azure-feature-management;4.8.0;4.9.1
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.8.0;4.9.1
+com.azure.spring:spring-cloud-azure-feature-management-web;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-feature-management;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.9.1;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-dependencies;4.8.0;4.9.0
 com.azure.spring:spring-messaging-azure;4.8.0;4.9.0
 com.azure.spring:spring-messaging-azure-eventhubs;4.8.0;4.9.0

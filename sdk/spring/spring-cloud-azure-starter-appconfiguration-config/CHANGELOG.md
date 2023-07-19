@@ -1,5 +1,15 @@
 # Release History
 
+## 4.10.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.9.1 (2023-07-19)
 
 Fixes a bug where exclusions from the portal don't map correctly resulting in a `java.lang.ClassCastException` [#35823](https://github.com/Azure/azure-sdk-for-java/issues/35823)
