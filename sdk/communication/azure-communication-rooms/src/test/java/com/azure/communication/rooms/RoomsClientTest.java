@@ -210,8 +210,7 @@ public class RoomsClientTest extends RoomsTestBase {
                 secondParticipant.getCommunicationIdentifier());
 
         // Remove 2 participants
-        RemoveParticipantsResult removeParticipantResponse = roomsClient.removeParticipants(roomId,
-                participantsIdentifiersForParticipants);
+        roomsClient.removeParticipants(roomId, participantsIdentifiersForParticipants);
 
         // Check participant count, expected 1
         PagedIterable<RoomParticipant> listParticipantsResponse4 = roomsClient.listParticipants(roomId);
@@ -224,6 +223,11 @@ public class RoomsClientTest extends RoomsTestBase {
         assertThrows(HttpResponseException.class, () -> {
             roomsClient.removeParticipants(roomId, participantsIdentifiersForNonExistentParticipant);
         });
+
+        // Remove Non-Existent Participants
+        roomsClient.removeParticipants(roomId, participantsIdentifiersForParticipants);
+        PagedIterable<RoomParticipant> listParticipantsResponse5 = roomsClient.listParticipants(roomId);
+        assertEquals(1, listParticipantsResponse5.stream().count());
 
         // Delete Room
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);

@@ -518,7 +518,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 .expectNext(1L)
                 .verifyComplete();
 
-        // Remove participant that does not exist
+        // Remove participant with incorrect MRI
         List<CommunicationIdentifier> participantsIdentifiersForNonExistentParticipant = Arrays
             .asList(new CommunicationUserIdentifier("8:acs:nonExistentParticipant"));
         CommunicationErrorResponseException exception =
@@ -526,6 +526,23 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.removeParticipants(roomId, participantsIdentifiersForNonExistentParticipant).block();
             });
         assertEquals(400, exception.getResponse().getStatusCode());
+
+        // Remove Non-existent participants
+        Mono<RemoveParticipantsResult> removeParticipantResponse2 = roomsAsyncClient.removeParticipants(roomId,
+                participantsIdentifiersForParticipants);
+
+        StepVerifier.create(removeParticipantResponse2)
+                .assertNext(result -> {
+                    assertEquals(true, result instanceof RemoveParticipantsResult);
+                })
+                .verifyComplete();
+
+        // Check participant count, expected 1
+        PagedFlux<RoomParticipant> listParticipantsResponse5 = roomsAsyncClient.listParticipants(roomId);
+
+        StepVerifier.create(listParticipantsResponse5.count())
+                .expectNext(1L)
+                .verifyComplete();
 
         // // Delete Room
         // Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
