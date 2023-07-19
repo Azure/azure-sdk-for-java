@@ -40,18 +40,12 @@ public class CosmosStoredProcedure {
         return id;
     }
 
-    /**
-     * Read cosmos sync stored procedure.
-     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.read -->
-     * <pre>
-     * CosmosStoredProcedure procedure = new CosmosStoredProcedure&#40;id, cosmosContainer, cosmosAsyncStoredProcedure&#41;;
-     * CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions&#40;&#41;;
-     *
-     * CosmosStoredProcedureResponse response = procedure.read&#40;options&#41;;
-     * <pre>
-     * <!-- end com.azure.cosmos.CosmosStoredProcedure.read -->
-     * @return the cosmos stored procedure response
-     */
+     /**
+      * Read cosmos sync stored procedure.
+      * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.read_no_params -->
+      * <!-- end com.azure.cosmos.CosmosStoredProcedure.read_no_params -->
+      * @return the cosmos stored procedure response
+      */
     public CosmosStoredProcedureResponse read() {
         return container.getScripts()
                    .blockStoredProcedureResponse(storedProcedure.read());
@@ -59,14 +53,8 @@ public class CosmosStoredProcedure {
 
     /**
      * Read cosmos sync stored procedure.
-     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.read -->
-     * <pre>
-     * CosmosStoredProcedure procedure = new CosmosStoredProcedure&#40;id, cosmosContainer, cosmosAsyncStoredProcedure&#41;;
-     * CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions&#40;&#41;;
-     *
-     * CosmosStoredProcedureResponse response = procedure.read&#40;options&#41;;
-     * <pre>
-     * <!-- end com.azure.cosmos.CosmosStoredProcedure.read -->
+     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.read_with_options_param -->
+     * <!-- end com.azure.cosmos.CosmosStoredProcedure.read_with_options_param -->
      * @param options the options
      * @return the cosmos stored procedure response
      */
@@ -78,11 +66,6 @@ public class CosmosStoredProcedure {
     /**
      * Delete cosmos stored procedure.
      * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.delete -->
-     * <pre>
-     * CosmosStoredProcedure procedure = new CosmosStoredProcedure&#40;id, cosmosContainer, cosmosAsyncStoredProcedure&#41;;
-     *
-     * CosmosStoredProcedureResponse response = procedure.delete&#40;&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosStoredProcedure.delete -->
      * @return the cosmos response
      */
@@ -93,13 +76,8 @@ public class CosmosStoredProcedure {
 
     /**
      * Delete cosmos stored procedure.
-     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.delete -->
-     * <pre>
-     * CosmosStoredProcedure procedure = new CosmosStoredProcedure&#40;id, cosmosContainer, cosmosAsyncStoredProcedure&#41;;
-     *
-     * CosmosStoredProcedureResponse response = procedure.delete&#40;&#41;;
-     * <pre>
-     * <!-- end com.azure.cosmos.CosmosStoredProcedure.delete -->
+     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.delete_with_options_param -->
+     * <!-- end com.azure.cosmos.CosmosStoredProcedure.delete_with_options_param -->
      * @param options the options
      * @return the cosmos response
      */
@@ -111,13 +89,6 @@ public class CosmosStoredProcedure {
     /**
      * Execute cosmos sync stored procedure.
      * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.execute -->
-     * <pre>
-     * CosmosStoredProcedure procedure = new CosmosStoredProcedure&#40;id, cosmosContainer, cosmosAsyncStoredProcedure&#41;;
-     * CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions&#40;&#41;;
-     * List&lt;Object&gt; procedureParams = new ArrayList&lt;&gt;&#40;&#41;;
-     *
-     * CosmosStoredProcedureResponse response = procedure.execute&#40;procedureParams, options&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosStoredProcedure.execute -->
      * @param procedureParams the procedure params
      * @param options the options
@@ -132,15 +103,8 @@ public class CosmosStoredProcedure {
 
     /**
      * Replace cosmos sync stored procedure.
-     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.replace -->
-     * <pre>
-     * CosmosStoredProcedure procedure = new CosmosStoredProcedure&#40;id, cosmosContainer, cosmosAsyncStoredProcedure&#41;;
-     * CosmosStoredProcedureProperties properties = new CosmosStoredProcedureProperties&#40;id, body&#41;;
-     * CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions&#40;&#41;;
-     *
-     * CosmosStoredProcedureResponse response = procedure.replace&#40;properties, options&#41;;
-     * <pre>
-     * <!-- end com.azure.cosmos.CosmosStoredProcedure.replace -->
+     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.replace_with_storedProcedureProperties_param -->
+     * <!-- end com.azure.cosmos.CosmosStoredProcedure.replace_with_storedProcedureProperties_param -->
      * @param storedProcedureProperties the stored procedure settings
      * @return the cosmos stored procedure response
      */
@@ -151,15 +115,8 @@ public class CosmosStoredProcedure {
 
     /**
      * Replace cosmos sync stored procedure.
-     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.replace -->
-     * <pre>
-     * CosmosStoredProcedure procedure = new CosmosStoredProcedure&#40;id, cosmosContainer, cosmosAsyncStoredProcedure&#41;;
-     * CosmosStoredProcedureProperties properties = new CosmosStoredProcedureProperties&#40;id, body&#41;;
-     * CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions&#40;&#41;;
-     *
-     * CosmosStoredProcedureResponse response = procedure.replace&#40;properties, options&#41;;
-     * <pre>
-     * <!-- end com.azure.cosmos.CosmosStoredProcedure.replace -->
+     * <!-- src_embed com.azure.cosmos.CosmosStoredProcedure.replace_with_storedProcedureProperties_and_options_param -->
+     * <!-- end com.azure.cosmos.CosmosStoredProcedure.replace_with_storedProcedureProperties_and_options_param -->
      * @param storedProcedureProperties the stored procedure settings
      * @param options the options
      * @return the cosmos stored procedure response

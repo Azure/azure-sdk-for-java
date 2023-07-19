@@ -39,12 +39,6 @@ public class CosmosTrigger {
     /**
      * Read cosmos trigger.
      * <!-- src_embed com.azure.cosmos.CosmosTrigger.read -->
-     * <pre>
-     * CosmosTrigger trigger =
-     *      new CosmosTrigger&#40;id, cosmosContainer, cosmosAsyncTrigger&#41;;
-     *
-     * CosmosTriggerResponse response = trigger.read&#40;&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosTrigger.read -->
      * @return the cosmos trigger response
      */
@@ -55,12 +49,6 @@ public class CosmosTrigger {
     /**
      * Replace cosmos trigger.
      * <!-- src_embed com.azure.cosmos.CosmosTrigger.replace -->
-     * <pre>
-     * CosmosTrigger trigger = new CosmosTrigger&#40;id, cosmosContainer, cosmosAsyncTrigger&#41;;
-     * CosmosTriggerProperties properties = new CosmosTriggerProperties&#40;id, body&#41;;
-     *
-     * CosmosTriggerResponse response = trigger.replace&#40;properties&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosTrigger.replace -->
      * @param triggerProperties the trigger properties.
      * @return the cosmos trigger response
@@ -72,11 +60,6 @@ public class CosmosTrigger {
     /**
      * Delete cosmos trigger.
      * <!-- src_embed com.azure.cosmos.CosmosTrigger.delete -->
-     * <pre>
-     * CosmosTrigger trigger = new CosmosTrigger&#40;id, cosmosContainer, cosmosAsyncTrigger&#41;;
-     *
-     * CosmosTriggerResponse response = trigger.delete&#40;&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosTrigger.delete -->
      * @return the cosmos response
      */
