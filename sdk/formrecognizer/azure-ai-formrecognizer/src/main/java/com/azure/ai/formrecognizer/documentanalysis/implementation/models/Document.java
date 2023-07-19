@@ -4,14 +4,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** An object describing the location and semantic content of a document. */
-@Fluent
+@Immutable
 public final class Document {
     /*
      * Document type.
@@ -51,7 +51,7 @@ public final class Document {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public Document(
+    private Document(
             @JsonProperty(value = "docType", required = true) String docType,
             @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
             @JsonProperty(value = "confidence", required = true) float confidence) {
@@ -79,17 +79,6 @@ public final class Document {
     }
 
     /**
-     * Set the boundingRegions property: Bounding regions covering the document.
-     *
-     * @param boundingRegions the boundingRegions value to set.
-     * @return the Document object itself.
-     */
-    public Document setBoundingRegions(List<BoundingRegion> boundingRegions) {
-        this.boundingRegions = boundingRegions;
-        return this;
-    }
-
-    /**
      * Get the spans property: Location of the document in the reading order concatenated content.
      *
      * @return the spans value.
@@ -105,17 +94,6 @@ public final class Document {
      */
     public Map<String, DocumentField> getFields() {
         return this.fields;
-    }
-
-    /**
-     * Set the fields property: Dictionary of named field values.
-     *
-     * @param fields the fields value to set.
-     * @return the Document object itself.
-     */
-    public Document setFields(Map<String, DocumentField> fields) {
-        this.fields = fields;
-        return this;
     }
 
     /**

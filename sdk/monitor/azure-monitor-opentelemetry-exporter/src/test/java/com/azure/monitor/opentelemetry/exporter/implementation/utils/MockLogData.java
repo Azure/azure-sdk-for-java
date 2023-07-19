@@ -30,8 +30,13 @@ public class MockLogData implements LogRecordData {
     }
 
     @Override
-    public long getEpochNanos() {
+    public long getTimestampEpochNanos() {
         return Instant.now().getEpochSecond();
+    }
+
+    @Override
+    public long getObservedTimestampEpochNanos() {
+        return getTimestampEpochNanos();
     }
 
     @Override

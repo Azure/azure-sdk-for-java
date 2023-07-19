@@ -26,17 +26,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
 
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Utility method class.
@@ -54,22 +49,6 @@ public final class Utility {
     }
 
     private Utility() {
-    }
-
-    /**
-     * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given
-     * InputStream.
-     *
-     * @param inputStream InputStream to back the Flux
-     * @return Flux of ByteBuffer backed by the InputStream
-     * @throws NullPointerException If {@code inputStream} is null.
-     */
-    public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
-        Objects.requireNonNull(inputStream, "'inputStream' is required and cannot be null.");
-        return FluxUtil
-            .toFluxByteBuffer(inputStream)
-            .cache()
-            .map(ByteBuffer::duplicate);
     }
 
     public static String parseResultId(String operationLocation) {
@@ -100,14 +79,10 @@ public final class Utility {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        ClientOptions buildClientOptions = (clientOptions == null) ? Constants.DEFAULT_CLIENT_OPTIONS : clientOptions;
-        HttpLogOptions buildLogOptions = (logOptions == null) ? Constants.DEFAULT_LOG_OPTIONS : logOptions;
-
-        String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
+        String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-        httpPipelinePolicies.add(new AddHeadersPolicy(Constants.DEFAULT_HTTP_HEADERS));
         httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
         httpPipelinePolicies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
@@ -136,16 +111,15 @@ public final class Utility {
         httpPipelinePolicies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
-        HttpHeaders headers = new HttpHeaders();
-        buildClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null && headers.getSize() > 0) {
             httpPipelinePolicies.add(new AddHeadersPolicy(headers));
         }
 
-        httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
+        httpPipelinePolicies.add(new HttpLoggingPolicy(logOptions));
 
         return new HttpPipelineBuilder()
-            .clientOptions(buildClientOptions)
+            .clientOptions(clientOptions)
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();

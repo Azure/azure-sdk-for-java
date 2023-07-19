@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("wait-time")
 @Fluent
-public final class WaitTimeExceptionTrigger extends JobExceptionTrigger {
+public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
     /*
      * Threshold for wait time for this trigger.
      */

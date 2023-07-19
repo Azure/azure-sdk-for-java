@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
-import com.azure.resourcemanager.network.implementation.NetworkManagementClientBuilder;
 import com.azure.resourcemanager.network.implementation.ApplicationGatewaysImpl;
 import com.azure.resourcemanager.network.implementation.ApplicationSecurityGroupsImpl;
 import com.azure.resourcemanager.network.implementation.DdosProtectionPlansImpl;
@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.implementation.ExpressRouteCrossConnect
 import com.azure.resourcemanager.network.implementation.LoadBalancersImpl;
 import com.azure.resourcemanager.network.implementation.LocalNetworkGatewaysImpl;
 import com.azure.resourcemanager.network.implementation.NetworkInterfacesImpl;
+import com.azure.resourcemanager.network.implementation.NetworkManagementClientBuilder;
 import com.azure.resourcemanager.network.implementation.NetworkProfilesImpl;
 import com.azure.resourcemanager.network.implementation.NetworkSecurityGroupsImpl;
 import com.azure.resourcemanager.network.implementation.NetworkUsagesImpl;
@@ -25,6 +26,7 @@ import com.azure.resourcemanager.network.implementation.PublicIpPrefixesImpl;
 import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
 import com.azure.resourcemanager.network.implementation.RouteTablesImpl;
 import com.azure.resourcemanager.network.implementation.VirtualNetworkGatewaysImpl;
+import com.azure.resourcemanager.network.implementation.WebApplicationFirewallPoliciesImpl;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
 import com.azure.resourcemanager.network.models.DdosProtectionPlans;
@@ -44,9 +46,9 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicies;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
@@ -75,6 +77,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     private ExpressRouteCrossConnections expressRouteCrossConnections;
     private PrivateEndpoints privateEndpoints;
     private NetworkProfiles networkProfiles;
+    private WebApplicationFirewallPolicies webApplicationFirewallPolicies;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager} with optional configuration.
@@ -292,5 +295,13 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
             this.networkProfiles = new NetworkProfilesImpl(this);
         }
         return this.networkProfiles;
+    }
+
+    /** @return entry point to web application firewall policies management */
+    public WebApplicationFirewallPolicies webApplicationFirewallPolicies() {
+        if (this.webApplicationFirewallPolicies == null) {
+            this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesImpl(this);
+        }
+        return this.webApplicationFirewallPolicies;
     }
 }

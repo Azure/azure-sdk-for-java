@@ -13,6 +13,9 @@ parameters:
   - name: SDKType
     type: string
     default: client
+  - name: OSVmImage
+    type: string
+    default: $(OSVmImage)
 
 steps:
   # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -33,7 +36,7 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
-      AgentImage: $(OSVmImage)
+      AgentImage: ${{ parameters.OSVmImage }}
 
   - task: PythonScript@0
     displayName: 'Set versions for source build'

@@ -5,18 +5,19 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.ChannelConfiguration;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.JobOffer;
-import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.QueueAssignment;
+import com.azure.communication.jobrouter.models.RouterQueueAssignment;
 import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterJobOffer;
+import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.options.CreateJobOptions;
-import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -29,15 +30,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RouterJobLiveTests extends JobRouterTestBase {
-    private RouterClient routerClient;
+    private JobRouterClient jobRouterClient;
 
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35706")
     public void unassignJob(HttpClient httpClient) {
         // Setup
-        routerClient = getRouterClient(httpClient);
+        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         String testName = "unassign-job-2";
         /**
@@ -47,7 +49,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
-        JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
         /**
          * Setup worker
@@ -58,9 +60,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        Map<String, Object> tags = new HashMap<String, Object>() {
+        Map<String, LabelValue> tags = new HashMap<String, LabelValue>() {
             {
-                put("Tag", "Value");
+                put("Tag", new LabelValue("Value"));
             }
         };
 
@@ -72,9 +74,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
+        Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
             {
-                put(jobQueue.getId(), new QueueAssignment());
+                put(jobQueue.getId(), new RouterQueueAssignment());
             }
         };
 
@@ -86,17 +88,17 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setChannelConfigurations(channelConfigurations)
             .setQueueAssignments(queueAssignments);
 
-        RouterWorker worker = routerClient.createWorker(createWorkerOptions);
+        RouterWorker worker = jobRouterClient.createWorker(createWorkerOptions);
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         CreateJobOptions createJobOptions = new CreateJobOptions(jobId, "channel1", queueId);
 
-        RouterJob job = routerClient.createJob(createJobOptions);
+        RouterJob job = jobRouterClient.createJob(createJobOptions);
 
-        List<JobOffer> jobOffers = new ArrayList<>();
+        List<RouterJobOffer> jobOffers = new ArrayList<>();
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
-            worker = routerClient.getWorker(workerId);
+            worker = jobRouterClient.getWorker(workerId);
             jobOffers = worker.getOffers();
             if (jobOffers.size() > 0 || System.currentTimeMillis() - startTimeMillis > 10000) {
                 break;
@@ -105,23 +107,23 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         assertTrue(jobOffers.size() == 1);
 
-        JobOffer offer = jobOffers.get(0);
+        RouterJobOffer offer = jobOffers.get(0);
 
-        AcceptJobOfferResult acceptJobOfferResult = routerClient.acceptJobOffer(workerId, offer.getId());
+        AcceptJobOfferResult acceptJobOfferResult = jobRouterClient.acceptJobOffer(workerId, offer.getOfferId());
 
         String assignmentId = acceptJobOfferResult.getAssignmentId();
 
         // Action
         UnassignJobOptions unassignJobOptions = new UnassignJobOptions(jobId, assignmentId);
-        UnassignJobResult unassignJobResult = routerClient.unassignJob(unassignJobOptions);
+        UnassignJobResult unassignJobResult = jobRouterClient.unassignJob(unassignJobOptions);
 
         // Verify
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         // Cleanup
-        routerClient.cancelJob(jobId, "Done.", "test");
-        routerClient.deleteJob(jobId);
-        routerClient.deleteWorker(workerId);
+        jobRouterClient.cancelJob(jobId, "Done.", "test");
+        jobRouterClient.deleteJob(jobId);
+        jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }

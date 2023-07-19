@@ -17,18 +17,23 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class TransferCallToParticipantOptions {
-    
+
     private final CommunicationIdentifier targetParticipant;
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
-
-    
-
-    /**
-     * The operational context
-     */
+    private String callbackUrlOverride;
     private String operationContext;
 
+    /**
+     * Constructor
+     *
+     * @param targetParticipant {@link CommunicationIdentifier}contains information for TranferTarget.
+     */
+    public TransferCallToParticipantOptions(CommunicationIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
+        this.voipHeaders = new HashMap<String, String>();
+        this.sipHeaders = null;
+    }
 
     /**
      * Constructor
@@ -40,7 +45,7 @@ public final class TransferCallToParticipantOptions {
         this.voipHeaders = new HashMap<String, String>();
         this.sipHeaders = null;
     }
-    
+
     /**
      * Constructor
      *
@@ -52,18 +57,7 @@ public final class TransferCallToParticipantOptions {
         this.voipHeaders = voipHeaders == null ? new HashMap<String, String>() : voipHeaders;
         this.sipHeaders = null;
     }
-    
-    /**
-     * Constructor
-     *
-     * @param targetParticipant {@link PhoneNumberIdentifier}contains information for TranferTarget.
-     */
-    public TransferCallToParticipantOptions(PhoneNumberIdentifier targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        this.voipHeaders = null;
-        this.sipHeaders =  new HashMap<String, String>();
-    }
-    
+
     /**
      * Constructor
      *
@@ -75,18 +69,7 @@ public final class TransferCallToParticipantOptions {
         this.voipHeaders = null;
         this.sipHeaders = sipHeaders == null ? new HashMap<String, String>() : sipHeaders;
     }
-    
-    /**
-     * Constructor
-     *
-     * @param targetParticipant {@link PhoneNumberIdentifier}contains information for TranferTarget.
-     */
-    public TransferCallToParticipantOptions(MicrosoftTeamsUserIdentifier targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        this.voipHeaders = new HashMap<String, String>();
-        this.sipHeaders = null;
-    }
-    
+
     /**
      * Constructor
      *
@@ -126,7 +109,7 @@ public final class TransferCallToParticipantOptions {
     public CommunicationIdentifier getTargetParticipant() {
         return targetParticipant;
     }
-    
+
     /**
      *  Get custom headers for voip target
      * @return the customHeaders for voip target
@@ -134,12 +117,32 @@ public final class TransferCallToParticipantOptions {
     public Map<String, String> getVoipHeaders() {
         return voipHeaders;
     }
-    
+
     /**
      *  Get custom headers for PSTN target
      * @return custom headers for PSTN target
      */
     public Map<String, String> getSipHeaders() {
         return sipHeaders;
+    }
+
+    /**
+     * Get the callbackUrlOverride.
+     *
+     * @return the callbackUrlOverride
+     */
+    public String  getCallbackUrlOverride() {
+        return callbackUrlOverride;
+    }
+
+    /**
+     * Set the operationContext.
+     *
+     * @param callbackUrlOverride the callbackUrlOverride to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setCallbackUrlOverride(String callbackUrlOverride) {
+        this.callbackUrlOverride = callbackUrlOverride;
+        return this;
     }
 }

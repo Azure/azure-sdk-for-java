@@ -4,10 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.MessageTelemetryBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
@@ -20,8 +17,10 @@ import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
+import static io.opentelemetry.api.common.AttributeKey.stringArrayKey;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 public class LogDataMapper {
@@ -36,7 +35,7 @@ public class LogDataMapper {
     private static final String LOG4J_MAP_MESSAGE_PREFIX = "log4j.map_message."; // log4j 2.x
 
     private static final AttributeKey<String> LOG4J_MARKER = stringKey("log4j.marker");
-    private static final AttributeKey<String> LOGBACK_MARKER = stringKey("logback.marker");
+    private static final AttributeKey<List<String>> LOGBACK_MARKER = stringArrayKey("logback.marker");
 
     private static final Mappings MAPPINGS;
 
@@ -78,7 +77,7 @@ public class LogDataMapper {
                 .exactString(SemanticAttributes.CODE_FUNCTION, "MethodName")
                 .exactLong(SemanticAttributes.CODE_LINENO, "LineNumber")
                 .exactString(LOG4J_MARKER, "Marker")
-                .exactString(LOGBACK_MARKER, "Marker");
+                .exactStringArray(LOGBACK_MARKER, "Marker");
 
         SpanDataMapper.applyCommonTags(mappingsBuilder);
 
@@ -103,7 +102,7 @@ public class LogDataMapper {
         if (stack == null) {
             return createMessageTelemetryItem(log, itemCount);
         } else {
-            return createExceptionTelemetryItem(log, itemCount, stack);
+            return createExceptionTelemetryItem(log, stack, itemCount);
         }
     }
 
@@ -113,7 +112,7 @@ public class LogDataMapper {
 
         // set standard properties
         setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getEpochNanos());
+        setTime(telemetryBuilder, log.getTimestampEpochNanos());
         setItemCount(telemetryBuilder, log, itemCount);
 
         // update tags
@@ -137,20 +136,30 @@ public class LogDataMapper {
     }
 
     private TelemetryItem createExceptionTelemetryItem(
-        LogRecordData log, @Nullable Long itemCount, String stack) {
+        LogRecordData log, String stack, @Nullable Long itemCount) {
         ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
         // set standard properties
         setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getEpochNanos());
+        setTime(telemetryBuilder, log.getTimestampEpochNanos());
         setItemCount(telemetryBuilder, log, itemCount);
 
         // update tags
         Attributes attributes = log.getAttributes();
         MAPPINGS.map(attributes, telemetryBuilder);
 
-        telemetryBuilder.setExceptions(Exceptions.minimalParse(stack));
+        List<ExceptionDetailBuilder> builders = Exceptions.minimalParse(stack);
+        ExceptionDetailBuilder exceptionDetailBuilder = builders.get(0);
+        String type = log.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE);
+        if (type != null && !type.isEmpty()) {
+            exceptionDetailBuilder.setTypeName(type);
+        }
+        String message = log.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE);
+        if (message != null && !message.isEmpty()) {
+            exceptionDetailBuilder.setMessage(message);
+        }
+        telemetryBuilder.setExceptions(builders);
         telemetryBuilder.setSeverityLevel(toSeverityLevel(log.getSeverity()));
 
         // set exception-specific properties

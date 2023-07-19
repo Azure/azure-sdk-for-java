@@ -135,6 +135,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
+                null,
                 null);
 
         for (int i = 0; i < 2; i++) {
@@ -175,6 +176,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null);
 
         for (int i = 0; i < 2; i++) {
@@ -226,7 +228,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            proactiveOpenConnectionsProcessorMock);
+                                                            proactiveOpenConnectionsProcessorMock,
+                                                            null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -282,7 +285,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            proactiveOpenConnectionsProcessorMock);
+                                                            proactiveOpenConnectionsProcessorMock,
+                                                            null);
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -350,7 +354,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            proactiveOpenConnectionsProcessorMock);
+                                                            proactiveOpenConnectionsProcessorMock,
+                                                            null);
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -432,7 +437,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
-                                                                proactiveOpenConnectionsProcessorMock);
+                                                                proactiveOpenConnectionsProcessorMock,
+                                                                null);
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -555,7 +561,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             null,
-                                 null);
+                                                            null,
+                                                            null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -606,6 +613,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -656,7 +664,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                 null);
+                                                            null,
+                                                            null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -713,6 +722,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 ApiType.SQL,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
@@ -810,6 +820,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
@@ -926,7 +937,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                proactiveOpenConnectionsProcessorMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1082,7 +1094,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                proactiveOpenConnectionsProcessorMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1143,7 +1156,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                proactiveOpenConnectionsProcessorMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1235,7 +1249,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                proactiveOpenConnectionsProcessorMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
 
         Mockito.when(proactiveOpenConnectionsProcessorMock.submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt())).thenReturn(dummyOpenConnectionsTask);
 
@@ -1301,6 +1316,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
+                null,
                 null);
 
         // connected status

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.28.0-beta.1 (Unreleased)
+## 2.29.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,17 @@
 
 ### Bugs Fixed
 
+- Fixed a bug that methods in `MetricDefinitions` and `DiagnosticSettings`, which have `resourceId` as one of their 
+  parameters, throw exception on resources whose names contain white spaces.
+- Fixed `DiagnosticSettings.deleteByIds()` to make it work.
+
 ### Other Changes
+
+## 2.28.0 (2023-06-25)
+
+### Bugs Fixed
+
+- Fixed a bug in `DiagnosticSetting` initialization where category groups overwrite log settings.
 
 ## 2.27.0 (2023-05-25)
 

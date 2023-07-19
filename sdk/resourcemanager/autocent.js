@@ -66,16 +66,16 @@ async function readMetadata(artifact) {
 
 // method to read pom for each package version and get API version tag from description
 async function readPom(artifact, version) {
-    var response = await sendRequest(groupUrl + artifact + "/" + version + "/" + artifact + "-" + version + ".pom");
-    var match = pkgRegEx2.exec(response);
+    const response = await sendRequest(groupUrl + artifact + "/" + version + "/" + artifact + "-" + version + ".pom");
+    let match = pkgRegEx2.exec(response);
     if (!match) {
         match = pkgRegEx.exec(response);
     }
     if (!match) {
         console.log("[WARN] no package tag found in version %s for service %s.", version, artifact);
     } else {
-        var tag = match[1];
-        var service = artifact.split("azure-resourcemanager-").pop();
+        const tag = match[1];
+        const service = artifact.split("azure-resourcemanager-").pop();
         if (!data[service]) {
             data[service] = {};
         }
@@ -85,10 +85,9 @@ async function readPom(artifact, version) {
         data[service][tag].push(version);
         console.log("[INFO] find tag %s and version %s for service %s.", tag, version, service);
 
-        var spec = specs[service] ? specs[service] : service;
-        var serviceUrl =
-            "https://github.com/Azure/azure-rest-api-specs/tree/main/specification/" + spec + "/resource-manager";
-        var serviceUrlValid = await existUrl(serviceUrl);
+        const spec = specs[service] ? specs[service] : service;
+        const serviceUrl = getServiceUrl(spec);
+        const serviceUrlValid = await existUrl(serviceUrl);
         if (!serviceUrlValid) {
             console.log("[ERROR] URL not exists %s", serviceUrl);
             servicesInvalidUrl.push(service);
@@ -97,9 +96,26 @@ async function readPom(artifact, version) {
     pkgRegEx.lastIndex = 0;
 }
 
+function getServiceUrl(spec) {
+    if (spec.includes("/")) {
+        const indexOfSlash = spec.indexOf("/");
+        const service = spec.slice(0, indexOfSlash);
+        const nested = spec.slice(indexOfSlash + 1);
+        var serviceUrl =
+            "https://github.com/Azure/azure-rest-api-specs/tree/main/specification/" +
+            service +
+            "/resource-manager/" +
+            nested;
+    } else {
+        var serviceUrl =
+            "https://github.com/Azure/azure-rest-api-specs/tree/main/specification/" + spec + "/resource-manager";
+    }
+    return serviceUrl;
+}
+
 function writeMarkdown() {
     // update file for listing all latest releases of the packages
-    var content =
+    let content =
         "# Single-Service Packages Latest Releases\n\n" +
         "The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.\n\n" +
         "According to [Azure REST API reference](https://docs.microsoft.com/rest/api/azure/), most request URIs of Azure services require `api-version` as the query-string parameter. All supported API versions for each Azure service can be found via [Azure REST API Specifications](https://github.com/Azure/azure-rest-api-specs/tree/main/specification). For your convenience, we provide more details of the published packages by format below.\n\n" +
@@ -112,28 +128,24 @@ function writeMarkdown() {
         "- `package-tag` for included resources with API versions.\n" +
         "- `maven.version` for maven version of the artifact.\n\n";
 
-    var sortedServices = Object.keys(data).sort();
-    for (var i in sortedServices) {
-        var service = sortedServices[i];
+    const sortedServices = Object.keys(data).sort();
+    for (const i in sortedServices) {
+        const service = sortedServices[i];
         content += "\n<br/>\n" + "<details>\n" + "<summary> " + service + " </summary>\n\n";
-        var sortedTags = Object.keys(data[service]).sort().reverse();
-        for (var j in sortedTags) {
-            var tag = sortedTags[j];
-            var spec = specs[service] ? specs[service] : service;
+        const sortedTags = Object.keys(data[service]).sort().reverse();
+        for (const j in sortedTags) {
+            const tag = sortedTags[j];
+            const spec = specs[service] ? specs[service] : service;
             if (servicesInvalidUrl.includes(service)) {
                 content += "* " + tag + "\n";
             } else {
-                var readmeUrl =
-                    "https://github.com/Azure/azure-rest-api-specs/tree/main/specification/" +
-                    spec +
-                    "/resource-manager#tag-" +
-                    tag;
+                const readmeUrl = getServiceUrl(spec) + "#tag-" + tag;
                 content += "* [" + tag + "](" + readmeUrl + ")\n";
             }
-            var sortedVersions = data[service][tag].sort(function (a, b) {
+            const sortedVersions = data[service][tag].sort(function (a, b) {
                 // custom method to sort versions
-                var aVerNums = a.split(".");
-                var bVerNums = b.split(".");
+                const aVerNums = a.split(".");
+                const bVerNums = b.split(".");
                 if (aVerNums[0] > bVerNums[0]) {
                     return -1;
                 } else if (aVerNums[0] < bVerNums[0]) {
@@ -144,34 +156,25 @@ function writeMarkdown() {
                     } else if (aVerNums[1] < bVerNums[1]) {
                         return 1;
                     } else {
-                        var aPatchNums = a.split("-beta.");
-                        var bPatchNums = b.split("-beta.");
+                        const aPatchNums = a.split("-beta.");
+                        const bPatchNums = b.split("-beta.");
                         // sort GA version before beta version
                         if (aPatchNums.length < bPatchNums.length) {
                             return -1;
                         } else if (aPatchNums.length > bPatchNums.length) {
                             return 1;
                         } else if (aPatchNums.length > 1) {
-                          // sort according to beta minor version
-                          return parseInt(bPatchNums[1]) - parseInt(aPatchNums[1]);
+                            // sort according to beta minor version
+                            return parseInt(bPatchNums[1]) - parseInt(aPatchNums[1]);
                         } else {
                             return b.localeCompare(a);
                         }
                     }
                 }
             });
-            for (var k in sortedVersions) {
-                var sdk = sortedVersions[k];
-                content +=
-                    "    * [" +
-                    sdk +
-                    "](" +
-                    groupUrl +
-                    "azure-resourcemanager-" +
-                    service +
-                    "/" +
-                    sdk +
-                    ")\n";
+            for (const k in sortedVersions) {
+                const sdk = sortedVersions[k];
+                content += "    * [" + sdk + "](" + groupUrl + "azure-resourcemanager-" + service + "/" + sdk + ")\n";
             }
         }
         content += "</details>\n";
@@ -207,22 +210,21 @@ function getSpecsMapping() {
     const api_specs_file = path.join(__dirname, "../../eng/mgmt/automation/api-specs.yaml");
     const data = fs.readFileSync(api_specs_file, "utf-8");
     let specs = { managedapplications: "resources" };
-    Object.entries(yaml.parse(data))
-        .forEach(([rp, service]) => {
-            // e.g.
-            // web: (rp)
-            //   service: appservice (service["service"])
-            //   suffix: generated (service["suffix"])
-            let serviceName = rp
-            if (service.hasOwnProperty("service")) {
-                serviceName = service["service"]
-            }
-            if (service.hasOwnProperty("suffix")) {
-                serviceName = serviceName + "-" + service["suffix"];
-            }
-            console.log(serviceName)
-            specs[serviceName] = rp;
-        });
+    Object.entries(yaml.parse(data)).forEach(([rp, service]) => {
+        // e.g.
+        // web: (rp)
+        //   service: appservice (service["service"])
+        //   suffix: generated (service["suffix"])
+        let serviceName = rp;
+        if (service.hasOwnProperty("service")) {
+            serviceName = service["service"];
+        }
+        if (service.hasOwnProperty("suffix")) {
+            serviceName = serviceName + "-" + service["suffix"];
+        }
+        console.log(serviceName);
+        specs[serviceName] = rp;
+    });
     return specs;
 }
 

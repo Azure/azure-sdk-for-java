@@ -6,9 +6,14 @@ package com.azure.communication.callautomation;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Versions of CallingServer service supported by this client library.
+ * Versions of CallAutomation service supported by this client library.
  */
 public enum CallAutomationServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2023-03-06}.
+     */
+    V2023_03_06("2023-03-06"),
+
     /**
      * Service version {@code 2023-01-15-preview}.
      */

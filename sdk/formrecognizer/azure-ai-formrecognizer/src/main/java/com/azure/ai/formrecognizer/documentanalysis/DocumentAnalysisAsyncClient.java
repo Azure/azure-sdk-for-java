@@ -36,28 +36,86 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocAnalysisFeatures;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.activationOperation;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * This class provides an asynchronous client that contains the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are analyzing information from documents and images using custom-built document
- * analysis models, prebuilt models for invoices, receipts, identity documents and business cards, and the layout model.
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
+ * <p>This client provides asynchronous methods to perform:</p>
  *
- * <p><strong>Instantiating an asynchronous Document Analysis Client</strong></p>
+ * <ol>
+ *     <li>Custom Document Analysis: Classification, extraction and analysis of data from forms and documents specific
+ *     to distinct business data and use cases. Use the custom trained model by passing its modelId into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
+ *     <li>General Document Analysis: Extract text, tables, structure, and key-value pairs. Use general document model
+ *     provided by the Form Recognizer service by passing modelId="rebuilt-document" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
+ *     <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices, ID's, W2's and other documents with
+ *     <a href="https://aka.ms/azsdk/formrecognizer/models">supported prebuilt models. Use the prebuilt receipt model
+ *     provided by passing modelId="prebuilt-receipt" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</a></li>
+ *     <li>Layout Analysis: Extract text, selection marks, and tables structures, along with their bounding box
+ *     coordinates, from forms and documents. Use the layout analysis model provided the service by passing
+ *     modelId="prebuilt-layout" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
  *
- * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.instantiation -->
+ * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
+ *
+ * <p><strong>Note: </strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
+ * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and {@link com.azure.ai
+ * .formrecognizer.training.FormTrainingClient}.</p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient} is the asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a DocumentAnalysisAsyncClient with DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}, using
+ * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
+ * <!-- src_embed readme-sample-createDocumentAnalysisAsyncClientWithAAD -->
+ * <pre>
+ * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createDocumentAnalysisAsyncClientWithAAD  -->
+ *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
+ *
+ * <!-- src_embed readme-sample-asyncClient -->
  * <pre>
  * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.instantiation -->
+ * <!-- end readme-sample-asyncClient  -->
  *
+ * @see com.azure.ai.formrecognizer.documentanalysis
  * @see DocumentAnalysisClientBuilder
+ * @see DocumentAnalysisClient
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class, isAsync = true)
 public final class DocumentAnalysisAsyncClient {
@@ -199,7 +257,7 @@ public final class DocumentAnalysisAsyncClient {
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
-                                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
+                                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
                                 finalAnalyzeDocumentOptions.getQueryFields(),
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
@@ -361,7 +419,7 @@ public final class DocumentAnalysisAsyncClient {
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
-                            toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
+                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
                             finalAnalyzeDocumentOptions.getQueryFields(),
                             document,
                             document.getLength(),
