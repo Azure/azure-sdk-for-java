@@ -26,6 +26,7 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -35,6 +36,7 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.patch.CosmosPatchUpdateOperations;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -45,6 +47,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -1570,6 +1573,123 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosSessionRetryOptionsAccessor {
             CosmosRegionSwitchHint getRegionSwitchHint(SessionRetryOptions sessionRetryOptions);
+        }
+    }
+
+    public static final class ItemBulkOperationHelper {
+        private static final AtomicReference<Boolean> itemBulkOperationClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<ItemBulkOperationAccessor> accessor = new AtomicReference<>();
+
+        private ItemBulkOperationHelper() {}
+
+        public static ItemBulkOperationAccessor getItemBulkOperationAccessor() {
+
+            if (!itemBulkOperationClassLoaded.get()) {
+                logger.debug("Initializing itemBulkOperationAccessor...");
+                initializeAllAccessors();
+            }
+
+            ItemBulkOperationAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("itemBulkOperationAccessor is not initialized yet!");
+                System.exit(9728); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setItemBulkOperationAccessor(final ItemBulkOperationAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("ItemBulkOperationAccessor already initialized!");
+            } else {
+                logger.debug("Setting ItemBulkOperationAccessor...");
+                itemBulkOperationClassLoaded.set(true);
+            }
+        }
+
+        public interface ItemBulkOperationAccessor {
+            ObjectNode getSourceItem(ItemBulkOperation itemBulkOperation);
+            void addSourceItem(ItemBulkOperation itemBulkOperation, ObjectNode sourceItem);
+        }
+    }
+
+    public static final class CosmosBulkPatchItemRequestOptionsHelper {
+        private static final AtomicReference<Boolean> cosmosBulkPatchItemRequestOptionsLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosBulkPatchItemRequestOptionsAccessor> accessor = new AtomicReference<>();
+
+        private CosmosBulkPatchItemRequestOptionsHelper() {}
+
+        public static CosmosBulkPatchItemRequestOptionsAccessor getItemBulkOperationAccessor() {
+
+            if (!cosmosBulkPatchItemRequestOptionsLoaded.get()) {
+                logger.debug("Initializing cosmosBulkPatchItemRequestOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosBulkPatchItemRequestOptionsAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("CosmosBulkPatchItemRequestOptionsAccessor is not initialized yet!");
+                System.exit(9729); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setItemBulkOperationAccessor(final CosmosBulkPatchItemRequestOptionsAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosBulkPatchItemRequestOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosBulkPatchItemRequestOptionsAccessor...");
+                cosmosBulkPatchItemRequestOptionsLoaded.set(true);
+            }
+        }
+
+        public interface CosmosBulkPatchItemRequestOptionsAccessor {
+            RequestOptions toRequestOptions(CosmosBulkPatchItemRequestOptions cosmosBulkPatchItemRequestOptions);
+        }
+    }
+
+    public static final class CosmosPatchUpdateOperationsHelper {
+        private final static AtomicBoolean cosmosPatchUpdateOperationsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosPatchUpdateOperationsAccessor> accessor = new AtomicReference<>();
+
+        private CosmosPatchUpdateOperationsHelper() {
+        }
+
+        public static CosmosPatchUpdateOperationsAccessor getCosmosPatchUpdateOperationsAccessor() {
+            if (!cosmosPatchUpdateOperationsClassLoaded.get()) {
+                logger.debug("Initializing CosmosPatchUpdateOperationsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosPatchUpdateOperationsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosPatchUpdateOperationsAccessor is not initialized yet!");
+                System.exit(9730); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosPatchUpdateOperationsAccessor(CosmosPatchUpdateOperationsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosPatchUpdateOperationsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosPatchUpdateOperationsAccessor...");
+                cosmosPatchUpdateOperationsClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosPatchUpdateOperationsAccessor {
+            List<PatchOperation> getPatchOperations(CosmosPatchUpdateOperations cosmosPatchUpdateOperations);
         }
     }
 }

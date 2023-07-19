@@ -3,13 +3,16 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
+import com.azure.cosmos._
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
+import com.azure.cosmos.implementation.batch.ItemBulkOperation
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
-import com.azure.cosmos._
+import reactor.core.publisher.Mono
 import reactor.core.scheduler.Scheduler
 
+import scala.collection.concurrent.TrieMap
 import scala.collection.mutable
 import scala.concurrent.duration.Duration
 // scalastyle:on underscore.import
@@ -99,6 +102,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     case ItemWriteStrategy.ItemPatch => Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
     case _ => None
   }
+  private val readManyInputEmitter: Sinks.Many[ReadManyOption] = Sinks.many().unicast().onBackpressureBuffer()
 
   private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
@@ -128,6 +132,159 @@ class BulkWriter(container: CosmosAsyncContainer,
         -1,
         "")
     }
+  }
+
+  private val readManySubscriptionDisposable: Disposable = {
+    log.logTrace(s"readManySubscriptionDisposable, Context: ${operationContext.toString} ${getThreadInfo}")
+
+    readManyInputEmitter
+        .asFlux()
+        .publishOn(bulkWriterBoundedElastic)
+        .asScala
+        .bufferTimeout(100, Duration.fromNanos(100 * 1000000)) // TODO: configure with configuration
+        .flatMap(readManyOperations => {
+            val cosmosIdentitySet = readManyOperations.map(option => option.cosmosItemIdentity).toSet
+            // calling readMany
+            container
+                .readMany(cosmosIdentitySet.toList.asJava, classOf[ObjectNode])
+                .doOnNext(feedResponse => {
+                    val resultMap = new TrieMap[CosmosItemIdentity, ObjectNode]()
+                    for (itemNode: ObjectNode <- feedResponse.getResults.asScala) {
+                        resultMap += (
+                            new CosmosItemIdentity(
+                                PartitionKeyHelper.getPartitionKeyPath(itemNode, partitionKeyDefinition),
+                                itemNode.get(CosmosConstants.Properties.Id).asText()) -> itemNode)
+                    }
+
+                    // It is possible that multiple cosmosPatchUpdateOperations were targeting for the same item
+                    // Currently, we are still creating one bulk item operation for each cosmosPatchUpdateOperations
+                    // for easier exception and semaphore handling
+                    // However a consequences of it could be, the generated bulk item operation will fail due to conflicts or pre-condition failure
+                    // If this turns out to be a problem, we can do more optimization here: merge multiple cosmosPatchUpdateOperations into one bulkItemOperation
+                    // But even the above approach can only work within the same batch but not for the whole spark partition processing.
+                    for (readManyOption <- readManyOperations) {
+                        val cosmosPatchUpdateOperations =
+                            cosmosPatchHelperOpt
+                                .get
+                                .createCosmosPatchUpdateOperations(partitionKeyDefinition, readManyOption.objectNode)
+
+                        val rootNode =
+                            cosmosPatchHelperOpt
+                                .get
+                                .patchUpdateItem(resultMap.get(readManyOption.cosmosItemIdentity), cosmosPatchUpdateOperations)
+
+                        // create bulk item operation
+                        val etag = Option.apply(rootNode.get(CosmosConstants.Properties.ETag))
+                        val bulkItemOperation = etag match {
+                            case Some(etag) =>
+                                CosmosBulkOperations.getReplaceItemOperation(
+                                    readManyOption.cosmosItemIdentity.getId,
+                                    rootNode,
+                                    readManyOption.cosmosItemIdentity.getPartitionKey,
+                                    new CosmosBulkItemRequestOptions().setIfMatchETag(etag.asText()),
+                                    operationContext)
+                            case None => CosmosBulkOperations.getCreateItemOperation(rootNode, readManyOption.cosmosItemIdentity.getPartitionKey)
+                        }
+
+                        //Set up the sourceItem which will be used during retry
+                        ImplementationBridgeHelpers
+                            .ItemBulkOperationHelper
+                            .getItemBulkOperationAccessor
+                            .addSourceItem(bulkItemOperation.asInstanceOf[ItemBulkOperation[ObjectNode, OperationContext]], readManyOption.objectNode)
+
+                        bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
+                    }
+                })
+                .doOnError(throwable => {
+                    for (readManyOption <- readManyOperations) {
+                        handleReadManyExceptions(throwable, readManyOption)
+                    }
+                })
+                .`then`()
+        })
+        .subscribe()
+  }
+
+  private def handleReadManyExceptions(throwable: Throwable, readManyOption: ReadManyOption): Unit = {
+      throwable match {
+          case e: CosmosException =>
+              val requestOperationContext = readManyOption.operationContext
+              if (shouldRetry(e.getStatusCode, e.getSubStatusCode, requestOperationContext)) {
+                  log.logWarning(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
+                      s"encountered status code '${e.getStatusCode}:${e.getSubStatusCode}' in read many, will retry! " +
+                      s"attemptNumber=${requestOperationContext.attemptNumber}, exceptionMessage=${e.getMessage},  " +
+                      s"Context: {${operationContext.toString}} ${getThreadInfo}")
+
+                  this.scheduleRetry(
+                      readManyOption.cosmosItemIdentity.getPartitionKey,
+                      readManyOption.objectNode,
+                      readManyOption.operationContext,
+                      e.getStatusCode)
+
+              } else {
+                  // Non-retryable exception or has exceeded the max retry count
+                  val requestOperationContext = readManyOption.operationContext
+                  log.logError(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
+                      s"encountered status code '${e.getStatusCode}:${e.getSubStatusCode()}', all retries exhausted! " +
+                      s"attemptNumber=${requestOperationContext.attemptNumber}, exceptionMessage=${e.getMessage}, " +
+                      s"Context: {${operationContext.toString} ${getThreadInfo}")
+
+                  val message = s"All retries exhausted for readMany - " +
+                      s"statusCode=[${e.getStatusCode}:${e.getSubStatusCode}] " +
+                      s"itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}]"
+
+                  val exceptionToBeThrown = new BulkOperationFailedException(e.getStatusCode, e.getSubStatusCode, message, e)
+                  captureIfFirstFailure(exceptionToBeThrown)
+                  cancelWork()
+              }
+          case _ => // handle non cosmos exceptions
+              log.logError(s"Unexpected failure code path in Bulk ingestion readMany stage, " +
+                  s"Context: ${operationContext.toString} ${getThreadInfo}", throwable)
+              captureIfFirstFailure(throwable)
+              cancelWork()
+              markTaskCompletion()
+              Mono.empty()
+      }
+  }
+
+  private def scheduleRetry(
+                               partitionKey: PartitionKey,
+                               objectNode: ObjectNode,
+                               operationContext: OperationContext,
+                               statusCode: Int): Unit = {
+      this.pendingRetries.incrementAndGet();
+      // this is to ensure the submission will happen on a different thread in background
+      // and doesn't block the active thread
+      val deferredRetryMono = SMono.defer(() => {
+          scheduleWriteInternal(
+              partitionKey,
+              objectNode,
+              OperationContext(
+                  operationContext.itemId,
+                  operationContext.partitionKeyValue,
+                  operationContext.eTag,
+                  operationContext.attemptNumber + 1))
+          this.pendingRetries.decrementAndGet()
+          SMono.empty
+      })
+
+      if (Exceptions.isTimeout(statusCode)) {
+          deferredRetryMono
+              .delaySubscription(
+                  Duration(
+                      BulkWriter.minDelayOn408RequestTimeoutInMs +
+                          scala.util.Random.nextInt(
+                              BulkWriter.maxDelayOn408RequestTimeoutInMs - BulkWriter.minDelayOn408RequestTimeoutInMs),
+                      TimeUnit.MILLISECONDS),
+                  Schedulers.boundedElastic())
+              .subscribeOn(Schedulers.boundedElastic())
+              .subscribe()
+
+      } else {
+          deferredRetryMono
+              .subscribeOn(Schedulers.boundedElastic())
+              .subscribe()
+      }
   }
 
   private val subscriptionDisposable: Disposable = {
@@ -239,11 +396,30 @@ class BulkWriter(container: CosmosAsyncContainer,
   private def scheduleWriteInternal(partitionKeyValue: PartitionKey,
                                     objectNode: ObjectNode,
                                     operationContext: OperationContext): Unit = {
-    activeTasks.incrementAndGet()
-    if (operationContext.attemptNumber > 1) {
-      log.logInfo(s"bulk scheduleWrite attemptCnt: ${operationContext.attemptNumber}, " +
-        s"Context: ${operationContext.toString} ${getThreadInfo}")
-    }
+      activeTasks.incrementAndGet()
+      if (operationContext.attemptNumber > 1) {
+          log.logInfo(s"bulk scheduleWrite attemptCnt: ${operationContext.attemptNumber}, " +
+              s"Context: ${operationContext.toString} ${getThreadInfo}")
+      }
+
+      writeConfig.itemWriteStrategy match {
+          case ItemWriteStrategy.ItemPatchUpdate => scheduleReadManyInternal(partitionKeyValue, objectNode, operationContext)
+          case _ => scheduleBulkWriteInternal(partitionKeyValue, objectNode, operationContext)
+      }
+  }
+
+  private def scheduleReadManyInternal(partitionKeyValue: PartitionKey,
+                                       objectNode: ObjectNode,
+                                       operationContext: OperationContext): Unit = {
+      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+      readManyInputEmitter.emitNext(
+          ReadManyOption(new CosmosItemIdentity(partitionKeyValue, operationContext.itemId), objectNode, operationContext),
+          emitFailureHandler)
+  }
+
+  private def scheduleBulkWriteInternal(partitionKeyValue: PartitionKey,
+                                                objectNode: ObjectNode,
+                                                operationContext: OperationContext): Unit = {
 
     val bulkItemOperation = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite =>
@@ -296,7 +472,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
 
-    val requestOptions = new CosmosBulkPatchItemRequestOptions();
+    val requestOptions = new CosmosBulkPatchItemRequestOptions()
     if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
       requestOptions.setFilterPredicate(patchConfigs.filter.get)
     }
@@ -352,36 +528,24 @@ class BulkWriter(container: CosmosAsyncContainer,
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} ${getThreadInfo}")
 
-      this.pendingRetries.incrementAndGet();
+      // for bulk write, each operation can be a result of multiple source operations,so when fail
+      // we need to schedule all source operations
+      val sourceItem = itemOperation match {
+          case bulkItemOperation: ItemBulkOperation[ObjectNode, OperationContext] =>
+              val bulkOperationSourceItemOpt = Option.apply(
+                  ImplementationBridgeHelpers
+                      .ItemBulkOperationHelper
+                      .getItemBulkOperationAccessor
+                      .getSourceItem(bulkItemOperation))
 
-      // this is to ensure the submission will happen on a different thread in background
-      // and doesn't block the active thread
-      val deferredRetryMono = SMono.defer(() => {
-        scheduleWriteInternal(itemOperation.getPartitionKeyValue,
-          itemOperation.getItem.asInstanceOf[ObjectNode],
-          OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
-        this.pendingRetries.decrementAndGet()
-        SMono.empty
-      })
-
-      if (Exceptions.isTimeout(effectiveStatusCode)) {
-        deferredRetryMono
-          .delaySubscription(
-            Duration(
-              BulkWriter.minDelayOn408RequestTimeoutInMs +
-                scala.util.Random.nextInt(
-                  BulkWriter.maxDelayOn408RequestTimeoutInMs - BulkWriter.minDelayOn408RequestTimeoutInMs),
-              TimeUnit.MILLISECONDS),
-            Schedulers.boundedElastic())
-          .subscribeOn(Schedulers.boundedElastic())
-          .subscribe()
-
-      } else {
-        deferredRetryMono
-          .subscribeOn(Schedulers.boundedElastic())
-          .subscribe()
+              bulkOperationSourceItemOpt match {
+                  case Some(bulkOperationSourceItem) => bulkOperationSourceItem
+                  case None => itemOperation.getItem.asInstanceOf[ObjectNode]
+              }
+          case _ => itemOperation.getItem.asInstanceOf[ObjectNode]
       }
 
+      this.scheduleRetry(itemOperation.getPartitionKeyValue, sourceItem, context, effectiveStatusCode)
       isGettingRetried.set(true)
     } else {
       log.logError(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
@@ -607,8 +771,14 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private def shouldRetry(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
-    val returnValue = operationContext.attemptNumber < writeConfig.maxRetryCount &&
-      Exceptions.canBeTransientFailure(statusCode, subStatusCode)
+      var returnValue = false
+      if (operationContext.attemptNumber < writeConfig.maxRetryCount) {
+          returnValue = writeConfig.itemWriteStrategy match {
+              case ItemWriteStrategy.ItemPatchUpdate =>
+                  this.shouldRetryForItemPatchUpdate(statusCode, subStatusCode)
+              case _ => Exceptions.canBeTransientFailure(statusCode, subStatusCode)
+          }
+      }
 
     log.logDebug(s"Should retry statusCode '$statusCode:$subStatusCode' -> $returnValue, " +
       s"Context: ${operationContext.toString} ${getThreadInfo}")
@@ -616,14 +786,26 @@ class BulkWriter(container: CosmosAsyncContainer,
     returnValue
   }
 
+    private def shouldRetryForItemPatchUpdate(statusCode: Int, subStatusCode: Int): Boolean = {
+        Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
+            Exceptions.isResourceExistsException(statusCode) ||
+            Exceptions.isPreconditionFailedException(statusCode)
+    }
+
   private case class OperationContext
   (
     itemId: String,
     partitionKeyValue: PartitionKey,
     eTag: Option[String],
-    attemptNumber: Int /** starts from 1 * */)
+    attemptNumber: Int /** starts from 1 * */,
+  )
 
-  private def getId(objectNode: ObjectNode) = {
+  private case class ReadManyOption(
+                                       cosmosItemIdentity: CosmosItemIdentity,
+                                       objectNode: ObjectNode,
+                                       operationContext: OperationContext)
+
+    private def getId(objectNode: ObjectNode) = {
     val idField = objectNode.get(CosmosConstants.Properties.Id)
     assume(idField != null && idField.isTextual)
     idField.textValue()

@@ -69,7 +69,7 @@ class PointWriter(container: CosmosAsyncContainer,
     "PointWriter")
 
   private val cosmosPatchHelpOpt = cosmosWriteConfig.itemWriteStrategy match {
-    case ItemWriteStrategy.ItemPatch || ItemWriteStrategy.ItemPatchUpdate =>
+    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchUpdate =>
         Some(new CosmosPatchHelper(diagnosticsConfig, cosmosWriteConfig.patchConfigs.get))
     case _ => None
   }

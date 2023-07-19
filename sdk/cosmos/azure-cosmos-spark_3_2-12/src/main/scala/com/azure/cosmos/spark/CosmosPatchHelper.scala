@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.implementation.patch.{PatchOperationCore, PatchOperationType}
+import com.azure.cosmos.implementation.patch.{CosmosPatchUpdateOperations, PatchOperationCore, PatchOperationType}
 import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
@@ -165,9 +165,9 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
  }
 
   def createCosmosPatchUpdateOperations(partitionKeyDefinition: PartitionKeyDefinition,
-                                        objectNode: ObjectNode): CosmosPatchOperations = {
+                                        objectNode: ObjectNode): CosmosPatchUpdateOperations = {
 
-      val cosmosPatchOperations = CosmosPatchOperations.create()
+      val cosmosPatchUpdateOperations = CosmosPatchUpdateOperations.create()
       val fieldIterator = objectNode.fields()
       while (fieldIterator.hasNext) {
           val fieldEntry = fieldIterator.next()
@@ -175,7 +175,7 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
           // check whether there is customized mapping path
           cosmosPatchConfigs.columnConfigsMap.get(fieldEntry.getKey) match {
               case Some(userDefinedColumnConfig) =>
-                  if (isAllowedProperty(userDefinedColumnConfig.mappingPath, partitionKeyDefinition)) {
+                  if (!systemProperties.contains(userDefinedColumnConfig.mappingPath.substring(1))) {
                       val node = fieldEntry.getValue
                       val effectiveNode = if (userDefinedColumnConfig.isRawJson) {
                           objectMapper.readTree(node.asText())
@@ -185,29 +185,32 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
 
                       userDefinedColumnConfig.operationType match {
                           case CosmosPatchOperationTypes.Set =>
-                              cosmosPatchOperations.set(userDefinedColumnConfig.mappingPath, effectiveNode)
+                              cosmosPatchUpdateOperations.set(userDefinedColumnConfig.mappingPath, effectiveNode)
                           case _ => throw new IllegalArgumentException(s"Patch operation type is not supported for patch update write strategy")
                       }
                   }
 
               case None =>
                   if (isAllowedProperty(fieldEntry.getKey, partitionKeyDefinition)) {
-                      cosmosPatchOperations.set(fieldEntry.getKey, fieldEntry.getValue)
+                      cosmosPatchUpdateOperations.set(fieldEntry.getKey, fieldEntry.getValue)
                   }
           }
       }
 
-      cosmosPatchOperations
+      cosmosPatchUpdateOperations
   }
 
-  def patchUpdateItem(itemResponse: Option[ObjectNode], cosmosPatchOperations: CosmosPatchOperations): ObjectNode = {
+  def patchUpdateItem(itemToBeUpdatedOpt: Option[ObjectNode], cosmosPatchUpdateOperations: CosmosPatchUpdateOperations): ObjectNode = {
       val operations =
           ImplementationBridgeHelpers
-              .CosmosPatchOperationsHelper
-              .getCosmosPatchOperationsAccessor
-              .getPatchOperations(cosmosPatchOperations)
+              .CosmosPatchUpdateOperationsHelper
+              .getCosmosPatchUpdateOperationsAccessor
+              .getPatchOperations(cosmosPatchUpdateOperations)
 
-      val rootNode = itemResponse.getOrElse(Utils.getSimpleObjectMapper().createObjectNode())
+      val rootNode =
+          Utils.getSimpleObjectMapper.createObjectNode()
+              .setAll(itemToBeUpdatedOpt.getOrElse(Utils.getSimpleObjectMapper().createObjectNode()))
+
       operations.forEach(patchOperation => {
           val patchOperationCore = patchOperation.asInstanceOf[PatchOperationCore[ObjectNode]]
           patchUpdateField(rootNode, patchOperationCore.getOperationType, patchOperationCore.getPath, patchOperationCore.getResource)
@@ -218,7 +221,7 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
 
   private[this] def patchUpdateField(rootNode: ObjectNode, patchOperationType: PatchOperationType, path: String, pathValue: ObjectNode): Unit = {
       patchOperationType match {
-          case CosmosPatchOperationTypes.Set =>
+          case PatchOperationType.SET =>
               val pathArray = path.stripPrefix("/").split("/")
               var parentNode: ObjectNode = rootNode
               for (pathIndex <- 0 until pathArray.size - 1) {

@@ -4,7 +4,10 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.batch.ItemBulkOperation;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Encapsulates options that can be specified for an patch operation used in Bulk execution. It can be passed while
@@ -131,4 +134,11 @@ public final class CosmosBulkPatchItemRequestOptions {
         requestOptions.setFilterPredicate(this.filterPredicate);
         return requestOptions;
     }
+
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosBulkPatchItemRequestOptionsHelper.setItemBulkOperationAccessor(
+            cosmosBulkPatchItemRequestOptions -> cosmosBulkPatchItemRequestOptions.toRequestOptions());
+    }
+
+    static { initialize(); }
 }
