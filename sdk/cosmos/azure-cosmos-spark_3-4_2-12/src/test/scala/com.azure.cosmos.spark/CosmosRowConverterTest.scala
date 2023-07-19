@@ -39,7 +39,7 @@ class CosmosRowConverterTest extends UnitSpec with BasicLoggingTrait {
         val colName4 = "testCol4"
         val currentMillis = System.currentTimeMillis()
         val currentTimestampNTZ = OffsetDateTime.now().toLocalDateTime()
-        val currentMillis2 = currentTimestampNTZ.toEpochSecond(OffsetDateTime.now().getOffset)
+        val currentEpochSeconds = currentTimestampNTZ.toEpochSecond(OffsetDateTime.now().getOffset)
         val colVal1 = new Date(currentMillis)
         val colVal2 = LocalDateTime.from(currentTimestampNTZ)
         val colVal3 = currentMillis.toInt
@@ -52,7 +52,7 @@ class CosmosRowConverterTest extends UnitSpec with BasicLoggingTrait {
 
         val objectNode = defaultRowConverter.fromRowToObjectNode(row)
         objectNode.get(colName1).asLong() shouldEqual currentMillis
-        objectNode.get(colName2).asLong() shouldEqual currentMillis2
+        objectNode.get(colName2).asLong() shouldEqual currentEpochSeconds
         objectNode.get(colName3).asInt() shouldEqual colVal3
         objectNode.get(colName4).asInt() shouldEqual colVal3
     }
