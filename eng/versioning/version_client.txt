@@ -191,9 +191,9 @@ com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management-web;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.9.0;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-feature-management-web;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-feature-management;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.9.1;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-dependencies;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-messaging-azure;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;4.9.0;4.10.0-beta.1
