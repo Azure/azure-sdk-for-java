@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class LogsQueryClientTest extends TestProxyTestBase {
 
     private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
-            .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
+            .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
     private LogsQueryClient client;
     private static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
             + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
@@ -60,7 +60,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @BeforeEach
     public void setup() {
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
-            .endpoint(MonitorQueryTestUtils.getLogEndpoint())
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
                     public int getMaxRetries() {
@@ -82,6 +81,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
                     .credential(getCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
         this.client = clientBuilder
                 .buildClient();
@@ -211,7 +211,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
                 .getRows()
                 .stream()
                 .map(row -> {
-                    System.out.println(row.getColumnValue("TenantId").get().getValueAsString());
                     return row.getColumnValue("TenantId").get();
                 })
                 .distinct()
