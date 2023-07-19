@@ -42,7 +42,7 @@ com.azure:azure-ai-formrecognizer;4.0.8;4.1.0-beta.3
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-metricsadvisor;1.1.15;1.2.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-openai;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-ai-openai;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-textanalytics;5.3.0;5.4.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -93,15 +93,15 @@ com.azure:azure-core-test;1.18.1;1.19.0-beta.1
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.37;1.0.0-beta.38
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-cosmos;4.47.0;4.48.0
+com.azure:azure-cosmos;4.48.0;4.49.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;1.0.0-beta.1;1.0.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.20.0;4.21.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;4.20.0;4.21.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.20.0;4.21.0-beta.1
-com.azure:azure-cosmos-encryption;2.2.0;2.3.0
-com.azure:azure-cosmos-test;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-cosmos-encryption;2.3.0;2.4.0-beta.1
+com.azure:azure-cosmos-test;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.4.6;1.5.0-beta.2
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -137,7 +137,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.1;1.0.0-bet
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.14.2;7.15.0-beta.2
+com.azure:azure-messaging-servicebus;7.14.2;7.15.0-beta.3
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -243,7 +243,7 @@ com.azure.spring:spring-cloud-azure-trace-sleuth;4.9.0;4.10.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.28.0;2.29.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-authorization;2.28.0;2.29.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-authorization;2.28.0;2.29.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.28.0;2.29.0-beta.1
@@ -275,7 +275,7 @@ com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.4;1
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.6;1.0.0-beta.7
+com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.7;1.0.0-beta.8
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.1.0;1.2.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.2;1.0.0-beta.3
@@ -313,7 +313,7 @@ com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.2;1.0.0-beta
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-batchai;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0-beta.6;1.0.0-beta.7
-com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-databox;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0-beta.2;1.0.0-beta.3
@@ -374,7 +374,7 @@ com.azure.resourcemanager:azure-resourcemanager-edgeorder;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-securityinsights;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-oep;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dnsresolver;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.0.0-beta.5;1.0.0-beta.6
+com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-azureadexternalidentities;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dashboard;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-servicelinker;1.0.0-beta.2;1.0.0-beta.3
@@ -417,7 +417,7 @@ com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managementgroups;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;1.0.0;1.1.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 

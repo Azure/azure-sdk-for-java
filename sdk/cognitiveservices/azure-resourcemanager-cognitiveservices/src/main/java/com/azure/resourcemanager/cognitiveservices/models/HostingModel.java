@@ -19,6 +19,9 @@ public final class HostingModel extends ExpandableStringEnum<HostingModel> {
     /** Static value DisconnectedContainer for HostingModel. */
     public static final HostingModel DISCONNECTED_CONTAINER = fromString("DisconnectedContainer");
 
+    /** Static value ProvisionedWeb for HostingModel. */
+    public static final HostingModel PROVISIONED_WEB = fromString("ProvisionedWeb");
+
     /**
      * Creates a new instance of HostingModel value.
      *

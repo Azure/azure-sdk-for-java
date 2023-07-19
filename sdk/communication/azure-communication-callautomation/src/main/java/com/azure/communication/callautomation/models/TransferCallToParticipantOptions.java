@@ -21,12 +21,7 @@ public final class TransferCallToParticipantOptions {
     private final CommunicationIdentifier targetParticipant;
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
-
-
-
-    /**
-     * The operational context
-     */
+    private String callbackUrlOverride;
     private String operationContext;
 
     /**
@@ -129,5 +124,25 @@ public final class TransferCallToParticipantOptions {
      */
     public Map<String, String> getSipHeaders() {
         return sipHeaders;
+    }
+
+    /**
+     * Get the callbackUrlOverride.
+     *
+     * @return the callbackUrlOverride
+     */
+    public String  getCallbackUrlOverride() {
+        return callbackUrlOverride;
+    }
+
+    /**
+     * Set the operationContext.
+     *
+     * @param callbackUrlOverride the callbackUrlOverride to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setCallbackUrlOverride(String callbackUrlOverride) {
+        this.callbackUrlOverride = callbackUrlOverride;
+        return this;
     }
 }
