@@ -3,15 +3,6 @@
 
 package com.azure.maps.search;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoLineString;
@@ -33,14 +24,21 @@ import com.azure.maps.search.models.SearchPointOfInterestCategoryOptions;
 import com.azure.maps.search.models.SearchPointOfInterestOptions;
 import com.azure.maps.search.models.SearchStructuredAddressOptions;
 import com.azure.maps.search.models.StructuredAddress;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import reactor.test.StepVerifier;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
