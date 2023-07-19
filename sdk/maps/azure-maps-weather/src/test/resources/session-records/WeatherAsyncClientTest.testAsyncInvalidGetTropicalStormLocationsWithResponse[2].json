@@ -1,47 +1,78 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/active/json?api-version=1.1",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/weather/tropical/storms/active/json?api-version=1.1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "public, max-age=509",
+        "Content-Length": "200",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:52:18 GMT",
+        "Expires": "Wed, 19 Jul 2023 23:00:47 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 7A9B5962DE45400F809C1EC45D9B62E4 Ref B: STBEDGE0622 Ref C: 2023-07-19T22:52:18Z"
+      },
+      "ResponseBody": {
+        "results": [
+          {
+            "year": "2023",
+            "basinId": "AL",
+            "govId": 5,
+            "name": "Don",
+            "isActive": true,
+            "isSubtropical": false
+          },
+          {
+            "year": "2023",
+            "basinId": "EP",
+            "govId": 3,
+            "name": "Calvin",
+            "isActive": true,
+            "isSubtropical": false
+          }
+        ]
+      }
     },
-    "Response" : {
-      "content-length" : "109",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: B771EA65ADD1434E814F3069C9B473F1 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:32Z",
-      "Date" : "Fri, 11 Nov 2022 13:19:32 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=425",
-      "Vary" : "Accept-Encoding",
-      "Expires" : "Fri, 11 Nov 2022 13:26:37 GMT",
-      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isSubtropical\":false}]}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/locations/json?api-version=1.1&year=-1&basinId=AL&govId=17",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "content-length" : "77",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: 8DA547CAF13146FE9FA33358BA074E88 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:32Z",
-      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"year should be in YYYY format\"}}",
-      "Date" : "Fri, 11 Nov 2022 13:19:32 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/weather/tropical/storms/locations/json?api-version=1.1\u0026year=-1\u0026basinId=AL\u0026govId=5",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "77",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:52:18 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 6BDF0141E91E4DACAAE730B7751CD766 Ref B: STBEDGE0622 Ref C: 2023-07-19T22:52:18Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "400 BadRequest",
+          "message": "year should be in YYYY format"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

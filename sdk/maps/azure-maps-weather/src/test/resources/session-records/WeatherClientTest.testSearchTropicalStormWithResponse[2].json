@@ -1,50 +1,88 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/active/json?api-version=1.1",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/weather/tropical/storms/active/json?api-version=1.1",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "public, max-age=510",
+        "Content-Length": "200",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:52:17 GMT",
+        "Expires": "Wed, 19 Jul 2023 23:00:47 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: B96FE37107A14FF8AD52E015A42F1FEC Ref B: STBEDGE0620 Ref C: 2023-07-19T22:52:17Z"
+      },
+      "ResponseBody": {
+        "results": [
+          {
+            "year": "2023",
+            "basinId": "AL",
+            "govId": 5,
+            "name": "Don",
+            "isActive": true,
+            "isSubtropical": false
+          },
+          {
+            "year": "2023",
+            "basinId": "EP",
+            "govId": 3,
+            "name": "Calvin",
+            "isActive": true,
+            "isSubtropical": false
+          }
+        ]
+      }
     },
-    "Response" : {
-      "content-length" : "109",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 99D825801D6748B9931D013CB41BC654 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:48Z",
-      "Date" : "Fri, 11 Nov 2022 13:19:47 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=409",
-      "Vary" : "Accept-Encoding",
-      "Expires" : "Fri, 11 Nov 2022 13:26:37 GMT",
-      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isSubtropical\":false}]}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/json?api-version=1.1&year=2022&basinId=AL&govId=17",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "content-length" : "127",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 5CB80C377B294DC6A068F121688D0A05 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:48Z",
-      "Date" : "Fri, 11 Nov 2022 13:19:48 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=586",
-      "Vary" : "Accept-Encoding",
-      "Expires" : "Fri, 11 Nov 2022 13:29:34 GMT",
-      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isRetired\":false,\"isSubtropical\":false}]}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/weather/tropical/storms/json?api-version=1.1\u0026year=2023\u0026basinId=AL\u0026govId=5",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "public, max-age=600",
+        "Content-Length": "123",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:52:17 GMT",
+        "Expires": "Wed, 19 Jul 2023 23:02:17 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: A7D2D1FC0959442ABA8BDF164BCBFCD5 Ref B: STBEDGE0216 Ref C: 2023-07-19T22:52:17Z"
+      },
+      "ResponseBody": {
+        "results": [
+          {
+            "year": "2023",
+            "basinId": "AL",
+            "govId": 5,
+            "name": "Don",
+            "isActive": true,
+            "isRetired": false,
+            "isSubtropical": false
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

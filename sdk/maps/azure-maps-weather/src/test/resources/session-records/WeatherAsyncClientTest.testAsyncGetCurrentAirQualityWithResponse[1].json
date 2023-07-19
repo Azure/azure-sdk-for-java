@@ -1,27 +1,43 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/weather/airQuality/current/json?api-version=1.0&language=es&query=47.632346%2C-122.138874&pollutants=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.0 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "content-length" : "317",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 5CA39EB75F114CDBAE45ED58AFF31946 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:41Z",
-      "Date" : "Fri, 11 Nov 2022 13:19:41 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "public, max-age=887",
-      "Vary" : "Accept-Encoding",
-      "Expires" : "Fri, 11 Nov 2022 13:34:28 GMT",
-      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T12:00:00Z\",\"index\":31.3,\"globalIndex\":15.0,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Excelente\",\"categoryColor\":\"#00E39B\",\"description\":\"La calidad del aire es idónea para la mayoría de personas; puede disfrutar de sus actividades al aire libre con normalidad.\"}]}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/weather/airQuality/current/json?api-version=1.0\u0026language=es\u0026query=47.632346%2C-122.138874\u0026pollutants=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "public, max-age=899",
+        "Content-Length": "369",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:52:18 GMT",
+        "Expires": "Wed, 19 Jul 2023 23:07:17 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 8161535476144923A9AD6DB55B526E85 Ref B: STBEDGE0210 Ref C: 2023-07-19T22:52:18Z"
+      },
+      "ResponseBody": {
+        "results": [
+          {
+            "dateTime": "2023-07-19T22:00:00Z",
+            "index": 32.2,
+            "globalIndex": 34.9,
+            "dominantPollutant": "Ozone",
+            "category": "Buena",
+            "categoryColor": "#43D357",
+            "description": "La calidad del aire es generalmente aceptable para la mayor\u00EDa de personas. Sin embargo, los grupos sensibles pueden experimentar s\u00EDntomas de menores a a moderados por la exposici\u00F3n a largo plazo."
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }
