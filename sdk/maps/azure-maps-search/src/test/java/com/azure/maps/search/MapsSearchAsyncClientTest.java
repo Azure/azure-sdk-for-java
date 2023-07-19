@@ -27,6 +27,7 @@ import com.azure.maps.search.models.StructuredAddress;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -540,6 +541,7 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     }
 
     // Test async search along route
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchAlongRoute(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) throws IOException {
@@ -557,6 +559,7 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
 
     // Test async search along route with response
     // Case 1: 200
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchAlongRouteWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) throws IOException {

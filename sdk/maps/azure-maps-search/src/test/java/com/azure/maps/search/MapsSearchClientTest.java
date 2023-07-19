@@ -28,7 +28,7 @@ import com.azure.maps.search.models.SearchPointOfInterestCategoryOptions;
 import com.azure.maps.search.models.SearchPointOfInterestOptions;
 import com.azure.maps.search.models.SearchStructuredAddressOptions;
 import com.azure.maps.search.models.StructuredAddress;
-
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -458,6 +458,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     }
 
     // Test search along route
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testSearchAlongRoute(HttpClient httpClient, MapsSearchServiceVersion serviceVersion)
@@ -472,6 +473,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
 
     // Test search along route with response
     // Case 1: 200
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testSearchAlongRouteWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion)
