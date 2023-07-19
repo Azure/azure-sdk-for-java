@@ -103,6 +103,76 @@ public class UsernamePasswordCredentialTest {
     }
 
     @Test
+    public void testValidUserCredentialCAE() throws Exception {
+        // setup
+        String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
+        String fakePasswordPlaceholder = "fakePasswordPlaceholder";
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setEnableCae(true);
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net").setEnableCae(true);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder, fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+            when(identityClient.authenticateWithPublicClientCache(any(), any()))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0)) && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalToken(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            StepVerifier.create(credential.getToken(request2))
+                .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithUsernamePassword(request1, fakeUsernamePlaceholder, fakePasswordPlaceholder)).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))
+                        && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalTokenSync(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
+            // test
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+
+            accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
     public void testInvalidUserCredential() throws Exception {
         // setup
         String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
