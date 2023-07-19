@@ -3,12 +3,11 @@
 
 package com.azure.maps.timezone;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TimeZoneClientBuilderTest {
     // Test for null timezoneClientId, the client ID value
