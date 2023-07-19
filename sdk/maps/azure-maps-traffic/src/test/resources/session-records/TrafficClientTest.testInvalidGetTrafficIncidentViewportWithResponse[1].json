@@ -1,24 +1,33 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/traffic/incident/viewport/json?api-version=1.0&boundingbox=45.0%2C45.0%2C45.0%2C45.0&boundingzoom=-1000&overviewbox=45.0%2C45.0%2C45.0%2C45.0&overviewzoom=2&copyright=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaTrafficSDK/1.0 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "103",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: 9CCB8874E4FA45A299266D223FF55B6B Ref B: PAOEDGE0520 Ref C: 2022-10-24T21:06:51Z",
-      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"boundingZoom value should be between 0 and 22 inclusive\"}}",
-      "Date" : "Mon, 24 Oct 2022 21:06:51 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/traffic/incident/viewport/json?api-version=1.0\u0026boundingbox=45.0%2C45.0%2C45.0%2C45.0\u0026boundingzoom=-1000\u0026overviewbox=45.0%2C45.0%2C45.0%2C45.0\u0026overviewzoom=2\u0026copyright=true",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "103",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:49:48 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 4D6F167143AC48D5806C70B8C34B0544 Ref B: STBEDGE0113 Ref C: 2023-07-19T22:49:49Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "400 BadRequest",
+          "message": "boundingZoom value should be between 0 and 22 inclusive"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
