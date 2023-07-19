@@ -1,24 +1,33 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/timezone/byId/json?api-version=1.0&options=all&query=",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaTimezoneSDK/1.0 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "73",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: CC8027B6ECB64522A479C22270BB06A9 Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:52Z",
-      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"query is missing or empty\"}}",
-      "Date" : "Thu, 29 Sep 2022 21:00:52 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/timezone/byId/json?api-version=1.0\u0026options=all\u0026query=",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "73",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:42:18 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 0038E09769F24119934DD18DEBC5B7A2 Ref B: STBEDGE0114 Ref C: 2023-07-19T22:42:19Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "400 BadRequest",
+          "message": "query is missing or empty"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
