@@ -34,18 +34,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkDevicesClient;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetDeviceStatusPropertiesInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetDynamicInterfaceMapsPropertiesItemInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetStaticInterfaceMapsPropertiesItemInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.SupportPackagePropertiesInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevicePatchParameters;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevicesListResult;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdatePowerCycleProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersionProperties;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.azure.resourcemanager.managednetworkfabric.models.RebootProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
 import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -122,7 +118,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -160,7 +156,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/reboot")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reboot(
             @HostParam("$host") String endpoint,
@@ -168,15 +164,16 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("networkDeviceName") String networkDeviceName,
+            @BodyParam("application/json") RebootProperties body,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/restoreConfig")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/refreshConfiguration")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restoreConfig(
+        Mono<Response<Flux<ByteBuffer>>> refreshConfiguration(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -187,87 +184,31 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updateVersion")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updateAdministrativeState")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateVersion(
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("networkDeviceName") String networkDeviceName,
-            @BodyParam("application/json") UpdateVersionProperties body,
+            @BodyParam("application/json") UpdateDeviceAdministrativeState body,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/generateSupportPackage")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/upgrade")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> generateSupportPackage(
+        Mono<Response<Flux<ByteBuffer>>> upgrade(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("networkDeviceName") String networkDeviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updatePowerCycle")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updatePowerCycle(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkDeviceName") String networkDeviceName,
-            @BodyParam("application/json") UpdatePowerCycleProperties body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/getStatus")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getStatus(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkDeviceName") String networkDeviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/getStaticInterfaceMaps")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getStaticInterfaceMaps(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkDeviceName") String networkDeviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/getDynamicInterfaceMaps")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getDynamicInterfaceMaps(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkDeviceName") String networkDeviceName,
+            @BodyParam("application/json") UpdateVersion body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -303,7 +244,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition along with {@link Response} on successful completion of {@link
+     * @return the Network Device resource definition along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -363,7 +304,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition along with {@link Response} on successful completion of {@link
+     * @return the Network Device resource definition along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -419,7 +360,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkDevice resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreateAsync(
@@ -447,7 +388,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkDevice resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreateAsync(
@@ -472,7 +413,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
@@ -492,7 +433,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
@@ -511,7 +452,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition on successful completion of {@link Mono}.
+     * @return the Network Device resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceInner> createAsync(
@@ -533,7 +474,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition on successful completion of {@link Mono}.
+     * @return the Network Device resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceInner> createAsync(
@@ -554,7 +495,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner create(String resourceGroupName, String networkDeviceName, NetworkDeviceInner body) {
@@ -573,7 +514,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner create(
@@ -584,7 +525,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -635,7 +576,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -684,7 +625,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -702,7 +643,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -721,7 +662,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -746,7 +687,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition along with {@link Response} on successful completion of {@link
+     * @return the Network Device resource definition along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -806,7 +747,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition along with {@link Response} on successful completion of {@link
+     * @return the Network Device resource definition along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -862,7 +803,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkDevice resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdateAsync(
@@ -890,7 +831,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkDevice resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdateAsync(
@@ -915,7 +856,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
@@ -935,7 +876,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
@@ -954,7 +895,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition on successful completion of {@link Mono}.
+     * @return the Network Device resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceInner> updateAsync(
@@ -976,7 +917,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition on successful completion of {@link Mono}.
+     * @return the Network Device resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceInner> updateAsync(
@@ -997,7 +938,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner update(
@@ -1017,7 +958,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner update(
@@ -1611,15 +1552,17 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rebootWithResponseAsync(
-        String resourceGroupName, String networkDeviceName) {
+        String resourceGroupName, String networkDeviceName, RebootProperties body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1639,6 +1582,11 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
         if (networkDeviceName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1651,6 +1599,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
                             resourceGroupName,
                             this.client.getApiVersion(),
                             networkDeviceName,
+                            body,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1662,16 +1611,18 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rebootWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
+        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1691,6 +1642,11 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
         if (networkDeviceName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1701,712 +1657,208 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
                 resourceGroupName,
                 this.client.getApiVersion(),
                 networkDeviceName,
-                accept,
-                context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRebootAsync(String resourceGroupName, String networkDeviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = rebootWithResponseAsync(resourceGroupName, networkDeviceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRebootAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = rebootWithResponseAsync(resourceGroupName, networkDeviceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReboot(String resourceGroupName, String networkDeviceName) {
-        return this.beginRebootAsync(resourceGroupName, networkDeviceName).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReboot(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return this.beginRebootAsync(resourceGroupName, networkDeviceName, context).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> rebootAsync(String resourceGroupName, String networkDeviceName) {
-        return beginRebootAsync(resourceGroupName, networkDeviceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> rebootAsync(String resourceGroupName, String networkDeviceName, Context context) {
-        return beginRebootAsync(resourceGroupName, networkDeviceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reboot(String resourceGroupName, String networkDeviceName) {
-        rebootAsync(resourceGroupName, networkDeviceName).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reboot(String resourceGroupName, String networkDeviceName, Context context) {
-        rebootAsync(resourceGroupName, networkDeviceName, context).block();
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restoreConfigWithResponseAsync(
-        String resourceGroupName, String networkDeviceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restoreConfig(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkDeviceName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restoreConfigWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .restoreConfig(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkDeviceName,
-                accept,
-                context);
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestoreConfigAsync(
-        String resourceGroupName, String networkDeviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = restoreConfigWithResponseAsync(resourceGroupName, networkDeviceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestoreConfigAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreConfigWithResponseAsync(resourceGroupName, networkDeviceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestoreConfig(String resourceGroupName, String networkDeviceName) {
-        return this.beginRestoreConfigAsync(resourceGroupName, networkDeviceName).getSyncPoller();
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestoreConfig(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return this.beginRestoreConfigAsync(resourceGroupName, networkDeviceName, context).getSyncPoller();
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restoreConfigAsync(String resourceGroupName, String networkDeviceName) {
-        return beginRestoreConfigAsync(resourceGroupName, networkDeviceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restoreConfigAsync(String resourceGroupName, String networkDeviceName, Context context) {
-        return beginRestoreConfigAsync(resourceGroupName, networkDeviceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restoreConfig(String resourceGroupName, String networkDeviceName) {
-        restoreConfigAsync(resourceGroupName, networkDeviceName).block();
-    }
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restoreConfig(String resourceGroupName, String networkDeviceName, Context context) {
-        restoreConfigAsync(resourceGroupName, networkDeviceName, context).block();
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateVersionWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateVersion(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkDeviceName,
-                            body,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateVersionWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .updateVersion(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkDeviceName,
                 body,
                 accept,
                 context);
     }
 
     /**
-     * Implements SKU version upgrade of network device.
+     * Implements the operation to the underlying resources.
      *
-     * <p>Update the SKU version of the Network Device resource.
+     * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateVersionAsync(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateVersionWithResponseAsync(resourceGroupName, networkDeviceName, body);
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRebootAsync(String resourceGroupName, String networkDeviceName, RebootProperties body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = rebootWithResponseAsync(resourceGroupName, networkDeviceName, body);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateVersionAsync(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateVersionWithResponseAsync(resourceGroupName, networkDeviceName, body, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body) {
-        return this.beginUpdateVersionAsync(resourceGroupName, networkDeviceName, body).getSyncPoller();
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context) {
-        return this.beginUpdateVersionAsync(resourceGroupName, networkDeviceName, body, context).getSyncPoller();
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateVersionAsync(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body) {
-        return beginUpdateVersionAsync(resourceGroupName, networkDeviceName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateVersionAsync(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context) {
-        return beginUpdateVersionAsync(resourceGroupName, networkDeviceName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateVersion(String resourceGroupName, String networkDeviceName, UpdateVersionProperties body) {
-        updateVersionAsync(resourceGroupName, networkDeviceName, body).block();
-    }
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context) {
-        updateVersionAsync(resourceGroupName, networkDeviceName, body, context).block();
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRebootAsync(String resourceGroupName, String networkDeviceName, RebootProperties body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rebootWithResponseAsync(resourceGroupName, networkDeviceName, body, context);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Reboot the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginReboot(String resourceGroupName, String networkDeviceName, RebootProperties body) {
+        return this.beginRebootAsync(resourceGroupName, networkDeviceName, body).getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Reboot the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginReboot(String resourceGroupName, String networkDeviceName, RebootProperties body, Context context) {
+        return this.beginRebootAsync(resourceGroupName, networkDeviceName, body, context).getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Reboot the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> generateSupportPackageWithResponseAsync(
+    private Mono<CommonPostActionResponseForStateUpdateInner> rebootAsync(
+        String resourceGroupName, String networkDeviceName, RebootProperties body) {
+        return beginRebootAsync(resourceGroupName, networkDeviceName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Reboot the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> rebootAsync(
+        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context) {
+        return beginRebootAsync(resourceGroupName, networkDeviceName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Reboot the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body) {
+        return rebootAsync(resourceGroupName, networkDeviceName, body).block();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Reboot the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context) {
+        return rebootAsync(resourceGroupName, networkDeviceName, body, context).block();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(
         String resourceGroupName, String networkDeviceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2433,7 +1885,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .withContext(
                 context ->
                     service
-                        .generateSupportPackage(
+                        .refreshConfiguration(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -2447,19 +1899,19 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> generateSupportPackageWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(
         String resourceGroupName, String networkDeviceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2484,7 +1936,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .generateSupportPackage(
+            .refreshConfiguration(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -2497,112 +1949,116 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of generate support package post action properties.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SupportPackagePropertiesInner>, SupportPackagePropertiesInner>
-        beginGenerateSupportPackageAsync(String resourceGroupName, String networkDeviceName) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfigurationAsync(String resourceGroupName, String networkDeviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            generateSupportPackageWithResponseAsync(resourceGroupName, networkDeviceName);
+            refreshConfigurationWithResponseAsync(resourceGroupName, networkDeviceName);
         return this
             .client
-            .<SupportPackagePropertiesInner, SupportPackagePropertiesInner>getLroResult(
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                SupportPackagePropertiesInner.class,
-                SupportPackagePropertiesInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
                 this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of generate support package post action properties.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SupportPackagePropertiesInner>, SupportPackagePropertiesInner>
-        beginGenerateSupportPackageAsync(String resourceGroupName, String networkDeviceName, Context context) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfigurationAsync(String resourceGroupName, String networkDeviceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            generateSupportPackageWithResponseAsync(resourceGroupName, networkDeviceName, context);
+            refreshConfigurationWithResponseAsync(resourceGroupName, networkDeviceName, context);
         return this
             .client
-            .<SupportPackagePropertiesInner, SupportPackagePropertiesInner>getLroResult(
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                SupportPackagePropertiesInner.class,
-                SupportPackagePropertiesInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
                 context);
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of generate support package post action properties.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SupportPackagePropertiesInner>, SupportPackagePropertiesInner>
-        beginGenerateSupportPackage(String resourceGroupName, String networkDeviceName) {
-        return this.beginGenerateSupportPackageAsync(resourceGroupName, networkDeviceName).getSyncPoller();
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfiguration(String resourceGroupName, String networkDeviceName) {
+        return this.beginRefreshConfigurationAsync(resourceGroupName, networkDeviceName).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of generate support package post action properties.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SupportPackagePropertiesInner>, SupportPackagePropertiesInner>
-        beginGenerateSupportPackage(String resourceGroupName, String networkDeviceName, Context context) {
-        return this.beginGenerateSupportPackageAsync(resourceGroupName, networkDeviceName, context).getSyncPoller();
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfiguration(String resourceGroupName, String networkDeviceName, Context context) {
+        return this.beginRefreshConfigurationAsync(resourceGroupName, networkDeviceName, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties on successful completion of {@link Mono}.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SupportPackagePropertiesInner> generateSupportPackageAsync(
+    private Mono<CommonPostActionResponseForStateUpdateInner> refreshConfigurationAsync(
         String resourceGroupName, String networkDeviceName) {
-        return beginGenerateSupportPackageAsync(resourceGroupName, networkDeviceName)
+        return beginRefreshConfigurationAsync(resourceGroupName, networkDeviceName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2610,20 +2066,20 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties on successful completion of {@link Mono}.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SupportPackagePropertiesInner> generateSupportPackageAsync(
+    private Mono<CommonPostActionResponseForStateUpdateInner> refreshConfigurationAsync(
         String resourceGroupName, String networkDeviceName, Context context) {
-        return beginGenerateSupportPackageAsync(resourceGroupName, networkDeviceName, context)
+        return beginRefreshConfigurationAsync(resourceGroupName, networkDeviceName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2631,55 +2087,57 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SupportPackagePropertiesInner generateSupportPackage(String resourceGroupName, String networkDeviceName) {
-        return generateSupportPackageAsync(resourceGroupName, networkDeviceName).block();
+    public CommonPostActionResponseForStateUpdateInner refreshConfiguration(
+        String resourceGroupName, String networkDeviceName) {
+        return refreshConfigurationAsync(resourceGroupName, networkDeviceName).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SupportPackagePropertiesInner generateSupportPackage(
+    public CommonPostActionResponseForStateUpdateInner refreshConfiguration(
         String resourceGroupName, String networkDeviceName, Context context) {
-        return generateSupportPackageAsync(resourceGroupName, networkDeviceName, context).block();
+        return refreshConfigurationAsync(resourceGroupName, networkDeviceName, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updatePowerCycleWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2710,7 +2168,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .withContext(
                 context ->
                     service
-                        .updatePowerCycle(
+                        .updateAdministrativeState(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -2725,20 +2183,21 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updatePowerCycleWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2767,7 +2226,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .updatePowerCycle(
+            .updateAdministrativeState(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -2781,743 +2240,209 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdatePowerCycleAsync(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePowerCycleWithResponseAsync(resourceGroupName, networkDeviceName, body);
+            updateAdministrativeStateWithResponseAsync(resourceGroupName, networkDeviceName, body);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdatePowerCycleAsync(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePowerCycleWithResponseAsync(resourceGroupName, networkDeviceName, body, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body) {
-        return this.beginUpdatePowerCycleAsync(resourceGroupName, networkDeviceName, body).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context) {
-        return this.beginUpdatePowerCycleAsync(resourceGroupName, networkDeviceName, body, context).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updatePowerCycleAsync(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body) {
-        return beginUpdatePowerCycleAsync(resourceGroupName, networkDeviceName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updatePowerCycleAsync(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context) {
-        return beginUpdatePowerCycleAsync(resourceGroupName, networkDeviceName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePowerCycle(String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body) {
-        updatePowerCycleAsync(resourceGroupName, networkDeviceName, body).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context) {
-        updatePowerCycleAsync(resourceGroupName, networkDeviceName, body, context).block();
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getStatusWithResponseAsync(
-        String resourceGroupName, String networkDeviceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getStatus(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkDeviceName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getStatusWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getStatus(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkDeviceName,
-                accept,
-                context);
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GetDeviceStatusPropertiesInner>, GetDeviceStatusPropertiesInner> beginGetStatusAsync(
-        String resourceGroupName, String networkDeviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = getStatusWithResponseAsync(resourceGroupName, networkDeviceName);
-        return this
-            .client
-            .<GetDeviceStatusPropertiesInner, GetDeviceStatusPropertiesInner>getLroResult(
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                GetDeviceStatusPropertiesInner.class,
-                GetDeviceStatusPropertiesInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
                 this.client.getContext());
     }
 
     /**
-     * Gets the running status of the network device.
+     * Implements the operation to the underlying resources.
      *
-     * <p>Get the running status of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the running status of the Network Device.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GetDeviceStatusPropertiesInner>, GetDeviceStatusPropertiesInner> beginGetStatusAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            getStatusWithResponseAsync(resourceGroupName, networkDeviceName, context);
+            updateAdministrativeStateWithResponseAsync(resourceGroupName, networkDeviceName, body, context);
         return this
             .client
-            .<GetDeviceStatusPropertiesInner, GetDeviceStatusPropertiesInner>getLroResult(
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                GetDeviceStatusPropertiesInner.class,
-                GetDeviceStatusPropertiesInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
                 context);
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GetDeviceStatusPropertiesInner>, GetDeviceStatusPropertiesInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName) {
-        return this.beginGetStatusAsync(resourceGroupName, networkDeviceName).getSyncPoller();
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GetDeviceStatusPropertiesInner>, GetDeviceStatusPropertiesInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return this.beginGetStatusAsync(resourceGroupName, networkDeviceName, context).getSyncPoller();
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GetDeviceStatusPropertiesInner> getStatusAsync(String resourceGroupName, String networkDeviceName) {
-        return beginGetStatusAsync(resourceGroupName, networkDeviceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GetDeviceStatusPropertiesInner> getStatusAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return beginGetStatusAsync(resourceGroupName, networkDeviceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetDeviceStatusPropertiesInner getStatus(String resourceGroupName, String networkDeviceName) {
-        return getStatusAsync(resourceGroupName, networkDeviceName).block();
-    }
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetDeviceStatusPropertiesInner getStatus(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return getStatusAsync(resourceGroupName, networkDeviceName, context).block();
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getStaticInterfaceMapsWithResponseAsync(
-        String resourceGroupName, String networkDeviceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getStaticInterfaceMaps(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkDeviceName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getStaticInterfaceMapsWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getStaticInterfaceMaps(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkDeviceName,
-                accept,
-                context);
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<List<GetStaticInterfaceMapsPropertiesItemInner>>,
-            List<GetStaticInterfaceMapsPropertiesItemInner>>
-        beginGetStaticInterfaceMapsAsync(String resourceGroupName, String networkDeviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getStaticInterfaceMapsWithResponseAsync(resourceGroupName, networkDeviceName);
-        return this
-            .client
-            .<List<GetStaticInterfaceMapsPropertiesItemInner>, List<GetStaticInterfaceMapsPropertiesItemInner>>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    new TypeReference<List<GetStaticInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    new TypeReference<List<GetStaticInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    this.client.getContext());
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<List<GetStaticInterfaceMapsPropertiesItemInner>>,
-            List<GetStaticInterfaceMapsPropertiesItemInner>>
-        beginGetStaticInterfaceMapsAsync(String resourceGroupName, String networkDeviceName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getStaticInterfaceMapsWithResponseAsync(resourceGroupName, networkDeviceName, context);
-        return this
-            .client
-            .<List<GetStaticInterfaceMapsPropertiesItemInner>, List<GetStaticInterfaceMapsPropertiesItemInner>>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    new TypeReference<List<GetStaticInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    new TypeReference<List<GetStaticInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    context);
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<List<GetStaticInterfaceMapsPropertiesItemInner>>,
-            List<GetStaticInterfaceMapsPropertiesItemInner>>
-        beginGetStaticInterfaceMaps(String resourceGroupName, String networkDeviceName) {
-        return this.beginGetStaticInterfaceMapsAsync(resourceGroupName, networkDeviceName).getSyncPoller();
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<List<GetStaticInterfaceMapsPropertiesItemInner>>,
-            List<GetStaticInterfaceMapsPropertiesItemInner>>
-        beginGetStaticInterfaceMaps(String resourceGroupName, String networkDeviceName, Context context) {
-        return this.beginGetStaticInterfaceMapsAsync(resourceGroupName, networkDeviceName, context).getSyncPoller();
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<GetStaticInterfaceMapsPropertiesItemInner>> getStaticInterfaceMapsAsync(
-        String resourceGroupName, String networkDeviceName) {
-        return beginGetStaticInterfaceMapsAsync(resourceGroupName, networkDeviceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<GetStaticInterfaceMapsPropertiesItemInner>> getStaticInterfaceMapsAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return beginGetStaticInterfaceMapsAsync(resourceGroupName, networkDeviceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<GetStaticInterfaceMapsPropertiesItemInner> getStaticInterfaceMaps(
-        String resourceGroupName, String networkDeviceName) {
-        return getStaticInterfaceMapsAsync(resourceGroupName, networkDeviceName).block();
-    }
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<GetStaticInterfaceMapsPropertiesItemInner> getStaticInterfaceMaps(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return getStaticInterfaceMapsAsync(resourceGroupName, networkDeviceName, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body) {
+        return this.beginUpdateAdministrativeStateAsync(resourceGroupName, networkDeviceName, body).getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Administrative state of the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context) {
+        return this
+            .beginUpdateAdministrativeStateAsync(resourceGroupName, networkDeviceName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Administrative state of the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getDynamicInterfaceMapsWithResponseAsync(
-        String resourceGroupName, String networkDeviceName) {
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkDeviceName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Administrative state of the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkDeviceName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Administrative state of the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body) {
+        return updateAdministrativeStateAsync(resourceGroupName, networkDeviceName, body).block();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Administrative state of the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context) {
+        return updateAdministrativeStateAsync(resourceGroupName, networkDeviceName, body, context).block();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3538,17 +2463,23 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
         }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .getDynamicInterfaceMaps(
+                        .upgrade(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             this.client.getApiVersion(),
                             networkDeviceName,
+                            body,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3557,20 +2488,21 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getDynamicInterfaceMapsWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3591,15 +2523,21 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
         }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getDynamicInterfaceMaps(
+            .upgrade(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 this.client.getApiVersion(),
                 networkDeviceName,
+                body,
                 accept,
                 context);
     }
@@ -3607,126 +2545,120 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the dynamic interface maps for the given Network Device.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
-            PollResult<List<GetDynamicInterfaceMapsPropertiesItemInner>>,
-            List<GetDynamicInterfaceMapsPropertiesItemInner>>
-        beginGetDynamicInterfaceMapsAsync(String resourceGroupName, String networkDeviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getDynamicInterfaceMapsWithResponseAsync(resourceGroupName, networkDeviceName);
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgradeAsync(String resourceGroupName, String networkDeviceName, UpdateVersion body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, networkDeviceName, body);
         return this
             .client
-            .<List<GetDynamicInterfaceMapsPropertiesItemInner>, List<GetDynamicInterfaceMapsPropertiesItemInner>>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    new TypeReference<List<GetDynamicInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    new TypeReference<List<GetDynamicInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    this.client.getContext());
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the dynamic interface maps for the given Network Device.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
-            PollResult<List<GetDynamicInterfaceMapsPropertiesItemInner>>,
-            List<GetDynamicInterfaceMapsPropertiesItemInner>>
-        beginGetDynamicInterfaceMapsAsync(String resourceGroupName, String networkDeviceName, Context context) {
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgradeAsync(String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            getDynamicInterfaceMapsWithResponseAsync(resourceGroupName, networkDeviceName, context);
+            upgradeWithResponseAsync(resourceGroupName, networkDeviceName, body, context);
         return this
             .client
-            .<List<GetDynamicInterfaceMapsPropertiesItemInner>, List<GetDynamicInterfaceMapsPropertiesItemInner>>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    new TypeReference<List<GetDynamicInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    new TypeReference<List<GetDynamicInterfaceMapsPropertiesItemInner>>() {
-                    }.getType(),
-                    context);
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the dynamic interface maps for the given Network Device.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
-            PollResult<List<GetDynamicInterfaceMapsPropertiesItemInner>>,
-            List<GetDynamicInterfaceMapsPropertiesItemInner>>
-        beginGetDynamicInterfaceMaps(String resourceGroupName, String networkDeviceName) {
-        return this.beginGetDynamicInterfaceMapsAsync(resourceGroupName, networkDeviceName).getSyncPoller();
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkDeviceName, UpdateVersion body) {
+        return this.beginUpgradeAsync(resourceGroupName, networkDeviceName, body).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the dynamic interface maps for the given Network Device.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
-            PollResult<List<GetDynamicInterfaceMapsPropertiesItemInner>>,
-            List<GetDynamicInterfaceMapsPropertiesItemInner>>
-        beginGetDynamicInterfaceMaps(String resourceGroupName, String networkDeviceName, Context context) {
-        return this.beginGetDynamicInterfaceMapsAsync(resourceGroupName, networkDeviceName, context).getSyncPoller();
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context) {
+        return this.beginUpgradeAsync(resourceGroupName, networkDeviceName, body, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device on successful completion of {@link Mono}.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<GetDynamicInterfaceMapsPropertiesItemInner>> getDynamicInterfaceMapsAsync(
-        String resourceGroupName, String networkDeviceName) {
-        return beginGetDynamicInterfaceMapsAsync(resourceGroupName, networkDeviceName)
+    private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body) {
+        return beginUpgradeAsync(resourceGroupName, networkDeviceName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3734,20 +2666,21 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device on successful completion of {@link Mono}.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<GetDynamicInterfaceMapsPropertiesItemInner>> getDynamicInterfaceMapsAsync(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return beginGetDynamicInterfaceMapsAsync(resourceGroupName, networkDeviceName, context)
+    private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context) {
+        return beginUpgradeAsync(resourceGroupName, networkDeviceName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3755,38 +2688,40 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<GetDynamicInterfaceMapsPropertiesItemInner> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName) {
-        return getDynamicInterfaceMapsAsync(resourceGroupName, networkDeviceName).block();
+    public CommonPostActionResponseForStateUpdateInner upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body) {
+        return upgradeAsync(resourceGroupName, networkDeviceName, body).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<GetDynamicInterfaceMapsPropertiesItemInner> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        return getDynamicInterfaceMapsAsync(resourceGroupName, networkDeviceName, context).block();
+    public CommonPostActionResponseForStateUpdateInner upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context) {
+        return upgradeAsync(resourceGroupName, networkDeviceName, body, context).block();
     }
 
     /**

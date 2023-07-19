@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleName;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceSku;
 import java.nio.ByteBuffer;
@@ -32,7 +33,7 @@ public final class NetworkDeviceSkusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"model\":\"hgf\",\"manufacturer\":\"tzlexbs\",\"supportedVersions\":[],\"limits\":{\"physicalInterfaceCount\":269107120,\"maxSubInterfaces\":1279554044,\"maxTunnelInterfaces\":553630822,\"maxVirtualRouterFunctions\":1537365328,\"maxBorderGatewayProtocolPeers\":1263064497,\"maxBidirectionalForwardingDetectionPeers\":231052255},\"supportedRoleTypes\":[\"ToR\",\"NPB\",\"NPB\"],\"interfaces\":[],\"provisioningState\":\"Failed\"},\"id\":\"ljselp\",\"name\":\"pbafvafhlbylc\",\"type\":\"bevxrhyzd\"}";
+            "{\"properties\":{\"model\":\"cbogsfovk\",\"manufacturer\":\"miy\",\"supportedVersions\":[{\"version\":\"rukcyyaalbk\",\"vendorOsVersion\":\"zqazdlrkvitz\",\"vendorFirmwareVersion\":\"fqbxmnnidotm\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"TS\"],\"interfaces\":[{\"identifier\":\"ttqhpvaru\",\"interfaceType\":\"uwj\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"fpqqllavzlhjgm\",\"interfaceType\":\"dblapqraczvtniwf\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Updating\"},\"id\":\"xmyibx\",\"name\":\"ceg\",\"type\":\"ttgxkxt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,16 +62,16 @@ public final class NetworkDeviceSkusGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkDeviceSku response =
-            manager.networkDeviceSkus().getWithResponse("yqiq", com.azure.core.util.Context.NONE).getValue();
+            manager.networkDeviceSkus().getWithResponse("phxmwwvxcaicb", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("hgf", response.model());
-        Assertions.assertEquals("tzlexbs", response.manufacturer());
-        Assertions.assertEquals(269107120, response.limits().physicalInterfaceCount());
-        Assertions.assertEquals(1279554044, response.limits().maxSubInterfaces());
-        Assertions.assertEquals(553630822, response.limits().maxTunnelInterfaces());
-        Assertions.assertEquals(1537365328, response.limits().maxVirtualRouterFunctions());
-        Assertions.assertEquals(1263064497, response.limits().maxBorderGatewayProtocolPeers());
-        Assertions.assertEquals(231052255, response.limits().maxBidirectionalForwardingDetectionPeers());
-        Assertions.assertEquals(NetworkDeviceRoleName.TOR, response.supportedRoleTypes().get(0));
+        Assertions.assertEquals("cbogsfovk", response.model());
+        Assertions.assertEquals("miy", response.manufacturer());
+        Assertions.assertEquals("rukcyyaalbk", response.supportedVersions().get(0).version());
+        Assertions.assertEquals("zqazdlrkvitz", response.supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("fqbxmnnidotm", response.supportedVersions().get(0).vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, response.supportedVersions().get(0).isDefault());
+        Assertions.assertEquals(NetworkDeviceRoleName.TS, response.supportedRoleTypes().get(0));
+        Assertions.assertEquals("ttqhpvaru", response.interfaces().get(0).identifier());
+        Assertions.assertEquals("uwj", response.interfaces().get(0).interfaceType());
     }
 }

@@ -10,6 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -752,8 +753,16 @@ public class RoomsClientTest extends RoomsTestBase {
         });
     }
 
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
+    }
+
     private RoomsClient setupSyncClient(HttpClient httpClient, String testName) {
-        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient,
+        RoomsClientBuilder builder = getRoomsClientWithConnectionString(
+                buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+                : httpClient),
                 RoomsServiceVersion.V2023_06_14);
 
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
