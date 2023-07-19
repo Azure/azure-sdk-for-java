@@ -4,7 +4,9 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -53,6 +55,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
     private final CreditFlowMode creditFlowMode;
     private final AmqpRetryPolicy retryPolicy;
     private volatile BiFunction<String, DeliveryState, Mono<Void>> updateDispositionFunc;
+    /** An AmqpRetryPolicy const indicates that MessageFlux should terminate when the first receiver terminates
+     * (i.e., disables the retry action to obtain next receiver from the upstream).
+     **/
+    public static final AmqpRetryPolicy NULL_RETRY_POLICY = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
 
     /**
      * Create a message-flux to stream messages from a messaging entity to downstream subscriber.
@@ -226,8 +232,13 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         }
 
         /**
-         * Invoked by the upstream to signal operator termination with an error or invoked from the drain-loop to signal
-         * termination due to 'non-retriable or retry exhaust' error.
+         * Signals operator termination with error.
+         * <ul>
+         *     <li>Invoked by the upstream when it errors, or</li>
+         *     <li>Invoked by the drain-loop when it detects a 'non-retriable or retry exhaust' error, or </li>
+         *     <li>Invoked by the drain-loop when it detects the receiver signaled terminal completion  and retry
+         *     is disabled (i.e., NULL_RETRY_POLICY is set).</li>
+         * </ul>
          *
          * @param e the error signaled.
          */
@@ -238,12 +249,19 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 return;
             }
 
-            // It is possible that the upstream error and 'non-retriable or retry exhaust' error signals concurrently;
-            // if so, a CompositeException object holds both errors.
+            // It is possible that -
+            // 1. the error from upstream and 'non-retriable or retry exhaust' error from RetryLoop
+            // 2. Or, the error from upstream and error from receiver when NULL_RETRY_POLICY is set
+            // signals concurrently,  if so, the ERROR will be a CompositeException storing both errors.
             if (Exceptions.addThrowable(ERROR, this, e)) {
                 done = true;
-                mediatorHolder.updateLogWithReceiverId(logger.atWarning())
-                    .log("Terminal error signal from upstream Or from retry loop (non_retriable or retry_exhausted) arrived at MessageFlux.", e);
+                final String logMessage;
+                if (retryPolicy == NULL_RETRY_POLICY) {
+                    logMessage = "Terminal error signal from Upstream|Receiver arrived at MessageFlux.";
+                } else {
+                    logMessage = "Terminal error signal from Upstream|RetryLoop arrived at MessageFlux.";
+                }
+                mediatorHolder.withReceiverInfo(logger.atWarning()).log(logMessage, e);
                 drain(null);
             } else {
                 // Once the drain-loop processed the last error, then further errors dropped through the standard
@@ -254,7 +272,12 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         }
 
         /**
-         * Invoked by the upstream to signal operator termination with completion.
+         * Signals operator termination with completion.
+         * <ul>
+         *     <li>Invoked by the upstream when it completes, or</li>
+         *     <li>Invoked by the the drain-loop when it detects first receiver signaled terminal completion and retry
+         *     is disabled (i.e., NULL_RETRY_POLICY is set).</li>
+         * </ul>
          */
         @Override
         public void onComplete() {
@@ -263,8 +286,13 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             }
 
             done = true;
-            mediatorHolder.updateLogWithReceiverId(logger.atWarning())
-                .log("Terminal completion signal from upstream arrived at MessageFlux.");
+            final String logMessage;
+            if (retryPolicy == NULL_RETRY_POLICY) {
+                logMessage = "Terminal completion signal from Upstream|Receiver arrived at MessageFlux.";
+            } else {
+                logMessage = "Terminal completion signal from Upstream arrived at MessageFlux.";
+            }
+            mediatorHolder.withReceiverInfo(logger.atWarning()).log(logMessage);
             drain(null);
         }
 
@@ -293,7 +321,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             }
 
             cancelled = true;
-            mediatorHolder.updateLogWithReceiverId(logger.atWarning())
+            mediatorHolder.withReceiverInfo(logger.atWarning())
                 .log("Downstream cancellation signal arrived at MessageFlux.");
             // By incrementing wip, indicate the active drain-loop that there is cancel signal to handle,
             if (WIP.getAndIncrement(this) == 0) {
@@ -368,7 +396,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     return;
                 }
 
-                if (terminateIfErroredOrUpstreamCompleted(d, downstream, null)) {
+                if (terminateIfErrorOrCompletionSignaled(d, downstream, null)) {
                     return;
                 }
 
@@ -389,7 +417,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                             return;
                         }
 
-                        if (terminateIfErroredOrUpstreamCompleted(done, downstream, message)) {
+                        if (terminateIfErrorOrCompletionSignaled(done, downstream, message)) {
                             return;
                         }
 
@@ -437,7 +465,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     // or pending signal from the upstream to terminate the operator with error or completion
                     // or last drain-loop iteration detected 'non-retriable or retry exhaust' error needing
                     // operator termination,
-                    if (terminateIfErroredOrUpstreamCompleted(done, downstream, null)) {
+                    if (terminateIfErrorOrCompletionSignaled(done, downstream, null)) {
                         return;
                     }
 
@@ -469,7 +497,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <br/>
+         * <p/>
          * See if downstream signaled cancellation to terminate the operator, if so, react to the cancellation.
          *
          * @param downstream the downstream.
@@ -488,25 +516,27 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <br/>
-         * See if the upstream signaled the operator termination with error or completion or drain-loop detected
-         * 'non-retriable or retry exhaust' error needing operator termination; if so, react to it by terminating
-         * downstream.
+         * <p/>
+         * See if there is a pending signal for the operator termination with error or completion, if so, react to it
+         * by terminating downstream.
          *
          * @param d indicate if the operator termination was signaled.
          * @param downstream the downstream.
          * @param messageDropped the message that gets dropped if termination happened.
          * @return true if terminated, false otherwise.
          */
-        private boolean terminateIfErroredOrUpstreamCompleted(boolean d, CoreSubscriber<? super Message> downstream, Message messageDropped) {
+        private boolean terminateIfErrorOrCompletionSignaled(boolean d, CoreSubscriber<? super Message> downstream, Message messageDropped) {
             if (d) {
                 // true for 'd' means the operator termination was signaled.
-                final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning());
+                final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
                 Throwable e = error;
                 if (e != null && e != Exceptions.TERMINATED) {
-                    // A non-null 'e' indicates upstream signaled operator termination with an error,
-                    // or there is 'non-retriable or retry exhausted' error; let's terminate the local
-                    // resources and propagate the error to terminate the downstream.
+                    // A non-null 'e' indicates either
+                    // 1. upstream signaled termination with an error
+                    // 2. Or, there is 'non-retriable or retry exhausted' error
+                    // 3. Or, retry is disabled (i.e., NULL_RETRY_POLICY is set) and the receiver signaled terminal error.
+                    //
+                    // let's terminate the local resources and propagate the error to terminate the downstream.
 
                     // Freezing 'this.e' (by marking it as TERMINATED) to drop further error signals to 'onError'.
                     e = Exceptions.terminate(ERROR, this);
@@ -517,8 +547,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     downstream.onError(e);
                     return true;
                 }
-                //
-                // The absence of error (e) indicates upstream signaled operator termination with completion.
+
+                // The absence of error (e) indicates either
+                // 1. upstream signaled termination with completion,
+                // 2. Or, retry is disabled (i.e., NULL_RETRY_POLICY is set) and the first receiver signaled terminal completion.
                 Operators.onDiscard(messageDropped, downstream.currentContext());
                 upstream.cancel();
                 mediatorHolder.freeze();
@@ -531,12 +563,23 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
+         * <p/>
+         * 1. When retry is enabled (i.e., NULL_RETRY_POLICY is not set) then schedule request (retry) for the next mediator if
+         * <ul>
+         *     <li>the operator is not in a termination signaled state,</li>
+         *     <li> and
+         *         <ul>
+         *             <li>there is no error Or</li>
+         *             <li>error is retriable and the retry is not exhausted.</li>
+         *         </ul>
+         *     </li>
+         * </ul>
+         * 2. If retry is enabled (i.e., NULL_RETRY_POLICY is not set) and there is 'non-retriable or retry exhaust'
+         * error, then set an error signal for the drain-loop to terminate the operator.
          * <br/>
-         * Schedule request for the next mediator if (a). the operator is not in a termination signaled state and
-         * (b). there is no error Or (c). error is retriable and the retry is not exhausted.
-         * If there is 'non-retriable or retry exhaust' error, then set an error signal for the drain-loop to
-         * terminate the operator.
-         *
+         * 3. If retry is disabled (i.e., NULL_RETRY_POLICY is set), then set an error signal (if first receiver error-ed)
+         * or completion signal (if first receiver completed) for the drain-loop to terminate the operator.
+         * <br/>
          * @param error the error that leads to error-ed termination of the last mediator or {@code null}
          *              if terminated with completion.
          * @param downstream the downstream.
@@ -544,13 +587,22 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         private void setTerminationSignalOrScheduleNextMediatorRequest(Throwable error,
             CoreSubscriber<? super Message> downstream, MediatorHolder mediatorHolder) {
-            final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning());
+            final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
             if (cancelled || done) {
                 // To terminate the operator, the downstream signaled cancellation Or upstream signaled error
                 // or completion. The next drain-loop iteration as a result of that signalling will terminate
                 // the operator through one of the 'terminateIf*' methods followed by placing tombstone on
                 // the drain-loop.
                 logBuilder.log("MessageFlux reached terminal-state [done:{}, cancelled:{}].", done, cancelled);
+                return;
+            }
+
+            if (retryPolicy == NULL_RETRY_POLICY) {
+                if (error == null) {
+                    onComplete();
+                } else {
+                    onError(error);
+                }
                 return;
             }
 
@@ -585,7 +637,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 scheduleNextMediatorRequest(delay, mediatorHolder);
             } catch (RejectedExecutionException ree) {
                 final RuntimeException e = Operators.onRejectedExecution(ree, downstream.currentContext());
-                mediatorHolder.updateLogWithReceiverId(logger.atWarning())
+                mediatorHolder.withReceiverInfo(logger.atWarning())
                     .log("Unable to schedule a request for a new mediator (retriable:false).", e);
                 onError(e);
                 // See the above Note on 'onError' about why the downstream termination is guaranteed immediately
@@ -602,7 +654,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         private void scheduleNextMediatorRequest(Duration delay, MediatorHolder mediatorHolder) {
             final Runnable task = () -> {
-                final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning());
+                final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
                 if (cancelled || done) {
                     logBuilder.log("During the backoff, MessageFlux reached terminal-state [done:{}, cancelled:{}].", done, cancelled);
                     return;
@@ -747,7 +799,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <br/>
+         * <p/>
          * Notify the latest view of the downstream request and messages emitted by the emitter-loop during
          * the last drain-loop iteration.
          *
@@ -853,15 +905,17 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         }
 
         /**
-         * Close the mediator.
-         * <ul>
-         * Closing is triggered in the following cases -
+         * Close the mediator. Closing is triggered in the following cases -
          * <ul>
          * <li>When {@link RecoverableReactorReceiver} switches to a new (i.e., next) mediator, it closes the current mediator.</li>
          * <li>When {@link RecoverableReactorReceiver} terminates (hence {@link MessageFlux}) due to
-         * "downstream cancellation/upstream error or completion/retry-exhaust-error/non-retriable-error", it closes
-         * the current (i.e., last) mediator. </li>
-         * </ul>
+         *     <ul>
+         *         <li>downstream cancellation or</li>
+         *         <li>upstream termination with error or completion or</li>
+         *         <li>retry-exhaust-error or non-retriable-error or</li>
+         *         <li>termination of receiver with error or completion when NULL_RETRY_POLICY is set,</li>
+         *     </ul>
+         * it closes the current (i.e., last) mediator. </li>
          * </ul>
          */
         @Override
@@ -968,9 +1022,14 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             return m != null ? m.receiver.getLinkName() : null;
         }
 
-        // annotate the log builder with the receiver identifiers (connectionId:linkName:entityPath)
-        // if the mediator has receiver set, else nop.
-        LoggingEventBuilder updateLogWithReceiverId(LoggingEventBuilder builder) {
+        /**
+         * annotate the log builder with the receiver info (connectionId:linkName:entityPath) if the mediator has
+         * receiver set, else nop.
+         *
+         * @param builder the log builder to annotate.
+         * @return the log builder annotated with receiver info.
+         */
+        LoggingEventBuilder withReceiverInfo(LoggingEventBuilder builder) {
             final ReactorReceiverMediator m = mediator;
             if (m != null) {
                 return builder.addKeyValue(CONNECTION_ID_KEY, m.receiver.getConnectionId())

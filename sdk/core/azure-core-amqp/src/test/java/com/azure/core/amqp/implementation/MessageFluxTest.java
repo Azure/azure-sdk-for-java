@@ -204,6 +204,57 @@ public class MessageFluxTest {
         "EmissionDriven,1",
         "RequestDriven,0"
     })
+    public void shouldTerminateWhenRetryDisabledAndFirstReceiverEmitsRetriableError(CreditFlowMode creditFlowMode, int prefetch) {
+        final AmqpException error = new AmqpException(true, "retriable", null);
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.NULL_RETRY_POLICY);
+
+        final ReactorReceiver receiver = mock(ReactorReceiver.class);
+        when(receiver.receive()).thenReturn(Flux.empty());
+        when(receiver.getEndpointStates()).thenReturn(Flux.error(error));
+        when(receiver.closeAsync()).thenReturn(Mono.empty());
+
+        StepVerifier.create(messageFlux)
+            .then(() -> upstream.next(receiver))
+            .verifyErrorMatches(e -> e == error);
+
+        // Expecting closeAsync invocation from two call sites -
+        // 1. before the NOP retry (NULL_RETRY_POLICY) when first receiver terminates with (retriable) error
+        // 2. when operator terminates after NOP retry
+        verify(receiver, new AtLeast(2)).closeAsync();
+        upstream.assertCancelled();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "EmissionDriven,1",
+        "RequestDriven,0"
+    })
+    public void shouldTerminateWhenRetryDisabledAndFirstReceiverCompletes(CreditFlowMode creditFlowMode, int prefetch) {
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.NULL_RETRY_POLICY);
+
+        final ReactorReceiver receiver = mock(ReactorReceiver.class);
+        when(receiver.receive()).thenReturn(Flux.empty());
+        when(receiver.getEndpointStates()).thenReturn(Flux.empty());
+        when(receiver.closeAsync()).thenReturn(Mono.empty());
+
+        StepVerifier.create(messageFlux)
+            .then(() -> upstream.next(receiver))
+            .verifyComplete();
+
+        // Expecting closeAsync invocation from two call sites -
+        // 1. before the NOP retry (NULL_RETRY_POLICY) when first receiver terminates with completion
+        // 2. when operator terminates after NOP retry
+        verify(receiver, new AtLeast(2)).closeAsync();
+        upstream.assertCancelled();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "EmissionDriven,1",
+        "RequestDriven,0"
+    })
     public void shouldHonorBackpressureRequest(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
