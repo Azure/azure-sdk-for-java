@@ -33,7 +33,7 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
 
@@ -60,7 +60,7 @@ jobs:
       - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
         - template: /eng/pipelines/templates/steps/http-fault-injector.yml
 
-      - template: ../steps/install-reporting-tools.yml
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
 
@@ -106,6 +106,8 @@ jobs:
             AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
+
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved

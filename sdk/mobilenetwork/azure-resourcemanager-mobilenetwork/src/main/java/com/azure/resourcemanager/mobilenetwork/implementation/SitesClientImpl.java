@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.SitesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
+import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 import com.azure.resourcemanager.mobilenetwork.models.SiteListResult;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.nio.ByteBuffer;
@@ -67,8 +69,7 @@ public final class SitesClientImpl implements SitesClient {
     public interface SitesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -83,8 +84,7 @@ public final class SitesClientImpl implements SitesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SiteInner>> get(
@@ -99,8 +99,7 @@ public final class SitesClientImpl implements SitesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +115,7 @@ public final class SitesClientImpl implements SitesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SiteInner>> updateTags(
@@ -133,8 +131,7 @@ public final class SitesClientImpl implements SitesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SiteListResult>> listByMobileNetwork(
@@ -143,6 +140,22 @@ public final class SitesClientImpl implements SitesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mobileNetworkName") String mobileNetworkName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}/deletePacketCore")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> deletePacketCore(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName,
+            @PathParam("siteName") String siteName,
+            @BodyParam("application/json") SiteDeletePacketCore parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1226,6 +1239,310 @@ public final class SitesClientImpl implements SitesClient {
     public PagedIterable<SiteInner> listByMobileNetwork(
         String resourceGroupName, String mobileNetworkName, Context context) {
         return new PagedIterable<>(listByMobileNetworkAsync(resourceGroupName, mobileNetworkName, context));
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deletePacketCoreWithResponseAsync(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mobileNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deletePacketCore(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            mobileNetworkName,
+                            siteName,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deletePacketCoreWithResponseAsync(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mobileNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .deletePacketCore(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                mobileNetworkName,
+                siteName,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeletePacketCoreAsync(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deletePacketCoreWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeletePacketCoreAsync(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deletePacketCoreWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        return this
+            .beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context) {
+        return this
+            .beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deletePacketCoreAsync(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        return beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deletePacketCoreAsync(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context) {
+        return beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deletePacketCore(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        deletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters).block();
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deletePacketCore(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context) {
+        deletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context).block();
     }
 
     /**

@@ -8,10 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
 
-/** Describes multiple sets of label selectors, of which one will be selected and attached according to a weighting. */
+/** Describes multiple sets of worker selectors, of which one will be selected and attached according to a weighting. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("weighted-allocation-worker-selector")
 @Fluent

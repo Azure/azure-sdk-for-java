@@ -27,11 +27,21 @@ Synchronous:
 - [Text Completions][sample_get_completions]
 - [Chat Completions][sample_get_chat_completions]
 - [Embeddings][sample_get_embedding]
+- [Image Generation][sample_image_generation]
 
-Asynchronous :
+Asynchronous:
 - [Text Completions][async_sample_get_completions]
 - [Chat Completions][async_sample_get_chat_completions]
 - [Embeddings][async_sample_get_embedding]
+- [Image Generation][async_sample_image_generation]
+
+Cookbook:
+- [Chat bot][cookbook_chat_bot]
+- [Chat bot With Key][cookbook_chat_bot_with_key]
+- [Function Call][cookbook_function_call]
+- [OpenAIProxy][cookbook_openai_proxy]
+- [Streaming Chat][cookbook_streaming_chat]
+- [Summarize Text][cookbook_summarize_text]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -54,9 +64,18 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsAsyncSample.java
 [async_sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsAsyncSample.java
 [async_sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetEmbeddingsAsyncSample.java
+[async_sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesAsyncSample.java
 
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetEmbeddingsSample.java
+[sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesSample.java
+
+[cookbook_chat_bot]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatbotSample.java
+[cookbook_chat_bot_with_key]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatbotWithKeySample.java
+[cookbook_function_call]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
+[cookbook_openai_proxy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/OpenAIProxySample.java
+[cookbook_streaming_chat]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StreamingChatSample.java
+[cookbook_summarize_text]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/SummarizeTextSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fazure-ai-openai%2FREADME.png)

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** Contains the weight percentage and label selectors to be applied if selected for weighted distributions. */
+/** Contains the weight percentage and worker selectors to be applied if selected for weighted distributions. */
 @Fluent
 public final class WorkerWeightedAllocation {
     /*
@@ -19,11 +19,11 @@ public final class WorkerWeightedAllocation {
     private double weight;
 
     /*
-     * A collection of label selectors that will be applied if this allocation
+     * A collection of worker selectors that will be applied if this allocation
      * is selected.
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<WorkerSelector> labelSelectors;
+    @JsonProperty(value = "workerSelectors", required = true)
+    private List<RouterWorkerSelector> workerSelectors;
 
     /**
      * Get the weight property: The percentage of this weight, expressed as a fraction of 1.
@@ -46,24 +46,24 @@ public final class WorkerWeightedAllocation {
     }
 
     /**
-     * Get the labelSelectors property: A collection of label selectors that will be applied if this allocation is
+     * Get the workerSelectors property: A collection of worker selectors that will be applied if this allocation is
      * selected.
      *
-     * @return the labelSelectors value.
+     * @return the workerSelectors value.
      */
-    public List<WorkerSelector> getLabelSelectors() {
-        return this.labelSelectors;
+    public List<RouterWorkerSelector> getWorkerSelectors() {
+        return this.workerSelectors;
     }
 
     /**
-     * Set the labelSelectors property: A collection of label selectors that will be applied if this allocation is
+     * Set the workerSelectors property: A collection of worker selectors that will be applied if this allocation is
      * selected.
      *
-     * @param labelSelectors the labelSelectors value to set.
+     * @param workerSelectors the workerSelectors value to set.
      * @return the WorkerWeightedAllocation object itself.
      */
-    public WorkerWeightedAllocation setLabelSelectors(List<WorkerSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
+    public WorkerWeightedAllocation setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {
+        this.workerSelectors = workerSelectors;
         return this;
     }
 }

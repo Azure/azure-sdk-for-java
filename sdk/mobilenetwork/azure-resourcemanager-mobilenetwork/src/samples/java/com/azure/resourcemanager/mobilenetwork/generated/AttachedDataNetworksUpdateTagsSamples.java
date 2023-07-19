@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for AttachedDataNetworks UpdateTags. */
 public final class AttachedDataNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/AttachedDataNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/AttachedDataNetworkUpdateTags.json
      */
     /**
      * Sample code: Update attached data network tags.

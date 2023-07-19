@@ -46,6 +46,9 @@
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.45</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -62,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.2.9</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.2.10</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -107,10 +110,10 @@
         <configuration>
           <codesnippetGlob>**/src/samples/java/**/*.java</codesnippetGlob>
           <codesnippetRootDirectory>${project.basedir}/src/samples/java</codesnippetRootDirectory>
+          <readmePath>${project.basedir}/README.md</readmePath>
           <sourceGlob>**/src/main/java/**/*.java</sourceGlob>
           <sourceRootDirectory>${project.basedir}/src/main/java</sourceRootDirectory>
           <includeSource>true</includeSource>
-          <readmePath>${project.basedir}/README.md</readmePath>
           <includeReadme>true</includeReadme>
           <maxLineLength>120</maxLineLength>
           <skip>false</skip>

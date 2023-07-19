@@ -59,9 +59,13 @@
 
   <!-- Internal implementation details, not at risk.-->
   <Match>
-    <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
-    <Bug pattern="EI_EXPOSE_REP,
-      EI_EXPOSE_REP2"/>
+    <Or>
+      <!-- Internal implementation details, not at risk.-->
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
+      <!-- Testing model. -->
+      <Class name="com.azure.core.test.http.HttpClientTests$BinaryDataTestData"/>
+    </Or>
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
 
   <Match>
@@ -1727,7 +1731,7 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache"/>
-    <Method name="getServerAddressesViaGatewayAsync"/>
+    <Method name="getServerAddressesViaGatewayInternalAsync"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
@@ -2287,6 +2291,7 @@
     <Or>
       <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
       <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+      <Class name="com.azure.core.test.http.LocalTestServer"/>
     </Or>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>

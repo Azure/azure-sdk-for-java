@@ -12,7 +12,10 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyActionType;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyConditionType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +34,7 @@ public final class RoutePoliciesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"statements\":[],\"provisioningState\":\"Updating\",\"annotation\":\"eqacd\"},\"location\":\"tz\",\"tags\":{\"hnuqndaizu\":\"pefcpcz\",\"zx\":\"fkhuytu\",\"wtthaokgksk\":\"mtvtvegwqiukvzwy\",\"bs\":\"i\"},\"id\":\"hajqfuk\",\"name\":\"eexpgeumi\",\"type\":\"hwu\"}";
+            "{\"properties\":{\"networkFabricId\":\"c\",\"addressFamilyType\":\"IPv4\",\"configurationState\":\"Accepted\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"RMA\",\"statements\":[{\"sequenceNumber\":8478441101031024131,\"condition\":{\"type\":\"Or\",\"ipPrefixId\":\"gen\",\"ipExtendedCommunityIds\":[\"xffe\",\"cngjcdykkpnfvz\",\"vt\"],\"ipCommunityIds\":[\"nusqjjcwggj\",\"mlcbmhsfgax\"]},\"action\":{\"localPreference\":3703399213725371460,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"szxnzjxvdnf\"},{\"sequenceNumber\":6913517984931682319,\"condition\":{\"type\":\"And\",\"ipPrefixId\":\"lw\",\"ipExtendedCommunityIds\":[\"z\",\"fxbiqwgm\",\"ynwaofnoiphwaedp\",\"gxjtuhid\"],\"ipCommunityIds\":[\"z\",\"mcqen\",\"jwadvfqrvtymn\",\"wjdmjdphtfpjrbn\"]},\"action\":{\"localPreference\":5341193954054496929,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"ima\"},{\"sequenceNumber\":2795357146906080604,\"condition\":{\"type\":\"Or\",\"ipPrefixId\":\"epr\",\"ipExtendedCommunityIds\":[\"ktusrpjmevszbj\",\"qktokc\"],\"ipCommunityIds\":[\"mzb\",\"xxdxnhinn\"]},\"action\":{\"localPreference\":6659953453261740285,\"actionType\":\"Deny\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"x\"}],\"annotation\":\"jsfxxkg\"},\"location\":\"zznocrbtazopf\",\"tags\":{\"knppucfvx\":\"fmhm\",\"dumiuxxmrnt\":\"rmxcrhzecn\",\"jabzs\":\"hyjueddtkpysmal\"},\"id\":\"buzaxmkuthooaic\",\"name\":\"szcwwv\",\"type\":\"xvibivhjryppm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +65,21 @@ public final class RoutePoliciesGetByResourceGroupWithResponseMockTests {
         RoutePolicy response =
             manager
                 .routePolicies()
-                .getByResourceGroupWithResponse("phrgfnzhctm", "tsghpbcbcp", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("gdoi", "d", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("tz", response.location());
-        Assertions.assertEquals("pefcpcz", response.tags().get("hnuqndaizu"));
-        Assertions.assertEquals("eqacd", response.annotation());
+        Assertions.assertEquals("zznocrbtazopf", response.location());
+        Assertions.assertEquals("fmhm", response.tags().get("knppucfvx"));
+        Assertions.assertEquals("c", response.networkFabricId());
+        Assertions.assertEquals(AddressFamilyType.IPV4, response.addressFamilyType());
+        Assertions.assertEquals("szxnzjxvdnf", response.statements().get(0).annotation());
+        Assertions.assertEquals(8478441101031024131L, response.statements().get(0).sequenceNumber());
+        Assertions.assertEquals("nusqjjcwggj", response.statements().get(0).condition().ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR, response.statements().get(0).condition().type());
+        Assertions.assertEquals("gen", response.statements().get(0).condition().ipPrefixId());
+        Assertions.assertEquals("xffe", response.statements().get(0).condition().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(3703399213725371460L, response.statements().get(0).action().localPreference());
+        Assertions.assertEquals(RoutePolicyActionType.CONTINUE, response.statements().get(0).action().actionType());
+        Assertions.assertEquals("jsfxxkg", response.annotation());
     }
 }

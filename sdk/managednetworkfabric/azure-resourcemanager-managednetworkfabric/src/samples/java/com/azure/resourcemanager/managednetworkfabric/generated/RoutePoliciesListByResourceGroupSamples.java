@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for RoutePolicies ListByResourceGroup. */
 public final class RoutePoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/RoutePolicies_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/RoutePolicies_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: RoutePolicies_ListByResourceGroup_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class RoutePoliciesListByResourceGroupSamples {
      */
     public static void routePoliciesListByResourceGroupMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.routePolicies().listByResourceGroup("rgRoutePolicies", com.azure.core.util.Context.NONE);
+        manager.routePolicies().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,8 +11,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricInner;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatchParameters;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
 
 /** An instance of this class provides access to all the operations defined in NetworkFabricsClient. */
 public interface NetworkFabricsClient {
@@ -27,7 +33,7 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabric resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
@@ -45,7 +51,7 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabric resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
@@ -62,7 +68,7 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabric resource definition.
+     * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricInner create(String resourceGroupName, String networkFabricName, NetworkFabricInner body);
@@ -79,7 +85,7 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabric resource definition.
+     * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricInner create(
@@ -128,11 +134,11 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabric resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatchParameters body);
+        String resourceGroupName, String networkFabricName, NetworkFabricPatch body);
 
     /**
      * Updates a Network Fabric.
@@ -146,11 +152,11 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabric resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatchParameters body, Context context);
+        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context);
 
     /**
      * Updates a Network Fabric.
@@ -163,10 +169,10 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabric resource definition.
+     * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkFabricInner update(String resourceGroupName, String networkFabricName, NetworkFabricPatchParameters body);
+    NetworkFabricInner update(String resourceGroupName, String networkFabricName, NetworkFabricPatch body);
 
     /**
      * Updates a Network Fabric.
@@ -180,11 +186,11 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabric resource definition.
+     * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricInner update(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatchParameters body, Context context);
+        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context);
 
     /**
      * Deletes a Network Fabric.
@@ -247,7 +253,7 @@ public interface NetworkFabricsClient {
     void delete(String resourceGroupName, String networkFabricName, Context context);
 
     /**
-     * List NetworkFabrics by resource group.
+     * List Network Fabrics by resource group.
      *
      * <p>List all the Network Fabric resources in the given resource group.
      *
@@ -255,13 +261,13 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List NetworkFabrics by resource group.
+     * List Network Fabrics by resource group.
      *
      * <p>List all the Network Fabric resources in the given resource group.
      *
@@ -270,25 +276,25 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List NetworkFabrics by subscription.
+     * List Network Fabrics by subscription.
      *
      * <p>List all the Network Fabric resources in the given subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricInner> list();
 
     /**
-     * List NetworkFabrics by subscription.
+     * List Network Fabrics by subscription.
      *
      * <p>List all the Network Fabric resources in the given subscription.
      *
@@ -296,7 +302,7 @@ public interface NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricInner> list(Context context);
@@ -307,14 +313,15 @@ public interface NetworkFabricsClient {
      * <p>Provisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginProvision(String resourceGroupName, String networkFabricName);
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginProvision(String resourceGroupName, String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -322,16 +329,16 @@ public interface NetworkFabricsClient {
      * <p>Provisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginProvision(
-        String resourceGroupName, String networkFabricName, Context context);
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginProvision(String resourceGroupName, String networkFabricName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -339,13 +346,14 @@ public interface NetworkFabricsClient {
      * <p>Provisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void provision(String resourceGroupName, String networkFabricName);
+    CommonPostActionResponseForDeviceUpdateInner provision(String resourceGroupName, String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -353,45 +361,15 @@ public interface NetworkFabricsClient {
      * <p>Provisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void provision(String resourceGroupName, String networkFabricName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeprovision(String resourceGroupName, String networkFabricName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeprovision(
+    CommonPostActionResponseForDeviceUpdateInner provision(
         String resourceGroupName, String networkFabricName, Context context);
 
     /**
@@ -400,13 +378,15 @@ public interface NetworkFabricsClient {
      * <p>Deprovisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deprovision(String resourceGroupName, String networkFabricName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginDeprovision(String resourceGroupName, String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -414,12 +394,537 @@ public interface NetworkFabricsClient {
      * <p>Deprovisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginDeprovision(String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deprovision(String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdateInner deprovision(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForDeviceUpdateInner deprovision(
+        String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Network Fabric properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Network Fabric properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Network Fabric properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner upgrade(
+        String resourceGroupName, String networkFabricName, UpdateVersion body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Network Fabric properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner upgrade(
+        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfiguration(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfiguration(String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
+        String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
+        String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateWorkloadManagementBfdConfiguration(
+            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateWorkloadManagementBfdConfiguration(
+            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfiguration(
+            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfiguration(
+            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Validate configuration properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(
+            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Validate configuration properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(
+            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Validate configuration properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Validate configuration properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
+     *     instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner> beginGetTopology(
+        String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
+     *     instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner> beginGetTopology(
+        String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topology of the underlying resources in the given Network Fabric instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner getTopology(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topology of the underlying resources in the given Network Fabric instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner getTopology(String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String networkFabricName, Context context);
 }

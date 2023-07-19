@@ -34,15 +34,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.L2IsolationDomainsClient;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ArpPropertiesInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationDomainInner;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomainPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomainsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -119,7 +118,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -133,7 +132,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/updateAdministrativeState")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
             @HostParam("$host") String endpoint,
@@ -147,40 +146,24 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/clearArpTable")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/validateConfiguration")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> clearArpTable(
+        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @BodyParam("application/json") EnableDisableOnResources body,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/clearNeighborTable")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/commitConfiguration")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> clearNeighborTable(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l2IsolationDomainName") String l2IsolationDomainName,
-            @BodyParam("application/json") EnableDisableOnResources body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/{l2IsolationDomainName}/getArpEntries")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getArpEntries(
+        Mono<Response<Flux<ByteBuffer>>> commitConfiguration(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -246,8 +229,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -307,8 +290,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -364,7 +347,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreateAsync(
@@ -393,7 +376,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreateAsync(
@@ -423,7 +406,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
@@ -444,7 +427,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
@@ -464,7 +447,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2IsolationDomainInner> createAsync(
@@ -487,7 +470,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2IsolationDomainInner> createAsync(
@@ -509,7 +492,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2IsolationDomainInner create(
@@ -530,7 +513,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2IsolationDomainInner create(
@@ -548,8 +531,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(
@@ -601,8 +584,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(
@@ -650,7 +633,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2IsolationDomainInner> getByResourceGroupAsync(
@@ -670,7 +653,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<L2IsolationDomainInner> getByResourceGroupWithResponse(
@@ -688,7 +671,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2IsolationDomainInner getByResourceGroup(String resourceGroupName, String l2IsolationDomainName) {
@@ -696,7 +679,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -706,8 +689,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -755,7 +738,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -766,8 +749,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -812,7 +795,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -822,7 +805,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdateAsync(
@@ -839,7 +822,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -850,7 +833,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdateAsync(
@@ -869,7 +852,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -879,7 +862,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
@@ -888,7 +871,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -899,7 +882,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
@@ -908,7 +891,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -918,7 +901,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2IsolationDomainInner> updateAsync(
@@ -929,7 +912,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -940,7 +923,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L2 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2IsolationDomainInner> updateAsync(
@@ -951,7 +934,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -961,7 +944,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2IsolationDomainInner update(
@@ -970,7 +953,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -981,7 +964,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L2IsolationDomainInner update(
@@ -990,7 +973,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1041,7 +1024,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1090,7 +1073,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1112,7 +1095,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1136,7 +1119,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1153,7 +1136,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1172,7 +1155,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1191,7 +1174,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1211,7 +1194,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1227,7 +1210,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -1249,12 +1232,12 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
@@ -1307,13 +1290,13 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
@@ -1363,22 +1346,28 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAdministrativeStateAsync(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAdministrativeStateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1387,23 +1376,30 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAdministrativeStateAsync(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAdministrativeStateWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                context);
     }
 
     /**
@@ -1412,16 +1408,18 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
         return this.beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body).getSyncPoller();
     }
 
@@ -1431,17 +1429,19 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
         return this
             .beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context)
             .getSyncPoller();
@@ -1453,15 +1453,15 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAdministrativeStateAsync(
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
         return beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body)
             .last()
@@ -1474,16 +1474,16 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAdministrativeStateAsync(
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
         return beginUpdateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context)
             .last()
@@ -1496,16 +1496,17 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
-        updateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body).block();
+        return updateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body).block();
     }
 
     /**
@@ -1514,599 +1515,33 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        updateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context).block();
+        return updateAdministrativeStateAsync(resourceGroupName, l2IsolationDomainName, body, context).block();
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearArpTableWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l2IsolationDomainName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter l2IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .clearArpTable(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            body,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearArpTableWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l2IsolationDomainName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter l2IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .clearArpTable(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                body,
-                accept,
-                context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearArpTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            clearArpTableWithResponseAsync(resourceGroupName, l2IsolationDomainName, body);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearArpTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            clearArpTableWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        return this.beginClearArpTableAsync(resourceGroupName, l2IsolationDomainName, body).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return this.beginClearArpTableAsync(resourceGroupName, l2IsolationDomainName, body, context).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearArpTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        return beginClearArpTableAsync(resourceGroupName, l2IsolationDomainName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearArpTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return beginClearArpTableAsync(resourceGroupName, l2IsolationDomainName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearArpTable(String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        clearArpTableAsync(resourceGroupName, l2IsolationDomainName, body).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        clearArpTableAsync(resourceGroupName, l2IsolationDomainName, body, context).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearNeighborTableWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l2IsolationDomainName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter l2IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .clearNeighborTable(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l2IsolationDomainName,
-                            body,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearNeighborTableWithResponseAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l2IsolationDomainName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter l2IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .clearNeighborTable(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l2IsolationDomainName,
-                body,
-                accept,
-                context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearNeighborTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            clearNeighborTableWithResponseAsync(resourceGroupName, l2IsolationDomainName, body);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearNeighborTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            clearNeighborTableWithResponseAsync(resourceGroupName, l2IsolationDomainName, body, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        return this.beginClearNeighborTableAsync(resourceGroupName, l2IsolationDomainName, body).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return this
-            .beginClearNeighborTableAsync(resourceGroupName, l2IsolationDomainName, body, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearNeighborTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        return beginClearNeighborTableAsync(resourceGroupName, l2IsolationDomainName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearNeighborTableAsync(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return beginClearNeighborTableAsync(resourceGroupName, l2IsolationDomainName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        clearNeighborTableAsync(resourceGroupName, l2IsolationDomainName, body).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        clearNeighborTableAsync(resourceGroupName, l2IsolationDomainName, body, context).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device along with {@link Response} on successful completion of
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getArpEntriesWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
         String resourceGroupName, String l2IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2133,7 +1568,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
             .withContext(
                 context ->
                     service
-                        .getArpEntries(
+                        .validateConfiguration(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -2145,21 +1580,19 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device along with {@link Response} on successful completion of
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getArpEntriesWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
         String resourceGroupName, String l2IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2184,7 +1617,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getArpEntries(
+            .validateConfiguration(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -2195,177 +1628,435 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of show ARP entries response per network device.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Map<String, ArpPropertiesInner>>, Map<String, ArpPropertiesInner>>
-        beginGetArpEntriesAsync(String resourceGroupName, String l2IsolationDomainName) {
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String l2IsolationDomainName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            getArpEntriesWithResponseAsync(resourceGroupName, l2IsolationDomainName);
+            validateConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName);
         return this
             .client
-            .<Map<String, ArpPropertiesInner>, Map<String, ArpPropertiesInner>>getLroResult(
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                new TypeReference<Map<String, ArpPropertiesInner>>() {
-                }.getType(),
-                new TypeReference<Map<String, ArpPropertiesInner>>() {
-                }.getType(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
                 this.client.getContext());
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of show ARP entries response per network device.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Map<String, ArpPropertiesInner>>, Map<String, ArpPropertiesInner>>
-        beginGetArpEntriesAsync(String resourceGroupName, String l2IsolationDomainName, Context context) {
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String l2IsolationDomainName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            getArpEntriesWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
+            validateConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
         return this
             .client
-            .<Map<String, ArpPropertiesInner>, Map<String, ArpPropertiesInner>>getLroResult(
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                new TypeReference<Map<String, ArpPropertiesInner>>() {
-                }.getType(),
-                new TypeReference<Map<String, ArpPropertiesInner>>() {
-                }.getType(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
                 context);
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of show ARP entries response per network device.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Map<String, ArpPropertiesInner>>, Map<String, ArpPropertiesInner>> beginGetArpEntries(
-        String resourceGroupName, String l2IsolationDomainName) {
-        return this.beginGetArpEntriesAsync(resourceGroupName, l2IsolationDomainName).getSyncPoller();
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String l2IsolationDomainName) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName).getSyncPoller();
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of show ARP entries response per network device.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Map<String, ArpPropertiesInner>>, Map<String, ArpPropertiesInner>> beginGetArpEntries(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
-        return this.beginGetArpEntriesAsync(resourceGroupName, l2IsolationDomainName, context).getSyncPoller();
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String l2IsolationDomainName, Context context) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).getSyncPoller();
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device on successful completion of {@link Mono}.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Map<String, ArpPropertiesInner>> getArpEntriesAsync(
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
         String resourceGroupName, String l2IsolationDomainName) {
-        return beginGetArpEntriesAsync(resourceGroupName, l2IsolationDomainName)
+        return beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device on successful completion of {@link Mono}.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Map<String, ArpPropertiesInner>> getArpEntriesAsync(
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
         String resourceGroupName, String l2IsolationDomainName, Context context) {
-        return beginGetArpEntriesAsync(resourceGroupName, l2IsolationDomainName, context)
+        return beginValidateConfigurationAsync(resourceGroupName, l2IsolationDomainName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device.
+     * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, ArpPropertiesInner> getArpEntries(String resourceGroupName, String l2IsolationDomainName) {
-        return getArpEntriesAsync(resourceGroupName, l2IsolationDomainName).block();
+    public ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String l2IsolationDomainName) {
+        return validateConfigurationAsync(resourceGroupName, l2IsolationDomainName).block();
     }
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device.
+     * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, ArpPropertiesInner> getArpEntries(
+    public ValidateConfigurationResponseInner validateConfiguration(
         String resourceGroupName, String l2IsolationDomainName, Context context) {
-        return getArpEntriesAsync(resourceGroupName, l2IsolationDomainName, context).block();
+        return validateConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).block();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
+        String resourceGroupName, String l2IsolationDomainName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (l2IsolationDomainName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter l2IsolationDomainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .commitConfiguration(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            l2IsolationDomainName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
+        String resourceGroupName, String l2IsolationDomainName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (l2IsolationDomainName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter l2IsolationDomainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .commitConfiguration(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                l2IsolationDomainName,
+                accept,
+                context);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfigurationAsync(String resourceGroupName, String l2IsolationDomainName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            commitConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfigurationAsync(String resourceGroupName, String l2IsolationDomainName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            commitConfigurationWithResponseAsync(resourceGroupName, l2IsolationDomainName, context);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String l2IsolationDomainName) {
+        return this.beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName).getSyncPoller();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String l2IsolationDomainName, Context context) {
+        return this.beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).getSyncPoller();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
+        String resourceGroupName, String l2IsolationDomainName) {
+        return beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
+        String resourceGroupName, String l2IsolationDomainName, Context context) {
+        return beginCommitConfigurationAsync(resourceGroupName, l2IsolationDomainName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String l2IsolationDomainName) {
+        return commitConfigurationAsync(resourceGroupName, l2IsolationDomainName).block();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String l2IsolationDomainName, Context context) {
+        return commitConfigurationAsync(resourceGroupName, l2IsolationDomainName, context).block();
     }
 
     /**
@@ -2377,7 +2068,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -2431,7 +2122,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupSinglePageAsync(
@@ -2482,7 +2173,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -2501,7 +2192,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -2519,7 +2210,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2IsolationDomainInner> listByResourceGroup(String resourceGroupName) {
@@ -2536,7 +2227,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2IsolationDomainInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -2550,7 +2241,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listSinglePageAsync() {
@@ -2598,7 +2289,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listSinglePageAsync(Context context) {
@@ -2641,7 +2332,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listAsync() {
@@ -2658,7 +2349,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2IsolationDomainInner> listAsync(Context context) {
@@ -2673,7 +2364,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2IsolationDomainInner> list() {
@@ -2689,7 +2380,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2IsolationDomainInner> list(Context context) {
@@ -2704,7 +2395,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2742,7 +2433,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listByResourceGroupNextSinglePageAsync(
@@ -2779,7 +2470,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2817,7 +2508,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2IsolationDomainInner>> listBySubscriptionNextSinglePageAsync(

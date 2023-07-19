@@ -8,15 +8,16 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationDomainInner;
-import com.azure.resourcemanager.managednetworkfabric.models.ArpProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomain;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomainPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class L2IsolationDomainImpl
@@ -66,21 +67,16 @@ public final class L2IsolationDomainImpl
         return this.innerModel().mtu();
     }
 
-    public List<String> disabledOnResources() {
-        List<String> inner = this.innerModel().disabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public EnabledDisabledState administrativeState() {
-        return this.innerModel().administrativeState();
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
     }
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
     }
 
     public String annotation() {
@@ -195,38 +191,37 @@ public final class L2IsolationDomainImpl
         return this;
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager.l2IsolationDomains().updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body);
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager
+            .l2IsolationDomains()
+            .updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body);
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
             .l2IsolationDomains()
             .updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body, context);
     }
 
-    public void clearArpTable(EnableDisableOnResources body) {
-        serviceManager.l2IsolationDomains().clearArpTable(resourceGroupName, l2IsolationDomainName, body);
+    public ValidateConfigurationResponse validateConfiguration() {
+        return serviceManager.l2IsolationDomains().validateConfiguration(resourceGroupName, l2IsolationDomainName);
     }
 
-    public void clearArpTable(EnableDisableOnResources body, Context context) {
-        serviceManager.l2IsolationDomains().clearArpTable(resourceGroupName, l2IsolationDomainName, body, context);
+    public ValidateConfigurationResponse validateConfiguration(Context context) {
+        return serviceManager
+            .l2IsolationDomains()
+            .validateConfiguration(resourceGroupName, l2IsolationDomainName, context);
     }
 
-    public void clearNeighborTable(EnableDisableOnResources body) {
-        serviceManager.l2IsolationDomains().clearNeighborTable(resourceGroupName, l2IsolationDomainName, body);
+    public CommonPostActionResponseForStateUpdate commitConfiguration() {
+        return serviceManager.l2IsolationDomains().commitConfiguration(resourceGroupName, l2IsolationDomainName);
     }
 
-    public void clearNeighborTable(EnableDisableOnResources body, Context context) {
-        serviceManager.l2IsolationDomains().clearNeighborTable(resourceGroupName, l2IsolationDomainName, body, context);
-    }
-
-    public Map<String, ArpProperties> getArpEntries() {
-        return serviceManager.l2IsolationDomains().getArpEntries(resourceGroupName, l2IsolationDomainName);
-    }
-
-    public Map<String, ArpProperties> getArpEntries(Context context) {
-        return serviceManager.l2IsolationDomains().getArpEntries(resourceGroupName, l2IsolationDomainName, context);
+    public CommonPostActionResponseForStateUpdate commitConfiguration(Context context) {
+        return serviceManager
+            .l2IsolationDomains()
+            .commitConfiguration(resourceGroupName, l2IsolationDomainName, context);
     }
 
     public L2IsolationDomainImpl withRegion(Region location) {
@@ -239,16 +234,6 @@ public final class L2IsolationDomainImpl
         return this;
     }
 
-    public L2IsolationDomainImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateBody.withTags(tags);
-            return this;
-        }
-    }
-
     public L2IsolationDomainImpl withNetworkFabricId(String networkFabricId) {
         this.innerModel().withNetworkFabricId(networkFabricId);
         return this;
@@ -257,6 +242,16 @@ public final class L2IsolationDomainImpl
     public L2IsolationDomainImpl withVlanId(int vlanId) {
         this.innerModel().withVlanId(vlanId);
         return this;
+    }
+
+    public L2IsolationDomainImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public L2IsolationDomainImpl withMtu(Integer mtu) {
