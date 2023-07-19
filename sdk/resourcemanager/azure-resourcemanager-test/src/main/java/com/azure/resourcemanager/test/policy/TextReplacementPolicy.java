@@ -86,9 +86,7 @@ public class TextReplacementPolicy implements HttpPipelinePolicy {
         return next.process()
             .doOnError(throwable -> {
                 networkCallRecord.setException(new NetworkCallError(throwable));
-                if (recordedData != null) { // when using testproxy, recordedData will be set to null
-                    recordedData.addNetworkCall(networkCallRecord);
-                }
+                recordedData.addNetworkCall(networkCallRecord);
                 throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
             }).flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
@@ -101,7 +99,7 @@ public class TextReplacementPolicy implements HttpPipelinePolicy {
                     if (body != null && body.contains("<Status>InProgress</Status>")
                         || Integer.parseInt(responseData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
                         logger.info("Waiting for a response or redirection.");
-                    } else if (recordedData != null) { // when using testproxy, recordedData will be set to null
+                    } else {
                         recordedData.addNetworkCall(networkCallRecord);
                     }
 
