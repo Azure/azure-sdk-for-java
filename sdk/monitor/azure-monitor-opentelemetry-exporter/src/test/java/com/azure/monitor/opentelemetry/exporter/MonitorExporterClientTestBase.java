@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
@@ -35,7 +35,7 @@ import java.util.UUID;
 /**
  * Base test class for Monitor Exporter client tests
  */
-public class MonitorExporterClientTestBase extends TestBase {
+public class MonitorExporterClientTestBase extends TestProxyTestBase {
 
     @Override
     @BeforeEach

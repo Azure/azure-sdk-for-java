@@ -41,6 +41,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "Skipping playback tests");
+        super.setupTest(testInfo);
     }
 
     @Override
