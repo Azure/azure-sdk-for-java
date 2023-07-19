@@ -205,11 +205,10 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                              patchBulkUpdateOperations: CosmosPatchBulkUpdateOperations): ObjectNode = {
 
       // Do not do the modification on original objectNode, as it maybe used by other patchBulkUpdate operations
-      val rootNode =
-          Utils
-              .getSimpleObjectMapper
-              .createObjectNode()
-              .setAll(itemToBeUpdatedOpt.getOrElse(Utils.getSimpleObjectMapper().createObjectNode()))
+      val rootNode = itemToBeUpdatedOpt match {
+          case Some(itemToBeUpdate) => Utils.getSimpleObjectMapper.createObjectNode().setAll(itemToBeUpdate)
+          case _ => Utils.getSimpleObjectMapper.createObjectNode()
+      }
 
       patchBulkUpdateOperations.getPatchOperations().foreach(patchOperation => {
           val patchOperationCore = patchOperation.asInstanceOf[PatchOperationCore[JsonNode]]
@@ -219,13 +218,13 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
       rootNode
   }
 
-  private[this] def patchBulkUpdateField(rootNode: ObjectNode, patchOperationType: PatchOperationType, path: String, pathValue: JsonNode): Unit = {
+  private[this] def patchBulkUpdateField(rootNode: ObjectNode, patchOperationType: PatchOperationType, path: String, pathValue: JsonNode): ObjectNode = {
       patchOperationType match {
           case PatchOperationType.SET =>
               // CosmosDb mapping path: /parent/child1/item
               // Loop through each path component. If the parent node does not exists, create one {}
               val pathArray = path.stripPrefix("/").split("/")
-              var parentNode: ObjectNode = rootNode
+              var parentNode = rootNode
               for (pathIndex <- 0 until pathArray.size - 1) {
                   if (parentNode.get(pathArray(pathIndex)) isMissingNode) {
                       parentNode.set(pathArray(pathIndex), Utils.getSimpleObjectMapper().createObjectNode())
@@ -239,7 +238,7 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
 
               // after looping through the structure, now the field value
               parentNode.set(pathArray(pathArray.size - 1), pathValue)
-          case _ => new RuntimeException(s"PatchOperationType $patchOperationType is not supported for ItemPatchBulkUpdate") // we should have never reach here
+          case _ => throw new RuntimeException(s"PatchOperationType $patchOperationType is not supported for ItemPatchBulkUpdate") // we should have never reach here
       }
   }
 }

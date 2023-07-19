@@ -1088,6 +1088,40 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     }
   }
 
+  "Bulk Writer" can "patchBulkUpdate item" in {
+      val container = getContainer
+      val containerProperties = container.read().block().getProperties
+      val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+
+      val writeConfig = CosmosWriteConfig(
+          ItemWriteStrategy.ItemPatchBulkUpdate,
+          5,
+          bulkEnabled = true,
+          bulkMaxPendingOperations = Some(900),
+          patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
+
+      val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+      val items = mutable.Map[String, ObjectNode]()
+      for (_ <- 0 until 5000) {
+          val item = getItem(UUID.randomUUID().toString)
+          val id = item.get("id").textValue()
+          items += (id -> item)
+          bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+      }
+
+      bulkWriter.flushAndClose()
+      val allItems = readAllItems()
+
+      allItems should have size items.size
+
+      for (itemFromDB <- allItems) {
+          items.contains(itemFromDB.get("id").textValue()) shouldBe true
+          val expectedItem = items(itemFromDB.get("id").textValue())
+          secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+      }
+  }
+
   private def getItem(id: String): ObjectNode = {
     val objectNode = objectMapper.createObjectNode()
     objectNode.put("id", id)

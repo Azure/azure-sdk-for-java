@@ -12,7 +12,7 @@ import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Scheduler
 
-import java.util.stream.Collectors
+import java.util
 import scala.collection.concurrent.TrieMap
 import scala.collection.convert.ImplicitConversions.`collection AsScalaIterable`
 import scala.collection.mutable
@@ -78,7 +78,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
   private val pendingTasksCompleted = lock.newCondition
-  private val pendingRetries = new AtomicLong(0);
+  private val pendingRetries = new AtomicLong(0)
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[models.CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
@@ -105,9 +105,14 @@ class BulkWriter(container: CosmosAsyncContainer,
         Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
     case _ => None
   }
-  private val readManyInputEmitter: Sinks.Many[ReadManyOperation] = Sinks.many().unicast().onBackpressureBuffer()
+  private val readManyInputEmitterOpt: Option[Sinks.Many[ReadManyOperation]] = {
+      writeConfig.itemWriteStrategy match {
+          case ItemWriteStrategy.ItemPatchBulkUpdate => Some(Sinks.many().unicast().onBackpressureBuffer())
+          case _ => None
+      }
+  }
 
-  private def initializeOperationContext(): SparkTaskContext = {
+    private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
 
     val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "BulkWriter")
@@ -137,88 +142,101 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
   }
 
-  private val readManySubscriptionDisposable: Disposable = {
-    log.logTrace(s"readManySubscriptionDisposable, Context: ${operationContext.toString} ${getThreadInfo}")
+  private val readManySubscriptionDisposableOpt: Option[Disposable] = {
+      writeConfig.itemWriteStrategy match {
+          case ItemWriteStrategy.ItemPatchBulkUpdate => Some(createReadManySubscriptionDisposable())
+          case  _ => None
+      }
+  }
 
-    // We start from using the bulk batch size and interval
-    // If in the future, there is a need to separate the configuration, can re-consider
-    val bulkBatchSize = ImplementationBridgeHelpers
-        .CosmosBulkExecutionOptionsHelper
-        .getCosmosBulkExecutionOptionsAccessor
-        .getMaxMicroBatchSize(cosmosBulkExecutionOptions)
-    val batchInterval = ImplementationBridgeHelpers
-        .CosmosBulkExecutionOptionsHelper
-        .getCosmosBulkExecutionOptionsAccessor
-        .getMaxMicroBatchInterval(cosmosBulkExecutionOptions)
+  private def createReadManySubscriptionDisposable(): Disposable = {
+      log.logTrace(s"readManySubscriptionDisposable, Context: ${operationContext.toString} ${getThreadInfo}")
 
-    readManyInputEmitter
-        .asFlux()
-        .publishOn(bulkWriterBoundedElastic)
-        .bufferTimeout(bulkBatchSize, batchInterval)
-        .asScala
-        .flatMap(readManyOperations => {
-            val cosmosIdentitySet = readManyOperations.map(option => option.cosmosItemIdentity).toSet
+      // We start from using the bulk batch size and interval
+      // If in the future, there is a need to separate the configuration, can re-consider
+      val bulkBatchSize = ImplementationBridgeHelpers
+          .CosmosBulkExecutionOptionsHelper
+          .getCosmosBulkExecutionOptionsAccessor
+          .getMaxMicroBatchSize(cosmosBulkExecutionOptions)
+      val batchInterval = ImplementationBridgeHelpers
+          .CosmosBulkExecutionOptionsHelper
+          .getCosmosBulkExecutionOptionsAccessor
+          .getMaxMicroBatchInterval(cosmosBulkExecutionOptions)
 
-            // for each batch, use readMany to read items from cosmosdb
-            container
-                .readMany(cosmosIdentitySet.toList.asJava, classOf[ObjectNode])
-                .doOnNext(feedResponse => {
-                    val resultMap = new TrieMap[CosmosItemIdentity, ObjectNode]()
-                    for (itemNode: ObjectNode <- feedResponse.getResults.asScala) {
-                        resultMap += (
-                            new CosmosItemIdentity(
-                                PartitionKeyHelper.getPartitionKeyPath(itemNode, partitionKeyDefinition),
-                                itemNode.get(CosmosConstants.Properties.Id).asText()) -> itemNode)
-                    }
+      readManyInputEmitterOpt
+          .get
+          .asFlux()
+          .publishOn(bulkWriterBoundedElastic)
+          .bufferTimeout(bulkBatchSize, batchInterval)
+          .flatMap(readManyOperations => {
+              val cosmosIdentitySet = readManyOperations.map(option => option.cosmosItemIdentity).toSet
 
-                    // It is possible that multiple cosmosPatchBulkUpdateOperations were targeting for the same item
-                    // Currently, we are still creating one bulk item operation for each cosmosPatchBulkUpdateOperations
-                    // for easier exception and semaphore handling
-                    // However a consequences of it could be, the generated bulk item operation will fail due to conflicts or pre-condition failure
-                    // If this turns out to be a problem, we can do more optimization here: merge multiple cosmosPatchBulkUpdateOperations into one bulkItemOperation
-                    // But even the above approach can only work within the same batch but not for the whole spark partition processing.
-                    for (readManyOperation <- readManyOperations) {
-                        val cosmosPatchBulkUpdateOperations =
-                            cosmosPatchHelperOpt
-                                .get
-                                .createCosmosPatchBulkUpdateOperations(partitionKeyDefinition, readManyOperation.objectNode)
+              // for each batch, use readMany to read items from cosmosdb
+              container
+                  .readMany(cosmosIdentitySet.toList.asJava, classOf[ObjectNode])
+                  .switchIfEmpty(
+                      Mono.just(
+                          ImplementationBridgeHelpers
+                              .FeedResponseHelper
+                              .getFeedResponseAccessor
+                              .createFeedResponse(new util.ArrayList[ObjectNode](), null, null)))
+                  .doOnNext(feedResponse => {
+                      val resultMap = new TrieMap[CosmosItemIdentity, ObjectNode]()
+                      for (itemNode: ObjectNode <- feedResponse.getResults.asScala) {
+                          resultMap += (
+                              new CosmosItemIdentity(
+                                  PartitionKeyHelper.getPartitionKeyPath(itemNode, partitionKeyDefinition),
+                                  itemNode.get(CosmosConstants.Properties.Id).asText()) -> itemNode)
+                      }
 
-                        val rootNode =
-                            cosmosPatchHelperOpt
-                                .get
-                                .patchBulkUpdateItem(resultMap.get(readManyOperation.cosmosItemIdentity), cosmosPatchBulkUpdateOperations)
+                      // It is possible that multiple cosmosPatchBulkUpdateOperations were targeting for the same item
+                      // Currently, we are still creating one bulk item operation for each cosmosPatchBulkUpdateOperations
+                      // for easier exception and semaphore handling
+                      // However a consequences of it could be, the generated bulk item operation will fail due to conflicts or pre-condition failure
+                      // If this turns out to be a problem, we can do more optimization here: merge multiple cosmosPatchBulkUpdateOperations into one bulkItemOperation
+                      // But even the above approach can only work within the same batch but not for the whole spark partition processing.
+                      for (readManyOperation <- readManyOperations) {
+                          val cosmosPatchBulkUpdateOperations =
+                              cosmosPatchHelperOpt
+                                  .get
+                                  .createCosmosPatchBulkUpdateOperations(partitionKeyDefinition, readManyOperation.objectNode)
 
-                        // create bulk item operation
-                        val etagOpt = Option.apply(rootNode.get(CosmosConstants.Properties.ETag))
-                        val bulkItemOperation = etagOpt match {
-                            case Some(etag) =>
-                                CosmosBulkOperations.getReplaceItemOperation(
-                                    readManyOperation.cosmosItemIdentity.getId,
-                                    rootNode,
-                                    readManyOperation.cosmosItemIdentity.getPartitionKey,
-                                    new CosmosBulkItemRequestOptions().setIfMatchETag(etag.asText()),
-                                    operationContext)
-                            case None => CosmosBulkOperations.getCreateItemOperation(rootNode, readManyOperation.cosmosItemIdentity.getPartitionKey)
-                        }
+                          val rootNode =
+                              cosmosPatchHelperOpt
+                                  .get
+                                  .patchBulkUpdateItem(resultMap.get(readManyOperation.cosmosItemIdentity), cosmosPatchBulkUpdateOperations)
 
-                        // Important step
-                        // Set up the sourceItem which will be used during retry
-                        ImplementationBridgeHelpers
-                            .ItemBulkOperationHelper
-                            .getItemBulkOperationAccessor
-                            .addSourceItem(bulkItemOperation.asInstanceOf[ItemBulkOperation[ObjectNode, OperationContext]], readManyOperation.objectNode)
+                          // create bulk item operation
+                          val etagOpt = Option.apply(rootNode.get(CosmosConstants.Properties.ETag))
+                          val bulkItemOperation = etagOpt match {
+                              case Some(etag) =>
+                                  CosmosBulkOperations.getReplaceItemOperation(
+                                      readManyOperation.cosmosItemIdentity.getId,
+                                      rootNode,
+                                      readManyOperation.cosmosItemIdentity.getPartitionKey,
+                                      new CosmosBulkItemRequestOptions().setIfMatchETag(etag.asText()),
+                                      operationContext)
+                              case None => CosmosBulkOperations.getCreateItemOperation(rootNode, readManyOperation.cosmosItemIdentity.getPartitionKey)
+                          }
 
-                        bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
-                    }
-                })
-                .doOnError(throwable => {
-                    for (readManyOperation <- readManyOperations) {
-                        handleReadManyExceptions(throwable, readManyOperation)
-                    }
-                })
-                .`then`()
-        })
-        .subscribe()
+                          // Important step
+                          // Set up the sourceItem which will be used during retry
+                          ImplementationBridgeHelpers
+                              .ItemBulkOperationHelper
+                              .getItemBulkOperationAccessor
+                              .addSourceItem(bulkItemOperation.asInstanceOf[ItemBulkOperation[ObjectNode, OperationContext]], readManyOperation.objectNode)
+
+                          bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
+                      }
+                  })
+                  .doOnError(throwable => {
+                      for (readManyOperation <- readManyOperations) {
+                          handleReadManyExceptions(throwable, readManyOperation)
+                      }
+                  })
+                  .`then`()
+          })
+          .subscribe()
   }
 
   private def handleReadManyExceptions(throwable: Throwable, ReadManyOperation: ReadManyOperation): Unit = {
@@ -316,6 +334,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     bulkOperationResponseFlux.subscribe(
       resp => {
+          
         var isGettingRetried = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
@@ -428,7 +447,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                                        objectNode: ObjectNode,
                                        operationContext: OperationContext): Unit = {
       // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
-      readManyInputEmitter.emitNext(
+      readManyInputEmitterOpt.get.emitNext(
           ReadManyOperation(new CosmosItemIdentity(partitionKeyValue, operationContext.itemId), objectNode, operationContext),
           emitFailureHandler)
   }
@@ -731,7 +750,11 @@ class BulkWriter(container: CosmosAsyncContainer,
           assume(totalScheduledMetrics.get() == totalSuccessfulIngestionMetrics.get)
         }
       } finally {
-        subscriptionDisposable.dispose();
+        subscriptionDisposable.dispose()
+        readManySubscriptionDisposableOpt match {
+            case Some(readManySubscriptionDisposable) => readManySubscriptionDisposable.dispose()
+            case _ =>
+        }
         closed.set(true)
       }
     }
