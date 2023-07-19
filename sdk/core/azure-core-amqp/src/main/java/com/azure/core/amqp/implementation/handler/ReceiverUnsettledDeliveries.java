@@ -22,7 +22,6 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import reactor.core.Disposable;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
@@ -182,7 +181,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      */
     public Mono<Void> sendDisposition(String deliveryTag, DeliveryState desiredState) {
         if (isTerminated.get()) {
-            return monoError(logger, new IllegalStateException("Cannot perform sendDisposition on a disposed receiver."));
+            return monoError(logger, DeliveryNotOnLinkException.linkClosed(deliveryTag));
         } else {
             return sendDispositionImpl(deliveryTag, desiredState);
         }
@@ -371,8 +370,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
                 .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
                 .log("Delivery not found to update disposition.");
 
-            return monoError(logger, Exceptions.propagate(new IllegalArgumentException(
-                "Delivery not on receive link.")));
+            return monoError(logger, DeliveryNotOnLinkException.noMatchingDelivery(deliveryTag));
         }
 
         final DispositionWork work = new DispositionWork(deliveryTag, desiredState, timeout);
