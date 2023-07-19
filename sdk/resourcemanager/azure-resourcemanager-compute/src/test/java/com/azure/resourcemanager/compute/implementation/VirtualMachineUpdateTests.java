@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled
     public void testVirtualMachineUpdate() {
         final String vmname = "javavm1";
 

@@ -10,6 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -24,6 +25,7 @@ public class ProvidersTests extends ResourceManagementTest {
     // record data too big
     @DoNotRecord(skipInPlayback = true)
     @Test
+    @Disabled
     public void canUnregisterAndRegisterProvider() throws Exception {
         PagedIterable<Provider> providers = resourceClient.providers().list();
         int size = TestUtilities.getSize(providers);

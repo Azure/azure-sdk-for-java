@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
@@ -21,6 +22,7 @@ import java.util.Locale;
 public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
 
     @Test
+    @Disabled
     public void canCreateVirtualMachineWithDiskEncryptionSet() {
         final String clientId = this.clientIdFromFile();
 

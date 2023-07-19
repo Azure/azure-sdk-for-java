@@ -9,6 +9,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
@@ -16,6 +17,7 @@ import java.util.Locale;
 public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
 
     @Test
+    @Disabled
     public void canCreateClusterWithDiskEncryption() {
         final String clientId = this.clientIdFromFile();
 

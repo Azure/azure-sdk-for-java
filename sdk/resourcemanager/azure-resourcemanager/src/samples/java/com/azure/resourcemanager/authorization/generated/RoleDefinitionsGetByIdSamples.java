@@ -4,25 +4,23 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleDefinitions GetById. */
 public final class RoleDefinitionsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetRoleDefinitionById.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-05-01-preview/examples/GetRoleDefinitionByRoleId.json
      */
     /**
-     * Sample code: Get role definition by ID.
+     * Sample code: Get role definition by role ID.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getRoleDefinitionByID(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getRoleDefinitionByRoleID(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .accessManagement()
             .roleAssignments()
             .manager()
             .roleServiceClient()
             .getRoleDefinitions()
-            .getByIdWithResponse("roleDefinitionId", Context.NONE);
+            .getByIdWithResponse("roleDefinitionId", com.azure.core.util.Context.NONE);
     }
 }

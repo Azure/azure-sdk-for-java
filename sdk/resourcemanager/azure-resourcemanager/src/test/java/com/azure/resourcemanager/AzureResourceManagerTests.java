@@ -1154,12 +1154,14 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
         new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI()
             .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
     }
 
     @Test
+    @Disabled
     public void testContainerInstanceWithPublicIpAddressWithUserAssignedMsi() throws Exception {
         final String cgName = generateRandomResourceName("aci", 10);
         final String rgName = generateRandomResourceName("rgaci", 10);

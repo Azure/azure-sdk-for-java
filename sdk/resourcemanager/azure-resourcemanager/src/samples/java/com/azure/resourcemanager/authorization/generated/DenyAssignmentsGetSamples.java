@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DenyAssignments Get. */
 public final class DenyAssignmentsGetSamples {
     /*
@@ -23,6 +21,7 @@ public final class DenyAssignmentsGetSamples {
             .manager()
             .roleServiceClient()
             .getDenyAssignments()
-            .getWithResponse("subscriptions/subId/resourcegroups/rgname", "denyAssignmentId", Context.NONE);
+            .getWithResponse(
+                "subscriptions/subId/resourcegroups/rgname", "denyAssignmentId", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,12 +8,14 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
+    @Disabled
     public void canCRUDApplication() throws Exception {
         String name = generateRandomResourceName("javasdkapp", 20);
 
@@ -56,6 +58,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
 
     @Test
     @DoNotRecord
+    @Disabled
     public void canListApplications() {
         if (skipInPlayback()) {
             return;

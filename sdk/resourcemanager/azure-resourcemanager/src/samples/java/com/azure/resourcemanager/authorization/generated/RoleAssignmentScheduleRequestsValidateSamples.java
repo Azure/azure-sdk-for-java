@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentScheduleRequestInner;
 import com.azure.resourcemanager.authorization.models.RequestType;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentScheduleRequestPropertiesScheduleInfo;
@@ -15,7 +14,7 @@ import java.time.OffsetDateTime;
 /** Samples for RoleAssignmentScheduleRequests Validate. */
 public final class RoleAssignmentScheduleRequestsValidateSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/ValidateRoleAssignmentScheduleRequestByName.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-04-01-preview/examples/ValidateRoleAssignmentScheduleRequestByName.json
      */
     /**
      * Sample code: ValidateRoleAssignmentScheduleRequestByName.
@@ -50,6 +49,6 @@ public final class RoleAssignmentScheduleRequestsValidateSamples {
                         "@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]"
                             + " StringEqualsIgnoreCase 'foo_storage_container'")
                     .withConditionVersion("1.0"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

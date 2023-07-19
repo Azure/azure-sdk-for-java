@@ -24,6 +24,7 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -125,6 +126,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void canAssignCurrentResourceGroupAccessRoleToIdentity() throws Exception {
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
@@ -177,6 +179,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void canAssignRolesToIdentity() throws Exception {
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);

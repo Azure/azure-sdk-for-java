@@ -74,8 +74,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleInstances"
-                + "/{roleAssignmentScheduleInstanceName}")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleInstances/{roleAssignmentScheduleInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleInstanceInner>> get(
@@ -124,7 +123,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -169,7 +168,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -315,7 +314,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -362,7 +361,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

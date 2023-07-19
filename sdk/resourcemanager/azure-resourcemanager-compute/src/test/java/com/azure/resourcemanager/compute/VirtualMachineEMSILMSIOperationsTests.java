@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.Iterator;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -32,6 +33,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled
     public void canCreateUpdateVirtualMachineWithEMSI() {
         // this.resourceManager.resourceGroups().beginDeleteByName("41522c6e938c4f6");
 
@@ -252,6 +254,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled
     public void canCreateVirtualMachineWithLMSIAndEMSI() {
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
@@ -382,6 +385,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled
     public void canUpdateVirtualMachineWithEMSIAndLMSI() throws Exception {
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);

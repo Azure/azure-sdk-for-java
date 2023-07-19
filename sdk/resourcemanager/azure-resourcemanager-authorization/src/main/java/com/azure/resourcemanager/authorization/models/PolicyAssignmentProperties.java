@@ -7,7 +7,7 @@ package com.azure.resourcemanager.authorization.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Expanded info of resource scope, role definition and policy. */
+/** The PolicyAssignmentProperties model. */
 @Fluent
 public final class PolicyAssignmentProperties {
     /*

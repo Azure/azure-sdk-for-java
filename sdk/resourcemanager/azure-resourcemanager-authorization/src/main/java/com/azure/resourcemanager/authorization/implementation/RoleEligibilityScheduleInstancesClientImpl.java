@@ -76,8 +76,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleInstances"
-                + "/{roleEligibilityScheduleInstanceName}")
+            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleInstances/{roleEligibilityScheduleInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleEligibilityScheduleInstanceInner>> get(
@@ -126,7 +125,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -171,7 +170,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -317,7 +316,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
                     new IllegalArgumentException(
                         "Parameter roleEligibilityScheduleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -364,7 +363,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
                     new IllegalArgumentException(
                         "Parameter roleEligibilityScheduleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

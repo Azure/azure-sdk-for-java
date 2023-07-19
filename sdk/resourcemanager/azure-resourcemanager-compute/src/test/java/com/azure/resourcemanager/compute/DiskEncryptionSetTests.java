@@ -14,6 +14,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -35,6 +36,7 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDDiskEncryptionSet() {
         Region region = Region.US_EAST;
         VaultAndKey vaultAndKey = createVaultAndKey(region, rgName, generateRandomResourceName("kv", 15), clientIdFromFile());

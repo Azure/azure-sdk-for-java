@@ -65,8 +65,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
     public interface RoleAssignmentScheduleRequestsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleRequestInner>> create(
@@ -80,8 +79,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleRequestInner>> get(
@@ -106,8 +104,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}/cancel")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
@@ -120,8 +117,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}/validate")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleRequestInner>> validate(
@@ -148,9 +144,11 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * Creates a role assignment schedule request.
      *
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
      *     different for each role assignment.
@@ -183,7 +181,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -204,9 +202,11 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * Creates a role assignment schedule request.
      *
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
      *     different for each role assignment.
@@ -243,7 +243,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -261,9 +261,11 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * Creates a role assignment schedule request.
      *
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
      *     different for each role assignment.
@@ -284,9 +286,11 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * Creates a role assignment schedule request.
      *
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
      *     different for each role assignment.
@@ -310,9 +314,11 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * Creates a role assignment schedule request.
      *
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
      *     different for each role assignment.
@@ -357,7 +363,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -403,7 +409,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -486,7 +492,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -532,7 +538,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -673,7 +679,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -718,7 +724,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -804,7 +810,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -859,7 +865,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

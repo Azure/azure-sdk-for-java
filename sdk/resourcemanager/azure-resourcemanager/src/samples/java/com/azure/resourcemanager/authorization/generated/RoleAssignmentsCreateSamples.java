@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentCreateParameters;
 
@@ -33,7 +32,7 @@ public final class RoleAssignmentsCreateSamples {
                         "/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleDefinitions/0b5fe924-9a61-425c-96af-cfe6e287ca2d")
                     .withPrincipalId("ce2ce14e-85d7-4629-bdbc-454d0519d987")
                     .withPrincipalType(PrincipalType.USER),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -59,7 +58,7 @@ public final class RoleAssignmentsCreateSamples {
                         "/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleDefinitions/0b5fe924-9a61-425c-96af-cfe6e287ca2d")
                     .withPrincipalId("ce2ce14e-85d7-4629-bdbc-454d0519d987")
                     .withPrincipalType(PrincipalType.USER),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -85,6 +84,6 @@ public final class RoleAssignmentsCreateSamples {
                         "/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleDefinitions/0b5fe924-9a61-425c-96af-cfe6e287ca2d")
                     .withPrincipalId("ce2ce14e-85d7-4629-bdbc-454d0519d987")
                     .withPrincipalType(PrincipalType.USER),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

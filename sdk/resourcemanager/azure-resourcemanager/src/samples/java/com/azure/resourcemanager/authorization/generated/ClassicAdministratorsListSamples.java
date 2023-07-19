@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ClassicAdministrators List. */
 public final class ClassicAdministratorsListSamples {
     /*
@@ -23,6 +21,6 @@ public final class ClassicAdministratorsListSamples {
             .manager()
             .roleServiceClient()
             .getClassicAdministrators()
-            .list(Context.NONE);
+            .list(com.azure.core.util.Context.NONE);
     }
 }

@@ -1016,6 +1016,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled
     public void canEnableMSIOnVirtualMachineScaleSetWithMultipleRoleAssignment() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();

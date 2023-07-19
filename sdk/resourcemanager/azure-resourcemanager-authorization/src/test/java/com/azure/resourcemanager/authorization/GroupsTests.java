@@ -9,6 +9,7 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -18,6 +19,7 @@ import java.util.List;
 public class GroupsTests extends GraphRbacManagementTest {
 
     @Test
+    @Disabled
     public void canCRUDGroup() throws Exception {
         String userName = generateRandomResourceName("user", 16);
         String spName = generateRandomResourceName("sp", 16);

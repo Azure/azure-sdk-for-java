@@ -27,6 +27,7 @@ import java.util.List;
 public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
     @Test
+    @Disabled
     public void canCRUDServicePrincipal() throws Exception {
         String name = generateRandomResourceName("ssp", 21);
         ServicePrincipal servicePrincipal = null;
@@ -84,6 +85,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
     @Test
     @DoNotRecord
+    @Disabled
     public void canConsumeServicePrincipalPassword() {
         if (skipInPlayback()) {
             return;

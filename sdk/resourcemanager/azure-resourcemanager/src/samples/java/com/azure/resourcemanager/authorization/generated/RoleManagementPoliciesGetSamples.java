@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleManagementPolicies Get. */
 public final class RoleManagementPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleManagementPolicyByName.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleManagementPolicyByName.json
      */
     /**
      * Sample code: GetRoleManagementPolicyByName.
@@ -26,6 +24,6 @@ public final class RoleManagementPoliciesGetSamples {
             .getWithResponse(
                 "providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368",
                 "570c3619-7688-4b34-b290-2b8bb3ccab2a",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

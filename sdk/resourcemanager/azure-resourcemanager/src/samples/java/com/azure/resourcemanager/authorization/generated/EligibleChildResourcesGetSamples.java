@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EligibleChildResources Get. */
 public final class EligibleChildResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetEligibleChildResourcesByScope.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetEligibleChildResourcesByScope.json
      */
     /**
      * Sample code: GetEligibleChildResourcesByScope.
@@ -26,6 +24,6 @@ public final class EligibleChildResourcesGetSamples {
             .get(
                 "providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
                 "resourceType eq 'resourcegroup'",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

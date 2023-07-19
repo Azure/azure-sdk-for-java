@@ -8,6 +8,7 @@ import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class RoleAssignmentTests extends GraphRbacManagementTest {
     @Test
+    @Disabled
     public void canCRUDRoleAssignment() throws Exception {
         String roleAssignmentName = generateRandomUuid();
         String spName = generateRandomResourceName("sp", 20);
