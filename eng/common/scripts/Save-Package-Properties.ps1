@@ -32,7 +32,8 @@ Param (
   [string] $serviceDirectory,
   [Parameter(Mandatory=$True)]
   [string] $outDirectory,
-  [switch] $addDevVersion
+  [switch] $addDevVersion,
+  [switch] $requireNewSdk
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
@@ -88,13 +89,19 @@ function GetRelativePath($path) {
 }
 
 $allPackageProperties = Get-AllPkgProperties $serviceDirectory
-if ($allPackageProperties)
+$targetPackages = $allPackageProperties
+if ($requireNewSdk)
+{
+  $targetPackages = $allPackageProperties.Where({ $_.IsNewSdk })
+}
+
+if ($targetPackages)
 {
     if (-not (Test-Path -Path $outDirectory))
     {
       New-Item -ItemType Directory -Force -Path $outDirectory
     }
-    foreach($pkg in $allPackageProperties)
+    foreach($pkg in $targetPackages)
     {
         Write-Host "Package Name: $($pkg.Name)"
         Write-Host "Package Version: $($pkg.Version)"

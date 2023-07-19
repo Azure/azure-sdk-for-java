@@ -108,7 +108,10 @@ stages:
         - pwsh: |
             $ServiceDirs = '$(ServiceDirectories)'
             foreach($ServiceDir in $ServiceDirs.Split(',')) {
-              $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+              $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 `
+                -ServiceDirectory $ServiceDir `
+                -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo `
+                -RequireNewSdk
             }
           workingDirectory: $(Pipeline.Workspace)
           displayName: "Save Package Properties"
