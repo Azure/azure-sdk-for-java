@@ -49,7 +49,7 @@ import com.azure.maps.weather.implementation.WeatherClientImplBuilder;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * WeatherClient client = new WeatherClientBuilder&#40;&#41; 
+ * WeatherClient client = new WeatherClientBuilder&#40;&#41;
  *     .credential&#40;keyCredential&#41;
  *     .weatherClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;
@@ -75,19 +75,20 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     TokenCredentialTrait<WeatherClientBuilder>, HttpTrait<WeatherClientBuilder>,
     ConfigurationTrait<WeatherClientBuilder>, EndpointTrait<WeatherClientBuilder> {
 
+    // constants
+    private static final ClientLogger LOGGER = new ClientLogger(WeatherClientBuilder.class);
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+
+    // subscription-key
+    static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
-    // constants
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-    private static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
-    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
-    //subscription-key
-
     // instance fields
-    private static final ClientLogger LOGGER = new ClientLogger(WeatherClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
+
     private String endpoint;
     private WeatherServiceVersion serviceVersion;
     private String weatherClientId;
