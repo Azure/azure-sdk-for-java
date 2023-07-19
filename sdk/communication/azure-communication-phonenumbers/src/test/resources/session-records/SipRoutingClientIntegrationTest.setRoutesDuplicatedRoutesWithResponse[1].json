@@ -9,10 +9,10 @@
         "Content-Length": "96",
         "Content-Type": "application/merge-patch\u002Bjson",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "05b8cc7c-c12a-4a69-97eb-7d4808bf79b9",
+        "x-ms-client-request-id": "0a349767-dec1-40f5-8602-b184bd1dcbe0",
         "x-ms-content-sha256": "nwLIbafTrbs7h6QMOX02x1LCqwNT73iGDLl8ngnjRuQ=",
-        "x-ms-date": "Tue, 18 Jul 2023 18:00:25 GMT",
-        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClR1ZSwgMTggSnVsIDIwMjMgMTg6MDA6MjUgR01UO2xpdmUtdGVzdGluZy5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTtud0xJYmFmVHJiczdoNlFNT1gwMngxTENxd05UNzNpR0RMbDhuZ25qUnVRPQ=="
+        "x-ms-date": "Tue, 18 Jul 2023 23:52:30 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClR1ZSwgMTggSnVsIDIwMjMgMjM6NTI6MzAgR01UO2xpdmUtdGVzdGluZy5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTtud0xJYmFmVHJiczdoNlFNT1gwMngxTENxd05UNzNpR0RMbDhuZ25qUnVRPQ=="
       },
       "RequestBody": {
         "routes": [
@@ -29,13 +29,13 @@
       "StatusCode": 400,
       "ResponseHeaders": {
         "Content-Type": "application/json",
-        "Date": "Tue, 18 Jul 2023 18:00:24 GMT",
-        "MS-CV": "a4mf4MlWvki1gi2boyMViQ.0",
+        "Date": "Tue, 18 Jul 2023 23:52:29 GMT",
+        "MS-CV": "ADBqo7V28UKorlimaXkLfg.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0ONO2ZAAAAABPGBak\u002Bic7Q7fPYEt8haTsV1NURURHRTAxMDkAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0viW3ZAAAAAAR1mTBXPJ\u002BRZcqNC5vlH6fV1NURURHRTA4MjIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "9ms"
+        "X-Processing-Time": "8ms"
       },
       "ResponseBody": {
         "error": {

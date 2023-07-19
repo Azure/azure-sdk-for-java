@@ -116,9 +116,12 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     }
 
     private void addTestProxySanitizers() {
+        String domain = AZURE_TEST_DOMAIN;
         interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(-[0-9a-fA-F]{32}" +
-                ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12}[^/?]+)",
-                ".redacted.com", TestProxySanitizerType.BODY_REGEX),
+                ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12})",
+                ".redacted", TestProxySanitizerType.BODY_REGEX),
+            new TestProxySanitizer(domain.indexOf(".") > 0 ? domain.substring(domain.indexOf(".")) : domain,
+                ".testdomain.com", TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer("id", null,
                 "REDACTED", TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("phoneNumber", null, "REDACTED",
@@ -181,7 +184,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
 
     private static String getUniqueFqdn(String order) {
         if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
-            return order  + ".redacted.com";
+            return order + ".redacted" + "." + AZURE_TEST_DOMAIN;
         }
 
         String unique = UUID.randomUUID().toString().replace("-", "");

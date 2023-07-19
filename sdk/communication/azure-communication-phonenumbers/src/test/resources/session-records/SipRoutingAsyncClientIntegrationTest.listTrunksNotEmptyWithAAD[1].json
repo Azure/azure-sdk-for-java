@@ -8,34 +8,34 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "1fefc970-9e01-43d4-92b4-885d5761596a"
+        "x-ms-client-request-id": "929348fd-ad99-439a-b8ca-214f4f7b2046"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
         "api-supported-versions": "2023-03-01, 2023-04-01-preview",
-        "Content-Length": "696",
+        "Content-Length": "476",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 18 Jul 2023 17:50:51 GMT",
-        "MS-CV": "EteKi1xVqkCuDWvNrjO4Nw.0",
+        "Date": "Tue, 18 Jul 2023 23:56:52 GMT",
+        "MS-CV": "nKUgpHxBa0iw5a5DwwRDWw.0",
         "Strict-Transport-Security": "max-age=2592000",
-        "X-Azure-Ref": "0\u002B9C2ZAAAAACZwgUXEg15QK7vXVnc622TV1NURURHRTA4MDYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0xCa3ZAAAAAD7CNoIXO/YSqBJmy7FLjRIV1NURURHRTAxMTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "100ms"
+        "X-Processing-Time": "121ms"
       },
       "ResponseBody": {
         "trunks": {
-          "third.redacted.com": {
-            "sipSignalingPort": 3456
-          },
-          "second.redacted.com": {
-            "sipSignalingPort": 2345
-          },
-          "first.redacted.com": {
+          "first.redacted.testdomain.com": {
             "sipSignalingPort": 1234
           },
-          "set.redacted.com": {
+          "second.redacted.testdomain.com": {
+            "sipSignalingPort": 2345
+          },
+          "third.redacted.testdomain.com": {
+            "sipSignalingPort": 3456
+          },
+          "set.redacted.testdomain.com": {
             "sipSignalingPort": 4567
           }
         },
@@ -67,22 +67,22 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "442",
+        "Content-Length": "222",
         "Content-Type": "application/merge-patch\u002Bjson",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "7a87a44b-2a3b-4110-9417-7b2823a375dd"
+        "x-ms-client-request-id": "2acde30f-b396-4ab5-b81f-d732cc66fb1a"
       },
       "RequestBody": {
         "trunks": {
-          "set.redacted.com": null,
-          "third.redacted.com": {
-            "sipSignalingPort": 3456
-          },
-          "second.redacted.com": {
+          "second.redacted.testdomain.com": {
             "sipSignalingPort": 2345
           },
-          "first.redacted.com": {
+          "set.redacted.testdomain.com": null,
+          "first.redacted.testdomain.com": {
             "sipSignalingPort": 1234
+          },
+          "third.redacted.testdomain.com": {
+            "sipSignalingPort": 3456
           }
         }
       },
@@ -90,25 +90,25 @@
       "ResponseHeaders": {
         "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
         "api-supported-versions": "2023-03-01, 2023-04-01-preview",
-        "Content-Length": "585",
+        "Content-Length": "420",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 18 Jul 2023 17:50:51 GMT",
-        "MS-CV": "e7oiSBl7FEKm9bNCyed3Vg.0",
+        "Date": "Tue, 18 Jul 2023 23:56:52 GMT",
+        "MS-CV": "VuxLgLIB7k\u002BoyythGAva2A.0",
         "Strict-Transport-Security": "max-age=2592000",
-        "X-Azure-Ref": "0\u002B9C2ZAAAAAC4MtMk\u002BThHTrXt9njWx9TVV1NURURHRTA4MDYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0xCa3ZAAAAAAn4Obsfrn3R5lUX/w\u002BC0lqV1NURURHRTAxMTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "280ms"
+        "X-Processing-Time": "426ms"
       },
       "ResponseBody": {
         "trunks": {
-          "third.redacted.com": {
-            "sipSignalingPort": 3456
+          "first.redacted.testdomain.com": {
+            "sipSignalingPort": 1234
           },
-          "second.redacted.com": {
+          "second.redacted.testdomain.com": {
             "sipSignalingPort": 2345
           },
-          "first.redacted.com": {
-            "sipSignalingPort": 1234
+          "third.redacted.testdomain.com": {
+            "sipSignalingPort": 3456
           }
         },
         "routes": [
@@ -141,32 +141,32 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "26a5a936-b468-49dc-9486-a4c71dc35a15"
+        "x-ms-client-request-id": "d674e24e-6ab4-41c2-a9ca-35bca1912947"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
         "api-supported-versions": "2023-03-01, 2023-04-01-preview",
-        "Content-Length": "585",
+        "Content-Length": "420",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 18 Jul 2023 17:50:51 GMT",
-        "MS-CV": "UPhe2s3hJUmTnPPr2dfo1Q.0",
+        "Date": "Tue, 18 Jul 2023 23:56:52 GMT",
+        "MS-CV": "DWA6aTUAk0y2f6eorEBYLQ.0",
         "Strict-Transport-Security": "max-age=2592000",
-        "X-Azure-Ref": "0/NC2ZAAAAAD\u002Bh33KufzIRJJHyE7bZ/99V1NURURHRTA4MDYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0xCa3ZAAAAAAsj4ljWDY/S4hTIn0zTUx6V1NURURHRTAxMTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "82ms"
+        "X-Processing-Time": "134ms"
       },
       "ResponseBody": {
         "trunks": {
-          "third.redacted.com": {
-            "sipSignalingPort": 3456
+          "first.redacted.testdomain.com": {
+            "sipSignalingPort": 1234
           },
-          "second.redacted.com": {
+          "second.redacted.testdomain.com": {
             "sipSignalingPort": 2345
           },
-          "first.redacted.com": {
-            "sipSignalingPort": 1234
+          "third.redacted.testdomain.com": {
+            "sipSignalingPort": 3456
           }
         },
         "routes": [
