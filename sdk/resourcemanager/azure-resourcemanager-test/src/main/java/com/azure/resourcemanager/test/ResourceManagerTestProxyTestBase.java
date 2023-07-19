@@ -218,7 +218,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected void beforeTest() {
         TokenCredential credential;
         HttpPipeline httpPipeline;
-        Map<String, String> textReplacementRules = new HashMap<>();
         String logLevel = Configuration.getGlobalConfiguration().get(AZURE_TEST_LOG_LEVEL);
         HttpLogDetailLevel httpLogDetailLevel;
 
@@ -251,6 +250,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 interceptorManager.getPlaybackClient());
+            // don't match api-version when matching url
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
         } else {
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
@@ -285,7 +286,13 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(this.interceptorManager.getRecordPolicy());
-
+                interceptorManager.addSanitizers(Arrays.asList(
+                    // subscription id
+                    new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
+                    new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
+                    // Retry-After
+                    new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)
+                ));
             }
             if (httpLogDetailLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
                 policies.add(new HttpDebugLoggingPolicy());
@@ -297,16 +304,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 generateHttpClientWithProxy(null, null));
-        }
-
-        if (!testContextManager.doNotRecordTest()) {
-            // don't match api-version when matching url
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
-            // sanitize subscription id
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL)));
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL)));
-            // Retry-After
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)));
         }
         initializeClients(httpPipeline, testProfile);
     }
