@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for AttachedDataNetworks CreateOrUpdate. */
 public final class AttachedDataNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/AttachedDataNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/AttachedDataNetworkCreate.json
      */
     /**
      * Sample code: Create attached data network.
