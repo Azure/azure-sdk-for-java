@@ -12,15 +12,17 @@ import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.FunctionDefinition;
-import com.azure.ai.openai.models.Parameters;
-import com.azure.ai.openai.models.Properties;
-import com.azure.ai.openai.models.Properties2;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample demonstrates how to get chat completions using function call.
@@ -32,9 +34,10 @@ public class FunctionCallSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
-        String deploymentOrModelId = "gpt-4-0613";
+        String azureOpenaiKey = "{azure-open-ai-key}";
+        String endpoint = "{azure-open-ai-endpoint}";
+        // Function call is supported for model versions with suffix `-0613` and later.
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -44,52 +47,89 @@ public class FunctionCallSample {
         List<FunctionDefinition> functions = Arrays.asList(
             new FunctionDefinition("getCurrentWeather")
                 .setDescription("Get the current weather")
-                .setParameters(new Parameters("object", new Properties())),
-            new FunctionDefinition("getNumberDayWeatherForecast")
-                .setDescription("Get an N-day weather forecast")
-                .setParameters(new Parameters("object", new Properties2()))
+                .setParameters(getFunctionDefinition())
         );
 
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the weather like today"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What should I wear in Boston depending on the weather?"));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages)
             .setFunctionCall(FunctionCallConfig.AUTO)
             .setFunctions(functions);
 
         ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions);
-        System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
-        handleResponse(chatCompletions.getChoices(), chatMessages);
+        List<ChatMessage> chatMessages2 = handleFunctionCallResponse(chatCompletions.getChoices(), chatMessages);
 
-        chatMessages.add(new ChatMessage(ChatRole.USER, "I'm in Glasgow, Scotland"));
-        ChatCompletions chatCompletions2 = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions);
-        handleResponse(chatCompletions2.getChoices(), chatMessages);
-
-        chatMessages.add(new ChatMessage(ChatRole.USER, "what is the weather going to be like in Glasgow, Scotland over the next x days"));
-        ChatCompletions chatCompletions3 = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions);
-        handleResponse(chatCompletions3.getChoices(), chatMessages);
-
-        chatMessages.add(new ChatMessage(ChatRole.USER, "five days"));
-        ChatCompletions chatCompletions4 = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions);
-        handleResponse(chatCompletions4.getChoices(), chatMessages);
+        // Take your function_call result as the input prompt to make another request to service.
+        ChatCompletionsOptions chatCompletionOptions2 = new ChatCompletionsOptions(chatMessages2);
+        ChatCompletions chatCompletions2 = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions2);
+        List<ChatChoice> choices = chatCompletions2.getChoices();
+        ChatMessage message = choices.get(0).getMessage();
+        System.out.printf("Message: %s.%n", message.getContent());
     }
 
-    private static List<ChatMessage> handleResponse(List<ChatChoice> choices, List<ChatMessage> chatMessages) {
-        for (ChatChoice choice : choices) {
-            ChatMessage message = choice.getMessage();
-            System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-            ChatMessage choiceMessage = choice.getMessage();
-            System.out.printf("Role=%s, content=%s.%n", choiceMessage.getRole(), choiceMessage.getContent());
-            FunctionCall functionCall = message.getFunctionCall();
-            System.out.printf("Finished reason is %s.%n", choice.getFinishReason());
+    private static Map<String, Object> getFunctionDefinition() {
+        // Construct JSON in Map, or you can use create your own customized model.
+        Map<String, Object> location = new HashMap<>();
+        location.put("type", "string");
+        location.put("description", "The city and state, e.g. San Francisco, CA");
+        Map<String, Object> unit = new HashMap<>();
+        unit.put("type", "string");
+        unit.put("enum", Arrays.asList("celsius", "fahrenheit"));
+        Map<String, Object> prop1 = new HashMap<>();
+        prop1.put("location", location);
+        prop1.put("unit", unit);
+        Map<String, Object> functionDefinition = new HashMap<>();
+        functionDefinition.put("type", "object");
+        functionDefinition.put("required", Arrays.asList("location", "unit"));
+        functionDefinition.put("properties", prop1);
+        return functionDefinition;
+    }
 
+    private static List<ChatMessage> handleFunctionCallResponse(List<ChatChoice> choices, List<ChatMessage> chatMessages) {
+        for (ChatChoice choice : choices) {
+            ChatMessage choiceMessage = choice.getMessage();
+            FunctionCall functionCall = choiceMessage.getFunctionCall();
+            // We are looking for finish_reason = "function call".
             if (CompletionsFinishReason.FUNCTION_CALL.equals(choice.getFinishReason())) {
+                // We call getCurrentWeather() and pass the result to the service.
                 System.out.printf("Function name: %s, arguments: %s.%n", functionCall.getName(), functionCall.getArguments());
+                // WeatherLocation is our class that represents the parameters to use in our function call.
+                // We deserialize and pass it to our function.
+                WeatherLocation weatherLocation = BinaryData.fromString(functionCall.getArguments()).toObject(WeatherLocation.class);
+
+                int currentWeather = getCurrentWeather(weatherLocation);
+                chatMessages.add(new ChatMessage(ChatRole.USER, String.format("The weather in %s is %d degrees %s.",
+                    weatherLocation.getLocation(), currentWeather, weatherLocation.getUnit())));
             } else {
                 chatMessages.add(choiceMessage);
             }
         }
         return chatMessages;
+    }
+
+    // This is the method we offer to OpenAI to be used as a function_call.
+    // For this example, we ignore the input parameter and return a simple value.
+    private static int getCurrentWeather(WeatherLocation weatherLocation) {
+        return 35;
+    }
+
+    // WeatherLocation is used for this sample. This describes the parameter of the function you want to use.
+    private static class WeatherLocation {
+        @JsonProperty(value = "unit") String unit;
+        @JsonProperty(value = "location") String location;
+        @JsonCreator
+        WeatherLocation(@JsonProperty(value = "unit") String unit, @JsonProperty(value = "location") String location) {
+            this.unit = unit;
+            this.location = location;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public String getLocation() {
+            return location;
+        }
     }
 }
