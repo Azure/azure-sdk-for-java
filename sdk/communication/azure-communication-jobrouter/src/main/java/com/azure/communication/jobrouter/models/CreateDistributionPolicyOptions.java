@@ -24,10 +24,9 @@ public final class CreateDistributionPolicyOptions {
     private String name;
 
     /**
-     * The expiry time of any offers created under this policy will be governed
-     * by the offer time to live.
+     * The expiry time of any offers created under this policy.
      */
-    private final Duration offerExpiresAfterSeconds;
+    private final Duration offerExpiresAfter;
 
     /**
      * Abstract base class for defining a distribution mode
@@ -37,13 +36,12 @@ public final class CreateDistributionPolicyOptions {
     /**
      * Constructor for CreateDistributionPolicyOptions.
      * @param id The unique identifier of the policy.
-     * @param offerExpiresAfterSeconds The expiry time of any offers created under this policy will be governed
-     *   by the offer time to live.
+     * @param offerExpiresAfter The expiry time of any offers created under this policy.
      * @param mode Abstract base class for defining a distribution mode.
      */
-    public CreateDistributionPolicyOptions(String id, Duration offerExpiresAfterSeconds, DistributionMode mode) {
+    public CreateDistributionPolicyOptions(String id, Duration offerExpiresAfter, DistributionMode mode) {
         this.id = id;
-        this.offerExpiresAfterSeconds = offerExpiresAfterSeconds;
+        this.offerExpiresAfter = offerExpiresAfter;
         this.mode = mode;
     }
 
@@ -73,11 +71,11 @@ public final class CreateDistributionPolicyOptions {
     }
 
     /**
-     * Get the offer time to live of offers created under this policy.
-     * @return offerTtlSeconds
+     * Get the expiry time for offers created under this policy.
+     * @return offerExpiresAfterSeconds
      */
-    public Duration getOfferExpiresAfterSeconds() {
-        return this.offerExpiresAfterSeconds;
+    public Duration getOfferExpiresAfter() {
+        return this.offerExpiresAfter;
     }
 
     /**
