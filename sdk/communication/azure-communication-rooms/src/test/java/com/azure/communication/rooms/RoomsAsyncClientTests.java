@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -270,6 +272,136 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CommunicationErrorResponseException exception =
             assertThrows(CommunicationErrorResponseException.class, () -> {
                 roomsAsyncClient.createRoomWithResponse(createRoomOptions, Context.NONE).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRoomWithBadParticipantMri(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "createRoomWithBadParticipantMri");
+        assertNotNull(roomsAsyncClient);
+
+        // Create list of room participant with bad mri
+        List<RoomParticipant> badParticipant = Arrays
+                .asList(new RoomParticipant(new CommunicationUserIdentifier("badMRI")));
+
+        CreateRoomOptions roomOptions = new CreateRoomOptions()
+                .setParticipants(badParticipant);
+
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.createRoomWithResponse(roomOptions, Context.NONE).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getRoomWithUnexistingRoomIdReturnBadRequest(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "getRoomWithUnexistingRoomIdReturnBadRequest");
+        assertNotNull(roomsAsyncClient);
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.getRoom(nonExistRoomId).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomValidUntilGreaterThan180(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "updateRoomSyncValidUntilGreaterThan180");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(createRoomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
+
+        String roomId = response1.block().getValue().getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_FROM.plusDays(181));
+
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.updateRoom(roomId, updateRoomOptions).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomValidFromGreaterThan180(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "updateRoomSyncValidFromGreaterThan180");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(createRoomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
+
+        String roomId = response1.block().getValue().getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
+                .setValidFrom(VALID_FROM.plusDays(181))
+                .setValidUntil(VALID_UNTIL);
+
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.updateRoom(roomId, updateRoomOptions).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomValidUntilInPast(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "updateRoomValidUntilInPast");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(createRoomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
+
+        String roomId = response1.block().getValue().getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
+                .setValidFrom(VALID_FROM.minusMonths(3))
+                .setValidUntil(VALID_FROM);
+
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.updateRoom(roomId, updateRoomOptions).block();
             });
         assertEquals(400, exception.getResponse().getStatusCode());
     }
