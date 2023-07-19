@@ -229,9 +229,8 @@ public class ServiceApiTests extends DataLakeTestBase {
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsError() {
-        assertThrows(DataLakeStorageException.class, () -> getServiceClient(
-            ENVIRONMENT.getDataLakeAccount().getCredential(), "https://error.blob.core.windows.net")
-                .setProperties(new DataLakeServiceProperties()));
+        assertThrows(DataLakeStorageException.class, () -> getServiceClient(getDataLakeCredential(),
+            "https://error.blob.core.windows.net").setProperties(new DataLakeServiceProperties()));
     }
 
     @ResourceLock("ServiceProperties")
@@ -243,9 +242,8 @@ public class ServiceApiTests extends DataLakeTestBase {
     @ResourceLock("ServiceProperties")
     @Test
     public void getPropsError() {
-        assertThrows(DataLakeStorageException.class, () -> getServiceClient(
-            ENVIRONMENT.getDataLakeAccount().getCredential(), "https://error.blob.core.windows.net")
-                .getProperties());
+        assertThrows(DataLakeStorageException.class, () -> getServiceClient(getDataLakeCredential(),
+            "https://error.blob.core.windows.net").getProperties());
     }
 
     @Test
@@ -254,7 +252,7 @@ public class ServiceApiTests extends DataLakeTestBase {
             .setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
             .setEncryptionScopeOverridePrevented(true);
 
-        DataLakeFileSystemClient fsClient = getServiceClientBuilder(ENVIRONMENT.getDataLakeAccount().getCredential(),
+        DataLakeFileSystemClient fsClient = getServiceClientBuilder(getDataLakeCredential(),
             primaryDataLakeServiceClient.getAccountUrl())
             .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
@@ -406,7 +404,7 @@ public class ServiceApiTests extends DataLakeTestBase {
             .setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
             .setEncryptionScopeOverridePrevented(true);
 
-        DataLakeServiceClient serviceClient = getServiceClientBuilder(ENVIRONMENT.getDataLakeAccount().getCredential(),
+        DataLakeServiceClient serviceClient = getServiceClientBuilder(getDataLakeCredential(),
             primaryDataLakeServiceClient.getAccountUrl())
             .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient();
@@ -477,7 +475,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     // and auth would fail because we changed a signed header.
     @Test
     public void perCallPolicy() {
-        DataLakeServiceClient serviceClient = getServiceClient(ENVIRONMENT.getDataLakeAccount().getCredential(),
+        DataLakeServiceClient serviceClient = getServiceClient(getDataLakeCredential(),
             primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy());
 
         Response<DataLakeFileSystemClient> response = assertDoesNotThrow(() ->
@@ -653,8 +651,8 @@ public class ServiceApiTests extends DataLakeTestBase {
     @Test
     public void setConnectionStringOnServiceClientBuilder() {
         String connectionString = ENVIRONMENT.getPrimaryAccount().getConnectionString();
-        DataLakeServiceClientBuilder serviceClientBuilder = getServiceClientBuilder(
-            ENVIRONMENT.getDataLakeAccount().getCredential(), primaryDataLakeServiceClient.getAccountUrl());
+        DataLakeServiceClientBuilder serviceClientBuilder = getServiceClientBuilder(getDataLakeCredential(),
+            primaryDataLakeServiceClient.getAccountUrl());
 
         serviceClientBuilder.connectionString(connectionString);
 
@@ -676,8 +674,8 @@ public class ServiceApiTests extends DataLakeTestBase {
         String connectionString = String.format("BlobEndpoint=%s;SharedAccessSignature=%s;",
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), "?" + sas);
 
-        DataLakeServiceClientBuilder serviceClientBuilder = getServiceClientBuilder(
-            ENVIRONMENT.getDataLakeAccount().getCredential(), primaryDataLakeServiceClient.getAccountUrl());
+        DataLakeServiceClientBuilder serviceClientBuilder = getServiceClientBuilder(getDataLakeCredential(),
+            primaryDataLakeServiceClient.getAccountUrl());
 
         serviceClientBuilder.connectionString(connectionString);
 

@@ -346,7 +346,7 @@ public class DataLakeSasImplUtil {
         }
     }
 
-    private String stringToSign(final UserDelegationKey key, String canonicalName) {
+    public String stringToSign(final UserDelegationKey key, String canonicalName) {
         if (VERSION.compareTo(DataLakeServiceVersion.V2019_12_12.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,

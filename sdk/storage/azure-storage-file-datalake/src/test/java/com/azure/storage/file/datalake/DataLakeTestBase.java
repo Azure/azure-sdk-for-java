@@ -515,7 +515,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
             "en-US");
     }
 
-    protected void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
+    protected static void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
         assertEquals(expected.size(), actual.size());
 
         for (PathAccessControlEntry entry : expected) {
@@ -523,7 +523,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
     }
 
-    protected void entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
+    protected static void entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
         for (PathAccessControlEntry e : acl) {
             if (e.isInDefaultScope() == entry.isInDefaultScope() && Objects.equals(e.getAccessControlType(),
                 entry.getAccessControlType()) && Objects.equals(e.getEntityId(), entry.getEntityId()) && Objects.equals(
