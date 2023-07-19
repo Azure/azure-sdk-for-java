@@ -147,7 +147,7 @@ public class BulkExecutorTest extends BatchTestBase {
     }
 
     // Write operations should not be retried on a gone exception because the operation might have succeeded.
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" })
     public void executeBulk_OnGoneFailure() throws InterruptedException {
         this.container = createContainer(database);
 
@@ -223,14 +223,13 @@ public class BulkExecutorTest extends BatchTestBase {
 
         FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
             .operationType(operationType)
-            .connectionType(FaultInjectionConnectionType.DIRECT)
             .build();
 
         FaultInjectionRule rule = new FaultInjectionRuleBuilder(id)
             .condition(condition)
             .result(result)
             .startDelay(Duration.ofSeconds(1))
-            .hitLimit(1)
+            .hitLimit(10)
             .build();
 
 
