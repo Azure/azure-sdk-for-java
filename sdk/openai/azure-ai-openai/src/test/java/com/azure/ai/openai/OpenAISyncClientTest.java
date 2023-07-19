@@ -8,9 +8,12 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.HttpResponseException;
@@ -24,11 +27,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -252,6 +257,52 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
+            IterableStream<ChatCompletions> messageList = client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages));
+
+            int i = 0;
+            int totalMessages = messageList.stream().toArray().length;
+            for (Iterator<ChatCompletions> it = messageList.iterator(); it.hasNext();) {
+                ChatCompletions chatCompletions = it.next();
+                assertChatCompletionsStream(chatCompletions);
+                if (i == 0) {
+                    // The first stream message has the prompt filter result
+                    assertEquals(1, chatCompletions.getPromptFilterResults().size());
+                    assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
+                } else if (i == 1) {
+                    // The second message no longer has the prompt filter result, but contains a ChatChoice
+                    // filter result with all the filter set to null. The roll is also ASSISTANT
+                    assertEquals(ChatRole.ASSISTANT, chatCompletions.getChoices().get(0).getDelta().getRole());
+                    assertNull(chatCompletions.getPromptFilterResults());
+                    ContentFilterResults contentFilterResults = chatCompletions.getChoices().get(0).getContentFilterResults();
+                    assertEmptyContentFilterResults(contentFilterResults);
+                } else if (i == totalMessages - 1) {
+                    // The last stream message is empty with all the filters set to null
+                    assertEquals(1, chatCompletions.getChoices().size());
+                    ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+
+                    assertEquals(CompletionsFinishReason.fromString("stop"), chatChoice.getFinishReason());
+                    assertNotNull(chatChoice.getDelta());
+                    assertNull(chatChoice.getDelta().getContent());
+
+                    ContentFilterResults contentFilterResults = chatChoice.getContentFilterResults();
+                    assertEmptyContentFilterResults(contentFilterResults);
+                } else {
+                    // The rest of the intermediary messages have the text generation content filter set
+                    assertNull(chatCompletions.getPromptFilterResults());
+                    assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+                    assertSafeContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
+                }
+                i++;
+            }
+
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
         client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
@@ -263,6 +314,44 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertCompletions(1, completions);
             assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
             assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
+        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        getCompletionsRunner((deploymentId, prompt) -> {
+            IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
+            assertTrue(resultCompletions.stream().toArray().length > 1);
+            int i = 0;
+            int totalCompletions = resultCompletions.stream().toArray().length;
+            for (Iterator<Completions> it = resultCompletions.iterator(); it.hasNext();) {
+                Completions completions = it.next();
+                assertCompletionsStream(completions);
+                if (i == 0) {
+                    // The first stream message has the prompt filter result
+                    assertEquals(1, completions.getPromptFilterResults().size());
+                    assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
+                } else if (i == totalCompletions - 1) {
+                    // The last stream message is empty with all the filters set to null
+                    assertEquals(1, completions.getChoices().size());
+                    Choice choice = completions.getChoices().get(0);
+
+                    assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
+                    assertNotNull(choice.getText());
+
+                    ContentFilterResults contentFilterResults = choice.getContentFilterResults();
+                    assertEmptyContentFilterResults(contentFilterResults);
+                } else {
+                    // The rest of the intermediary messages have the text generation content filter set
+                    assertNull(completions.getPromptFilterResults());
+                    assertNotNull(completions.getChoices().get(0));
+                    assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
+                }
+                i++;
+            }
         });
     }
 }

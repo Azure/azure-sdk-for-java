@@ -5,7 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.implementation.models.FunctionDefinition;
+import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -42,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
@@ -166,10 +167,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
         return chatMessages;
     }
 
@@ -180,7 +181,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the weather like in San Francisco in Celsius?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the weather like in San Francisco in Celsius?"));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionOptions.setFunctions(functions);
@@ -310,5 +311,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
         assertFalse(contentFilterResults.getViolence().isFiltered());
         assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+    }
+
+    static void assertEmptyContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertNull(contentFilterResults.getHate());
+        assertNull(contentFilterResults.getSexual());
+        assertNull(contentFilterResults.getViolence());
+        assertNull(contentFilterResults.getSelfHarm());
     }
 }
