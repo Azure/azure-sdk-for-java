@@ -1,25 +1,787 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/search/nearby/json?api-version=1.0&lat=40.70627&lon=-74.011454",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "date" : "Sat, 04 Jun 2022 07:06:39 GMT",
-      "content-length" : "11072",
-      "x-content-type-options" : "nosniff",
-      "x-msedge-ref" : "Ref A: 5992B40B5BBA4C23BC71463766C3ECAD Ref B: SIN30EDGE0121 Ref C: 2022-06-04T07:06:39Z",
-      "vary" : "Accept-Encoding",
-      "x-ms-azuremaps-region" : "West Europe",
-      "content-type" : "application/json; charset=utf-8",
-      "x-cache" : "CONFIG_NOCACHE",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"summary\":{\"queryType\":\"NEARBY\",\"queryTime\":7,\"numResults\":10,\"offset\":0,\"totalResults\":399630,\"fuzzyLevel\":1,\"geoBias\":{\"lat\":40.70627,\"lon\":-74.011454}},\"results\":[{\"type\":\"POI\",\"id\":\"840367000046196\",\"score\":99.9854888916,\"dist\":14.510353680631288,\"info\":\"search:ta:840367000046196-US\",\"poi\":{\"name\":\"Focus Publishing Hq\",\"categorySet\":[{\"id\":9352039}],\"categories\":[\"company\",\"services\"],\"classifications\":[{\"code\":\"COMPANY\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"company\"},{\"nameLocale\":\"en-US\",\"name\":\"services\"}]}]},\"address\":{\"streetName\":\"Exchange Place\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10005.0\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"Exchange Place, New York, NY 10005.0\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70619,\"lon\":-74.01159},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70709,\"lon\":-74.01278},\"btmRightPoint\":{\"lat\":40.70529,\"lon\":-74.0104}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.70639,\"lon\":-74.0115}}]},{\"type\":\"POI\",\"id\":\"840369011305262\",\"score\":99.9833679199,\"dist\":16.635096483110484,\"info\":\"search:ta:840369011305262-US\",\"poi\":{\"name\":\"30 Broad Street\",\"categorySet\":[{\"id\":7376002}],\"categories\":[\"building\",\"important tourist attraction\"],\"classifications\":[{\"code\":\"IMPORTANT_TOURIST_ATTRACTION\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"important tourist attraction\"},{\"nameLocale\":\"en-US\",\"name\":\"building\"}]}]},\"address\":{\"streetNumber\":\"30\",\"streetName\":\"Broad Street\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10004\",\"extendedPostalCode\":\"10004-2337\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"30 Broad Street, New York, NY 10004\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70622,\"lon\":-74.01164},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70712,\"lon\":-74.01283},\"btmRightPoint\":{\"lat\":40.70532,\"lon\":-74.01045}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.70611,\"lon\":-74.01131}},{\"type\":\"main\",\"position\":{\"lat\":40.7059,\"lon\":-74.01139}}]},{\"type\":\"POI\",\"id\":\"840369002164164\",\"score\":99.9803390503,\"dist\":19.65782495930506,\"info\":\"search:ta:840369002164164-US\",\"poi\":{\"name\":\"Sponsors For Educational Opportunity\",\"phone\":\"+1 212-785-1361\",\"categorySet\":[{\"id\":9152}],\"url\":\"REDACTED\",\"categories\":[\"non governmental organization\"],\"classifications\":[{\"code\":\"NON_GOVERNMENTAL_ORGANIZATION\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"non governmental organization\"}]}]},\"address\":{\"streetNumber\":\"55\",\"streetName\":\"Exchange Place\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10005\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"55 Exchange Place, New York, NY 10005\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70644,\"lon\":-74.01139},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70734,\"lon\":-74.01258},\"btmRightPoint\":{\"lat\":40.70554,\"lon\":-74.0102}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.70636,\"lon\":-74.01145}}]},{\"type\":\"POI\",\"id\":\"840369014806459\",\"score\":99.9740142822,\"dist\":25.98626843306073,\"info\":\"search:ta:840369014806459-US\",\"poi\":{\"name\":\"Sonder\",\"categorySet\":[{\"id\":7314003}],\"categories\":[\"hotel\",\"hotel/motel\"],\"classifications\":[{\"code\":\"HOTEL_MOTEL\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"hotel\"},{\"nameLocale\":\"en-US\",\"name\":\"hotel/motel\"}]}]},\"address\":{\"streetName\":\"Exchange Place\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10005.0\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"Exchange Place, New York, NY 10005.0\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70649,\"lon\":-74.01135},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70739,\"lon\":-74.01254},\"btmRightPoint\":{\"lat\":40.70559,\"lon\":-74.01016}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.70634,\"lon\":-74.0114}}]},{\"type\":\"POI\",\"id\":\"840369014741317\",\"score\":99.971031189,\"dist\":28.965349336481665,\"info\":\"search:ta:840369014741317-US\",\"poi\":{\"name\":\"Citymd Financial District Urgent Care-Nyc\",\"phone\":\"+1 646-647-1259\",\"categorySet\":[{\"id\":7321003}],\"categories\":[\"hospital/polyclinic\",\"special\"],\"classifications\":[{\"code\":\"HOSPITAL_POLYCLINIC\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"hospital/polyclinic\"},{\"nameLocale\":\"en-US\",\"name\":\"special\"}]}]},\"address\":{\"streetNumber\":\"24\",\"streetName\":\"Broad Street\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10005\",\"extendedPostalCode\":\"10005-1904\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"24 Broad Street, New York, NY 10005\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70649,\"lon\":-74.01127},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70739,\"lon\":-74.01246},\"btmRightPoint\":{\"lat\":40.70559,\"lon\":-74.01008}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.70642,\"lon\":-74.01114}}],\"dataSources\":{\"poiDetails\":[{\"id\":\"Rm91cnNxdWFyZTo1ZDVmNzk0NDVjOWEwMzAwMDg4NWQzODc=\",\"sourceName\":\"Foursquare\"}]}},{\"type\":\"POI\",\"id\":\"840369011807284\",\"score\":99.9659576416,\"dist\":34.04127337222731,\"info\":\"search:ta:840369011807284-US\",\"poi\":{\"name\":\"Lamode\",\"phone\":\"+1 646-864-3529\",\"categorySet\":[{\"id\":9361010}],\"categories\":[\"dry cleaners\",\"shop\"],\"classifications\":[{\"code\":\"SHOP\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"dry cleaners\"},{\"nameLocale\":\"en-US\",\"name\":\"shop\"}]}]},\"address\":{\"streetNumber\":\"30\",\"streetName\":\"New Street\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10004\",\"extendedPostalCode\":\"10004-2303\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"30 New Street, New York, NY 10004\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70636,\"lon\":-74.01184},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70726,\"lon\":-74.01303},\"btmRightPoint\":{\"lat\":40.70546,\"lon\":-74.01065}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.7064,\"lon\":-74.01195}}]},{\"type\":\"POI\",\"id\":\"840369014838812\",\"score\":99.9659576416,\"dist\":34.04127337222731,\"info\":\"search:ta:840369014838812-US\",\"poi\":{\"name\":\"Lamoda Service Center\",\"phone\":\"+1 646-864-3529\",\"categorySet\":[{\"id\":9361077}],\"url\":\"REDACTED\",\"categories\":[\"shop\",\"tailor shop\"],\"classifications\":[{\"code\":\"SHOP\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"tailor shop\"},{\"nameLocale\":\"en-US\",\"name\":\"shop\"}]}]},\"address\":{\"streetNumber\":\"30\",\"streetName\":\"New Street\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10004\",\"extendedPostalCode\":\"10004-2303\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"30 New Street, New York, NY 10004\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70636,\"lon\":-74.01184},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70726,\"lon\":-74.01303},\"btmRightPoint\":{\"lat\":40.70546,\"lon\":-74.01065}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.7064,\"lon\":-74.01195}}],\"dataSources\":{\"poiDetails\":[{\"id\":\"Rm91cnNxdWFyZTo1NThkYjE4MTQ5OGUyNGE4NGQ5ZTMwODM=\",\"sourceName\":\"Foursquare\"}]}},{\"type\":\"POI\",\"id\":\"840369010959385\",\"score\":99.9659576416,\"dist\":34.04127337222731,\"info\":\"search:ta:840369010959385-US\",\"poi\":{\"name\":\"De Janeiro Stores\",\"phone\":\"+1 212-943-9019\",\"categorySet\":[{\"id\":9361041}],\"url\":\"REDACTED\",\"categories\":[\"shop\",\"travel agents\"],\"classifications\":[{\"code\":\"SHOP\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"travel agents\"},{\"nameLocale\":\"en-US\",\"name\":\"shop\"}]}]},\"address\":{\"streetNumber\":\"30\",\"streetName\":\"New Street\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10004\",\"extendedPostalCode\":\"10004-2303\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"30 New Street, New York, NY 10004\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70636,\"lon\":-74.01184},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70726,\"lon\":-74.01303},\"btmRightPoint\":{\"lat\":40.70546,\"lon\":-74.01065}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.7064,\"lon\":-74.01195}}]},{\"type\":\"POI\",\"id\":\"840367000048456\",\"score\":99.9659576416,\"dist\":34.04127337222731,\"info\":\"search:ta:840367000048456-US\",\"poi\":{\"name\":\"Dijon\",\"phone\":\"+1 212-943-7529\",\"categorySet\":[{\"id\":9361008}],\"categories\":[\"clothing accessories: women\",\"shop\"],\"classifications\":[{\"code\":\"SHOP\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"clothing accessories: women\"},{\"nameLocale\":\"en-US\",\"name\":\"shop\"}]}]},\"address\":{\"streetNumber\":\"30\",\"streetName\":\"New Street\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10004\",\"extendedPostalCode\":\"10004-2303\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"30 New Street, New York, NY 10004\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70636,\"lon\":-74.01184},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70726,\"lon\":-74.01303},\"btmRightPoint\":{\"lat\":40.70546,\"lon\":-74.01065}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.7064,\"lon\":-74.01195}}],\"dataSources\":{\"poiDetails\":[{\"id\":\"Rm91cnNxdWFyZTo0YmZkNGYwY2Y2MWRjOWI2MWRjZjllZGU=\",\"sourceName\":\"Foursquare\"}]}},{\"type\":\"POI\",\"id\":\"840369011201231\",\"score\":99.9650421143,\"dist\":34.95774796206709,\"info\":\"search:ta:840369011201231-US\",\"poi\":{\"name\":\"Sogo Trade\",\"phone\":\"+1 212-422-2800\",\"categorySet\":[{\"id\":9352009}],\"categories\":[\"company\",\"real estate\"],\"classifications\":[{\"code\":\"COMPANY\",\"names\":[{\"nameLocale\":\"en-US\",\"name\":\"real estate\"},{\"nameLocale\":\"en-US\",\"name\":\"company\"}]}]},\"address\":{\"streetNumber\":\"20\",\"streetName\":\"Broad Street\",\"municipalitySubdivision\":\"Financial District\",\"municipality\":\"New York\",\"countrySecondarySubdivision\":\"New York\",\"countrySubdivision\":\"NY\",\"countrySubdivisionName\":\"New York\",\"postalCode\":\"10005\",\"extendedPostalCode\":\"10005-1904\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"20 Broad Street, New York, NY 10005\",\"localName\":\"New York\"},\"position\":{\"lat\":40.70657,\"lon\":-74.01133},\"viewport\":{\"topLeftPoint\":{\"lat\":40.70747,\"lon\":-74.01252},\"btmRightPoint\":{\"lat\":40.70567,\"lon\":-74.01014}},\"entryPoints\":[{\"type\":\"main\",\"position\":{\"lat\":40.70648,\"lon\":-74.0111}}]}]}",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/search/nearby/json?api-version=1.0\u0026lat=40.70627\u0026lon=-74.011454",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "10893",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:23:26 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: CC2F3A0CE5574A3FB99BCFBA02D8FE16 Ref B: STBEDGE0519 Ref C: 2023-07-19T22:23:26Z"
+      },
+      "ResponseBody": {
+        "summary": {
+          "queryType": "NEARBY",
+          "queryTime": 8,
+          "numResults": 10,
+          "offset": 0,
+          "totalResults": 100,
+          "fuzzyLevel": 1,
+          "geoBias": {
+            "lat": 40.70627,
+            "lon": -74.011454
+          },
+          "geobiasCountry": "US"
+        },
+        "results": [
+          {
+            "type": "POI",
+            "id": "znalS2SKzFo6WwVKTE7zYg",
+            "score": 99.9912185669,
+            "dist": 8.786951,
+            "info": "search:ta:840369010897557-US",
+            "poi": {
+              "name": "Coffee Lounge",
+              "phone": "\u002B1 559-412-4445",
+              "categorySet": [
+                {
+                  "id": 9376002
+                }
+              ],
+              "categories": [
+                "caf\u00E9",
+                "caf\u00E9/pub"
+              ],
+              "classifications": [
+                {
+                  "code": "CAFE_PUB",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "caf\u00E9"
+                    },
+                    {
+                      "nameLocale": "en-US",
+                      "name": "caf\u00E9/pub"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10004",
+              "extendedPostalCode": "10004-2337",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "Broad Street, New York, NY 10004",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706192,
+              "lon": -74.011439
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70709,
+                "lon": -74.01263
+              },
+              "btmRightPoint": {
+                "lat": 40.70529,
+                "lon": -74.01025
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.7059,
+                  "lon": -74.01139
+                }
+              },
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70612,
+                  "lon": -74.0113
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "vXA7pnJQAEUiCqnnZDfNWA",
+            "score": 99.9832763672,
+            "dist": 16.728183,
+            "info": "search:ta:840369011305262-US",
+            "poi": {
+              "name": "30 Broad Street",
+              "categorySet": [
+                {
+                  "id": 7376002
+                }
+              ],
+              "categories": [
+                "building",
+                "important tourist attraction"
+              ],
+              "classifications": [
+                {
+                  "code": "IMPORTANT_TOURIST_ATTRACTION",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "important tourist attraction"
+                    },
+                    {
+                      "nameLocale": "en-US",
+                      "name": "building"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "30",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10004",
+              "extendedPostalCode": "10004-2337",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "30 Broad Street, New York, NY 10004",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706222,
+              "lon": -74.011642
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70712,
+                "lon": -74.01283
+              },
+              "btmRightPoint": {
+                "lat": 40.70532,
+                "lon": -74.01046
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70611,
+                  "lon": -74.01131
+                }
+              },
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.7059,
+                  "lon": -74.01139
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "MUJeib0axULPHunXz3tIRw",
+            "score": 99.970489502,
+            "dist": 29.50235,
+            "info": "search:ta:840367000102285-US",
+            "poi": {
+              "name": "CityMD Financial District Urgent Care - NYC",
+              "phone": "\u002B1 646-647-1259",
+              "categorySet": [
+                {
+                  "id": 7391
+                }
+              ],
+              "url": "REDACTED",
+              "categories": [
+                "emergency medical service"
+              ],
+              "classifications": [
+                {
+                  "code": "EMERGENCY_MEDICAL_SERVICE",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "emergency medical service"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "24",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10005",
+              "extendedPostalCode": "10005-1904",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "24 Broad Street, New York, NY 10005",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706494,
+              "lon": -74.011267
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70739,
+                "lon": -74.01245
+              },
+              "btmRightPoint": {
+                "lat": 40.70559,
+                "lon": -74.01008
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70634,
+                  "lon": -74.01119
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "dahoc_cyAWFJ6FnFNI4_tg",
+            "score": 99.9656982422,
+            "dist": 34.309076,
+            "info": "search:ta:840369010959385-US",
+            "poi": {
+              "name": "De Janeiro Stores",
+              "phone": "\u002B1 212-943-9019",
+              "categorySet": [
+                {
+                  "id": 9361041
+                }
+              ],
+              "url": "REDACTED",
+              "categories": [
+                "shop",
+                "travel agents"
+              ],
+              "classifications": [
+                {
+                  "code": "SHOP",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "travel agents"
+                    },
+                    {
+                      "nameLocale": "en-US",
+                      "name": "shop"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "30",
+              "streetName": "New Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10004",
+              "extendedPostalCode": "10004-2303",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "30 New Street, New York, NY 10004",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706363,
+              "lon": -74.011842
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70726,
+                "lon": -74.01303
+              },
+              "btmRightPoint": {
+                "lat": 40.70546,
+                "lon": -74.01066
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.7064,
+                  "lon": -74.01195
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "x0YBQzgRZ2Eo4VOVDyhRVA",
+            "score": 99.9656448364,
+            "dist": 34.348612,
+            "info": "search:ta:840369011660506-US",
+            "poi": {
+              "name": "Chase",
+              "phone": "\u002B1 212-495-2056",
+              "brands": [
+                {
+                  "name": "Chase"
+                }
+              ],
+              "categorySet": [
+                {
+                  "id": 7328
+                }
+              ],
+              "url": "REDACTED",
+              "categories": [
+                "bank"
+              ],
+              "classifications": [
+                {
+                  "code": "BANK",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "bank"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "20",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10005",
+              "extendedPostalCode": "10005-1904",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "20 Broad Street, New York, NY 10005",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706565,
+              "lon": -74.011333
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70746,
+                "lon": -74.01252
+              },
+              "btmRightPoint": {
+                "lat": 40.70567,
+                "lon": -74.01015
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70648,
+                  "lon": -74.0111
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "IJg0TEdqFhBdOua8-3IXyQ",
+            "score": 99.9656448364,
+            "dist": 34.348612,
+            "info": "search:ta:840369010710665-US",
+            "poi": {
+              "name": "MGRM Technologies",
+              "phone": "\u002B1 212-825-0382",
+              "categorySet": [
+                {
+                  "id": 9352004
+                }
+              ],
+              "categories": [
+                "company",
+                "computer data services"
+              ],
+              "classifications": [
+                {
+                  "code": "COMPANY",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "company"
+                    },
+                    {
+                      "nameLocale": "en-US",
+                      "name": "computer data services"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "20",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10005",
+              "extendedPostalCode": "10005-1904",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "20 Broad Street, New York, NY 10005",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706565,
+              "lon": -74.011333
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70746,
+                "lon": -74.01252
+              },
+              "btmRightPoint": {
+                "lat": 40.70567,
+                "lon": -74.01015
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70648,
+                  "lon": -74.0111
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "NqlTzVbGpx-UpdkoicWv5g",
+            "score": 99.9656448364,
+            "dist": 34.348612,
+            "info": "search:ta:840369011161255-US",
+            "poi": {
+              "name": "Building Maintenance Service",
+              "phone": "\u002B1 212-742-0591",
+              "categorySet": [
+                {
+                  "id": 9352029
+                }
+              ],
+              "url": "REDACTED",
+              "categories": [
+                "cleaning services",
+                "company"
+              ],
+              "classifications": [
+                {
+                  "code": "COMPANY",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "company"
+                    },
+                    {
+                      "nameLocale": "en-US",
+                      "name": "cleaning services"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "20",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10005",
+              "extendedPostalCode": "10005-1904",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "20 Broad Street, New York, NY 10005",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706565,
+              "lon": -74.011333
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70746,
+                "lon": -74.01252
+              },
+              "btmRightPoint": {
+                "lat": 40.70567,
+                "lon": -74.01015
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70648,
+                  "lon": -74.0111
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "ik8_aEdZO1NhBK-iO5ICcA",
+            "score": 99.9656448364,
+            "dist": 34.348612,
+            "info": "search:ta:840367000127421-US",
+            "poi": {
+              "name": "New York Stock Exchange",
+              "categorySet": [
+                {
+                  "id": 7376
+                }
+              ],
+              "url": "REDACTED",
+              "categories": [
+                "important tourist attraction"
+              ],
+              "classifications": [
+                {
+                  "code": "IMPORTANT_TOURIST_ATTRACTION",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "important tourist attraction"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "20",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10005",
+              "extendedPostalCode": "10005-1904",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "20 Broad Street, New York, NY 10005",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706565,
+              "lon": -74.011333
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70746,
+                "lon": -74.01252
+              },
+              "btmRightPoint": {
+                "lat": 40.70567,
+                "lon": -74.01015
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70648,
+                  "lon": -74.0111
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "NFeE1JqlK5BPe7TNrWSdPg",
+            "score": 99.9656448364,
+            "dist": 34.348612,
+            "info": "search:ta:840369000520643-US",
+            "poi": {
+              "name": "Farina and Associates",
+              "phone": "\u002B1 212-480-3474",
+              "categorySet": [
+                {
+                  "id": 9152
+                }
+              ],
+              "url": "REDACTED",
+              "categories": [
+                "non governmental organization"
+              ],
+              "classifications": [
+                {
+                  "code": "NON_GOVERNMENTAL_ORGANIZATION",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "non governmental organization"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "20",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10005",
+              "extendedPostalCode": "10005-1904",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "20 Broad Street, New York, NY 10005",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706565,
+              "lon": -74.011333
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70746,
+                "lon": -74.01252
+              },
+              "btmRightPoint": {
+                "lat": 40.70567,
+                "lon": -74.01015
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70648,
+                  "lon": -74.0111
+                }
+              }
+            ]
+          },
+          {
+            "type": "POI",
+            "id": "JaAXn2LIvh_1uSsc94X8cg",
+            "score": 99.9656448364,
+            "dist": 34.348612,
+            "info": "search:ta:840369010971855-US",
+            "poi": {
+              "name": "Hornblower Fischer \u0026 Co",
+              "phone": "\u002B1 212-363-1764",
+              "categorySet": [
+                {
+                  "id": 9352006
+                }
+              ],
+              "categories": [
+                "company",
+                "diversified finanacials"
+              ],
+              "classifications": [
+                {
+                  "code": "COMPANY",
+                  "names": [
+                    {
+                      "nameLocale": "en-US",
+                      "name": "company"
+                    },
+                    {
+                      "nameLocale": "en-US",
+                      "name": "diversified finanacials"
+                    }
+                  ]
+                }
+              ]
+            },
+            "address": {
+              "streetNumber": "20",
+              "streetName": "Broad Street",
+              "municipalitySubdivision": "Manhattan",
+              "municipality": "New York",
+              "countrySecondarySubdivision": "New York",
+              "countrySubdivision": "NY",
+              "countrySubdivisionName": "New York",
+              "postalCode": "10005",
+              "extendedPostalCode": "10005-1904",
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "20 Broad Street, New York, NY 10005",
+              "localName": "New York"
+            },
+            "position": {
+              "lat": 40.706565,
+              "lon": -74.011333
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 40.70746,
+                "lon": -74.01252
+              },
+              "btmRightPoint": {
+                "lat": 40.70567,
+                "lon": -74.01015
+              }
+            },
+            "entryPoints": [
+              {
+                "type": "main",
+                "position": {
+                  "lat": 40.70648,
+                  "lon": -74.0111
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

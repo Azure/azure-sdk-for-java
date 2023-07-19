@@ -1,25 +1,82 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/search/address/structured/json?api-version=1.0&countryCode=US",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "date" : "Sat, 04 Jun 2022 07:06:35 GMT",
-      "content-length" : "670",
-      "x-content-type-options" : "nosniff",
-      "x-msedge-ref" : "Ref A: 10D85076A5E64AA8ABCAAF4EBE8D709F Ref B: SIN30EDGE0709 Ref C: 2022-06-04T07:06:35Z",
-      "vary" : "Accept-Encoding",
-      "x-ms-azuremaps-region" : "West Europe",
-      "content-type" : "application/json; charset=utf-8",
-      "x-cache" : "CONFIG_NOCACHE",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"summary\":{\"query\":\"us\",\"queryType\":\"NON_NEAR\",\"queryTime\":5,\"numResults\":1,\"offset\":0,\"totalResults\":8,\"fuzzyLevel\":1},\"results\":[{\"type\":\"Geography\",\"id\":\"US/GEO/p0/66014\",\"score\":2.7289803028,\"entityType\":\"Country\",\"address\":{\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"United States\"},\"position\":{\"lat\":38.89206,\"lon\":-77.01991},\"viewport\":{\"topLeftPoint\":{\"lat\":71.39048,\"lon\":172.44475},\"btmRightPoint\":{\"lat\":18.91079,\"lon\":-66.95}},\"boundingBox\":{\"topLeftPoint\":{\"lat\":71.39048,\"lon\":172.44475},\"btmRightPoint\":{\"lat\":18.91079,\"lon\":-66.95}},\"dataSources\":{\"geometry\":{\"id\":\"8cc529f8-a9ac-46a3-91ee-2e3b6bcb2e5b\"}}}]}",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/search/address/structured/json?api-version=1.0\u0026countryCode=US",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "678",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:23:25 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 10E538A4EBFC489A9E03B02FC6BE6236 Ref B: STBEDGE0118 Ref C: 2023-07-19T22:23:26Z"
+      },
+      "ResponseBody": {
+        "summary": {
+          "query": "us",
+          "queryType": "NON_NEAR",
+          "queryTime": 4,
+          "numResults": 1,
+          "offset": 0,
+          "totalResults": 10,
+          "fuzzyLevel": 1
+        },
+        "results": [
+          {
+            "type": "Geography",
+            "id": "kQcOInbjgLsV3uLoz5wFQw",
+            "score": 2.7289803028,
+            "entityType": "Country",
+            "address": {
+              "countryCode": "US",
+              "country": "United States",
+              "countryCodeISO3": "USA",
+              "freeformAddress": "United States"
+            },
+            "position": {
+              "lat": 38.89206,
+              "lon": -77.01991
+            },
+            "viewport": {
+              "topLeftPoint": {
+                "lat": 71.39048,
+                "lon": 172.44475
+              },
+              "btmRightPoint": {
+                "lat": 18.91079,
+                "lon": -66.95
+              }
+            },
+            "boundingBox": {
+              "topLeftPoint": {
+                "lat": 71.39048,
+                "lon": 172.44475
+              },
+              "btmRightPoint": {
+                "lat": 18.91079,
+                "lon": -66.95
+              }
+            },
+            "dataSources": {
+              "geometry": {
+                "id": "8cc529f8-a9ac-46a3-91ee-2e3b6bcb2e5b"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

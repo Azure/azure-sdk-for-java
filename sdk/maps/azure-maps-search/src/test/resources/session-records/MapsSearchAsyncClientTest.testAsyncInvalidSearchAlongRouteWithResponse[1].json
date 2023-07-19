@@ -1,25 +1,56 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.microsoft.com/search/alongRoute/json?api-version=1.0&query=&maxDetourTime=1000",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "date" : "Sat, 04 Jun 2022 07:06:38 GMT",
-      "content-length" : "73",
-      "x-content-type-options" : "nosniff",
-      "x-msedge-ref" : "Ref A: 0CBDC85C06124521B24391318A3C0C27 Ref B: SIN30EDGE0418 Ref C: 2022-06-04T07:06:38Z",
-      "x-ms-azuremaps-region" : "West Europe",
-      "content-type" : "application/json; charset=utf-8",
-      "x-cache" : "CONFIG_NOCACHE",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"query is missing or empty\"}}",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/search/alongRoute/json?api-version=1.0\u0026query=\u0026maxDetourTime=1000",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "143",
+        "Content-Type": "application/json",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "route": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              -122.143035,
+              47.653536
+            ],
+            [
+              -122.187164,
+              47.617556
+            ],
+            [
+              -122.114981,
+              47.570599
+            ],
+            [
+              -122.132756,
+              47.654009
+            ]
+          ]
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "73",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 19 Jul 2023 22:23:26 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 8BD94E89F84F4D73A80EC3FC8DD8065F Ref B: STBEDGE0118 Ref C: 2023-07-19T22:23:26Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "400 BadRequest",
+          "message": "query is missing or empty"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
