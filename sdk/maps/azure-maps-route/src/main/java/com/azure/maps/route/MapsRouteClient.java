@@ -3,8 +3,6 @@
 
 package com.azure.maps.route;
 
-import java.util.List;
-
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -23,6 +21,8 @@ import com.azure.maps.route.models.RouteMatrixOptions;
 import com.azure.maps.route.models.RouteMatrixResult;
 import com.azure.maps.route.models.RouteRangeOptions;
 import com.azure.maps.route.models.RouteRangeResult;
+
+import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous RouteClient type.
@@ -66,7 +66,7 @@ public final class MapsRouteClient {
     /**
      * Initializes an instance of Routes client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
     MapsRouteClient(MapsRouteAsyncClient asyncClient) {
         this.asyncClient = asyncClient;

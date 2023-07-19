@@ -12,14 +12,14 @@ public final class ScriptCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"qoaxoruzfgs\"}").toObject(ScriptCheckNameRequest.class);
-        Assertions.assertEquals("qoaxoruzfgs", model.name());
+            BinaryData.fromString("{\"name\":\"ihxumwctondzj\"}").toObject(ScriptCheckNameRequest.class);
+        Assertions.assertEquals("ihxumwctondzj", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptCheckNameRequest model = new ScriptCheckNameRequest().withName("qoaxoruzfgs");
+        ScriptCheckNameRequest model = new ScriptCheckNameRequest().withName("ihxumwctondzj");
         model = BinaryData.fromObject(model).toObject(ScriptCheckNameRequest.class);
-        Assertions.assertEquals("qoaxoruzfgs", model.name());
+        Assertions.assertEquals("ihxumwctondzj", model.name());
     }
 }

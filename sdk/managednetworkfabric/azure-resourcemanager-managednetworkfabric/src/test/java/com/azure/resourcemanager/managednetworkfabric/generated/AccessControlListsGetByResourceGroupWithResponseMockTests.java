@@ -13,7 +13,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
-import com.azure.resourcemanager.managednetworkfabric.models.AddressFamily;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
+import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +33,7 @@ public final class AccessControlListsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"addressFamily\":\"ipv6\",\"conditions\":[],\"provisioningState\":\"Failed\",\"annotation\":\"xpxiwfcngjs\"},\"location\":\"sii\",\"tags\":{\"viirhgfgrws\":\"kzjv\",\"tctbrxkjzwrgxffm\":\"pgratzvzbglbyvi\",\"bydpizqaclnapxb\":\"hkwfbkgozxwop\"},\"id\":\"yg\",\"name\":\"ugjknf\",\"type\":\"mfcttux\"}";
+            "{\"properties\":{\"lastSyncedTime\":\"2021-09-23T22:30:34Z\",\"configurationState\":\"Failed\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"configurationType\":\"File\",\"aclsUrl\":\"uzscyfyi\",\"matchConfigurations\":[{\"matchConfigurationName\":\"asjnfgngxaojeeyv\",\"sequenceNumber\":4807900032809026267,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{},{}]}],\"annotation\":\"kjcdzuiygtcyzcje\"},\"location\":\"ubaldjcgldryvlr\",\"tags\":{\"jbfomfbozpjyxe\":\"hzirmxca\",\"jthp\":\"ppqcwdnn\"},\"id\":\"nxebycympohx\",\"name\":\"bnnpnsebcxnous\",\"type\":\"dyzssjlmykdygj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +64,16 @@ public final class AccessControlListsGetByResourceGroupWithResponseMockTests {
         AccessControlList response =
             manager
                 .accessControlLists()
-                .getByResourceGroupWithResponse("hlisngw", "lqqmpiz", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("tuqvirlun", "skydigtvjxsocsv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("sii", response.location());
-        Assertions.assertEquals("kzjv", response.tags().get("viirhgfgrws"));
-        Assertions.assertEquals(AddressFamily.IPV6, response.addressFamily());
-        Assertions.assertEquals("xpxiwfcngjs", response.annotation());
+        Assertions.assertEquals("ubaldjcgldryvlr", response.location());
+        Assertions.assertEquals("hzirmxca", response.tags().get("jbfomfbozpjyxe"));
+        Assertions.assertEquals(ConfigurationType.FILE, response.configurationType());
+        Assertions.assertEquals("uzscyfyi", response.aclsUrl());
+        Assertions.assertEquals("asjnfgngxaojeeyv", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(4807900032809026267L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4, response.matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("kjcdzuiygtcyzcje", response.annotation());
     }
 }

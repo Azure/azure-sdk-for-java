@@ -8,14 +8,36 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
 /** An instance of this class provides access to all the operations defined in AccessControlListsClient. */
 public interface AccessControlListsClient {
     /**
-     * Create Access Control List.
+     * Creates Access Control List.
+     *
+     * <p>Implements Access Control List PUT method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
+        String resourceGroupName, String accessControlListName, AccessControlListInner body);
+
+    /**
+     * Creates Access Control List.
      *
      * <p>Implements Access Control List PUT method.
      *
@@ -26,14 +48,14 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessControlListInner> createWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
         String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context);
 
     /**
-     * Create Access Control List.
+     * Creates Access Control List.
      *
      * <p>Implements Access Control List PUT method.
      *
@@ -43,10 +65,28 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition.
+     * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccessControlListInner create(String resourceGroupName, String accessControlListName, AccessControlListInner body);
+
+    /**
+     * Creates Access Control List.
+     *
+     * <p>Implements Access Control List PUT method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccessControlListInner create(
+        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context);
 
     /**
      * Gets a Access Control List.
@@ -59,7 +99,7 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the Access Control List resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AccessControlListInner> getByResourceGroupWithResponse(
@@ -75,13 +115,30 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition.
+     * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccessControlListInner getByResourceGroup(String resourceGroupName, String accessControlListName);
 
     /**
-     * Updates a Access Control List.
+     * Updates the Access Control List.
+     *
+     * <p>API to update certain properties of the Access Control List resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Access Control List properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
+        String resourceGroupName, String accessControlListName, AccessControlListPatch body);
+
+    /**
+     * Updates the Access Control List.
      *
      * <p>API to update certain properties of the Access Control List resource.
      *
@@ -92,14 +149,14 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessControlListInner> updateWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
         String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context);
 
     /**
-     * Updates a Access Control List.
+     * Updates the Access Control List.
      *
      * <p>API to update certain properties of the Access Control List resource.
      *
@@ -109,10 +166,43 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition.
+     * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccessControlListInner update(String resourceGroupName, String accessControlListName, AccessControlListPatch body);
+
+    /**
+     * Updates the Access Control List.
+     *
+     * <p>API to update certain properties of the Access Control List resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Access Control List properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccessControlListInner update(
+        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context);
+
+    /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accessControlListName);
 
     /**
      * Deletes a Access Control List.
@@ -125,10 +215,11 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String accessControlListName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String accessControlListName, Context context);
 
     /**
      * Deletes a Access Control List.
@@ -145,6 +236,21 @@ public interface AccessControlListsClient {
     void delete(String resourceGroupName, String accessControlListName);
 
     /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String accessControlListName, Context context);
+
+    /**
      * List AccessControlLists by resource group.
      *
      * <p>Implements AccessControlLists list by resource group GET method.
@@ -153,7 +259,7 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AccessControlListInner> listByResourceGroup(String resourceGroupName);
@@ -168,7 +274,7 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AccessControlListInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -180,7 +286,7 @@ public interface AccessControlListsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AccessControlListInner> list();
@@ -194,8 +300,210 @@ public interface AccessControlListsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AccessControlListInner> list(Context context);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginResync(String resourceGroupName, String accessControlListName);
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginResync(String resourceGroupName, String accessControlListName, Context context);
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String accessControlListName);
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner resync(
+        String resourceGroupName, String accessControlListName, Context context);
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String accessControlListName);
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String accessControlListName, Context context);
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String accessControlListName);
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String accessControlListName, Context context);
 }
