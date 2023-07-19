@@ -47,11 +47,11 @@ public final class CustomContext {
     }
 
     /**
-     * Add a custom context header
+     * Add or update a custom context header
      * @param header the custom context SIP UUI, SIP custom or VOIP header
      * @throws IllegalStateException If sipHeaders or voipHeaders is null
      */
-    public void add(CustomContextHeader header) {
+    public void addOrUpdate(CustomContextHeader header) {
         if (header instanceof SIPUUIHeader) {
             if (sipHeaders == null) {
                 throw logger.logExceptionAsError(new IllegalStateException(
