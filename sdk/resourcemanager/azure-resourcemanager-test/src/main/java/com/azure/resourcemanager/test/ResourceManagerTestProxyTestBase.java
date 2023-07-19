@@ -250,8 +250,11 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 interceptorManager.getPlaybackClient());
-            // don't match api-version when matching url
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
+            if (!testContextManager.doNotRecordTest()) {
+                // don't match api-version when matching url
+                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
+                addSanitizers();
+            }
         } else {
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
@@ -286,13 +289,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(this.interceptorManager.getRecordPolicy());
-                interceptorManager.addSanitizers(Arrays.asList(
-                    // subscription id
-                    new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
-                    new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
-                    // Retry-After
-                    new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)
-                ));
+                addSanitizers();
             }
             if (httpLogDetailLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
                 policies.add(new HttpDebugLoggingPolicy());
@@ -457,6 +454,16 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      * Cleans up resources.
      */
     protected abstract void cleanUpResources();
+
+    private void addSanitizers() {
+        interceptorManager.addSanitizers(Arrays.asList(
+            // subscription id
+            new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
+            new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
+            // Retry-After
+            new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)
+        ));
+    }
 
     private final class PlaybackTimeoutInterceptor implements InvocationInterceptor {
 
