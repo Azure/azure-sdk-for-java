@@ -117,8 +117,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
 
     private void addTestProxySanitizers() {
         String domain = AZURE_TEST_DOMAIN;
-        interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(-[0-9a-fA-F]{32}" +
-                ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12})",
+        interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(-[0-9a-fA-F]{32}"
+                + ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12})",
                 ".redacted", TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer(domain.indexOf(".") > 0 ? domain.substring(domain.indexOf(".")) : domain,
                 ".testdomain.com", TestProxySanitizerType.BODY_REGEX),

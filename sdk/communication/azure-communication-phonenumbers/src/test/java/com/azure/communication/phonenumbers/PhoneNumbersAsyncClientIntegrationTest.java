@@ -124,7 +124,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             assertEquals(searchResult.getPhoneNumbers().size(), 1);
             assertNotNull(searchResult.getSearchId());
         })
-        .verifyComplete();
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -188,7 +188,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         });
                 }))
         .assertNext(Assertions::assertNotNull)
-        .verifyComplete();
+            .verifyComplete();
     }
 
     @ParameterizedTest
