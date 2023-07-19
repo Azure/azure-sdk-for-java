@@ -9,11 +9,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
-import com.azure.resourcemanager.cognitiveservices.models.Deployment;
-import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
+import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
+import com.azure.resourcemanager.cognitiveservices.models.UnitType;
+import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,15 +26,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class DeploymentsGetWithResponseMockTests {
+public final class UsagesListMockTests {
     @Test
-    public void testGetWithResponse() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"mywwtkgkxnyed\",\"properties\":{\"provisioningState\":\"Accepted\",\"model\":{\"format\":\"dtj\",\"name\":\"wbcihxuuwh\",\"version\":\"yxccyb\"},\"scaleSettings\":{\"scaleType\":\"Standard\",\"capacity\":184122584,\"activeCapacity\":240734224},\"capabilities\":{\"fkyrk\":\"xgwjplmagstcyoh\"},\"raiPolicyName\":\"dg\",\"callRateLimit\":{\"count\":49.6279,\"renewalPeriod\":99.05967,\"rules\":[]}},\"id\":\"nwqjnoba\",\"name\":\"yhddvia\",\"type\":\"egfnmntfpmvmemfn\"}";
+            "{\"value\":[{\"unit\":\"Bytes\",\"name\":{\"value\":\"hlhzdsqtzbsrgno\",\"localizedValue\":\"jhf\"},\"quotaPeriod\":\"vecactx\",\"limit\":41.168322378176114,\"currentValue\":22.497800609323814,\"nextResetTime\":\"cluqovekqvgqo\",\"status\":\"InOverage\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,17 +62,16 @@ public final class DeploymentsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Deployment response =
-            manager
-                .deployments()
-                .getWithResponse("goorbteo", "bfhjxakvvjgsl", "r", com.azure.core.util.Context.NONE)
-                .getValue();
+        PagedIterable<Usage> response =
+            manager.usages().list("pe", "ojyqdhcuplcplcw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dtj", response.properties().model().format());
-        Assertions.assertEquals("wbcihxuuwh", response.properties().model().name());
-        Assertions.assertEquals("yxccyb", response.properties().model().version());
-        Assertions.assertEquals(DeploymentScaleType.STANDARD, response.properties().scaleSettings().scaleType());
-        Assertions.assertEquals(184122584, response.properties().scaleSettings().capacity());
-        Assertions.assertEquals("dg", response.properties().raiPolicyName());
+        Assertions.assertEquals(UnitType.BYTES, response.iterator().next().unit());
+        Assertions.assertEquals("hlhzdsqtzbsrgno", response.iterator().next().name().value());
+        Assertions.assertEquals("jhf", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("vecactx", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(41.168322378176114D, response.iterator().next().limit());
+        Assertions.assertEquals(22.497800609323814D, response.iterator().next().currentValue());
+        Assertions.assertEquals("cluqovekqvgqo", response.iterator().next().nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.IN_OVERAGE, response.iterator().next().status());
     }
 }
