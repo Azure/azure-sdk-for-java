@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.implementation.patch.{CosmosPatchUpdateOperations, PatchOperationCore, PatchOperationType}
+import com.azure.cosmos.implementation.patch.{PatchOperationCore, PatchOperationType}
 import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
@@ -164,16 +164,16 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   }
  }
 
-  def createCosmosPatchUpdateOperations(partitionKeyDefinition: PartitionKeyDefinition,
-                                        objectNode: ObjectNode): CosmosPatchUpdateOperations = {
+  def createCosmosPatchBulkUpdateOperations(partitionKeyDefinition: PartitionKeyDefinition,
+                                            objectNode: ObjectNode): CosmosPatchBulkUpdateOperations = {
 
-      val cosmosPatchUpdateOperations = CosmosPatchUpdateOperations.create()
+      val cosmosPatchBulkUpdateOperations = new CosmosPatchBulkUpdateOperations()
       val fieldIterator = objectNode.fields()
       while (fieldIterator.hasNext) {
           val fieldEntry = fieldIterator.next()
 
           // check whether there is customized mapping path
-          cosmosPatchConfigs.columnConfigsMap.get(fieldEntry.getKey) match {
+          cosmosPatchConfigs.columnConfigsMap.get(s"/{$fieldEntry.getKey}") match {
               case Some(userDefinedColumnConfig) =>
                   if (!systemProperties.contains(userDefinedColumnConfig.mappingPath.substring(1))) {
                       val node = fieldEntry.getValue
@@ -185,43 +185,45 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
 
                       userDefinedColumnConfig.operationType match {
                           case CosmosPatchOperationTypes.Set =>
-                              cosmosPatchUpdateOperations.set(userDefinedColumnConfig.mappingPath, effectiveNode)
-                          case _ => throw new IllegalArgumentException(s"Patch operation type is not supported for patch update write strategy")
+                              cosmosPatchBulkUpdateOperations.set(userDefinedColumnConfig.mappingPath, effectiveNode)
+                          case _ => throw new RuntimeException(s"Patch operation type is not supported for itemPatchBulkUpdate write strategy")
                       }
                   }
 
               case None =>
-                  if (isAllowedProperty(fieldEntry.getKey, partitionKeyDefinition)) {
-                      cosmosPatchUpdateOperations.set(fieldEntry.getKey, fieldEntry.getValue)
+                  if (!systemProperties.contains(fieldEntry.getKey)) {
+                      cosmosPatchBulkUpdateOperations.set(fieldEntry.getKey, fieldEntry.getValue)
                   }
           }
       }
 
-      cosmosPatchUpdateOperations
+      cosmosPatchBulkUpdateOperations
   }
 
-  def patchUpdateItem(itemToBeUpdatedOpt: Option[ObjectNode], cosmosPatchUpdateOperations: CosmosPatchUpdateOperations): ObjectNode = {
-      val operations =
-          ImplementationBridgeHelpers
-              .CosmosPatchUpdateOperationsHelper
-              .getCosmosPatchUpdateOperationsAccessor
-              .getPatchOperations(cosmosPatchUpdateOperations)
+  def patchBulkUpdateItem(
+                             itemToBeUpdatedOpt: Option[ObjectNode],
+                             patchBulkUpdateOperations: CosmosPatchBulkUpdateOperations): ObjectNode = {
 
+      // Do not do the modification on original objectNode, as it maybe used by other patchBulkUpdate operations
       val rootNode =
-          Utils.getSimpleObjectMapper.createObjectNode()
+          Utils
+              .getSimpleObjectMapper
+              .createObjectNode()
               .setAll(itemToBeUpdatedOpt.getOrElse(Utils.getSimpleObjectMapper().createObjectNode()))
 
-      operations.forEach(patchOperation => {
-          val patchOperationCore = patchOperation.asInstanceOf[PatchOperationCore[ObjectNode]]
-          patchUpdateField(rootNode, patchOperationCore.getOperationType, patchOperationCore.getPath, patchOperationCore.getResource)
+      patchBulkUpdateOperations.getPatchOperations().foreach(patchOperation => {
+          val patchOperationCore = patchOperation.asInstanceOf[PatchOperationCore[JsonNode]]
+          patchBulkUpdateField(rootNode, patchOperationCore.getOperationType, patchOperationCore.getPath, patchOperationCore.getResource)
       })
 
       rootNode
   }
 
-  private[this] def patchUpdateField(rootNode: ObjectNode, patchOperationType: PatchOperationType, path: String, pathValue: ObjectNode): Unit = {
+  private[this] def patchBulkUpdateField(rootNode: ObjectNode, patchOperationType: PatchOperationType, path: String, pathValue: JsonNode): Unit = {
       patchOperationType match {
           case PatchOperationType.SET =>
+              // CosmosDb mapping path: /parent/child1/item
+              // Loop through each path component. If the parent node does not exists, create one {}
               val pathArray = path.stripPrefix("/").split("/")
               var parentNode: ObjectNode = rootNode
               for (pathIndex <- 0 until pathArray.size - 1) {
@@ -229,12 +231,15 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                       parentNode.set(pathArray(pathIndex), Utils.getSimpleObjectMapper().createObjectNode())
                   }
 
-                  parentNode = parentNode.get(pathArray(pathIndex)).asInstanceOf[ObjectNode]
+                  parentNode.get(pathArray(pathIndex)) match {
+                      case updatedNode: ObjectNode => parentNode = updatedNode
+                      case _ => new RuntimeException(s"Unsupported parent node type for ItemPatchBulkUpdate")
+                  }
               }
 
               // after looping through the structure, now the field value
               parentNode.set(pathArray(pathArray.size - 1), pathValue)
-          case _ => // do not support other path update operation type yet
+          case _ => new RuntimeException(s"PatchOperationType $patchOperationType is not supported for ItemPatchBulkUpdate") // we should have never reach here
       }
   }
 }

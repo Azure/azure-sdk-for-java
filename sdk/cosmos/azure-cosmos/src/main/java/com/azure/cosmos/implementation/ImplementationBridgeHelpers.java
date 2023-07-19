@@ -36,7 +36,6 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.patch.CosmosPatchUpdateOperations;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -1614,82 +1613,6 @@ public class ImplementationBridgeHelpers {
         public interface ItemBulkOperationAccessor {
             ObjectNode getSourceItem(ItemBulkOperation itemBulkOperation);
             void addSourceItem(ItemBulkOperation itemBulkOperation, ObjectNode sourceItem);
-        }
-    }
-
-    public static final class CosmosBulkPatchItemRequestOptionsHelper {
-        private static final AtomicReference<Boolean> cosmosBulkPatchItemRequestOptionsLoaded = new AtomicReference<>(false);
-        private static final AtomicReference<CosmosBulkPatchItemRequestOptionsAccessor> accessor = new AtomicReference<>();
-
-        private CosmosBulkPatchItemRequestOptionsHelper() {}
-
-        public static CosmosBulkPatchItemRequestOptionsAccessor getItemBulkOperationAccessor() {
-
-            if (!cosmosBulkPatchItemRequestOptionsLoaded.get()) {
-                logger.debug("Initializing cosmosBulkPatchItemRequestOptionsAccessor...");
-                initializeAllAccessors();
-            }
-
-            CosmosBulkPatchItemRequestOptionsAccessor snapshot = accessor.get();
-
-            if (snapshot == null) {
-                logger.error("CosmosBulkPatchItemRequestOptionsAccessor is not initialized yet!");
-                System.exit(9729); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public static void setItemBulkOperationAccessor(final CosmosBulkPatchItemRequestOptionsAccessor newAccessor) {
-
-            assert (newAccessor != null);
-
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("CosmosBulkPatchItemRequestOptionsAccessor already initialized!");
-            } else {
-                logger.debug("Setting CosmosBulkPatchItemRequestOptionsAccessor...");
-                cosmosBulkPatchItemRequestOptionsLoaded.set(true);
-            }
-        }
-
-        public interface CosmosBulkPatchItemRequestOptionsAccessor {
-            RequestOptions toRequestOptions(CosmosBulkPatchItemRequestOptions cosmosBulkPatchItemRequestOptions);
-        }
-    }
-
-    public static final class CosmosPatchUpdateOperationsHelper {
-        private final static AtomicBoolean cosmosPatchUpdateOperationsClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<CosmosPatchUpdateOperationsAccessor> accessor = new AtomicReference<>();
-
-        private CosmosPatchUpdateOperationsHelper() {
-        }
-
-        public static CosmosPatchUpdateOperationsAccessor getCosmosPatchUpdateOperationsAccessor() {
-            if (!cosmosPatchUpdateOperationsClassLoaded.get()) {
-                logger.debug("Initializing CosmosPatchUpdateOperationsAccessor...");
-                initializeAllAccessors();
-            }
-
-            CosmosPatchUpdateOperationsAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("CosmosPatchUpdateOperationsAccessor is not initialized yet!");
-                System.exit(9730); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public static void setCosmosPatchUpdateOperationsAccessor(CosmosPatchUpdateOperationsAccessor newAccessor) {
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("CosmosPatchUpdateOperationsAccessor already initialized!");
-            } else {
-                logger.debug("Setting CosmosPatchUpdateOperationsAccessor...");
-                cosmosPatchUpdateOperationsClassLoaded.set(true);
-            }
-        }
-
-        public interface CosmosPatchUpdateOperationsAccessor {
-            List<PatchOperation> getPatchOperations(CosmosPatchUpdateOperations cosmosPatchUpdateOperations);
         }
     }
 }

@@ -14,9 +14,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -35,8 +32,9 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     private final RequestOptions requestOptions;
 
     // ONLY used for spark SDK
-    // for patch/patchUpdate:source item refers to the original objectNode from which SDK constructs the final item
+    // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
     private ObjectNode sourceItem;
+
     private String partitionKeyJson;
     private BulkOperationRetryPolicy bulkOperationRetryPolicy;
 
@@ -168,6 +166,9 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         this.sourceItem = objectNode;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.ItemBulkOperationHelper.setItemBulkOperationAccessor(
             new ImplementationBridgeHelpers.ItemBulkOperationHelper.ItemBulkOperationAccessor() {
