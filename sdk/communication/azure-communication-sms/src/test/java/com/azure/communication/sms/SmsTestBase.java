@@ -4,27 +4,20 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Arrays;
 
 public class SmsTestBase extends TestProxyTestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -41,17 +34,10 @@ public class SmsTestBase extends TestProxyTestBase {
 
     protected static final String MESSAGE = "Hello";
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("to");
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-        Pattern.CASE_INSENSITIVE);
 
     protected SmsClientBuilder getSmsClientWithToken(HttpClient httpClient, TokenCredential tokenCredential) {
         if (getTestMode() == TestMode.PLAYBACK) {
-            tokenCredential = new FakeCredentials();
+            tokenCredential = new MockTokenCredential();
         }
         SmsClientBuilder builder = new SmsClientBuilder();
         builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
@@ -59,10 +45,10 @@ public class SmsTestBase extends TestProxyTestBase {
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        addTestProxySanitizer();
+        addTestProxyMatcher();
         return builder;
     }
 
@@ -73,11 +59,30 @@ public class SmsTestBase extends TestProxyTestBase {
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+
+        addTestProxySanitizer();
+        addTestProxyMatcher();
         return builder;
+    }
+
+    private void addTestProxySanitizer() {
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("$..to", null,
+                "REDACTED",
+                TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("$..from", null,
+                "REDACTED",
+                TestProxySanitizerType.BODY_KEY)));
+        }
+    }
+
+    private void addTestProxyMatcher() {
+        if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
+                .setComparingBodies(false)));
+        }
     }
 
     protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
@@ -95,24 +100,6 @@ public class SmsTestBase extends TestProxyTestBase {
                 return Mono.just(bufferedResponse);
             });
     }
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
-
-    private String redact(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group(1);
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), replacement);
-            }
-        }
-        return content;
-    }
-
     protected boolean shouldEnableSmsTests() {
         return !Boolean.parseBoolean(SKIP_INT_SMS_TEST);
     }
