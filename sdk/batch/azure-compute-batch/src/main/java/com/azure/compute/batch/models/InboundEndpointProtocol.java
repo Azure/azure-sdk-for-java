@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InboundEndpointProtocol. */
+/** InboundEndpointProtocol enums. */
 public final class InboundEndpointProtocol extends ExpandableStringEnum<InboundEndpointProtocol> {
 
     /** Use TCP for the endpoint. */

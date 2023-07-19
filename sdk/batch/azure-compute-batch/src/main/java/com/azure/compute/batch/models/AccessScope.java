@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccessScope. */
+/** AccessScope enums. */
 public final class AccessScope extends ExpandableStringEnum<AccessScope> {
 
     /** Grants access to perform all operations on the Job containing the Task. */

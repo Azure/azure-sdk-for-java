@@ -340,7 +340,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         long elapsedTime = 0L;
 
         while (elapsedTime < expiryTimeInSeconds * 1000) {
-            PagedIterable<BatchTask> taskIterator = taskClient.list(jobId, null, null, null, null, null, null, "id, state", null);
+            PagedIterable<BatchTask> taskIterator = taskClient.list(jobId, null, null, null, null,  "id, state", null);
 
             boolean allComplete = true;
             for (BatchTask task : taskIterator) {

@@ -9,6 +9,7 @@ using Azure.Core;
 
 namespace BatchService;
 
+@doc("OSType enums")
 enum OSType {
   @doc("The Linux operating system.")
   Linux: "linux",
@@ -17,6 +18,7 @@ enum OSType {
   Windows: "windows",
 }
 
+@doc("VerificationType enums")
 enum VerificationType {
   @doc("The Image is guaranteed to be compatible with the associated Compute Node agent SKU and all Batch features have been confirmed to work as expected.")
   Verified: "verified",
@@ -25,6 +27,7 @@ enum VerificationType {
   Unverified: "unverified",
 }
 
+@doc("CertificateState enums")
 enum CertificateState {
   @doc("The Certificate is available for use in Pools.")
   Active: "active",
@@ -36,6 +39,7 @@ enum CertificateState {
   DeleteFailed: "deletefailed",
 }
 
+@doc("CertificateFormat enums")
 enum CertificateFormat {
   @doc("The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain.")
   Pfx: "pfx",
@@ -44,6 +48,7 @@ enum CertificateFormat {
   Cer: "cer",
 }
 
+@doc("JobScheduleState enums")
 enum JobScheduleState {
   @doc("The Job Schedule is active and will create Jobs as per its schedule.")
   Active: "active",
@@ -61,14 +66,16 @@ enum JobScheduleState {
   Deleting: "deleting",
 }
 
+@doc("The action the Batch service should take when all Tasks in the Job are in the completed state.")
 enum OnAllTasksComplete {
   @doc("Do nothing. The Job remains active unless terminated or disabled by some other means.")
   NoAction: "noaction",
 
-  @doc("")
+  @doc("Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'.")
   TerminateJob: "terminatejob",
 }
 
+@doc("OnTaskFailure enums")
 enum OnTaskFailure {
   @doc("Do nothing. The Job remains active unless terminated or disabled by some other means.")
   NoAction: "noaction",
@@ -77,6 +84,7 @@ enum OnTaskFailure {
   PerformExitOptionsJobAction: "performexitoptionsjobaction",
 }
 
+@doc("ContainerWorkingDirectory enums")
 enum ContainerWorkingDirectory {
   @doc("Use the standard Batch service Task working directory, which will contain the Task Resource Files populated by Batch.")
   TaskWorkingDirectory: "taskWorkingDirectory",
@@ -85,6 +93,7 @@ enum ContainerWorkingDirectory {
   ContainerImageDefault: "containerImageDefault",
 }
 
+@doc("OutputFileUploadCondition enums")
 enum OutputFileUploadCondition {
   @doc("Upload the file(s) only after the Task process exits with an exit code of 0.")
   TaskSuccess: "tasksuccess",
@@ -96,6 +105,7 @@ enum OutputFileUploadCondition {
   TaskCompletion: "taskcompletion",
 }
 
+@doc("AutoUserScope enums")
 enum AutoUserScope {
   @doc("Specifies that the service should create a new user for the Task.")
   Task: "task",
@@ -104,6 +114,7 @@ enum AutoUserScope {
   Pool: "pool",
 }
 
+@doc("ElevationLevel enums")
 enum ElevationLevel {
   @doc("The user is a standard user without elevated access.")
   NonAdmin: "nonadmin",
@@ -112,6 +123,7 @@ enum ElevationLevel {
   Admin: "admin",
 }
 
+@doc("PoolLifetimeOption enums")
 enum PoolLifetimeOption {
   @doc("The Pool exists for the lifetime of the Job Schedule. The Batch Service creates the Pool when it creates the first Job on the schedule. You may apply this option only to Job Schedules, not to Jobs.")
   JobSchedule: "jobschedule",
@@ -120,6 +132,7 @@ enum PoolLifetimeOption {
   Job: "job",
 }
 
+@doc("CachingType enums")
 enum CachingType {
   @doc("The caching mode for the disk is not enabled.")
   None: "none",
@@ -131,6 +144,7 @@ enum CachingType {
   ReadWrite: "readwrite",
 }
 
+@doc("StorageAccountType enums")
 enum StorageAccountType {
   @doc("The data disk should use standard locally redundant storage.")
   StandardLRS: "standard_lrs",
@@ -139,6 +153,7 @@ enum StorageAccountType {
   PremiumLRS: "premium_lrs",
 }
 
+@doc("DiskEncryptionTarget enums")
 enum DiskEncryptionTarget {
   @doc("The OS Disk on the compute node is encrypted.")
   OsDisk: "osdisk",
@@ -147,6 +162,7 @@ enum DiskEncryptionTarget {
   TemporaryDisk: "temporarydisk",
 }
 
+@doc("NodePlacementPolicyType enums")
 enum NodePlacementPolicyType {
   @doc("All nodes in the pool will be allocated in the same region.")
   Regional: "regional",
@@ -155,6 +171,7 @@ enum NodePlacementPolicyType {
   Zonal: "zonal",
 }
 
+@doc("BatchNodeFillType enums")
 enum BatchNodeFillType {
   @doc("Tasks should be assigned evenly across all Compute Nodes in the Pool.")
   Spread: "spread",
@@ -163,6 +180,7 @@ enum BatchNodeFillType {
   Pack: "pack",
 }
 
+@doc("DynamicVNetAssignmentScope enums")
 enum DynamicVNetAssignmentScope {
   @doc("No dynamic VNet assignment is enabled.")
   None: "none",
@@ -171,6 +189,7 @@ enum DynamicVNetAssignmentScope {
   Job: "job",
 }
 
+@doc("InboundEndpointProtocol enums")
 enum InboundEndpointProtocol {
   @doc("Use TCP for the endpoint.")
   Tcp: "tcp",
@@ -179,6 +198,7 @@ enum InboundEndpointProtocol {
   Udp: "udp",
 }
 
+@doc("NetworkSecurityGroupRuleAccess enums")
 enum NetworkSecurityGroupRuleAccess {
   @doc("Allow access.")
   Allow: "allow",
@@ -187,6 +207,7 @@ enum NetworkSecurityGroupRuleAccess {
   Deny: "deny",
 }
 
+@doc("IPAddressProvisioningType enums")
 enum IPAddressProvisioningType {
   @doc("A public IP will be created and managed by Batch. There may be multiple public IPs depending on the size of the Pool.")
   BatchManaged: "batchmanaged",
@@ -199,20 +220,25 @@ enum IPAddressProvisioningType {
   NoPublicIPAddresses: "nopublicipaddresses",
 }
 
+@doc("AccessDiffDiskPlacementScope enums")
 enum DiffDiskPlacement {
   @doc("The Ephemeral OS Disk is stored on the VM cache.")
   CacheDisk: "cachedisk",
 }
 
+@doc("ContainerType enums")
 enum ContainerType {
   @doc("A Docker compatible container technology will be used to launch the containers.")
   DockerCompatible: "dockerCompatible",
 }
+
+@doc("AccessScope enums")
 enum AccessScope {
   @doc("Grants access to perform all operations on the Job containing the Task.")
   Job: "job",
 }
 
+@doc("CertificateStoreLocation enums")
 enum CertificateStoreLocation {
   @doc("Certificates should be installed to the CurrentUser Certificate store.")
   CurrentUser: "currentuser",
@@ -221,6 +247,7 @@ enum CertificateStoreLocation {
   LocalMachine: "localmachine",
 }
 
+@doc("CertificateVisibility enums")
 enum CertificateVisibility {
   @doc("The Certificate should be visible to the user account under which the StartTask is run. Note that if AutoUser Scope is Pool for both the StartTask and a Task, this certificate will be visible to the Task as well.")
   StartTask: "starttask",
@@ -232,6 +259,7 @@ enum CertificateVisibility {
   RemoteUser: "remoteuser",
 }
 
+@doc("LoginMode enums")
 enum LoginMode {
   @doc("The LOGON32_LOGON_BATCH Win32 login mode. The batch login mode is recommended for long running parallel processes.")
   Batch: "batch",
@@ -240,6 +268,7 @@ enum LoginMode {
   Interactive: "interactive",
 }
 
+@doc("NodeCommunicationMode enums")
 enum NodeCommunicationMode {
   @doc("The node communication mode is automatically set by the Batch service.")
   Default: "default",
@@ -251,6 +280,7 @@ enum NodeCommunicationMode {
   Simplified: "simplified",
 }
 
+@doc("JobState enums")
 enum JobState {
   @doc("The Job is available to have Tasks scheduled.")
   Active: "active",
@@ -274,6 +304,7 @@ enum JobState {
   Deleting: "deleting",
 }
 
+@doc("ErrorCategory enums")
 enum ErrorCategory {
   @doc("The error is due to a user issue, such as misconfiguration.")
   UserError: "usererror",
@@ -282,6 +313,7 @@ enum ErrorCategory {
   ServerError: "servererror",
 }
 
+@doc("DisableJobOption enums")
 enum DisableJobOption {
   @doc("Terminate running Tasks and requeue them. The Tasks will run again when the Job is enabled.")
   Requeue: "requeue",
@@ -293,6 +325,7 @@ enum DisableJobOption {
   Wait: "wait",
 }
 
+@doc("JobPreparationTaskState enums")
 enum JobPreparationTaskState {
   @doc("The Task is currently running (including retrying).")
   Running: "running",
@@ -301,6 +334,7 @@ enum JobPreparationTaskState {
   Completed: "completed",
 }
 
+@doc("TaskExecutionResult enums")
 enum TaskExecutionResult {
   @doc("The Task ran successfully.")
   Success: "success",
@@ -309,6 +343,7 @@ enum TaskExecutionResult {
   Failure: "failure",
 }
 
+@doc("JobReleaseTaskState enums")
 enum JobReleaseTaskState {
   @doc("The Task is currently running (including retrying).")
   Running: "running",
@@ -317,6 +352,7 @@ enum JobReleaseTaskState {
   Completed: "completed",
 }
 
+@doc("PoolState enums")
 enum PoolState {
   @doc("The Pool is available to run Tasks subject to the availability of Compute Nodes.")
   Active: "active",
@@ -325,6 +361,7 @@ enum PoolState {
   Deleting: "deleting",
 }
 
+@doc("AllocationState enums")
 enum AllocationState {
   @doc("The Pool is not resizing. There are no changes to the number of Compute Nodes in the Pool in progress. A Pool enters this state when it is created and when no operations are being performed on the Pool to change the number of Compute Nodes.")
   Steady: "steady",
@@ -336,6 +373,7 @@ enum AllocationState {
   Stopping: "stopping",
 }
 
+@doc("PoolIdentityType enums")
 enum PoolIdentityType {
   @doc("Batch pool has user assigned identities with it.")
   UserAssigned,
@@ -344,6 +382,7 @@ enum PoolIdentityType {
   None,
 }
 
+@doc("BatchNodeDeallocationOption enums")
 enum BatchNodeDeallocationOption {
   @doc("Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute Node is available. Remove Compute Nodes as soon as Tasks have been terminated.")
   Requeue: "requeue",
@@ -358,6 +397,7 @@ enum BatchNodeDeallocationOption {
   RetainedData: "retaineddata",
 }
 
+@doc("JobAction enums")
 enum JobAction {
   @doc("Take no action.")
   None: "none",
@@ -369,6 +409,7 @@ enum JobAction {
   Terminate: "terminate",
 }
 
+@doc("DependencyAction enums")
 enum DependencyAction {
   @doc("Satisfy tasks waiting on this task; once all dependencies are satisfied, the task will be scheduled to run.")
   Satisfy: "satisfy",
@@ -377,6 +418,7 @@ enum DependencyAction {
   Block: "block",
 }
 
+@doc("TaskState enums")
 enum TaskState {
   @doc("The Task is queued and able to run, but is not currently assigned to a Compute Node. A Task enters this state when it is created, when it is enabled after being disabled, or when it is awaiting a retry after a failed run.")
   Active: "active",
@@ -391,6 +433,7 @@ enum TaskState {
   Completed: "completed",
 }
 
+@doc("TaskAddStatus enums")
 enum TaskAddStatus {
   @doc("The Task was added successfully.")
   Success: "Success",
@@ -402,6 +445,7 @@ enum TaskAddStatus {
   ServerError: "servererror",
 }
 
+@doc("SubtaskState enums")
 enum SubtaskState {
   @doc("The Task has been assigned to a Compute Node, but is waiting for a required Job Preparation Task to complete on the Compute Node. If the Job Preparation Task succeeds, the Task will move to running. If the Job Preparation Task fails, the Task will return to active and will be eligible to be assigned to a different Compute Node.")
   Preparing: "preparing",
@@ -413,6 +457,7 @@ enum SubtaskState {
   Completed: "completed",
 }
 
+@doc("BatchNodeState enums")
 enum BatchNodeState {
   @doc("The Compute Node is not currently running a Task.")
   Idle: "idle",
@@ -454,6 +499,7 @@ enum BatchNodeState {
   Preempted: "preempted",
 }
 
+@doc("SchedulingState enums")
 enum SchedulingState {
   @doc("Tasks can be scheduled on the Compute Node.")
   Enabled: "enabled",
@@ -462,6 +508,7 @@ enum SchedulingState {
   Disabled: "disabled",
 }
 
+@doc("StartTaskState enums")
 enum StartTaskState {
   @doc("The StartTask is currently running.")
   Running: "running",
@@ -470,6 +517,7 @@ enum StartTaskState {
   Completed: "completed",
 }
 
+@doc("BatchNodeRebootOption enums")
 enum BatchNodeRebootOption {
   @doc("Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute Node is available. Restart the Compute Node as soon as Tasks have been terminated.")
   Requeue: "requeue",
@@ -484,6 +532,7 @@ enum BatchNodeRebootOption {
   RetainedData: "retaineddata",
 }
 
+@doc("BatchNodeReimageOption enums")
 enum BatchNodeReimageOption {
   @doc("Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute Node is available. Reimage the Compute Node as soon as Tasks have been terminated.")
   Requeue: "requeue",
@@ -498,6 +547,7 @@ enum BatchNodeReimageOption {
   RetainedData: "retaineddata",
 }
 
+@doc("DisableBatchNodeSchedulingOption enums")
 enum DisableBatchNodeSchedulingOption {
   @doc("Terminate running Task processes and requeue the Tasks. The Tasks may run again on other Compute Nodes, or when Task scheduling is re-enabled on this Compute Node. Enter offline state as soon as Tasks have been terminated.")
   Requeue: "requeue",
@@ -509,14 +559,15 @@ enum DisableBatchNodeSchedulingOption {
   TaskCompletion: "taskcompletion",
 }
 
+@doc("Level code.")
 enum StatusLevelTypes {
-  @doc("")
+  @doc("Error")
   Error,
 
-  @doc("")
+  @doc("Info")
   Info,
 
-  @doc("")
+  @doc("Warning")
   Warning,
 }
 
@@ -2450,13 +2501,13 @@ upgrade minor versions unless redeployed, even with this property set to true.
   autoUpgradeMinorVersion?: boolean;
 
   @doc("JSON formatted public settings for the extension.")
-  settings?: Record<unknown>;
+  settings?: Record<string>;
 
   @doc("""
 The extension can contain either protectedSettings or
 protectedSettingsFromKeyVault or no protected settings at all.
 """)
-  protectedSettings?: Record<unknown>;
+  protectedSettings?: Record<string>;
 
   @doc("""
 Collection of extension names after which this extension needs to be
@@ -3353,7 +3404,6 @@ use of user code.
 """)
   metadata?: MetadataItem[];
 }
-
 
 @doc("An Azure Batch Job Update Model.")
 model BatchJobUpdateParameters {

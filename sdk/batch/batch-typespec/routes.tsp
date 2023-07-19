@@ -47,6 +47,7 @@ op RpcOperationWithAdditionalResponse<
 // Interfaces ////////////////////
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
 @operationGroup
 @tag("Applications")
 interface Applications {
@@ -92,6 +93,8 @@ API.
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
+#suppress "@azure-tools/typespec-azure-core/use-standard-operations" "Operation 'Exists' should be defined using a signature from the Azure.Core namespace."
 @operationGroup
 @tag("Pools")
 interface Pool {
@@ -539,6 +542,7 @@ Each request may remove up to 100 nodes.
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
 @operationGroup
 @tag("Accounts")
 interface Account {
@@ -588,6 +592,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
 @operationGroup
 @tag("Jobs")
 interface Job {
@@ -1009,6 +1014,7 @@ up to date. If you need exact task counts, use a list query.
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
 @operationGroup
 @tag("Certificates")
 interface Certificates {
@@ -1161,6 +1167,7 @@ active if you decide that you want to continue using the Certificate.
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
 @operationGroup
 @tag("Files")
 interface File {
@@ -1361,6 +1368,8 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
+#suppress "@azure-tools/typespec-azure-core/use-standard-operations" "Operation 'Exists' should be defined using a signature from the Azure.Core namespace."
 @operationGroup
 @tag("JobSchedules")
 interface JobSchedule {
@@ -1650,6 +1659,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
 @operationGroup
 @tag("Tasks")
 interface Task {
@@ -1981,6 +1991,7 @@ will fail if the Job has completed (or is terminating or deleting).
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
 @operationGroup
 @tag("BatchNodes")
 interface BatchNodes {

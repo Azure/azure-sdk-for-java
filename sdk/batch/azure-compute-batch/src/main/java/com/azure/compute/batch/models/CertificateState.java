@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateState. */
+/** CertificateState enums. */
 public final class CertificateState extends ExpandableStringEnum<CertificateState> {
 
     /** The Certificate is available for use in Pools. */

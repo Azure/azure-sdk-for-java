@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobReleaseTaskState. */
+/** JobReleaseTaskState enums. */
 public final class JobReleaseTaskState extends ExpandableStringEnum<JobReleaseTaskState> {
 
     /** The Task is currently running (including retrying). */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VerificationType. */
+/** VerificationType enums. */
 public final class VerificationType extends ExpandableStringEnum<VerificationType> {
 
     /**

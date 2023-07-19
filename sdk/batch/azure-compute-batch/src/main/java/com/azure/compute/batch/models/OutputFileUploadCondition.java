@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OutputFileUploadCondition. */
+/** OutputFileUploadCondition enums. */
 public final class OutputFileUploadCondition extends ExpandableStringEnum<OutputFileUploadCondition> {
 
     /** Upload the file(s) only after the Task process exits with an exit code of 0. */

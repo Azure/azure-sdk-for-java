@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AllocationState. */
+/** AllocationState enums. */
 public final class AllocationState extends ExpandableStringEnum<AllocationState> {
 
     /**

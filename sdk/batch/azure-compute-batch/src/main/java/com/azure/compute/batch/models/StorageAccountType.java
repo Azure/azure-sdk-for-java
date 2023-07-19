@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageAccountType. */
+/** StorageAccountType enums. */
 public final class StorageAccountType extends ExpandableStringEnum<StorageAccountType> {
 
     /** The data disk should use standard locally redundant storage. */

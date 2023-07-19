@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubtaskState. */
+/** SubtaskState enums. */
 public final class SubtaskState extends ExpandableStringEnum<SubtaskState> {
 
     /**

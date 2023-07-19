@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateStoreLocation. */
+/** CertificateStoreLocation enums. */
 public final class CertificateStoreLocation extends ExpandableStringEnum<CertificateStoreLocation> {
 
     /** Certificates should be installed to the CurrentUser Certificate store. */

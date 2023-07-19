@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateFormat. */
+/** CertificateFormat enums. */
 public final class CertificateFormat extends ExpandableStringEnum<CertificateFormat> {
 
     /** The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain. */

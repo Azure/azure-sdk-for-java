@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ErrorCategory. */
+/** ErrorCategory enums. */
 public final class ErrorCategory extends ExpandableStringEnum<ErrorCategory> {
 
     /** The error is due to a user issue, such as misconfiguration. */

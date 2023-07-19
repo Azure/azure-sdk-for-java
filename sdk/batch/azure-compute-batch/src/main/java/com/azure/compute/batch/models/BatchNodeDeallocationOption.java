@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BatchNodeDeallocationOption. */
+/** BatchNodeDeallocationOption enums. */
 public final class BatchNodeDeallocationOption extends ExpandableStringEnum<BatchNodeDeallocationOption> {
 
     /**

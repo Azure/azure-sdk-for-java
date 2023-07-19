@@ -401,7 +401,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public ApplicationsClient buildApplicationsClient() {
-        return new ApplicationsClient(new ApplicationsAsyncClient(buildInnerClient().getApplications()));
+        return new ApplicationsClient(buildInnerClient().getApplications());
     }
 
     /**
@@ -411,7 +411,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public PoolClient buildPoolClient() {
-        return new PoolClient(new PoolAsyncClient(buildInnerClient().getPools()));
+        return new PoolClient(buildInnerClient().getPools());
     }
 
     /**
@@ -421,7 +421,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public AccountClient buildAccountClient() {
-        return new AccountClient(new AccountAsyncClient(buildInnerClient().getAccounts()));
+        return new AccountClient(buildInnerClient().getAccounts());
     }
 
     /**
@@ -431,7 +431,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public JobClient buildJobClient() {
-        return new JobClient(new JobAsyncClient(buildInnerClient().getJobs()));
+        return new JobClient(buildInnerClient().getJobs());
     }
 
     /**
@@ -441,7 +441,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public CertificatesClient buildCertificatesClient() {
-        return new CertificatesClient(new CertificatesAsyncClient(buildInnerClient().getCertificates()));
+        return new CertificatesClient(buildInnerClient().getCertificates());
     }
 
     /**
@@ -451,7 +451,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public FileClient buildFileClient() {
-        return new FileClient(new FileAsyncClient(buildInnerClient().getFiles()));
+        return new FileClient(buildInnerClient().getFiles());
     }
 
     /**
@@ -461,7 +461,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public JobScheduleClient buildJobScheduleClient() {
-        return new JobScheduleClient(new JobScheduleAsyncClient(buildInnerClient().getJobSchedules()));
+        return new JobScheduleClient(buildInnerClient().getJobSchedules());
     }
 
     /**
@@ -471,7 +471,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public TaskClient buildTaskClient() {
-        return new TaskClient(new TaskAsyncClient(buildInnerClient().getTasks()));
+        return new TaskClient(buildInnerClient().getTasks());
     }
 
     /**
@@ -481,7 +481,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public BatchNodesClient buildBatchNodesClient() {
-        return new BatchNodesClient(new BatchNodesAsyncClient(buildInnerClient().getBatchNodes()));
+        return new BatchNodesClient(buildInnerClient().getBatchNodes());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchServiceClientBuilder.class);

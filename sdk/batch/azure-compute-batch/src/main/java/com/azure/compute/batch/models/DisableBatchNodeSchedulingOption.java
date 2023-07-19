@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DisableBatchNodeSchedulingOption. */
+/** DisableBatchNodeSchedulingOption enums. */
 public final class DisableBatchNodeSchedulingOption extends ExpandableStringEnum<DisableBatchNodeSchedulingOption> {
 
     /**

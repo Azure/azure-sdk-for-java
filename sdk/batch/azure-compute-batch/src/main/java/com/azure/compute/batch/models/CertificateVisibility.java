@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateVisibility. */
+/** CertificateVisibility enums. */
 public final class CertificateVisibility extends ExpandableStringEnum<CertificateVisibility> {
 
     /**

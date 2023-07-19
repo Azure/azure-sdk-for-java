@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobScheduleState. */
+/** JobScheduleState enums. */
 public final class JobScheduleState extends ExpandableStringEnum<JobScheduleState> {
 
     /** The Job Schedule is active and will create Jobs as per its schedule. */

@@ -174,12 +174,11 @@ public class TaskTests extends BatchServiceClientTestBase {
             Assertions.assertEquals(Duration.ofDays(7), task.getConstraints().getRetentionTime());
 
             // TODO UPDATE - modifying taskToAdd vs creating new BatchTask instance
-//            BatchTask taskToUpdate = new BatchTask().setId(taskId).setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
-//            //taskToAdd.setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
-//            taskClient.update(jobId, taskId, taskToUpdate);
-//
-//            task = taskClient.get(jobId, taskId);
-//            Assertions.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
+            task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
+            taskClient.update(jobId, taskId, task);
+
+            task = taskClient.get(jobId, taskId);
+            Assertions.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
 
             // LIST
             PagedIterable<BatchTask> tasks = taskClient.list(jobId);

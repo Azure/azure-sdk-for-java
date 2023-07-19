@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DynamicVNetAssignmentScope. */
+/** DynamicVNetAssignmentScope enums. */
 public final class DynamicVNetAssignmentScope extends ExpandableStringEnum<DynamicVNetAssignmentScope> {
 
     /** No dynamic VNet assignment is enabled. */

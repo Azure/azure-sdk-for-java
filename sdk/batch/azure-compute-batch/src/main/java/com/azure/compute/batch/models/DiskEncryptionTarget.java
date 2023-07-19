@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskEncryptionTarget. */
+/** DiskEncryptionTarget enums. */
 public final class DiskEncryptionTarget extends ExpandableStringEnum<DiskEncryptionTarget> {
 
     /** The OS Disk on the compute node is encrypted. */

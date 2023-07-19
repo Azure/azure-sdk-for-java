@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerType. */
+/** ContainerType enums. */
 public final class ContainerType extends ExpandableStringEnum<ContainerType> {
 
     /** A Docker compatible container technology will be used to launch the containers. */

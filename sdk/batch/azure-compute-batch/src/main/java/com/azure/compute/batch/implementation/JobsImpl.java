@@ -84,6 +84,25 @@ public final class JobsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/lifetimejobstats")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAllLifetimeStatisticsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Delete("/jobs/{jobId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -97,6 +116,26 @@ public final class JobsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/jobs/{jobId}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
@@ -124,6 +163,26 @@ public final class JobsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/jobs/{jobId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Patch("/jobs/{jobId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -137,6 +196,28 @@ public final class JobsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> patch(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/jobs/{jobId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> patchSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -168,6 +249,28 @@ public final class JobsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Put("/jobs/{jobId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> updateSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/jobs/{jobId}/disable")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -181,6 +284,28 @@ public final class JobsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disable(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/jobs/{jobId}/disable")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> disableSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -210,6 +335,26 @@ public final class JobsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/jobs/{jobId}/enable")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> enableSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -223,6 +368,26 @@ public final class JobsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminate(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/jobs/{jobId}/terminate")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> terminateSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
@@ -251,6 +416,27 @@ public final class JobsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/jobs")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> createSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/jobs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -270,6 +456,25 @@ public final class JobsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/jobs")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/jobschedules/{jobScheduleId}/jobs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -283,6 +488,26 @@ public final class JobsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listFromJobSchedule(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("jobScheduleId") String jobScheduleId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/jobschedules/{jobScheduleId}/jobs")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listFromJobScheduleSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobScheduleId") String jobScheduleId,
@@ -310,6 +535,26 @@ public final class JobsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listPreparationAndReleaseTaskStatusSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/jobs/{jobId}/taskcounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -323,6 +568,26 @@ public final class JobsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTaskCounts(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("jobId") String jobId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/jobs/{jobId}/taskcounts")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getTaskCountsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
@@ -361,6 +626,25 @@ public final class JobsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listFromJobScheduleNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -380,7 +664,45 @@ public final class JobsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listFromJobScheduleNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listPreparationAndReleaseTaskStatusNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listPreparationAndReleaseTaskStatusNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
@@ -411,9 +733,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -485,9 +804,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -525,7 +841,13 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAllLifetimeStatisticsWithResponse(RequestOptions requestOptions) {
-        return getAllLifetimeStatisticsWithResponseAsync(requestOptions).block();
+        final String accept = "application/json";
+        return service.getAllLifetimeStatisticsSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -554,9 +876,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -624,9 +943,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -656,7 +972,14 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String jobId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(jobId, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                jobId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -680,9 +1003,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -899,10 +1219,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -1131,9 +1451,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1350,10 +1667,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -1549,7 +1866,14 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String jobId, RequestOptions requestOptions) {
-        return getWithResponseAsync(jobId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                jobId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1574,9 +1898,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1674,10 +1995,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -1900,9 +2221,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2000,10 +2318,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -2188,7 +2506,17 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> patchWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
-        return patchWithResponseAsync(jobId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.patchSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                jobId,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2214,9 +2542,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2433,10 +2758,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -2672,9 +2997,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2891,10 +3213,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -3091,7 +3413,17 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
-        return updateWithResponseAsync(jobId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.updateSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                jobId,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3120,9 +3452,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3203,9 +3532,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3244,7 +3570,17 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
-        return disableWithResponseAsync(jobId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.disableSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                jobId,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3271,9 +3607,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3339,9 +3672,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3371,7 +3701,14 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableWithResponse(String jobId, RequestOptions requestOptions) {
-        return enableWithResponseAsync(jobId, requestOptions).block();
+        final String accept = "application/json";
+        return service.enableSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                jobId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3399,9 +3736,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3484,9 +3818,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3524,7 +3855,22 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateWithResponse(String jobId, RequestOptions requestOptions) {
-        return terminateWithResponseAsync(jobId, requestOptions).block();
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(
+                requestLocal -> {
+                    if (requestLocal.getBody() != null
+                            && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                    }
+                });
+        return service.terminateSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                jobId,
+                accept,
+                requestOptionsLocal,
+                Context.NONE);
     }
 
     /**
@@ -3553,9 +3899,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3752,10 +4095,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -3958,9 +4301,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4157,10 +4497,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -4323,7 +4663,16 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(BinaryData parameters, RequestOptions requestOptions) {
-        return createWithResponseAsync(parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.createSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -4354,9 +4703,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -4558,10 +4904,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -4805,9 +5151,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -5009,10 +5352,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -5245,9 +5588,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -5449,10 +5789,454 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 applicationLicenses (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: int (Required)
+     *         writeIOps: int (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: int (Required)
+     *         numFailedTasks: int (Required)
+     *         numTaskRetries: int (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
+     *     <tr><td>$expand</td><td>String</td><td>No</td><td>An OData $expand clause.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 cloudServiceConfiguration (Optional): {
+     *                     osFamily: String (Required)
+     *                     osVersion: String (Optional)
+     *                 }
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Optional)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -5647,7 +6431,14 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(listAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listSinglePage(requestOptions),
+                nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5678,9 +6469,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -5882,10 +6670,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -6132,9 +6920,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -6336,10 +7121,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -6573,9 +7358,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -6777,10 +7559,457 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 applicationLicenses (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: int (Required)
+     *         writeIOps: int (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: int (Required)
+     *         numFailedTasks: int (Required)
+     *         numTaskRetries: int (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listFromJobScheduleSinglePage(
+            String jobScheduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listFromJobScheduleSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        jobScheduleId,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
+     *     <tr><td>$expand</td><td>String</td><td>No</td><td>An OData $expand clause.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 cloudServiceConfiguration (Optional): {
+     *                     osFamily: String (Required)
+     *                     osVersion: String (Optional)
+     *                 }
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Optional)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -6976,7 +8205,14 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listFromJobSchedule(String jobScheduleId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listFromJobScheduleAsync(jobScheduleId, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listFromJobScheduleSinglePage(jobScheduleId, requestOptions),
+                nextLink -> listFromJobScheduleNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7012,9 +8248,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -7133,9 +8366,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -7243,9 +8473,121 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     poolId: String (Optional)
+     *     nodeId: String (Optional)
+     *     nodeUrl: String (Optional)
+     *     jobPreparationTaskExecutionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         state: String(running/completed) (Required)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): {
+     *             containerId: String (Optional)
+     *             state: String (Optional)
+     *             error: String (Optional)
+     *         }
+     *         failureInfo (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         retryCount: int (Required)
+     *         lastRetryTime: OffsetDateTime (Optional)
+     *         result: String(success/failure) (Optional)
+     *     }
+     *     jobReleaseTaskExecutionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         state: String(running/completed) (Required)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): (recursive schema, see containerInfo above)
+     *         failureInfo (Optional): (recursive schema, see failureInfo above)
+     *         result: String(success/failure) (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job along with {@link
+     *     PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listPreparationAndReleaseTaskStatusSinglePage(
+            String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listPreparationAndReleaseTaskStatusSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        jobId,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
+     * Nodes where the Job has run.
+     *
+     * <p>This API returns the Job Preparation and Job Release Task status on all Compute Nodes that have run the Job
+     * Preparation or Job Release Task. This includes Compute Nodes which have since been removed from the Pool. If this
+     * API is invoked on a Job which has no Job Preparation or Job Release Task, the Batch service returns HTTP status
+     * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -7309,7 +8651,14 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listPreparationAndReleaseTaskStatus(String jobId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listPreparationAndReleaseTaskStatusAsync(jobId, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listPreparationAndReleaseTaskStatusSinglePage(jobId, requestOptions),
+                nextLink -> listPreparationAndReleaseTaskStatusNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -7335,9 +8684,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -7412,9 +8758,6 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -7453,7 +8796,14 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTaskCountsWithResponse(String jobId, RequestOptions requestOptions) {
-        return getTaskCountsWithResponseAsync(jobId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getTaskCountsSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                jobId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -7469,9 +8819,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -7673,10 +9020,10 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -7890,7 +9237,7 @@ public final class JobsImpl {
     }
 
     /**
-     * Lists the Jobs that have been created under the specified Job Schedule.
+     * Lists all of the Jobs in the specified Account.
      *
      * <p>Get the next page of items.
      *
@@ -7902,9 +9249,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -8106,10 +9450,436 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: String (Optional)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 applicationLicenses (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: int (Required)
+     *         writeIOps: int (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: int (Required)
+     *         numFailedTasks: int (Required)
+     *         numTaskRetries: int (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 cloudServiceConfiguration (Optional): {
+     *                     osFamily: String (Required)
+     *                     osVersion: String (Optional)
+     *                 }
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Optional)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Optional)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -8325,6 +10095,434 @@ public final class JobsImpl {
     }
 
     /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 cloudServiceConfiguration (Optional): {
+     *                     osFamily: String (Required)
+     *                     osVersion: String (Optional)
+     *                 }
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Optional)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Optional)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 applicationLicenses (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: int (Required)
+     *         writeIOps: int (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: int (Required)
+     *         numFailedTasks: int (Required)
+     *         numTaskRetries: int (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listFromJobScheduleNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listFromJobScheduleNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
      * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
      * Nodes where the Job has run.
      *
@@ -8338,9 +10536,6 @@ public final class JobsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -8420,6 +10615,98 @@ public final class JobsImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "odata.nextLink"),
                                         null));
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
+     * Nodes where the Job has run.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     poolId: String (Optional)
+     *     nodeId: String (Optional)
+     *     nodeUrl: String (Optional)
+     *     jobPreparationTaskExecutionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         state: String(running/completed) (Required)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): {
+     *             containerId: String (Optional)
+     *             state: String (Optional)
+     *             error: String (Optional)
+     *         }
+     *         failureInfo (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         retryCount: int (Required)
+     *         lastRetryTime: OffsetDateTime (Optional)
+     *         result: String(success/failure) (Optional)
+     *     }
+     *     jobReleaseTaskExecutionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         state: String(running/completed) (Required)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): (recursive schema, see containerInfo above)
+     *         failureInfo (Optional): (recursive schema, see failureInfo above)
+     *         result: String(success/failure) (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job along with {@link
+     *     PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listPreparationAndReleaseTaskStatusNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listPreparationAndReleaseTaskStatusNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

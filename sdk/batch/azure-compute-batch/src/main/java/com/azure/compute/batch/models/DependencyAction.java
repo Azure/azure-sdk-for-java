@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DependencyAction. */
+/** DependencyAction enums. */
 public final class DependencyAction extends ExpandableStringEnum<DependencyAction> {
 
     /** Satisfy tasks waiting on this task; once all dependencies are satisfied, the task will be scheduled to run. */

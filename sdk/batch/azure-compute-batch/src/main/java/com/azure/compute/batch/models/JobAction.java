@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobAction. */
+/** JobAction enums. */
 public final class JobAction extends ExpandableStringEnum<JobAction> {
 
     /** Take no action. */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutoUserScope. */
+/** AutoUserScope enums. */
 public final class AutoUserScope extends ExpandableStringEnum<AutoUserScope> {
 
     /** Specifies that the service should create a new user for the Task. */

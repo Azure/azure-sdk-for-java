@@ -88,6 +88,29 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/nodes/{nodeId}/users")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> addUserSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -101,6 +124,28 @@ public final class BatchNodesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteUser(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("userName") String userName,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteUserSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -134,6 +179,30 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> updateUserSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("userName") String userName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/pools/{poolId}/nodes/{nodeId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -155,6 +224,27 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/pools/{poolId}/nodes/{nodeId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -168,6 +258,28 @@ public final class BatchNodesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> reboot(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> rebootSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -199,6 +311,28 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> reimageSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -212,6 +346,27 @@ public final class BatchNodesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> disableScheduling(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> disableSchedulingSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -241,6 +396,27 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> enableSchedulingSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -262,6 +438,27 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getRemoteLoginSettingsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/pools/{poolId}/nodes/{nodeId}/rdp")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -275,6 +472,27 @@ public final class BatchNodesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRemoteDesktop(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}/nodes/{nodeId}/rdp")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getRemoteDesktopSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -306,6 +524,29 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> uploadBatchServiceLogsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/pools/{poolId}/nodes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -319,6 +560,26 @@ public final class BatchNodesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}/nodes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -348,6 +609,28 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getExtensionsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("extensionName") String extensionName,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -361,6 +644,27 @@ public final class BatchNodesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listExtensions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}/nodes/{nodeId}/extensions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listExtensionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -400,7 +704,45 @@ public final class BatchNodesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listExtensionsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listExtensionsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
@@ -429,9 +771,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -501,9 +840,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -536,7 +872,18 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addUserWithResponse(
             String poolId, String nodeId, BinaryData parameters, RequestOptions requestOptions) {
-        return addUserWithResponseAsync(poolId, nodeId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.addUserSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                poolId,
+                nodeId,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -560,9 +907,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -618,9 +962,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -641,7 +982,16 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(
             String poolId, String nodeId, String userName, RequestOptions requestOptions) {
-        return deleteUserWithResponseAsync(poolId, nodeId, userName, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteUserSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                userName,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -667,9 +1017,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -741,9 +1088,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -775,7 +1119,19 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateUserWithResponse(
             String poolId, String nodeId, String userName, BinaryData parameters, RequestOptions requestOptions) {
-        return updateUserWithResponseAsync(poolId, nodeId, userName, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.updateUserSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                poolId,
+                nodeId,
+                userName,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -798,9 +1154,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1010,9 +1363,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1187,7 +1537,15 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        return getWithResponseAsync(poolId, nodeId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1211,9 +1569,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1286,9 +1641,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1315,7 +1667,27 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rebootWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        return rebootWithResponseAsync(poolId, nodeId, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(
+                requestLocal -> {
+                    if (requestLocal.getBody() != null
+                            && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+                    }
+                });
+        return service.rebootSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                poolId,
+                nodeId,
+                accept,
+                requestOptionsLocal,
+                Context.NONE);
     }
 
     /**
@@ -1340,9 +1712,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1416,9 +1785,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1445,7 +1811,27 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reimageWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        return reimageWithResponseAsync(poolId, nodeId, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(
+                requestLocal -> {
+                    if (requestLocal.getBody() != null
+                            && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+                    }
+                });
+        return service.reimageSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                poolId,
+                nodeId,
+                accept,
+                requestOptionsLocal,
+                Context.NONE);
     }
 
     /**
@@ -1469,9 +1855,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1541,9 +1924,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1570,7 +1950,23 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableSchedulingWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        return disableSchedulingWithResponseAsync(poolId, nodeId, requestOptions).block();
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(
+                requestLocal -> {
+                    if (requestLocal.getBody() != null
+                            && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                    }
+                });
+        return service.disableSchedulingSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                accept,
+                requestOptionsLocal,
+                Context.NONE);
     }
 
     /**
@@ -1594,9 +1990,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1650,9 +2043,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1671,7 +2061,15 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableSchedulingWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        return enableSchedulingWithResponseAsync(poolId, nodeId, requestOptions).block();
+        final String accept = "application/json";
+        return service.enableSchedulingSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1697,9 +2095,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1765,9 +2160,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1796,7 +2188,15 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRemoteLoginSettingsWithResponse(
             String poolId, String nodeId, RequestOptions requestOptions) {
-        return getRemoteLoginSettingsWithResponseAsync(poolId, nodeId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getRemoteLoginSettingsSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1822,9 +2222,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1886,9 +2283,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1914,7 +2308,15 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRemoteDesktopWithResponse(
             String poolId, String nodeId, RequestOptions requestOptions) {
-        return getRemoteDesktopWithResponseAsync(poolId, nodeId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getRemoteDesktopSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1940,9 +2342,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2025,9 +2424,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2070,7 +2466,18 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> uploadBatchServiceLogsWithResponse(
             String poolId, String nodeId, BinaryData parameters, RequestOptions requestOptions) {
-        return uploadBatchServiceLogsWithResponseAsync(poolId, nodeId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.uploadBatchServiceLogsSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                poolId,
+                nodeId,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2100,9 +2507,6 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2322,9 +2726,6 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2532,9 +2933,221 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     url: String (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     schedulingState: String(enabled/disabled) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     lastBootTime: OffsetDateTime (Optional)
+     *     allocationTime: OffsetDateTime (Optional)
+     *     ipAddress: String (Optional)
+     *     affinityId: String (Optional)
+     *     vmSize: String (Optional)
+     *     totalTasksRun: Integer (Optional)
+     *     runningTasksCount: Integer (Optional)
+     *     runningTaskSlotsCount: Integer (Optional)
+     *     totalTasksSucceeded: Integer (Optional)
+     *     recentTasks (Optional): [
+     *          (Optional){
+     *             taskUrl: String (Optional)
+     *             jobId: String (Optional)
+     *             taskId: String (Optional)
+     *             subtaskId: Integer (Optional)
+     *             taskState: String(active/preparing/running/completed) (Required)
+     *             executionInfo (Optional): {
+     *                 startTime: OffsetDateTime (Optional)
+     *                 endTime: OffsetDateTime (Optional)
+     *                 exitCode: Integer (Optional)
+     *                 containerInfo (Optional): {
+     *                     containerId: String (Optional)
+     *                     state: String (Optional)
+     *                     error: String (Optional)
+     *                 }
+     *                 failureInfo (Optional): {
+     *                     category: String(usererror/servererror) (Required)
+     *                     code: String (Optional)
+     *                     message: String (Optional)
+     *                     details (Optional): [
+     *                          (Optional){
+     *                             name: String (Optional)
+     *                             value: String (Optional)
+     *                         }
+     *                     ]
+     *                 }
+     *                 retryCount: int (Required)
+     *                 lastRetryTime: OffsetDateTime (Optional)
+     *                 requeueCount: int (Required)
+     *                 lastRequeueTime: OffsetDateTime (Optional)
+     *                 result: String(success/failure) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     startTask (Optional): {
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         maxTaskRetryCount: Integer (Optional)
+     *         waitForSuccess: Boolean (Optional)
+     *     }
+     *     startTaskInfo (Optional): {
+     *         state: String(running/completed) (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): (recursive schema, see containerInfo above)
+     *         failureInfo (Optional): (recursive schema, see failureInfo above)
+     *         retryCount: int (Required)
+     *         lastRetryTime: OffsetDateTime (Optional)
+     *         result: String(success/failure) (Optional)
+     *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     errors (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             errorDetails (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     isDedicated: Boolean (Optional)
+     *     endpointConfiguration (Optional): {
+     *         inboundEndpoints (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 protocol: String(tcp/udp) (Required)
+     *                 publicIPAddress: String (Required)
+     *                 publicFQDN: String (Required)
+     *                 frontendPort: int (Required)
+     *                 backendPort: int (Required)
+     *             }
+     *         ]
+     *     }
+     *     nodeAgentInfo (Optional): {
+     *         version: String (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *     }
+     *     virtualMachineInfo (Optional): {
+     *         imageReference (Optional): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSinglePage(String poolId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        poolId,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2705,7 +3318,14 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(String poolId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listAsync(poolId, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listSinglePage(poolId, requestOptions),
+                nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2728,9 +3348,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2750,10 +3367,10 @@ public final class BatchNodesImpl {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         protectedSettings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -2825,9 +3442,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2847,10 +3461,10 @@ public final class BatchNodesImpl {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         protectedSettings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -2887,7 +3501,16 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getExtensionsWithResponse(
             String poolId, String nodeId, String extensionName, RequestOptions requestOptions) {
-        return getExtensionsWithResponseAsync(poolId, nodeId, extensionName, requestOptions).block();
+        final String accept = "application/json";
+        return service.getExtensionsSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                extensionName,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2915,9 +3538,6 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2934,10 +3554,10 @@ public final class BatchNodesImpl {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         protectedSettings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -3021,9 +3641,6 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -3040,10 +3657,10 @@ public final class BatchNodesImpl {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         protectedSettings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -3113,9 +3730,6 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -3132,10 +3746,109 @@ public final class BatchNodesImpl {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         protectedSettings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
+     *         }
+     *         provisionAfterExtensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     instanceView (Optional): {
+     *         name: String (Optional)
+     *         statuses (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 displayStatus: String (Optional)
+     *                 level: String(Error/Info/Warning) (Optional)
+     *                 message: String (Optional)
+     *                 time: String (Optional)
+     *             }
+     *         ]
+     *         subStatuses (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to list extensions.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listExtensionsSinglePage(
+            String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listExtensionsSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        poolId,
+                        nodeId,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the Compute Nodes Extensions in the specified Pool.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     provisioningState: String (Optional)
+     *     vmExtension (Optional): {
+     *         name: String (Required)
+     *         publisher: String (Required)
+     *         type: String (Required)
+     *         typeHandlerVersion: String (Optional)
+     *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         settings (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         protectedSettings (Optional): {
+     *             String: String (Optional)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -3171,7 +3884,14 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listExtensions(String poolId, String nodeId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listExtensionsAsync(poolId, nodeId, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listExtensionsSinglePage(poolId, nodeId, requestOptions),
+                nextLink -> listExtensionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3187,9 +3907,6 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -3378,6 +4095,202 @@ public final class BatchNodesImpl {
     }
 
     /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     url: String (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     schedulingState: String(enabled/disabled) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     lastBootTime: OffsetDateTime (Optional)
+     *     allocationTime: OffsetDateTime (Optional)
+     *     ipAddress: String (Optional)
+     *     affinityId: String (Optional)
+     *     vmSize: String (Optional)
+     *     totalTasksRun: Integer (Optional)
+     *     runningTasksCount: Integer (Optional)
+     *     runningTaskSlotsCount: Integer (Optional)
+     *     totalTasksSucceeded: Integer (Optional)
+     *     recentTasks (Optional): [
+     *          (Optional){
+     *             taskUrl: String (Optional)
+     *             jobId: String (Optional)
+     *             taskId: String (Optional)
+     *             subtaskId: Integer (Optional)
+     *             taskState: String(active/preparing/running/completed) (Required)
+     *             executionInfo (Optional): {
+     *                 startTime: OffsetDateTime (Optional)
+     *                 endTime: OffsetDateTime (Optional)
+     *                 exitCode: Integer (Optional)
+     *                 containerInfo (Optional): {
+     *                     containerId: String (Optional)
+     *                     state: String (Optional)
+     *                     error: String (Optional)
+     *                 }
+     *                 failureInfo (Optional): {
+     *                     category: String(usererror/servererror) (Required)
+     *                     code: String (Optional)
+     *                     message: String (Optional)
+     *                     details (Optional): [
+     *                          (Optional){
+     *                             name: String (Optional)
+     *                             value: String (Optional)
+     *                         }
+     *                     ]
+     *                 }
+     *                 retryCount: int (Required)
+     *                 lastRetryTime: OffsetDateTime (Optional)
+     *                 requeueCount: int (Required)
+     *                 lastRequeueTime: OffsetDateTime (Optional)
+     *                 result: String(success/failure) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     startTask (Optional): {
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         maxTaskRetryCount: Integer (Optional)
+     *         waitForSuccess: Boolean (Optional)
+     *     }
+     *     startTaskInfo (Optional): {
+     *         state: String(running/completed) (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): (recursive schema, see containerInfo above)
+     *         failureInfo (Optional): (recursive schema, see failureInfo above)
+     *         retryCount: int (Required)
+     *         lastRetryTime: OffsetDateTime (Optional)
+     *         result: String(success/failure) (Optional)
+     *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     errors (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             errorDetails (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     isDedicated: Boolean (Optional)
+     *     endpointConfiguration (Optional): {
+     *         inboundEndpoints (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 protocol: String(tcp/udp) (Required)
+     *                 publicIPAddress: String (Required)
+     *                 publicFQDN: String (Required)
+     *                 frontendPort: int (Required)
+     *                 backendPort: int (Required)
+     *             }
+     *         ]
+     *     }
+     *     nodeAgentInfo (Optional): {
+     *         version: String (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *     }
+     *     virtualMachineInfo (Optional): {
+     *         imageReference (Optional): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
      * Lists the Compute Nodes Extensions in the specified Pool.
      *
      * <p>Get the next page of items.
@@ -3390,9 +4303,6 @@ public final class BatchNodesImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -3409,10 +4319,10 @@ public final class BatchNodesImpl {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         protectedSettings (Optional): {
-     *             String: Object (Optional)
+     *             String: String (Optional)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -3463,6 +4373,86 @@ public final class BatchNodesImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "odata.nextLink"),
                                         null));
+    }
+
+    /**
+     * Lists the Compute Nodes Extensions in the specified Pool.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     provisioningState: String (Optional)
+     *     vmExtension (Optional): {
+     *         name: String (Required)
+     *         publisher: String (Required)
+     *         type: String (Required)
+     *         typeHandlerVersion: String (Optional)
+     *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         settings (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         protectedSettings (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         provisionAfterExtensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     instanceView (Optional): {
+     *         name: String (Optional)
+     *         statuses (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 displayStatus: String (Optional)
+     *                 level: String(Error/Info/Warning) (Optional)
+     *                 message: String (Optional)
+     *                 time: String (Optional)
+     *             }
+     *         ]
+     *         subStatuses (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listExtensionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listExtensionsNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

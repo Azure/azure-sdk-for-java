@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SchedulingState. */
+/** SchedulingState enums. */
 public final class SchedulingState extends ExpandableStringEnum<SchedulingState> {
 
     /** Tasks can be scheduled on the Compute Node. */

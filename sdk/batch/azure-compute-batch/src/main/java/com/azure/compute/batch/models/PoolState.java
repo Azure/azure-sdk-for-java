@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PoolState. */
+/** PoolState enums. */
 public final class PoolState extends ExpandableStringEnum<PoolState> {
 
     /** The Pool is available to run Tasks subject to the availability of Compute Nodes. */

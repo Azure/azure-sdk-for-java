@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OnTaskFailure. */
+/** OnTaskFailure enums. */
 public final class OnTaskFailure extends ExpandableStringEnum<OnTaskFailure> {
 
     /** Do nothing. The Job remains active unless terminated or disabled by some other means. */

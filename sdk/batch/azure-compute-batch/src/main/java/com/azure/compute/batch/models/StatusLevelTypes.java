@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StatusLevelTypes. */
+/** Level code. */
 public final class StatusLevelTypes extends ExpandableStringEnum<StatusLevelTypes> {
 
-    /** Static value Error for StatusLevelTypes. */
+    /** Error. */
     @Generated public static final StatusLevelTypes ERROR = fromString("Error");
 
-    /** Static value Info for StatusLevelTypes. */
+    /** Info. */
     @Generated public static final StatusLevelTypes INFO = fromString("Info");
 
-    /** Static value Warning for StatusLevelTypes. */
+    /** Warning. */
     @Generated public static final StatusLevelTypes WARNING = fromString("Warning");
 
     /**

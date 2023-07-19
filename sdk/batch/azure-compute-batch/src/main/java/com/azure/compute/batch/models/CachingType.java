@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CachingType. */
+/** CachingType enums. */
 public final class CachingType extends ExpandableStringEnum<CachingType> {
 
     /** The caching mode for the disk is not enabled. */

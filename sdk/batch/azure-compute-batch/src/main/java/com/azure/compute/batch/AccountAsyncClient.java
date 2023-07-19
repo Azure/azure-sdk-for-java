@@ -67,9 +67,6 @@ public final class AccountAsyncClient {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -136,9 +133,6 @@ public final class AccountAsyncClient {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -179,84 +173,6 @@ public final class AccountAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listPoolNodeCounts(RequestOptions requestOptions) {
         return this.serviceClient.listPoolNodeCountsAsync(requestOptions);
-    }
-
-    /**
-     * Lists all Virtual Machine Images supported by the Azure Batch service.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ImageInformation> listSupportedImages(
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String filter) {
-        // Generated convenience method for listSupportedImages
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, ImageInformation>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    ImageInformation.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -303,18 +219,6 @@ public final class AccountAsyncClient {
      * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
      * up to date. If you need exact node counts, use a list query.
      *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -324,35 +228,9 @@ public final class AccountAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PoolNodeCounts> listPoolNodeCounts(
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String filter) {
+    public PagedFlux<PoolNodeCounts> listPoolNodeCounts() {
         // Generated convenience method for listPoolNodeCounts
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
         PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
         return PagedFlux.create(
                 () ->
@@ -379,9 +257,81 @@ public final class AccountAsyncClient {
     }
 
     /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ImageInformation> listSupportedImages(
+            Integer maxresults, OffsetDateTime ocpDate, Integer timeOut, String filter) {
+        // Generated convenience method for listSupportedImages
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, ImageInformation>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    ImageInformation.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
      * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
      * up to date. If you need exact node counts, use a list query.
      *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -391,9 +341,23 @@ public final class AccountAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PoolNodeCounts> listPoolNodeCounts() {
+    public PagedFlux<PoolNodeCounts> listPoolNodeCounts(
+            Integer maxresults, OffsetDateTime ocpDate, Integer timeOut, String filter) {
         // Generated convenience method for listPoolNodeCounts
         RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
         PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
         return PagedFlux.create(
                 () ->

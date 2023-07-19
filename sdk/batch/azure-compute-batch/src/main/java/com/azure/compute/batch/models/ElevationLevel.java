@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ElevationLevel. */
+/** ElevationLevel enums. */
 public final class ElevationLevel extends ExpandableStringEnum<ElevationLevel> {
 
     /** The user is a standard user without elevated access. */

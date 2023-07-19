@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TaskState. */
+/** TaskState enums. */
 public final class TaskState extends ExpandableStringEnum<TaskState> {
 
     /**

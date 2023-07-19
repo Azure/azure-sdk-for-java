@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NodePlacementPolicyType. */
+/** NodePlacementPolicyType enums. */
 public final class NodePlacementPolicyType extends ExpandableStringEnum<NodePlacementPolicyType> {
 
     /** All nodes in the pool will be allocated in the same region. */

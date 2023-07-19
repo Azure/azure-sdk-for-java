@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PoolIdentityType. */
+/** PoolIdentityType enums. */
 public final class PoolIdentityType extends ExpandableStringEnum<PoolIdentityType> {
 
     /** Batch pool has user assigned identities with it. */

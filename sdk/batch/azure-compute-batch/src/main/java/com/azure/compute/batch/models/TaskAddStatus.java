@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TaskAddStatus. */
+/** TaskAddStatus enums. */
 public final class TaskAddStatus extends ExpandableStringEnum<TaskAddStatus> {
 
     /** The Task was added successfully. */

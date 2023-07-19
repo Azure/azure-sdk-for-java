@@ -8,13 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OnAllTasksComplete. */
+/** The action the Batch service should take when all Tasks in the Job are in the completed state. */
 public final class OnAllTasksComplete extends ExpandableStringEnum<OnAllTasksComplete> {
 
     /** Do nothing. The Job remains active unless terminated or disabled by some other means. */
     @Generated public static final OnAllTasksComplete NO_ACTION = fromString("noaction");
 
-    /** Static value terminatejob for OnAllTasksComplete. */
+    /** Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'. */
     @Generated public static final OnAllTasksComplete TERMINATE_JOB = fromString("terminatejob");
 
     /**

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StartTaskState. */
+/** StartTaskState enums. */
 public final class StartTaskState extends ExpandableStringEnum<StartTaskState> {
 
     /** The StartTask is currently running. */

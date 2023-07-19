@@ -83,6 +83,25 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/poolusagemetrics")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listUsageMetricsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/lifetimepoolstats")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -96,6 +115,25 @@ public final class PoolsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAllLifetimeStatistics(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/lifetimepoolstats")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAllLifetimeStatisticsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
@@ -123,6 +161,27 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> createSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/pools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -136,6 +195,25 @@ public final class PoolsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> list(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
@@ -162,6 +240,26 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Delete("/pools/{poolId}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Head("/pools/{poolId}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(
@@ -172,6 +270,23 @@ public final class PoolsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> exists(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Head("/pools/{poolId}")
+        @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Boolean> existsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -192,6 +307,26 @@ public final class PoolsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -221,6 +356,28 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Patch("/pools/{poolId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> patchSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("content-type") String contentType,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -241,6 +398,26 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/disableautoscale")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> disableAutoScaleSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/pools/{poolId}/enableautoscale")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -254,6 +431,28 @@ public final class PoolsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> enableAutoScale(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("content-type") String contentType,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/pools/{poolId}/enableautoscale")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> enableAutoScaleSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -285,6 +484,28 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/evaluateautoscale")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> evaluateAutoScaleSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/pools/{poolId}/resize")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -298,6 +519,28 @@ public final class PoolsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resize(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("content-type") String contentType,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/pools/{poolId}/resize")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> resizeSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -327,6 +570,26 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/stopresize")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> stopResizeSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -349,6 +612,28 @@ public final class PoolsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/pools/{poolId}/updateproperties")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> updatePropertiesSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/pools/{poolId}/removenodes")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -362,6 +647,28 @@ public final class PoolsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeNodes(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @HeaderParam("content-type") String contentType,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/pools/{poolId}/removenodes")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> removeNodesSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -402,7 +709,45 @@ public final class PoolsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listUsageMetricsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
@@ -447,9 +792,6 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -533,9 +875,6 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -608,9 +947,85 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     poolId: String (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     *     vmSize: String (Required)
+     *     totalCoreHours: double (Required)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listUsageMetricsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listUsageMetricsSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by Pool across individual time intervals, for the specified Account.
+     *
+     * <p>If you do not specify a $filter clause including a poolId, the response includes all Pools that existed in the
+     * Account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including
+     * a startTime or endTime these filters default to the start and end times of the last aggregation interval
+     * currently available; that is, only the last aggregation interval is returned.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>starttime</td><td>OffsetDateTime</td><td>No</td><td>The earliest time from which to include metrics. This must be at least two and
+     * a half hours before the current time. If not specified this defaults to the
+     * start time of the last aggregation interval currently available.</td></tr>
+     *     <tr><td>endtime</td><td>OffsetDateTime</td><td>No</td><td>The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -637,7 +1052,14 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listUsageMetrics(RequestOptions requestOptions) {
-        return new PagedIterable<>(listUsageMetricsAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listUsageMetricsSinglePage(requestOptions),
+                nextLink -> listUsageMetricsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -663,9 +1085,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -747,9 +1166,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -797,7 +1213,13 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAllLifetimeStatisticsWithResponse(RequestOptions requestOptions) {
-        return getAllLifetimeStatisticsWithResponseAsync(requestOptions).block();
+        final String accept = "application/json";
+        return service.getAllLifetimeStatisticsSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -822,9 +1244,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -897,10 +1316,10 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -1113,9 +1532,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -1188,10 +1604,10 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -1368,7 +1784,16 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(BinaryData parameters, RequestOptions requestOptions) {
-        return createWithResponseAsync(parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.createSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1399,9 +1824,6 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -1479,10 +1901,10 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -1768,9 +2190,6 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -1848,10 +2267,10 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -2126,9 +2545,6 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2206,10 +2622,372 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
+     *                 }
+     *                 provisionAfterExtensions (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         osDisk (Optional): {
+     *             ephemeralOSDiskSettings (Optional): {
+     *                 placement: String(cachedisk) (Optional)
+     *             }
+     *         }
+     *     }
+     *     resizeTimeout: Duration (Optional)
+     *     resizeErrors (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             values (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     currentDedicatedNodes: Integer (Optional)
+     *     currentLowPriorityNodes: Integer (Optional)
+     *     targetDedicatedNodes: Integer (Optional)
+     *     targetLowPriorityNodes: Integer (Optional)
+     *     enableAutoScale: Boolean (Optional)
+     *     autoScaleFormula: String (Optional)
+     *     autoScaleEvaluationInterval: Duration (Optional)
+     *     autoScaleRun (Optional): {
+     *         timestamp: OffsetDateTime (Required)
+     *         results: String (Optional)
+     *         error (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             values (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     }
+     *     enableInterNodeCommunication: Boolean (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Optional)
+     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *         endpointConfiguration (Optional): {
+     *             inboundNATPools (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     protocol: String(tcp/udp) (Required)
+     *                     backendPort: int (Required)
+     *                     frontendPortRangeStart: int (Required)
+     *                     frontendPortRangeEnd: int (Required)
+     *                     networkSecurityGroupRules (Optional): [
+     *                          (Optional){
+     *                             priority: int (Required)
+     *                             access: String(allow/deny) (Required)
+     *                             sourceAddressPrefix: String (Required)
+     *                             sourcePortRanges (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }
+     *         publicIPAddressConfiguration (Optional): {
+     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipAddressIds (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     startTask (Optional): {
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): (recursive schema, see registry above)
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         maxTaskRetryCount: Integer (Optional)
+     *         waitForSuccess: Boolean (Optional)
+     *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     applicationPackageReferences (Optional): [
+     *          (Optional){
+     *             applicationId: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     ]
+     *     applicationLicenses (Optional): [
+     *         String (Optional)
+     *     ]
+     *     taskSlotsPerNode: Integer (Optional)
+     *     taskSchedulingPolicy (Optional): {
+     *         nodeFillType: String(spread/pack) (Required)
+     *     }
+     *     userAccounts (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             password: String (Required)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *             linuxUserConfiguration (Optional): {
+     *                 uid: Integer (Optional)
+     *                 gid: Integer (Optional)
+     *                 sshPrivateKey: String (Optional)
+     *             }
+     *             windowsUserConfiguration (Optional): {
+     *                 loginMode: String(batch/interactive) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     metadata (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             value: String (Required)
+     *         }
+     *     ]
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         usageStats (Optional): {
+     *             startTime: OffsetDateTime (Required)
+     *             lastUpdateTime: OffsetDateTime (Required)
+     *             dedicatedCoreTime: Duration (Required)
+     *         }
+     *         resourceStats (Optional): {
+     *             startTime: OffsetDateTime (Required)
+     *             lastUpdateTime: OffsetDateTime (Required)
+     *             avgCPUPercentage: double (Required)
+     *             avgMemoryGiB: double (Required)
+     *             peakMemoryGiB: double (Required)
+     *             avgDiskGiB: double (Required)
+     *             peakDiskGiB: double (Required)
+     *             diskReadIOps: int (Required)
+     *             diskWriteIOps: int (Required)
+     *             diskReadGiB: double (Required)
+     *             diskWriteGiB: double (Required)
+     *             networkReadGiB: double (Required)
+     *             networkWriteGiB: double (Required)
+     *         }
+     *     }
+     *     mountConfiguration (Optional): [
+     *          (Optional){
+     *             azureBlobFileSystemConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 containerName: String (Required)
+     *                 accountKey: String (Optional)
+     *                 sasKey: String (Optional)
+     *                 blobfuseOptions: String (Optional)
+     *                 relativeMountPath: String (Required)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *             nfsMountConfiguration (Optional): {
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *             cifsMountConfiguration (Optional): {
+     *                 username: String (Required)
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *                 password: String (Required)
+     *             }
+     *             azureFileShareConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 azureFileUrl: String (Required)
+     *                 accountKey: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     identity (Optional): {
+     *         type: String(UserAssigned/None) (Required)
+     *         userAssignedIdentities (Optional): [
+     *              (Optional){
+     *                 resourceId: String (Required)
+     *                 clientId: String (Optional)
+     *                 principalId: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Pools in an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists all of the Pools in the specified Account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
+     *     <tr><td>$expand</td><td>String</td><td>No</td><td>An OData $expand clause.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     allocationState: String(steady/resizing/stopping) (Optional)
+     *     allocationStateTransitionTime: OffsetDateTime (Optional)
+     *     vmSize: String (Optional)
+     *     cloudServiceConfiguration (Optional): {
+     *         osFamily: String (Required)
+     *         osVersion: String (Optional)
+     *     }
+     *     virtualMachineConfiguration (Optional): {
+     *         imageReference (Required): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *         }
+     *         nodeAgentSKUId: String (Required)
+     *         windowsConfiguration (Optional): {
+     *             enableAutomaticUpdates: Boolean (Optional)
+     *         }
+     *         dataDisks (Optional): [
+     *              (Optional){
+     *                 lun: int (Required)
+     *                 caching: String(none/readonly/readwrite) (Optional)
+     *                 diskSizeGB: int (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs) (Optional)
+     *             }
+     *         ]
+     *         licenseType: String (Optional)
+     *         containerConfiguration (Optional): {
+     *             type: String(dockerCompatible) (Required)
+     *             containerImageNames (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             containerRegistries (Optional): [
+     *                  (Optional){
+     *                     username: String (Optional)
+     *                     password: String (Optional)
+     *                     registryServer: String (Optional)
+     *                     identityReference (Optional): {
+     *                         resourceId: String (Optional)
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         diskEncryptionConfiguration (Optional): {
+     *             targets (Optional): [
+     *                 String(osdisk/temporarydisk) (Optional)
+     *             ]
+     *         }
+     *         nodePlacementConfiguration (Optional): {
+     *             policy: String(regional/zonal) (Optional)
+     *         }
+     *         extensions (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 publisher: String (Required)
+     *                 type: String (Required)
+     *                 typeHandlerVersion: String (Optional)
+     *                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Optional)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -2446,7 +3224,14 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(listAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listSinglePage(requestOptions),
+                nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2477,9 +3262,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2549,9 +3331,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2581,7 +3360,14 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String poolId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(poolId, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2603,9 +3389,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2671,9 +3454,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2708,7 +3488,14 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(String poolId, RequestOptions requestOptions) {
-        return existsWithResponseAsync(poolId, requestOptions).block();
+        final String accept = "application/json";
+        return service.existsSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2732,9 +3519,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -2827,10 +3611,10 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -3102,9 +3886,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3197,10 +3978,10 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -3438,7 +4219,14 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String poolId, RequestOptions requestOptions) {
-        return getWithResponseAsync(poolId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3464,9 +4252,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3609,9 +4394,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3715,7 +4497,17 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> patchWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return patchWithResponseAsync(poolId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.patchSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                contentType,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3737,9 +4529,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3788,9 +4577,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3808,7 +4594,14 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableAutoScaleWithResponse(String poolId, RequestOptions requestOptions) {
-        return disableAutoScaleWithResponseAsync(poolId, requestOptions).block();
+        final String accept = "application/json";
+        return service.disableAutoScaleSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3835,9 +4628,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3917,9 +4707,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -3960,7 +4747,17 @@ public final class PoolsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableAutoScaleWithResponse(
             String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return enableAutoScaleWithResponseAsync(poolId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.enableAutoScaleSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                contentType,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -3985,9 +4782,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4072,9 +4866,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4121,7 +4912,17 @@ public final class PoolsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> evaluateAutoScaleWithResponse(
             String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return evaluateAutoScaleWithResponseAsync(poolId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.evaluateAutoScaleSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                poolId,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -4149,9 +4950,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4234,9 +5032,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4278,7 +5073,17 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resizeWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return resizeWithResponseAsync(poolId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.resizeSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                contentType,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -4306,9 +5111,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4375,9 +5177,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4407,7 +5206,14 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopResizeWithResponse(String poolId, RequestOptions requestOptions) {
-        return stopResizeWithResponseAsync(poolId, requestOptions).block();
+        final String accept = "application/json";
+        return service.stopResizeSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -4433,9 +5239,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4566,9 +5369,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4661,7 +5461,17 @@ public final class PoolsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updatePropertiesWithResponse(
             String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return updatePropertiesWithResponseAsync(poolId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.updatePropertiesSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                contentType,
+                poolId,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -4686,9 +5496,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4769,9 +5576,6 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
@@ -4814,7 +5618,17 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return removeNodesWithResponseAsync(poolId, parameters, requestOptions).block();
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.removeNodesSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                contentType,
+                accept,
+                parameters,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -4830,9 +5644,6 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -4879,6 +5690,59 @@ public final class PoolsImpl {
     }
 
     /**
+     * Lists the usage metrics, aggregated by Pool across individual time intervals, for the specified Account.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     poolId: String (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     *     vmSize: String (Required)
+     *     totalCoreHours: double (Required)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listUsageMetricsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listUsageMetricsNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
      * Lists all of the Pools in the specified Account.
      *
      * <p>Get the next page of items.
@@ -4891,9 +5755,6 @@ public final class PoolsImpl {
      *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -4971,10 +5832,10 @@ public final class PoolsImpl {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: Object (Optional)
+     *                     String: String (Optional)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -5227,6 +6088,350 @@ public final class PoolsImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "odata.nextLink"),
                                         null));
+    }
+
+    /**
+     * Lists all of the Pools in the specified Account.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     allocationState: String(steady/resizing/stopping) (Optional)
+     *     allocationStateTransitionTime: OffsetDateTime (Optional)
+     *     vmSize: String (Optional)
+     *     cloudServiceConfiguration (Optional): {
+     *         osFamily: String (Required)
+     *         osVersion: String (Optional)
+     *     }
+     *     virtualMachineConfiguration (Optional): {
+     *         imageReference (Required): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *         }
+     *         nodeAgentSKUId: String (Required)
+     *         windowsConfiguration (Optional): {
+     *             enableAutomaticUpdates: Boolean (Optional)
+     *         }
+     *         dataDisks (Optional): [
+     *              (Optional){
+     *                 lun: int (Required)
+     *                 caching: String(none/readonly/readwrite) (Optional)
+     *                 diskSizeGB: int (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs) (Optional)
+     *             }
+     *         ]
+     *         licenseType: String (Optional)
+     *         containerConfiguration (Optional): {
+     *             type: String(dockerCompatible) (Required)
+     *             containerImageNames (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             containerRegistries (Optional): [
+     *                  (Optional){
+     *                     username: String (Optional)
+     *                     password: String (Optional)
+     *                     registryServer: String (Optional)
+     *                     identityReference (Optional): {
+     *                         resourceId: String (Optional)
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         diskEncryptionConfiguration (Optional): {
+     *             targets (Optional): [
+     *                 String(osdisk/temporarydisk) (Optional)
+     *             ]
+     *         }
+     *         nodePlacementConfiguration (Optional): {
+     *             policy: String(regional/zonal) (Optional)
+     *         }
+     *         extensions (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 publisher: String (Required)
+     *                 type: String (Required)
+     *                 typeHandlerVersion: String (Optional)
+     *                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Optional)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Optional)
+     *                 }
+     *                 provisionAfterExtensions (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         osDisk (Optional): {
+     *             ephemeralOSDiskSettings (Optional): {
+     *                 placement: String(cachedisk) (Optional)
+     *             }
+     *         }
+     *     }
+     *     resizeTimeout: Duration (Optional)
+     *     resizeErrors (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             values (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     currentDedicatedNodes: Integer (Optional)
+     *     currentLowPriorityNodes: Integer (Optional)
+     *     targetDedicatedNodes: Integer (Optional)
+     *     targetLowPriorityNodes: Integer (Optional)
+     *     enableAutoScale: Boolean (Optional)
+     *     autoScaleFormula: String (Optional)
+     *     autoScaleEvaluationInterval: Duration (Optional)
+     *     autoScaleRun (Optional): {
+     *         timestamp: OffsetDateTime (Required)
+     *         results: String (Optional)
+     *         error (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             values (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     }
+     *     enableInterNodeCommunication: Boolean (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Optional)
+     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *         endpointConfiguration (Optional): {
+     *             inboundNATPools (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     protocol: String(tcp/udp) (Required)
+     *                     backendPort: int (Required)
+     *                     frontendPortRangeStart: int (Required)
+     *                     frontendPortRangeEnd: int (Required)
+     *                     networkSecurityGroupRules (Optional): [
+     *                          (Optional){
+     *                             priority: int (Required)
+     *                             access: String(allow/deny) (Required)
+     *                             sourceAddressPrefix: String (Required)
+     *                             sourcePortRanges (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }
+     *         publicIPAddressConfiguration (Optional): {
+     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipAddressIds (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     startTask (Optional): {
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): (recursive schema, see registry above)
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         maxTaskRetryCount: Integer (Optional)
+     *         waitForSuccess: Boolean (Optional)
+     *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     applicationPackageReferences (Optional): [
+     *          (Optional){
+     *             applicationId: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     ]
+     *     applicationLicenses (Optional): [
+     *         String (Optional)
+     *     ]
+     *     taskSlotsPerNode: Integer (Optional)
+     *     taskSchedulingPolicy (Optional): {
+     *         nodeFillType: String(spread/pack) (Required)
+     *     }
+     *     userAccounts (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             password: String (Required)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *             linuxUserConfiguration (Optional): {
+     *                 uid: Integer (Optional)
+     *                 gid: Integer (Optional)
+     *                 sshPrivateKey: String (Optional)
+     *             }
+     *             windowsUserConfiguration (Optional): {
+     *                 loginMode: String(batch/interactive) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     metadata (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             value: String (Required)
+     *         }
+     *     ]
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         usageStats (Optional): {
+     *             startTime: OffsetDateTime (Required)
+     *             lastUpdateTime: OffsetDateTime (Required)
+     *             dedicatedCoreTime: Duration (Required)
+     *         }
+     *         resourceStats (Optional): {
+     *             startTime: OffsetDateTime (Required)
+     *             lastUpdateTime: OffsetDateTime (Required)
+     *             avgCPUPercentage: double (Required)
+     *             avgMemoryGiB: double (Required)
+     *             peakMemoryGiB: double (Required)
+     *             avgDiskGiB: double (Required)
+     *             peakDiskGiB: double (Required)
+     *             diskReadIOps: int (Required)
+     *             diskWriteIOps: int (Required)
+     *             diskReadGiB: double (Required)
+     *             diskWriteGiB: double (Required)
+     *             networkReadGiB: double (Required)
+     *             networkWriteGiB: double (Required)
+     *         }
+     *     }
+     *     mountConfiguration (Optional): [
+     *          (Optional){
+     *             azureBlobFileSystemConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 containerName: String (Required)
+     *                 accountKey: String (Optional)
+     *                 sasKey: String (Optional)
+     *                 blobfuseOptions: String (Optional)
+     *                 relativeMountPath: String (Required)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *             nfsMountConfiguration (Optional): {
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *             cifsMountConfiguration (Optional): {
+     *                 username: String (Required)
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *                 password: String (Required)
+     *             }
+     *             azureFileShareConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 azureFileUrl: String (Required)
+     *                 accountKey: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     identity (Optional): {
+     *         type: String(UserAssigned/None) (Required)
+     *         userAssignedIdentities (Optional): [
+     *              (Optional){
+     *                 resourceId: String (Required)
+     *                 clientId: String (Optional)
+     *                 principalId: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Pools in an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

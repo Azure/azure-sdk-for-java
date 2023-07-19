@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BatchNodeFillType. */
+/** BatchNodeFillType enums. */
 public final class BatchNodeFillType extends ExpandableStringEnum<BatchNodeFillType> {
 
     /** Tasks should be assigned evenly across all Compute Nodes in the Pool. */

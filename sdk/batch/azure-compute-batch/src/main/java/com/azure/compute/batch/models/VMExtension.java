@@ -56,7 +56,7 @@ public final class VMExtension {
      */
     @Generated
     @JsonProperty(value = "settings")
-    private Map<String, Object> settings;
+    private Map<String, String> settings;
 
     /*
      * The extension can contain either protectedSettings or
@@ -64,7 +64,7 @@ public final class VMExtension {
      */
     @Generated
     @JsonProperty(value = "protectedSettings")
-    private Map<String, Object> protectedSettings;
+    private Map<String, String> protectedSettings;
 
     /*
      * Collection of extension names after which this extension needs to be
@@ -176,7 +176,7 @@ public final class VMExtension {
      * @return the settings value.
      */
     @Generated
-    public Map<String, Object> getSettings() {
+    public Map<String, String> getSettings() {
         return this.settings;
     }
 
@@ -187,7 +187,7 @@ public final class VMExtension {
      * @return the protectedSettings value.
      */
     @Generated
-    public Map<String, Object> getProtectedSettings() {
+    public Map<String, String> getProtectedSettings() {
         return this.protectedSettings;
     }
 
@@ -222,7 +222,7 @@ public final class VMExtension {
      * @return the VMExtension object itself.
      */
     @Generated
-    public VMExtension setSettings(Map<String, Object> settings) {
+    public VMExtension setSettings(Map<String, String> settings) {
         this.settings = settings;
         return this;
     }
@@ -235,7 +235,7 @@ public final class VMExtension {
      * @return the VMExtension object itself.
      */
     @Generated
-    public VMExtension setProtectedSettings(Map<String, Object> protectedSettings) {
+    public VMExtension setProtectedSettings(Map<String, String> protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
     }

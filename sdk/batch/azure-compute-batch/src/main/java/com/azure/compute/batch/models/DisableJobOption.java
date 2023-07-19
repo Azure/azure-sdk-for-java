@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DisableJobOption. */
+/** DisableJobOption enums. */
 public final class DisableJobOption extends ExpandableStringEnum<DisableJobOption> {
 
     /** Terminate running Tasks and requeue them. The Tasks will run again when the Job is enabled. */

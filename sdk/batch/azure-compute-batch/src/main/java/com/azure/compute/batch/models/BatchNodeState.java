@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BatchNodeState. */
+/** BatchNodeState enums. */
 public final class BatchNodeState extends ExpandableStringEnum<BatchNodeState> {
 
     /** The Compute Node is not currently running a Task. */

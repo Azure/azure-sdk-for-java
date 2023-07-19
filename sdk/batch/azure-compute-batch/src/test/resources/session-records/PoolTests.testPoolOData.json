@@ -7,18 +7,18 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Jul 2023 00:26:42 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (14; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e6b23389-b925-4d3a-992e-4bf6ba9b653a"
+        "Date": "Wed, 19 Jul 2023 17:03:20 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.19; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2df5dbc5-6312-4930-9db8-e96948a773d7"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 12 Jul 2023 00:26:42 GMT",
-        "ETag": "0x8DB7E42DD0EC077",
-        "Last-Modified": "Thu, 06 Jul 2023 17:03:04 GMT",
-        "request-id": "899fac9a-9379-44f2-9601-ccae724235a2",
+        "Date": "Wed, 19 Jul 2023 17:03:21 GMT",
+        "ETag": "0x8DB8818F745B375",
+        "Last-Modified": "Wed, 19 Jul 2023 05:28:21 GMT",
+        "request-id": "6b62feed-14c4-4f50-8f2f-cf949e8b6ed4",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -33,19 +33,19 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Jul 2023 00:26:44 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (14; Windows 10; 10.0)",
-        "x-ms-client-request-id": "20aa0645-0da9-43fb-8a3a-a9c7d450b641"
+        "Date": "Wed, 19 Jul 2023 17:03:21 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.19; Windows 11; 10.0)",
+        "x-ms-client-request-id": "5a0587af-6acd-4b6b-961c-e3b3c6ca922a"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 12 Jul 2023 00:26:42 GMT",
-        "ETag": "0x8DB7E42DD0EC077",
-        "Last-Modified": "Thu, 06 Jul 2023 17:03:04 GMT",
-        "request-id": "cc20a35e-038d-4fd6-9338-d6b98eab21ef",
+        "Date": "Wed, 19 Jul 2023 17:03:21 GMT",
+        "ETag": "0x8DB8818F745B375",
+        "Last-Modified": "Wed, 19 Jul 2023 05:28:21 GMT",
+        "request-id": "61cb5792-ff17-4dcb-be78-f898af034efe",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -55,13 +55,13 @@
         "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testpool",
         "url": "REDACTED",
-        "eTag": "0x8DB7E42DD0EC077",
-        "lastModified": "2023-07-06T17:03:04.4729975Z",
-        "creationTime": "2023-07-06T17:03:04.4729975Z",
+        "eTag": "0x8DB8818F745B375",
+        "lastModified": "2023-07-19T05:28:21.2190069Z",
+        "creationTime": "2023-07-19T05:28:21.2190069Z",
         "state": "active",
-        "stateTransitionTime": "2023-07-06T17:03:04.4729975Z",
+        "stateTransitionTime": "2023-07-19T05:28:21.2190069Z",
         "allocationState": "steady",
-        "allocationStateTransitionTime": "2023-07-06T17:03:56.7846912Z",
+        "allocationStateTransitionTime": "2023-07-19T05:29:18.6896944Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 1,
@@ -107,17 +107,17 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Jul 2023 00:26:45 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (14; Windows 10; 10.0)",
-        "x-ms-client-request-id": "111dbb68-e008-498b-9af1-43483212d40e"
+        "Date": "Wed, 19 Jul 2023 17:03:23 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.19; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b1a873c6-3298-4277-9685-ef23a37ee225"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 12 Jul 2023 00:26:44 GMT",
-        "request-id": "d2c33a38-9aaa-4db2-8648-de47fcdedf5a",
+        "Date": "Wed, 19 Jul 2023 17:03:23 GMT",
+        "request-id": "0b53b54f-e22a-4913-ad90-9e90fcd79392",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -143,11 +143,15 @@
             "state": "active"
           },
           {
-            "id": "BatchUser-testIaaSpool",
+            "id": "8CF2BC76-D3D0-4749-9C8E-2A261492794F",
             "state": "active"
           },
           {
             "id": "BatchUser-testpool",
+            "state": "active"
+          },
+          {
+            "id": "DD0DE6A1-595D-4733-84E5-8FA23DC61825",
             "state": "active"
           },
           {
@@ -156,6 +160,10 @@
           },
           {
             "id": "PersistOutputsSamplePool",
+            "state": "active"
+          },
+          {
+            "id": "testpooldeployment",
             "state": "active"
           },
           {
