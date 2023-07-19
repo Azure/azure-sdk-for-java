@@ -32,6 +32,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
+import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -77,6 +78,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class DataLakeTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
+    protected static final TestDataFactory DATA = TestDataFactory.getInstance();
 
     // The values below are used to create data-driven tests for access conditions.
     protected static final OffsetDateTime OLD_DATE = OffsetDateTime.now().minusDays(1);
@@ -716,5 +718,22 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected String getPrimaryConnectionString() {
         return ENVIRONMENT.getPrimaryAccount().getConnectionString();
+    }
+
+    protected static boolean olderThan(DataLakeServiceVersion targetVersion) {
+        String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
+        DataLakeServiceVersion version = (targetServiceVersionFromEnvironment != null)
+            ? Enum.valueOf(DataLakeServiceVersion.class, targetServiceVersionFromEnvironment)
+            : DataLakeServiceVersion.getLatest();
+
+        return version.ordinal() < targetVersion.ordinal();
+    }
+
+    protected static StorageSharedKeyCredential getDataLakeCredential() {
+        return ENVIRONMENT.getDataLakeAccount().getCredential();
+    }
+
+    protected String getFileSystemUrl() {
+        return dataLakeFileSystemClient.getFileSystemUrl();
     }
 }
