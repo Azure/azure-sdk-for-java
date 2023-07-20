@@ -14,6 +14,7 @@ import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
+import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.util.UUID
@@ -371,7 +372,7 @@ class PointWriter(container: CosmosAsyncContainer,
       assert(cosmosPatchHelpOpt.isDefined)
 
       val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
-      val patchBulkUpdateOperations = cosmosPatchHelpOpt.get.createCosmosPatchBulkUpdateOperations(partitionKeyDefinition, objectNode)
+      val patchBulkUpdateOperations = cosmosPatchHelpOpt.get.createCosmosPatchBulkUpdateOperations(objectNode)
 
       container
           .readItem(itemId, partitionKey, classOf[ObjectNode])

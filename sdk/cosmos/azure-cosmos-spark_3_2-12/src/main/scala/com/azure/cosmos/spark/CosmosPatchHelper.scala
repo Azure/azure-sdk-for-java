@@ -9,10 +9,12 @@ import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, 
 import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.node._
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 
 import java.io.IOException
+import scala.collection.mutable.ListBuffer
 
 class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                         cosmosPatchConfigs: CosmosPatchConfigs) {
@@ -164,16 +166,15 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   }
  }
 
-  def createCosmosPatchBulkUpdateOperations(partitionKeyDefinition: PartitionKeyDefinition,
-                                            objectNode: ObjectNode): CosmosPatchBulkUpdateOperations = {
+  def createCosmosPatchBulkUpdateOperations(objectNode: ObjectNode): List[PatchOperationCore[JsonNode]] = {
 
-      val cosmosPatchBulkUpdateOperations = new CosmosPatchBulkUpdateOperations()
+      val cosmosPatchBulkUpdateOperations = new ListBuffer[PatchOperationCore[JsonNode]]()
       val fieldIterator = objectNode.fields()
       while (fieldIterator.hasNext) {
           val fieldEntry = fieldIterator.next()
 
           // check whether there is customized mapping path
-          cosmosPatchConfigs.columnConfigsMap.get(s"/{$fieldEntry.getKey}") match {
+          cosmosPatchConfigs.columnConfigsMap.get(fieldEntry.getKey) match {
               case Some(userDefinedColumnConfig) =>
                   if (!systemProperties.contains(userDefinedColumnConfig.mappingPath.substring(1))) {
                       val node = fieldEntry.getValue
@@ -185,24 +186,26 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
 
                       userDefinedColumnConfig.operationType match {
                           case CosmosPatchOperationTypes.Set =>
-                              cosmosPatchBulkUpdateOperations.set(userDefinedColumnConfig.mappingPath, effectiveNode)
+                              cosmosPatchBulkUpdateOperations +=
+                                  new PatchOperationCore[JsonNode](PatchOperationType.SET, userDefinedColumnConfig.mappingPath, effectiveNode)
                           case _ => throw new RuntimeException(s"Patch operation type is not supported for itemPatchBulkUpdate write strategy")
                       }
                   }
 
               case None =>
                   if (!systemProperties.contains(fieldEntry.getKey)) {
-                      cosmosPatchBulkUpdateOperations.set(fieldEntry.getKey, fieldEntry.getValue)
+                      cosmosPatchBulkUpdateOperations +=
+                          new PatchOperationCore[JsonNode](PatchOperationType.SET, s"/${fieldEntry.getKey}", fieldEntry.getValue)
                   }
           }
       }
 
-      cosmosPatchBulkUpdateOperations
+      cosmosPatchBulkUpdateOperations.toList
   }
 
   def patchBulkUpdateItem(
                              itemToBeUpdatedOpt: Option[ObjectNode],
-                             patchBulkUpdateOperations: CosmosPatchBulkUpdateOperations): ObjectNode = {
+                             patchBulkUpdateOperations: List[PatchOperationCore[JsonNode]]): ObjectNode = {
 
       // Do not do the modification on original objectNode, as it maybe used by other patchBulkUpdate operations
       val rootNode = itemToBeUpdatedOpt match {
@@ -210,35 +213,65 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
           case _ => Utils.getSimpleObjectMapper.createObjectNode()
       }
 
-      patchBulkUpdateOperations.getPatchOperations().foreach(patchOperation => {
-          val patchOperationCore = patchOperation.asInstanceOf[PatchOperationCore[JsonNode]]
-          patchBulkUpdateField(rootNode, patchOperationCore.getOperationType, patchOperationCore.getPath, patchOperationCore.getResource)
+      patchBulkUpdateOperations.foreach(patchOperation => {
+          patchBulkUpdateFields(rootNode, patchOperation.getOperationType, patchOperation.getPath, patchOperation.getResource)
       })
 
       rootNode
   }
 
-  private[this] def patchBulkUpdateField(rootNode: ObjectNode, patchOperationType: PatchOperationType, path: String, pathValue: JsonNode): ObjectNode = {
+  private[this] def patchBulkUpdateFields(
+                                            rootNode: ObjectNode,
+                                            patchOperationType: PatchOperationType,
+                                            path: String,
+                                            pathValue: JsonNode): ObjectNode = {
       patchOperationType match {
           case PatchOperationType.SET =>
               // CosmosDb mapping path: /parent/child1/item
               // Loop through each path component. If the parent node does not exists, create one {}
+              var parentNode: JsonNode = rootNode
               val pathArray = path.stripPrefix("/").split("/")
-              var parentNode = rootNode
-              for (pathIndex <- 0 until pathArray.size - 1) {
-                  if (parentNode.get(pathArray(pathIndex)) isMissingNode) {
-                      parentNode.set(pathArray(pathIndex), Utils.getSimpleObjectMapper().createObjectNode())
-                  }
 
-                  parentNode.get(pathArray(pathIndex)) match {
-                      case updatedNode: ObjectNode => parentNode = updatedNode
-                      case _ => new RuntimeException(s"Unsupported parent node type for ItemPatchBulkUpdate")
-                  }
+              // get or create parent node
+              for (pathIndex <- 0 until pathArray.size - 1) {
+                  parentNode = getOrCreateNextParentNode(parentNode, s"/${pathArray(pathIndex)}")
               }
 
-              // after looping through the structure, now the field value
-              parentNode.set(pathArray(pathArray.size - 1), pathValue)
+              // after looping through the structure, now set the field value
+              val fieldPath = pathArray(pathArray.size - 1)
+              parentNode match {
+                  case parentIsObjectNode: ObjectNode => parentIsObjectNode.set(fieldPath, pathValue)
+                  case parentIsArrayNode: ArrayNode =>
+                      val arrayIndex = Integer.parseInt(fieldPath)
+                      parentIsArrayNode.set(arrayIndex, pathValue)
+                  case _ => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass} in patchBulkUpdateFields") // we should never reach here
+              }
+
+              rootNode
           case _ => throw new RuntimeException(s"PatchOperationType $patchOperationType is not supported for ItemPatchBulkUpdate") // we should have never reach here
+      }
+  }
+
+  private[this] def getOrCreateNextParentNode(parentNode: JsonNode, childPath: String): JsonNode = {
+      val jsonPath = JsonPointer.compile(childPath)
+      val nextParentNode =
+          parentNode.at(jsonPath) match {
+              case _: MissingNode =>
+                  parentNode match {
+                      case objectNode: ObjectNode => objectNode.set(jsonPath.getMatchingProperty, Utils.getSimpleObjectMapper().createObjectNode())
+                      case arrayNode: ArrayNode =>
+                          val arrayIndex = Integer.parseInt(jsonPath.getMatchingProperty)
+                          arrayNode.set(arrayIndex, Utils.getSimpleObjectMapper().createObjectNode())
+                      case _: JsonNode => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass}")
+                  }
+
+                  parentNode.at(jsonPath)
+              case existingNode: JsonNode => existingNode
+          }
+
+      nextParentNode match {
+          case _: ObjectNode | _: ArrayNode => nextParentNode
+          case _ => throw new RuntimeException(s"Unsupported next parent node type ${nextParentNode.getClass}")
       }
   }
 }
