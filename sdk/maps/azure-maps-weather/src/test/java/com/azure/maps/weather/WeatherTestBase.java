@@ -85,8 +85,6 @@ public class WeatherTestBase extends TestProxyTestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        httpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient;
-
         if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
             interceptorManager.addSanitizers(
                 Collections.singletonList(
