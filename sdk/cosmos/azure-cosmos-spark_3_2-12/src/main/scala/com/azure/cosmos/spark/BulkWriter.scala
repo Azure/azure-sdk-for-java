@@ -7,7 +7,7 @@ import com.azure.cosmos._
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.ItemBulkOperation
 import com.azure.cosmos.models._
-import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
+import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Scheduler
@@ -166,7 +166,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       readManyInputEmitterOpt
           .get
           .asFlux()
-          .publishOn(bulkWriterBoundedElastic)
+          .publishOn(readManyBoundedElastic)
           .bufferTimeout(bulkBatchSize, batchInterval)
           .flatMap(readManyOperations => {
               val cosmosIdentitySet = readManyOperations.map(option => option.cosmosItemIdentity).toSet
@@ -226,16 +226,18 @@ class BulkWriter(container: CosmosAsyncContainer,
                               .getItemBulkOperationAccessor
                               .addSourceItem(bulkItemOperation.asInstanceOf[ItemBulkOperation[ObjectNode, OperationContext]], readManyOperation.objectNode)
 
-                          bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
+                          this.emitBulkInput(bulkItemOperation)
                       }
                   })
-                  .doOnError(throwable => {
+                  .onErrorResume(throwable => {
                       for (readManyOperation <- readManyOperations) {
                           handleReadManyExceptions(throwable, readManyOperation)
                       }
+
+                      Mono.empty()
                   })
-                  .`then`()
           })
+          .subscribeOn(readManyBoundedElastic)
           .subscribe()
   }
 
@@ -334,7 +336,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     bulkOperationResponseFlux.subscribe(
       resp => {
-          
+
         var isGettingRetried = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
@@ -488,10 +490,13 @@ class BulkWriter(container: CosmosAsyncContainer,
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
 
-    activeOperations.add(bulkItemOperation)
+      this.emitBulkInput(bulkItemOperation)
+  }
 
-    // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
-    bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
+  private[this] def emitBulkInput(bulkItemOperation: CosmosItemOperation): Unit = {
+      activeOperations.add(bulkItemOperation)
+      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+      bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
   }
 
   private[this] def getPatchItemOperation(itemId: String,
@@ -871,6 +876,7 @@ private object BulkWriter {
   val minDelayOn408RequestTimeoutInMs = 1000
   val maxItemOperationsToShowInErrorMessage = 10
   private val BULK_WRITER_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-bounded-elastic"
+  private val READ_MANY_BOUNDED_ELASTIC_THREAD_NAME = "read-many-bounded-elastic"
   private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
 
   // we used to use 15 minutes here - extending it because of several incidents where
@@ -917,6 +923,13 @@ private object BulkWriter {
     Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
     BULK_WRITER_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
+
+  // Custom bounded elastic scheduler to switch off IO thread to process response.
+  val readManyBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+      2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+      Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+      READ_MANY_BOUNDED_ELASTIC_THREAD_NAME,
+      TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   def getThreadInfo: String = {
     val t = Thread.currentThread()
