@@ -3,6 +3,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -10,11 +11,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -23,6 +24,7 @@ import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -39,17 +41,18 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -517,26 +520,6 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         assertEquals(404, dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null).getStatusCode());
         assertFalse(dataLakeFileSystemClient.exists());
-    }
-
-    // We can't guarantee that the requests will always happen before the container is garbage collected
-    @PlaybackOnly
-    def "Delete if exists file system that was already deleted"() {
-
-        def dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-        dataLakeFileSystemClient.create()
-        dataLakeFileSystemClient.getBlobContainerClient().exists()
-
-
-        def initialResponse = dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null)
-        def secondResponse = dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null)
-
-
-        !dataLakeFileSystemClient.getBlobContainerClient().exists()
-        initialResponse.getStatusCode() == 202
-        // Confirming the behavior of the api when the container is in the deleting state.
-        // After delete has been called once but before it has been garbage collected
-        secondResponse.getStatusCode() == 202
     }
 
     @ParameterizedTest
@@ -1027,1526 +1010,1293 @@ public class FileSystemApiTests extends DataLakeTestBase {
         }
     }
 
-    def "Create if not exists file options with permissions and umask"() {
+    @Test
+    public void createIfNotExistsFileOptionsWithPermissionsAndUmask() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
+         DataLakeFileClient result = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+             .getValue();
 
-        def permissions = "0777"
-        def umask = "0057"
-        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-        def result = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
+        PathAccessControl acl = result.getAccessControlWithResponse(true, null, null, null).getValue();
 
-
-        def acl = result.getAccessControlWithResponse(true, null, null, null).getValue()
-
-
-        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+        assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(), acl.getPermissions().toString());
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create if not exists file options with lease id"() {
+    @Test
+    public void createIfNotExistsFileOptionsWithLeaseId() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setProposedLeaseId(CoreUtils.randomUuid().toString())
+            .setLeaseDuration(15);
 
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
-        def response = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
-
-
-        response.getStatusCode() == 201
+        assertEquals(201, dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getStatusCode());
     }
 
-    def "Create if not exists file options with lease id error"() {
-
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
-        dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createIfNotExistsFileOptionsWithLeaseIdError() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setProposedLeaseId(CoreUtils.randomUuid().toString());
 
         // lease duration must also be set, or else exception is thrown
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () ->
+            dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null));
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create if not exists file options with lease duration"() {
+    @Test
+    public void createIfNotExistsFileOptionsWithLeaseDuration() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setLeaseDuration(15)
+            .setProposedLeaseId(CoreUtils.randomUuid().toString());
+        String fileName = generatePathName();
 
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        def fileName = generatePathName()
-        def response = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(fileName, options, null, null)
+        assertEquals(201, dataLakeFileSystemClient.createFileIfNotExistsWithResponse(fileName, options, null, null)
+            .getStatusCode());
 
-
-        response.getStatusCode() == 201
-        def fileProps = dataLakeFileSystemClient.getFileClient(fileName).getProperties()
+        PathProperties fileProps = dataLakeFileSystemClient.getFileClient(fileName).getProperties();
         // assert whether lease has been acquired
-        fileProps.getLeaseStatus() == LeaseStatusType.LOCKED
-        fileProps.getLeaseState() == LeaseStateType.LEASED
-        fileProps.getLeaseDuration() == LeaseDurationType.FIXED
+        assertEquals(LeaseStatusType.LOCKED, fileProps.getLeaseStatus());
+        assertEquals(LeaseStateType.LEASED, fileProps.getLeaseState());
+        assertEquals(LeaseDurationType.FIXED, fileProps.getLeaseDuration());
 
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create if not exists file options with time expires on absolute and never expire"() {
+    @ParameterizedTest
+    @MethodSource("createIfNotExistsFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpireSupplier")
+    public void createIfNotExistsFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpire(DataLakePathScheduleDeletionOptions deletionOptions) {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions);
 
-        def options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions)
-        def response = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+        assertEquals(201, dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getStatusCode());
+    }
 
-
-        response.getStatusCode() == 201
-
-        where:
-        deletionOptions                                                             || _
-        new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))   || _
-        null                                                                        || _
-
+    private static Stream<DataLakePathScheduleDeletionOptions> createIfNotExistsFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpireSupplier() {
+        return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create if not exists file options with time to expire relative to now"() {
+    @Test
+    public void createIfNotExistsFileOptionsWithTimeToExpireRelativeToNow() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(Duration.ofDays(6)));
+        String fileName = generatePathName();
 
-        def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
-        def options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions)
-        def fileName = generatePathName()
-        def response = dataLakeFileSystemClient.createFileWithResponse(fileName, options, null, null)
+        assertEquals(201, dataLakeFileSystemClient.createFileWithResponse(fileName, options, null, null).getStatusCode());
 
-
-        response.getStatusCode() == 201
-        def fileProps = dataLakeFileSystemClient.getFileClient(fileName).getProperties()
-        def expireTime = fileProps.getExpiresOn()
-        def expectedExpire = fileProps.getCreationTime().plusDays(6)
-        compareDatesWithPrecision(expireTime, expectedExpire)
+        PathProperties fileProps = dataLakeFileSystemClient.getFileClient(fileName).getProperties();
+        compareDatesWithPrecision(fileProps.getExpiresOn(), fileProps.getCreationTime().plusDays(6));
     }
 
-    def "Delete file min"() {
+    @Test
+    public void deleteFileMin() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createFile(pathName);
 
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createFile(pathName)
-        dataLakeFileSystemClient.deleteFileWithResponse(pathName, null, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.deleteFileWithResponse(pathName, null, null, null).getStatusCode());
     }
 
-    def "Delete file file does not exist anymore"() {
+    @Test
+    public void deleteFileFileDoesNotExistAnymore() {
+        String pathName = generatePathName();
+        DataLakeFileClient client = dataLakeFileSystemClient.createFile(pathName);
+        dataLakeFileSystemClient.deleteFileWithResponse(pathName, null, null, null);
 
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createFile(pathName)
-        dataLakeFileSystemClient.deleteFileWithResponse(pathName, null, null, null)
-        client.getPropertiesWithResponse(null, null, null)
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> client.getPropertiesWithResponse(null, null, null));
 
-
-        def e = thrown(DataLakeStorageException)
-        e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
-//        e.getServiceMessage().contains("The specified blob does not exist.")
+        assertEquals(404, e.getStatusCode());
+        assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
-    def "Delete file AC"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createFile(pathName)
-        match = setupPathMatchCondition(client, match)
-        leaseID = setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
+    public void deleteFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileClient client = dataLakeFileSystemClient.createFile(pathName);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
+            .setIfUnmodifiedSince(unmodified);
 
-
-        dataLakeFileSystemClient.deleteFileWithResponse(pathName, drc, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.deleteFileWithResponse(pathName, drc, null, null).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
-    def "Delete file AC fail"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createFile(pathName)
-        noneMatch = setupPathMatchCondition(client, noneMatch)
-        setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
+    public void deleteFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileClient client = dataLakeFileSystemClient.createFile(pathName);
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
+            .setIfUnmodifiedSince(unmodified);
 
-
-        dataLakeFileSystemClient.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
-
-
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () ->
+            dataLakeFileSystemClient.deleteFileWithResponse(pathName, drc, null, null));
     }
 
-    def "Delete if exists file min"() {
+    @Test
+    public void deleteIfExistsFileMin() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createFile(pathName);
 
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createFile(pathName)
-        dataLakeFileSystemClient.deleteFileIfExists(pathName)
+        assertTrue(dataLakeFileSystemClient.deleteFileIfExists(pathName));
     }
 
-    def "Delete if exists file null args"() {
+    @Test
+    public void deleteIfExistsFileNullArgs() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createFile(pathName);
 
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createFile(pathName)
-        dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, null, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, null, null, null).getStatusCode());
     }
 
-    def "Delete if exists file that does not exist"() {
-
-        def pathName = generatePathName()
-        def response = dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, null, null, null)
-
-
-        response.getStatusCode() == 404
+    @Test
+    public void deleteIfExistsFileThatDoesNotExists() {
+        assertEquals(404, dataLakeFileSystemClient.deleteFileIfExistsWithResponse(generatePathName(), null, null, null)
+            .getStatusCode());
     }
 
-    def "Delete if exists file that was already deleted"() {
+    @Test
+    public void deleteIfExistsFileThatWasAlreadyDelete() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createFile(pathName);
 
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createFile(pathName)
-
-
-        def initialResponse = dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, null, null, null)
-        def secondResponse = dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, null, null, null)
-
-
-        initialResponse.getStatusCode() == 200
-        secondResponse.getStatusCode() == 404
+        assertEquals(200, dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, null, null, null).getStatusCode());
+        assertEquals(404, dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
-    def "Delete if exists file AC"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createFile(pathName)
-        match = setupPathMatchCondition(client, match)
-        leaseID = setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
+    public void deleteIfExistsFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileClient client = dataLakeFileSystemClient.createFile(pathName);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
 
-
-        dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
-    def "Delete if exists file AC fail"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createFile(pathName)
-        noneMatch = setupPathMatchCondition(client, noneMatch)
-        setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
+    public void deleteIfExistsFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+        String noneMatch, String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileClient client = dataLakeFileSystemClient.createFile(pathName);
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
 
-
-        dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode()
-
-
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () ->
+            dataLakeFileSystemClient.deleteFileIfExistsWithResponse(pathName, options, null, null));
     }
 
-    def "Create dir min"() {
-
-        dataLakeFileSystemClient.createDirectory(generatePathName())
-
-
-        notThrown(DataLakeStorageException)
+    @Test
+    public void createDirMin() {
+        assertDoesNotThrow(() -> dataLakeFileSystemClient.createDirectory(generatePathName()));
     }
 
-    @Unroll
-    def "Create dir overwrite"() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void createDirOverwrite(boolean overwrite) {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
 
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createDirectory(pathName)
-
-
-        def exceptionThrown = false
-        try {
-            dataLakeFileSystemClient.createDirectory(pathName, overwrite)
-        } catch (DataLakeStorageException ignored) {
-            exceptionThrown = true
+        if (overwrite) {
+            assertDoesNotThrow(() -> dataLakeFileSystemClient.createDirectory(pathName, overwrite));
+        } else {
+            assertThrows(DataLakeStorageException.class,
+                () -> dataLakeFileSystemClient.createDirectory(pathName, overwrite));
         }
-
-
-        exceptionThrown != overwrite
-
-        where:
-        overwrite || _
-        true      || _
-        false     || _
     }
 
-    def "Create dir defaults"() {
+    @Test
+    public void createDirDefaults() {
+        Response<?> createResponse = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), null,
+            null, null, null, null, null, null);
 
-        def createResponse = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), null, null, null, null, null, null, null)
-
-
-        createResponse.getStatusCode() == 201
-        validateBasicHeaders(createResponse.getHeaders())
+        assertEquals(201, createResponse.getStatusCode());
+        validateBasicHeaders(createResponse.getHeaders());
     }
 
-    def "Create dir error"() {
-
-        dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), null, null, null, null,
-            new DataLakeRequestConditions().setIfMatch("garbage"), null,
-            Context.NONE)
-
-
-        thrown(DataLakeStorageException)
+    @Test
+    public void createDirError() {
+        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.createDirectoryWithResponse(
+            generatePathName(), null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
+            Context.NONE));
     }
 
     @ParameterizedTest
     @MethodSource("cacheAndContentSupplier")
-    def "Create dir headers"() {
+    public void createDirHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+        String contentLanguage, String contentType) {
         // Create does not set md5
-
-        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
-            .setContentType(contentType)
+            .setContentType(contentType);
 
-
-        def client = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), null, null, headers, null, null, null, null).getValue()
-        def response = client.getPropertiesWithResponse(null, null, null)
+        Response<PathProperties> response = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(),
+            null, null, headers, null, null, null, null).getValue()
+            .getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
-        contentType = (contentType == null) ? "application/octet-stream" : contentType
+        contentType = (contentType == null) ? "application/octet-stream" : contentType;
 
-
-        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType);
     }
 
     @ParameterizedTest
     @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
-    def "Create dir metadata"() {
-
-        Map<String, String> metadata = new HashMap<String, String>()
+    public void createDirMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
-            metadata.put(key1, value1)
+            metadata.put(key1, value1);
         }
         if (key2 != null) {
-            metadata.put(key2, value2)
+            metadata.put(key2, value2);
         }
 
-
-        def client = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), null, null, null, metadata, null, null, null).getValue()
-        def response = client.getProperties()
-
+        PathProperties response = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), null, null,
+            null, metadata, null, null, null).getValue()
+            .getProperties();
 
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            response.getMetadata().containsKey(k)
-            response.getMetadata().get(k) == metadata.get(k)
+            assertTrue(response.getMetadata().containsKey(k));
+            assertEquals(metadata.get(k), response.getMetadata().get(k));
         }
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
-    def "Create dir AC"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.getDirectoryClient(pathName)
-        client.create()
-        match = setupPathMatchCondition(client, match)
-        leaseID = setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
+    public void createDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(pathName);
+        client.create();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
+            .setIfUnmodifiedSince(unmodified);
 
-
-
-        dataLakeFileSystemClient.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode() == 201
+        assertEquals(201, dataLakeFileSystemClient.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, null)
+            .getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
-    def "Create dir AC fail"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.getDirectoryClient(pathName)
-        client.create()
-        noneMatch = setupPathMatchCondition(client, noneMatch)
-        setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
+    public void createDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(pathName);
+        client.create();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
+            .setIfUnmodifiedSince(unmodified);
 
-
-        dataLakeFileSystemClient.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE)
-
-
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () ->
+            dataLakeFileSystemClient.createDirectoryWithResponse(pathName, null, null, null, null, drc, null, Context.NONE));
     }
 
-    def "Create dir permissions and umask"() {
-
-        def permissions = "0777"
-        def umask = "0057"
-
-
-        dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
+    @Test
+    public void createDirPermissionsAndUmask() {
+        assertEquals(201, dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), "0777", "0057",
+            null, null, null, null, Context.NONE).getStatusCode());
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create dir options with ACL"() {
+    @Test
+    public void createDirOptionsWithACL() {
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
-        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
-        def client = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null).getValue()
-
-
-        notThrown(DataLakeStorageException)
-        def acl = client.getAccessControl().getAccessControlList()
-        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
-        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+        List<PathAccessControlEntry> acl = client.getAccessControl().getAccessControlList();
+        assertEquals(pathAccessControlEntries.get(0), acl.get(0)); // testing if owner is set the same
+        assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create dir options with owner and group"() {
+    @Test
+    public void createDirOptionsWithOwnerAndGroup() {
+        String ownerName = testResourceNamer.randomUuid();
+        String groupName = testResourceNamer.randomUuid();
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName);
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        def ownerName = testResourceNamer.randomUuid()
-        def groupName = testResourceNamer.randomUuid()
-        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
-        def result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null).getValue()
-
-
-        notThrown(DataLakeStorageException)
-        result.getAccessControl().getOwner() == ownerName
-        result.getAccessControl().getGroup() == groupName
+        assertEquals(ownerName, result.getAccessControl().getOwner());
+        assertEquals(groupName, result.getAccessControl().getGroup());
     }
 
-    def "Create dir options with null owner and group"() {
+    @Test
+    public void createDirOptionsWithNullOwnerAndGroup() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setOwner(null).setGroup(null);
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        def options = new DataLakePathCreateOptions().setOwner(null).setGroup(null)
-        def result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null).getValue()
-
-
-        notThrown(DataLakeStorageException)
-        result.getAccessControl().getOwner() == "\$superuser"
-        result.getAccessControl().getGroup() == "\$superuser"
+        assertEquals("$superuser", result.getAccessControl().getOwner());
+        assertEquals("$superuser", result.getAccessControl().getGroup());
     }
 
     @ParameterizedTest
     @MethodSource("cacheAndContentWithMd5Supplier")
-    def "Create dir options with path http headers"() {
-
-        def putHeaders = new PathHttpHeaders()
+    public void createDirOptionsWithPathHttpHeaders(String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, byte[] contentMD5, String contentType) {
+        PathHttpHeaders putHeaders = new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentMd5(contentMD5)
-            .setContentType(contentType)
+            .setContentType(contentType);
 
-        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders);
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        def result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null).getValue()
-
-
-        validatePathProperties(
-            result.getPropertiesWithResponse(null, null, null),
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+        validatePathProperties(result.getPropertiesWithResponse(null, null, null), cacheControl, contentDisposition,
+            contentEncoding, contentLanguage, contentMD5, contentType);
     }
 
     @ParameterizedTest
     @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
-    def "Create dir options with metadata"() {
-
-        Map<String, String> metadata = new HashMap<String, String>()
+    public void createDirOptionsWithMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
-            metadata.put(key1, value1)
+            metadata.put(key1, value1);
         }
         if (key2 != null && value2 != null) {
-            metadata.put(key2, value2)
+            metadata.put(key2, value2);
         }
-        def options = new DataLakePathCreateOptions().setMetadata(metadata)
-        def result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setMetadata(metadata);
 
+        assertEquals(201, dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
+            .getStatusCode());
 
-        result.getStatusCode() == 201
-        def properties = dataLakeFileSystemClient.getProperties()
+        FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            properties.getMetadata().containsKey(k)
-            properties.getMetadata().get(k) == metadata.get(k)
+            assertTrue(properties.getMetadata().containsKey(k));
+            assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
     }
 
-    def "Create dir options with permissions and umask"() {
+    @Test
+    public void createDirOptionsWithPermissionsAndUmask() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions("0057")
+            .setUmask("0777");
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        def permissions = "0777"
-        def umask = "0057"
-        def options = new DataLakePathCreateOptions()
-            .setPermissions(permissions)
-            .setUmask(umask)
-        def result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null).getValue()
+        PathAccessControl acl = result.getAccessControlWithResponse(true, null, null, null).getValue();
 
-
-        def acl = result.getAccessControlWithResponse(true, null, null, null).getValue()
-
-
-        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+        assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(), acl.getPermissions().toString());
     }
 
-    def "Create dir options with lease id"() {
-
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
-        dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createDirOptionsWithLeaseId() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(CoreUtils.randomUuid().toString())
+            .setLeaseDuration(15);
 
         // lease id not supported for directories
-        thrown(IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create dir options with lease duration"() {
-
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createDirOptionsWithLeaseDuration() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setLeaseDuration(15)
+            .setProposedLeaseId(CoreUtils.randomUuid().toString());
 
         // lease duration not supported for directories
-        thrown(IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create dir options with time expires on"() {
-
-        def leaseId = UUID.randomUUID().toString()
-        def deletionOptions = new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))
-        def options = new DataLakePathCreateOptions()
-            .setProposedLeaseId(leaseId)
-            .setScheduleDeletionOptions(deletionOptions)
-        dataLakeFileSystemClient.createFileWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createDirOptionsWithTimeExpiresOn() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setProposedLeaseId(CoreUtils.randomUuid().toString())
+            .setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)));
 
         // expires on not supported for directories
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () ->
+            dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create dir options with time to expire"() {
-
-        def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
-        def options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions)
-
-        dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createDirOptionsWithTimeToExpire() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(Duration.ofDays(6)));
 
         // time to expire not supported for directories
-        thrown(IllegalArgumentException)
-
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create if not exists dir min"() {
-
-        def client = dataLakeFileSystemClient.createDirectoryIfNotExists(generatePathName())
-
-
-        client.exists()
+    @Test
+    public void createIfNotExistsDirMin() {
+        assertTrue(dataLakeFileSystemClient.createDirectoryIfNotExists(generatePathName()).exists());
     }
 
-    def "Create if not exists dir defaults"() {
+    @Test
+    public void createIfNotExistsDirDefaults() {
+        Response<?> createResponse = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(),
+            null, null, null);
 
-        def createResponse = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), new DataLakePathCreateOptions(), null, null)
-
-
-        createResponse.getStatusCode() == 201
-        validateBasicHeaders(createResponse.getHeaders())
+        assertEquals(201, createResponse.getStatusCode());
+        validateBasicHeaders(createResponse.getHeaders());
     }
 
-    def "Create if not exists dir that already exists"() {
+    @Test
+    public void createIfNotExistsDirThatAlreadyExists() {
+        String dirName = generatePathName();
 
-        def dirName = generatePathName()
-
-        def initialResponse = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(dirName,
-            new DataLakePathCreateOptions(), null, Context.NONE)
-        def secondResponse = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(dirName,
-            new DataLakePathCreateOptions(), null, Context.NONE)
-
-
-        initialResponse.getStatusCode() == 201
-        secondResponse.getStatusCode() == 409
+        assertEquals(201, dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(dirName,
+            new DataLakePathCreateOptions(), null, Context.NONE).getStatusCode());
+        assertEquals(409, dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(dirName,
+            new DataLakePathCreateOptions(), null, Context.NONE).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("cacheAndContentSupplier")
-    def "Create if not exists dir headers"() {
+    public void createIfNotExistsDirHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+        String contentLanguage, String contentType) {
         // Create does not set md5
-
-        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
-            .setContentType(contentType)
+            .setContentType(contentType);
 
-
-        def client = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(),
+        Response<PathProperties> response = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(),
             new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null).getValue()
-        def response = client.getPropertiesWithResponse(null, null, null)
+            .getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
-        contentType = (contentType == null) ? "application/octet-stream" : contentType
+        contentType = (contentType == null) ? "application/octet-stream" : contentType;
 
-
-        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType);
     }
 
     @ParameterizedTest
     @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
-    def "Create if not exists dir metadata"() {
-
-        Map<String, String> metadata = new HashMap<String, String>()
+    public void createIfNotExistsDirMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
-            metadata.put(key1, value1)
+            metadata.put(key1, value1);
         }
         if (key2 != null) {
-            metadata.put(key2, value2)
+            metadata.put(key2, value2);
         }
 
-
-        def client = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(),
+        PathProperties response = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(),
             new DataLakePathCreateOptions().setMetadata(metadata), null, null).getValue()
-        def response = client.getProperties()
-
+            .getProperties();
 
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            response.getMetadata().containsKey(k)
-            response.getMetadata().get(k) == metadata.get(k)
+            assertTrue(response.getMetadata().containsKey(k));
+            assertEquals(metadata.get(k), response.getMetadata().get(k));
         }
     }
 
-    def "Create if not exists dir permissions and umask"() {
-
-        def permissions = "0777"
-        def umask = "0057"
-
-        dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(),
-            new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask),
-            null, Context.NONE).getStatusCode() == 201
+    @Test
+    public void createIfNotExistsDirPermissionsAndUmask() {
+        assertEquals(201, dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(),
+            new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057"),
+            null, Context.NONE).getStatusCode());
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create if not exists dir options with ACL"() {
+    @Test
+    public void createIfNotExistsDirOptionsWithACL() {
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries);
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
-        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
-        def client = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
-
-
-        notThrown(DataLakeStorageException)
-        def acl = client.getAccessControl().getAccessControlList()
-        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
-        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+        List<PathAccessControlEntry> acl = client.getAccessControl().getAccessControlList();
+        assertEquals(pathAccessControlEntries.get(0), acl.get(0)); // testing if owner is set the same
+        assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
     @DisabledIf("olderThan20210608ServiceVersion")
-    def "Create if not exists dir options with owner and group"() {
-
-        def ownerName = testResourceNamer.randomUuid()
-        def groupName = testResourceNamer.randomUuid()
-        def options = new DataLakePathCreateOptions()
+    @Test
+    public void createIfNotExistsDirOptionsWithOwnerAndGroup() {
+        String ownerName = testResourceNamer.randomUuid();
+        String groupName = testResourceNamer.randomUuid();
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setOwner(ownerName)
-            .setGroup(groupName)
-        def result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
+            .setGroup(groupName);
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-
-        notThrown(DataLakeStorageException)
-        result.getAccessControl().getOwner() == ownerName
-        result.getAccessControl().getGroup() == groupName
+        assertEquals(ownerName, result.getAccessControl().getOwner());
+        assertEquals(groupName, result.getAccessControl().getGroup());
     }
 
-    def "Create if not exists dir options with null owner and group"() {
+    @Test
+    public void createIfNotExistsDirOptionsWithNullOwnerAndGroup() {
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), null, null, null)
+            .getValue();
 
-        def options = new DataLakePathCreateOptions()
-            .setOwner(null)
-            .setGroup(null)
-        def result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
-
-
-        notThrown(DataLakeStorageException)
-        result.getAccessControl().getOwner() == "\$superuser"
-        result.getAccessControl().getGroup() == "\$superuser"
+        assertEquals("$superuser", result.getAccessControl().getOwner());
+        assertEquals("$superuser", result.getAccessControl().getGroup());
     }
 
     @ParameterizedTest
     @MethodSource("cacheAndContentWithMd5Supplier")
-    def "Create if not exists dir options with path http headers"() {
-
-        def putHeaders = new PathHttpHeaders()
+    public void createIfNotExistsDirOptionsWithPathHttpHeaders(String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, byte[] contentMD5, String contentType) {
+        PathHttpHeaders putHeaders = new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentMd5(contentMD5)
-            .setContentType(contentType)
+            .setContentType(contentType);
 
-        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders);
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        def result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
 
-
-        validatePathProperties(
-            result.getPropertiesWithResponse(null, null, null),
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+        validatePathProperties(result.getPropertiesWithResponse(null, null, null), cacheControl, contentDisposition,
+            contentEncoding, contentLanguage, contentMD5, contentType);
     }
 
     @ParameterizedTest
     @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
-    def "Create if not exists dir options with metadata"() {
-
-        Map<String, String> metadata = new HashMap<String, String>()
+    public void createIfNotExistsDirOptionsWithMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
-            metadata.put(key1, value1)
+            metadata.put(key1, value1);
         }
         if (key2 != null && value2 != null) {
-            metadata.put(key2, value2)
+            metadata.put(key2, value2);
         }
-        def options = new DataLakePathCreateOptions().setMetadata(metadata)
-        def result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setMetadata(metadata);
 
+        assertEquals(201, dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getStatusCode());
 
-        result.getStatusCode() == 201
-        def properties = dataLakeFileSystemClient.getProperties()
+        FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
         for(String k : metadata.keySet()) {
-            properties.getMetadata().containsKey(k)
-            properties.getMetadata().get(k) == metadata.get(k)
+            assertTrue(properties.getMetadata().containsKey(k));
+            assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
     }
 
-    def "Create if not exists dir options with permissions and umask"() {
+    @Test
+    public void createIfNotExistsDirOptionsWithPermissionsAndUmask() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions("0777")
+            .setUmask("0057");
+        DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
-        def permissions = "0777"
-        def umask = "0057"
-        def options = new DataLakePathCreateOptions()
-            .setPermissions(permissions)
-            .setUmask(umask)
-        def result = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
+        PathAccessControl acl = result.getAccessControlWithResponse(true, null, null, null).getValue();
 
-
-        def acl = result.getAccessControlWithResponse(true, null, null, null).getValue()
-
-
-        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+        assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(), acl.getPermissions().toString());
     }
 
-    def "Create if not exists dir options with lease id"() {
-
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
-        dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createIfNotExistsDirOptionsWithLeaseId() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setProposedLeaseId(CoreUtils.randomUuid().toString())
+            .setLeaseDuration(15);
 
         // assert lease id not supported for directory
-        thrown(IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create if not exists dir options with lease id error"() {
-
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
-        dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createIfNotExistsDirOptionsWithLeaseIdError() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setProposedLeaseId(CoreUtils.randomUuid().toString());
 
         // assert lease duration not supported for directory
-        thrown(IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create if not exists dir options with lease duration"() {
-
-        def leaseId = UUID.randomUUID().toString()
-        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createIfNotExistsDirOptionsWithLeaseDuration() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setLeaseDuration(15)
+            .setProposedLeaseId(CoreUtils.randomUuid().toString());
 
         // assert expires on not supported for directory
-        thrown(IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create if not exists dir options with time expires on absolute"() {
-
-        def deletionOptions = new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))
-        def options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions)
-        dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createIfNotExistsDirOptionsWithTimeExpiresOnAbsolute() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)));
 
         // assert expires on not supported for directory
-        thrown(IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Create if not exists dir options with time to expire relative to now"() {
-
-        def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
-        def options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions)
-
-        dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
-
+    @Test
+    public void createIfNotExistsDirOptionsWithTimeToExpireRelativeToNow() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(Duration.ofDays(6)));
 
         // assert time to expire not supported for directory
-        thrown(IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () ->
+            dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null));
     }
 
-    def "Delete dir min"() {
+    @Test
+    public void deleteDirMin() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
 
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createDirectory(pathName)
-        dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, null, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, null, null, null).getStatusCode());
     }
 
-    def "Delete dir recursive"() {
+    @Test
+    public void deleteDirRecursive() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
 
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createDirectory(pathName)
-        dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, true, null, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, true, null, null, null).getStatusCode());
     }
 
-    def "Delete dir dir does not exist anymore"() {
+    @Test
+    public void deleteDirDirDoesNotExistAnymore() {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectory(pathName);
+        dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, null, null, null);
 
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createDirectory(pathName)
-        dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, null, null, null)
-        client.getPropertiesWithResponse(null, null, null)
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+            () -> client.getPropertiesWithResponse(null, null, null));
 
-
-        def e = thrown(DataLakeStorageException)
-        e.getResponse().getStatusCode() == 404
-        e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
-//        e.getServiceMessage().contains("The specified blob does not exist.")
-    }
-
-    @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier")
-    def "Delete dir AC"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createDirectory(pathName)
-        match = setupPathMatchCondition(client, match)
-        leaseID = setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-
-
-        dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode() == 200
-    }
-
-    @ParameterizedTest
-    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
-    def "Delete dir AC fail"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createDirectory(pathName)
-        noneMatch = setupPathMatchCondition(client, noneMatch)
-        setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-
-
-        dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
-
-
-        thrown(DataLakeStorageException)
-    }
-
-    def "Delete if exists dir min"() {
-
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createDirectory(pathName)
-        dataLakeFileSystemClient.deleteDirectoryIfExists(pathName)
-    }
-
-    def "Delete if exists dir null args"() {
-
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createDirectory(pathName)
-        dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null).getStatusCode() == 200
-    }
-
-    def "Delete if exists dir recursive"() {
-
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createDirectory(pathName)
-        dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setIsRecursive(true), null, null).getStatusCode() == 200
-    }
-
-    def "Delete if exists dir that does not exist"() {
-
-        def pathName = generatePathName()
-        def response = dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
-
-
-        response.getStatusCode() == 404
-        !dataLakeFileSystemClient.getDirectoryClient(pathName).exists()
-    }
-
-    def "Delete if exists dir that was already deleted"() {
-
-        def pathName = generatePathName()
-        dataLakeFileSystemClient.createDirectory(pathName)
-
-
-        def initialResponse = dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
-        def secondResponse = dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
-
-
-        initialResponse.getStatusCode() == 200
-        secondResponse.getStatusCode() == 404
-
+        assertEquals(404, e.getResponse().getStatusCode());
+        assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
-    def "Delete if exists dir AC"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createDirectory(pathName)
-        match = setupPathMatchCondition(client, match)
-        leaseID = setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
+    public void deleteDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectory(pathName);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
+            .setIfUnmodifiedSince(unmodified);
 
-
-        dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, drc, null, null).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
-    def "Delete if exists dir AC fail"() {
-
-        def pathName = generatePathName()
-        def client = dataLakeFileSystemClient.createDirectory(pathName)
-        noneMatch = setupPathMatchCondition(client, noneMatch)
-        setupPathLeaseCondition(client, leaseID)
-        def drc = new DataLakeRequestConditions()
+    public void deleteDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectory(pathName);
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
+            .setIfUnmodifiedSince(unmodified);
 
-
-        dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode()
-
-
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.deleteDirectoryWithResponse(pathName, false, drc, null, null));
     }
 
-    def "List paths"() {
+    @Test
+    public void deleteIfExistsDirMin() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
 
-        def dirName = generatePathName()
-        dataLakeFileSystemClient.getDirectoryClient(dirName).create()
+        assertTrue(dataLakeFileSystemClient.deleteDirectoryIfExists(pathName));
+    }
 
-        def fileName = generatePathName()
-        def fileClient = dataLakeFileSystemClient.getFileClient(fileName)
-        fileClient.create()
+    @Test
+    public void deleteIfExistsDirNullArgs() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
 
+        assertEquals(200, dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null).getStatusCode());
+    }
 
-        def response = dataLakeFileSystemClient.listPaths().iterator()
+    @Test
+    public void deleteIfExistsDirRecursive() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
 
+        assertEquals(200, dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName,
+            new DataLakePathDeleteOptions().setIsRecursive(true), null, null).getStatusCode());
+    }
 
-        def dirPath = response.next()
-        dirPath.getName() == dirName
-        dirPath.getETag()
-        dirPath.getGroup()
-        dirPath.getLastModified()
-        dirPath.getOwner()
-        dirPath.getPermissions()
-//        dirPath.getContentLength() // known issue with service
-        dirPath.isDirectory()
+    @Test
+    public void deleteIfExistsDirThatDoesNotExist() {
+        String pathName = generatePathName();
 
-        response.hasNext()
-        def filePath = response.next()
-        filePath.getName() == fileName
-        filePath.getETag()
-        filePath.getGroup()
-        filePath.getLastModified()
-        filePath.getOwner()
-        filePath.getPermissions()
-//        filePath.getContentLength() // known issue with service
-        !filePath.isDirectory()
+        assertEquals(404, dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
+            .getStatusCode());
+        assertFalse(dataLakeFileSystemClient.getDirectoryClient(pathName).exists());
+    }
 
-        !response.hasNext()
+    @Test
+    public void deleteIfExistsDirThatWasAlreadyDeleted() {
+        String pathName = generatePathName();
+        dataLakeFileSystemClient.createDirectory(pathName);
+
+        assertEquals(200, dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
+            .getStatusCode());
+        assertEquals(404, dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
+            .getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    public void deleteIfExistsDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectory(pathName);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false);
+
+        assertEquals(200, dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, options, null, null)
+            .getStatusCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void deleteIfExistsDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+        String noneMatch, String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectory(pathName);
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false);
+
+        assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse(pathName, options, null, null));
+    }
+
+    @Test
+    public void listPaths() {
+        String dirName = generatePathName();
+        dataLakeFileSystemClient.getDirectoryClient(dirName).create();
+
+        String fileName = generatePathName();
+        dataLakeFileSystemClient.getFileClient(fileName).create();
+
+        Iterator<PathItem> response = dataLakeFileSystemClient.listPaths().iterator();
+
+        PathItem dirPath = response.next();
+        assertEquals(dirName, dirPath.getName());
+        assertNotNull(dirPath.getETag());
+        assertNotNull(dirPath.getGroup());
+        assertNotNull(dirPath.getLastModified());
+        assertNotNull(dirPath.getOwner());
+        assertNotNull(dirPath.getPermissions());
+//        assertNotNull(dirPath.getContentLength()); // known issue with service
+        assertTrue(dirPath.isDirectory());
+
+        assertTrue(response.hasNext());
+        PathItem filePath = response.next();
+        assertEquals(fileName, filePath.getName());
+        assertNotNull(filePath.getETag());
+        assertNotNull(filePath.getGroup());
+        assertNotNull(filePath.getLastModified());
+        assertNotNull(filePath.getOwner());
+        assertNotNull(filePath.getPermissions());
+//        assertNotNull(filePath.getContentLength()); // known issue with service
+        assertFalse(filePath.isDirectory());
+
+        assertFalse(response.hasNext());
     }
 
     @DisabledIf("olderThan20200210ServiceVersion")
-    def "List paths expiry and creation"() {
+    @Test
+    public void listPathsExpiryAndCreation() {
+        String dirName = generatePathName();
+        dataLakeFileSystemClient.getDirectoryClient(dirName).create();
 
-        def dirName = generatePathName()
-        dataLakeFileSystemClient.getDirectoryClient(dirName).create()
+        String fileName = generatePathName();
+        DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient(fileName);
+        fileClient.create();
+        fileClient.scheduleDeletion(new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(2)));
 
-        def fileName = generatePathName()
-        def fileClient = dataLakeFileSystemClient.getFileClient(fileName)
-        fileClient.create()
-        fileClient.scheduleDeletion(new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(2)))
+        Iterator<PathItem> response = dataLakeFileSystemClient.listPaths().iterator();
 
+        PathItem dirPath = response.next();
+        assertEquals(dirName, dirPath.getName());
+        assertNotNull(dirPath.getCreationTime());
+        assertNull(dirPath.getExpiryTime());
 
-        def response = dataLakeFileSystemClient.listPaths().iterator()
-
-
-        def dirPath = response.next()
-        dirPath.getName() == dirName
-        dirPath.getCreationTime()
-        !dirPath.getExpiryTime()
-
-        def filePath = response.next()
-        filePath.getExpiryTime()
-        filePath.getCreationTime()
+        PathItem filePath = response.next();
+        assertEquals(fileName, filePath.getName());
+        assertNotNull(filePath.getExpiryTime());
+        assertNotNull(filePath.getCreationTime());
     }
 
-    def "List paths recursive"() {
+    @Test
+    public void listPathsRecursive() {
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
 
-        def dirName = generatePathName()
-        dataLakeFileSystemClient.getDirectoryClient(dirName).create()
+        Iterator<PathItem> response = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setRecursive(true), null)
+            .iterator();
 
-        def fileName = generatePathName()
-        dataLakeFileSystemClient.getFileClient(fileName).create()
-
-
-        def response = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setRecursive(true), null).iterator()
-
-
-        def dirPath = response.next()
-        response.hasNext()
-        def filePath = response.next()
-        !response.hasNext()
+        response.next();
+        assertTrue(response.hasNext());
+        response.next();
+        assertFalse(response.hasNext());
     }
 
-    def "List paths return upn"() {
+    @Test
+    public void listPathsReturnUpn() {
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
 
-        def dirName = generatePathName()
-        dataLakeFileSystemClient.getDirectoryClient(dirName).create()
+        Iterator<PathItem> response = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setUserPrincipalNameReturned(true), null)
+            .iterator();
 
-        def fileName = generatePathName()
-        dataLakeFileSystemClient.getFileClient(fileName).create()
-
-
-        def response = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setUserPrincipalNameReturned(true), null).iterator()
-
-
-        def dirPath = response.next()
-        response.hasNext()
-        def filePath = response.next()
-        !response.hasNext()
+        response.next();
+        assertTrue(response.hasNext());
+        response.next();
+        assertFalse(response.hasNext());
     }
 
-    def "List paths max results"() {
+    @Test
+    public void listPathsMaxResults() {
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
 
-        def dirName = generatePathName()
-        dataLakeFileSystemClient.getDirectoryClient(dirName).create()
+        Iterator<PathItem> response = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setMaxResults(1), null)
+            .iterator();
 
-        def fileName = generatePathName()
-        dataLakeFileSystemClient.getFileClient(fileName).create()
-
-
-        def response = dataLakeFileSystemClient.listPaths(new ListPathsOptions().setMaxResults(1), null).iterator()
-
-
-        def dirPath = response.next()
-        response.hasNext()
-        def filePath = response.next()
-        !response.hasNext()
+        response.next();
+        assertTrue(response.hasNext());
+        response.next();
+        assertFalse(response.hasNext());
     }
 
-    def "List paths max results by page"() {
+    @Test
+    public void listPathsMaxResultsByPage() {
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
 
-        def dirName = generatePathName()
-        dataLakeFileSystemClient.getDirectoryClient(dirName).create()
-
-        def fileName = generatePathName()
-        dataLakeFileSystemClient.getFileClient(fileName).create()
-
-
-        for (def page : dataLakeFileSystemClient.listPaths(new ListPathsOptions(), null).iterableByPage(1)) {
-            assert page.value.size() == 1
+        for (PagedResponse<?> page : dataLakeFileSystemClient.listPaths(new ListPathsOptions(), null).iterableByPage(1)) {
+            assertEquals(1, page.getValue().size());
         }
     }
 
-    def "List paths encryption scope"() {
-
-        def encryptionScope = new FileSystemEncryptionScopeOptions()
+    @Test
+    public void listPathsEncryptionScope() {
+        FileSystemEncryptionScopeOptions encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
-            .setEncryptionScopeOverridePrevented(true)
+            .setEncryptionScopeOverridePrevented(true);
 
-        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        def client = getFileSystemClientBuilder(dataLakeFileSystemClient.getFileSystemUrl())
+        DataLakeFileSystemClient client = getFileSystemClientBuilder(dataLakeFileSystemClient.getFileSystemUrl())
             .credential(getDataLakeCredential())
             .fileSystemEncryptionScopeOptions(encryptionScope)
-            .buildClient()
+            .buildClient();
+        client.create();
 
-        client.create()
+        String dirName = generatePathName();
+        client.getDirectoryClient(dirName).create();
 
-        def dirName = generatePathName()
-        client.getDirectoryClient(dirName).create()
+        String fileName = generatePathName();
+        dataLakeFileSystemClient.getFileClient(fileName).create();
 
-        def fileName = generatePathName()
-        def fileClient = dataLakeFileSystemClient.getFileClient(fileName)
-        fileClient.create()
+        Iterator<PathItem> response = dataLakeFileSystemClient.listPaths().iterator();
 
+        PathItem dirPath = response.next();
+        assertEquals(dirName, dirPath.getName());
+        assertNotNull(dirPath.getETag());
+        assertNotNull(dirPath.getGroup());
+        assertNotNull(dirPath.getLastModified());
+        assertNotNull(dirPath.getOwner());
+        assertNotNull(dirPath.getPermissions());
+        assertTrue(dirPath.isDirectory());
+        assertEquals(ENCRYPTION_SCOPE_STRING, dirPath.getEncryptionScope());
 
-        def response = dataLakeFileSystemClient.listPaths().iterator()
+        assertTrue(response.hasNext());
+        PathItem filePath = response.next();
+        assertEquals(fileName, filePath.getName());
+        assertNotNull(filePath.getETag());
+        assertNotNull(filePath.getGroup());
+        assertNotNull(filePath.getLastModified());
+        assertNotNull(filePath.getOwner());
+        assertNotNull(filePath.getPermissions());
+        assertEquals(ENCRYPTION_SCOPE_STRING, filePath.getEncryptionScope());
+        assertFalse(filePath.isDirectory());
 
-
-        def dirPath = response.next()
-        dirPath.getName() == dirName
-        dirPath.getETag()
-        dirPath.getGroup()
-        dirPath.getLastModified()
-        dirPath.getOwner()
-        dirPath.getPermissions()
-        dirPath.isDirectory()
-        dirPath.getEncryptionScope() == ENCRYPTION_SCOPE_STRING
-
-        response.hasNext()
-        def filePath = response.next()
-        filePath.getName() == fileName
-        filePath.getETag()
-        filePath.getGroup()
-        filePath.getLastModified()
-        filePath.getOwner()
-        filePath.getPermissions()
-        filePath.getEncryptionScope() == ENCRYPTION_SCOPE_STRING
-        !filePath.isDirectory()
-
-        !response.hasNext()
+        assertFalse(response.hasNext());
     }
 
-    def "Async list paths max results by page"() {
+    @Test
+    public void asyncListPathsMaxResultsByPage() {
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
+        dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
 
-        def dirName = generatePathName()
-        fscAsync.getDirectoryAsyncClient(dirName).create().block()
-
-        def fileName = generatePathName()
-        fscAsync.getFileAsyncClient(fileName).create().block()
-
-
-        for (def page : fscAsync.listPaths(new ListPathsOptions()).byPage(1).collectList().block()) {
-            assert page.value.size() == 1
-        }
+        StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions()).byPage(1))
+            .thenConsumeWhile(page -> {
+                assertEquals(1, page.getValue().size());
+                return true;
+            })
+            .verifyComplete();
     }
 
-    @Unroll
-    def "Create URL special chars encoded"() {
+    @ParameterizedTest
+    @ValueSource(strings = {"%E4%B8%AD%E6%96%87", "az%5B%5D", "hello%20world", "hello%26world",
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D"})
+    public void createUrlSpecialCharsEncoded(String name) {
+        // Note you cannot use the / character in a path in datalake unless it is to specify an absolute path
         // This test checks that we handle path names with encoded special characters correctly.
 
-        def fc1 = dataLakeFileSystemClient.getFileClient(name + "file1")
-        def fc2 = dataLakeFileSystemClient.getFileClient(name + "file2")
-        def dc1 = dataLakeFileSystemClient.getDirectoryClient(name + "dir1")
-        def dc2 = dataLakeFileSystemClient.getDirectoryClient(name + "dir2")
+        DataLakeFileClient fc1 = dataLakeFileSystemClient.getFileClient(name + "file1");
+        DataLakeFileClient fc2 = dataLakeFileSystemClient.getFileClient(name + "file2");
+        DataLakeDirectoryClient dc1 = dataLakeFileSystemClient.getDirectoryClient(name + "dir1");
+        DataLakeDirectoryClient dc2 = dataLakeFileSystemClient.getDirectoryClient(name + "dir2");
 
+        assertEquals(201, fc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode());
+        fc2.create();
+        assertEquals(200, fc2.getPropertiesWithResponse(null, null, null).getStatusCode());
+        assertEquals(202, fc2.appendWithResponse(DATA.getDefaultBinaryData(), 0, null, null, null, null).getStatusCode());
+        assertEquals(201, dc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode());
+        dc2.create();
+        assertEquals(200, dc2.getPropertiesWithResponse(null, null, null).getStatusCode());
 
-        fc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
-        fc2.create()
-        fc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-        fc2.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, null, null, null, null).getStatusCode() == 202
-        dc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
-        dc2.create()
-        dc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+        Iterator<PathItem> paths = dataLakeFileSystemClient.listPaths().iterator();
 
-
-        def paths = dataLakeFileSystemClient.listPaths().iterator()
-
-
-        paths.next().getName() == Utility.urlDecode(name) + "dir1"
-        paths.next().getName() == Utility.urlDecode(name) + "dir2"
-        paths.next().getName() == Utility.urlDecode(name) + "file1"
-        paths.next().getName() == Utility.urlDecode(name) + "file2"
-
-        // Note you cannot use the / character in a path in datalake unless it is to specify an absolute path
-        where:
-        name                                                     | _
-        "%E4%B8%AD%E6%96%87"                                     | _
-        "az%5B%5D"                                               | _
-        "hello%20world"                                          | _
-        "hello%26world"                                          | _
-        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D"    | _
+        assertEquals(Utility.urlDecode(name) + "dir1", paths.next().getName());
+        assertEquals(Utility.urlDecode(name) + "dir2", paths.next().getName());
+        assertEquals(Utility.urlDecode(name) + "file1", paths.next().getName());
+        assertEquals(Utility.urlDecode(name) + "file2", paths.next().getName());
     }
 
-    @Unroll
-    def "Set access policy"() {
+    @ParameterizedTest
+    @MethodSource("publicAccessSupplier")
+    public void setAccessPolicy(PublicAccessType access) {
+        Response<?> response = dataLakeFileSystemClient.setAccessPolicyWithResponse(access, null, null, null, null);
 
-        def response = dataLakeFileSystemClient.setAccessPolicyWithResponse(access, null, null, null, null)
-
-
-        validateBasicHeaders(response.getHeaders())
-        dataLakeFileSystemClient.getProperties().getDataLakePublicAccess() == access
-
-        where:
-        access                     | _
-        PublicAccessType.BLOB      | _
-        PublicAccessType.CONTAINER | _
-        null                       | _
+        validateBasicHeaders(response.getHeaders());
+        assertEquals(access, dataLakeFileSystemClient.getProperties().getDataLakePublicAccess());
     }
 
-    def "Set access policy min access"() {
+    @Test
+    public void setAccessPolicyMinAccess() {
+        dataLakeFileSystemClient.setAccessPolicy(PublicAccessType.CONTAINER, null);
 
-        dataLakeFileSystemClient.setAccessPolicy(PublicAccessType.CONTAINER, null)
-
-
-        dataLakeFileSystemClient.getProperties().getDataLakePublicAccess() == PublicAccessType.CONTAINER
+        assertEquals(PublicAccessType.CONTAINER, dataLakeFileSystemClient.getProperties().getDataLakePublicAccess());
     }
 
-    def "Set access policy min ids"() {
-
-        def identifier = new DataLakeSignedIdentifier()
+    @Test
+    public void setAccessPolicyMinIds() {
+        DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy()
                 .setStartsOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
                 .setExpiresOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
                     .plusDays(1))
-                .setPermissions("r"))
+                .setPermissions("r"));
 
-        def ids = [identifier] as List
+        dataLakeFileSystemClient.setAccessPolicy(null, Collections.singletonList(identifier));
 
-
-        dataLakeFileSystemClient.setAccessPolicy(null, ids)
-
-
-        dataLakeFileSystemClient.getAccessPolicy().getIdentifiers().get(0).getId() == "0000"
+        assertEquals(identifier.getId(), dataLakeFileSystemClient.getAccessPolicy().getIdentifiers().get(0).getId());
     }
 
-    def "Set access policy ids"() {
-
-        def identifier = new DataLakeSignedIdentifier()
+    @Test
+    public void setAccessPolicyIds() {
+        DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(namer.getUtcNow())
-                .setExpiresOn(namer.getUtcNow().plusDays(1))
-                .setPermissions("r"))
-        def identifier2 = new DataLakeSignedIdentifier()
+                .setStartsOn(testResourceNamer.now())
+                .setExpiresOn(testResourceNamer.now().plusDays(1))
+                .setPermissions("r"));
+        DataLakeSignedIdentifier identifier2 = new DataLakeSignedIdentifier()
             .setId("0001")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(namer.getUtcNow())
-                .setExpiresOn(namer.getUtcNow().plusDays(2))
-                .setPermissions("w"))
-        def ids = [identifier, identifier2] as List
+                .setStartsOn(testResourceNamer.now())
+                .setExpiresOn(testResourceNamer.now().plusDays(2))
+                .setPermissions("w"));
+
+        Response<?> response = dataLakeFileSystemClient.setAccessPolicyWithResponse(null,
+            Arrays.asList(identifier, identifier2), null, null, null);
+        List<DataLakeSignedIdentifier> receivedIdentifiers = dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null)
+            .getValue().getIdentifiers();
 
 
-        def response = dataLakeFileSystemClient.setAccessPolicyWithResponse(null, ids, null, null, null)
-        def receivedIdentifiers = dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null).getValue().getIdentifiers()
+        assertEquals(200, response.getStatusCode());
+        validateBasicHeaders(response.getHeaders());
 
-
-        response.getStatusCode() == 200
-        validateBasicHeaders(response.getHeaders())
-        receivedIdentifiers.get(0).getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn().truncatedTo(
-            ChronoUnit.SECONDS)
-        receivedIdentifiers.get(0).getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
-        receivedIdentifiers.get(0).getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
-        receivedIdentifiers.get(1).getAccessPolicy().getExpiresOn() == identifier2.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
-        receivedIdentifiers.get(1).getAccessPolicy().getStartsOn() == identifier2.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
-        receivedIdentifiers.get(1).getAccessPolicy().getPermissions() == identifier2.getAccessPolicy().getPermissions()
+        assertEquals(identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS),
+            receivedIdentifiers.get(0).getAccessPolicy().getExpiresOn());
+        assertEquals(identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS),
+            receivedIdentifiers.get(0).getAccessPolicy().getStartsOn());
+        assertEquals(identifier.getAccessPolicy().getPermissions(), receivedIdentifiers.get(0).getAccessPolicy().getPermissions());
+        assertEquals(identifier2.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS),
+            receivedIdentifiers.get(1).getAccessPolicy().getExpiresOn());
+        assertEquals(identifier2.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS),
+            receivedIdentifiers.get(1).getAccessPolicy().getStartsOn());
+        assertEquals(identifier2.getAccessPolicy().getPermissions(), receivedIdentifiers.get(1).getAccessPolicy().getPermissions());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedAndLeaseIdSupplier")
-    def "Set access policy AC"() {
-
-        leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, leaseID)
-        def cac = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+    public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
+        DataLakeRequestConditions cac = new DataLakeRequestConditions()
+            .setLeaseId(setupFileSystemLeaseCondition(dataLakeFileSystemClient, leaseID))
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
+            .setIfUnmodifiedSince(unmodified);
 
-
-        dataLakeFileSystemClient.setAccessPolicyWithResponse(null, null, cac, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.setAccessPolicyWithResponse(null, null, cac, null, null).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedAndLeaseIdSupplier")
-    def "Set access policy AC fail"() {
-
-        def cac = new DataLakeRequestConditions()
+    public void setAccessPolicyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
+        DataLakeRequestConditions cac = new DataLakeRequestConditions()
             .setLeaseId(leaseID)
             .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
+            .setIfUnmodifiedSince(unmodified);
 
-
-        dataLakeFileSystemClient.setAccessPolicyWithResponse(null, null, cac, null, null)
-
-
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.setAccessPolicyWithResponse(null, null, cac, null, null));
     }
 
     @ParameterizedTest
     @MethodSource("invalidMatchSupplier")
-    def "Set access policy AC illegal"() {
+    public void setAccessPolicyACIllegal(String match, String noneMatch) {
+        DataLakeRequestConditions mac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        def mac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
-
-
-        dataLakeFileSystemClient.setAccessPolicyWithResponse(null, null, mac, null, null)
-
-
-        thrown(UnsupportedOperationException)
+        assertThrows(UnsupportedOperationException.class,
+            () -> dataLakeFileSystemClient.setAccessPolicyWithResponse(null, null, mac, null, null));
     }
 
-    def "Set access policy error"() {
+    @Test
+    public void setAccessPolicyError() {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-
-
-        dataLakeFileSystemClient.setAccessPolicy(null, null)
-
-
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.setAccessPolicy(null, null));
     }
 
-    def "Get access policy"() {
-
-        def identifier = new DataLakeSignedIdentifier()
+    @Test
+    public void getAccessPolicy() {
+        DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(namer.getUtcNow())
-                .setExpiresOn(namer.getUtcNow().plusDays(1))
-                .setPermissions("r"))
-        def ids = [identifier] as List
-        dataLakeFileSystemClient.setAccessPolicy(PublicAccessType.BLOB, ids)
-        def response = dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null)
+                .setStartsOn(testResourceNamer.now())
+                .setExpiresOn(testResourceNamer.now().plusDays(1))
+                .setPermissions("r"));
+        dataLakeFileSystemClient.setAccessPolicy(PublicAccessType.BLOB, Collections.singletonList(identifier));
+        Response<FileSystemAccessPolicies> response = dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null);
 
-
-        response.getStatusCode() == 200
-        response.getValue().getDataLakeAccessType() == PublicAccessType.BLOB
-        validateBasicHeaders(response.getHeaders())
-        response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS)
-        response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS)
-        response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
+        assertEquals(200, response.getStatusCode());
+        assertEquals(PublicAccessType.BLOB, response.getValue().getDataLakeAccessType());
+        validateBasicHeaders(response.getHeaders());
+        assertEquals(identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS),
+            response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn());
+        assertEquals(identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS),
+            response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn());
+        assertEquals(identifier.getAccessPolicy().getPermissions(),
+            response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions());
     }
 
-    def "Get access policy lease"() {
+    @Test
+    public void getAccessPolicyLease() {
+        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
 
-        def leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID)
-
-
-        dataLakeFileSystemClient.getAccessPolicyWithResponse(leaseID, null, null).getStatusCode() == 200
+        assertEquals(200, dataLakeFileSystemClient.getAccessPolicyWithResponse(leaseID, null, null).getStatusCode());
     }
 
-    def "Get access policy lease fail"() {
-
-        dataLakeFileSystemClient.getAccessPolicyWithResponse(GARBAGE_LEASE_ID, null, null)
-
-
-        thrown(DataLakeStorageException)
+    @Test
+    public void getAccessPolicyLeaseFail() {
+        assertThrows(DataLakeStorageException.class, () ->
+            dataLakeFileSystemClient.getAccessPolicyWithResponse(GARBAGE_LEASE_ID, null, null));
     }
 
-    def "Get access policy error"() {
+    @Test
+    public void getAccessPolicyError() {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
-        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-
-
-        dataLakeFileSystemClient.getAccessPolicy()
-
-
-        thrown(DataLakeStorageException)
+        assertThrows(DataLakeStorageException.class, dataLakeFileSystemClient::getAccessPolicy);
     }
 
-    def "Builder bearer token validation"() {
+    @Test
+    public void builderBearerTokenValidation() {
         // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
-
         String endpoint = BlobUrlParts.parse(dataLakeFileSystemClient.getFileSystemUrl()).setScheme("http").toUrl()
-        def builder = new DataLakeFileSystemClientBuilder()
+            .toString();
+
+        assertThrows(IllegalArgumentException.class, () -> new DataLakeFileSystemClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-
-
-        builder.buildClient()
-
-
-        thrown(IllegalArgumentException)
+            .buildClient());
     }
 
-    def "List Paths OAuth"() {
+    @Test
+    public void listPathsOAuth() {
+        DataLakeFileSystemClient fsClient = getOAuthServiceClient()
+            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName());
+        fsClient.createFile(generatePathName());
 
-        def client = getOAuthServiceClient()
-        def fsClient = client.getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-        fsClient.createFile(generatePathName())
-
-
-        Iterator<PathItem> items = fsClient.listPaths().iterator()
-
-
-        items.hasNext()
+        assertTrue(fsClient.listPaths().iterator().hasNext());
     }
 
-    def "Set ACL root directory"() {
+    @Test
+    public void setACLRootDirectory() {
+        DataLakeDirectoryClient dc = dataLakeFileSystemClient.getRootDirectoryClient();
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
 
-        def dc = dataLakeFileSystemClient.getRootDirectoryClient()
+        PathInfo resp = dc.setAccessControlList(pathAccessControlEntries, null, null);
 
-        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
-
-
-        def resp = dc.setAccessControlList(pathAccessControlEntries, null, null)
-
-
-        notThrown(DataLakeStorageException)
-        resp.getETag()
-        resp.getLastModified()
+        assertNotNull(resp.getETag());
+        assertNotNull(resp.getLastModified());
     }
 
-    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
-    def "Per call policy"() {
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    @Test
+    public void perCallPolicy() {
+        DataLakeFileSystemClient dataLakeFileSystemClient = getFileSystemClientBuilder(getFileSystemUrl())
+            .addPolicy(getPerCallVersionPolicy()).credential(getDataLakeCredential()).buildClient();
 
-        def dataLakeFileSystemClient = getFileSystemClientBuilder(dataLakeFileSystemClient.getFileSystemUrl()).addPolicy(getPerCallVersionPolicy()).credential(getDataLakeCredential()).buildClient()
+        // blob endpoint
+        assertEquals("2019-02-02", dataLakeFileSystemClient.getPropertiesWithResponse(null, null, null)
+            .getHeaders().getValue("x-ms-version"));
 
-         "blob endpoint"
-        def response = dataLakeFileSystemClient.getPropertiesWithResponse(null, null, null)
-
-
-        notThrown(DataLakeStorageException)
-        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
-
-         "dfs endpoint"
-        response = dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null)
-
-
-        notThrown(DataLakeStorageException)
-        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+        // dfs endpoint
+        assertEquals("2019-02-02", dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null)
+            .getHeaders().getValue("x-ms-version"));
     }
 
-//    def "Rename"() {
+//    @Test
+//    public void rename() {
+//        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());
 //
-//        def newName = generateFileSystemName()
-//
-//
-//        def renamedContainer = dataLakeFileSystemClient.rename(newName)
-//
-//
-//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-//
-//        cleanup:
-//        renamedContainer.delete()
+//        assertEquals(200, renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode())
 //    }
-
-//    def "Rename sas"() {
 //
-//        def service = new AccountSasService()
-//            .setBlobAccess(true)
-//        def resourceType = new AccountSasResourceType()
+//    @Test
+//    public void renameSas() {
+//        AccountSasService service = new AccountSasService().setBlobAccess(true);
+//        AccountSasResourceType resourceType = new AccountSasResourceType()
 //            .setContainer(true)
 //            .setService(true)
-//            .setObject(true)
-//        def permissions = new AccountSasPermission()
+//            .setObject(true);
+//        AccountSasPermission permissions = new AccountSasPermission()
 //            .setReadPermission(true)
 //            .setCreatePermission(true)
 //            .setWritePermission(true)
-//            .setDeletePermission(true)
-//        def expiryTime = namer.getUtcNow().plusDays(1)
+//            .setDeletePermission(true);
 //
-//        def newName = generateFileSystemName()
-//        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
-//        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
-//        def sasClient = getFileSystemClient(sas, dataLakeFileSystemClient.getFileSystemUrl())
+//        String sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(
+//            testResourceNamer.now().plusDays(1), permissions, service, resourceType));
+//        DataLakeFileSystemClient sasClient = getFileSystemClient(sas, dataLakeFileSystemClient.getFileSystemUrl());
 //
+//        DataLakeFileSystemClient renamedContainer = sasClient.rename(generateFileSystemName());
 //
-//        def renamedContainer = sasClient.rename(newName)
-//
-//
-//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-//
-//        cleanup:
-//        renamedContainer.delete()
+//        assertEquals(200, renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode());
 //    }
-
-//    @Unroll
-//    def "Rename AC"() {
 //
-//        leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, leaseID)
-//        def cac = new DataLakeRequestConditions()
-//            .setLeaseId(leaseID)
+//    @ParameterizedTest
+//    @MethodSource("renameACSupplier")
+//    public void renameAC(String leaseID) {
+//        DataLakeRequestConditions cac = new DataLakeRequestConditions().setLeaseId(setupFileSystemLeaseCondition(dataLakeFileSystemClient, leaseID));
 //
-//
-//        dataLakeFileSystemClient.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
-//            null, null).getStatusCode() == 200
-//
-//        where:
-//        leaseID         || _
-//        null            || _
-//        RECEIVED_LEASE_ID || _
+//        assertEquals(200, dataLakeFileSystemClient
+//            .renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac), null,
+//                null)
+//            .getStatusCode());
 //    }
-
-//    @Unroll
-//    def "Rename AC fail"() {
 //
-//        def cac = new DataLakeRequestConditions()
-//            .setLeaseId(leaseID)
-//
-//
-//        dataLakeFileSystemClient.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
-//            null, null)
-//
-//
-//        thrown(DataLakeStorageException)
-//
-//        where:
-//        leaseID         || _
-//        GARBAGE_LEASE_ID  || _
+//    private static Stream<String> renameACSupplier() {
+//        return Stream.of(null, RECEIVED_LEASE_ID);
 //    }
-
-//    @Unroll
-//    def "Rename AC illegal"() {
 //
-//        def ac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+//    @Test
+//    public void renameACFail() {
+//        DataLakeRequestConditions cac = new DataLakeRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
 //
-//
-//        dataLakeFileSystemClient.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(ac),
-//            null, null)
-//
-//
-//        thrown(UnsupportedOperationException)
-//
-//        where:
-//        modified | unmodified | match        | noneMatch
-//        OLD_DATE  | null       | null         | null
-//        null     | NEW_DATE    | null         | null
-//        null     | null       | RECEIVED_ETAG | null
-//        null     | null       | null         | GARBAGE_ETAG
+//        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.renameWithResponse(
+//            new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac), null, null));
 //    }
-
-//    def "Rename error"() {
 //
-//        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-//        def newName = generateFileSystemName()
+//    @ParameterizedTest
+//    @MethodSource("renameACIllegalSupplier")
+//    public void renameACIllegal(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch) {
+//        DataLakeRequestConditions ac = new DataLakeRequestConditions().setIfMatch(match)
+//            .setIfNoneMatch(noneMatch)
+//            .setIfModifiedSince(modified)
+//            .setIfUnmodifiedSince(unmodified);
 //
+//        assertThrows(UnsupportedOperationException.class, () -> dataLakeFileSystemClient.renameWithResponse(
+//            new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(ac), null, null));
+//    }
 //
-//        dataLakeFileSystemClient.rename(newName)
+//    private static Stream<Arguments> renameACIllegalSupplier() {
+//        return Stream.of(
+//            Arguments.of(OLD_DATE, null, null, null),
+//            Arguments.of(null, NEW_DATE, null, null),
+//            Arguments.of(null, null, RECEIVED_ETAG, null),
+//            Arguments.of(null, null, null, GARBAGE_ETAG)
+//        );
+//    }
 //
+//    @Test
+//    public void renameError() {
+//        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 //
-//        thrown(DataLakeStorageException)
+//        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.rename(generateFileSystemName()));
 //    }
 
     private static boolean olderThan20200210ServiceVersion() {

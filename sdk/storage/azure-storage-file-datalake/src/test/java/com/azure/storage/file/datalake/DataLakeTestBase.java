@@ -46,10 +46,12 @@ import okhttp3.ConnectionPool;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
@@ -735,5 +737,17 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected String getFileSystemUrl() {
         return dataLakeFileSystemClient.getFileSystemUrl();
+    }
+
+    public static byte[] convertInputStreamToByteArray(InputStream inputStream, int expectedSize) throws IOException {
+        int b;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(expectedSize);
+        byte[] buffer = new byte[8192];
+
+        while ((b = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, b);
+        }
+
+        return outputStream.toByteArray();
     }
 }
