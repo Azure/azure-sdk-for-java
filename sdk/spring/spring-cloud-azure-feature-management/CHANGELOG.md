@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+Fixes a bug where exclusions from the portal don't map correctly resulting in a `java.lang.ClassCastException` [#35823](https://github.com/Azure/azure-sdk-for-java/issues/35823)
+
 ### Other Changes
 
 ## 5.3.0 (2023-06-28)
