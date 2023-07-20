@@ -378,7 +378,7 @@
     },
     "AZURE_MONITOR_LOGS_RESOURCE_ID": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Eventhub/Namespaces', variables('eventHubsNamespaceName')).id]"
+      "value": "[resourceId('Microsoft.Eventhub/Namespaces', variables('eventHubsNamespaceName'))]"
     }
   }
 }
