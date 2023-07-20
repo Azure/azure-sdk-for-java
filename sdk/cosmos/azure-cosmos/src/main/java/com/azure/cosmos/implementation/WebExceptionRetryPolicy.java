@@ -24,7 +24,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
     private StopWatch durationTimer = new StopWatch();
     private RetryContext retryContext;
-    private Duration retryDelay;
+    private int retryDelay;
     private RxDocumentServiceRequest request;
     private HttpTimeoutPolicy timeoutPolicy;
     private boolean isReadRequest;
@@ -67,11 +67,11 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                 return shouldRetryAddressRefresh();
             }
 
-            return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
         }
 
         logger.warn("Received retriable web exception, will retry", e);
-        return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
+        return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         if (!isOutOfRetries()) {
             ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCountTimeout);
             this.request.setResponseTimeout(current.getResponseTimeout());
-            this.retryDelay = Duration.ofSeconds(current.getDelayForNextRequestInSeconds());
+            this.retryDelay = current.getDelayForNextRequestInSeconds();
         }
         this.locationEndpoint = request.requestContext.locationEndpointToRoute;
     }
