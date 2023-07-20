@@ -94,13 +94,13 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     /**
      * Gets a Network Fabric Sku.
      *
-     * <p>Implements Network Fabric Sku GET method.
+     * <p>Implements Network Fabric SKU GET method.
      *
-     * @param networkFabricSkuName Name of the Network Fabric Sku.
+     * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricSku resource definition along with {@link Response} on successful completion of {@link
+     * @return the Network Fabric SKU resource definition along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -139,14 +139,14 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     /**
      * Gets a Network Fabric Sku.
      *
-     * <p>Implements Network Fabric Sku GET method.
+     * <p>Implements Network Fabric SKU GET method.
      *
-     * @param networkFabricSkuName Name of the Network Fabric Sku.
+     * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricSku resource definition along with {@link Response} on successful completion of {@link
+     * @return the Network Fabric SKU resource definition along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -182,13 +182,13 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     /**
      * Gets a Network Fabric Sku.
      *
-     * <p>Implements Network Fabric Sku GET method.
+     * <p>Implements Network Fabric SKU GET method.
      *
-     * @param networkFabricSkuName Name of the Network Fabric Sku.
+     * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricSku resource definition on successful completion of {@link Mono}.
+     * @return the Network Fabric SKU resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFabricSkuInner> getAsync(String networkFabricSkuName) {
@@ -198,14 +198,14 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     /**
      * Gets a Network Fabric Sku.
      *
-     * <p>Implements Network Fabric Sku GET method.
+     * <p>Implements Network Fabric SKU GET method.
      *
-     * @param networkFabricSkuName Name of the Network Fabric Sku.
+     * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricSku resource definition along with {@link Response}.
+     * @return the Network Fabric SKU resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkFabricSkuInner> getWithResponse(String networkFabricSkuName, Context context) {
@@ -215,13 +215,13 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     /**
      * Gets a Network Fabric Sku.
      *
-     * <p>Implements Network Fabric Sku GET method.
+     * <p>Implements Network Fabric SKU GET method.
      *
-     * @param networkFabricSkuName Name of the Network Fabric Sku.
+     * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricSku resource definition.
+     * @return the Network Fabric SKU resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricSkuInner get(String networkFabricSkuName) {
@@ -229,13 +229,13 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     }
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Fabric SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricSkuInner>> listSinglePageAsync() {
@@ -275,15 +275,15 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     }
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Fabric SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricSkuInner>> listSinglePageAsync(Context context) {
@@ -320,13 +320,13 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     }
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus as paginated response with {@link PagedFlux}.
+     * @return list of Network Fabric SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricSkuInner> listAsync() {
@@ -335,15 +335,15 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     }
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus as paginated response with {@link PagedFlux}.
+     * @return list of Network Fabric SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricSkuInner> listAsync(Context context) {
@@ -352,13 +352,13 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     }
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricSkuInner> list() {
@@ -366,15 +366,15 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
     }
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricSkuInner> list(Context context) {
@@ -389,7 +389,7 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Fabric SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricSkuInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -427,7 +427,7 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Fabric SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricSkuInner>> listBySubscriptionNextSinglePageAsync(

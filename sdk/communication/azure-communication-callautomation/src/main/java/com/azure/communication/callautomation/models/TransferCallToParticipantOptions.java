@@ -18,10 +18,7 @@ import com.azure.core.annotation.Fluent;
 public final class TransferCallToParticipantOptions {
     private final CommunicationIdentifier targetParticipant;
     private final CustomContext customContext;
-
-    /**
-     * The operational context
-     */
+    private String callbackUrlOverride;
     private String operationContext;
 
     /**
@@ -98,5 +95,25 @@ public final class TransferCallToParticipantOptions {
      */
     public CustomContext getCustomContext() {
         return customContext;
+    }
+
+    /**
+     * Get the callbackUrlOverride.
+     *
+     * @return the callbackUrlOverride
+     */
+    public String  getCallbackUrlOverride() {
+        return callbackUrlOverride;
+    }
+
+    /**
+     * Set the operationContext.
+     *
+     * @param callbackUrlOverride the callbackUrlOverride to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setCallbackUrlOverride(String callbackUrlOverride) {
+        this.callbackUrlOverride = callbackUrlOverride;
+        return this;
     }
 }

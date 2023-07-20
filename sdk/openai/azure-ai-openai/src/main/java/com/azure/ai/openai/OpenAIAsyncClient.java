@@ -37,6 +37,34 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
 
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
+     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
+     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
+     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
+     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
+    }
+
     /**
      * Return the embeddings for a given prompt.
      *
@@ -438,34 +466,6 @@ public final class OpenAIAsyncClient {
         return chatCompletionsStream.getEvents();
     }
 
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
-    /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
-     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
-     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
-     *
-     * @param serviceClient the service client implementation for Azure OpenAI Service client.
-     */
-    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
-     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
-     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
-     *
-     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
-     */
-    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
-        this.serviceClient = null;
-        openAIServiceClient = serviceClient;
-    }
-
     /**
      * Starts the generation of a batch of images from a text caption.
      *
@@ -479,7 +479,7 @@ public final class OpenAIAsyncClient {
      * @return the {@link Mono} with the image generation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
+    public Mono<ImageResponse> getImages(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         return openAIServiceClient != null

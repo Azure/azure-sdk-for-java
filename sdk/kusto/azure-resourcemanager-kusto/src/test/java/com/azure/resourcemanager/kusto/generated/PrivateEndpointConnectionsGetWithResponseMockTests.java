@@ -31,7 +31,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"ault\"},\"privateLinkServiceConnectionState\":{\"status\":\"jjum\",\"description\":\"waz\",\"actionsRequired\":\"qnmcjngzqdqx\"},\"groupId\":\"jw\",\"provisioningState\":\"yfu\"},\"id\":\"zsvtuikzhajqgl\",\"name\":\"fh\",\"type\":\"l\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"nuchlgmltxdwhmo\"},\"privateLinkServiceConnectionState\":{\"status\":\"sgzv\",\"description\":\"snnjzfpafolpym\",\"actionsRequired\":\"mxq\"},\"groupId\":\"agpgdph\",\"provisioningState\":\"dulajvlejchcs\"},\"id\":\"zknmzlanrupd\",\"name\":\"vnphc\",\"type\":\"zqtpjhmq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("yawbzasqbu", "ljgkyex", "oguyaip", com.azure.core.util.Context.NONE)
+                .getWithResponse("rrkolawjmjs", "wro", "cdxfzzzwyjafitl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("jjum", response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("waz", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("sgzv", response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("snnjzfpafolpym", response.privateLinkServiceConnectionState().description());
     }
 }

@@ -13,15 +13,15 @@ public final class NeighborAddressTests {
     public void testDeserialize() throws Exception {
         NeighborAddress model =
             BinaryData
-                .fromString("{\"address\":\"queziky\",\"operationalState\":\"gxk\"}")
+                .fromString("{\"address\":\"kw\",\"configurationState\":\"Provisioned\"}")
                 .toObject(NeighborAddress.class);
-        Assertions.assertEquals("queziky", model.address());
+        Assertions.assertEquals("kw", model.address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborAddress model = new NeighborAddress().withAddress("queziky");
+        NeighborAddress model = new NeighborAddress().withAddress("kw");
         model = BinaryData.fromObject(model).toObject(NeighborAddress.class);
-        Assertions.assertEquals("queziky", model.address());
+        Assertions.assertEquals("kw", model.address());
     }
 }
