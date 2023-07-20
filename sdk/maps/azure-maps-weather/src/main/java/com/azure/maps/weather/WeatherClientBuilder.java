@@ -49,7 +49,7 @@ import com.azure.maps.weather.implementation.WeatherClientImplBuilder;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * WeatherClient client = new WeatherClientBuilder&#40;&#41;
+ * WeatherClient client = new WeatherClientBuilder&#40;&#41; 
  *     .credential&#40;keyCredential&#41;
  *     .weatherClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;
