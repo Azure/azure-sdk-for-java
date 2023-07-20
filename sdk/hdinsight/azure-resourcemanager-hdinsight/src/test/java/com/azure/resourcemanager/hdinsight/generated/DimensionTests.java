@@ -7,34 +7,33 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.Dimension;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DimensionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Dimension model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"jbazpjuohminy\",\"displayName\":\"norwmduvwpklvx\",\"internalName\":\"ygdxpgpqchis\",\"toBeExportedForShoebox\":false}")
+                    "{\"name\":\"gg\",\"displayName\":\"pijrajcivmmghf\",\"internalName\":\"iwrxgkn\",\"toBeExportedForShoebox\":false}")
                 .toObject(Dimension.class);
-        Assertions.assertEquals("jbazpjuohminy", model.name());
-        Assertions.assertEquals("norwmduvwpklvx", model.displayName());
-        Assertions.assertEquals("ygdxpgpqchis", model.internalName());
+        Assertions.assertEquals("gg", model.name());
+        Assertions.assertEquals("pijrajcivmmghf", model.displayName());
+        Assertions.assertEquals("iwrxgkn", model.internalName());
         Assertions.assertEquals(false, model.toBeExportedForShoebox());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Dimension model =
             new Dimension()
-                .withName("jbazpjuohminy")
-                .withDisplayName("norwmduvwpklvx")
-                .withInternalName("ygdxpgpqchis")
+                .withName("gg")
+                .withDisplayName("pijrajcivmmghf")
+                .withInternalName("iwrxgkn")
                 .withToBeExportedForShoebox(false);
         model = BinaryData.fromObject(model).toObject(Dimension.class);
-        Assertions.assertEquals("jbazpjuohminy", model.name());
-        Assertions.assertEquals("norwmduvwpklvx", model.displayName());
-        Assertions.assertEquals("ygdxpgpqchis", model.internalName());
+        Assertions.assertEquals("gg", model.name());
+        Assertions.assertEquals("pijrajcivmmghf", model.displayName());
+        Assertions.assertEquals("iwrxgkn", model.internalName());
         Assertions.assertEquals(false, model.toBeExportedForShoebox());
     }
 }

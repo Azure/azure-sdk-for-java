@@ -7,11 +7,10 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.EncryptionInTransitProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EncryptionInTransitPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EncryptionInTransitProperties model =
             BinaryData
                 .fromString("{\"isEncryptionInTransitEnabled\":false}")
@@ -19,8 +18,8 @@ public final class EncryptionInTransitPropertiesTests {
         Assertions.assertEquals(false, model.isEncryptionInTransitEnabled());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EncryptionInTransitProperties model =
             new EncryptionInTransitProperties().withIsEncryptionInTransitEnabled(false);
         model = BinaryData.fromObject(model).toObject(EncryptionInTransitProperties.class);
