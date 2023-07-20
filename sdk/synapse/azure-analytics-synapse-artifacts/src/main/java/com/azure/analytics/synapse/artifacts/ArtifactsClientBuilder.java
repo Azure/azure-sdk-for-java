@@ -21,7 +21,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -44,7 +43,6 @@ import java.util.Objects;
 /** A builder for creating a new instance of the ArtifactsClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            ArtifactsClient.class,
             LinkConnectionClient.class,
             RunNotebookClient.class,
             KqlScriptsClient.class,
@@ -69,7 +67,6 @@ import java.util.Objects;
             TriggerClient.class,
             TriggerRunClient.class,
             WorkspaceClient.class,
-            ArtifactsAsyncClient.class,
             LinkConnectionAsyncClient.class,
             RunNotebookAsyncClient.class,
             KqlScriptsAsyncClient.class,
@@ -303,7 +300,6 @@ public final class ArtifactsClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
@@ -319,16 +315,6 @@ public final class ArtifactsClientBuilder
                         .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
-    }
-
-    /**
-     * Builds an instance of ArtifactsAsyncClient class.
-     *
-     * @return an instance of ArtifactsAsyncClient.
-     */
-    @Generated
-    public ArtifactsAsyncClient buildAsyncClient() {
-        return new ArtifactsAsyncClient(buildInnerClient());
     }
 
     /**
@@ -569,16 +555,6 @@ public final class ArtifactsClientBuilder
     @Generated
     public WorkspaceAsyncClient buildWorkspaceAsyncClient() {
         return new WorkspaceAsyncClient(buildInnerClient().getWorkspaces());
-    }
-
-    /**
-     * Builds an instance of ArtifactsClient class.
-     *
-     * @return an instance of ArtifactsClient.
-     */
-    @Generated
-    public ArtifactsClient buildClient() {
-        return new ArtifactsClient(buildInnerClient());
     }
 
     /**
