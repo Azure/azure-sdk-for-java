@@ -78,6 +78,7 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isLiveMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
             addTestProxySanitizer();
         }
 
