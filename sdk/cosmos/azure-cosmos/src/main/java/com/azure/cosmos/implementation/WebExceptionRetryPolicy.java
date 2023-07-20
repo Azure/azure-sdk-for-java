@@ -50,11 +50,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        if (!WebExceptionUtility.isWebExceptionRetriable(e)) {
-            // Have caller propagate original exception.
-            this.durationTimer.stop();
-            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
-        }
+
 
         // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
         CosmosException webException = Utils.as(e, CosmosException.class);
@@ -68,6 +64,12 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             }
 
             return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
+        }
+
+        if (!WebExceptionUtility.isWebExceptionRetriable(e)) {
+            // Have caller propagate original exception.
+            this.durationTimer.stop();
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
         }
 
         logger.warn("Received retriable web exception, will retry", e);
