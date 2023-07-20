@@ -215,16 +215,24 @@ class BulkWriter(container: CosmosAsyncContainer,
                                       rootNode,
                                       readManyOperation.cosmosItemIdentity.getPartitionKey,
                                       new CosmosBulkItemRequestOptions().setIfMatchETag(etag.asText()),
-                                      operationContext)
-                              case None => CosmosBulkOperations.getCreateItemOperation(rootNode, readManyOperation.cosmosItemIdentity.getPartitionKey)
+                                      OperationContext(
+                                          readManyOperation.operationContext.itemId,
+                                          readManyOperation.operationContext.partitionKeyValue,
+                                          Some(etag.asText()),
+                                          readManyOperation.operationContext.attemptNumber,
+                                          Some(readManyOperation.objectNode)
+                                      ))
+                              case None => CosmosBulkOperations.getCreateItemOperation(
+                                  rootNode,
+                                  readManyOperation.cosmosItemIdentity.getPartitionKey,
+                                  OperationContext(
+                                      readManyOperation.operationContext.itemId,
+                                      readManyOperation.operationContext.partitionKeyValue,
+                                      None,
+                                      readManyOperation.operationContext.attemptNumber,
+                                      Some(readManyOperation.objectNode)
+                                  ))
                           }
-
-                          // Important step
-                          // Set up the sourceItem which will be used during retry
-                          ImplementationBridgeHelpers
-                              .ItemBulkOperationHelper
-                              .getItemBulkOperationAccessor
-                              .addSourceItem(bulkItemOperation.asInstanceOf[ItemBulkOperation[ObjectNode, OperationContext]], readManyOperation.objectNode)
 
                           this.emitBulkInput(bulkItemOperation)
                       }
@@ -568,18 +576,12 @@ class BulkWriter(container: CosmosAsyncContainer,
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} ${getThreadInfo}")
 
-      // If the write strategy is patchBulkUpdate, the bulkItemOperation.Item will not be the original objectNode,
+      // If the write strategy is patchBulkUpdate, the OperationContext.sourceItem will not be the original objectNode,
       // It is computed through read item from cosmosdb, and then patch the item locally.
       // During retry, it is important to use the original objectNode (for example for preCondition failure, it requires to go through the readMany step again)
       val sourceItem = itemOperation match {
-          case bulkItemOperation: ItemBulkOperation[ObjectNode, OperationContext] =>
-              val bulkOperationSourceItemOpt = Option.apply(
-                  ImplementationBridgeHelpers
-                      .ItemBulkOperationHelper
-                      .getItemBulkOperationAccessor
-                      .getSourceItem(bulkItemOperation))
-
-              bulkOperationSourceItemOpt match {
+          case _: ItemBulkOperation[ObjectNode, OperationContext] =>
+              context.sourceItem match {
                   case Some(bulkOperationSourceItem) => bulkOperationSourceItem
                   case None => itemOperation.getItem.asInstanceOf[ObjectNode]
               }
@@ -842,9 +844,11 @@ class BulkWriter(container: CosmosAsyncContainer,
     itemId: String,
     partitionKeyValue: PartitionKey,
     eTag: Option[String],
-    attemptNumber: Int /** starts from 1 * */)
+    attemptNumber: Int /** starts from 1 * */,
+    sourceItem: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
 
-  private case class ReadManyOperation(
+
+    private case class ReadManyOperation(
                                        cosmosItemIdentity: CosmosItemIdentity,
                                        objectNode: ObjectNode,
                                        operationContext: OperationContext)

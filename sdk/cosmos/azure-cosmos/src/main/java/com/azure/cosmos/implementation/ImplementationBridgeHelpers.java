@@ -26,7 +26,6 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
-import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -46,7 +45,6 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
-import com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -1572,47 +1570,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosSessionRetryOptionsAccessor {
             CosmosRegionSwitchHint getRegionSwitchHint(SessionRetryOptions sessionRetryOptions);
-        }
-    }
-
-    public static final class ItemBulkOperationHelper {
-        private static final AtomicReference<Boolean> itemBulkOperationClassLoaded = new AtomicReference<>(false);
-        private static final AtomicReference<ItemBulkOperationAccessor> accessor = new AtomicReference<>();
-
-        private ItemBulkOperationHelper() {}
-
-        public static ItemBulkOperationAccessor getItemBulkOperationAccessor() {
-
-            if (!itemBulkOperationClassLoaded.get()) {
-                logger.debug("Initializing itemBulkOperationAccessor...");
-                initializeAllAccessors();
-            }
-
-            ItemBulkOperationAccessor snapshot = accessor.get();
-
-            if (snapshot == null) {
-                logger.error("itemBulkOperationAccessor is not initialized yet!");
-                System.exit(9728); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public static void setItemBulkOperationAccessor(final ItemBulkOperationAccessor newAccessor) {
-
-            assert (newAccessor != null);
-
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("ItemBulkOperationAccessor already initialized!");
-            } else {
-                logger.debug("Setting ItemBulkOperationAccessor...");
-                itemBulkOperationClassLoaded.set(true);
-            }
-        }
-
-        public interface ItemBulkOperationAccessor {
-            ObjectNode getSourceItem(ItemBulkOperation itemBulkOperation);
-            void addSourceItem(ItemBulkOperation itemBulkOperation, ObjectNode sourceItem);
         }
     }
 }

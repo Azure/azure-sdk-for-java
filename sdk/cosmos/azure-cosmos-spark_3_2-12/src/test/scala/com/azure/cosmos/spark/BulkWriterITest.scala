@@ -4,9 +4,9 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
-import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemResponse, PartitionKey, ThroughputProperties, UniqueKey, UniqueKeyPolicy}
+import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, ThroughputProperties, UniqueKey, UniqueKeyPolicy}
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
@@ -1093,6 +1093,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       val containerProperties = container.read().block().getProperties
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
+      // if the item does not exists, patchBulkUpdate essentially will create those items
+      // Validate that patchBulkUpdate can create items successfully
       val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemPatchBulkUpdate,
           5,
@@ -1100,7 +1102,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           bulkMaxPendingOperations = Some(900),
           patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
 
-      val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+      var bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
       val items = mutable.Map[String, ObjectNode]()
       for (_ <- 0 until 5000) {
@@ -1120,6 +1122,22 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           val expectedItem = items(itemFromDB.get("id").textValue())
           secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
       }
+
+      // validate patchBulkUpdate can patch/update item successfully
+      val itemToBeUpdated = items.values.head
+      val itemToBeUpdatedId = itemToBeUpdated.get(CosmosConstants.Properties.Id).asText()
+      val patchItem = objectMapper.createObjectNode()
+      patchItem.put("newPropertyString", UUID.randomUUID().toString)
+      patchItem.put("propInt", RandomUtils.nextInt())
+      patchItem.put("id", itemToBeUpdatedId)
+
+      bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+      bulkWriter.scheduleWrite(new PartitionKey(itemToBeUpdatedId), patchItem)
+
+      bulkWriter.flushAndClose()
+      val itemsFromDB = container.readItem(itemToBeUpdatedId, new PartitionKey(itemToBeUpdatedId), classOf[ObjectNode]).block().getItem
+      itemsFromDB.get("newPropertyString").asText() shouldEqual patchItem.get("newPropertyString").asText()
+      itemsFromDB.get("propInt").asInt() shouldEqual patchItem.get("propInt").asInt()
   }
 
   private def getItem(id: String): ObjectNode = {

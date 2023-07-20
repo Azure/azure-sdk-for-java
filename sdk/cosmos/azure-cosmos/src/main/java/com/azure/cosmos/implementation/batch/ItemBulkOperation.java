@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -12,7 +11,6 @@ import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -30,10 +28,6 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
-
-    // ONLY used for spark SDK
-    // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
-    private ObjectNode sourceItem;
 
     private String partitionKeyJson;
     private BulkOperationRetryPolicy bulkOperationRetryPolicy;
@@ -157,33 +151,4 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     void setRetryPolicy(BulkOperationRetryPolicy bulkOperationRetryPolicy) {
         this.bulkOperationRetryPolicy = bulkOperationRetryPolicy;
     }
-
-    ObjectNode getSourceItem() {
-        return this.sourceItem;
-    }
-
-    void setSourceItem(ObjectNode objectNode) {
-        this.sourceItem = objectNode;
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.ItemBulkOperationHelper.setItemBulkOperationAccessor(
-            new ImplementationBridgeHelpers.ItemBulkOperationHelper.ItemBulkOperationAccessor() {
-                @Override
-                public ObjectNode getSourceItem(ItemBulkOperation itemBulkOperation) {
-                    return itemBulkOperation.getSourceItem();
-                }
-
-                @Override
-                public void addSourceItem(ItemBulkOperation itemBulkOperation, ObjectNode sourceItem) {
-                    itemBulkOperation.setSourceItem(sourceItem);
-                }
-            }
-        );
-    }
-
-    static { initialize(); }
 }
