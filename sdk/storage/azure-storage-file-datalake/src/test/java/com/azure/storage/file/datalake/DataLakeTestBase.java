@@ -605,7 +605,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     // This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not
     // seem to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult
     // to work with than was worth it.
-    protected HttpResponse getStubResponse(int code, HttpRequest request) {
+    protected static HttpResponse getStubResponse(int code, HttpRequest request) {
         return new MockHttpResponse(request, code);
     }
 
