@@ -340,6 +340,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.updateRoom(roomId, updateRoomOptions).block();
             });
         assertEquals(400, exception.getResponse().getStatusCode());
+
+        Mono<Response<Void>> response2 = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(response2)
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 204);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -372,6 +378,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.updateRoom(roomId, updateRoomOptions).block();
             });
         assertEquals(400, exception.getResponse().getStatusCode());
+
+        Mono<Response<Void>> response2 = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(response2)
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 204);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -404,6 +416,50 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.updateRoom(roomId, updateRoomOptions).block();
             });
         assertEquals(400, exception.getResponse().getStatusCode());
+
+        Mono<Response<Void>> response2 = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(response2)
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 204);
+                }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomWithInvalidRoomId(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "updateRoomValidUntilInPast");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(createRoomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
+
+        String roomId = response1.block().getValue().getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
+                .setValidFrom(VALID_FROM.minusMonths(6))
+                .setValidUntil(VALID_FROM.minusMonths(3));
+
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.updateRoom(roomId, updateRoomOptions).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
+
+        Mono<Response<Void>> response2 = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(response2)
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 204);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -649,6 +705,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.addOrUpdateParticipants(roomId, participants).block();
             });
         assertEquals(400, exception.getResponse().getStatusCode());
+
+        Mono<Response<Void>> response2 = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(response2)
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 204);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -771,6 +833,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
             assertEquals(ParticipantRole.ATTENDEE, response4.getRole());
         })
                 .verifyComplete();
+
+        Mono<Response<Void>> response4 = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(response4)
+                .assertNext(result4 -> {
+                    assertEquals(result4.getStatusCode(), 204);
+                }).verifyComplete();
 
     }
 

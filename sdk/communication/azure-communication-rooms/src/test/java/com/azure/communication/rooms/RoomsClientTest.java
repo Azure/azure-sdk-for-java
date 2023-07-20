@@ -383,6 +383,20 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRoomSyncNoParticipants(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncNoAttributes");
+        assertNotNull(roomsClient);
+        CommunicationRoom createCommunicationRoom = roomsClient.createRoom(new CreateRoomOptions().setValidFrom(VALID_FROM).setValidUntil(VALID_FROM.plusDays(120)));
+        assertHappyPath(createCommunicationRoom);
+
+        String roomId = createCommunicationRoom.getRoomId();
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRoomSyncOnlyValidFrom(HttpClient httpClient) {
         roomsClient = setupSyncClient(httpClient, "createRoomSyncOnlyValidFrom");
         assertNotNull(roomsClient);
@@ -533,6 +547,9 @@ public class RoomsClientTest extends RoomsTestBase {
         assertThrows(HttpResponseException.class, () -> {
             roomsClient.updateRoom(roomId, updateRoomOptions);
         });
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
     @ParameterizedTest
@@ -557,6 +574,9 @@ public class RoomsClientTest extends RoomsTestBase {
         assertThrows(HttpResponseException.class, () -> {
             roomsClient.updateRoom(roomId, updateRoomOptions);
         });
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
     @ParameterizedTest
@@ -581,6 +601,36 @@ public class RoomsClientTest extends RoomsTestBase {
         assertThrows(HttpResponseException.class, () -> {
             roomsClient.updateRoom(roomId, updateRoomOptions);
         });
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomSyncWithInvalidRoomId(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithInvalidRoomId");
+        assertNotNull(roomsClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
+        assertHappyPath(createdRoom);
+
+        String roomId = createdRoom.getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_FROM.plusMonths(3));
+
+        assertThrows(HttpResponseException.class, () -> {
+            roomsClient.updateRoom("Invalid", updateRoomOptions);
+        });
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
     @ParameterizedTest
@@ -805,6 +855,9 @@ public class RoomsClientTest extends RoomsTestBase {
         assertThrows(HttpResponseException.class, () -> {
             roomsClient.updateRoomWithResponse(roomId, updateRoomOptions, Context.NONE);
         });
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
     @ParameterizedTest
@@ -840,6 +893,9 @@ public class RoomsClientTest extends RoomsTestBase {
         assertThrows(HttpResponseException.class, () -> {
             roomsClient.addOrUpdateParticipants(roomId, participants);
         });
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
     private RoomsClient setupSyncClient(HttpClient httpClient, String testName) {
