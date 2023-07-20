@@ -96,7 +96,9 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     private void setupUnitTest(HttpClient mockHttpClient) {
         String threadId = "19:4b72178530934b7790135dd9359205e0@thread.v2";
         String mockToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
-        client = getChatClientBuilder(mockToken, mockHttpClient).buildAsyncClient();
+        client =
+            getChatClientBuilder(mockToken,
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : mockHttpClient).buildAsyncClient();
         chatThreadClient = client.getChatThreadClient(threadId);
     }
 
@@ -902,6 +904,8 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             }
         };
         setupUnitTest(mockHttpClient);
+        setupTest(httpClient, "canListReadReceipts");
+
         PagedFlux<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
 
         // // process the iterableByPage

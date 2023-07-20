@@ -42,12 +42,12 @@ public class ChatClientTestBase extends TestProxyTestBase {
 
         builder
             .endpoint(ENDPOINT)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new CommunicationTokenCredential(generateRawToken()));
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "repeatability-request-id"))));
             return builder;
         } else {
             builder.credential(new CommunicationTokenCredential(token));

@@ -71,7 +71,9 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     }
 
     private void setupTest(HttpClient httpClient, String testName) {
-        communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
+        communicationClient =
+            getCommunicationIdentityClientBuilder(interceptorManager.isPlaybackMode()
+                ? interceptorManager.getPlaybackClient() : httpClient).buildClient();
         firstParticipant = communicationClient.createUser();
         secondParticipant = communicationClient.createUser();
         firstAddedParticipant = communicationClient.createUser();
@@ -613,7 +615,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canSendReadReceiptSync(HttpClient httpClient) throws InterruptedException {
+    public void canSendReadReceiptSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendReadReceiptSync");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
