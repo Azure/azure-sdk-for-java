@@ -48,9 +48,9 @@ class PurviewWorkflowClientTestBase extends TestProxyTestBase {
         List<TestProxySanitizer> customSanitizer = new ArrayList<>();
         if (!interceptorManager.isLiveMode()) {
             // sanitize response body keys
-            customSanitizer.add(new TestProxySanitizer("$..requestor", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
-            customSanitizer.add(new TestProxySanitizer("$..createdBy", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
-            customSanitizer.add(new TestProxySanitizer("$..updatedBy", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..requestor", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..createdBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..updatedBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizer);
         }
 
