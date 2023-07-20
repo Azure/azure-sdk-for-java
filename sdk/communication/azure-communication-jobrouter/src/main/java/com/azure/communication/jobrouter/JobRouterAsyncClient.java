@@ -10,6 +10,7 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWork
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferRequest;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobStatusSelectorInternal;
@@ -17,7 +18,9 @@ import com.azure.communication.jobrouter.implementation.models.RouterWorkerInter
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerStateSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CloseJobOptions;
+import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
@@ -53,7 +56,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p><strong>Instantiating an asynchronous job router Client</strong></p>
  * <!-- src_embed com.azure.communication.jobrouter.jobrouterasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; Initialize the router client builder
+ * &#47;&#47; Initialize the jobrouter client builder
  * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the jobrouter client
@@ -340,19 +343,20 @@ public final class JobRouterAsyncClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param jobId Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     * provided, default value of "Cancelled" is set.
+     * @param cancelJobOptions options object for cancel job operation.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelJob(String jobId, String note, String dispositionCode) {
+    public Mono<Void> cancelJob(CancelJobOptions cancelJobOptions) {
         try {
-            return withContext(context -> cancelJobWithResponse(jobId, note, dispositionCode, context)
+            return withContext(context -> cancelJobWithResponse(
+                cancelJobOptions.getJobId(),
+                cancelJobOptions.getNote(),
+                cancelJobOptions.getDispositionCode(),
+                context)
                 .flatMap(
                     (Response<Void> res) -> {
                         if (res.getValue() != null) {
@@ -369,19 +373,19 @@ public final class JobRouterAsyncClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param jobId Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     * provided, default value of "Cancelled" is set.
+     * @param cancelJobOptions options object to cancel a job.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelJobWithResponse(String jobId, String note, String dispositionCode) {
+    public Mono<Response<Void>> cancelJobWithResponse(CancelJobOptions cancelJobOptions) {
         try {
-            return withContext(context -> cancelJobWithResponse(jobId, note, dispositionCode, context));
+            return withContext(context -> cancelJobWithResponse(cancelJobOptions.getJobId(),
+                cancelJobOptions.getNote(),
+                cancelJobOptions.getDispositionCode(),
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -400,18 +404,20 @@ public final class JobRouterAsyncClient {
     /**
      * Completes an assigned job.
      *
-     * @param jobId Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param completeJobOptions options for completeJob request.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> completeJob(String jobId, String assignmentId, String note) {
+    public Mono<Void> completeJob(CompleteJobOptions completeJobOptions) {
         try {
-            return withContext(context -> completeJobWithResponse(jobId, assignmentId, note, context)
+            return withContext(context -> completeJobWithResponse(
+                completeJobOptions.getJobId(),
+                completeJobOptions.getAssignmentId(),
+                completeJobOptions.getNote(),
+                context)
                 .flatMap(
                     (Response<Void> res) -> {
                         if (res.getValue() != null) {
@@ -428,18 +434,20 @@ public final class JobRouterAsyncClient {
     /**
      * Completes an assigned job.
      *
-     * @param jobId Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param  completeJobOptions Options object for CompleteJob.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> completeJobWithResponse(String jobId, String assignmentId, String note) {
+    public Mono<Response<Void>> completeJobWithResponse(CompleteJobOptions completeJobOptions) {
         try {
-            return withContext(context -> completeJobWithResponse(jobId, assignmentId, note, context));
+            return withContext(context -> completeJobWithResponse(
+                completeJobOptions.getJobId(),
+                completeJobOptions.getAssignmentId(),
+                completeJobOptions.getJobId(),
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
