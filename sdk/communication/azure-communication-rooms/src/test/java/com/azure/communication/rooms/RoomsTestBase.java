@@ -13,12 +13,15 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -41,12 +44,6 @@ public class RoomsTestBase extends TestProxyTestBase {
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"")
-            .add("roomId");
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile(
-            String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
-
     protected RoomsClientBuilder getRoomsClient(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(
                 CONNECTION_STRING);
@@ -55,27 +52,33 @@ public class RoomsTestBase extends TestProxyTestBase {
 
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.endpoint(communicationEndpoint).credential(new AzureKeyCredential(communicationAccessKey))
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(
+                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+        }
+
         return builder;
     }
 
     protected RoomsClientBuilder getRoomsClientWithToken(HttpClient httpClient, TokenCredential tokenCredential) {
         if (getTestMode() == TestMode.PLAYBACK) {
-            tokenCredential = new FakeCredentials();
+            tokenCredential = new MockTokenCredential();
         }
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint()).credential(tokenCredential)
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(
+                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
         return builder;
     }
@@ -85,12 +88,14 @@ public class RoomsTestBase extends TestProxyTestBase {
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.connectionString(CONNECTION_STRING)
                 .serviceVersion(version)
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(
+                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
         return builder;
     }
@@ -103,12 +108,14 @@ public class RoomsTestBase extends TestProxyTestBase {
         String accessKey = connectionStringObject.getAccessKey();
         builder.endpoint(endpoint)
                 .credential(new AzureKeyCredential(accessKey))
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(
+                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
         return builder;
     }
@@ -160,7 +167,7 @@ public class RoomsTestBase extends TestProxyTestBase {
         });
     }
 
-    static class FakeCredentials implements TokenCredential {
+    static class MockTokenCredential implements TokenCredential {
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
