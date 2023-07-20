@@ -184,7 +184,7 @@ public class BulkExecutorTest extends BatchTestBase {
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
             Flux.deferContextual(context -> executor.execute()).flatMap(response -> {
                 if (response.getResponse() != null) {
-                    logger.debug(String.valueOf(response.getResponse().getCosmosDiagnostics()));
+                    logger.info(String.valueOf(response.getResponse().getCosmosDiagnostics()));
                 }
                 return Mono.just(response);
             });
@@ -228,13 +228,14 @@ public class BulkExecutorTest extends BatchTestBase {
 
         FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
             .operationType(operationType)
+            .connectionType(FaultInjectionConnectionType.DIRECT)
             .build();
 
         FaultInjectionRule rule = new FaultInjectionRuleBuilder(id)
             .condition(condition)
             .result(result)
             .startDelay(Duration.ofSeconds(1))
-            .hitLimit(10)
+            .hitLimit(1)
             .build();
 
 

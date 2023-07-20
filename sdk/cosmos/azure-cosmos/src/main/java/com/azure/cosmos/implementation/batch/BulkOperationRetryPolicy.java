@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.IRetryPolicy;
@@ -82,14 +83,12 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
-    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, CosmosItemOperation itemOperation) {
+    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, ItemBulkOperation itemOperation, CosmosException exception) {
         if (statusCode == StatusCodes.GONE) {
-
-            if (itemOperation.getOperationType() == CosmosItemOperationType.CREATE ||
-                itemOperation.getOperationType() == CosmosItemOperationType.DELETE ||
-                itemOperation.getOperationType() == CosmosItemOperationType.PATCH ||
-                itemOperation.getOperationType() == CosmosItemOperationType.REPLACE ||
-                itemOperation.getOperationType() == CosmosItemOperationType.UPSERT) {
+            if (isWriteOnly(itemOperation) &&
+                BridgeInternal.hasSendingRequestStarted(exception) &&
+                !((GoneException) exception).isBasedOn410ResponseFromService() &&
+                !itemOperation.getRequestOptions().getNonIdempotentWriteRetriesEnabled()) {
                 return Mono.just(false);
             }
 
@@ -120,6 +119,14 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         }
 
         return Mono.just(false);
+    }
+
+    private boolean isWriteOnly(ItemBulkOperation itemOperation) {
+        return itemOperation.getOperationType() == CosmosItemOperationType.CREATE ||
+            itemOperation.getOperationType() == CosmosItemOperationType.DELETE ||
+            itemOperation.getOperationType() == CosmosItemOperationType.PATCH ||
+            itemOperation.getOperationType() == CosmosItemOperationType.REPLACE ||
+            itemOperation.getOperationType() == CosmosItemOperationType.UPSERT;
     }
 
     /**
