@@ -12,7 +12,7 @@ public class CancelJobOptions {
     /**
      * Id of the job to cancel.
      */
-    private String jobId;
+    private final String jobId;
 
     /*
      * A note that will be appended to the jobs' Notes collection with the current timestamp.

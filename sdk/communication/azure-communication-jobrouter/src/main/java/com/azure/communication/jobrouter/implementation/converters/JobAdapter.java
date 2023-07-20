@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.implementation.converters;
 
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
-import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
 import com.azure.communication.jobrouter.implementation.models.JobMatchModeTypeInternal;
 import com.azure.communication.jobrouter.implementation.models.JobMatchingModeInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobAssignmentInternal;
@@ -12,7 +11,6 @@ import com.azure.communication.jobrouter.implementation.models.RouterJobInternal
 import com.azure.communication.jobrouter.implementation.models.RouterJobItemInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.ScheduleAndSuspendModeInternal;
-import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAndMatchMode;

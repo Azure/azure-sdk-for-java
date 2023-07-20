@@ -10,7 +10,6 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWork
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferRequest;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobStatusSelectorInternal;

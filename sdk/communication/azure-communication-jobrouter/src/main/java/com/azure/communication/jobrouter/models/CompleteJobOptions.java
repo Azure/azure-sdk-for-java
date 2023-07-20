@@ -11,12 +11,12 @@ public class CompleteJobOptions {
     /*
      * The id of the job to complete.
      */
-    private String jobId;
+    private final String jobId;
 
     /*
      * The assignment within the job to complete.
      */
-    private String assignmentId;
+    private final String assignmentId;
 
     /*
      * (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
