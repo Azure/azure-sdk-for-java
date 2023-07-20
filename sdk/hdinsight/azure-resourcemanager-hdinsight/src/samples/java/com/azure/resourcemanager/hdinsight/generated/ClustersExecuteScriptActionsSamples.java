@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.models.ExecuteScriptActionParameters;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptAction;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for Clusters ExecuteScriptActions. */
 public final class ClustersExecuteScriptActionsSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/PostExecuteScriptAction.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/PostExecuteScriptAction.json
      */
     /**
      * Sample code: Execute script action on HDInsight cluster.
@@ -36,6 +35,6 @@ public final class ClustersExecuteScriptActionsSamples {
                                     .withParameters("")
                                     .withRoles(Arrays.asList("headnode", "workernode"))))
                     .withPersistOnSuccess(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
