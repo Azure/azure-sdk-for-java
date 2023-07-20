@@ -686,7 +686,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       numberOfIntervalsWithIdenticalActiveOperationSnapshots.incrementAndGet()
       log.logWarning(
         s"${operationName} has been waiting ${numberOfIntervalsWithIdenticalActiveOperationSnapshots} " +
-          s"times for identical set of bulkWrite operations: ${operationsLog} " +
+          s"times for identical set of operations: ${operationsLog} " +
           s"Context: ${operationContext.toString} ${getThreadInfo}"
       )
     } else {
