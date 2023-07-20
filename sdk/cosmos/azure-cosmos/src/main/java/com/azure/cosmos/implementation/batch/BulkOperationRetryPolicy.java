@@ -83,7 +83,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
-    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, ItemBulkOperation itemOperation, CosmosException exception) {
+    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, ItemBulkOperation<?, ?> itemOperation, CosmosException exception) {
         if (statusCode == StatusCodes.GONE) {
             if (isWriteOnly(itemOperation) &&
                 BridgeInternal.hasSendingRequestStarted(exception) &&
@@ -121,7 +121,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return Mono.just(false);
     }
 
-    private boolean isWriteOnly(ItemBulkOperation itemOperation) {
+    private boolean isWriteOnly(ItemBulkOperation<?, ?> itemOperation) {
         return itemOperation.getOperationType() == CosmosItemOperationType.CREATE ||
             itemOperation.getOperationType() == CosmosItemOperationType.DELETE ||
             itemOperation.getOperationType() == CosmosItemOperationType.PATCH ||
