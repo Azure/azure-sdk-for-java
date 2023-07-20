@@ -24,7 +24,6 @@ class ModelsRepositoryTestBase extends TestProxyTestBase {
         }
 
         // If it is record mode, we add record mode policies to the builder.
-        // There is no isRecordMode method on interceptorManger.
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
