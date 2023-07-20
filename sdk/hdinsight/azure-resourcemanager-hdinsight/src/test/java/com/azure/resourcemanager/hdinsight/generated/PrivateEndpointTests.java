@@ -7,19 +7,18 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.PrivateEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"gevqznty\"}").toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("gevqznty", model.id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"zdxss\"}").toObject(PrivateEndpoint.class);
+        Assertions.assertEquals("zdxss", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpoint model = new PrivateEndpoint().withId("gevqznty");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpoint model = new PrivateEndpoint().withId("zdxss");
         model = BinaryData.fromObject(model).toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("gevqznty", model.id());
+        Assertions.assertEquals("zdxss", model.id());
     }
 }

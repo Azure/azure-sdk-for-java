@@ -7,24 +7,25 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.ControllerServices;
 import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnectionInformation;
-import com.azure.resourcemanager.managednetworkfabric.models.InfrastructureServices;
+import com.azure.resourcemanager.managednetworkfabric.models.IsWorkloadManagementNetworkEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedResourceGroupConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricControllerOperationalState;
+import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.WorkloadServices;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The NetworkFabricController resource definition. */
+/** The Network Fabric Controller resource definition. */
 @Fluent
 public final class NetworkFabricControllerInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
-    private NetworkFabricControllerProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private NetworkFabricControllerProperties innerProperties = new NetworkFabricControllerProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -73,7 +74,7 @@ public final class NetworkFabricControllerInner extends Resource {
      *
      * @return the infrastructureServices value.
      */
-    public InfrastructureServices infrastructureServices() {
+    public ControllerServices infrastructureServices() {
         return this.innerProperties() == null ? null : this.innerProperties().infrastructureServices();
     }
 
@@ -82,7 +83,7 @@ public final class NetworkFabricControllerInner extends Resource {
      *
      * @return the workloadServices value.
      */
-    public WorkloadServices workloadServices() {
+    public ControllerServices workloadServices() {
         return this.innerProperties() == null ? null : this.innerProperties().workloadServices();
     }
 
@@ -123,12 +124,49 @@ public final class NetworkFabricControllerInner extends Resource {
     /**
      * Get the workloadManagementNetwork property: A workload management network is required for all the tenant
      * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
-     * any other MSFT/Public endpoints.
+     * any other MSFT/Public endpoints. This is used for the backward compatibility.
      *
      * @return the workloadManagementNetwork value.
      */
     public Boolean workloadManagementNetwork() {
         return this.innerProperties() == null ? null : this.innerProperties().workloadManagementNetwork();
+    }
+
+    /**
+     * Get the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the tenant
+     * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
+     * any other MSFT/Public endpoints.
+     *
+     * @return the isWorkloadManagementNetworkEnabled value.
+     */
+    public IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isWorkloadManagementNetworkEnabled();
+    }
+
+    /**
+     * Set the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the tenant
+     * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
+     * any other MSFT/Public endpoints.
+     *
+     * @param isWorkloadManagementNetworkEnabled the isWorkloadManagementNetworkEnabled value to set.
+     * @return the NetworkFabricControllerInner object itself.
+     */
+    public NetworkFabricControllerInner withIsWorkloadManagementNetworkEnabled(
+        IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricControllerProperties();
+        }
+        this.innerProperties().withIsWorkloadManagementNetworkEnabled(isWorkloadManagementNetworkEnabled);
+        return this;
+    }
+
+    /**
+     * Get the tenantInternetGatewayIds property: List of tenant InternetGateway resource IDs.
+     *
+     * @return the tenantInternetGatewayIds value.
+     */
+    public List<String> tenantInternetGatewayIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantInternetGatewayIds();
     }
 
     /**
@@ -178,13 +216,26 @@ public final class NetworkFabricControllerInner extends Resource {
     }
 
     /**
-     * Get the operationalState property: The Operational Status would always be NULL. Look only in to the Provisioning
-     * state for the latest status.
+     * Get the nfcSku property: Network Fabric Controller SKU.
      *
-     * @return the operationalState value.
+     * @return the nfcSku value.
      */
-    public NetworkFabricControllerOperationalState operationalState() {
-        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
+    public NfcSku nfcSku() {
+        return this.innerProperties() == null ? null : this.innerProperties().nfcSku();
+    }
+
+    /**
+     * Set the nfcSku property: Network Fabric Controller SKU.
+     *
+     * @param nfcSku the nfcSku value to set.
+     * @return the NetworkFabricControllerInner object itself.
+     */
+    public NetworkFabricControllerInner withNfcSku(NfcSku nfcSku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricControllerProperties();
+        }
+        this.innerProperties().withNfcSku(nfcSku);
+        return this;
     }
 
     /**
@@ -283,8 +334,15 @@ public final class NetworkFabricControllerInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model NetworkFabricControllerInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkFabricControllerInner.class);
 }

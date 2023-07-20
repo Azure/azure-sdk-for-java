@@ -8,12 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The NetworkRack resource definition. */
+/** The Network Rack resource definition. */
 @Fluent
 public final class NetworkRackInner extends Resource {
     /*
@@ -65,30 +66,30 @@ public final class NetworkRackInner extends Resource {
     }
 
     /**
-     * Get the networkRackSku property: Network Rack SKU name.
+     * Get the networkRackType property: Network Rack SKU name.
      *
-     * @return the networkRackSku value.
+     * @return the networkRackType value.
      */
-    public String networkRackSku() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkRackSku();
+    public NetworkRackType networkRackType() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRackType();
     }
 
     /**
-     * Set the networkRackSku property: Network Rack SKU name.
+     * Set the networkRackType property: Network Rack SKU name.
      *
-     * @param networkRackSku the networkRackSku value to set.
+     * @param networkRackType the networkRackType value to set.
      * @return the NetworkRackInner object itself.
      */
-    public NetworkRackInner withNetworkRackSku(String networkRackSku) {
+    public NetworkRackInner withNetworkRackType(NetworkRackType networkRackType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkRackProperties();
         }
-        this.innerProperties().withNetworkRackSku(networkRackSku);
+        this.innerProperties().withNetworkRackType(networkRackType);
         return this;
     }
 
     /**
-     * Get the networkFabricId property: Network Fabric ARM resource id.
+     * Get the networkFabricId property: ARM resource ID of the Network Fabric.
      *
      * @return the networkFabricId value.
      */
@@ -97,7 +98,7 @@ public final class NetworkRackInner extends Resource {
     }
 
     /**
-     * Set the networkFabricId property: Network Fabric ARM resource id.
+     * Set the networkFabricId property: ARM resource ID of the Network Fabric.
      *
      * @param networkFabricId the networkFabricId value to set.
      * @return the NetworkRackInner object itself.
@@ -111,7 +112,7 @@ public final class NetworkRackInner extends Resource {
     }
 
     /**
-     * Get the networkDevices property: List of network device ARM resource ids.
+     * Get the networkDevices property: List of network device ARM resource IDs.
      *
      * @return the networkDevices value.
      */
@@ -120,7 +121,7 @@ public final class NetworkRackInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

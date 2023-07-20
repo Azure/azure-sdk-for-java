@@ -174,7 +174,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        TransferCallToParticipantOptions transferCallToParticipantOptions = new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID), null)
+        TransferCallToParticipantOptions transferCallToParticipantOptions = new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
 

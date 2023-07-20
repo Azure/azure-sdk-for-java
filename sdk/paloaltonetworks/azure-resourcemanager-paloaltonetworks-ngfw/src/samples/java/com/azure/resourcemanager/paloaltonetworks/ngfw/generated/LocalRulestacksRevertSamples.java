@@ -7,7 +7,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 /** Samples for LocalRulestacks Revert. */
 public final class LocalRulestacksRevertSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRulestacks_revert_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_revert_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_revert_MaximumSet_Gen.
@@ -20,7 +20,7 @@ public final class LocalRulestacksRevertSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRulestacks_revert_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_revert_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_revert_MinimumSet_Gen.

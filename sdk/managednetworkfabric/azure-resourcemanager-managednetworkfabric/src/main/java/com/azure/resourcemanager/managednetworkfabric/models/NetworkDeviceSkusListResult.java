@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDevic
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of NetworkDeviceSkus. */
+/** List of Network Device SKUs. */
 @Fluent
 public final class NetworkDeviceSkusListResult {
     /*
-     * List of NetworkDeviceSku resources.
+     * List of Network Device SKU resources.
      */
     @JsonProperty(value = "value")
     private List<NetworkDeviceSkuInner> value;
@@ -29,7 +29,7 @@ public final class NetworkDeviceSkusListResult {
     }
 
     /**
-     * Get the value property: List of NetworkDeviceSku resources.
+     * Get the value property: List of Network Device SKU resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class NetworkDeviceSkusListResult {
     }
 
     /**
-     * Set the value property: List of NetworkDeviceSku resources.
+     * Set the value property: List of Network Device SKU resources.
      *
      * @param value the value value to set.
      * @return the NetworkDeviceSkusListResult object itself.

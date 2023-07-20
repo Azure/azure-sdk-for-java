@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Extensions DisableMonitoring. */
 public final class ExtensionsDisableMonitoringSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DisableLinuxClusterMonitoring.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/DisableLinuxClusterMonitoring.json
      */
     /**
      * Sample code: Enable cluster monitoring.
@@ -17,6 +15,6 @@ public final class ExtensionsDisableMonitoringSamples {
      * @param manager Entry point to HDInsightManager.
      */
     public static void enableClusterMonitoring(com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager.extensions().disableMonitoring("rg1", "cluster1", Context.NONE);
+        manager.extensions().disableMonitoring("rg1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

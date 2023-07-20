@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managednetworkfabric.models.IsCurrentVersion;
-import com.azure.resourcemanager.managednetworkfabric.models.IsTestVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
 import com.azure.resourcemanager.managednetworkfabric.models.SupportedVersionProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,29 +15,26 @@ public final class SupportedVersionPropertiesTests {
         SupportedVersionProperties model =
             BinaryData
                 .fromString(
-                    "{\"version\":\"vhixbjxy\",\"vendorOsVersion\":\"n\",\"vendorFirmwareVersion\":\"r\",\"isCurrent\":\"true\",\"isTest\":\"true\"}")
+                    "{\"version\":\"vorbalkjnbk\",\"vendorOsVersion\":\"h\",\"vendorFirmwareVersion\":\"tqstqkqsygxiyne\",\"isDefault\":\"False\"}")
                 .toObject(SupportedVersionProperties.class);
-        Assertions.assertEquals("vhixbjxy", model.version());
-        Assertions.assertEquals("n", model.vendorOsVersion());
-        Assertions.assertEquals("r", model.vendorFirmwareVersion());
-        Assertions.assertEquals(IsCurrentVersion.TRUE, model.isCurrent());
-        Assertions.assertEquals(IsTestVersion.TRUE, model.isTest());
+        Assertions.assertEquals("vorbalkjnbk", model.version());
+        Assertions.assertEquals("h", model.vendorOsVersion());
+        Assertions.assertEquals("tqstqkqsygxiyne", model.vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.isDefault());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SupportedVersionProperties model =
             new SupportedVersionProperties()
-                .withVersion("vhixbjxy")
-                .withVendorOsVersion("n")
-                .withVendorFirmwareVersion("r")
-                .withIsCurrent(IsCurrentVersion.TRUE)
-                .withIsTest(IsTestVersion.TRUE);
+                .withVersion("vorbalkjnbk")
+                .withVendorOsVersion("h")
+                .withVendorFirmwareVersion("tqstqkqsygxiyne")
+                .withIsDefault(BooleanEnumProperty.FALSE);
         model = BinaryData.fromObject(model).toObject(SupportedVersionProperties.class);
-        Assertions.assertEquals("vhixbjxy", model.version());
-        Assertions.assertEquals("n", model.vendorOsVersion());
-        Assertions.assertEquals("r", model.vendorFirmwareVersion());
-        Assertions.assertEquals(IsCurrentVersion.TRUE, model.isCurrent());
-        Assertions.assertEquals(IsTestVersion.TRUE, model.isTest());
+        Assertions.assertEquals("vorbalkjnbk", model.version());
+        Assertions.assertEquals("h", model.vendorOsVersion());
+        Assertions.assertEquals("tqstqkqsygxiyne", model.vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.isDefault());
     }
 }

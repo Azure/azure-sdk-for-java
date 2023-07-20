@@ -8,11 +8,15 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.InternalNetworkProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.AllowASOverride;
 import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.BgpConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnet;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.Extension;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesBgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesStaticRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborAddress;
-import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -23,110 +27,164 @@ public final class InternalNetworkPropertiesTests {
         InternalNetworkProperties model =
             BinaryData
                 .fromString(
-                    "{\"disabledOnResources\":[\"gpfqbuace\",\"pzfqrhhuaoppp\"],\"administrativeState\":\"Enabled\",\"bgpDisabledOnResources\":[\"ol\",\"dahzxctobg\",\"kdmoi\"],\"bfdDisabledOnResources\":[\"stmgrcfbunrmfqjh\",\"kxbpvj\"],\"bfdForStaticRoutesDisabledOnResources\":[\"hx\",\"j\"],\"provisioningState\":\"Canceled\",\"vlanId\":8533369,\"mtu\":1804869047,\"connectedIPv4Subnets\":[{\"prefix\":\"tswb\",\"annotation\":\"zvszj\"},{\"prefix\":\"uvjfdxxive\",\"annotation\":\"t\"},{\"prefix\":\"aqtdoqmcbx\",\"annotation\":\"vxysl\"}],\"connectedIPv6Subnets\":[{\"prefix\":\"fxoblytkb\",\"annotation\":\"pe\"},{\"prefix\":\"wfbkrvrns\",\"annotation\":\"hqjohxcrsbfova\"},{\"prefix\":\"ruvw\",\"annotation\":\"sqfsubcgjbirxb\"}],\"staticRouteConfiguration\":{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"interval\":716024879,\"multiplier\":520672043},\"ipv4Routes\":[{\"prefix\":\"w\",\"nextHop\":[]}],\"ipv6Routes\":[{\"prefix\":\"t\",\"nextHop\":[]},{\"prefix\":\"tpvjzbexilzznfqq\",\"nextHop\":[]},{\"prefix\":\"vwpm\",\"nextHop\":[]},{\"prefix\":\"taruoujmkcj\",\"nextHop\":[]}]},\"bgpConfiguration\":{\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"interval\":75465955,\"multiplier\":778428037},\"defaultRouteOriginate\":\"True\",\"allowAS\":524895743,\"allowASOverride\":\"Disable\",\"fabricASN\":1130044611,\"peerASN\":1074784162,\"ipv4ListenRangePrefixes\":[\"vnaenqpehindoyg\",\"ifthnz\",\"ndslgnayqigynduh\"],\"ipv6ListenRangePrefixes\":[\"qlkth\",\"maqolbgycduie\",\"tgccymvaolpss\"],\"ipv4NeighborAddress\":[{\"address\":\"mmdnbbglzps\",\"operationalState\":\"ydmcwyhzdxssa\"},{\"address\":\"zmnvdfznudaod\",\"operationalState\":\"zbn\"},{\"address\":\"lylpstdb\",\"operationalState\":\"xsrz\"},{\"address\":\"ucerscdntnevfi\",\"operationalState\":\"mygtdssls\"}],\"ipv6NeighborAddress\":[{\"address\":\"eriofzpyqs\",\"operationalState\":\"wab\"},{\"address\":\"tshhszhedp\",\"operationalState\":\"wiwubm\"},{\"address\":\"besldnkwwtppjflc\",\"operationalState\":\"gaokonzmnsikv\"}],\"annotation\":\"qzeqqkdltfzxm\"},\"importRoutePolicyId\":\"v\",\"exportRoutePolicyId\":\"ur\",\"annotation\":\"dkwobdagx\"}")
+                    "{\"vlanId\":1880463040,\"bgpConfiguration\":{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":969630981,\"multiplier\":84398716},\"defaultRouteOriginate\":\"False\",\"allowAS\":891640951,\"allowASOverride\":\"Disable\",\"fabricASN\":9033387095244894570,\"peerASN\":2624787996456648289,\"ipv4ListenRangePrefixes\":[\"xlzsxezppk\",\"waaeskyfjl\"],\"ipv6ListenRangePrefixes\":[\"qtoyrpl\",\"xlaj\"],\"ipv4NeighborAddress\":[{\"address\":\"quevham\",\"configurationState\":\"ErrorDeprovisioning\"},{\"address\":\"w\",\"configurationState\":\"Failed\"},{\"address\":\"ekxpkzwaqxofqo\",\"configurationState\":\"ErrorDeprovisioning\"}],\"ipv6NeighborAddress\":[{\"address\":\"p\",\"configurationState\":\"ErrorProvisioning\"},{\"address\":\"dusztekxby\",\"configurationState\":\"Provisioned\"},{\"address\":\"fepxyihpqadag\",\"configurationState\":\"Accepted\"},{\"address\":\"icxdwyjfo\",\"configurationState\":\"Failed\"}],\"annotation\":\"ovcxjs\"},\"staticRouteConfiguration\":{\"extension\":\"NoExtension\",\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":1455369326,\"multiplier\":1508387956},\"ipv4Routes\":[{\"prefix\":\"uhoduchvlscrdpib\",\"nextHop\":[\"yjdusspysze\",\"bhwlkaaggkrehbfr\"]},{\"prefix\":\"uybffljfiim\",\"nextHop\":[\"oags\",\"taadu\"]},{\"prefix\":\"rexxfavs\",\"nextHop\":[\"udo\",\"zilfmnlikps\",\"msfeypofqpm\"]}],\"ipv6Routes\":[{\"prefix\":\"qgsdr\",\"nextHop\":[\"ttjxophgerhsmvgo\",\"twzmqilrixysfnim\",\"qywwwmhk\"]}]},\"configurationState\":\"Succeeded\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Disabled\",\"mtu\":2066882789,\"connectedIPv4Subnets\":[{\"prefix\":\"lqoin\",\"annotation\":\"duewihapfj\"},{\"prefix\":\"iknj\",\"annotation\":\"qfli\"},{\"prefix\":\"jh\",\"annotation\":\"lbiedfsbw\"}],\"connectedIPv6Subnets\":[{\"prefix\":\"vbvzipbwxgo\",\"annotation\":\"x\"},{\"prefix\":\"pradmskxknpdgzi\",\"annotation\":\"sugswhgsaod\"}],\"importRoutePolicyId\":\"wnbaf\",\"exportRoutePolicyId\":\"to\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"aquvwsxbgnvkervq\",\"importIpv6RoutePolicyId\":\"oadhrsxqvz\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"abdsr\",\"exportIpv6RoutePolicyId\":\"ajglzrsubklr\"},\"ingressAclId\":\"jnltcetjdvqydi\",\"egressAclId\":\"qkwaruwd\",\"isMonitoringEnabled\":\"False\",\"extension\":\"NoExtension\",\"annotation\":\"ebwgjxb\"}")
                 .toObject(InternalNetworkProperties.class);
-        Assertions.assertEquals("dkwobdagx", model.annotation());
-        Assertions.assertEquals(8533369, model.vlanId());
-        Assertions.assertEquals(1804869047, model.mtu());
-        Assertions.assertEquals("zvszj", model.connectedIPv4Subnets().get(0).annotation());
-        Assertions.assertEquals("tswb", model.connectedIPv4Subnets().get(0).prefix());
-        Assertions.assertEquals("pe", model.connectedIPv6Subnets().get(0).annotation());
-        Assertions.assertEquals("fxoblytkb", model.connectedIPv6Subnets().get(0).prefix());
-        Assertions.assertEquals("w", model.staticRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("t", model.staticRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("qzeqqkdltfzxm", model.bgpConfiguration().annotation());
-        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.bgpConfiguration().defaultRouteOriginate());
-        Assertions.assertEquals(524895743, model.bgpConfiguration().allowAS());
+        Assertions.assertEquals("ebwgjxb", model.annotation());
+        Assertions.assertEquals(1880463040, model.vlanId());
+        Assertions.assertEquals("ovcxjs", model.bgpConfiguration().annotation());
+        Assertions.assertEquals(969630981, model.bgpConfiguration().bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(84398716, model.bgpConfiguration().bfdConfiguration().multiplier());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.bgpConfiguration().defaultRouteOriginate());
+        Assertions.assertEquals(891640951, model.bgpConfiguration().allowAS());
         Assertions.assertEquals(AllowASOverride.DISABLE, model.bgpConfiguration().allowASOverride());
-        Assertions.assertEquals(1074784162, model.bgpConfiguration().peerAsn());
-        Assertions.assertEquals("vnaenqpehindoyg", model.bgpConfiguration().ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("qlkth", model.bgpConfiguration().ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("mmdnbbglzps", model.bgpConfiguration().ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("eriofzpyqs", model.bgpConfiguration().ipv6NeighborAddress().get(0).address());
-        Assertions.assertEquals("v", model.importRoutePolicyId());
-        Assertions.assertEquals("ur", model.exportRoutePolicyId());
+        Assertions.assertEquals(2624787996456648289L, model.bgpConfiguration().peerAsn());
+        Assertions.assertEquals("xlzsxezppk", model.bgpConfiguration().ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("qtoyrpl", model.bgpConfiguration().ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("quevham", model.bgpConfiguration().ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("p", model.bgpConfiguration().ipv6NeighborAddress().get(0).address());
+        Assertions
+            .assertEquals(1455369326, model.staticRouteConfiguration().bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1508387956, model.staticRouteConfiguration().bfdConfiguration().multiplier());
+        Assertions.assertEquals("uhoduchvlscrdpib", model.staticRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("yjdusspysze", model.staticRouteConfiguration().ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("qgsdr", model.staticRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions
+            .assertEquals("ttjxophgerhsmvgo", model.staticRouteConfiguration().ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals(Extension.NO_EXTENSION, model.staticRouteConfiguration().extension());
+        Assertions.assertEquals(2066882789, model.mtu());
+        Assertions.assertEquals("duewihapfj", model.connectedIPv4Subnets().get(0).annotation());
+        Assertions.assertEquals("lqoin", model.connectedIPv4Subnets().get(0).prefix());
+        Assertions.assertEquals("x", model.connectedIPv6Subnets().get(0).annotation());
+        Assertions.assertEquals("vbvzipbwxgo", model.connectedIPv6Subnets().get(0).prefix());
+        Assertions.assertEquals("wnbaf", model.importRoutePolicyId());
+        Assertions.assertEquals("to", model.exportRoutePolicyId());
+        Assertions.assertEquals("aquvwsxbgnvkervq", model.importRoutePolicy().importIpv4RoutePolicyId());
+        Assertions.assertEquals("oadhrsxqvz", model.importRoutePolicy().importIpv6RoutePolicyId());
+        Assertions.assertEquals("abdsr", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("ajglzrsubklr", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("jnltcetjdvqydi", model.ingressAclId());
+        Assertions.assertEquals("qkwaruwd", model.egressAclId());
+        Assertions.assertEquals(IsMonitoringEnabled.FALSE, model.isMonitoringEnabled());
+        Assertions.assertEquals(Extension.NO_EXTENSION, model.extension());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InternalNetworkProperties model =
             new InternalNetworkProperties()
-                .withAnnotation("dkwobdagx")
-                .withVlanId(8533369)
-                .withMtu(1804869047)
-                .withConnectedIPv4Subnets(
-                    Arrays
-                        .asList(
-                            new ConnectedSubnet().withAnnotation("zvszj").withPrefix("tswb"),
-                            new ConnectedSubnet().withAnnotation("t").withPrefix("uvjfdxxive"),
-                            new ConnectedSubnet().withAnnotation("vxysl").withPrefix("aqtdoqmcbx")))
-                .withConnectedIPv6Subnets(
-                    Arrays
-                        .asList(
-                            new ConnectedSubnet().withAnnotation("pe").withPrefix("fxoblytkb"),
-                            new ConnectedSubnet().withAnnotation("hqjohxcrsbfova").withPrefix("wfbkrvrns"),
-                            new ConnectedSubnet().withAnnotation("sqfsubcgjbirxb").withPrefix("ruvw")))
-                .withStaticRouteConfiguration(
-                    new StaticRouteConfiguration()
-                        .withBfdConfiguration(new BfdConfiguration())
-                        .withIpv4Routes(
-                            Arrays.asList(new StaticRouteProperties().withPrefix("w").withNextHop(Arrays.asList())))
-                        .withIpv6Routes(
-                            Arrays
-                                .asList(
-                                    new StaticRouteProperties().withPrefix("t").withNextHop(Arrays.asList()),
-                                    new StaticRouteProperties()
-                                        .withPrefix("tpvjzbexilzznfqq")
-                                        .withNextHop(Arrays.asList()),
-                                    new StaticRouteProperties().withPrefix("vwpm").withNextHop(Arrays.asList()),
-                                    new StaticRouteProperties()
-                                        .withPrefix("taruoujmkcj")
-                                        .withNextHop(Arrays.asList()))))
+                .withAnnotation("ebwgjxb")
+                .withVlanId(1880463040)
                 .withBgpConfiguration(
-                    new BgpConfiguration()
-                        .withAnnotation("qzeqqkdltfzxm")
-                        .withBfdConfiguration(new BfdConfiguration())
-                        .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
-                        .withAllowAS(524895743)
+                    new InternalNetworkPropertiesBgpConfiguration()
+                        .withAnnotation("ovcxjs")
+                        .withBfdConfiguration(
+                            new BfdConfiguration().withIntervalInMilliSeconds(969630981).withMultiplier(84398716))
+                        .withDefaultRouteOriginate(BooleanEnumProperty.FALSE)
+                        .withAllowAS(891640951)
                         .withAllowASOverride(AllowASOverride.DISABLE)
-                        .withPeerAsn(1074784162)
-                        .withIpv4ListenRangePrefixes(Arrays.asList("vnaenqpehindoyg", "ifthnz", "ndslgnayqigynduh"))
-                        .withIpv6ListenRangePrefixes(Arrays.asList("qlkth", "maqolbgycduie", "tgccymvaolpss"))
+                        .withPeerAsn(2624787996456648289L)
+                        .withIpv4ListenRangePrefixes(Arrays.asList("xlzsxezppk", "waaeskyfjl"))
+                        .withIpv6ListenRangePrefixes(Arrays.asList("qtoyrpl", "xlaj"))
                         .withIpv4NeighborAddress(
                             Arrays
                                 .asList(
-                                    new NeighborAddress().withAddress("mmdnbbglzps"),
-                                    new NeighborAddress().withAddress("zmnvdfznudaod"),
-                                    new NeighborAddress().withAddress("lylpstdb"),
-                                    new NeighborAddress().withAddress("ucerscdntnevfi")))
+                                    new NeighborAddress().withAddress("quevham"),
+                                    new NeighborAddress().withAddress("w"),
+                                    new NeighborAddress().withAddress("ekxpkzwaqxofqo")))
                         .withIpv6NeighborAddress(
                             Arrays
                                 .asList(
-                                    new NeighborAddress().withAddress("eriofzpyqs"),
-                                    new NeighborAddress().withAddress("tshhszhedp"),
-                                    new NeighborAddress().withAddress("besldnkwwtppjflc"))))
-                .withImportRoutePolicyId("v")
-                .withExportRoutePolicyId("ur");
+                                    new NeighborAddress().withAddress("p"),
+                                    new NeighborAddress().withAddress("dusztekxby"),
+                                    new NeighborAddress().withAddress("fepxyihpqadag"),
+                                    new NeighborAddress().withAddress("icxdwyjfo"))))
+                .withStaticRouteConfiguration(
+                    new InternalNetworkPropertiesStaticRouteConfiguration()
+                        .withBfdConfiguration(
+                            new BfdConfiguration().withIntervalInMilliSeconds(1455369326).withMultiplier(1508387956))
+                        .withIpv4Routes(
+                            Arrays
+                                .asList(
+                                    new StaticRouteProperties()
+                                        .withPrefix("uhoduchvlscrdpib")
+                                        .withNextHop(Arrays.asList("yjdusspysze", "bhwlkaaggkrehbfr")),
+                                    new StaticRouteProperties()
+                                        .withPrefix("uybffljfiim")
+                                        .withNextHop(Arrays.asList("oags", "taadu")),
+                                    new StaticRouteProperties()
+                                        .withPrefix("rexxfavs")
+                                        .withNextHop(Arrays.asList("udo", "zilfmnlikps", "msfeypofqpm"))))
+                        .withIpv6Routes(
+                            Arrays
+                                .asList(
+                                    new StaticRouteProperties()
+                                        .withPrefix("qgsdr")
+                                        .withNextHop(
+                                            Arrays.asList("ttjxophgerhsmvgo", "twzmqilrixysfnim", "qywwwmhk"))))
+                        .withExtension(Extension.NO_EXTENSION))
+                .withMtu(2066882789)
+                .withConnectedIPv4Subnets(
+                    Arrays
+                        .asList(
+                            new ConnectedSubnet().withAnnotation("duewihapfj").withPrefix("lqoin"),
+                            new ConnectedSubnet().withAnnotation("qfli").withPrefix("iknj"),
+                            new ConnectedSubnet().withAnnotation("lbiedfsbw").withPrefix("jh")))
+                .withConnectedIPv6Subnets(
+                    Arrays
+                        .asList(
+                            new ConnectedSubnet().withAnnotation("x").withPrefix("vbvzipbwxgo"),
+                            new ConnectedSubnet().withAnnotation("sugswhgsaod").withPrefix("pradmskxknpdgzi")))
+                .withImportRoutePolicyId("wnbaf")
+                .withExportRoutePolicyId("to")
+                .withImportRoutePolicy(
+                    new ImportRoutePolicy()
+                        .withImportIpv4RoutePolicyId("aquvwsxbgnvkervq")
+                        .withImportIpv6RoutePolicyId("oadhrsxqvz"))
+                .withExportRoutePolicy(
+                    new ExportRoutePolicy()
+                        .withExportIpv4RoutePolicyId("abdsr")
+                        .withExportIpv6RoutePolicyId("ajglzrsubklr"))
+                .withIngressAclId("jnltcetjdvqydi")
+                .withEgressAclId("qkwaruwd")
+                .withIsMonitoringEnabled(IsMonitoringEnabled.FALSE)
+                .withExtension(Extension.NO_EXTENSION);
         model = BinaryData.fromObject(model).toObject(InternalNetworkProperties.class);
-        Assertions.assertEquals("dkwobdagx", model.annotation());
-        Assertions.assertEquals(8533369, model.vlanId());
-        Assertions.assertEquals(1804869047, model.mtu());
-        Assertions.assertEquals("zvszj", model.connectedIPv4Subnets().get(0).annotation());
-        Assertions.assertEquals("tswb", model.connectedIPv4Subnets().get(0).prefix());
-        Assertions.assertEquals("pe", model.connectedIPv6Subnets().get(0).annotation());
-        Assertions.assertEquals("fxoblytkb", model.connectedIPv6Subnets().get(0).prefix());
-        Assertions.assertEquals("w", model.staticRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("t", model.staticRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("qzeqqkdltfzxm", model.bgpConfiguration().annotation());
-        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.bgpConfiguration().defaultRouteOriginate());
-        Assertions.assertEquals(524895743, model.bgpConfiguration().allowAS());
+        Assertions.assertEquals("ebwgjxb", model.annotation());
+        Assertions.assertEquals(1880463040, model.vlanId());
+        Assertions.assertEquals("ovcxjs", model.bgpConfiguration().annotation());
+        Assertions.assertEquals(969630981, model.bgpConfiguration().bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(84398716, model.bgpConfiguration().bfdConfiguration().multiplier());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.bgpConfiguration().defaultRouteOriginate());
+        Assertions.assertEquals(891640951, model.bgpConfiguration().allowAS());
         Assertions.assertEquals(AllowASOverride.DISABLE, model.bgpConfiguration().allowASOverride());
-        Assertions.assertEquals(1074784162, model.bgpConfiguration().peerAsn());
-        Assertions.assertEquals("vnaenqpehindoyg", model.bgpConfiguration().ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("qlkth", model.bgpConfiguration().ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("mmdnbbglzps", model.bgpConfiguration().ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("eriofzpyqs", model.bgpConfiguration().ipv6NeighborAddress().get(0).address());
-        Assertions.assertEquals("v", model.importRoutePolicyId());
-        Assertions.assertEquals("ur", model.exportRoutePolicyId());
+        Assertions.assertEquals(2624787996456648289L, model.bgpConfiguration().peerAsn());
+        Assertions.assertEquals("xlzsxezppk", model.bgpConfiguration().ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("qtoyrpl", model.bgpConfiguration().ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("quevham", model.bgpConfiguration().ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("p", model.bgpConfiguration().ipv6NeighborAddress().get(0).address());
+        Assertions
+            .assertEquals(1455369326, model.staticRouteConfiguration().bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1508387956, model.staticRouteConfiguration().bfdConfiguration().multiplier());
+        Assertions.assertEquals("uhoduchvlscrdpib", model.staticRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("yjdusspysze", model.staticRouteConfiguration().ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("qgsdr", model.staticRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions
+            .assertEquals("ttjxophgerhsmvgo", model.staticRouteConfiguration().ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals(Extension.NO_EXTENSION, model.staticRouteConfiguration().extension());
+        Assertions.assertEquals(2066882789, model.mtu());
+        Assertions.assertEquals("duewihapfj", model.connectedIPv4Subnets().get(0).annotation());
+        Assertions.assertEquals("lqoin", model.connectedIPv4Subnets().get(0).prefix());
+        Assertions.assertEquals("x", model.connectedIPv6Subnets().get(0).annotation());
+        Assertions.assertEquals("vbvzipbwxgo", model.connectedIPv6Subnets().get(0).prefix());
+        Assertions.assertEquals("wnbaf", model.importRoutePolicyId());
+        Assertions.assertEquals("to", model.exportRoutePolicyId());
+        Assertions.assertEquals("aquvwsxbgnvkervq", model.importRoutePolicy().importIpv4RoutePolicyId());
+        Assertions.assertEquals("oadhrsxqvz", model.importRoutePolicy().importIpv6RoutePolicyId());
+        Assertions.assertEquals("abdsr", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("ajglzrsubklr", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("jnltcetjdvqydi", model.ingressAclId());
+        Assertions.assertEquals("qkwaruwd", model.egressAclId());
+        Assertions.assertEquals(IsMonitoringEnabled.FALSE, model.isMonitoringEnabled());
+        Assertions.assertEquals(Extension.NO_EXTENSION, model.extension());
     }
 }

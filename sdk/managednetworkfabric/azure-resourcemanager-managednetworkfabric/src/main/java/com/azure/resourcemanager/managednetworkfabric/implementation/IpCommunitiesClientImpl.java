@@ -113,7 +113,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities/{ipCommunityName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -180,7 +180,8 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Community resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -239,7 +240,8 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Community resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -294,7 +296,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IpCommunity resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpCommunityInner>, IpCommunityInner> beginCreateAsync(
@@ -322,7 +324,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IpCommunity resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpCommunityInner>, IpCommunityInner> beginCreateAsync(
@@ -347,7 +349,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(
@@ -367,7 +369,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginCreate(
@@ -386,7 +388,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition on successful completion of {@link Mono}.
+     * @return the IP Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpCommunityInner> createAsync(
@@ -408,7 +410,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition on successful completion of {@link Mono}.
+     * @return the IP Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpCommunityInner> createAsync(
@@ -429,7 +431,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition.
+     * @return the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner create(String resourceGroupName, String ipCommunityName, IpCommunityInner body) {
@@ -448,7 +450,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition.
+     * @return the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner create(
@@ -466,7 +468,8 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Community resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IpCommunityInner>> getByResourceGroupWithResponseAsync(
@@ -518,7 +521,8 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Community resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IpCommunityInner>> getByResourceGroupWithResponseAsync(
@@ -566,7 +570,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition on successful completion of {@link Mono}.
+     * @return the IP Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpCommunityInner> getByResourceGroupAsync(String resourceGroupName, String ipCommunityName) {
@@ -585,7 +589,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response}.
+     * @return the IP Community resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpCommunityInner> getByResourceGroupWithResponse(
@@ -603,7 +607,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition.
+     * @return the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner getByResourceGroup(String resourceGroupName, String ipCommunityName) {
@@ -621,7 +625,8 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Community resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -680,7 +685,8 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Community resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -735,7 +741,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IpCommunity resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdateAsync(
@@ -763,7 +769,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IpCommunity resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdateAsync(
@@ -788,7 +794,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(
@@ -808,7 +814,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpCommunityInner>, IpCommunityInner> beginUpdate(
@@ -827,7 +833,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition on successful completion of {@link Mono}.
+     * @return the IP Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpCommunityInner> updateAsync(
@@ -849,7 +855,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition on successful completion of {@link Mono}.
+     * @return the IP Community resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpCommunityInner> updateAsync(
@@ -870,7 +876,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition.
+     * @return the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner update(String resourceGroupName, String ipCommunityName, IpCommunityPatch body) {
@@ -889,7 +895,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition.
+     * @return the IP Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpCommunityInner update(
@@ -1149,15 +1155,15 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1202,16 +1208,16 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listByResourceGroupSinglePageAsync(
@@ -1254,15 +1260,15 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedFlux}.
+     * @return list of IP Communities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpCommunityInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1272,16 +1278,16 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedFlux}.
+     * @return list of IP Communities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpCommunityInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1291,15 +1297,15 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> listByResourceGroup(String resourceGroupName) {
@@ -1307,16 +1313,16 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1324,13 +1330,13 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listSinglePageAsync() {
@@ -1370,15 +1376,15 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listSinglePageAsync(Context context) {
@@ -1415,13 +1421,13 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedFlux}.
+     * @return list of IP Communities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpCommunityInner> listAsync() {
@@ -1430,15 +1436,15 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedFlux}.
+     * @return list of IP Communities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpCommunityInner> listAsync(Context context) {
@@ -1447,13 +1453,13 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> list() {
@@ -1461,15 +1467,15 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
     }
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpCommunityInner> list(Context context) {
@@ -1484,7 +1490,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1522,7 +1528,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listByResourceGroupNextSinglePageAsync(
@@ -1559,7 +1565,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1597,7 +1603,7 @@ public final class IpCommunitiesClientImpl implements IpCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Communities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpCommunityInner>> listBySubscriptionNextSinglePageAsync(

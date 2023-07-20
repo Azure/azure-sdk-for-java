@@ -34,6 +34,7 @@ public class RntbdServiceEndpointTest {
 
         RntbdEndpoint.Provider endpointProvider = (RntbdEndpoint.Provider) FieldUtils.readField(transportClient, "endpointProvider", true);
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = (ProactiveOpenConnectionsProcessor) FieldUtils.readField(transportClient, "proactiveOpenConnectionsProcessor", true);
+        AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
         for(int i = 0;i <10;i++) {
             int port=uri.getPort()+i;
@@ -44,13 +45,13 @@ public class RntbdServiceEndpointTest {
             uriList.add(addressUri);
 
             //Adding endpoints to provider
-            endpointProvider.createIfAbsent(new URI("http://localhost"), addressUri, proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            endpointProvider.createIfAbsent(new URI("http://localhost"), addressUri, proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
         }
         //Asserting no eviction yet
         assertThat(endpointProvider.evictions()).isEqualTo(0);
 
         for(int i = 0;i <5;i++) {
-            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
             assertThat(rntbdEndpoint.isClosed()).isFalse();
             rntbdEndpoint.close();
             assertThat(rntbdEndpoint.isClosed()).isTrue();

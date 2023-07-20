@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -15,20 +15,20 @@ public final class UpdateAdministrativeStateTests {
     public void testDeserialize() throws Exception {
         UpdateAdministrativeState model =
             BinaryData
-                .fromString("{\"state\":\"Disable\",\"resourceIds\":[\"uconuqszfkbey\",\"ewrmjmwvvjektc\"]}")
+                .fromString("{\"state\":\"Enable\",\"resourceIds\":[\"rhvyeld\"]}")
                 .toObject(UpdateAdministrativeState.class);
-        Assertions.assertEquals("uconuqszfkbey", model.resourceIds().get(0));
-        Assertions.assertEquals(AdministrativeState.DISABLE, model.state());
+        Assertions.assertEquals("rhvyeld", model.resourceIds().get(0));
+        Assertions.assertEquals(EnableDisableState.ENABLE, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateAdministrativeState model =
             new UpdateAdministrativeState()
-                .withResourceIds(Arrays.asList("uconuqszfkbey", "ewrmjmwvvjektc"))
-                .withState(AdministrativeState.DISABLE);
+                .withResourceIds(Arrays.asList("rhvyeld"))
+                .withState(EnableDisableState.ENABLE);
         model = BinaryData.fromObject(model).toObject(UpdateAdministrativeState.class);
-        Assertions.assertEquals("uconuqszfkbey", model.resourceIds().get(0));
-        Assertions.assertEquals(AdministrativeState.DISABLE, model.state());
+        Assertions.assertEquals("rhvyeld", model.resourceIds().get(0));
+        Assertions.assertEquals(EnableDisableState.ENABLE, model.state());
     }
 }

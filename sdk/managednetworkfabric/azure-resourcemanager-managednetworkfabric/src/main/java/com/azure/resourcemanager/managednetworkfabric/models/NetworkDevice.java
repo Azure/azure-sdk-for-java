@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceInner;
-import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of NetworkDevice. */
@@ -70,18 +69,11 @@ public interface NetworkDevice {
     String networkDeviceSku();
 
     /**
-     * Gets the networkDeviceRole property: networkDeviceRole is the device role: Example: CE | ToR.
+     * Gets the networkDeviceRole property: NetworkDeviceRole is the device role: Example: CE | ToR.
      *
      * @return the networkDeviceRole value.
      */
-    NetworkDeviceRoleTypes networkDeviceRole();
-
-    /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
+    NetworkDeviceRole networkDeviceRole();
 
     /**
      * Gets the networkRackId property: Reference to network rack resource id.
@@ -91,15 +83,50 @@ public interface NetworkDevice {
     String networkRackId();
 
     /**
-     * Gets the hostname property: The host Name of the device.
+     * Gets the managementIpv4Address property: Management IPv4 Address.
+     *
+     * @return the managementIpv4Address value.
+     */
+    String managementIpv4Address();
+
+    /**
+     * Gets the managementIpv6Address property: Management IPv6 Address.
+     *
+     * @return the managementIpv6Address value.
+     */
+    String managementIpv6Address();
+
+    /**
+     * Gets the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    ConfigurationState configurationState();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
+
+    /**
+     * Gets the hostname property: The host name of the device.
      *
      * @return the hostname value.
      */
     String hostname();
 
     /**
-     * Gets the serialNumber property: serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969.
+     * Gets the serialNumber property: Serial number of the device. Format of serial Number -
+     * Make;Model;HardwareRevisionId;SerialNumber.
      *
      * @return the serialNumber value.
      */
@@ -147,11 +174,13 @@ public interface NetworkDevice {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The NetworkDevice definition stages. */
     interface DefinitionStages {
         /** The first stage of the NetworkDevice definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the NetworkDevice definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -170,6 +199,7 @@ public interface NetworkDevice {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the NetworkDevice definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -180,6 +210,7 @@ public interface NetworkDevice {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the NetworkDevice definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -187,7 +218,6 @@ public interface NetworkDevice {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithNetworkDeviceSku,
-                DefinitionStages.WithNetworkDeviceRole,
                 DefinitionStages.WithHostname,
                 DefinitionStages.WithSerialNumber,
                 DefinitionStages.WithAnnotation {
@@ -206,6 +236,7 @@ public interface NetworkDevice {
              */
             NetworkDevice create(Context context);
         }
+
         /** The stage of the NetworkDevice definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -216,6 +247,7 @@ public interface NetworkDevice {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the NetworkDevice definition allowing to specify networkDeviceSku. */
         interface WithNetworkDeviceSku {
             /**
@@ -226,38 +258,31 @@ public interface NetworkDevice {
              */
             WithCreate withNetworkDeviceSku(String networkDeviceSku);
         }
-        /** The stage of the NetworkDevice definition allowing to specify networkDeviceRole. */
-        interface WithNetworkDeviceRole {
-            /**
-             * Specifies the networkDeviceRole property: networkDeviceRole is the device role: Example: CE | ToR..
-             *
-             * @param networkDeviceRole networkDeviceRole is the device role: Example: CE | ToR.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkDeviceRole(NetworkDeviceRoleTypes networkDeviceRole);
-        }
+
         /** The stage of the NetworkDevice definition allowing to specify hostname. */
         interface WithHostname {
             /**
-             * Specifies the hostname property: The host Name of the device..
+             * Specifies the hostname property: The host name of the device..
              *
-             * @param hostname The host Name of the device.
+             * @param hostname The host name of the device.
              * @return the next definition stage.
              */
             WithCreate withHostname(String hostname);
         }
+
         /** The stage of the NetworkDevice definition allowing to specify serialNumber. */
         interface WithSerialNumber {
             /**
-             * Specifies the serialNumber property: serialNumber of the format
-             * Make;Model;HardwareRevisionId;SerialNumber. Example: Arista;DCS-7280DR3-24;12.05;JPE21116969.
+             * Specifies the serialNumber property: Serial number of the device. Format of serial Number -
+             * Make;Model;HardwareRevisionId;SerialNumber..
              *
-             * @param serialNumber serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-             *     Arista;DCS-7280DR3-24;12.05;JPE21116969.
+             * @param serialNumber Serial number of the device. Format of serial Number -
+             *     Make;Model;HardwareRevisionId;SerialNumber.
              * @return the next definition stage.
              */
             WithCreate withSerialNumber(String serialNumber);
         }
+
         /** The stage of the NetworkDevice definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -269,6 +294,7 @@ public interface NetworkDevice {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the NetworkDevice resource.
      *
@@ -297,40 +323,44 @@ public interface NetworkDevice {
          */
         NetworkDevice apply(Context context);
     }
+
     /** The NetworkDevice update stages. */
     interface UpdateStages {
         /** The stage of the NetworkDevice update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Azure resource tags that will replace the existing ones..
+             * Specifies the tags property: Resource tags.
              *
-             * @param tags Azure resource tags that will replace the existing ones.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the NetworkDevice update allowing to specify hostname. */
         interface WithHostname {
             /**
-             * Specifies the hostname property: The host Name of the device..
+             * Specifies the hostname property: The host name of the device..
              *
-             * @param hostname The host Name of the device.
+             * @param hostname The host name of the device.
              * @return the next definition stage.
              */
             Update withHostname(String hostname);
         }
+
         /** The stage of the NetworkDevice update allowing to specify serialNumber. */
         interface WithSerialNumber {
             /**
-             * Specifies the serialNumber property: serialNumber of the format
-             * Make;Model;HardwareRevisionId;SerialNumber. Example: Arista;DCS-7280DR3-24;12.05;JPE21116969.
+             * Specifies the serialNumber property: Serial number of the device. Format of serial Number -
+             * Make;Model;HardwareRevisionId;SerialNumber..
              *
-             * @param serialNumber serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-             *     Arista;DCS-7280DR3-24;12.05;JPE21116969.
+             * @param serialNumber Serial number of the device. Format of serial Number -
+             *     Make;Model;HardwareRevisionId;SerialNumber.
              * @return the next definition stage.
              */
             Update withSerialNumber(String serialNumber);
         }
+
         /** The stage of the NetworkDevice update allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -342,6 +372,7 @@ public interface NetworkDevice {
             Update withAnnotation(String annotation);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -362,188 +393,104 @@ public interface NetworkDevice {
      *
      * <p>Reboot the Network Device.
      *
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void reboot();
+    CommonPostActionResponseForStateUpdate reboot(RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
      *
      * <p>Reboot the Network Device.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void reboot(Context context);
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restoreConfig();
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restoreConfig(Context context);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateVersion(UpdateVersionProperties body);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateVersion(UpdateVersionProperties body, Context context);
+    CommonPostActionResponseForStateUpdate reboot(RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
+     * @return common response for the state updates.
      */
-    SupportPackageProperties generateSupportPackage();
+    CommonPostActionResponseForStateUpdate refreshConfiguration();
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
+     * @return common response for the state updates.
      */
-    SupportPackageProperties generateSupportPackage(Context context);
+    CommonPostActionResponseForStateUpdate refreshConfiguration(Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updatePowerCycle(UpdatePowerCycleProperties body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updatePowerCycle(UpdatePowerCycleProperties body, Context context);
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    GetDeviceStatusProperties getStatus();
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    GetDeviceStatusProperties getStatus(Context context);
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps();
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps(Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
-    List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps();
+    CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
-    List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps(Context context);
+    CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body, Context context);
 }

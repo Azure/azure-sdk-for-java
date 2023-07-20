@@ -9,7 +9,7 @@ import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRe
 /** Samples for ManagedPrivateEndpoints CheckNameAvailability. */
 public final class ManagedPrivateEndpointsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoManagedPrivateEndpointsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoManagedPrivateEndpointsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsCheckNameAvailability.

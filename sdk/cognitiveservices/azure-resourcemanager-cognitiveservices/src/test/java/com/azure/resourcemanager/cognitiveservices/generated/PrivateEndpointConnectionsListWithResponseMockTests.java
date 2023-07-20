@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnectionListResult;
+import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointServiceConnectionStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"xvydfceacvlhvygd\",\"etag\":\"t\",\"id\":\"mrtwna\",\"name\":\"jslb\",\"type\":\"wkojgcyztsfmzn\"},{\"location\":\"ph\",\"etag\":\"qnrnrpxehuwryk\",\"id\":\"gaifmvik\",\"name\":\"bydvkhbejdz\",\"type\":\"xcv\"},{\"location\":\"njivolvtnovq\",\"etag\":\"gemjdftuljltdu\",\"id\":\"eamtmcz\",\"name\":\"o\",\"type\":\"ejwcwwqiok\"},{\"location\":\"mojmsvpkjprvkw\",\"etag\":\"zqljyxgtczh\",\"id\":\"ydbsd\",\"name\":\"hmkxmaehvbb\",\"type\":\"uripltfnhtba\"}]}";
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"eg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zxwhcansymoyqhlw\",\"actionsRequired\":\"divb\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"mf\",\"juwasqvdaeyyguxa\"]},\"location\":\"qzhzbezkgimsi\",\"etag\":\"asi\",\"id\":\"ddyvvjskgfmo\",\"name\":\"wa\",\"type\":\"pqg\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"a\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jhhn\",\"actionsRequired\":\"zybbj\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"syxkyxvxevblb\",\"ednljl\",\"geuaulx\",\"nsmjbnkppxynen\"]},\"location\":\"xeizzg\",\"etag\":\"lnsrmffe\",\"id\":\"cxcktpi\",\"name\":\"merteeammxqiek\",\"type\":\"kzddrtkgdojbmxva\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"de\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"cuijpxt\",\"actionsRequired\":\"uwprtujwsawd\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"bxv\",\"titvtzeexavox\"]},\"location\":\"lecdmdqbw\",\"etag\":\"pqtgsfjac\",\"id\":\"slhhxudbxv\",\"name\":\"d\",\"type\":\"tnsi\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"z\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ckdlpag\",\"actionsRequired\":\"cxfailcfxwmdboxd\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"ufqobrjlnac\",\"cc\",\"knh\",\"kizvytn\"]},\"location\":\"uljraae\",\"etag\":\"nok\",\"id\":\"gukkjqnvbroy\",\"name\":\"a\",\"type\":\"xulcdisdos\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +63,21 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         PrivateEndpointConnectionListResult response =
             manager
                 .privateEndpointConnections()
-                .listWithResponse("pnfqntcyp", "xjvfoimwksl", com.azure.core.util.Context.NONE)
+                .listWithResponse("awaoqvmmbnpqfrt", "lkzmegnitgvkxl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xvydfceacvlhvygd", response.value().get(0).location());
+        Assertions
+            .assertEquals(
+                PrivateEndpointServiceConnectionStatus.APPROVED,
+                response.value().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions
+            .assertEquals(
+                "zxwhcansymoyqhlw",
+                response.value().get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions
+            .assertEquals(
+                "divb", response.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("mf", response.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("qzhzbezkgimsi", response.value().get(0).location());
     }
 }

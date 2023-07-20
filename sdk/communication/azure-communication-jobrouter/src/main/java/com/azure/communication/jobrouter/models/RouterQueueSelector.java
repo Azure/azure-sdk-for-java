@@ -28,7 +28,7 @@ public final class RouterQueueSelector {
      * operator
      */
     @JsonProperty(value = "value")
-    private Object value;
+    private LabelValue value;
 
     /**
      * Get the key property: The label key to query against.
@@ -75,19 +75,19 @@ public final class RouterQueueSelector {
     /**
      * Get the value property: The value to compare against the actual label value with the given operator.
      *
-     * @return the value value.
+     * @return the LabelValue value.
      */
-    public Object getValue() {
+    public LabelValue getValue() {
         return this.value;
     }
 
     /**
      * Set the value property: The value to compare against the actual label value with the given operator.
      *
-     * @param value the value value to set.
+     * @param value the LabelValue value to set.
      * @return the RouterQueueSelector object itself.
      */
-    public RouterQueueSelector setValue(Object value) {
+    public RouterQueueSelector setValue(LabelValue value) {
         this.value = value;
         return this;
     }

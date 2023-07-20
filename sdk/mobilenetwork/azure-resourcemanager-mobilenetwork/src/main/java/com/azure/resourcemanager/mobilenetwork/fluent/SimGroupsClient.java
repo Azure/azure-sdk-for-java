@@ -12,7 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimGroupInner;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
+import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 
 /** An instance of this class provides access to all the operations defined in SimGroupsClient. */
 public interface SimGroupsClient {
@@ -158,11 +158,11 @@ public interface SimGroupsClient {
         String resourceGroupName, String simGroupName, SimGroupInner parameters, Context context);
 
     /**
-     * Updates SIM group tags.
+     * Patch SIM group resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
+     * @param parameters Parameters supplied to patch SIM group resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,21 +171,21 @@ public interface SimGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SimGroupInner> updateTagsWithResponse(
-        String resourceGroupName, String simGroupName, TagsObject parameters, Context context);
+        String resourceGroupName, String simGroupName, IdentityAndTagsObject parameters, Context context);
 
     /**
-     * Updates SIM group tags.
+     * Patch SIM group resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
+     * @param parameters Parameters supplied to patch SIM group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sIM group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimGroupInner updateTags(String resourceGroupName, String simGroupName, TagsObject parameters);
+    SimGroupInner updateTags(String resourceGroupName, String simGroupName, IdentityAndTagsObject parameters);
 
     /**
      * Gets all the SIM groups in a subscription.

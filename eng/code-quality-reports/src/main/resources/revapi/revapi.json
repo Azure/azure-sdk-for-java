@@ -275,6 +275,16 @@
           "regex": true,
           "code": "java.method.(returnTypeTypeParametersChanged|parameterTypeChanged|returnTypeChanged)",
           "new": ".* com.azure.security.attestation.*attestTpm.*"
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.cosmos.models.ChangeFeedMetaData",
+          "justification": "Fixes a bug to deserilize the conflictResolutionTimestamp Instant object."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
+          "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
         }
       ]
     }
