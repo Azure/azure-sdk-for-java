@@ -85,7 +85,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
 
     Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, ItemBulkOperation<?, ?> itemOperation, CosmosException exception) {
         if (statusCode == StatusCodes.GONE) {
-            if (isWriteOnly(itemOperation) &&
+            if (exception instanceof GoneException && isWriteOnly(itemOperation) &&
                 BridgeInternal.hasSendingRequestStarted(exception) &&
                 !((GoneException) exception).isBasedOn410ResponseFromService() &&
                 !itemOperation.getRequestOptions().getNonIdempotentWriteRetriesEnabled()) {
