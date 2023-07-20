@@ -807,6 +807,41 @@ public class RoomsClientTest extends RoomsTestBase {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void addUpdateInvalidParticipants(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithResponseValidFromGreaterThan180");
+        assertNotNull(roomsClient);
+
+        // Create empty room
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
+        assertHappyPath(createdRoom);
+
+        String roomId = createdRoom.getRoomId();
+
+        // Check participant count, expected 0
+        PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms();
+
+        PagedIterable<RoomParticipant> listParticipantsResponse1 = roomsClient.listParticipants(roomId);
+        assertEquals(0, listParticipantsResponse1.stream().count());
+
+        // Add participants
+
+        RoomParticipant firstParticipant = new RoomParticipant(new CommunicationUserIdentifier("badMRI"));
+        RoomParticipant secondParticipant = new RoomParticipant(new CommunicationUserIdentifier("badMRI2"));
+
+        List<RoomParticipant> participants = Arrays.asList(firstParticipant, secondParticipant);
+
+        // Add Invalid participants.
+        assertThrows(HttpResponseException.class, () -> {
+            roomsClient.addOrUpdateParticipants(roomId, participants);
+        });
+    }
+
     private RoomsClient setupSyncClient(HttpClient httpClient, String testName) {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient,
                 RoomsServiceVersion.V2023_06_14);

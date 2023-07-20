@@ -608,7 +608,48 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                     assertEquals(result5.getStatusCode(), 204);
                 }).verifyComplete();
     }
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void addUpdateInvalidParticipants(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient, "addUpdateInvalidParticipants");
+        assertNotNull(roomsAsyncClient);
 
+        // Create empty room
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        Mono<CommunicationRoom> createCommunicationRoom = roomsAsyncClient.createRoom(createRoomOptions);
+
+        StepVerifier.create(createCommunicationRoom)
+                .assertNext(roomResult -> {
+                    assertEquals(true, roomResult.getRoomId() != null);
+                    assertEquals(true, roomResult.getCreatedAt() != null);
+                    assertEquals(true, roomResult.getValidFrom() != null);
+                    assertEquals(true, roomResult.getValidUntil() != null);
+                }).verifyComplete();
+
+        String roomId = createCommunicationRoom.block().getRoomId();
+
+        // Check participant count, expected 0
+        PagedFlux<RoomParticipant> listParticipantsResponse1 = roomsAsyncClient.listParticipants(roomId);
+
+        StepVerifier.create(listParticipantsResponse1.count())
+                .expectNext(0L)
+                .verifyComplete();
+
+        RoomParticipant firstParticipant = new RoomParticipant(new CommunicationUserIdentifier("badMRI"));
+        RoomParticipant secondParticipant = new RoomParticipant(new CommunicationUserIdentifier("badMRI2"));
+
+        List<RoomParticipant> participants = Arrays.asList(firstParticipant, secondParticipant);
+
+        // Add Invalid participants.
+        CommunicationErrorResponseException exception =
+            assertThrows(CommunicationErrorResponseException.class, () -> {
+                roomsAsyncClient.addOrUpdateParticipants(roomId, participants).block();
+            });
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
