@@ -8,13 +8,13 @@ import com.azure.communication.rooms.models.*;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -140,9 +140,8 @@ public class RoomsClientTest extends RoomsTestBase {
         // Check created room coun
         PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms();
 
-        List<CommunicationRoom> rooms = listRoomResponse.stream().collect(Collectors.toList());
-
-        assertHappyPath(rooms.get(0));
+        Iterable<PagedResponse<CommunicationRoom>> rooms = listRoomResponse.iterableByPage(1);
+        assertHappyPath(rooms.iterator().next().getValue().get(0));
 
         // Delete Room
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
