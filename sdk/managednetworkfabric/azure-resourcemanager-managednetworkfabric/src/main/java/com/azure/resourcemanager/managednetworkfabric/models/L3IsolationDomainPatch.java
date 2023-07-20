@@ -6,25 +6,17 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The L3IsolationDomain patch resource definition. */
+/** The L3 Isolation Domain patch resource definition. */
 @Fluent
-public final class L3IsolationDomainPatch {
+public final class L3IsolationDomainPatch extends TagsUpdate {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private L3IsolationDomainPatchProperties innerProperties;
-
-    /*
-     * Resource tags
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of L3IsolationDomainPatch class. */
     public L3IsolationDomainPatch() {
@@ -39,23 +31,10 @@ public final class L3IsolationDomainPatch {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the L3IsolationDomainPatch object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public L3IsolationDomainPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
@@ -107,7 +86,7 @@ public final class L3IsolationDomainPatch {
     }
 
     /**
-     * Get the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Get the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @return the aggregateRouteConfiguration value.
      */
@@ -116,7 +95,7 @@ public final class L3IsolationDomainPatch {
     }
 
     /**
-     * Set the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Set the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainPatch object itself.
@@ -131,34 +110,11 @@ public final class L3IsolationDomainPatch {
     }
 
     /**
-     * Get the description property: L3 Isolation Domain description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: L3 Isolation Domain description.
-     *
-     * @param description the description value to set.
-     * @return the L3IsolationDomainPatch object itself.
-     */
-    public L3IsolationDomainPatch withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new L3IsolationDomainPatchProperties();
-        }
-        this.innerProperties().withDescription(description);
-        return this;
-    }
-
-    /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
      *
      * @return the connectedSubnetRoutePolicy value.
      */
-    public L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
+    public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
         return this.innerProperties() == null ? null : this.innerProperties().connectedSubnetRoutePolicy();
     }
 
@@ -169,7 +125,7 @@ public final class L3IsolationDomainPatch {
      * @return the L3IsolationDomainPatch object itself.
      */
     public L3IsolationDomainPatch withConnectedSubnetRoutePolicy(
-        L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainPatchProperties();
         }
@@ -178,11 +134,36 @@ public final class L3IsolationDomainPatch {
     }
 
     /**
+     * Get the annotation property: Switch configuration description.
+     *
+     * @return the annotation value.
+     */
+    public String annotation() {
+        return this.innerProperties() == null ? null : this.innerProperties().annotation();
+    }
+
+    /**
+     * Set the annotation property: Switch configuration description.
+     *
+     * @param annotation the annotation value to set.
+     * @return the L3IsolationDomainPatch object itself.
+     */
+    public L3IsolationDomainPatch withAnnotation(String annotation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new L3IsolationDomainPatchProperties();
+        }
+        this.innerProperties().withAnnotation(annotation);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

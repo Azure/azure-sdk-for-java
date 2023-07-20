@@ -61,8 +61,8 @@ public class TestProxyUtils {
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    private static final List<String>
-        HEADER_KEYS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key"));
+    private static final List<String> HEADER_KEYS_TO_REDACT =
+        new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key", "subscription-key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
     private static final String DELEGATION_KEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";

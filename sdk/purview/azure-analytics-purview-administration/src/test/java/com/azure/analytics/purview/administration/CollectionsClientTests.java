@@ -15,7 +15,7 @@ public class CollectionsClientTests extends PurviewAccountClientTestBase {
 
     @Override
     protected void beforeTest() {
-        client = purviewCollectionClientBuilderSetUp().endpoint(getEndpoint()).buildClient();
+        client = purviewCollectionClientBuilderSetUp().buildClient();
     }
 
     @Test

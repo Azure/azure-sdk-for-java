@@ -14,6 +14,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -894,8 +895,16 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(roomsAsyncClient.deleteRoomWithResponse(nonExistRoomId)).verifyError();
     }
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .build();
+    }
+
     private RoomsAsyncClient setupAsyncClient(HttpClient httpClient, String testName) {
-        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient,
+        RoomsClientBuilder builder = getRoomsClientWithConnectionString(
+                buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+                : httpClient),
                 RoomsServiceVersion.V2023_06_14);
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
         return addLoggingPolicy(builder, testName).buildAsyncClient();

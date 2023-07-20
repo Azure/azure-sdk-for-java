@@ -4,12 +4,41 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Policy governing how jobs are distributed to workers. */
 @Fluent
 public final class DistributionPolicy {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
+    public DistributionPolicy(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param internal The internal DistributionPolicy
+     */
+    DistributionPolicy(DistributionPolicyInternal internal) {
+        id = internal.getId();
+
+        setName(internal.getName());
+        setMode(DistributionPolicyAdapter.convertDistributionModeToPublic(internal.getMode()));
+        setOfferExpiresAfterSeconds(internal.getOfferExpiresAfterSeconds());
+    }
+
+    static {
+        DistributionPolicyConstructorProxy.setAccessor(internal -> new DistributionPolicy(internal));
+    }
+
     /*
      * The unique identifier of the policy.
      */

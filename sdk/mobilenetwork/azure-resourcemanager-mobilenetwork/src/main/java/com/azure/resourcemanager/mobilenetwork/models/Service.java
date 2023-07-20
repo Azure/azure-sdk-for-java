@@ -124,11 +124,13 @@ public interface Service {
             DefinitionStages.WithPccRules,
             DefinitionStages.WithCreate {
     }
+
     /** The Service definition stages. */
     interface DefinitionStages {
         /** The first stage of the Service definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Service definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -147,6 +149,7 @@ public interface Service {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Service definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -158,6 +161,7 @@ public interface Service {
              */
             WithServicePrecedence withExistingMobileNetwork(String resourceGroupName, String mobileNetworkName);
         }
+
         /** The stage of the Service definition allowing to specify servicePrecedence. */
         interface WithServicePrecedence {
             /**
@@ -172,6 +176,7 @@ public interface Service {
              */
             WithPccRules withServicePrecedence(int servicePrecedence);
         }
+
         /** The stage of the Service definition allowing to specify pccRules. */
         interface WithPccRules {
             /**
@@ -182,6 +187,7 @@ public interface Service {
              */
             WithCreate withPccRules(List<PccRuleConfiguration> pccRules);
         }
+
         /**
          * The stage of the Service definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -202,6 +208,7 @@ public interface Service {
              */
             Service create(Context context);
         }
+
         /** The stage of the Service definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -212,6 +219,7 @@ public interface Service {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Service definition allowing to specify serviceQosPolicy. */
         interface WithServiceQosPolicy {
             /**
@@ -227,6 +235,7 @@ public interface Service {
             WithCreate withServiceQosPolicy(QosPolicy serviceQosPolicy);
         }
     }
+
     /**
      * Begins update for the Service resource.
      *
@@ -251,6 +260,7 @@ public interface Service {
          */
         Service apply(Context context);
     }
+
     /** The Service update stages. */
     interface UpdateStages {
         /** The stage of the Service update allowing to specify tags. */
@@ -264,6 +274,7 @@ public interface Service {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

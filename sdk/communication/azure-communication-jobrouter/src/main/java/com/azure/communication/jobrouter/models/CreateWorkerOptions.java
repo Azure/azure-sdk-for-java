@@ -18,7 +18,7 @@ public final class CreateWorkerOptions {
     /**
      * The queue(s) that this worker can receive work from.
      */
-    private Map<String, QueueAssignment> queueAssignments;
+    private Map<String, RouterQueueAssignment> queueAssignments;
 
     /**
      * The total capacity score this worker has to manage multiple concurrent
@@ -35,7 +35,7 @@ public final class CreateWorkerOptions {
     /**
      * A set of non-identifying attributes attached to this worker.
      */
-    private Map<String, Object> tags;
+    private Map<String, LabelValue> tags;
 
     /**
      * The channel(s) this worker can handle and their impact on the workers
@@ -64,7 +64,7 @@ public final class CreateWorkerOptions {
      * @param queueAssignments the queueAssignments value to set.
      * @return this
      */
-    public CreateWorkerOptions setQueueAssignments(Map<String, QueueAssignment> queueAssignments) {
+    public CreateWorkerOptions setQueueAssignments(Map<String, RouterQueueAssignment> queueAssignments) {
         this.queueAssignments = queueAssignments;
         return this;
     }
@@ -87,7 +87,7 @@ public final class CreateWorkerOptions {
      * @param tags the tags value to set.
      * @return this
      */
-    public CreateWorkerOptions setTags(Map<String, Object> tags) {
+    public CreateWorkerOptions setTags(Map<String, LabelValue> tags) {
         this.tags = tags;
         return this;
     }
@@ -127,7 +127,7 @@ public final class CreateWorkerOptions {
      * Returns queue assignments.
      * @return queueAssignments
      */
-    public Map<String, QueueAssignment> getQueueAssignments() {
+    public Map<String, RouterQueueAssignment> getQueueAssignments() {
         return this.queueAssignments;
     }
 
@@ -151,7 +151,7 @@ public final class CreateWorkerOptions {
      * Returns tags.
      * @return tags
      */
-    public Map<String, Object> getTags() {
+    public Map<String, LabelValue> getTags() {
         return this.tags;
     }
 

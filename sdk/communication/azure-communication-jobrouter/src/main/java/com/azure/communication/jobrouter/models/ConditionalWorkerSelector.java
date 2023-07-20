@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
-/** Describes a set of label selectors that will be attached if the given condition resolves to true. */
+/** Describes a set of worker selectors that will be attached if the given condition resolves to true. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("conditional")
 @Fluent
@@ -30,7 +30,7 @@ public final class ConditionalWorkerSelector extends WorkerSelectorAttachment {
     private RouterRule condition;
 
     /*
-     * The label selectors to attach
+     * The worker selectors to attach
      */
     @JsonProperty(value = "workerSelectors", required = true)
     private List<RouterWorkerSelector> workerSelectors;
@@ -64,18 +64,18 @@ public final class ConditionalWorkerSelector extends WorkerSelectorAttachment {
     }
 
     /**
-     * Get the labelSelectors property: The label selectors to attach.
+     * Get the workerSelectors property: The worker selectors to attach.
      *
-     * @return the labelSelectors value.
+     * @return the workerSelectors value.
      */
     public List<RouterWorkerSelector> getWorkerSelectors() {
         return this.workerSelectors;
     }
 
     /**
-     * Set the labelSelectors property: The label selectors to attach.
+     * Set the workerSelectors property: The worker selectors to attach.
      *
-     * @param workerSelectors the labelSelectors value to set.
+     * @param workerSelectors the workerSelectors value to set.
      * @return the ConditionalWorkerSelector object itself.
      */
     public ConditionalWorkerSelector setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {

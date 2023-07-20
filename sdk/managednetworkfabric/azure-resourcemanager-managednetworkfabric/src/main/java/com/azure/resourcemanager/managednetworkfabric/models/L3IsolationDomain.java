@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainInner;
-import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of L3IsolationDomain. */
@@ -56,41 +55,32 @@ public interface L3IsolationDomain {
     SystemData systemData();
 
     /**
-     * Gets the networkFabricId property: Network Fabric ARM resource id.
+     * Gets the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @return the networkFabricId value.
      */
     String networkFabricId();
 
     /**
-     * Gets the disabledOnResources property: List of resources the L3 Isolation Domain is disabled on. Can be either
-     * entire NetworkFabric or NetworkRack.
+     * Gets the configurationState property: Configuration state of the resource.
      *
-     * @return the disabledOnResources value.
+     * @return the configurationState value.
      */
-    List<String> disabledOnResources();
+    ConfigurationState configurationState();
 
     /**
-     * Gets the administrativeState property: Administrative state of the IsolationDomain. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    EnabledDisabledState administrativeState();
-
-    /**
-     * Gets the optionBDisabledOnResources property: List of resources the OptionB is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the optionBDisabledOnResources value.
-     */
-    List<String> optionBDisabledOnResources();
-
-    /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
 
     /**
      * Gets the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
@@ -107,25 +97,18 @@ public interface L3IsolationDomain {
     RedistributeStaticRoutes redistributeStaticRoutes();
 
     /**
-     * Gets the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Gets the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @return the aggregateRouteConfiguration value.
      */
     AggregateRouteConfiguration aggregateRouteConfiguration();
 
     /**
-     * Gets the description property: L3 Isolation Domain description.
-     *
-     * @return the description value.
-     */
-    String description();
-
-    /**
      * Gets the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
      *
      * @return the connectedSubnetRoutePolicy value.
      */
-    L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy();
+    ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -167,13 +150,16 @@ public interface L3IsolationDomain {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithNetworkFabricId,
             DefinitionStages.WithCreate {
     }
+
     /** The L3IsolationDomain definition stages. */
     interface DefinitionStages {
         /** The first stage of the L3IsolationDomain definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the L3IsolationDomain definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -192,6 +178,7 @@ public interface L3IsolationDomain {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the L3IsolationDomain definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -200,19 +187,29 @@ public interface L3IsolationDomain {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithNetworkFabricId withExistingResourceGroup(String resourceGroupName);
         }
+
+        /** The stage of the L3IsolationDomain definition allowing to specify networkFabricId. */
+        interface WithNetworkFabricId {
+            /**
+             * Specifies the networkFabricId property: ARM Resource ID of the Network Fabric..
+             *
+             * @param networkFabricId ARM Resource ID of the Network Fabric.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkFabricId(String networkFabricId);
+        }
+
         /**
          * The stage of the L3IsolationDomain definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithNetworkFabricId,
                 DefinitionStages.WithRedistributeConnectedSubnets,
                 DefinitionStages.WithRedistributeStaticRoutes,
                 DefinitionStages.WithAggregateRouteConfiguration,
-                DefinitionStages.WithDescription,
                 DefinitionStages.WithConnectedSubnetRoutePolicy,
                 DefinitionStages.WithAnnotation {
             /**
@@ -230,6 +227,7 @@ public interface L3IsolationDomain {
              */
             L3IsolationDomain create(Context context);
         }
+
         /** The stage of the L3IsolationDomain definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -240,16 +238,7 @@ public interface L3IsolationDomain {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the L3IsolationDomain definition allowing to specify networkFabricId. */
-        interface WithNetworkFabricId {
-            /**
-             * Specifies the networkFabricId property: Network Fabric ARM resource id..
-             *
-             * @param networkFabricId Network Fabric ARM resource id.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkFabricId(String networkFabricId);
-        }
+
         /** The stage of the L3IsolationDomain definition allowing to specify redistributeConnectedSubnets. */
         interface WithRedistributeConnectedSubnets {
             /**
@@ -260,6 +249,7 @@ public interface L3IsolationDomain {
              */
             WithCreate withRedistributeConnectedSubnets(RedistributeConnectedSubnets redistributeConnectedSubnets);
         }
+
         /** The stage of the L3IsolationDomain definition allowing to specify redistributeStaticRoutes. */
         interface WithRedistributeStaticRoutes {
             /**
@@ -270,26 +260,18 @@ public interface L3IsolationDomain {
              */
             WithCreate withRedistributeStaticRoutes(RedistributeStaticRoutes redistributeStaticRoutes);
         }
+
         /** The stage of the L3IsolationDomain definition allowing to specify aggregateRouteConfiguration. */
         interface WithAggregateRouteConfiguration {
             /**
-             * Specifies the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations..
+             * Specifies the aggregateRouteConfiguration property: Aggregate route configurations..
              *
-             * @param aggregateRouteConfiguration List of Ipv4 and Ipv6 route configurations.
+             * @param aggregateRouteConfiguration Aggregate route configurations.
              * @return the next definition stage.
              */
             WithCreate withAggregateRouteConfiguration(AggregateRouteConfiguration aggregateRouteConfiguration);
         }
-        /** The stage of the L3IsolationDomain definition allowing to specify description. */
-        interface WithDescription {
-            /**
-             * Specifies the description property: L3 Isolation Domain description..
-             *
-             * @param description L3 Isolation Domain description.
-             * @return the next definition stage.
-             */
-            WithCreate withDescription(String description);
-        }
+
         /** The stage of the L3IsolationDomain definition allowing to specify connectedSubnetRoutePolicy. */
         interface WithConnectedSubnetRoutePolicy {
             /**
@@ -298,9 +280,9 @@ public interface L3IsolationDomain {
              * @param connectedSubnetRoutePolicy Connected Subnet RoutePolicy.
              * @return the next definition stage.
              */
-            WithCreate withConnectedSubnetRoutePolicy(
-                L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy);
+            WithCreate withConnectedSubnetRoutePolicy(ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy);
         }
+
         /** The stage of the L3IsolationDomain definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -312,6 +294,7 @@ public interface L3IsolationDomain {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the L3IsolationDomain resource.
      *
@@ -325,8 +308,8 @@ public interface L3IsolationDomain {
             UpdateStages.WithRedistributeConnectedSubnets,
             UpdateStages.WithRedistributeStaticRoutes,
             UpdateStages.WithAggregateRouteConfiguration,
-            UpdateStages.WithDescription,
-            UpdateStages.WithConnectedSubnetRoutePolicy {
+            UpdateStages.WithConnectedSubnetRoutePolicy,
+            UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *
@@ -342,6 +325,7 @@ public interface L3IsolationDomain {
          */
         L3IsolationDomain apply(Context context);
     }
+
     /** The L3IsolationDomain update stages. */
     interface UpdateStages {
         /** The stage of the L3IsolationDomain update allowing to specify tags. */
@@ -354,6 +338,7 @@ public interface L3IsolationDomain {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the L3IsolationDomain update allowing to specify redistributeConnectedSubnets. */
         interface WithRedistributeConnectedSubnets {
             /**
@@ -364,6 +349,7 @@ public interface L3IsolationDomain {
              */
             Update withRedistributeConnectedSubnets(RedistributeConnectedSubnets redistributeConnectedSubnets);
         }
+
         /** The stage of the L3IsolationDomain update allowing to specify redistributeStaticRoutes. */
         interface WithRedistributeStaticRoutes {
             /**
@@ -374,26 +360,18 @@ public interface L3IsolationDomain {
              */
             Update withRedistributeStaticRoutes(RedistributeStaticRoutes redistributeStaticRoutes);
         }
+
         /** The stage of the L3IsolationDomain update allowing to specify aggregateRouteConfiguration. */
         interface WithAggregateRouteConfiguration {
             /**
-             * Specifies the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations..
+             * Specifies the aggregateRouteConfiguration property: Aggregate route configurations..
              *
-             * @param aggregateRouteConfiguration List of Ipv4 and Ipv6 route configurations.
+             * @param aggregateRouteConfiguration Aggregate route configurations.
              * @return the next definition stage.
              */
             Update withAggregateRouteConfiguration(AggregateRouteConfiguration aggregateRouteConfiguration);
         }
-        /** The stage of the L3IsolationDomain update allowing to specify description. */
-        interface WithDescription {
-            /**
-             * Specifies the description property: L3 Isolation Domain description..
-             *
-             * @param description L3 Isolation Domain description.
-             * @return the next definition stage.
-             */
-            Update withDescription(String description);
-        }
+
         /** The stage of the L3IsolationDomain update allowing to specify connectedSubnetRoutePolicy. */
         interface WithConnectedSubnetRoutePolicy {
             /**
@@ -402,10 +380,21 @@ public interface L3IsolationDomain {
              * @param connectedSubnetRoutePolicy Connected Subnet RoutePolicy.
              * @return the next definition stage.
              */
-            Update withConnectedSubnetRoutePolicy(
-                L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy);
+            Update withConnectedSubnetRoutePolicy(ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy);
+        }
+
+        /** The stage of the L3IsolationDomain update allowing to specify annotation. */
+        interface WithAnnotation {
+            /**
+             * Specifies the annotation property: Switch configuration description..
+             *
+             * @param annotation Switch configuration description.
+             * @return the next definition stage.
+             */
+            Update withAnnotation(String annotation);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -430,8 +419,9 @@ public interface L3IsolationDomain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void updateAdministrativeState(UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body);
 
     /**
      * executes enable operation to the underlying resources.
@@ -443,81 +433,51 @@ public interface L3IsolationDomain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void updateAdministrativeState(UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body, Context context);
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
+     * Validates the configuration of the resources.
      *
-     * <p>Update administrative state of option B on CE devices.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
-    void updateOptionBAdministrativeState(UpdateAdministrativeState body);
+    ValidateConfigurationResponse validateConfiguration();
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
+     * Validates the configuration of the resources.
      *
-     * <p>Update administrative state of option B on CE devices.
-     *
-     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
-    void updateOptionBAdministrativeState(UpdateAdministrativeState body, Context context);
+    ValidateConfigurationResponse validateConfiguration(Context context);
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void clearArpTable(EnableDisableOnResources body);
+    CommonPostActionResponseForStateUpdate commitConfiguration();
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
-     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void clearArpTable(EnableDisableOnResources body, Context context);
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearNeighborTable(EnableDisableOnResources body);
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearNeighborTable(EnableDisableOnResources body, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(Context context);
 }

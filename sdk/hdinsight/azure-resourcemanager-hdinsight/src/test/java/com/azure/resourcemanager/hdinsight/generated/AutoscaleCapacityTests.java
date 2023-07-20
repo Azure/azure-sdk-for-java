@@ -7,25 +7,24 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleCapacity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoscaleCapacityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoscaleCapacity model =
             BinaryData
-                .fromString("{\"minInstanceCount\":253386723,\"maxInstanceCount\":1248526317}")
+                .fromString("{\"minInstanceCount\":358956997,\"maxInstanceCount\":1965159297}")
                 .toObject(AutoscaleCapacity.class);
-        Assertions.assertEquals(253386723, model.minInstanceCount());
-        Assertions.assertEquals(1248526317, model.maxInstanceCount());
+        Assertions.assertEquals(358956997, model.minInstanceCount());
+        Assertions.assertEquals(1965159297, model.maxInstanceCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoscaleCapacity model =
-            new AutoscaleCapacity().withMinInstanceCount(253386723).withMaxInstanceCount(1248526317);
+            new AutoscaleCapacity().withMinInstanceCount(358956997).withMaxInstanceCount(1965159297);
         model = BinaryData.fromObject(model).toObject(AutoscaleCapacity.class);
-        Assertions.assertEquals(253386723, model.minInstanceCount());
-        Assertions.assertEquals(1248526317, model.maxInstanceCount());
+        Assertions.assertEquals(358956997, model.minInstanceCount());
+        Assertions.assertEquals(1965159297, model.maxInstanceCount());
     }
 }

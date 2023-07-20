@@ -29,7 +29,7 @@ public final class RouterWorkerSelector {
      * operator
      */
     @JsonProperty(value = "value")
-    private Object value;
+    private LabelValue value;
 
     /*
      * Describes how long this label selector is valid in seconds.
@@ -101,19 +101,19 @@ public final class RouterWorkerSelector {
     /**
      * Get the value property: The value to compare against the actual label value with the given operator.
      *
-     * @return the value value.
+     * @return the LabelValue value.
      */
-    public Object getValue() {
+    public LabelValue getValue() {
         return this.value;
     }
 
     /**
      * Set the value property: The value to compare against the actual label value with the given operator.
      *
-     * @param value the value value to set.
+     * @param value the LabelValue value to set.
      * @return the RouterWorkerSelector object itself.
      */
-    public RouterWorkerSelector setValue(Object value) {
+    public RouterWorkerSelector setValue(LabelValue value) {
         this.value = value;
         return this;
     }

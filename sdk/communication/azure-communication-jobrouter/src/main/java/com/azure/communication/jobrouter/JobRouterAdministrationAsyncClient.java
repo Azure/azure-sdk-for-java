@@ -5,27 +5,35 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.AzureCommunicationServicesImpl;
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationsImpl;
-import com.azure.communication.jobrouter.implementation.convertors.ClassificationPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.convertors.ExceptionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.convertors.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.DistributionPolicyItem;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
-import com.azure.communication.jobrouter.models.RouterQueue;
-import com.azure.communication.jobrouter.models.RouterQueueItem;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicyItem;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.ListClassificationPoliciesOptions;
 import com.azure.communication.jobrouter.models.ListDistributionPoliciesOptions;
 import com.azure.communication.jobrouter.models.ListExceptionPoliciesOptions;
 import com.azure.communication.jobrouter.models.ListQueuesOptions;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueItem;
 import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
@@ -35,6 +43,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -47,16 +56,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Async Client that supports job router administration operations.
  *
  * <p><strong>Instantiating an asynchronous JobRouter Administration Client</strong></p>
- * <!-- src_embed com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router administration client builder
  * final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
- * &#47;&#47; Build the router administration client
- * JobRouterAdministrationAsyncClient routerAdministrationClient = builder.buildAsyncClient&#40;&#41;;
+ * &#47;&#47; Build the jobrouter administration client
+ * JobRouterAdministrationAsyncClient jobRouterAdministrationClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation -->
  *
  * <p>View {@link JobRouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -84,7 +93,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
-            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context)
                 .flatMap(
                     (Response<ClassificationPolicy> res) -> {
@@ -111,7 +120,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
-            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -130,7 +139,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> updateClassificationPolicy(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
         try {
-            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
+            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(updateClassificationPolicyOptions.getId(), classificationPolicy, context)
                 .flatMap(
                     (Response<ClassificationPolicy> res) -> {
@@ -157,16 +166,17 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> updateClassificationPolicyWithResponse(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
         try {
-            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
+            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(updateClassificationPolicyOptions.getId(), classificationPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
+    Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicyInternal classificationPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertClassificationPolicyWithResponseAsync(id, classificationPolicy, context);
+            return jobRouterAdmin.upsertClassificationPolicyWithResponseAsync(id, classificationPolicy, context)
+                .map(response -> new SimpleResponse<>(response, ClassificationPolicyConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -218,7 +228,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.getClassificationPolicyWithResponseAsync(id, context);
+            return jobRouterAdmin.getClassificationPolicyWithResponseAsync(id, context)
+                .map(response -> new SimpleResponse<>(response, ClassificationPolicyConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -286,7 +297,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassificationPolicyItem> listClassificationPolicies() {
         try {
-            return jobRouterAdmin.listClassificationPoliciesAsync(null);
+            return ClassificationPolicyAdapter.convertPagedFluxToPublic(
+                jobRouterAdmin.listClassificationPoliciesAsync(null));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -304,7 +316,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions) {
         try {
-            return jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize());
+            return ClassificationPolicyAdapter.convertPagedFluxToPublic(
+                jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize()));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -322,7 +335,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions, Context context) {
         try {
-            return jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize(), context);
+            return ClassificationPolicyAdapter.convertPagedFluxToPublic(
+                jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize(), context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -340,7 +354,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         try {
-            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context)
                 .flatMap(
                     (Response<DistributionPolicy> res) -> {
@@ -367,7 +381,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         try {
-            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -386,7 +400,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> updateDistributionPolicy(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
         try {
-            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context)
                 .flatMap(
                     (Response<DistributionPolicy> res) -> {
@@ -413,16 +427,17 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> updateDistributionPolicyWithResponse(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
         try {
-            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
+    Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicyInternal distributionPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertDistributionPolicyWithResponseAsync(id, distributionPolicy, context);
+            return jobRouterAdmin.upsertDistributionPolicyWithResponseAsync(id, distributionPolicy, context)
+                .map(response -> new SimpleResponse<>(response, DistributionPolicyConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -474,7 +489,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.getDistributionPolicyWithResponseAsync(id, context);
+            return jobRouterAdmin.getDistributionPolicyWithResponseAsync(id, context)
+                .map(response -> new SimpleResponse<>(response, DistributionPolicyConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -543,7 +559,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DistributionPolicyItem> listDistributionPolicies() {
         try {
-            return jobRouterAdmin.listDistributionPoliciesAsync(null);
+            return DistributionPolicyAdapter.convertPagedFluxToPublic(jobRouterAdmin.listDistributionPoliciesAsync(null));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -561,7 +577,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions) {
         try {
-            return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize());
+            return DistributionPolicyAdapter.convertPagedFluxToPublic(
+                jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize()));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -579,7 +596,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions, Context context) {
         try {
-            return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize(), context);
+            return DistributionPolicyAdapter.convertPagedFluxToPublic(
+                jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize(), context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -597,7 +615,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         try {
-            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context)
                 .flatMap(
                     (Response<ExceptionPolicy> res) -> {
@@ -624,7 +642,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         try {
-            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -643,7 +661,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> updateExceptionPolicy(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
         try {
-            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
+            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(updateExceptionPolicyOptions.getId(), exceptionPolicy, context)
                 .flatMap(
                     (Response<ExceptionPolicy> res) -> {
@@ -670,16 +688,17 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> updateExceptionPolicyWithResponse(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
         try {
-            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
+            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(updateExceptionPolicyOptions.getId(), exceptionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
+    Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicyInternal exceptionPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertExceptionPolicyWithResponseAsync(id, exceptionPolicy, context);
+            return jobRouterAdmin.upsertExceptionPolicyWithResponseAsync(id, exceptionPolicy, context)
+                .map(response -> new SimpleResponse<>(response, ExceptionPolicyConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -731,7 +750,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.getExceptionPolicyWithResponseAsync(id, context);
+            return jobRouterAdmin.getExceptionPolicyWithResponseAsync(id, context)
+                .map(response -> new SimpleResponse<>(response, ExceptionPolicyConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -799,7 +819,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExceptionPolicyItem> listExceptionPolicies() {
         try {
-            return jobRouterAdmin.listExceptionPoliciesAsync(null);
+            return ExceptionPolicyAdapter.convertPagedFluxToPublic(jobRouterAdmin.listExceptionPoliciesAsync(null));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -817,7 +837,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions) {
         try {
-            return jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize());
+            return ExceptionPolicyAdapter.convertPagedFluxToPublic(
+                jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize()));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -835,7 +856,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions, Context context) {
         try {
-            return jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize(), context);
+            return ExceptionPolicyAdapter.convertPagedFluxToPublic(
+                jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize(), context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -853,8 +875,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueue> createQueue(CreateQueueOptions createQueueOptions) {
         try {
-            RouterQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
-            return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context)
+            RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), queue, context)
                 .flatMap(
                     (Response<RouterQueue> res) -> {
                         if (res.getValue() != null) {
@@ -880,8 +902,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterQueue>> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
         try {
-            RouterQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
-            return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context));
+            RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), queue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -899,8 +921,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueue> updateQueue(UpdateQueueOptions updateQueueOptions) {
         try {
-            RouterQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
-            return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context)
+            RouterQueueInternal queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), queue, context)
                 .flatMap(
                     (Response<RouterQueue> res) -> {
                         if (res.getValue() != null) {
@@ -926,16 +948,17 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterQueue>> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions) {
         try {
-            RouterQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
-            return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context));
+            RouterQueueInternal queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), queue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<RouterQueue>> upsertQueueWithResponse(String id, RouterQueue jobQueue, Context context) {
+    Mono<Response<RouterQueue>> upsertQueueWithResponse(String id, RouterQueueInternal queue, Context context) {
         try {
-            return jobRouterAdmin.upsertQueueWithResponseAsync(id, jobQueue, context);
+            return jobRouterAdmin.upsertQueueWithResponseAsync(id, queue, context)
+                .map(response -> new SimpleResponse<>(response, RouterQueueConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -987,7 +1010,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     Mono<Response<RouterQueue>> getQueueWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.getQueueWithResponseAsync(id, context);
+            return jobRouterAdmin.getQueueWithResponseAsync(id, context)
+                .map(response -> new SimpleResponse<>(response, RouterQueueConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1055,7 +1079,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterQueueItem> listQueues() {
         try {
-            return jobRouterAdmin.listQueuesAsync(null);
+            return QueueAdapter.convertPagedFluxToPublic(jobRouterAdmin.listQueuesAsync(null));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1073,7 +1097,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
         try {
-            return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize());
+            return QueueAdapter.convertPagedFluxToPublic(jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize()));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1091,7 +1115,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
         try {
-            return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize(), context);
+            return QueueAdapter.convertPagedFluxToPublic(jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize(), context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
