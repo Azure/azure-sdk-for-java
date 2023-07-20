@@ -51,7 +51,7 @@ public class LabelSelectorAdapter {
     public static RouterWorkerSelectorInternal convertWorkerSelectorToInternal(RouterWorkerSelector ws) {
         RouterWorkerSelectorInternal workerSelector = new RouterWorkerSelectorInternal()
             .setKey(ws.getKey())
-            .setValue(ws.getValue())
+            .setValue(ws.getValue().getValue())
             .setExpedite(ws.isExpedite())
             .setExpiresAfterSeconds(ws.getExpiresAfterSeconds())
             .setLabelOperator(LabelOperatorInternal.fromString(ws.getLabelOperator().toString()));
@@ -73,7 +73,7 @@ public class LabelSelectorAdapter {
     public static RouterQueueSelectorInternal convertQueueSelectorToInternal(RouterQueueSelector qs) {
         RouterQueueSelectorInternal queueSelector = new RouterQueueSelectorInternal()
             .setKey(qs.getKey())
-            .setValue(qs.getValue())
+            .setValue(qs.getValue().getValue())
             .setLabelOperator(LabelOperatorInternal.fromString(qs.getLabelOperator().toString()));
 
         return queueSelector;

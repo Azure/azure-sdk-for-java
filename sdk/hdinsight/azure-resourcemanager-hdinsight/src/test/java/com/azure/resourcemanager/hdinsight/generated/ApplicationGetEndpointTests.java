@@ -7,34 +7,33 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ApplicationGetEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationGetEndpointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ApplicationGetEndpoint model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"vhelxprglyatdd\",\"destinationPort\":1454263457,\"publicPort\":373907539,\"privateIPAddress\":\"ejrjxgciqibrho\"}")
+                    "{\"location\":\"iith\",\"destinationPort\":63986979,\"publicPort\":511745945,\"privateIPAddress\":\"v\"}")
                 .toObject(ApplicationGetEndpoint.class);
-        Assertions.assertEquals("vhelxprglyatdd", model.location());
-        Assertions.assertEquals(1454263457, model.destinationPort());
-        Assertions.assertEquals(373907539, model.publicPort());
-        Assertions.assertEquals("ejrjxgciqibrho", model.privateIpAddress());
+        Assertions.assertEquals("iith", model.location());
+        Assertions.assertEquals(63986979, model.destinationPort());
+        Assertions.assertEquals(511745945, model.publicPort());
+        Assertions.assertEquals("v", model.privateIpAddress());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ApplicationGetEndpoint model =
             new ApplicationGetEndpoint()
-                .withLocation("vhelxprglyatdd")
-                .withDestinationPort(1454263457)
-                .withPublicPort(373907539)
-                .withPrivateIpAddress("ejrjxgciqibrho");
+                .withLocation("iith")
+                .withDestinationPort(63986979)
+                .withPublicPort(511745945)
+                .withPrivateIpAddress("v");
         model = BinaryData.fromObject(model).toObject(ApplicationGetEndpoint.class);
-        Assertions.assertEquals("vhelxprglyatdd", model.location());
-        Assertions.assertEquals(1454263457, model.destinationPort());
-        Assertions.assertEquals(373907539, model.publicPort());
-        Assertions.assertEquals("ejrjxgciqibrho", model.privateIpAddress());
+        Assertions.assertEquals("iith", model.location());
+        Assertions.assertEquals(63986979, model.destinationPort());
+        Assertions.assertEquals(511745945, model.publicPort());
+        Assertions.assertEquals("v", model.privateIpAddress());
     }
 }

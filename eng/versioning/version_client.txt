@@ -191,9 +191,9 @@ com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management-web;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.9.0;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-feature-management-web;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-feature-management;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.9.1;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-dependencies;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-messaging-azure;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;4.9.0;4.10.0-beta.1
@@ -270,7 +270,7 @@ com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mediaservices;2.3.0;2.4.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mysql;1.0.2;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.2;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.6;1.0.0-beta.7
@@ -418,6 +418,7 @@ com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0-beta.2;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managementgroups;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-iotfirmwaredefense;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 
