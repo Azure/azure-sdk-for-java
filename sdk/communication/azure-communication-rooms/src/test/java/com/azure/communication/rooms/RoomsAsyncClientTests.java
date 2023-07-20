@@ -314,7 +314,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateRoomValidUntilGreaterThan180(HttpClient httpClient) {
         roomsAsyncClient = setupAsyncClient(httpClient,
-                "updateRoomSyncValidUntilGreaterThan180");
+                "updateRoomValidUntilGreaterThan180");
         assertNotNull(roomsAsyncClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -352,7 +352,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateRoomValidFromGreaterThan180(HttpClient httpClient) {
         roomsAsyncClient = setupAsyncClient(httpClient,
-                "updateRoomSyncValidFromGreaterThan180");
+                "updateRoomValidFromGreaterThan180");
         assertNotNull(roomsAsyncClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -428,7 +428,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateRoomWithInvalidRoomId(HttpClient httpClient) {
         roomsAsyncClient = setupAsyncClient(httpClient,
-                "updateRoomValidUntilInPast");
+                "updateRoomWithInvalidRoomId");
         assertNotNull(roomsAsyncClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()

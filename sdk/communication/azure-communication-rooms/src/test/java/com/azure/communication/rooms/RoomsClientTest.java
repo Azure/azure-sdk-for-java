@@ -384,7 +384,7 @@ public class RoomsClientTest extends RoomsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRoomSyncNoParticipants(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "createRoomSyncNoAttributes");
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncNoParticipants");
         assertNotNull(roomsClient);
         CommunicationRoom createCommunicationRoom = roomsClient.createRoom(new CreateRoomOptions().setValidFrom(VALID_FROM).setValidUntil(VALID_FROM.plusDays(120)));
         assertHappyPath(createCommunicationRoom);
@@ -863,7 +863,7 @@ public class RoomsClientTest extends RoomsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void addUpdateInvalidParticipants(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithResponseValidFromGreaterThan180");
+        roomsClient = setupSyncClient(httpClient, "addUpdateInvalidParticipants");
         assertNotNull(roomsClient);
 
         // Create empty room
