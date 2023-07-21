@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.util;
 
 import com.azure.sdk.build.tool.util.logging.Logger;
@@ -39,6 +42,8 @@ public class MavenUtils {
 
     /**
      * Gets the latest released version of the given artifact from Maven repository.
+     * @param groupId The group id of the artifact.
+     * @param artifactId The artifact id of the artifact.
      * @return The latest version or {@code null} if an error occurred while retrieving the latest
      * version.
      */
@@ -67,7 +72,7 @@ public class MavenUtils {
                 // that is not a beta, preview, etc release.
                 NodeList versionsList = doc.getElementsByTagName("version");
                 String latestVersion = null;
-                for (int i = versionsList.getLength() - 1; i >=0; i--) {
+                for (int i = versionsList.getLength() - 1; i >= 0; i--) {
                     Node versionNode = versionsList.item(i);
                     if (!versionNode.getTextContent().contains("beta")) {
                         latestVersion = versionNode.getTextContent();

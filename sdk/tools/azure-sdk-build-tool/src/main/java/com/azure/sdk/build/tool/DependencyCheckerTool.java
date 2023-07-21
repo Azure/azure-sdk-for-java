@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool;
 
 import com.azure.sdk.build.tool.models.BuildErrorCode;
@@ -32,11 +35,14 @@ import static com.azure.sdk.build.tool.util.MojoUtils.getString;
  * </ul>
  */
 public class DependencyCheckerTool implements Runnable {
-    private static Logger LOGGER = Logger.getInstance();
+    private static final Logger LOGGER = Logger.getInstance();
 
     private static final String AZURE_SDK_BOM_ARTIFACT_ID = "azure-sdk-bom";
     private static final String COM_MICROSOFT_AZURE_GROUP_ID = "com.microsoft.azure";
 
+    /**
+     * Runs the dependency checker tool.
+     */
     public void run() {
         LOGGER.info("Running Dependency Checker Tool");
 
@@ -46,9 +52,9 @@ public class DependencyCheckerTool implements Runnable {
 
     private void checkForBom() {
         // we are looking for the azure-sdk-bom artifact ID listed as a dependency in the dependency management section
-        DependencyManagement depMgmt = AzureSdkMojo.MOJO.getProject().getDependencyManagement();
+        DependencyManagement depMgmt = AzureSdkMojo.getMojo().getProject().getDependencyManagement();
         DependencyManagement originalDepMgmt =
-                AzureSdkMojo.MOJO.getProject().getOriginalModel().getDependencyManagement();
+                AzureSdkMojo.getMojo().getProject().getOriginalModel().getDependencyManagement();
 
         Optional<Dependency> bomDependency = Optional.empty();
         Optional<Dependency> originalBomDependency = Optional.empty();
@@ -71,23 +77,23 @@ public class DependencyCheckerTool implements Runnable {
             String usedBomVersion = bomDependency.get().getVersion();
             if (usedBomVersion.startsWith("${")) {
                 String propertyName = usedBomVersion.substring(2, usedBomVersion.indexOf("}"));
-                AzureSdkMojo.MOJO.getLog().info("BOM Version property name " + propertyName);
-                usedBomVersion = AzureSdkMojo.MOJO.getProject().getProperties().getProperty(propertyName);
+                AzureSdkMojo.getMojo().getLog().info("BOM Version property name " + propertyName);
+                usedBomVersion = AzureSdkMojo.getMojo().getProject().getProperties().getProperty(propertyName);
             }
             boolean isLatestBomVersion = usedBomVersion.equals(latestAvailableBomVersion);
             if (!isLatestBomVersion) {
-                failOrWarn(AzureSdkMojo.MOJO::isValidateLatestBomVersionUsed, BuildErrorCode.OUTDATED_DEPENDENCY, getString("outdatedBomDependency") + " using" +
-                        " version" + usedBomVersion + " latest version: " + latestAvailableBomVersion, Arrays.asList(MavenUtils.toGAV(bomDependency.get())));
+                failOrWarn(AzureSdkMojo.getMojo()::isValidateLatestBomVersionUsed, BuildErrorCode.OUTDATED_DEPENDENCY, getString("outdatedBomDependency") + " using"
+                    + " version" + usedBomVersion + " latest version: " + latestAvailableBomVersion, Arrays.asList(MavenUtils.toGAV(bomDependency.get())));
             }
             checkForAzureSdkDependencyVersions();
-            AzureSdkMojo.MOJO.getReport().setBomVersion(usedBomVersion);
+            AzureSdkMojo.getMojo().getReport().setBomVersion(usedBomVersion);
         } else {
-            failOrWarn(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, BuildErrorCode.BOM_NOT_USED, getString("missingBomDependency"));
+            failOrWarn(AzureSdkMojo.getMojo()::isValidateAzureSdkBomUsed, BuildErrorCode.BOM_NOT_USED, getString("missingBomDependency"));
         }
     }
 
     private void checkForAzureSdkDependencyVersions() {
-        List<Dependency> dependencies = AzureSdkMojo.MOJO.getProject().getDependencies();
+        List<Dependency> dependencies = AzureSdkMojo.getMojo().getProject().getDependencies();
         List<Dependency> dependenciesWithOverriddenVersions = dependencies.stream()
                 .filter(dependency -> dependency.getGroupId().equals("com.azure"))
                 .filter(dependency -> {
@@ -97,7 +103,7 @@ public class DependencyCheckerTool implements Runnable {
                 }).collect(Collectors.toList());
 
 
-        dependenciesWithOverriddenVersions.forEach(dependency -> failOrWarn(AzureSdkMojo.MOJO::isValidateBomVersionsAreUsed,
+        dependenciesWithOverriddenVersions.forEach(dependency -> failOrWarn(AzureSdkMojo.getMojo()::isValidateBomVersionsAreUsed,
                 BuildErrorCode.BOM_VERSION_OVERRIDDEN, dependency.getArtifactId() + " " + getString("overrideBomVersion"),
             Arrays.asList(MavenUtils.toGAV(dependency))));
 
@@ -106,7 +112,7 @@ public class DependencyCheckerTool implements Runnable {
                 .filter(dependency -> dependency.getVersion().contains("-beta"))
                 .collect(Collectors.toList());
 
-        betaDependencies.forEach(dependency -> failOrWarn(AzureSdkMojo.MOJO::isValidateNoBetaLibraryUsed, BuildErrorCode.BETA_DEPENDENCY_USED,
+        betaDependencies.forEach(dependency -> failOrWarn(AzureSdkMojo.getMojo()::isValidateNoBetaLibraryUsed, BuildErrorCode.BETA_DEPENDENCY_USED,
                 dependency.getArtifactId() + " " + getString("betaDependencyUsed"),
             Arrays.asList(MavenUtils.toGAV(dependency))));
     }
@@ -131,8 +137,8 @@ public class DependencyCheckerTool implements Runnable {
                 .collect(Collectors.toList());
 
         // The report is only concerned with GAV, so we simplify it here
-        AzureSdkMojo.MOJO.getReport().setOutdatedDirectDependencies(outdatedDirectDependencies);
-        AzureSdkMojo.MOJO.getReport().setOutdatedTransitiveDependencies(outdatedTransitiveDependencies);
+        AzureSdkMojo.getMojo().getReport().setOutdatedDirectDependencies(outdatedDirectDependencies);
+        AzureSdkMojo.getMojo().getReport().setOutdatedTransitiveDependencies(outdatedTransitiveDependencies);
 
         if (!outdatedDirectDependencies.isEmpty()) {
             // convert each track one dependency into actionable guidance
@@ -145,7 +151,7 @@ public class DependencyCheckerTool implements Runnable {
                 .stream()
                 .map(OutdatedDependency::getOutdatedDependency)
                 .collect(Collectors.toList());
-            failOrWarn(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_DEPENDENCY_USED, message, outdatedDependencyGavs);
+            failOrWarn(AzureSdkMojo.getMojo()::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_DEPENDENCY_USED, message, outdatedDependencyGavs);
         }
         if (!outdatedTransitiveDependencies.isEmpty()) {
             // convert each track one dependency into actionable guidance
@@ -157,7 +163,7 @@ public class DependencyCheckerTool implements Runnable {
                 .stream()
                 .map(OutdatedDependency::getOutdatedDependency)
                 .collect(Collectors.toList());
-            failOrWarn(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_TRANSITIVE_DEPENDENCY, message, outdatedTransitiveDependencyGavs);
+            failOrWarn(AzureSdkMojo.getMojo()::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_TRANSITIVE_DEPENDENCY, message, outdatedTransitiveDependencyGavs);
         }
     }
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool;
 
 import com.azure.core.util.BinaryData;
@@ -27,30 +30,41 @@ public class ReportGenerator {
     private static final String AZURE_SDK_BOM_ARTIFACT_ID = "azure-sdk-bom";
     private final BuildReport report;
 
+    /**
+     * Creates an instance of {@link ReportGenerator} to generate the final report of the build.
+     * @param report the report to generate.
+     */
     public ReportGenerator(BuildReport report) {
         this.report = report;
     }
 
+    /**
+     * Gets the generated report.
+     * @return the generated report.
+     */
     public BuildReport getReport() {
         return this.report;
     }
 
+    /**
+     * Generates the final report of the build.
+     */
     public void generateReport() {
         report.setAzureDependencies(computeAzureDependencies());
-        report.setGroupId(getMd5(AzureSdkMojo.MOJO.getProject().getGroupId()));
-        report.setArtifactId(getMd5(AzureSdkMojo.MOJO.getProject().getArtifactId()));
-        report.setVersion(getMd5(AzureSdkMojo.MOJO.getProject().getVersion()));
+        report.setGroupId(getMd5(AzureSdkMojo.mojo.getProject().getGroupId()));
+        report.setArtifactId(getMd5(AzureSdkMojo.mojo.getProject().getArtifactId()));
+        report.setVersion(getMd5(AzureSdkMojo.mojo.getProject().getVersion()));
         writeReportToFile();
     }
 
     private void writeReportToFile() {
-        final String reportFileString = AzureSdkMojo.MOJO.getReportFile();
+        final String reportFileString = AzureSdkMojo.mojo.getReportFile();
         if (reportFileString != null && !reportFileString.isEmpty()) {
             final File reportFile = new File(reportFileString);
             try (FileWriter fileWriter = new FileWriter(reportFile)) {
                 fileWriter.write(BinaryData.fromObject(report).toString());
             } catch (IOException exception) {
-                AzureSdkMojo.MOJO.getLog().warn("Unable to write report to " + reportFileString, exception);
+                AzureSdkMojo.mojo.getLog().warn("Unable to write report to " + reportFileString, exception);
             }
         }
     }

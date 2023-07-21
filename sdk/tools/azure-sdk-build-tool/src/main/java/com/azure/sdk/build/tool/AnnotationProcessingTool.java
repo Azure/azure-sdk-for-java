@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool;
 
 import com.azure.sdk.build.tool.models.BuildErrorCode;
@@ -36,7 +39,7 @@ import static com.azure.sdk.build.tool.util.MojoUtils.getString;
  * </ul>
  */
 public class AnnotationProcessingTool implements Runnable {
-    private static Logger LOGGER = Logger.getInstance();
+    private static final Logger LOGGER = Logger.getInstance();
 
     /**
      * Runs the annotation processing task to look for @ServiceMethod and @Beta usage.
@@ -57,21 +60,21 @@ public class AnnotationProcessingTool implements Runnable {
 
         if (serviceMethodCallers.isPresent()) {
             List<MethodCallDetails> serviceMethodCallDetails = getMethodCallDetails(serviceMethodCallers.get());
-            AzureSdkMojo.MOJO.getReport().setServiceMethodCalls(serviceMethodCallDetails);
+            AzureSdkMojo.getMojo().getReport().setServiceMethodCalls(serviceMethodCallDetails);
         }
 
         // Collect all calls to methods annotated with the Azure SDK @Beta annotation
         Optional<Set<AnnotatedMethodCallerResult>> betaMethodCallers = getAnnotation("com.azure.cosmos.util.Beta", classLoader)
-                .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true));
+            .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true));
         if (betaMethodCallers.isPresent()) {
             List<MethodCallDetails> betaMethodCallDetails = getMethodCallDetails(betaMethodCallers.get());
 
-            AzureSdkMojo.MOJO.getReport().setBetaMethodCalls(betaMethodCallDetails);
+            AzureSdkMojo.getMojo().getReport().setBetaMethodCalls(betaMethodCallDetails);
             if (!betaMethodCallers.get().isEmpty()) {
                 StringBuilder message = new StringBuilder();
                 message.append(getString("betaApiUsed")).append(System.lineSeparator());
                 betaMethodCallers.get().forEach(method -> message.append("   - ").append(method.toString()).append(System.lineSeparator()));
-                failOrWarn(() -> AzureSdkMojo.MOJO.isValidateNoBetaApiUsed(), BuildErrorCode.BETA_API_USED, message.toString());
+                failOrWarn(() -> AzureSdkMojo.getMojo().isValidateNoBetaApiUsed(), BuildErrorCode.BETA_API_USED, message.toString());
             }
         }
     }
@@ -90,14 +93,14 @@ public class AnnotationProcessingTool implements Runnable {
 
     private static Stream<Path> getAllPaths() {
         // This is the user maven build target directory - we look in here for the compiled source code
-        final File targetDir = new File(AzureSdkMojo.MOJO.getProject().getBuild().getDirectory() + "/classes/");
+        final File targetDir = new File(AzureSdkMojo.getMojo().getProject().getBuild().getDirectory() + "/classes/");
 
         // this stream of paths is a stream containing the users maven project compiled class files, as well as all
         // jar file dependencies. We use this to analyse the use of annotations and report back to the user.
         return Stream.concat(
-                   Stream.of(targetDir.getAbsolutePath()),
-                   getAllDependencies().stream().map(a -> a.getFile().getAbsolutePath()))
-               .map(Paths::get);
+                Stream.of(targetDir.getAbsolutePath()),
+                getAllDependencies().stream().map(a -> a.getFile().getAbsolutePath()))
+            .map(Paths::get);
     }
 
     private static void buildPackageList(String rootDir, String currentDir, Set<String> packages) {

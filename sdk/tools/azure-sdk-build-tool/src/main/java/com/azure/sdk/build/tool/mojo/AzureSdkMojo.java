@@ -1,10 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.mojo;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.sdk.build.tool.ReportGenerator;
 import com.azure.sdk.build.tool.Tools;
 import com.azure.sdk.build.tool.implementation.ApplicationInsightsClient;
@@ -43,7 +42,7 @@ import java.util.Map;
     requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class AzureSdkMojo extends AbstractMojo {
 
-    public static AzureSdkMojo MOJO;
+    private static AzureSdkMojo mojo;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String APP_INSIGHTS_INSTRUMENTATION_KEY = "1d377c0e-44f8-4d56-bee7-7f13a3fef594";
     private static final String APP_INSIGHTS_ENDPOINT = "https://centralus-2.in.applicationinsights.azure.com/";
@@ -83,11 +82,19 @@ public class AzureSdkMojo extends AbstractMojo {
      * Creates an instance of Azure SDK build tool Mojo.
      */
     public AzureSdkMojo() {
-        MOJO = this;
+        mojo = this;
         this.buildReport = new BuildReport();
         applicationInsightsClient = new ApplicationInsightsClientBuilder()
             .host(APP_INSIGHTS_ENDPOINT)
             .buildClient();
+    }
+
+    /**
+     * The {@link AzureSdkMojo} instance.
+     * @return The {@link AzureSdkMojo} instance.
+     */
+    public static AzureSdkMojo getMojo() {
+        return mojo;
     }
 
     /**
