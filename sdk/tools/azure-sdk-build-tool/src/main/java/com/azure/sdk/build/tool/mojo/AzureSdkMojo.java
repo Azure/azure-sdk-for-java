@@ -14,7 +14,6 @@ import com.azure.sdk.build.tool.implementation.models.TelemetryItem;
 import com.azure.sdk.build.tool.models.BuildError;
 import com.azure.sdk.build.tool.models.BuildErrorLevel;
 import com.azure.sdk.build.tool.models.BuildReport;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.maven.plugin.AbstractMojo;
@@ -42,6 +41,8 @@ import java.util.Map;
     requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class AzureSdkMojo extends AbstractMojo {
 
+    public static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {
+    };
     private static AzureSdkMojo mojo;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String APP_INSIGHTS_INSTRUMENTATION_KEY = "1d377c0e-44f8-4d56-bee7-7f13a3fef594";
@@ -157,8 +158,8 @@ public class AzureSdkMojo extends AbstractMojo {
         }
     }
 
-    private Map<String, String> getCustomEventProperties(BuildReport report) throws JsonProcessingException {
-        Map<String, Object> properties = OBJECT_MAPPER.convertValue(report, new TypeReference<Map<String, Object>>() {});
+    private Map<String, String> getCustomEventProperties(BuildReport report) {
+        Map<String, Object> properties = OBJECT_MAPPER.convertValue(report, MAP_TYPE_REFERENCE);
         Map<String, String> customEventProperties = new HashMap<>(properties.size());
         // AppInsights customEvents table does not support nested JSON objects in "properties" field
         // So, we have to convert the nested objects to strings

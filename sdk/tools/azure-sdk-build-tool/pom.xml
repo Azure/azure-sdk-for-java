@@ -277,17 +277,8 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <fork>true</fork>
-
-          <!-- Enable this plugin when issues documented are fixed -->
-          <!--          <plugins>-->
-          <!--            <plugin>-->
-          <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
-          <!--              <artifactId>findsecbugs-plugin</artifactId>-->
-          <!--              <version>1.9.0</version> &lt;!&ndash; {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} &ndash;&gt;-->
-          <!--            </plugin>-->
-          <!--          </plugins>-->
         </configuration>
       </plugin>
 

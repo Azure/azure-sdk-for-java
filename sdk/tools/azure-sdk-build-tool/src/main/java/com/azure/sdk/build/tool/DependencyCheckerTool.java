@@ -142,16 +142,19 @@ public class DependencyCheckerTool implements Runnable {
 
         if (!outdatedDirectDependencies.isEmpty()) {
             // convert each track one dependency into actionable guidance
-            String message = getString("deprecatedDirectDependency");
+            StringBuilder message = new StringBuilder(getString("deprecatedDirectDependency"));
             for (OutdatedDependency outdatedDependency : outdatedDirectDependencies) {
-                message += "\n    - " + outdatedDependency.getOutdatedDependency() + " --> " + outdatedDependency.getSuggestedReplacements();
+                message.append("\n    - ")
+                    .append(outdatedDependency.getOutdatedDependency())
+                    .append(" --> ")
+                    .append(outdatedDependency.getSuggestedReplacements());
             }
 
             List<String> outdatedDependencyGavs = outdatedDirectDependencies
                 .stream()
                 .map(OutdatedDependency::getOutdatedDependency)
                 .collect(Collectors.toList());
-            failOrWarn(AzureSdkMojo.getMojo()::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_DEPENDENCY_USED, message, outdatedDependencyGavs);
+            failOrWarn(AzureSdkMojo.getMojo()::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_DEPENDENCY_USED, message.toString(), outdatedDependencyGavs);
         }
         if (!outdatedTransitiveDependencies.isEmpty()) {
             // convert each track one dependency into actionable guidance
