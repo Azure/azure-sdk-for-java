@@ -8,18 +8,16 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class TaskStatusUpdateTests extends PurviewWorkflowClientTestBase {
-    @Disabled
     @Test
     public void testTaskStatusUpdateTests() {
         BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"NotStarted\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.updateTaskStatusWithResponse(
-                        "a8f67c0b-36a6-48b0-9cbb-8fc4a02281d8", taskUpdateCommand, requestOptions);
+                        "2a9b4f18-4610-4961-bb3b-611e10c21cf7", taskUpdateCommand, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }
