@@ -23,11 +23,11 @@ import com.azure.communication.jobrouter.models.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.core.http.HttpClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +93,6 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setChannelConfigurations(channelConfigurations)
             .setQueueAssignments(queueAssignments);
 
-        jobRouterClient.deleteWorker(workerId);
         RouterWorker worker = jobRouterClient.createWorker(createWorkerOptions);
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
@@ -139,7 +138,6 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @Disabled("Need to add API side fix to pick the matchingMode based on matchingModeType")
     public void jobScheduling(HttpClient httpClient) {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
@@ -155,7 +153,8 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         RouterJob job = jobRouterClient.createJob(new CreateJobOptions(jobId, testName, queue.getId())
-            .setMatchingMode(new RouterJobMatchingMode(new ScheduleAndSuspendMode(OffsetDateTime.now().plusMinutes(5)))));
+            .setMatchingMode(new RouterJobMatchingMode(new ScheduleAndSuspendMode(
+                OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)))));
 
         // Action
         RouterJob job2 = jobRouterClient.updateJob(new UpdateJobOptions(jobId)
