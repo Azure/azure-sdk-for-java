@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ElasticPools Failover. */
 public final class ElasticPoolsFailoverSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverElasticPool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/FailoverElasticPool.json
      */
     /**
      * Sample code: Failover an elastic pool.
@@ -22,6 +20,6 @@ public final class ElasticPoolsFailoverSamples {
             .manager()
             .serviceClient()
             .getElasticPools()
-            .failover("group1", "testServer", "testElasticPool", Context.NONE);
+            .failover("group1", "testServer", "testElasticPool", com.azure.core.util.Context.NONE);
     }
 }

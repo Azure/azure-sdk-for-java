@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkRules Delete. */
 public final class VirtualNetworkRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualNetworkRulesDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualNetworkRulesDelete.json
      */
     /**
      * Sample code: Delete a virtual network rule.
@@ -22,6 +20,6 @@ public final class VirtualNetworkRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkRules()
-            .delete("Default", "vnet-test-svr", "vnet-firewall-rule", Context.NONE);
+            .delete("Default", "vnet-test-svr", "vnet-firewall-rule", com.azure.core.util.Context.NONE);
     }
 }

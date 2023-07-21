@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ExtendedDatabaseBlobAuditingPolicyInner;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.util.Arrays;
@@ -13,7 +12,7 @@ import java.util.UUID;
 /** Samples for ExtendedDatabaseBlobAuditingPolicies CreateOrUpdate. */
 public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ExtendedDatabaseBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with minimal parameters.
@@ -35,11 +34,11 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                     .withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ExtendedDatabaseBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with all parameters.
@@ -73,11 +72,11 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseAzureMonitorAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ExtendedDatabaseAzureMonitorAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended database's azure monitor auditing policy with minimal parameters.
@@ -98,6 +97,6 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                 new ExtendedDatabaseBlobAuditingPolicyInner()
                     .withIsAzureMonitorTargetEnabled(true)
                     .withState(BlobAuditingPolicyState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

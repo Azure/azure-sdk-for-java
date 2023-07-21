@@ -22,55 +22,6 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in LedgerDigestUploadsOperationsClient. */
 public interface LedgerDigestUploadsOperationsClient {
     /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LedgerDigestUploadsInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LedgerDigestUploadsInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LedgerDigestUploadsInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
-
-    /**
      * Gets the current ledger digest upload configuration for a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -302,6 +253,55 @@ public interface LedgerDigestUploadsOperationsClient {
         LedgerDigestUploadsName ledgerDigestUploads,
         LedgerDigestUploadsInner parameters,
         Context context);
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LedgerDigestUploadsInner> listByDatabaseAsync(
+        String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LedgerDigestUploadsInner> listByDatabase(
+        String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LedgerDigestUploadsInner> listByDatabase(
+        String resourceGroupName, String serverName, String databaseName, Context context);
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.

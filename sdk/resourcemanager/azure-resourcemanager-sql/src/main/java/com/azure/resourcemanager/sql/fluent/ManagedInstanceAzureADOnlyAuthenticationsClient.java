@@ -25,55 +25,6 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
     /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName);
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(
-        String resourceGroupName, String managedInstanceName);
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
-
-    /**
      * Gets a specific Azure Active Directory only authentication property.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -410,4 +361,53 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(
         String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context);
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstanceAsync(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(
+        String resourceGroupName, String managedInstanceName, Context context);
 }

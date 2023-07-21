@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobTargetGroups Delete. */
 public final class JobTargetGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteJobTargetGroup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeleteJobTargetGroup.json
      */
     /**
      * Sample code: Delete a target group.
@@ -22,6 +20,6 @@ public final class JobTargetGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getJobTargetGroups()
-            .deleteWithResponse("group1", "server1", "agent1", "targetGroup1", Context.NONE);
+            .deleteWithResponse("group1", "server1", "agent1", "targetGroup1", com.azure.core.util.Context.NONE);
     }
 }

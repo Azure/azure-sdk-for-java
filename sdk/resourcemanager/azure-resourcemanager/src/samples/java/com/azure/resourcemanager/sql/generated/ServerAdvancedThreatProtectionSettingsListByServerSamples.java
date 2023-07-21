@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerAdvancedThreatProtectionSettings ListByServer. */
 public final class ServerAdvancedThreatProtectionSettingsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAdvancedThreatProtectionSettingsListByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ServerAdvancedThreatProtectionSettingsListByServer.json
      */
     /**
      * Sample code: List the server's Advanced Threat Protection settings.
@@ -23,6 +21,6 @@ public final class ServerAdvancedThreatProtectionSettingsListByServerSamples {
             .manager()
             .serviceClient()
             .getServerAdvancedThreatProtectionSettings()
-            .listByServer("threatprotection-4799", "threatprotection-6440", Context.NONE);
+            .listByServer("threatprotection-4799", "threatprotection-6440", com.azure.core.util.Context.NONE);
     }
 }

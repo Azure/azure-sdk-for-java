@@ -244,7 +244,7 @@
     "dir": "azure-resourcemanager-sql",
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.sql",
-    "args": "--tag=package-2021-11 --rename-model=SecurityAlertsPolicyState:SecurityAlertPolicyState",
+    "args": "--tag=package-composite-v5 --rename-model=SecurityAlertsPolicyState:SecurityAlertPolicyState",
     "note": "Add '\"x-ms-long-running-operation\": true' to TransparentDataEncryptions_CreateOrUpdate in specs file TransparentDataEncryptions.json"
   },
   "storage": {

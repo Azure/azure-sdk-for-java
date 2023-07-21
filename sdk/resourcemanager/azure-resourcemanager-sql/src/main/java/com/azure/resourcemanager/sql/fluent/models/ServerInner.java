@@ -6,10 +6,12 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -190,7 +192,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
      *
      * @return the minimalTlsVersion value.
      */
@@ -199,7 +201,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerInner object itself.
@@ -214,22 +216,22 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      *
      * @return the publicNetworkAccess value.
      */
-    public ServerNetworkAccessFlag publicNetworkAccess() {
+    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
         return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
+    public ServerInner withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
@@ -319,7 +321,9 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator of the server. This can only be used at
+     * server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
      *
      * @return the administrators value.
      */
@@ -328,7 +332,9 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator of the server. This can only be used at
+     * server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
      *
      * @param administrators the administrators value to set.
      * @return the ServerInner object itself.
@@ -364,6 +370,15 @@ public final class ServerInner extends Resource {
         }
         this.innerProperties().withRestrictOutboundNetworkAccess(restrictOutboundNetworkAccess);
         return this;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     *
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalGovernanceStatus();
     }
 
     /**

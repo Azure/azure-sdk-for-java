@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.UpdateLongTermRetentionBackupParameters;
 
 /** Samples for LongTermRetentionBackups Update. */
 public final class LongTermRetentionBackupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionBackupUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/LongTermRetentionBackupUpdate.json
      */
     /**
      * Sample code: Update the long term retention backup.
@@ -31,6 +30,6 @@ public final class LongTermRetentionBackupsUpdateSamples {
                 "55555555-6666-7777-8888-999999999999;131637960820000000",
                 new UpdateLongTermRetentionBackupParameters()
                     .withRequestedBackupStorageRedundancy(BackupStorageRedundancy.GEO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

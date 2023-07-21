@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedInstanceKeys Delete. */
 public final class ManagedInstanceKeysDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceKeyDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyDelete.json
      */
     /**
      * Sample code: Delete the managed instance key.
@@ -26,6 +24,6 @@ public final class ManagedInstanceKeysDeleteSamples {
                 "sqlcrudtest-7398",
                 "sqlcrudtest-4645",
                 "someVault_someKey_01234567890123456789012345678901",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

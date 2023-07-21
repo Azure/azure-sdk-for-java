@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionPolicyInner;
 import com.azure.resourcemanager.sql.models.LongTermRetentionPolicyName;
 
 /** Samples for LongTermRetentionPolicies CreateOrUpdate. */
 public final class LongTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/LongTermRetentionPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update the long term retention policy for the database.
@@ -35,6 +34,6 @@ public final class LongTermRetentionPoliciesCreateOrUpdateSamples {
                     .withMonthlyRetention("P1Y")
                     .withYearlyRetention("P5Y")
                     .withWeekOfYear(5),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

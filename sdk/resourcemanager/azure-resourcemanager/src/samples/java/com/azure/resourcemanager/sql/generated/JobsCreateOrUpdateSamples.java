@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.JobInner;
 import com.azure.resourcemanager.sql.models.JobSchedule;
 import com.azure.resourcemanager.sql.models.JobScheduleType;
@@ -13,7 +12,7 @@ import java.time.OffsetDateTime;
 /** Samples for Jobs CreateOrUpdate. */
 public final class JobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobMin.json
      */
     /**
      * Sample code: Create a job with default properties.
@@ -26,11 +25,12 @@ public final class JobsCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getJobs()
-            .createOrUpdateWithResponse("group1", "server1", "agent1", "job1", new JobInner(), Context.NONE);
+            .createOrUpdateWithResponse(
+                "group1", "server1", "agent1", "job1", new JobInner(), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobMax.json
      */
     /**
      * Sample code: Create a job with all properties specified.
@@ -57,6 +57,6 @@ public final class JobsCreateOrUpdateSamples {
                             .withType(JobScheduleType.RECURRING)
                             .withEnabled(true)
                             .withInterval("PT5M")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

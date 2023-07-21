@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.SensitivityLabelSource;
 
 /** Samples for ManagedDatabaseSensitivityLabels Get. */
 public final class ManagedDatabaseSensitivityLabelsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseColumnSensitivityLabelGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseColumnSensitivityLabelGet.json
      */
     /**
      * Sample code: Gets the sensitivity label of a given column in a managed database.
@@ -32,6 +31,6 @@ public final class ManagedDatabaseSensitivityLabelsGetSamples {
                 "myTable",
                 "myColumn",
                 SensitivityLabelSource.CURRENT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

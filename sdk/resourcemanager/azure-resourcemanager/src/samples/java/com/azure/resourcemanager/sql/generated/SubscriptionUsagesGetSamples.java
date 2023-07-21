@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubscriptionUsages Get. */
 public final class SubscriptionUsagesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SubscriptionUsageGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SubscriptionUsageGet.json
      */
     /**
      * Sample code: Get specific subscription usage in the given location.
@@ -23,6 +21,6 @@ public final class SubscriptionUsagesGetSamples {
             .manager()
             .serviceClient()
             .getSubscriptionUsages()
-            .getWithResponse("WestUS", "ServerQuota", Context.NONE);
+            .getWithResponse("WestUS", "ServerQuota", com.azure.core.util.Context.NONE);
     }
 }

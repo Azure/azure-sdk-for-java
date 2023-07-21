@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceEncryptionProtectorInner;
 import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 /** Samples for ManagedInstanceEncryptionProtectors CreateOrUpdate. */
 public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateKeyVault.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateKeyVault.json
      */
     /**
      * Sample code: Update the encryption protector to key vault.
@@ -33,11 +32,11 @@ public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
                     .withServerKeyName("fakeTokenPlaceholder")
                     .withServerKeyType(ServerKeyType.AZURE_KEY_VAULT)
                     .withAutoRotationEnabled(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateServiceManaged.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateServiceManaged.json
      */
     /**
      * Sample code: Update the encryption protector to service managed.
@@ -58,6 +57,6 @@ public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
                 new ManagedInstanceEncryptionProtectorInner()
                     .withServerKeyName("fakeTokenPlaceholder")
                     .withServerKeyType(ServerKeyType.SERVICE_MANAGED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Time Zone property. */
+/** Time Zone. */
 @Immutable
 public final class TimeZoneInner extends ProxyResource {
     /*

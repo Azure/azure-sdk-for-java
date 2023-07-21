@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerKeys ListByServer. */
 public final class ServerKeysListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerKeyList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerKeyList.json
      */
     /**
      * Sample code: List the server keys by server.
@@ -22,6 +20,6 @@ public final class ServerKeysListByServerSamples {
             .manager()
             .serviceClient()
             .getServerKeys()
-            .listByServer("sqlcrudtest-7398", "sqlcrudtest-4645", Context.NONE);
+            .listByServer("sqlcrudtest-7398", "sqlcrudtest-4645", com.azure.core.util.Context.NONE);
     }
 }

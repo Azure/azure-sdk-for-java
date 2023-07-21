@@ -62,8 +62,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
     public interface DatabaseColumnsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/columns")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/columns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseColumnListResult>> listByDatabase(
@@ -83,8 +82,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseColumnListResult>> listByTable(
@@ -102,8 +100,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseColumnInner>> get(
@@ -189,6 +186,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         List<String> schemaConverted =
             (schema == null)
@@ -221,7 +219,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                             orderByConverted,
                             skiptoken,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DatabaseColumnInner>>map(
@@ -287,6 +285,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         List<String> schemaConverted =
             (schema == null)
@@ -317,7 +316,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                 orderByConverted,
                 skiptoken,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -538,6 +537,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -552,7 +552,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                             tableName,
                             filter,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DatabaseColumnInner>>map(
@@ -620,6 +620,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -632,7 +633,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                 tableName,
                 filter,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -836,6 +837,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -850,7 +852,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                             tableName,
                             columnName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -912,6 +914,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -924,7 +927,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                 tableName,
                 columnName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

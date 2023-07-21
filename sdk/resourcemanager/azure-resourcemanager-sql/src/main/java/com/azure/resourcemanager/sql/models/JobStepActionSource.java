@@ -14,6 +14,15 @@ public final class JobStepActionSource extends ExpandableStringEnum<JobStepActio
     public static final JobStepActionSource INLINE = fromString("Inline");
 
     /**
+     * Creates a new instance of JobStepActionSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobStepActionSource() {
+    }
+
+    /**
      * Creates or finds a JobStepActionSource from its string representation.
      *
      * @param name a name to look for.

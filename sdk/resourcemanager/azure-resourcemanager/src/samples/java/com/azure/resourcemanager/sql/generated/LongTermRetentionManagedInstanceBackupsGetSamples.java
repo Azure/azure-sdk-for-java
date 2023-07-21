@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LongTermRetentionManagedInstanceBackups Get. */
 public final class LongTermRetentionManagedInstanceBackupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceLongTermRetentionBackupGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceLongTermRetentionBackupGet.json
      */
     /**
      * Sample code: Get the long term retention backup of a managed database.
@@ -28,6 +26,6 @@ public final class LongTermRetentionManagedInstanceBackupsGetSamples {
                 "testInstance",
                 "testDatabase",
                 "55555555-6666-7777-8888-999999999999;131637960820000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

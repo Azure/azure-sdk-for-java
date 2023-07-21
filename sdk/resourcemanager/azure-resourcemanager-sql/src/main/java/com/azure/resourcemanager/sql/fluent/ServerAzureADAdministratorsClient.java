@@ -22,52 +22,6 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ServerAzureADAdministratorsClient. */
 public interface ServerAzureADAdministratorsClient {
     /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName);
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerAzureADAdministratorInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
-
-    /**
      * Gets a Azure Active Directory administrator.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -386,4 +340,50 @@ public interface ServerAzureADAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String serverName, AdministratorName administratorName, Context context);
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName);
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerAzureADAdministratorInner> listByServer(
+        String resourceGroupName, String serverName, Context context);
 }

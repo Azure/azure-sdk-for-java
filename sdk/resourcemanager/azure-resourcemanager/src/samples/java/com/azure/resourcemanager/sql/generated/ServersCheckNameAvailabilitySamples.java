@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
 
 /** Samples for Servers CheckNameAvailability. */
 public final class ServersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CheckNameAvailabilityServerAvailable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerAvailable.json
      */
     /**
      * Sample code: Check for a server name that is available.
@@ -23,11 +22,12 @@ public final class ServersCheckNameAvailabilitySamples {
             .manager()
             .serviceClient()
             .getServers()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailabilityRequest().withName("server1"), Context.NONE);
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("server1"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CheckNameAvailabilityServerAlreadyExists.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerAlreadyExists.json
      */
     /**
      * Sample code: Check for a server name that already exists.
@@ -40,11 +40,12 @@ public final class ServersCheckNameAvailabilitySamples {
             .manager()
             .serviceClient()
             .getServers()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailabilityRequest().withName("server1"), Context.NONE);
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("server1"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CheckNameAvailabilityServerInvalid.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerInvalid.json
      */
     /**
      * Sample code: Check for a server name that is invalid.
@@ -57,6 +58,7 @@ public final class ServersCheckNameAvailabilitySamples {
             .manager()
             .serviceClient()
             .getServers()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailabilityRequest().withName("SERVER1"), Context.NONE);
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("SERVER1"), com.azure.core.util.Context.NONE);
     }
 }

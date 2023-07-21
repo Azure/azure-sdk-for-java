@@ -253,6 +253,52 @@ public final class ElasticPoolUpdate {
     }
 
     /**
+     * Get the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     *
+     * @return the preferredEnclaveType value.
+     */
+    public AlwaysEncryptedEnclaveType preferredEnclaveType() {
+        return this.innerProperties() == null ? null : this.innerProperties().preferredEnclaveType();
+    }
+
+    /**
+     * Set the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     *
+     * @param preferredEnclaveType the preferredEnclaveType value to set.
+     * @return the ElasticPoolUpdate object itself.
+     */
+    public ElasticPoolUpdate withPreferredEnclaveType(AlwaysEncryptedEnclaveType preferredEnclaveType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withPreferredEnclaveType(preferredEnclaveType);
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     *
+     * @return the availabilityZone value.
+     */
+    public AvailabilityZoneType availabilityZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityZone();
+    }
+
+    /**
+     * Set the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     *
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the ElasticPoolUpdate object itself.
+     */
+    public ElasticPoolUpdate withAvailabilityZone(AvailabilityZoneType availabilityZone) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withAvailabilityZone(availabilityZone);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.util.UUID;
 
 /** Samples for ManagedInstanceOperations Get. */
 public final class ManagedInstanceOperationsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetManagedInstanceOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetManagedInstanceOperation.json
      */
     /**
      * Sample code: Gets the managed instance management operation.
@@ -27,6 +26,6 @@ public final class ManagedInstanceOperationsGetSamples {
                 "sqlcrudtest-7398",
                 "sqlcrudtest-4645",
                 UUID.fromString("00000000-1111-2222-3333-444444444444"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

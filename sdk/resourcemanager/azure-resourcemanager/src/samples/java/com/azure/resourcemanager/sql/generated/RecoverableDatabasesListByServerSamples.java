@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RecoverableDatabases ListByServer. */
 public final class RecoverableDatabasesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RecoverableDatabaseList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseList.json
      */
     /**
      * Sample code: Get list of recoverable databases.
@@ -22,6 +20,7 @@ public final class RecoverableDatabasesListByServerSamples {
             .manager()
             .serviceClient()
             .getRecoverableDatabases()
-            .listByServer("recoverabledatabasetest-1234", "recoverabledatabasetest-7177", Context.NONE);
+            .listByServer(
+                "recoverabledatabasetest-1234", "recoverabledatabasetest-7177", com.azure.core.util.Context.NONE);
     }
 }

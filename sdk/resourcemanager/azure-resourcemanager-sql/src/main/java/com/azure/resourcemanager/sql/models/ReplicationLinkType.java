@@ -20,6 +20,15 @@ public final class ReplicationLinkType extends ExpandableStringEnum<ReplicationL
     public static final ReplicationLinkType STANDBY = fromString("STANDBY");
 
     /**
+     * Creates a new instance of ReplicationLinkType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationLinkType() {
+    }
+
+    /**
      * Creates or finds a ReplicationLinkType from its string representation.
      *
      * @param name a name to look for.

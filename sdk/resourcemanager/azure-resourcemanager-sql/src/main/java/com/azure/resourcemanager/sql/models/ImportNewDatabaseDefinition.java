@@ -62,7 +62,7 @@ public final class ImportNewDatabaseDefinition {
     /*
      * Administrator login password.
      */
-    @JsonProperty(value = "administratorLoginPassword", required = true)
+    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*

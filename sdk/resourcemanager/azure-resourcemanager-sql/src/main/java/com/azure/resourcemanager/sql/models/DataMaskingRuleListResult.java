@@ -4,32 +4,26 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.fluent.models.DataMaskingRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of database data masking rules. */
-@Immutable
+/** The response to a list data masking rules request. */
+@Fluent
 public final class DataMaskingRuleListResult {
     /*
-     * Array of results.
+     * The list of database data masking rules.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value")
     private List<DataMaskingRuleInner> value;
-
-    /*
-     * Link to retrieve next page of results.
-     */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
 
     /** Creates an instance of DataMaskingRuleListResult class. */
     public DataMaskingRuleListResult() {
     }
 
     /**
-     * Get the value property: Array of results.
+     * Get the value property: The list of database data masking rules.
      *
      * @return the value value.
      */
@@ -38,12 +32,14 @@ public final class DataMaskingRuleListResult {
     }
 
     /**
-     * Get the nextLink property: Link to retrieve next page of results.
+     * Set the value property: The list of database data masking rules.
      *
-     * @return the nextLink value.
+     * @param value the value value to set.
+     * @return the DataMaskingRuleListResult object itself.
      */
-    public String nextLink() {
-        return this.nextLink;
+    public DataMaskingRuleListResult withValue(List<DataMaskingRuleInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**

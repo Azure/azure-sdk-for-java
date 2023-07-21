@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.util.UUID;
 
 /** Samples for ElasticPoolOperations Cancel. */
 public final class ElasticPoolOperationsCancelSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelElasticPoolOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CancelElasticPoolOperation.json
      */
     /**
      * Sample code: Cancel the elastic pool management operation.
@@ -28,6 +27,6 @@ public final class ElasticPoolOperationsCancelSamples {
                 "sqlcrudtest-6661",
                 "testpool",
                 UUID.fromString("f779414b-e748-4925-8cfe-c8598f7660ae"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

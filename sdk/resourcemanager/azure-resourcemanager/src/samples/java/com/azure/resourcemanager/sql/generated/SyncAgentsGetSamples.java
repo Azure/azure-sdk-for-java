@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SyncAgents Get. */
 public final class SyncAgentsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentGet.json
      */
     /**
      * Sample code: Get a sync agent.
@@ -22,6 +20,7 @@ public final class SyncAgentsGetSamples {
             .manager()
             .serviceClient()
             .getSyncAgents()
-            .getWithResponse("syncagentcrud-65440", "syncagentcrud-8475", "syncagentcrud-3187", Context.NONE);
+            .getWithResponse(
+                "syncagentcrud-65440", "syncagentcrud-8475", "syncagentcrud-3187", com.azure.core.util.Context.NONE);
     }
 }

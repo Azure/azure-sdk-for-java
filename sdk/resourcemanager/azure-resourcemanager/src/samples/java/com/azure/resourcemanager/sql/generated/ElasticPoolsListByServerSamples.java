@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ElasticPools ListByServer. */
 public final class ElasticPoolsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ElasticPoolListByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolListByServer.json
      */
     /**
      * Sample code: Get all elastic pools in a server.
@@ -22,6 +20,6 @@ public final class ElasticPoolsListByServerSamples {
             .manager()
             .serviceClient()
             .getElasticPools()
-            .listByServer("sqlcrudtest-2369", "sqlcrudtest-8069", null, Context.NONE);
+            .listByServer("sqlcrudtest-2369", "sqlcrudtest-8069", null, com.azure.core.util.Context.NONE);
     }
 }

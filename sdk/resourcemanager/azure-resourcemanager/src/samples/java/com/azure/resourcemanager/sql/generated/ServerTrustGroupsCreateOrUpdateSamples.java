@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerTrustGroupInner;
 import com.azure.resourcemanager.sql.models.ServerInfo;
 import com.azure.resourcemanager.sql.models.ServerTrustGroupPropertiesTrustScopesItem;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for ServerTrustGroups CreateOrUpdate. */
 public final class ServerTrustGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustGroupCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerTrustGroupCreate.json
      */
     /**
      * Sample code: Create server trust group.
@@ -45,6 +44,6 @@ public final class ServerTrustGroupsCreateOrUpdateSamples {
                             .asList(
                                 ServerTrustGroupPropertiesTrustScopesItem.GLOBAL_TRANSACTIONS,
                                 ServerTrustGroupPropertiesTrustScopesItem.SERVICE_BROKER)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

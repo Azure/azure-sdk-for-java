@@ -20,6 +20,15 @@ public final class DatabaseLicenseType extends ExpandableStringEnum<DatabaseLice
     public static final DatabaseLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of DatabaseLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseLicenseType() {
+    }
+
+    /**
      * Creates or finds a DatabaseLicenseType from its string representation.
      *
      * @param name a name to look for.

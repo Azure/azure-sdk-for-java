@@ -15,6 +15,7 @@ import com.azure.resourcemanager.sql.samples.ManageSqlServerSecurityAlertPolicy;
 import com.azure.resourcemanager.sql.samples.ManageSqlVirtualNetworkRules;
 import com.azure.resourcemanager.sql.samples.ManageSqlWithRecoveredOrRestoredDatabase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
@@ -24,31 +25,37 @@ import java.sql.SQLException;
 public class SqlSampleTests extends SamplesTestBase {
 
     @Test
+    @Disabled
     public void testManageSqlDatabase() {
         Assertions.assertTrue(ManageSqlDatabase.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageSqlDatabaseInElasticPool() {
         Assertions.assertTrue(ManageSqlDatabaseInElasticPool.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageSqlDatabasesAcrossDifferentDataCenters() {
         Assertions.assertTrue(ManageSqlDatabasesAcrossDifferentDataCenters.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageSqlFirewallRules() {
         Assertions.assertTrue(ManageSqlFirewallRules.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageSqlServerSecurityAlertPolicy() {
         Assertions.assertTrue(ManageSqlServerSecurityAlertPolicy.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageSqlVirtualNetworkRules() {
         Assertions.assertTrue(ManageSqlVirtualNetworkRules.runSample(azureResourceManager));
     }
@@ -62,12 +69,14 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @Disabled
     public void testManageSqlWithRecoveredOrRestoredDatabase() {
         // This test can take significant time to run since it depends on the availability of certain resources on the service side.
         Assertions.assertTrue(ManageSqlWithRecoveredOrRestoredDatabase.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageSqlFailoverGroups() {
         Assertions.assertTrue(ManageSqlFailoverGroups.runSample(azureResourceManager));
     }

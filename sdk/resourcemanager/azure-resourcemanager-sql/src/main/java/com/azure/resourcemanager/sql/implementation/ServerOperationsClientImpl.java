@@ -58,8 +58,7 @@ public final class ServerOperationsClientImpl implements ServerOperationsClient 
     public interface ServerOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/operations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerOperationListResult>> listByServer(
@@ -116,6 +115,7 @@ public final class ServerOperationsClientImpl implements ServerOperationsClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -126,7 +126,7 @@ public final class ServerOperationsClientImpl implements ServerOperationsClient 
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ServerOperationInner>>map(
@@ -176,6 +176,7 @@ public final class ServerOperationsClientImpl implements ServerOperationsClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -184,7 +185,7 @@ public final class ServerOperationsClientImpl implements ServerOperationsClient 
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(

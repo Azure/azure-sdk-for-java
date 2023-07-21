@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationLinks Get. */
 public final class ReplicationLinksGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ReplicationLinkGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ReplicationLinkGet.json
      */
     /**
      * Sample code: Gets the replication link.
@@ -22,6 +20,11 @@ public final class ReplicationLinksGetSamples {
             .manager()
             .serviceClient()
             .getReplicationLinks()
-            .getWithResponse("Default", "sourcesvr", "gamma-db", "4891ca10-ebd0-47d7-9182-c722651780fb", Context.NONE);
+            .getWithResponse(
+                "Default",
+                "sourcesvr",
+                "gamma-db",
+                "4891ca10-ebd0-47d7-9182-c722651780fb",
+                com.azure.core.util.Context.NONE);
     }
 }

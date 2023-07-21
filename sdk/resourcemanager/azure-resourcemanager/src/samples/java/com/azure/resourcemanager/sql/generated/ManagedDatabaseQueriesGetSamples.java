@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseQueries Get. */
 public final class ManagedDatabaseQueriesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceQueryGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceQueryGet.json
      */
     /**
      * Sample code: Obtain query properties.
@@ -22,6 +20,7 @@ public final class ManagedDatabaseQueriesGetSamples {
             .manager()
             .serviceClient()
             .getManagedDatabaseQueries()
-            .getWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", "database_1", "42", Context.NONE);
+            .getWithResponse(
+                "sqlcrudtest-7398", "sqlcrudtest-4645", "database_1", "42", com.azure.core.util.Context.NONE);
     }
 }

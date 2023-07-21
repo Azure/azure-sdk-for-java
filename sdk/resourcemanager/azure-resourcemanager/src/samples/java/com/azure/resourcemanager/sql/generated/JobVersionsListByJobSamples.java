@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobVersions ListByJob. */
 public final class JobVersionsListByJobSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobVersions.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobVersions.json
      */
     /**
      * Sample code: Get all versions of a job.
@@ -22,6 +20,6 @@ public final class JobVersionsListByJobSamples {
             .manager()
             .serviceClient()
             .getJobVersions()
-            .listByJob("group1", "server1", "agent1", "job1", Context.NONE);
+            .listByJob("group1", "server1", "agent1", "job1", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SyncMembers ListBySyncGroup. */
 public final class SyncMembersListBySyncGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberListBySyncGroup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncMemberListBySyncGroup.json
      */
     /**
      * Sample code: List sync members under a sync group.
@@ -23,6 +21,10 @@ public final class SyncMembersListBySyncGroupSamples {
             .serviceClient()
             .getSyncMembers()
             .listBySyncGroup(
-                "syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187", Context.NONE);
+                "syncgroupcrud-65440",
+                "syncgroupcrud-8475",
+                "syncgroupcrud-4328",
+                "syncgroupcrud-3187",
+                com.azure.core.util.Context.NONE);
     }
 }

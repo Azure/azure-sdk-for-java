@@ -58,8 +58,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
     public interface JobVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobVersionListResult>> listByJob(
@@ -75,8 +74,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobVersionInner>> get(
@@ -143,6 +141,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -155,7 +154,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                             jobAgentName,
                             jobName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<JobVersionInner>>map(
@@ -212,6 +211,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -222,7 +222,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                 jobAgentName,
                 jobName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -360,6 +360,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -373,7 +374,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                             jobName,
                             jobVersion,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -427,6 +428,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -438,7 +440,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                 jobName,
                 jobVersion,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }

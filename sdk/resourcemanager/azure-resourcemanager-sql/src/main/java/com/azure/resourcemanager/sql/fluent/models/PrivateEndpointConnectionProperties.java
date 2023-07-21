@@ -9,7 +9,6 @@ import com.azure.resourcemanager.sql.models.PrivateEndpointProperty;
 import com.azure.resourcemanager.sql.models.PrivateEndpointProvisioningState;
 import com.azure.resourcemanager.sql.models.PrivateLinkServiceConnectionStateProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Properties of a private endpoint connection. */
 @Fluent
@@ -19,12 +18,6 @@ public final class PrivateEndpointConnectionProperties {
      */
     @JsonProperty(value = "privateEndpoint")
     private PrivateEndpointProperty privateEndpoint;
-
-    /*
-     * Group IDs.
-     */
-    @JsonProperty(value = "groupIds", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> groupIds;
 
     /*
      * Connection state of the private endpoint connection.
@@ -60,15 +53,6 @@ public final class PrivateEndpointConnectionProperties {
     public PrivateEndpointConnectionProperties withPrivateEndpoint(PrivateEndpointProperty privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
         return this;
-    }
-
-    /**
-     * Get the groupIds property: Group IDs.
-     *
-     * @return the groupIds value.
-     */
-    public List<String> groupIds() {
-        return this.groupIds;
     }
 
     /**

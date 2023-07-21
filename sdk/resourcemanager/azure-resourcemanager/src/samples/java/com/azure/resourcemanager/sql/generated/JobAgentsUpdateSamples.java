@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.JobAgentUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for JobAgents Update. */
 public final class JobAgentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateJobAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/UpdateJobAgent.json
      */
     /**
      * Sample code: Update a job agent's tags.
@@ -30,7 +29,7 @@ public final class JobAgentsUpdateSamples {
                 "server1",
                 "agent1",
                 new JobAgentUpdate().withTags(mapOf("mytag1", "myvalue1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

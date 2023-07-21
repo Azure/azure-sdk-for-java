@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Servers GetByResourceGroup. */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerGetWithExpandEqualsAdministrators.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerGetWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: Get server with $expand=administrators/activedirectory.
@@ -23,11 +21,12 @@ public final class ServersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getServers()
-            .getByResourceGroupWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "sqlcrudtest-7398", "sqlcrudtest-4645", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerGet.json
      */
     /**
      * Sample code: Get server.
@@ -40,6 +39,7 @@ public final class ServersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getServers()
-            .getByResourceGroupWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "sqlcrudtest-7398", "sqlcrudtest-4645", null, com.azure.core.util.Context.NONE);
     }
 }

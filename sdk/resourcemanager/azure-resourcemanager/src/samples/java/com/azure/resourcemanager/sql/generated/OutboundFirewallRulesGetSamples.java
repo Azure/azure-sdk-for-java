@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OutboundFirewallRules Get. */
 public final class OutboundFirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/OutboundFirewallRuleGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/OutboundFirewallRuleGet.json
      */
     /**
      * Sample code: Gets outbound firewall rule.
@@ -22,6 +20,10 @@ public final class OutboundFirewallRulesGetSamples {
             .manager()
             .serviceClient()
             .getOutboundFirewallRules()
-            .getWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", "server.database.windows.net", Context.NONE);
+            .getWithResponse(
+                "sqlcrudtest-7398",
+                "sqlcrudtest-4645",
+                "server.database.windows.net",
+                com.azure.core.util.Context.NONE);
     }
 }

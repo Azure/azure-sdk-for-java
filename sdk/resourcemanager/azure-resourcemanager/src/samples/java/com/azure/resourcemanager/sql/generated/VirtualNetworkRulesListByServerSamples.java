@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkRules ListByServer. */
 public final class VirtualNetworkRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualNetworkRulesList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualNetworkRulesList.json
      */
     /**
      * Sample code: List virtual network rules.
@@ -22,6 +20,6 @@ public final class VirtualNetworkRulesListByServerSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkRules()
-            .listByServer("Default", "vnet-test-svr", Context.NONE);
+            .listByServer("Default", "vnet-test-svr", com.azure.core.util.Context.NONE);
     }
 }

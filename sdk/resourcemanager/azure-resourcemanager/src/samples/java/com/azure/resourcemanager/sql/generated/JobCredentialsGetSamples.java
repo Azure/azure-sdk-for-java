@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobCredentials Get. */
 public final class JobCredentialsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobCredential.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobCredential.json
      */
     /**
      * Sample code: Get a credential.
@@ -22,6 +20,6 @@ public final class JobCredentialsGetSamples {
             .manager()
             .serviceClient()
             .getJobCredentials()
-            .getWithResponse("group1", "server1", "agent1", "cred1", Context.NONE);
+            .getWithResponse("group1", "server1", "agent1", "cred1", com.azure.core.util.Context.NONE);
     }
 }

@@ -36,10 +36,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.DatabasesClient;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricInner;
 import com.azure.resourcemanager.sql.models.DatabaseListResult;
 import com.azure.resourcemanager.sql.models.DatabaseUpdate;
 import com.azure.resourcemanager.sql.models.ExportDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.ImportExistingDatabaseDefinition;
+import com.azure.resourcemanager.sql.models.MetricDefinitionListResult;
+import com.azure.resourcemanager.sql.models.MetricListResult;
 import com.azure.resourcemanager.sql.models.ReplicaType;
 import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 import java.nio.ByteBuffer;
@@ -74,8 +78,38 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public interface DatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/metrics")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MetricListResult>> listMetrics(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/metricDefinitions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MetricDefinitionListResult>> listMetricDefinitions(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listByServer(
@@ -90,8 +124,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseInner>> get(
@@ -99,6 +132,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
+            @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -106,8 +141,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -123,8 +157,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -138,8 +171,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -155,8 +187,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/export")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> export(
@@ -172,8 +203,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failover(
@@ -188,8 +218,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/import")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/import")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> importMethod(
@@ -205,8 +234,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/move")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/move")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> rename(
@@ -221,8 +249,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/pause")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> pause(
@@ -237,8 +264,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/resume")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/resume")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resume(
@@ -253,8 +279,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/upgradeDataWarehouse")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/upgradeDataWarehouse")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> upgradeDataWarehouse(
@@ -268,8 +293,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}/databases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listByElasticPool(
@@ -284,8 +308,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/inaccessibleDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/inaccessibleDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listInaccessibleByServer(
@@ -329,6 +352,408 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
+        String resourceGroupName, String serverName, String databaseName, String filter) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (filter == null) {
+            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listMetrics(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            filter,
+                            accept,
+                            context))
+            .<PagedResponse<MetricInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
+        String resourceGroupName, String serverName, String databaseName, String filter, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (filter == null) {
+            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listMetrics(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                filter,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricInner> listMetricsAsync(
+        String resourceGroupName, String serverName, String databaseName, String filter) {
+        return new PagedFlux<>(() -> listMetricsSinglePageAsync(resourceGroupName, serverName, databaseName, filter));
+    }
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<MetricInner> listMetricsAsync(
+        String resourceGroupName, String serverName, String databaseName, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listMetricsSinglePageAsync(resourceGroupName, serverName, databaseName, filter, context));
+    }
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricInner> listMetrics(
+        String resourceGroupName, String serverName, String databaseName, String filter) {
+        return new PagedIterable<>(listMetricsAsync(resourceGroupName, serverName, databaseName, filter));
+    }
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricInner> listMetrics(
+        String resourceGroupName, String serverName, String databaseName, String filter, Context context) {
+        return new PagedIterable<>(listMetricsAsync(resourceGroupName, serverName, databaseName, filter, context));
+    }
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
+        String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listMetricDefinitions(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            accept,
+                            context))
+            .<PagedResponse<MetricDefinitionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
+        String resourceGroupName, String serverName, String databaseName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listMetricDefinitions(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
+        String resourceGroupName, String serverName, String databaseName) {
+        return new PagedFlux<>(() -> listMetricDefinitionsSinglePageAsync(resourceGroupName, serverName, databaseName));
+    }
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
+        String resourceGroupName, String serverName, String databaseName, Context context) {
+        return new PagedFlux<>(
+            () -> listMetricDefinitionsSinglePageAsync(resourceGroupName, serverName, databaseName, context));
+    }
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricDefinitionInner> listMetricDefinitions(
+        String resourceGroupName, String serverName, String databaseName) {
+        return new PagedIterable<>(listMetricDefinitionsAsync(resourceGroupName, serverName, databaseName));
+    }
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricDefinitionInner> listMetricDefinitions(
+        String resourceGroupName, String serverName, String databaseName, Context context) {
+        return new PagedIterable<>(listMetricDefinitionsAsync(resourceGroupName, serverName, databaseName, context));
+    }
+
+    /**
      * Gets a list of databases.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -362,6 +787,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -373,7 +799,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             skipToken,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DatabaseInner>>map(
@@ -423,6 +849,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -432,7 +859,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 skipToken,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -548,6 +975,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -555,7 +984,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName, String serverName, String databaseName, String expand, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -578,6 +1007,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -588,8 +1018,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             serverName,
                             databaseName,
+                            expand,
+                            filter,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -602,6 +1034,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -610,7 +1044,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -633,6 +1072,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -641,8 +1081,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 serverName,
                 databaseName,
+                expand,
+                filter,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -661,7 +1103,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+        final String expand = null;
+        final String filter = null;
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -672,6 +1116,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -680,8 +1126,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter, context).block();
     }
 
     /**
@@ -698,7 +1149,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
+        final String expand = null;
+        final String filter = null;
+        return getWithResponse(resourceGroupName, serverName, databaseName, expand, filter, Context.NONE).getValue();
     }
 
     /**
@@ -744,6 +1197,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -755,7 +1209,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -806,6 +1260,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -815,7 +1270,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -891,7 +1346,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -911,7 +1366,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1034,6 +1490,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1044,7 +1501,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1087,6 +1544,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1095,7 +1553,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1160,7 +1618,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -1179,7 +1637,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -1297,6 +1755,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1308,7 +1767,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1359,6 +1818,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1368,7 +1828,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1444,7 +1904,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -1464,7 +1924,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1593,6 +2053,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1604,7 +2065,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1660,6 +2121,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1669,7 +2131,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1753,7 +2215,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginExport(
         String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginExportAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -1777,7 +2239,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         String databaseName,
         ExportDatabaseDefinition parameters,
         Context context) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+        return this.beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1908,6 +2370,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1919,7 +2382,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             databaseName,
                             replicaType,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1963,6 +2426,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service
             .failover(
@@ -1972,7 +2436,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 databaseName,
                 replicaType,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -2065,7 +2529,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName) {
         final ReplicaType replicaType = null;
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
     }
 
     /**
@@ -2085,7 +2549,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).getSyncPoller();
+        return this
+            .beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2231,6 +2697,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2242,7 +2709,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -2298,6 +2765,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2307,7 +2775,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -2396,7 +2864,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportMethod(
         String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters) {
-        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -2420,7 +2888,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
         String databaseName,
         ImportExistingDatabaseDefinition parameters,
         Context context) {
-        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+        return this
+            .beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2556,6 +3026,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -2566,7 +3037,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2620,6 +3091,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service
             .rename(
@@ -2628,7 +3100,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 context);
     }
@@ -2732,6 +3204,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2743,7 +3216,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2787,6 +3260,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2796,7 +3270,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -2867,7 +3341,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginPauseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginPauseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -2886,7 +3360,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginPauseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this.beginPauseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -3001,6 +3475,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3012,7 +3487,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3056,6 +3531,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3065,7 +3541,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -3136,7 +3612,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginResumeAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -3155,7 +3631,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginResumeAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -3270,6 +3746,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -3280,7 +3757,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -3323,6 +3800,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service
             .upgradeDataWarehouse(
@@ -3331,7 +3809,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -3397,7 +3875,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -3416,7 +3894,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this
+            .beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3532,6 +4012,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3543,7 +4024,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             elasticPoolName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DatabaseInner>>map(
@@ -3598,6 +4079,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3607,7 +4089,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 elasticPoolName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -3733,6 +4215,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3743,7 +4226,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DatabaseInner>>map(
@@ -3793,6 +4276,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3801,7 +4285,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(

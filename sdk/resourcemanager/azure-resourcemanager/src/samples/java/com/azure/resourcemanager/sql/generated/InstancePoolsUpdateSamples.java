@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.InstancePoolUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for InstancePools Update. */
 public final class InstancePoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/PatchInstancePool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/PatchInstancePool.json
      */
     /**
      * Sample code: Patch an instance pool.
@@ -25,7 +24,11 @@ public final class InstancePoolsUpdateSamples {
             .manager()
             .serviceClient()
             .getInstancePools()
-            .update("group1", "testIP", new InstancePoolUpdate().withTags(mapOf("x", "y")), Context.NONE);
+            .update(
+                "group1",
+                "testIP",
+                new InstancePoolUpdate().withTags(mapOf("x", "y")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

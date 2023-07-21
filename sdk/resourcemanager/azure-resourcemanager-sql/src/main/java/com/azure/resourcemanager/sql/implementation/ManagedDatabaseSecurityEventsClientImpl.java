@@ -62,8 +62,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
     public interface ManagedDatabaseSecurityEventsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/securityEvents")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/securityEvents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityEventCollection>> listByDatabase(
@@ -72,8 +71,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("databaseName") String databaseName,
             @QueryParam("$filter") String filter,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$top") Integer top,
             @QueryParam("$skiptoken") String skiptoken,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -113,8 +112,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
         String managedInstanceName,
         String databaseName,
         String filter,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         String skiptoken) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -139,6 +138,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -154,7 +154,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
                             top,
                             skiptoken,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<SecurityEventInner>>map(
@@ -192,8 +192,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
         String managedInstanceName,
         String databaseName,
         String filter,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         String skiptoken,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -219,6 +219,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -232,7 +233,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
                 top,
                 skiptoken,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -268,8 +269,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
         String managedInstanceName,
         String databaseName,
         String filter,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         String skiptoken) {
         return new PagedFlux<>(
             () ->
@@ -294,8 +295,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
     public PagedFlux<SecurityEventInner> listByDatabaseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName) {
         final String filter = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         final String skiptoken = null;
         return new PagedFlux<>(
             () ->
@@ -327,8 +328,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
         String managedInstanceName,
         String databaseName,
         String filter,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         String skiptoken,
         Context context) {
         return new PagedFlux<>(
@@ -354,8 +355,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
     public PagedIterable<SecurityEventInner> listByDatabase(
         String resourceGroupName, String managedInstanceName, String databaseName) {
         final String filter = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         final String skiptoken = null;
         return new PagedIterable<>(
             listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter, skip, top, skiptoken));
@@ -384,8 +385,8 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
         String managedInstanceName,
         String databaseName,
         String filter,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         String skiptoken,
         Context context) {
         return new PagedIterable<>(

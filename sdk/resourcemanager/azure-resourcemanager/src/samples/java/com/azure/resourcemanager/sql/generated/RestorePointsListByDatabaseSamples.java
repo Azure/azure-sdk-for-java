@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorePoints ListByDatabase. */
 public final class RestorePointsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRestorePointsListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseRestorePointsListByDatabase.json
      */
     /**
      * Sample code: List database restore points.
@@ -22,11 +20,11 @@ public final class RestorePointsListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getRestorePoints()
-            .listByDatabase("sqlcrudtest-6730", "sqlcrudtest-9007", "3481", Context.NONE);
+            .listByDatabase("sqlcrudtest-6730", "sqlcrudtest-9007", "3481", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataWarehouseRestorePointsListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DataWarehouseRestorePointsListByDatabase.json
      */
     /**
      * Sample code: List datawarehouse database restore points.
@@ -39,6 +37,7 @@ public final class RestorePointsListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getRestorePoints()
-            .listByDatabase("Default-SQL-SouthEastAsia", "testserver", "testDatabase", Context.NONE);
+            .listByDatabase(
+                "Default-SQL-SouthEastAsia", "testserver", "testDatabase", com.azure.core.util.Context.NONE);
     }
 }

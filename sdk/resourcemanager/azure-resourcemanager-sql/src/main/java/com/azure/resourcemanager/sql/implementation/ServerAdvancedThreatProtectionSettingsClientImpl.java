@@ -74,8 +74,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
     public interface ServerAdvancedThreatProtectionSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalServerAdvancedThreatProtectionListResult>> listByServer(
@@ -89,8 +88,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAdvancedThreatProtectionInner>> get(
@@ -105,8 +103,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -165,6 +162,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -175,7 +173,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ServerAdvancedThreatProtectionInner>>map(
@@ -225,6 +223,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -233,7 +232,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -364,6 +363,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -375,7 +375,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                             serverName,
                             advancedThreatProtectionName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -426,6 +426,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -435,7 +436,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                 serverName,
                 advancedThreatProtectionName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -548,6 +549,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -559,7 +561,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                             serverName,
                             advancedThreatProtectionName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -617,6 +619,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -626,7 +629,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
                 serverName,
                 advancedThreatProtectionName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -720,7 +723,8 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             String serverName,
             AdvancedThreatProtectionName advancedThreatProtectionName,
             ServerAdvancedThreatProtectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters)
             .getSyncPoller();
     }
 
@@ -746,8 +750,8 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             AdvancedThreatProtectionName advancedThreatProtectionName,
             ServerAdvancedThreatProtectionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
             .getSyncPoller();
     }
 

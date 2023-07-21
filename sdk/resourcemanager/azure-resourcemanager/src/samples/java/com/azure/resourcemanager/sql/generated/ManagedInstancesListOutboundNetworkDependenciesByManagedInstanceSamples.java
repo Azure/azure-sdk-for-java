@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedInstances ListOutboundNetworkDependenciesByManagedInstance. */
 public final class ManagedInstancesListOutboundNetworkDependenciesByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListOutboundNetworkDependenciesByManagedInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ListOutboundNetworkDependenciesByManagedInstance.json
      */
     /**
      * Sample code: Gets the collection of outbound network dependencies for the given managed instance.
@@ -23,6 +21,7 @@ public final class ManagedInstancesListOutboundNetworkDependenciesByManagedInsta
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listOutboundNetworkDependenciesByManagedInstance("sqlcrudtest-7398", "testinstance", Context.NONE);
+            .listOutboundNetworkDependenciesByManagedInstance(
+                "sqlcrudtest-7398", "testinstance", com.azure.core.util.Context.NONE);
     }
 }

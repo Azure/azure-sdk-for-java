@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerDevOpsAuditSettings ListByServer. */
 public final class ServerDevOpsAuditSettingsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDevOpsAuditSettingsList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ServerDevOpsAuditList.json
      */
     /**
      * Sample code: List DevOps audit settings of a server.
@@ -22,6 +20,6 @@ public final class ServerDevOpsAuditSettingsListByServerSamples {
             .manager()
             .serviceClient()
             .getServerDevOpsAuditSettings()
-            .listByServer("devAuditTestRG", "devOpsAuditTestSvr", Context.NONE);
+            .listByServer("devAuditTestRG", "devOpsAuditTestSvr", com.azure.core.util.Context.NONE);
     }
 }

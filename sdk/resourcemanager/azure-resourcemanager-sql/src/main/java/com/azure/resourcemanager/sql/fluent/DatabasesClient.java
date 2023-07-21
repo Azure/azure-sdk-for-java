@@ -15,6 +15,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricInner;
 import com.azure.resourcemanager.sql.models.DatabaseUpdate;
 import com.azure.resourcemanager.sql.models.ExportDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.ImportExistingDatabaseDefinition;
@@ -26,6 +28,109 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabasesClient. */
 public interface DatabasesClient {
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MetricInner> listMetricsAsync(
+        String resourceGroupName, String serverName, String databaseName, String filter);
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MetricInner> listMetrics(
+        String resourceGroupName, String serverName, String databaseName, String filter);
+
+    /**
+     * Returns database metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MetricInner> listMetrics(
+        String resourceGroupName, String serverName, String databaseName, String filter, Context context);
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
+        String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MetricDefinitionInner> listMetricDefinitions(
+        String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Returns database metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MetricDefinitionInner> listMetricDefinitions(
+        String resourceGroupName, String serverName, String databaseName, Context context);
+
     /**
      * Gets a list of databases.
      *
@@ -93,6 +198,8 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -100,7 +207,7 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+        String resourceGroupName, String serverName, String databaseName, String expand, String filter);
 
     /**
      * Gets a database.
@@ -124,6 +231,8 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -132,7 +241,12 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context);
 
     /**
      * Gets a database.

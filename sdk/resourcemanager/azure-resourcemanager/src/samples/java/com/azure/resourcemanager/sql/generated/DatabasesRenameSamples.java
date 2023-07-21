@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 
 /** Samples for Databases Rename. */
 public final class DatabasesRenameSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RenameDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RenameDatabase.json
      */
     /**
      * Sample code: Renames a database.
@@ -30,6 +29,6 @@ public final class DatabasesRenameSamples {
                 new ResourceMoveDefinition()
                     .withId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/newtestdb"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

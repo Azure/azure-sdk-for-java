@@ -53,43 +53,6 @@ public interface DeletedServersClient {
     PagedIterable<DeletedServerInner> list(Context context);
 
     /**
-     * Gets a list of deleted servers for a location.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted servers for a location as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DeletedServerInner> listByLocationAsync(String locationName);
-
-    /**
-     * Gets a list of deleted servers for a location.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted servers for a location as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeletedServerInner> listByLocation(String locationName);
-
-    /**
-     * Gets a list of deleted servers for a location.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted servers for a location as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeletedServerInner> listByLocation(String locationName, Context context);
-
-    /**
      * Gets a deleted server.
      *
      * @param locationName The name of the region where the resource is located.
@@ -141,6 +104,43 @@ public interface DeletedServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DeletedServerInner get(String locationName, String deletedServerName);
+
+    /**
+     * Gets a list of deleted servers for a location.
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted servers for a location as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DeletedServerInner> listByLocationAsync(String locationName);
+
+    /**
+     * Gets a list of deleted servers for a location.
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted servers for a location as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeletedServerInner> listByLocation(String locationName);
+
+    /**
+     * Gets a list of deleted servers for a location.
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted servers for a location as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeletedServerInner> listByLocation(String locationName, Context context);
 
     /**
      * Recovers a deleted server.

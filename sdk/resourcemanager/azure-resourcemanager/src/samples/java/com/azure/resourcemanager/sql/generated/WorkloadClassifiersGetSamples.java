@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadClassifiers Get. */
 public final class WorkloadClassifiersGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetWorkloadClassifier.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetWorkloadClassifier.json
      */
     /**
      * Sample code: Gets a workload classifier for a data warehouse.
@@ -23,6 +21,11 @@ public final class WorkloadClassifiersGetSamples {
             .serviceClient()
             .getWorkloadClassifiers()
             .getWithResponse(
-                "Default-SQL-SouthEastAsia", "testsvr", "testdb", "wlm_workloadgroup", "wlm_classifier", Context.NONE);
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb",
+                "wlm_workloadgroup",
+                "wlm_classifier",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -85,6 +85,15 @@ public final class DatabaseStatus extends ExpandableStringEnum<DatabaseStatus> {
     public static final DatabaseStatus STARTING = fromString("Starting");
 
     /**
+     * Creates a new instance of DatabaseStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseStatus() {
+    }
+
+    /**
      * Creates or finds a DatabaseStatus from its string representation.
      *
      * @param name a name to look for.

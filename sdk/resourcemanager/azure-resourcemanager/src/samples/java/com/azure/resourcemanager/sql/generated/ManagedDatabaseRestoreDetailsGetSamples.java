@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.RestoreDetailsName;
 
 /** Samples for ManagedDatabaseRestoreDetails Get. */
 public final class ManagedDatabaseRestoreDetailsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseRestoreDetails.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseRestoreDetails.json
      */
     /**
      * Sample code: Managed database restore details.
@@ -24,6 +23,10 @@ public final class ManagedDatabaseRestoreDetailsGetSamples {
             .serviceClient()
             .getManagedDatabaseRestoreDetails()
             .getWithResponse(
-                "Default-SQL-SouthEastAsia", "managedInstance", "testdb", RestoreDetailsName.DEFAULT, Context.NONE);
+                "Default-SQL-SouthEastAsia",
+                "managedInstance",
+                "testdb",
+                RestoreDetailsName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

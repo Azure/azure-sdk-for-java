@@ -24,13 +24,6 @@ public interface SqlManagementClient {
     String getEndpoint();
 
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -45,46 +38,74 @@ public interface SqlManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the BackupShortTermRetentionPoliciesClient object to access its operations.
+     * Gets the DataMaskingPoliciesClient object to access its operations.
      *
-     * @return the BackupShortTermRetentionPoliciesClient object.
+     * @return the DataMaskingPoliciesClient object.
      */
-    BackupShortTermRetentionPoliciesClient getBackupShortTermRetentionPolicies();
+    DataMaskingPoliciesClient getDataMaskingPolicies();
 
     /**
-     * Gets the ServerBlobAuditingPoliciesClient object to access its operations.
+     * Gets the DataMaskingRulesClient object to access its operations.
      *
-     * @return the ServerBlobAuditingPoliciesClient object.
+     * @return the DataMaskingRulesClient object.
      */
-    ServerBlobAuditingPoliciesClient getServerBlobAuditingPolicies();
+    DataMaskingRulesClient getDataMaskingRules();
 
     /**
-     * Gets the DatabaseBlobAuditingPoliciesClient object to access its operations.
+     * Gets the GeoBackupPoliciesClient object to access its operations.
      *
-     * @return the DatabaseBlobAuditingPoliciesClient object.
+     * @return the GeoBackupPoliciesClient object.
      */
-    DatabaseBlobAuditingPoliciesClient getDatabaseBlobAuditingPolicies();
+    GeoBackupPoliciesClient getGeoBackupPolicies();
 
     /**
-     * Gets the ExtendedDatabaseBlobAuditingPoliciesClient object to access its operations.
+     * Gets the DatabasesClient object to access its operations.
      *
-     * @return the ExtendedDatabaseBlobAuditingPoliciesClient object.
+     * @return the DatabasesClient object.
      */
-    ExtendedDatabaseBlobAuditingPoliciesClient getExtendedDatabaseBlobAuditingPolicies();
+    DatabasesClient getDatabases();
 
     /**
-     * Gets the ExtendedServerBlobAuditingPoliciesClient object to access its operations.
+     * Gets the ElasticPoolsClient object to access its operations.
      *
-     * @return the ExtendedServerBlobAuditingPoliciesClient object.
+     * @return the ElasticPoolsClient object.
      */
-    ExtendedServerBlobAuditingPoliciesClient getExtendedServerBlobAuditingPolicies();
+    ElasticPoolsClient getElasticPools();
 
     /**
-     * Gets the DatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     * Gets the ServerCommunicationLinksClient object to access its operations.
      *
-     * @return the DatabaseAdvancedThreatProtectionSettingsClient object.
+     * @return the ServerCommunicationLinksClient object.
      */
-    DatabaseAdvancedThreatProtectionSettingsClient getDatabaseAdvancedThreatProtectionSettings();
+    ServerCommunicationLinksClient getServerCommunicationLinks();
+
+    /**
+     * Gets the ServiceObjectivesClient object to access its operations.
+     *
+     * @return the ServiceObjectivesClient object.
+     */
+    ServiceObjectivesClient getServiceObjectives();
+
+    /**
+     * Gets the ElasticPoolActivitiesClient object to access its operations.
+     *
+     * @return the ElasticPoolActivitiesClient object.
+     */
+    ElasticPoolActivitiesClient getElasticPoolActivities();
+
+    /**
+     * Gets the ElasticPoolDatabaseActivitiesClient object to access its operations.
+     *
+     * @return the ElasticPoolDatabaseActivitiesClient object.
+     */
+    ElasticPoolDatabaseActivitiesClient getElasticPoolDatabaseActivities();
+
+    /**
+     * Gets the ServerUsagesClient object to access its operations.
+     *
+     * @return the ServerUsagesClient object.
+     */
+    ServerUsagesClient getServerUsages();
 
     /**
      * Gets the DatabaseAdvisorsClient object to access its operations.
@@ -108,32 +129,11 @@ public interface SqlManagementClient {
     DatabaseColumnsClient getDatabaseColumns();
 
     /**
-     * Gets the DatabaseExtensionsOperationsClient object to access its operations.
-     *
-     * @return the DatabaseExtensionsOperationsClient object.
-     */
-    DatabaseExtensionsOperationsClient getDatabaseExtensionsOperations();
-
-    /**
-     * Gets the DatabaseOperationsClient object to access its operations.
-     *
-     * @return the DatabaseOperationsClient object.
-     */
-    DatabaseOperationsClient getDatabaseOperations();
-
-    /**
      * Gets the DatabaseRecommendedActionsClient object to access its operations.
      *
      * @return the DatabaseRecommendedActionsClient object.
      */
     DatabaseRecommendedActionsClient getDatabaseRecommendedActions();
-
-    /**
-     * Gets the DatabasesClient object to access its operations.
-     *
-     * @return the DatabasesClient object.
-     */
-    DatabasesClient getDatabases();
 
     /**
      * Gets the DatabaseSchemasClient object to access its operations.
@@ -157,13 +157,6 @@ public interface SqlManagementClient {
     DatabaseTablesClient getDatabaseTables();
 
     /**
-     * Gets the DatabaseUsagesClient object to access its operations.
-     *
-     * @return the DatabaseUsagesClient object.
-     */
-    DatabaseUsagesClient getDatabaseUsages();
-
-    /**
      * Gets the DatabaseVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
      *
      * @return the DatabaseVulnerabilityAssessmentRuleBaselinesClient object.
@@ -185,20 +178,6 @@ public interface SqlManagementClient {
     DatabaseVulnerabilityAssessmentScansClient getDatabaseVulnerabilityAssessmentScans();
 
     /**
-     * Gets the DataMaskingPoliciesClient object to access its operations.
-     *
-     * @return the DataMaskingPoliciesClient object.
-     */
-    DataMaskingPoliciesClient getDataMaskingPolicies();
-
-    /**
-     * Gets the DataMaskingRulesClient object to access its operations.
-     *
-     * @return the DataMaskingRulesClient object.
-     */
-    DataMaskingRulesClient getDataMaskingRules();
-
-    /**
      * Gets the DataWarehouseUserActivitiesOperationsClient object to access its operations.
      *
      * @return the DataWarehouseUserActivitiesOperationsClient object.
@@ -213,25 +192,11 @@ public interface SqlManagementClient {
     DeletedServersClient getDeletedServers();
 
     /**
-     * Gets the DistributedAvailabilityGroupsClient object to access its operations.
-     *
-     * @return the DistributedAvailabilityGroupsClient object.
-     */
-    DistributedAvailabilityGroupsClient getDistributedAvailabilityGroups();
-
-    /**
      * Gets the ElasticPoolOperationsClient object to access its operations.
      *
      * @return the ElasticPoolOperationsClient object.
      */
     ElasticPoolOperationsClient getElasticPoolOperations();
-
-    /**
-     * Gets the ElasticPoolsClient object to access its operations.
-     *
-     * @return the ElasticPoolsClient object.
-     */
-    ElasticPoolsClient getElasticPools();
 
     /**
      * Gets the EncryptionProtectorsClient object to access its operations.
@@ -241,20 +206,6 @@ public interface SqlManagementClient {
     EncryptionProtectorsClient getEncryptionProtectors();
 
     /**
-     * Gets the EndpointCertificatesClient object to access its operations.
-     *
-     * @return the EndpointCertificatesClient object.
-     */
-    EndpointCertificatesClient getEndpointCertificates();
-
-    /**
-     * Gets the FailoverGroupsClient object to access its operations.
-     *
-     * @return the FailoverGroupsClient object.
-     */
-    FailoverGroupsClient getFailoverGroups();
-
-    /**
      * Gets the FirewallRulesClient object to access its operations.
      *
      * @return the FirewallRulesClient object.
@@ -262,32 +213,11 @@ public interface SqlManagementClient {
     FirewallRulesClient getFirewallRules();
 
     /**
-     * Gets the GeoBackupPoliciesClient object to access its operations.
-     *
-     * @return the GeoBackupPoliciesClient object.
-     */
-    GeoBackupPoliciesClient getGeoBackupPolicies();
-
-    /**
-     * Gets the InstanceFailoverGroupsClient object to access its operations.
-     *
-     * @return the InstanceFailoverGroupsClient object.
-     */
-    InstanceFailoverGroupsClient getInstanceFailoverGroups();
-
-    /**
      * Gets the InstancePoolsClient object to access its operations.
      *
      * @return the InstancePoolsClient object.
      */
     InstancePoolsClient getInstancePools();
-
-    /**
-     * Gets the IPv6FirewallRulesClient object to access its operations.
-     *
-     * @return the IPv6FirewallRulesClient object.
-     */
-    IPv6FirewallRulesClient getIPv6FirewallRules();
 
     /**
      * Gets the JobAgentsClient object to access its operations.
@@ -353,32 +283,11 @@ public interface SqlManagementClient {
     JobVersionsClient getJobVersions();
 
     /**
-     * Gets the LedgerDigestUploadsOperationsClient object to access its operations.
-     *
-     * @return the LedgerDigestUploadsOperationsClient object.
-     */
-    LedgerDigestUploadsOperationsClient getLedgerDigestUploadsOperations();
-
-    /**
      * Gets the CapabilitiesClient object to access its operations.
      *
      * @return the CapabilitiesClient object.
      */
     CapabilitiesClient getCapabilities();
-
-    /**
-     * Gets the LongTermRetentionBackupsClient object to access its operations.
-     *
-     * @return the LongTermRetentionBackupsClient object.
-     */
-    LongTermRetentionBackupsClient getLongTermRetentionBackups();
-
-    /**
-     * Gets the LongTermRetentionManagedInstanceBackupsClient object to access its operations.
-     *
-     * @return the LongTermRetentionManagedInstanceBackupsClient object.
-     */
-    LongTermRetentionManagedInstanceBackupsClient getLongTermRetentionManagedInstanceBackups();
 
     /**
      * Gets the LongTermRetentionPoliciesClient object to access its operations.
@@ -423,20 +332,6 @@ public interface SqlManagementClient {
     ManagedDatabaseQueriesClient getManagedDatabaseQueries();
 
     /**
-     * Gets the ManagedDatabaseRestoreDetailsClient object to access its operations.
-     *
-     * @return the ManagedDatabaseRestoreDetailsClient object.
-     */
-    ManagedDatabaseRestoreDetailsClient getManagedDatabaseRestoreDetails();
-
-    /**
-     * Gets the ManagedDatabasesClient object to access its operations.
-     *
-     * @return the ManagedDatabasesClient object.
-     */
-    ManagedDatabasesClient getManagedDatabases();
-
-    /**
      * Gets the ManagedDatabaseSchemasClient object to access its operations.
      *
      * @return the ManagedDatabaseSchemasClient object.
@@ -456,20 +351,6 @@ public interface SqlManagementClient {
      * @return the ManagedDatabaseSecurityEventsClient object.
      */
     ManagedDatabaseSecurityEventsClient getManagedDatabaseSecurityEvents();
-
-    /**
-     * Gets the ManagedDatabaseSensitivityLabelsClient object to access its operations.
-     *
-     * @return the ManagedDatabaseSensitivityLabelsClient object.
-     */
-    ManagedDatabaseSensitivityLabelsClient getManagedDatabaseSensitivityLabels();
-
-    /**
-     * Gets the ManagedDatabaseRecommendedSensitivityLabelsClient object to access its operations.
-     *
-     * @return the ManagedDatabaseRecommendedSensitivityLabelsClient object.
-     */
-    ManagedDatabaseRecommendedSensitivityLabelsClient getManagedDatabaseRecommendedSensitivityLabels();
 
     /**
      * Gets the ManagedDatabaseTablesClient object to access its operations.
@@ -563,13 +444,6 @@ public interface SqlManagementClient {
     ManagedInstancePrivateLinkResourcesClient getManagedInstancePrivateLinkResources();
 
     /**
-     * Gets the ManagedInstancesClient object to access its operations.
-     *
-     * @return the ManagedInstancesClient object.
-     */
-    ManagedInstancesClient getManagedInstances();
-
-    /**
      * Gets the ManagedInstanceTdeCertificatesClient object to access its operations.
      *
      * @return the ManagedInstanceTdeCertificatesClient object.
@@ -592,13 +466,6 @@ public interface SqlManagementClient {
         getManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies();
 
     /**
-     * Gets the ManagedServerDnsAliasesClient object to access its operations.
-     *
-     * @return the ManagedServerDnsAliasesClient object.
-     */
-    ManagedServerDnsAliasesClient getManagedServerDnsAliases();
-
-    /**
      * Gets the ManagedServerSecurityAlertPoliciesClient object to access its operations.
      *
      * @return the ManagedServerSecurityAlertPoliciesClient object.
@@ -611,13 +478,6 @@ public interface SqlManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
-
-    /**
-     * Gets the OutboundFirewallRulesClient object to access its operations.
-     *
-     * @return the OutboundFirewallRulesClient object.
-     */
-    OutboundFirewallRulesClient getOutboundFirewallRules();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
@@ -634,13 +494,6 @@ public interface SqlManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the RecoverableDatabasesClient object to access its operations.
-     *
-     * @return the RecoverableDatabasesClient object.
-     */
-    RecoverableDatabasesClient getRecoverableDatabases();
-
-    /**
      * Gets the RecoverableManagedDatabasesClient object to access its operations.
      *
      * @return the RecoverableManagedDatabasesClient object.
@@ -648,53 +501,11 @@ public interface SqlManagementClient {
     RecoverableManagedDatabasesClient getRecoverableManagedDatabases();
 
     /**
-     * Gets the ReplicationLinksClient object to access its operations.
-     *
-     * @return the ReplicationLinksClient object.
-     */
-    ReplicationLinksClient getReplicationLinks();
-
-    /**
-     * Gets the RestorableDroppedDatabasesClient object to access its operations.
-     *
-     * @return the RestorableDroppedDatabasesClient object.
-     */
-    RestorableDroppedDatabasesClient getRestorableDroppedDatabases();
-
-    /**
-     * Gets the RestorableDroppedManagedDatabasesClient object to access its operations.
-     *
-     * @return the RestorableDroppedManagedDatabasesClient object.
-     */
-    RestorableDroppedManagedDatabasesClient getRestorableDroppedManagedDatabases();
-
-    /**
      * Gets the RestorePointsClient object to access its operations.
      *
      * @return the RestorePointsClient object.
      */
     RestorePointsClient getRestorePoints();
-
-    /**
-     * Gets the SensitivityLabelsClient object to access its operations.
-     *
-     * @return the SensitivityLabelsClient object.
-     */
-    SensitivityLabelsClient getSensitivityLabels();
-
-    /**
-     * Gets the RecommendedSensitivityLabelsClient object to access its operations.
-     *
-     * @return the RecommendedSensitivityLabelsClient object.
-     */
-    RecommendedSensitivityLabelsClient getRecommendedSensitivityLabels();
-
-    /**
-     * Gets the ServerAdvancedThreatProtectionSettingsClient object to access its operations.
-     *
-     * @return the ServerAdvancedThreatProtectionSettingsClient object.
-     */
-    ServerAdvancedThreatProtectionSettingsClient getServerAdvancedThreatProtectionSettings();
 
     /**
      * Gets the ServerAdvisorsClient object to access its operations.
@@ -725,13 +536,6 @@ public interface SqlManagementClient {
     ServerAzureADOnlyAuthenticationsClient getServerAzureADOnlyAuthentications();
 
     /**
-     * Gets the ServerConnectionPoliciesClient object to access its operations.
-     *
-     * @return the ServerConnectionPoliciesClient object.
-     */
-    ServerConnectionPoliciesClient getServerConnectionPolicies();
-
-    /**
      * Gets the ServerDevOpsAuditSettingsClient object to access its operations.
      *
      * @return the ServerDevOpsAuditSettingsClient object.
@@ -760,13 +564,6 @@ public interface SqlManagementClient {
     ServerOperationsClient getServerOperations();
 
     /**
-     * Gets the ServersClient object to access its operations.
-     *
-     * @return the ServersClient object.
-     */
-    ServersClient getServers();
-
-    /**
      * Gets the ServerSecurityAlertPoliciesClient object to access its operations.
      *
      * @return the ServerSecurityAlertPoliciesClient object.
@@ -774,25 +571,11 @@ public interface SqlManagementClient {
     ServerSecurityAlertPoliciesClient getServerSecurityAlertPolicies();
 
     /**
-     * Gets the ServerTrustCertificatesClient object to access its operations.
-     *
-     * @return the ServerTrustCertificatesClient object.
-     */
-    ServerTrustCertificatesClient getServerTrustCertificates();
-
-    /**
      * Gets the ServerTrustGroupsClient object to access its operations.
      *
      * @return the ServerTrustGroupsClient object.
      */
     ServerTrustGroupsClient getServerTrustGroups();
-
-    /**
-     * Gets the ServerUsagesClient object to access its operations.
-     *
-     * @return the ServerUsagesClient object.
-     */
-    ServerUsagesClient getServerUsages();
 
     /**
      * Gets the ServerVulnerabilityAssessmentsClient object to access its operations.
@@ -851,27 +634,6 @@ public interface SqlManagementClient {
     TimeZonesClient getTimeZones();
 
     /**
-     * Gets the TransparentDataEncryptionsClient object to access its operations.
-     *
-     * @return the TransparentDataEncryptionsClient object.
-     */
-    TransparentDataEncryptionsClient getTransparentDataEncryptions();
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     *
-     * @return the UsagesClient object.
-     */
-    UsagesClient getUsages();
-
-    /**
-     * Gets the VirtualClustersClient object to access its operations.
-     *
-     * @return the VirtualClustersClient object.
-     */
-    VirtualClustersClient getVirtualClusters();
-
-    /**
      * Gets the VirtualNetworkRulesClient object to access its operations.
      *
      * @return the VirtualNetworkRulesClient object.
@@ -891,4 +653,431 @@ public interface SqlManagementClient {
      * @return the WorkloadGroupsClient object.
      */
     WorkloadGroupsClient getWorkloadGroups();
+
+    /**
+     * Gets the BackupShortTermRetentionPoliciesClient object to access its operations.
+     *
+     * @return the BackupShortTermRetentionPoliciesClient object.
+     */
+    BackupShortTermRetentionPoliciesClient getBackupShortTermRetentionPolicies();
+
+    /**
+     * Gets the DatabaseExtensionsOperationsClient object to access its operations.
+     *
+     * @return the DatabaseExtensionsOperationsClient object.
+     */
+    DatabaseExtensionsOperationsClient getDatabaseExtensionsOperations();
+
+    /**
+     * Gets the DatabaseOperationsClient object to access its operations.
+     *
+     * @return the DatabaseOperationsClient object.
+     */
+    DatabaseOperationsClient getDatabaseOperations();
+
+    /**
+     * Gets the DatabaseUsagesClient object to access its operations.
+     *
+     * @return the DatabaseUsagesClient object.
+     */
+    DatabaseUsagesClient getDatabaseUsages();
+
+    /**
+     * Gets the LedgerDigestUploadsOperationsClient object to access its operations.
+     *
+     * @return the LedgerDigestUploadsOperationsClient object.
+     */
+    LedgerDigestUploadsOperationsClient getLedgerDigestUploadsOperations();
+
+    /**
+     * Gets the OutboundFirewallRulesClient object to access its operations.
+     *
+     * @return the OutboundFirewallRulesClient object.
+     */
+    OutboundFirewallRulesClient getOutboundFirewallRules();
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    UsagesClient getUsages();
+
+    /**
+     * Gets the LongTermRetentionBackupsClient object to access its operations.
+     *
+     * @return the LongTermRetentionBackupsClient object.
+     */
+    LongTermRetentionBackupsClient getLongTermRetentionBackups();
+
+    /**
+     * Gets the LongTermRetentionManagedInstanceBackupsClient object to access its operations.
+     *
+     * @return the LongTermRetentionManagedInstanceBackupsClient object.
+     */
+    LongTermRetentionManagedInstanceBackupsClient getLongTermRetentionManagedInstanceBackups();
+
+    /**
+     * Gets the RestorableDroppedManagedDatabasesClient object to access its operations.
+     *
+     * @return the RestorableDroppedManagedDatabasesClient object.
+     */
+    RestorableDroppedManagedDatabasesClient getRestorableDroppedManagedDatabases();
+
+    /**
+     * Gets the ServerConnectionPoliciesClient object to access its operations.
+     *
+     * @return the ServerConnectionPoliciesClient object.
+     */
+    ServerConnectionPoliciesClient getServerConnectionPolicies();
+
+    /**
+     * Gets the DistributedAvailabilityGroupsClient object to access its operations.
+     *
+     * @return the DistributedAvailabilityGroupsClient object.
+     */
+    DistributedAvailabilityGroupsClient getDistributedAvailabilityGroups();
+
+    /**
+     * Gets the ServerTrustCertificatesClient object to access its operations.
+     *
+     * @return the ServerTrustCertificatesClient object.
+     */
+    ServerTrustCertificatesClient getServerTrustCertificates();
+
+    /**
+     * Gets the EndpointCertificatesClient object to access its operations.
+     *
+     * @return the EndpointCertificatesClient object.
+     */
+    EndpointCertificatesClient getEndpointCertificates();
+
+    /**
+     * Gets the ManagedDatabaseSensitivityLabelsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseSensitivityLabelsClient object.
+     */
+    ManagedDatabaseSensitivityLabelsClient getManagedDatabaseSensitivityLabels();
+
+    /**
+     * Gets the ManagedDatabaseRecommendedSensitivityLabelsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseRecommendedSensitivityLabelsClient object.
+     */
+    ManagedDatabaseRecommendedSensitivityLabelsClient getManagedDatabaseRecommendedSensitivityLabels();
+
+    /**
+     * Gets the SensitivityLabelsClient object to access its operations.
+     *
+     * @return the SensitivityLabelsClient object.
+     */
+    SensitivityLabelsClient getSensitivityLabels();
+
+    /**
+     * Gets the RecommendedSensitivityLabelsClient object to access its operations.
+     *
+     * @return the RecommendedSensitivityLabelsClient object.
+     */
+    RecommendedSensitivityLabelsClient getRecommendedSensitivityLabels();
+
+    /**
+     * Gets the ServerBlobAuditingPoliciesClient object to access its operations.
+     *
+     * @return the ServerBlobAuditingPoliciesClient object.
+     */
+    ServerBlobAuditingPoliciesClient getServerBlobAuditingPolicies();
+
+    /**
+     * Gets the DatabaseBlobAuditingPoliciesClient object to access its operations.
+     *
+     * @return the DatabaseBlobAuditingPoliciesClient object.
+     */
+    DatabaseBlobAuditingPoliciesClient getDatabaseBlobAuditingPolicies();
+
+    /**
+     * Gets the ExtendedDatabaseBlobAuditingPoliciesClient object to access its operations.
+     *
+     * @return the ExtendedDatabaseBlobAuditingPoliciesClient object.
+     */
+    ExtendedDatabaseBlobAuditingPoliciesClient getExtendedDatabaseBlobAuditingPolicies();
+
+    /**
+     * Gets the ExtendedServerBlobAuditingPoliciesClient object to access its operations.
+     *
+     * @return the ExtendedServerBlobAuditingPoliciesClient object.
+     */
+    ExtendedServerBlobAuditingPoliciesClient getExtendedServerBlobAuditingPolicies();
+
+    /**
+     * Gets the DatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the DatabaseAdvancedThreatProtectionSettingsClient object.
+     */
+    DatabaseAdvancedThreatProtectionSettingsClient getDatabaseAdvancedThreatProtectionSettings();
+
+    /**
+     * Gets the ServerAdvancedThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ServerAdvancedThreatProtectionSettingsClient object.
+     */
+    ServerAdvancedThreatProtectionSettingsClient getServerAdvancedThreatProtectionSettings();
+
+    /**
+     * Gets the ManagedServerDnsAliasesClient object to access its operations.
+     *
+     * @return the ManagedServerDnsAliasesClient object.
+     */
+    ManagedServerDnsAliasesClient getManagedServerDnsAliases();
+
+    /**
+     * Gets the ManagedDatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseAdvancedThreatProtectionSettingsClient object.
+     */
+    ManagedDatabaseAdvancedThreatProtectionSettingsClient getManagedDatabaseAdvancedThreatProtectionSettings();
+
+    /**
+     * Gets the ManagedInstanceAdvancedThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ManagedInstanceAdvancedThreatProtectionSettingsClient object.
+     */
+    ManagedInstanceAdvancedThreatProtectionSettingsClient getManagedInstanceAdvancedThreatProtectionSettings();
+
+    /**
+     * Gets the ReplicationLinksClient object to access its operations.
+     *
+     * @return the ReplicationLinksClient object.
+     */
+    ReplicationLinksClient getReplicationLinks();
+
+    /**
+     * Gets the ManagedDatabaseMoveOperationsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseMoveOperationsClient object.
+     */
+    ManagedDatabaseMoveOperationsClient getManagedDatabaseMoveOperations();
+
+    /**
+     * Gets the ManagedInstanceDtcsClient object to access its operations.
+     *
+     * @return the ManagedInstanceDtcsClient object.
+     */
+    ManagedInstanceDtcsClient getManagedInstanceDtcs();
+
+    /**
+     * Gets the SynapseLinkWorkspacesClient object to access its operations.
+     *
+     * @return the SynapseLinkWorkspacesClient object.
+     */
+    SynapseLinkWorkspacesClient getSynapseLinkWorkspaces();
+
+    /**
+     * Gets the VirtualClustersClient object to access its operations.
+     *
+     * @return the VirtualClustersClient object.
+     */
+    VirtualClustersClient getVirtualClusters();
+
+    /**
+     * Gets the InstanceFailoverGroupsClient object to access its operations.
+     *
+     * @return the InstanceFailoverGroupsClient object.
+     */
+    InstanceFailoverGroupsClient getInstanceFailoverGroups();
+
+    /**
+     * Gets the ManagedDatabaseRestoreDetailsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseRestoreDetailsClient object.
+     */
+    ManagedDatabaseRestoreDetailsClient getManagedDatabaseRestoreDetails();
+
+    /**
+     * Gets the DatabaseEncryptionProtectorsClient object to access its operations.
+     *
+     * @return the DatabaseEncryptionProtectorsClient object.
+     */
+    DatabaseEncryptionProtectorsClient getDatabaseEncryptionProtectors();
+
+    /**
+     * Gets the ManagedDatabasesClient object to access its operations.
+     *
+     * @return the ManagedDatabasesClient object.
+     */
+    ManagedDatabasesClient getManagedDatabases();
+
+    /**
+     * Gets the ManagedInstancesClient object to access its operations.
+     *
+     * @return the ManagedInstancesClient object.
+     */
+    ManagedInstancesClient getManagedInstances();
+
+    /**
+     * Gets the ManagedLedgerDigestUploadsOperationsClient object to access its operations.
+     *
+     * @return the ManagedLedgerDigestUploadsOperationsClient object.
+     */
+    ManagedLedgerDigestUploadsOperationsClient getManagedLedgerDigestUploadsOperations();
+
+    /**
+     * Gets the RecoverableDatabasesClient object to access its operations.
+     *
+     * @return the RecoverableDatabasesClient object.
+     */
+    RecoverableDatabasesClient getRecoverableDatabases();
+
+    /**
+     * Gets the RestorableDroppedDatabasesClient object to access its operations.
+     *
+     * @return the RestorableDroppedDatabasesClient object.
+     */
+    RestorableDroppedDatabasesClient getRestorableDroppedDatabases();
+
+    /**
+     * Gets the ServerConfigurationOptionsClient object to access its operations.
+     *
+     * @return the ServerConfigurationOptionsClient object.
+     */
+    ServerConfigurationOptionsClient getServerConfigurationOptions();
+
+    /**
+     * Gets the ServersClient object to access its operations.
+     *
+     * @return the ServersClient object.
+     */
+    ServersClient getServers();
+
+    /**
+     * Gets the StartStopManagedInstanceSchedulesClient object to access its operations.
+     *
+     * @return the StartStopManagedInstanceSchedulesClient object.
+     */
+    StartStopManagedInstanceSchedulesClient getStartStopManagedInstanceSchedules();
+
+    /**
+     * Gets the TransparentDataEncryptionsClient object to access its operations.
+     *
+     * @return the TransparentDataEncryptionsClient object.
+     */
+    TransparentDataEncryptionsClient getTransparentDataEncryptions();
+
+    /**
+     * Gets the FailoverGroupsClient object to access its operations.
+     *
+     * @return the FailoverGroupsClient object.
+     */
+    FailoverGroupsClient getFailoverGroups();
+
+    /**
+     * Gets the IPv6FirewallRulesClient object to access its operations.
+     *
+     * @return the IPv6FirewallRulesClient object.
+     */
+    IPv6FirewallRulesClient getIPv6FirewallRules();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentBaselinesClient object.
+     */
+    SqlVulnerabilityAssessmentBaselinesClient getSqlVulnerabilityAssessmentBaselines();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselinesOperationsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentBaselinesOperationsClient object.
+     */
+    SqlVulnerabilityAssessmentBaselinesOperationsClient getSqlVulnerabilityAssessmentBaselinesOperations();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentExecuteScansClient object.
+     */
+    SqlVulnerabilityAssessmentExecuteScansClient getSqlVulnerabilityAssessmentExecuteScans();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentRuleBaselinesClient object.
+     */
+    SqlVulnerabilityAssessmentRuleBaselinesClient getSqlVulnerabilityAssessmentRuleBaselines();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentRuleBaselinesOperationsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentRuleBaselinesOperationsClient object.
+     */
+    SqlVulnerabilityAssessmentRuleBaselinesOperationsClient getSqlVulnerabilityAssessmentRuleBaselinesOperations();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScanResultOperationsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScanResultOperationsClient object.
+     */
+    SqlVulnerabilityAssessmentScanResultOperationsClient getSqlVulnerabilityAssessmentScanResultOperations();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScansClient object.
+     */
+    SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentsSettingsClient object.
+     */
+    SqlVulnerabilityAssessmentsSettingsClient getSqlVulnerabilityAssessmentsSettings();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentsClient object.
+     */
+    SqlVulnerabilityAssessmentsClient getSqlVulnerabilityAssessments();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentBaselinesClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentBaselinesClient getDatabaseSqlVulnerabilityAssessmentBaselines();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentExecuteScansClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentExecuteScansClient getDatabaseSqlVulnerabilityAssessmentExecuteScans();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient getDatabaseSqlVulnerabilityAssessmentRuleBaselines();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentScanResultsClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentScanResultsClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentScanResultsClient getDatabaseSqlVulnerabilityAssessmentScanResults();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentScansClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentScansClient getDatabaseSqlVulnerabilityAssessmentScans();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentsSettingsClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentsSettingsClient getDatabaseSqlVulnerabilityAssessmentsSettings();
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerTrustCertificates Get. */
 public final class ServerTrustCertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustCertificatesGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ServerTrustCertificatesGet.json
      */
     /**
      * Sample code: Gets server trust certificate.
@@ -22,6 +20,6 @@ public final class ServerTrustCertificatesGetSamples {
             .manager()
             .serviceClient()
             .getServerTrustCertificates()
-            .getWithResponse("testrg", "testcl", "customerCertificateName", Context.NONE);
+            .getWithResponse("testrg", "testcl", "customerCertificateName", com.azure.core.util.Context.NONE);
     }
 }

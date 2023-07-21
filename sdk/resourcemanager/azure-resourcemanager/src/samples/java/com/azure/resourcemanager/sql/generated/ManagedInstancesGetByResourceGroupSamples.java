@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedInstances GetByResourceGroup. */
 public final class ManagedInstancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceGetWithExpandEqualsAdministrators.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceGetWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: Get managed instance with $expand=administrators/activedirectory.
@@ -23,11 +21,11 @@ public final class ManagedInstancesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .getByResourceGroupWithResponse("testrg", "testinstance", null, Context.NONE);
+            .getByResourceGroupWithResponse("testrg", "testinstance", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceGet.json
      */
     /**
      * Sample code: Get managed instance.
@@ -40,6 +38,6 @@ public final class ManagedInstancesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .getByResourceGroupWithResponse("testrg", "testinstance", null, Context.NONE);
+            .getByResourceGroupWithResponse("testrg", "testinstance", null, com.azure.core.util.Context.NONE);
     }
 }

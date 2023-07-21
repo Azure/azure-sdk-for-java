@@ -254,6 +254,200 @@ public interface SensitivityLabelsClient {
         Context context);
 
     /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> enableRecommendationWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName);
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> enableRecommendationAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName);
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> enableRecommendationWithResponse(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName,
+        Context context);
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void enableRecommendation(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName);
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> disableRecommendationWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName);
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> disableRecommendationAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName);
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> disableRecommendationWithResponse(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName,
+        Context context);
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableRecommendation(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName);
+
+    /**
      * Gets the sensitivity label of a given column.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -562,265 +756,4 @@ public interface SensitivityLabelsClient {
         String schemaName,
         String tableName,
         String columnName);
-
-    /**
-     * Disables sensitivity recommendations on a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> disableRecommendationWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
-
-    /**
-     * Disables sensitivity recommendations on a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> disableRecommendationAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
-
-    /**
-     * Disables sensitivity recommendations on a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> disableRecommendationWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
-
-    /**
-     * Disables sensitivity recommendations on a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void disableRecommendation(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
-
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> enableRecommendationWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
-
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> enableRecommendationAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
-
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> enableRecommendationWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
-
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableRecommendation(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName, String filter);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SensitivityLabelInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, String filter, Context context);
 }

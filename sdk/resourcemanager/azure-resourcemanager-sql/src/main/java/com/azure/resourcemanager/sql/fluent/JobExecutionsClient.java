@@ -51,8 +51,8 @@ public interface JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top);
+        Integer skip,
+        Integer top);
 
     /**
      * Lists all executions in a job agent.
@@ -114,9 +114,205 @@ public interface JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context);
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> cancelWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> cancelAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> cancelWithResponse(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        Context context);
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancel(String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName);
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName);
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName);
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context);
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<JobExecutionInner> createAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName);
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobExecutionInner create(String resourceGroupName, String serverName, String jobAgentName, String jobName);
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobExecutionInner create(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context);
 
     /**
      * Lists a job's executions.
@@ -149,8 +345,8 @@ public interface JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top);
+        Integer skip,
+        Integer top);
 
     /**
      * Lists a job's executions.
@@ -218,8 +414,8 @@ public interface JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context);
 
     /**
@@ -437,200 +633,4 @@ public interface JobExecutionsClient {
         String jobName,
         UUID jobExecutionId,
         Context context);
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> cancelAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context);
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName);
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName);
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName);
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context);
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<JobExecutionInner> createAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName);
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobExecutionInner create(String resourceGroupName, String serverName, String jobAgentName, String jobName);
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobExecutionInner create(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context);
 }

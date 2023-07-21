@@ -20,6 +20,15 @@ public final class ReadWriteEndpointFailoverPolicy extends ExpandableStringEnum<
     public static final ReadWriteEndpointFailoverPolicy AUTOMATIC = fromString("Automatic");
 
     /**
+     * Creates a new instance of ReadWriteEndpointFailoverPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReadWriteEndpointFailoverPolicy() {
+    }
+
+    /**
      * Creates or finds a ReadWriteEndpointFailoverPolicy from its string representation.
      *
      * @param name a name to look for.

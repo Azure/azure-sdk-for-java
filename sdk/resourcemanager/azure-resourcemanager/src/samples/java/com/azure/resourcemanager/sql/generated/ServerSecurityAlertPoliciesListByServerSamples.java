@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerSecurityAlertPolicies ListByServer. */
 public final class ServerSecurityAlertPoliciesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerSecurityAlertsListByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerSecurityAlertsListByServer.json
      */
     /**
      * Sample code: List the server's threat detection policies.
@@ -22,6 +20,6 @@ public final class ServerSecurityAlertPoliciesListByServerSamples {
             .manager()
             .serviceClient()
             .getServerSecurityAlertPolicies()
-            .listByServer("securityalert-4799", "securityalert-6440", Context.NONE);
+            .listByServer("securityalert-4799", "securityalert-6440", com.azure.core.util.Context.NONE);
     }
 }

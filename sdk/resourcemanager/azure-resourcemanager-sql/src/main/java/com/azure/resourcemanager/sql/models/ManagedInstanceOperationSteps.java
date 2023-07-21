@@ -27,7 +27,7 @@ public final class ManagedInstanceOperationSteps {
      * The operation steps list.
      */
     @JsonProperty(value = "stepsList", access = JsonProperty.Access.WRITE_ONLY)
-    private List<UpsertManagedServerOperationStepWithEstimatesAndDuration> stepsList;
+    private List<UpsertManagedServerOperationStep> stepsList;
 
     /** Creates an instance of ManagedInstanceOperationSteps class. */
     public ManagedInstanceOperationSteps() {
@@ -56,7 +56,7 @@ public final class ManagedInstanceOperationSteps {
      *
      * @return the stepsList value.
      */
-    public List<UpsertManagedServerOperationStepWithEstimatesAndDuration> stepsList() {
+    public List<UpsertManagedServerOperationStep> stepsList() {
         return this.stepsList;
     }
 

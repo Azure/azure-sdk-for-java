@@ -20,6 +20,12 @@ public final class DataMaskingRuleProperties {
     private String id;
 
     /*
+     * The alias name. This is a legacy parameter and is no longer used.
+     */
+    @JsonProperty(value = "aliasName")
+    private String aliasName;
+
+    /*
      * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName,
      * columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the
      * rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
@@ -44,12 +50,6 @@ public final class DataMaskingRuleProperties {
      */
     @JsonProperty(value = "columnName", required = true)
     private String columnName;
-
-    /*
-     * The alias name. This is a legacy parameter and is no longer used.
-     */
-    @JsonProperty(value = "aliasName")
-    private String aliasName;
 
     /*
      * The masking function that is used for the data masking rule.
@@ -103,6 +103,26 @@ public final class DataMaskingRuleProperties {
      */
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     *
+     * @return the aliasName value.
+     */
+    public String aliasName() {
+        return this.aliasName;
+    }
+
+    /**
+     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     *
+     * @param aliasName the aliasName value to set.
+     * @return the DataMaskingRuleProperties object itself.
+     */
+    public DataMaskingRuleProperties withAliasName(String aliasName) {
+        this.aliasName = aliasName;
+        return this;
     }
 
     /**
@@ -188,26 +208,6 @@ public final class DataMaskingRuleProperties {
      */
     public DataMaskingRuleProperties withColumnName(String columnName) {
         this.columnName = columnName;
-        return this;
-    }
-
-    /**
-     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @return the aliasName value.
-     */
-    public String aliasName() {
-        return this.aliasName;
-    }
-
-    /**
-     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @param aliasName the aliasName value to set.
-     * @return the DataMaskingRuleProperties object itself.
-     */
-    public DataMaskingRuleProperties withAliasName(String aliasName) {
-        this.aliasName = aliasName;
         return this;
     }
 

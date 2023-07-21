@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseSchemas Get. */
 public final class ManagedDatabaseSchemasGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseSchemaGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSchemaGet.json
      */
     /**
      * Sample code: Get managed database schema.
@@ -22,6 +20,6 @@ public final class ManagedDatabaseSchemasGetSamples {
             .manager()
             .serviceClient()
             .getManagedDatabaseSchemas()
-            .getWithResponse("myRG", "myManagedInstanceName", "myDatabase", "dbo", Context.NONE);
+            .getWithResponse("myRG", "myManagedInstanceName", "myDatabase", "dbo", com.azure.core.util.Context.NONE);
     }
 }

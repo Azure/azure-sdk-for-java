@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Databases Pause. */
 public final class DatabasesPauseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/PauseDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/PauseDatabase.json
      */
     /**
      * Sample code: Pauses a database.
@@ -22,6 +20,6 @@ public final class DatabasesPauseSamples {
             .manager()
             .serviceClient()
             .getDatabases()
-            .pause("Default-SQL-SouthEastAsia", "testsvr", "testdwdb", Context.NONE);
+            .pause("Default-SQL-SouthEastAsia", "testsvr", "testdwdb", com.azure.core.util.Context.NONE);
     }
 }

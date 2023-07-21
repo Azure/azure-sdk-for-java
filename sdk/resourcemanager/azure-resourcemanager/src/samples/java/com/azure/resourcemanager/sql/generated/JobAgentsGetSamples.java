@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobAgents Get. */
 public final class JobAgentsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobAgent.json
      */
     /**
      * Sample code: Get a job agent.
@@ -22,6 +20,6 @@ public final class JobAgentsGetSamples {
             .manager()
             .serviceClient()
             .getJobAgents()
-            .getWithResponse("group1", "server1", "agent1", Context.NONE);
+            .getWithResponse("group1", "server1", "agent1", com.azure.core.util.Context.NONE);
     }
 }

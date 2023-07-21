@@ -26,6 +26,15 @@ public final class JobAgentState extends ExpandableStringEnum<JobAgentState> {
     public static final JobAgentState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of JobAgentState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobAgentState() {
+    }
+
+    /**
      * Creates or finds a JobAgentState from its string representation.
      *
      * @param name a name to look for.

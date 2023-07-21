@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.util.UUID;
 
 /** Samples for JobExecutions Cancel. */
 public final class JobExecutionsCancelSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelJobExecution.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CancelJobExecution.json
      */
     /**
      * Sample code: Cancel a job execution.
@@ -29,6 +28,6 @@ public final class JobExecutionsCancelSamples {
                 "agent1",
                 "job1",
                 UUID.fromString("5A86BF65-43AC-F258-2524-9E92992F97CA"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

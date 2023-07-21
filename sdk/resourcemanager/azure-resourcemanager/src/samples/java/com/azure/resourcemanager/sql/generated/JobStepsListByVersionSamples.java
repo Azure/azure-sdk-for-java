@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobSteps ListByVersion. */
 public final class JobStepsListByVersionSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobStepsByVersion.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobStepsByVersion.json
      */
     /**
      * Sample code: List job steps for the specified version of a job.
@@ -22,6 +20,6 @@ public final class JobStepsListByVersionSamples {
             .manager()
             .serviceClient()
             .getJobSteps()
-            .listByVersion("group1", "server1", "agent1", "job1", 1, Context.NONE);
+            .listByVersion("group1", "server1", "agent1", "job1", 1, com.azure.core.util.Context.NONE);
     }
 }

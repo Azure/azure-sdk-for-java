@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseColumns ListByTable. */
 public final class DatabaseColumnsListByTableSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseColumnListByTable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseColumnListByTable.json
      */
     /**
      * Sample code: List database columns.
@@ -22,6 +20,6 @@ public final class DatabaseColumnsListByTableSamples {
             .manager()
             .serviceClient()
             .getDatabaseColumns()
-            .listByTable("myRG", "serverName", "myDatabase", "dbo", "table1", null, Context.NONE);
+            .listByTable("myRG", "serverName", "myDatabase", "dbo", "table1", null, com.azure.core.util.Context.NONE);
     }
 }

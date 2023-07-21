@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.JobStepInner;
 import com.azure.resourcemanager.sql.models.JobStepAction;
 import com.azure.resourcemanager.sql.models.JobStepActionSource;
@@ -17,7 +16,7 @@ import java.util.UUID;
 /** Samples for JobSteps CreateOrUpdate. */
 public final class JobStepsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobStepMin.json
      */
     /**
      * Sample code: Create or update a job step with minimal properties specified.
@@ -42,11 +41,11 @@ public final class JobStepsCreateOrUpdateSamples {
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup0")
                     .withCredential("fakeTokenPlaceholder")
                     .withAction(new JobStepAction().withValue("select 1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobStepMax.json
      */
     /**
      * Sample code: Create or update a job step with all properties specified.
@@ -93,6 +92,6 @@ public final class JobStepsCreateOrUpdateSamples {
                             .withInitialRetryIntervalSeconds(11)
                             .withMaximumRetryIntervalSeconds(222)
                             .withRetryIntervalBackoffMultiplier(3.0F)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

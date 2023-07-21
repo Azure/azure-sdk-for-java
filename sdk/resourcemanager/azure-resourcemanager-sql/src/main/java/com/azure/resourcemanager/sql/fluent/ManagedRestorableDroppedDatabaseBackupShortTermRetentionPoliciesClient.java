@@ -25,55 +25,6 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient {
     /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context);
-
-    /**
      * Gets a dropped database's short term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -477,4 +428,53 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
         ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters,
         Context context);
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
+        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context);
 }

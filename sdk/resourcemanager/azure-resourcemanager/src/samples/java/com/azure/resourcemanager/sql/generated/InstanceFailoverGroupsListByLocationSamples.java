@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InstanceFailoverGroups ListByLocation. */
 public final class InstanceFailoverGroupsListByLocationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/InstanceFailoverGroupList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/InstanceFailoverGroupList.json
      */
     /**
      * Sample code: List failover group.
@@ -22,6 +20,6 @@ public final class InstanceFailoverGroupsListByLocationSamples {
             .manager()
             .serviceClient()
             .getInstanceFailoverGroups()
-            .listByLocation("Default", "Japan East", Context.NONE);
+            .listByLocation("Default", "Japan East", com.azure.core.util.Context.NONE);
     }
 }

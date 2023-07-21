@@ -74,23 +74,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
     public interface ManagedInstancePrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstancePrivateEndpointConnectionListResult>> listByManagedInstance(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstancePrivateEndpointConnectionInner>> get(
@@ -105,8 +89,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -122,8 +105,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -136,6 +118,20 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedInstancePrivateEndpointConnectionListResult>> listByManagedInstance(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,198 +140,6 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
-
-    /**
-     * Gets all private endpoint connections on a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstancePrivateEndpointConnectionInner>> listByManagedInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByManagedInstance(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagedInstancePrivateEndpointConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets all private endpoint connections on a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstancePrivateEndpointConnectionInner>> listByManagedInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByManagedInstance(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all private endpoint connections on a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstanceAsync(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedFlux<>(
-            () -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
-            nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all private endpoint connections on a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstanceAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
-            nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all private endpoint connections on a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName));
-    }
-
-    /**
-     * Gets all private endpoint connections on a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
     /**
@@ -379,6 +183,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -390,7 +195,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                             managedInstanceName,
                             privateEndpointConnectionName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -438,6 +243,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -447,7 +253,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                 managedInstanceName,
                 privateEndpointConnectionName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -560,6 +366,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -571,7 +378,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                             managedInstanceName,
                             privateEndpointConnectionName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -630,6 +437,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -639,7 +447,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                 managedInstanceName,
                 privateEndpointConnectionName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -737,8 +545,8 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             String managedInstanceName,
             String privateEndpointConnectionName,
             ManagedInstancePrivateEndpointConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -765,7 +573,8 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             String privateEndpointConnectionName,
             ManagedInstancePrivateEndpointConnectionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters, context)
             .getSyncPoller();
     }
@@ -912,6 +721,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -922,7 +732,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                             managedInstanceName,
                             privateEndpointConnectionName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -969,6 +779,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -977,7 +788,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                 managedInstanceName,
                 privateEndpointConnectionName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1043,7 +854,9 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName)
+            .getSyncPoller();
     }
 
     /**
@@ -1062,7 +875,8 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
 
@@ -1139,6 +953,200 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
     public void delete(
         String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName, Context context) {
         deleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstancePrivateEndpointConnectionInner>> listByManagedInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByManagedInstance(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<ManagedInstancePrivateEndpointConnectionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstancePrivateEndpointConnectionInner>> listByManagedInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByManagedInstance(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstanceAsync(
+        String resourceGroupName, String managedInstanceName) {
+        return new PagedFlux<>(
+            () -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
+            nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstanceAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        return new PagedFlux<>(
+            () -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
+            nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstance(
+        String resourceGroupName, String managedInstanceName) {
+        return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName));
+    }
+
+    /**
+     * Gets all private endpoint connections on a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstance(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
     /**

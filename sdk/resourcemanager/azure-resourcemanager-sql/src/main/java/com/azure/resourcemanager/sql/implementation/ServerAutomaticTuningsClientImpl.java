@@ -56,8 +56,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
     public interface ServerAutomaticTuningsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/automaticTuning/current")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/automaticTuning/current")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAutomaticTuningInner>> get(
@@ -71,8 +70,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/automaticTuning/current")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/automaticTuning/current")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAutomaticTuningInner>> update(
@@ -119,6 +117,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -129,7 +128,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -169,6 +168,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -177,7 +177,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -271,6 +271,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -281,7 +282,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -328,6 +329,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -336,7 +338,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);

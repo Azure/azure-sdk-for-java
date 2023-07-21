@@ -14,6 +14,15 @@ public final class LedgerDigestUploadsName extends ExpandableStringEnum<LedgerDi
     public static final LedgerDigestUploadsName CURRENT = fromString("current");
 
     /**
+     * Creates a new instance of LedgerDigestUploadsName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LedgerDigestUploadsName() {
+    }
+
+    /**
      * Creates or finds a LedgerDigestUploadsName from its string representation.
      *
      * @param name a name to look for.

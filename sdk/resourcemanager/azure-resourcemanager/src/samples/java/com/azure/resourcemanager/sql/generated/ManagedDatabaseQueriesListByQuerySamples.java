@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
 
 /** Samples for ManagedDatabaseQueries ListByQuery. */
 public final class ManagedDatabaseQueriesListByQuerySamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceQueryStatisticsListMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceQueryStatisticsListMax.json
      */
     /**
      * Sample code: Obtain query execution statistics. Example with all request parameters.
@@ -32,11 +31,11 @@ public final class ManagedDatabaseQueriesListByQuerySamples {
                 "03/01/2020 16:23:09",
                 "03/11/2020 14:00:00",
                 QueryTimeGrainType.P1D,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceQueryStatisticsList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceQueryStatisticsList.json
      */
     /**
      * Sample code: Obtain query execution statistics.
@@ -49,11 +48,19 @@ public final class ManagedDatabaseQueriesListByQuerySamples {
             .manager()
             .serviceClient()
             .getManagedDatabaseQueries()
-            .listByQuery("sqlcrudtest-7398", "sqlcrudtest-4645", "database_1", "42", null, null, null, Context.NONE);
+            .listByQuery(
+                "sqlcrudtest-7398",
+                "sqlcrudtest-4645",
+                "database_1",
+                "42",
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceQueryStatisticsListMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceQueryStatisticsListMin.json
      */
     /**
      * Sample code: Obtain query execution statistics. Minimal example with only mandatory request parameters.
@@ -75,6 +82,6 @@ public final class ManagedDatabaseQueriesListByQuerySamples {
                 null,
                 null,
                 QueryTimeGrainType.PT1H,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

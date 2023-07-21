@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SensitivityLabels DisableRecommendation. */
 public final class SensitivityLabelsDisableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RecommendedColumnSensitivityLabelDisable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/RecommendedColumnSensitivityLabelDisable.json
      */
     /**
      * Sample code: Disables sensitivity recommendations on a given column.
@@ -24,6 +22,6 @@ public final class SensitivityLabelsDisableRecommendationSamples {
             .serviceClient()
             .getSensitivityLabels()
             .disableRecommendationWithResponse(
-                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAdvisors ListByDatabase. */
 public final class DatabaseAdvisorsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAdvisorList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseAdvisorList.json
      */
     /**
      * Sample code: List of database advisors.
@@ -23,11 +21,11 @@ public final class DatabaseAdvisorsListByDatabaseSamples {
             .serviceClient()
             .getDatabaseAdvisors()
             .listByDatabaseWithResponse(
-                "workloadinsight-demos", "misosisvr", "IndexAdvisor_test_3", null, Context.NONE);
+                "workloadinsight-demos", "misosisvr", "IndexAdvisor_test_3", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRecommendedActionListExpand.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseRecommendedActionListExpand.json
      */
     /**
      * Sample code: List of database recommended actions for all advisors.
@@ -42,6 +40,10 @@ public final class DatabaseAdvisorsListByDatabaseSamples {
             .serviceClient()
             .getDatabaseAdvisors()
             .listByDatabaseWithResponse(
-                "workloadinsight-demos", "misosisvr", "IndexAdvisor_test_3", "recommendedActions", Context.NONE);
+                "workloadinsight-demos",
+                "misosisvr",
+                "IndexAdvisor_test_3",
+                "recommendedActions",
+                com.azure.core.util.Context.NONE);
     }
 }

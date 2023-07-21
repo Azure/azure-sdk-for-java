@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabases ListInaccessibleByInstance. */
 public final class ManagedDatabasesListInaccessibleByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/InaccessibleManagedDatabaseListByManagedInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/InaccessibleManagedDatabaseListByManagedInstance.json
      */
     /**
      * Sample code: List inaccessible managed databases by managed instances.
@@ -23,6 +21,6 @@ public final class ManagedDatabasesListInaccessibleByInstanceSamples {
             .manager()
             .serviceClient()
             .getManagedDatabases()
-            .listInaccessibleByInstance("testrg", "testcl", Context.NONE);
+            .listInaccessibleByInstance("testrg", "testcl", com.azure.core.util.Context.NONE);
     }
 }

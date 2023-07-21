@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerAdvisors Get. */
 public final class ServerAdvisorsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAdvisorGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAdvisorGet.json
      */
     /**
      * Sample code: Get server advisor.
@@ -22,6 +20,6 @@ public final class ServerAdvisorsGetSamples {
             .manager()
             .serviceClient()
             .getServerAdvisors()
-            .getWithResponse("workloadinsight-demos", "misosisvr", "CreateIndex", Context.NONE);
+            .getWithResponse("workloadinsight-demos", "misosisvr", "CreateIndex", com.azure.core.util.Context.NONE);
     }
 }

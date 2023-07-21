@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FailoverGroups Delete. */
 public final class FailoverGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupDelete.json
      */
     /**
      * Sample code: Delete failover group.
@@ -22,6 +20,7 @@ public final class FailoverGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getFailoverGroups()
-            .delete("Default", "failover-group-primary-server", "failover-group-test-1", Context.NONE);
+            .delete(
+                "Default", "failover-group-primary-server", "failover-group-test-1", com.azure.core.util.Context.NONE);
     }
 }

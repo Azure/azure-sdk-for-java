@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerMode;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for ServerAutomaticTuning Update. */
 public final class ServerAutomaticTuningUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAutomaticTuningUpdateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningUpdateMax.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with all properties.
@@ -43,11 +42,11 @@ public final class ServerAutomaticTuningUpdateSamples {
                             "forceLastGoodPlan",
                             new AutomaticTuningServerOptions()
                                 .withDesiredState(AutomaticTuningOptionModeDesired.DEFAULT))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAutomaticTuningUpdateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningUpdateMin.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with minimal properties.
@@ -65,7 +64,7 @@ public final class ServerAutomaticTuningUpdateSamples {
                 "default-sql-onebox",
                 "testsvr11",
                 new ServerAutomaticTuningInner().withDesiredState(AutomaticTuningServerMode.AUTO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

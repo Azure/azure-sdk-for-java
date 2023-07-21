@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseTransparentDataEncryption ListByDatabase. */
 public final class ManagedDatabaseTransparentDataEncryptionListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedTransparentDataEncryptionList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedTransparentDataEncryptionList.json
      */
     /**
      * Sample code: Get a list of the database's transparent data encryptions.
@@ -23,6 +21,6 @@ public final class ManagedDatabaseTransparentDataEncryptionListByDatabaseSamples
             .manager()
             .serviceClient()
             .getManagedDatabaseTransparentDataEncryptions()
-            .listByDatabase("security-tde-resourcegroup", "securitytde", "testdb", Context.NONE);
+            .listByDatabase("security-tde-resourcegroup", "securitytde", "testdb", com.azure.core.util.Context.NONE);
     }
 }

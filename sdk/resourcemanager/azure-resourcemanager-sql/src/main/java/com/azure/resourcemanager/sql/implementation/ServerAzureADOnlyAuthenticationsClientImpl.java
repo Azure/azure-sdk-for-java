@@ -73,23 +73,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
     public interface ServerAzureADOnlyAuthenticationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureADOnlyAuthListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAzureADOnlyAuthenticationInner>> get(
@@ -104,8 +88,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -121,8 +104,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -135,6 +117,20 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AzureADOnlyAuthListResult>> listByServer(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -143,200 +139,6 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerAzureADOnlyAuthenticationInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ServerAzureADOnlyAuthenticationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerAzureADOnlyAuthenticationInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByServer(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerAzureADOnlyAuthenticationInner> listByServerAsync(
-        String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerAzureADOnlyAuthenticationInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAzureADOnlyAuthenticationInner> listByServer(
-        String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAzureADOnlyAuthenticationInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
@@ -378,6 +180,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -389,7 +192,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                             serverName,
                             authenticationName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -435,6 +238,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -444,7 +248,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                 serverName,
                 authenticationName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -555,6 +359,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -566,7 +371,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                             serverName,
                             authenticationName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -625,6 +430,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -634,7 +440,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                 serverName,
                 authenticationName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -733,7 +539,9 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
             String serverName,
             AuthenticationName authenticationName,
             ServerAzureADOnlyAuthenticationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -760,7 +568,8 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
             AuthenticationName authenticationName,
             ServerAzureADOnlyAuthenticationInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters, context)
             .getSyncPoller();
     }
 
@@ -906,6 +715,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -916,7 +726,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                             serverName,
                             authenticationName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -960,6 +770,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -968,7 +779,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
                 serverName,
                 authenticationName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1034,7 +845,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AuthenticationName authenticationName) {
-        return beginDeleteAsync(resourceGroupName, serverName, authenticationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, authenticationName).getSyncPoller();
     }
 
     /**
@@ -1053,7 +864,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AuthenticationName authenticationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, authenticationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, authenticationName, context).getSyncPoller();
     }
 
     /**
@@ -1128,6 +939,202 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
     public void delete(
         String resourceGroupName, String serverName, AuthenticationName authenticationName, Context context) {
         deleteAsync(resourceGroupName, serverName, authenticationName, context).block();
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ServerAzureADOnlyAuthenticationInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByServer(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<ServerAzureADOnlyAuthenticationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ServerAzureADOnlyAuthenticationInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByServer(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ServerAzureADOnlyAuthenticationInner> listByServerAsync(
+        String resourceGroupName, String serverName) {
+        return new PagedFlux<>(
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ServerAzureADOnlyAuthenticationInner> listByServerAsync(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedFlux<>(
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ServerAzureADOnlyAuthenticationInner> listByServer(
+        String resourceGroupName, String serverName) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ServerAzureADOnlyAuthenticationInner> listByServer(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**

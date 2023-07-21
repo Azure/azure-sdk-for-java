@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ManagedServerDnsAliasAcquisition;
 
 /** Samples for ManagedServerDnsAliases Acquire. */
 public final class ManagedServerDnsAliasesAcquireSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerDnsAliasAcquire.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedServerDnsAliasAcquire.json
      */
     /**
      * Sample code: Acquire managed server DNS alias.
@@ -30,6 +29,6 @@ public final class ManagedServerDnsAliasesAcquireSamples {
                 new ManagedServerDnsAliasAcquisition()
                     .withOldManagedServerDnsAliasResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/managedInstances/old-mi/dnsAliases/alias1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FirewallRules Delete. */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete a firewall rule.
@@ -23,6 +21,9 @@ public final class FirewallRulesDeleteSamples {
             .serviceClient()
             .getFirewallRules()
             .deleteWithResponse(
-                "firewallrulecrudtest-9886", "firewallrulecrudtest-2368", "firewallrulecrudtest-7011", Context.NONE);
+                "firewallrulecrudtest-9886",
+                "firewallrulecrudtest-2368",
+                "firewallrulecrudtest-7011",
+                com.azure.core.util.Context.NONE);
     }
 }

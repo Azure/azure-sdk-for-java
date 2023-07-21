@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies ListByRestorableDroppedDatabase. */
 public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetListManagedShortTermRetentionPolicyRestorableDropped.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetListManagedShortTermRetentionPolicyRestorableDropped.json
      */
     /**
      * Sample code: Get the short term retention policy list for the database.
@@ -24,6 +22,6 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             .serviceClient()
             .getManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies()
             .listByRestorableDroppedDatabase(
-                "Default-SQL-SouthEastAsia", "testsvr", "testdb,131403269876900000", Context.NONE);
+                "Default-SQL-SouthEastAsia", "testsvr", "testdb,131403269876900000", com.azure.core.util.Context.NONE);
     }
 }

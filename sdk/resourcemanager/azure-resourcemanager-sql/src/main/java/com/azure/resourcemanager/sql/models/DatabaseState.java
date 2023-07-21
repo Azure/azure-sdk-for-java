@@ -20,6 +20,15 @@ public final class DatabaseState extends ExpandableStringEnum<DatabaseState> {
     public static final DatabaseState DELETED = fromString("Deleted");
 
     /**
+     * Creates a new instance of DatabaseState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseState() {
+    }
+
+    /**
      * Creates or finds a DatabaseState from its string representation.
      *
      * @param name a name to look for.

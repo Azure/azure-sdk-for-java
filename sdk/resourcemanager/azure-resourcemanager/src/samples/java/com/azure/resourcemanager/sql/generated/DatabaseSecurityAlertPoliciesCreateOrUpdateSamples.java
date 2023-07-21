@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for DatabaseSecurityAlertPolicies CreateOrUpdate. */
 public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseSecurityAlertCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseSecurityAlertCreateMax.json
      */
     /**
      * Sample code: Update a database's threat detection policy with all parameters.
@@ -40,11 +39,11 @@ public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withRetentionDays(6),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseSecurityAlertCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseSecurityAlertCreateMin.json
      */
     /**
      * Sample code: Update a database's threat detection policy with minimal parameters.
@@ -64,6 +63,6 @@ public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
                 "testdb",
                 SecurityAlertPolicyName.DEFAULT,
                 new DatabaseSecurityAlertPolicyInner().withState(SecurityAlertPolicyState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

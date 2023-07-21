@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationLinks ListByDatabase. */
 public final class ReplicationLinksListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ReplicationLinkListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ReplicationLinkListByDatabase.json
      */
     /**
      * Sample code: List replication links on server on database.
@@ -22,6 +20,6 @@ public final class ReplicationLinksListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getReplicationLinks()
-            .listByDatabase("Default", "sourcesvr", "tetha-db", Context.NONE);
+            .listByDatabase("Default", "sourcesvr", "tetha-db", com.azure.core.util.Context.NONE);
     }
 }

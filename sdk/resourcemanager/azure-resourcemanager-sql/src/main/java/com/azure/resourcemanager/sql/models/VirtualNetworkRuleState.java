@@ -29,6 +29,15 @@ public final class VirtualNetworkRuleState extends ExpandableStringEnum<VirtualN
     public static final VirtualNetworkRuleState UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of VirtualNetworkRuleState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkRuleState() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkRuleState from its string representation.
      *
      * @param name a name to look for.

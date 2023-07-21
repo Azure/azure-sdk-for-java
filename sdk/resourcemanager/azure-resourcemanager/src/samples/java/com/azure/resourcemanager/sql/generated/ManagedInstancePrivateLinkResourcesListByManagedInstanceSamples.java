@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedInstancePrivateLinkResources ListByManagedInstance. */
 public final class ManagedInstancePrivateLinkResourcesListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstancePrivateLinkResourcesList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstancePrivateLinkResourcesList.json
      */
     /**
      * Sample code: Gets private link resources for SQL.
@@ -22,6 +20,6 @@ public final class ManagedInstancePrivateLinkResourcesListByManagedInstanceSampl
             .manager()
             .serviceClient()
             .getManagedInstancePrivateLinkResources()
-            .listByManagedInstance("Default", "test-cl", Context.NONE);
+            .listByManagedInstance("Default", "test-cl", com.azure.core.util.Context.NONE);
     }
 }

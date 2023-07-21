@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerTrustGroups ListByInstance. */
 public final class ServerTrustGroupsListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustGroupListByManagedInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerTrustGroupListByManagedInstance.json
      */
     /**
      * Sample code: List server trust groups by managed instance.
@@ -22,6 +20,6 @@ public final class ServerTrustGroupsListByInstanceSamples {
             .manager()
             .serviceClient()
             .getServerTrustGroups()
-            .listByInstance("Default-SQL-SouthEastAsia", "managedInstance-1", Context.NONE);
+            .listByInstance("Default-SQL-SouthEastAsia", "managedInstance-1", com.azure.core.util.Context.NONE);
     }
 }

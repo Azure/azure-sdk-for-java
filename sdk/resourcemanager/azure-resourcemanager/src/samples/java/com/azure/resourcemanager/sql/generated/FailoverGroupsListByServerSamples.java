@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FailoverGroups ListByServer. */
 public final class FailoverGroupsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupList.json
      */
     /**
      * Sample code: List failover group.
@@ -22,6 +20,6 @@ public final class FailoverGroupsListByServerSamples {
             .manager()
             .serviceClient()
             .getFailoverGroups()
-            .listByServer("Default", "failover-group-primary-server", Context.NONE);
+            .listByServer("Default", "failover-group-primary-server", com.azure.core.util.Context.NONE);
     }
 }

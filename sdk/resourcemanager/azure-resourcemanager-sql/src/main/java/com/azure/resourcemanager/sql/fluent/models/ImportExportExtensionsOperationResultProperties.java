@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.sql.models.PrivateEndpointConnectionRequestStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.UUID;
 
 /** Contains the operation result properties for import/export operation. */
@@ -54,24 +52,6 @@ public final class ImportExportExtensionsOperationResultProperties {
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
-
-    /*
-     * Queued time.
-     */
-    @JsonProperty(value = "queuedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String queuedTime;
-
-    /*
-     * Blob URI.
-     */
-    @JsonProperty(value = "blobUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String blobUri;
-
-    /*
-     * Gets the status of private endpoints associated with this request.
-     */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections;
 
     /** Creates an instance of ImportExportExtensionsOperationResultProperties class. */
     public ImportExportExtensionsOperationResultProperties() {
@@ -141,40 +121,10 @@ public final class ImportExportExtensionsOperationResultProperties {
     }
 
     /**
-     * Get the queuedTime property: Queued time.
-     *
-     * @return the queuedTime value.
-     */
-    public String queuedTime() {
-        return this.queuedTime;
-    }
-
-    /**
-     * Get the blobUri property: Blob URI.
-     *
-     * @return the blobUri value.
-     */
-    public String blobUri() {
-        return this.blobUri;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: Gets the status of private endpoints associated with this request.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
     }
 }

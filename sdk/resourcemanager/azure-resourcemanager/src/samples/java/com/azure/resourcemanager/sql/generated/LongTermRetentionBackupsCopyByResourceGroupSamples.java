@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.CopyLongTermRetentionBackupParameters;
 
 /** Samples for LongTermRetentionBackups CopyByResourceGroup. */
 public final class LongTermRetentionBackupsCopyByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ResourceGroupBasedLongTermRetentionBackupCopy.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedLongTermRetentionBackupCopy.json
      */
     /**
      * Sample code: Copy the long term retention backup.
@@ -35,6 +34,6 @@ public final class LongTermRetentionBackupsCopyByResourceGroupSamples {
                         "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/resourceGroups/resourceGroup/servers/testserver2")
                     .withTargetDatabaseName("testDatabase2")
                     .withTargetBackupStorageRedundancy(BackupStorageRedundancy.GEO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

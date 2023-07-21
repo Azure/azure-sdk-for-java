@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExtendedServerBlobAuditingPolicies ListByServer. */
 public final class ExtendedServerBlobAuditingPoliciesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerExtendedAuditingSettingsList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ServerExtendedAuditingSettingsList.json
      */
     /**
      * Sample code: List extended auditing settings of a server.
@@ -22,6 +20,6 @@ public final class ExtendedServerBlobAuditingPoliciesListByServerSamples {
             .manager()
             .serviceClient()
             .getExtendedServerBlobAuditingPolicies()
-            .listByServer("blobauditingtest-4799", "blobauditingtest-6440", Context.NONE);
+            .listByServer("blobauditingtest-4799", "blobauditingtest-6440", com.azure.core.util.Context.NONE);
     }
 }

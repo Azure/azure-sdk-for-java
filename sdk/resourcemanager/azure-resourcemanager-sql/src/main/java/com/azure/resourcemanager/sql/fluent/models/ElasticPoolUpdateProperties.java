@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
+import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -56,6 +58,18 @@ public final class ElasticPoolUpdateProperties {
      */
     @JsonProperty(value = "highAvailabilityReplicaCount")
     private Integer highAvailabilityReplicaCount;
+
+    /*
+     * Type of enclave requested on the elastic pool.
+     */
+    @JsonProperty(value = "preferredEnclaveType")
+    private AlwaysEncryptedEnclaveType preferredEnclaveType;
+
+    /*
+     * Specifies the availability zone the pool's primary replica is pinned to.
+     */
+    @JsonProperty(value = "availabilityZone")
+    private AvailabilityZoneType availabilityZone;
 
     /** Creates an instance of ElasticPoolUpdateProperties class. */
     public ElasticPoolUpdateProperties() {
@@ -204,6 +218,46 @@ public final class ElasticPoolUpdateProperties {
      */
     public ElasticPoolUpdateProperties withHighAvailabilityReplicaCount(Integer highAvailabilityReplicaCount) {
         this.highAvailabilityReplicaCount = highAvailabilityReplicaCount;
+        return this;
+    }
+
+    /**
+     * Get the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     *
+     * @return the preferredEnclaveType value.
+     */
+    public AlwaysEncryptedEnclaveType preferredEnclaveType() {
+        return this.preferredEnclaveType;
+    }
+
+    /**
+     * Set the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     *
+     * @param preferredEnclaveType the preferredEnclaveType value to set.
+     * @return the ElasticPoolUpdateProperties object itself.
+     */
+    public ElasticPoolUpdateProperties withPreferredEnclaveType(AlwaysEncryptedEnclaveType preferredEnclaveType) {
+        this.preferredEnclaveType = preferredEnclaveType;
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     *
+     * @return the availabilityZone value.
+     */
+    public AvailabilityZoneType availabilityZone() {
+        return this.availabilityZone;
+    }
+
+    /**
+     * Set the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     *
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the ElasticPoolUpdateProperties object itself.
+     */
+    public ElasticPoolUpdateProperties withAvailabilityZone(AvailabilityZoneType availabilityZone) {
+        this.availabilityZone = availabilityZone;
         return this;
     }
 

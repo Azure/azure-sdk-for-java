@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAutomaticTuning Get. */
 public final class DatabaseAutomaticTuningGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseAutomaticTuningGet.json
      */
     /**
      * Sample code: Get a database's automatic tuning settings.
@@ -22,6 +20,6 @@ public final class DatabaseAutomaticTuningGetSamples {
             .manager()
             .serviceClient()
             .getDatabaseAutomaticTunings()
-            .getWithResponse("default-sql-onebox", "testsvr11", "db1", Context.NONE);
+            .getWithResponse("default-sql-onebox", "testsvr11", "db1", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAdministratorInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
@@ -13,7 +12,7 @@ import java.util.UUID;
 /** Samples for ManagedInstanceAdministrators CreateOrUpdate. */
 public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceAdministratorCreate.json
      */
     /**
      * Sample code: Create administrator of managed instance.
@@ -35,11 +34,11 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
                     .withLogin("bob@contoso.com")
                     .withSid(UUID.fromString("44444444-3333-2222-1111-000000000000"))
                     .withTenantId(UUID.fromString("55555555-4444-3333-2222-111111111111")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceAdministratorUpdate.json
      */
     /**
      * Sample code: Update administrator of managed instance.
@@ -61,6 +60,6 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
                     .withLogin("bob@contoso.com")
                     .withSid(UUID.fromString("44444444-3333-2222-1111-000000000000"))
                     .withTenantId(UUID.fromString("55555555-4444-3333-2222-111111111111")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

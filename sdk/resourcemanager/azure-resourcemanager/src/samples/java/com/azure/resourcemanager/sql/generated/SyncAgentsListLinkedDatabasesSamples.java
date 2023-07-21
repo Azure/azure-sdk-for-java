@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SyncAgents ListLinkedDatabases. */
 public final class SyncAgentsListLinkedDatabasesSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentGetLinkedDatabases.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentGetLinkedDatabases.json
      */
     /**
      * Sample code: Get sync agent linked databases.
@@ -22,6 +20,7 @@ public final class SyncAgentsListLinkedDatabasesSamples {
             .manager()
             .serviceClient()
             .getSyncAgents()
-            .listLinkedDatabases("syncagentcrud-65440", "syncagentcrud-8475", "syncagentcrud-3187", Context.NONE);
+            .listLinkedDatabases(
+                "syncagentcrud-65440", "syncagentcrud-8475", "syncagentcrud-3187", com.azure.core.util.Context.NONE);
     }
 }

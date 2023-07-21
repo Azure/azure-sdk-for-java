@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OutboundFirewallRules ListByServer. */
 public final class OutboundFirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/OutboundFirewallRuleList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/OutboundFirewallRuleList.json
      */
     /**
      * Sample code: Gets list of outbound firewall rules on a server.
@@ -22,6 +20,6 @@ public final class OutboundFirewallRulesListByServerSamples {
             .manager()
             .serviceClient()
             .getOutboundFirewallRules()
-            .listByServer("sqlcrudtest-7398", "sqlcrudtest-4645", Context.NONE);
+            .listByServer("sqlcrudtest-7398", "sqlcrudtest-4645", com.azure.core.util.Context.NONE);
     }
 }

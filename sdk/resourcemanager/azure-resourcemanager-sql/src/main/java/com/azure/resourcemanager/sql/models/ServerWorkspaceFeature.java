@@ -17,6 +17,15 @@ public final class ServerWorkspaceFeature extends ExpandableStringEnum<ServerWor
     public static final ServerWorkspaceFeature DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of ServerWorkspaceFeature value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerWorkspaceFeature() {
+    }
+
+    /**
      * Creates or finds a ServerWorkspaceFeature from its string representation.
      *
      * @param name a name to look for.

@@ -61,8 +61,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
     public interface IPv6FirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/ipv6FirewallRules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/ipv6FirewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IPv6FirewallRuleListResult>> listByServer(
@@ -76,8 +75,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/ipv6FirewallRules/{firewallRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/ipv6FirewallRules/{firewallRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IPv6FirewallRuleInner>> get(
@@ -92,8 +90,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/ipv6FirewallRules/{firewallRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/ipv6FirewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IPv6FirewallRuleInner>> createOrUpdate(
@@ -109,8 +106,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/ipv6FirewallRules/{firewallRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/ipv6FirewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -166,6 +162,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -176,7 +173,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<IPv6FirewallRuleInner>>map(
@@ -225,6 +222,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -233,7 +231,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -357,6 +355,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -368,7 +367,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                             serverName,
                             firewallRuleName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -413,6 +412,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -422,7 +422,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                 serverName,
                 firewallRuleName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -525,6 +525,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -536,7 +537,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                             serverName,
                             firewallRuleName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -592,6 +593,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -601,7 +603,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                 serverName,
                 firewallRuleName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -710,6 +712,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -720,7 +723,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                             serverName,
                             firewallRuleName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -764,6 +767,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -772,7 +776,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
                 serverName,
                 firewallRuleName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 

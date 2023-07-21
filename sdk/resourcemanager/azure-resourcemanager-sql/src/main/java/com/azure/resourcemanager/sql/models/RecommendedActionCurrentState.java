@@ -62,6 +62,15 @@ public final class RecommendedActionCurrentState extends ExpandableStringEnum<Re
     public static final RecommendedActionCurrentState ERROR = fromString("Error");
 
     /**
+     * Creates a new instance of RecommendedActionCurrentState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendedActionCurrentState() {
+    }
+
+    /**
      * Creates or finds a RecommendedActionCurrentState from its string representation.
      *
      * @param name a name to look for.

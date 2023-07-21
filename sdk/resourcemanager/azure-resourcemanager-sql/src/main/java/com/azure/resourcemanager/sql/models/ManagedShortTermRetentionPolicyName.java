@@ -15,6 +15,15 @@ public final class ManagedShortTermRetentionPolicyName
     public static final ManagedShortTermRetentionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ManagedShortTermRetentionPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedShortTermRetentionPolicyName() {
+    }
+
+    /**
      * Creates or finds a ManagedShortTermRetentionPolicyName from its string representation.
      *
      * @param name a name to look for.

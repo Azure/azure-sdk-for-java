@@ -60,9 +60,31 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
     public interface JobTargetExecutionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}"
-                + "/targets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/targets")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<JobExecutionListResult>> listByJobExecution(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName,
+            @PathParam("jobName") String jobName,
+            @PathParam("jobExecutionId") UUID jobExecutionId,
+            @QueryParam("createTimeMin") OffsetDateTime createTimeMin,
+            @QueryParam("createTimeMax") OffsetDateTime createTimeMax,
+            @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
+            @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
+            @QueryParam("isActive") Boolean isActive,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$top") Integer top,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByStep(
@@ -78,8 +100,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
             @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
             @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
             @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$top") Integer top,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -87,9 +109,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}"
-                + "/targets/{targetId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets/{targetId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionInner>> get(
@@ -107,27 +127,12 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/targets")
+        @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobExecutionListResult>> listByJobExecution(
+        Mono<Response<JobExecutionListResult>> listByJobExecutionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobExecutionId") UUID jobExecutionId,
-            @QueryParam("createTimeMin") OffsetDateTime createTimeMin,
-            @QueryParam("createTimeMax") OffsetDateTime createTimeMax,
-            @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
-            @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
-            @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -140,16 +145,448 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+    }
 
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobExecutionListResult>> listByJobExecutionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByJobExecution(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            jobAgentName,
+                            jobName,
+                            jobExecutionId,
+                            createTimeMin,
+                            createTimeMax,
+                            endTimeMin,
+                            endTimeMax,
+                            isActive,
+                            skip,
+                            top,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<JobExecutionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByJobExecution(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<JobExecutionInner> listByJobExecutionAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top) {
+        return new PagedFlux<>(
+            () ->
+                listByJobExecutionSinglePageAsync(
+                    resourceGroupName,
+                    serverName,
+                    jobAgentName,
+                    jobName,
+                    jobExecutionId,
+                    createTimeMin,
+                    createTimeMax,
+                    endTimeMin,
+                    endTimeMax,
+                    isActive,
+                    skip,
+                    top),
+            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<JobExecutionInner> listByJobExecutionAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+        final OffsetDateTime createTimeMin = null;
+        final OffsetDateTime createTimeMax = null;
+        final OffsetDateTime endTimeMin = null;
+        final OffsetDateTime endTimeMax = null;
+        final Boolean isActive = null;
+        final Integer skip = null;
+        final Integer top = null;
+        return new PagedFlux<>(
+            () ->
+                listByJobExecutionSinglePageAsync(
+                    resourceGroupName,
+                    serverName,
+                    jobAgentName,
+                    jobName,
+                    jobExecutionId,
+                    createTimeMin,
+                    createTimeMax,
+                    endTimeMin,
+                    endTimeMax,
+                    isActive,
+                    skip,
+                    top),
+            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<JobExecutionInner> listByJobExecutionAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByJobExecutionSinglePageAsync(
+                    resourceGroupName,
+                    serverName,
+                    jobAgentName,
+                    jobName,
+                    jobExecutionId,
+                    createTimeMin,
+                    createTimeMax,
+                    endTimeMin,
+                    endTimeMax,
+                    isActive,
+                    skip,
+                    top,
+                    context),
+            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobExecutionInner> listByJobExecution(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+        final OffsetDateTime createTimeMin = null;
+        final OffsetDateTime createTimeMax = null;
+        final OffsetDateTime endTimeMin = null;
+        final OffsetDateTime endTimeMax = null;
+        final Boolean isActive = null;
+        final Integer skip = null;
+        final Integer top = null;
+        return new PagedIterable<>(
+            listByJobExecutionAsync(
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top));
+    }
+
+    /**
+     * Lists target executions for all steps of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
+     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
+     * @param createTimeMax If specified, only job executions created before the specified time are included.
+     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
+     * @param endTimeMax If specified, only job executions completed before the specified time are included.
+     * @param isActive If specified, only active or only completed job executions are included.
+     * @param skip The number of elements in the collection to skip.
+     * @param top The number of elements to return from the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobExecutionInner> listByJobExecution(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax,
+        Boolean isActive,
+        Integer skip,
+        Integer top,
+        Context context) {
+        return new PagedIterable<>(
+            listByJobExecutionAsync(
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top,
+                context));
     }
 
     /**
@@ -187,8 +624,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -220,6 +657,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -241,7 +679,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                             skip,
                             top,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<JobExecutionInner>>map(
@@ -292,8 +730,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -326,6 +764,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -345,7 +784,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                 skip,
                 top,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -394,8 +833,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         return new PagedFlux<>(
             () ->
                 listByStepSinglePageAsync(
@@ -443,8 +882,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedFlux<>(
             () ->
                 listByStepSinglePageAsync(
@@ -500,8 +939,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedFlux<>(
             () ->
@@ -551,8 +990,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedIterable<>(
             listByStepAsync(
                 resourceGroupName,
@@ -606,8 +1045,8 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedIterable<>(
             listByStepAsync(
@@ -686,6 +1125,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -701,7 +1141,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                             stepName,
                             targetId,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -768,6 +1208,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -781,7 +1222,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                 stepName,
                 targetId,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -879,91 +1320,30 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
     }
 
     /**
-     * Lists target executions for all steps of a job execution.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
-     * @param createTimeMax If specified, only job executions created before the specified time are included.
-     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
-     * @param endTimeMax If specified, only job executions completed before the specified time are included.
-     * @param isActive If specified, only active or only completed job executions are included.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top) {
+    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (jobExecutionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByJobExecution(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobExecutionId,
-                            createTimeMin,
-                            createTimeMax,
-                            endTimeMin,
-                            endTimeMax,
-                            isActive,
-                            skip,
-                            top,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listByJobExecutionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobExecutionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -977,21 +1357,10 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
     }
 
     /**
-     * Lists target executions for all steps of a job execution.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
-     * @param createTimeMax If specified, only job executions created before the specified time are included.
-     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
-     * @param endTimeMax If specified, only job executions completed before the specified time are included.
-     * @param isActive If specified, only active or only completed job executions are included.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -999,69 +1368,21 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
      * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
+    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (jobExecutionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByJobExecution(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
+            .listByJobExecutionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1071,251 +1392,6 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null));
-    }
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
-     * @param createTimeMax If specified, only job executions created before the specified time are included.
-     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
-     * @param endTimeMax If specified, only job executions completed before the specified time are included.
-     * @param isActive If specified, only active or only completed job executions are included.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobExecutionInner> listByJobExecutionAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top) {
-        return new PagedFlux<>(
-            () ->
-                listByJobExecutionSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    jobName,
-                    jobExecutionId,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top),
-            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobExecutionInner> listByJobExecutionAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        final OffsetDateTime createTimeMin = null;
-        final OffsetDateTime createTimeMax = null;
-        final OffsetDateTime endTimeMin = null;
-        final OffsetDateTime endTimeMax = null;
-        final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
-        return new PagedFlux<>(
-            () ->
-                listByJobExecutionSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    jobName,
-                    jobExecutionId,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top),
-            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
-     * @param createTimeMax If specified, only job executions created before the specified time are included.
-     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
-     * @param endTimeMax If specified, only job executions completed before the specified time are included.
-     * @param isActive If specified, only active or only completed job executions are included.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobExecutionInner> listByJobExecutionAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByJobExecutionSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    jobName,
-                    jobExecutionId,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top,
-                    context),
-            nextLink -> listByJobExecutionNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByJobExecution(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        final OffsetDateTime createTimeMin = null;
-        final OffsetDateTime createTimeMax = null;
-        final OffsetDateTime endTimeMin = null;
-        final OffsetDateTime endTimeMax = null;
-        final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
-        return new PagedIterable<>(
-            listByJobExecutionAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top));
-    }
-
-    /**
-     * Lists target executions for all steps of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @param createTimeMin If specified, only job executions created at or after the specified time are included.
-     * @param createTimeMax If specified, only job executions created before the specified time are included.
-     * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
-     * @param endTimeMax If specified, only job executions completed before the specified time are included.
-     * @param isActive If specified, only active or only completed job executions are included.
-     * @param skip The number of elements in the collection to skip.
-     * @param top The number of elements to return from the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByJobExecution(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
-        return new PagedIterable<>(
-            listByJobExecutionAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top,
-                context));
     }
 
     /**
@@ -1380,81 +1456,6 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
         context = this.client.mergeContext(context);
         return service
             .listByStepNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByJobExecutionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobExecutionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByJobExecutionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

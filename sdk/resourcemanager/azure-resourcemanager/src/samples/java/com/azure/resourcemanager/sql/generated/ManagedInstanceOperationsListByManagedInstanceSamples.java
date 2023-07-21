@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedInstanceOperations ListByManagedInstance. */
 public final class ManagedInstanceOperationsListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListManagedInstanceOperations.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListManagedInstanceOperations.json
      */
     /**
      * Sample code: List the managed instance management operations.
@@ -23,6 +21,6 @@ public final class ManagedInstanceOperationsListByManagedInstanceSamples {
             .manager()
             .serviceClient()
             .getManagedInstanceOperations()
-            .listByManagedInstance("sqlcrudtest-7398", "sqlcrudtest-4645", Context.NONE);
+            .listByManagedInstance("sqlcrudtest-7398", "sqlcrudtest-4645", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeletedServers Get. */
 public final class DeletedServersGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeletedServerGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeletedServerGet.json
      */
     /**
      * Sample code: Get deleted server.
@@ -22,6 +20,6 @@ public final class DeletedServersGetSamples {
             .manager()
             .serviceClient()
             .getDeletedServers()
-            .getWithResponse("japaneast", "sqlcrudtest-d-1414", Context.NONE);
+            .getWithResponse("japaneast", "sqlcrudtest-d-1414", com.azure.core.util.Context.NONE);
     }
 }

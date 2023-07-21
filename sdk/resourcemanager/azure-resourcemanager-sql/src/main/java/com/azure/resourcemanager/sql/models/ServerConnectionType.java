@@ -20,6 +20,15 @@ public final class ServerConnectionType extends ExpandableStringEnum<ServerConne
     public static final ServerConnectionType PROXY = fromString("Proxy");
 
     /**
+     * Creates a new instance of ServerConnectionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerConnectionType() {
+    }
+
+    /**
      * Creates or finds a ServerConnectionType from its string representation.
      *
      * @param name a name to look for.

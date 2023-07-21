@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.SensitivityLabelInner;
 import com.azure.resourcemanager.sql.fluent.models.SensitivityLabelUpdateInner;
 import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for SensitivityLabels Update. */
 public final class SensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SensitivityLabelsCurrentUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SensitivityLabelsCurrentUpdate.json
      */
     /**
      * Sample code: Update sensitivity labels of a given database using an operations batch.
@@ -66,6 +65,6 @@ public final class SensitivityLabelsUpdateSamples {
                                     .withSchema("dbo")
                                     .withTable("Table1")
                                     .withColumn("Column3"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

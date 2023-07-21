@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServerDnsAliases ListByServer. */
 public final class ServerDnsAliasesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDnsAliasList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerDnsAliasList.json
      */
     /**
      * Sample code: List server DNS aliases.
@@ -22,6 +20,6 @@ public final class ServerDnsAliasesListByServerSamples {
             .manager()
             .serviceClient()
             .getServerDnsAliases()
-            .listByServer("Default", "dns-alias-server", Context.NONE);
+            .listByServer("Default", "dns-alias-server", com.azure.core.util.Context.NONE);
     }
 }

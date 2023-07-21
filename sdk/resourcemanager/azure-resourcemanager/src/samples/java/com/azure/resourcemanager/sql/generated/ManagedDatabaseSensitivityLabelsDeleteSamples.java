@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedDatabaseSensitivityLabels Delete. */
 public final class ManagedDatabaseSensitivityLabelsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseColumnSensitivityLabelDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseColumnSensitivityLabelDelete.json
      */
     /**
      * Sample code: Deletes the sensitivity label of a given column in a managed database.
@@ -24,6 +22,12 @@ public final class ManagedDatabaseSensitivityLabelsDeleteSamples {
             .serviceClient()
             .getManagedDatabaseSensitivityLabels()
             .deleteWithResponse(
-                "myRG", "myManagedInstanceName", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+                "myRG",
+                "myManagedInstanceName",
+                "myDatabase",
+                "dbo",
+                "myTable",
+                "myColumn",
+                com.azure.core.util.Context.NONE);
     }
 }

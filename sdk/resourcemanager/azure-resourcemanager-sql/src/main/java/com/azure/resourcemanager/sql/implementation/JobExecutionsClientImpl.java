@@ -67,8 +67,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     public interface JobExecutionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/executions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/executions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByAgent(
@@ -81,8 +80,40 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
             @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
             @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$top") Integer top,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> cancel(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName,
+            @PathParam("jobName") String jobName,
+            @PathParam("jobExecutionId") UUID jobExecutionId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName,
+            @PathParam("jobName") String jobName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -90,8 +121,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByJob(
@@ -105,8 +135,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
             @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
             @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$top") Integer top,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -114,8 +144,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionInner>> get(
@@ -132,8 +161,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -143,40 +171,6 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @PathParam("jobAgentName") String jobAgentName,
             @PathParam("jobName") String jobName,
             @PathParam("jobExecutionId") UUID jobExecutionId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancel(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobExecutionId") UUID jobExecutionId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -232,8 +226,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -256,6 +250,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -274,7 +269,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             skip,
                             top,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<JobExecutionInner>>map(
@@ -319,8 +314,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -344,6 +339,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -360,7 +356,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 skip,
                 top,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -403,8 +399,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         return new PagedFlux<>(
             () ->
                 listByAgentSinglePageAsync(
@@ -441,8 +437,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedFlux<>(
             () ->
                 listByAgentSinglePageAsync(
@@ -489,8 +485,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedFlux<>(
             () ->
@@ -529,8 +525,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedIterable<>(
             listByAgentAsync(
                 resourceGroupName,
@@ -575,8 +571,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedIterable<>(
             listByAgentAsync(
@@ -591,6 +587,494 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 skip,
                 top,
                 context));
+    }
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .cancel(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            jobAgentName,
+                            jobName,
+                            jobExecutionId,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> cancelWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        context = this.client.mergeContext(context);
+        return service
+            .cancel(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+        return cancelWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelWithResponse(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        Context context) {
+        return cancelWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
+            .block();
+    }
+
+    /**
+     * Requests cancellation of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobExecutionId The id of the job execution to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+        cancelWithResponse(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, Context.NONE);
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            jobAgentName,
+                            jobName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .create(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName);
+        return this
+            .client
+            .<JobExecutionInner, JobExecutionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                JobExecutionInner.class,
+                JobExecutionInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, context);
+        return this
+            .client
+            .<JobExecutionInner, JobExecutionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), JobExecutionInner.class, JobExecutionInner.class, context);
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+        return this.beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).getSyncPoller();
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+        return this.beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).getSyncPoller();
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<JobExecutionInner> createAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<JobExecutionInner> createAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobExecutionInner create(String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+        return createAsync(resourceGroupName, serverName, jobAgentName, jobName).block();
+    }
+
+    /**
+     * Starts an elastic job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobExecutionInner create(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+        return createAsync(resourceGroupName, serverName, jobAgentName, jobName, context).block();
     }
 
     /**
@@ -624,8 +1108,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -651,6 +1135,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -670,7 +1155,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             skip,
                             top,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<JobExecutionInner>>map(
@@ -717,8 +1202,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -745,6 +1230,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -762,7 +1248,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 skip,
                 top,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -807,8 +1293,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top) {
+        Integer skip,
+        Integer top) {
         return new PagedFlux<>(
             () ->
                 listByJobSinglePageAsync(
@@ -847,8 +1333,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedFlux<>(
             () ->
                 listByJobSinglePageAsync(
@@ -898,8 +1384,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedFlux<>(
             () ->
@@ -940,8 +1426,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Long skip = null;
-        final Long top = null;
+        final Integer skip = null;
+        final Integer top = null;
         return new PagedIterable<>(
             listByJobAsync(
                 resourceGroupName,
@@ -989,8 +1475,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         Context context) {
         return new PagedIterable<>(
             listByJobAsync(
@@ -1053,6 +1539,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1066,7 +1553,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             jobName,
                             jobExecutionId,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1123,6 +1610,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1134,7 +1622,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 jobName,
                 jobExecutionId,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -1253,6 +1741,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1266,7 +1755,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             jobName,
                             jobExecutionId,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1323,6 +1812,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1334,7 +1824,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 jobName,
                 jobExecutionId,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -1418,7 +1908,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
             .getSyncPoller();
     }
 
@@ -1445,7 +1936,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         String jobName,
         UUID jobExecutionId,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .getSyncPoller();
     }
 
@@ -1544,490 +2036,6 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .block();
-    }
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (jobExecutionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobExecutionId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (jobExecutionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        return cancelWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
-        return cancelWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
-            .block();
-    }
-
-    /**
-     * Requests cancellation of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobExecutionId The id of the job execution to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        cancelWithResponse(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, Context.NONE);
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName);
-        return this
-            .client
-            .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JobExecutionInner.class,
-                JobExecutionInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, context);
-        return this
-            .client
-            .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobExecutionInner.class, JobExecutionInner.class, context);
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).getSyncPoller();
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).getSyncPoller();
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobExecutionInner> createAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobExecutionInner> createAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobExecutionInner create(String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return createAsync(resourceGroupName, serverName, jobAgentName, jobName).block();
-    }
-
-    /**
-     * Starts an elastic job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobExecutionInner create(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return createAsync(resourceGroupName, serverName, jobAgentName, jobName, context).block();
     }
 
     /**

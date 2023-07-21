@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.SqlAgentConfigurationInner;
 import com.azure.resourcemanager.sql.models.SqlAgentConfigurationPropertiesState;
 
 /** Samples for SqlAgent CreateOrUpdate. */
 public final class SqlAgentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SqlAgentConfigurationPut.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SqlAgentConfigurationPut.json
      */
     /**
      * Sample code: Puts new sql agent configuration to instance.
@@ -28,6 +27,6 @@ public final class SqlAgentCreateOrUpdateSamples {
                 "sqlcrudtest-7398",
                 "sqlcrudtest-4645",
                 new SqlAgentConfigurationInner().withState(SqlAgentConfigurationPropertiesState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

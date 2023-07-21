@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.CompleteDatabaseRestoreDefinition;
 
 /** Samples for ManagedDatabases CompleteRestore. */
 public final class ManagedDatabasesCompleteRestoreSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseCompleteExternalRestore.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseCompleteExternalRestore.json
      */
     /**
      * Sample code: Completes a managed database external backup restore.
@@ -29,6 +28,6 @@ public final class ManagedDatabasesCompleteRestoreSamples {
                 "myManagedInstanceName",
                 "myDatabase",
                 new CompleteDatabaseRestoreDefinition().withLastBackupName("testdb1_log4"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

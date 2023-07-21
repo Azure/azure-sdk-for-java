@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.CreateDatabaseRestorePointDefinition;
 
 /** Samples for RestorePoints Create. */
 public final class RestorePointsCreateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRestorePointsPost.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseRestorePointsPost.json
      */
     /**
      * Sample code: Creates datawarehouse database restore point.
@@ -28,6 +27,6 @@ public final class RestorePointsCreateSamples {
                 "testserver",
                 "testDatabase",
                 new CreateDatabaseRestorePointDefinition().withRestorePointLabel("mylabel"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

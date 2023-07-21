@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedInstances ListByInstancePool. */
 public final class ManagedInstancesListByInstancePoolSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceListByInstancePool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceListByInstancePool.json
      */
     /**
      * Sample code: List managed instances by instance pool.
@@ -22,11 +20,11 @@ public final class ManagedInstancesListByInstancePoolSamples {
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listByInstancePool("Test1", "pool1", null, Context.NONE);
+            .listByInstancePool("Test1", "pool1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: List managed instances by instance pool with $expand=administrators/activedirectory.
@@ -40,6 +38,6 @@ public final class ManagedInstancesListByInstancePoolSamples {
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listByInstancePool("Test1", "pool1", null, Context.NONE);
+            .listByInstancePool("Test1", "pool1", null, com.azure.core.util.Context.NONE);
     }
 }

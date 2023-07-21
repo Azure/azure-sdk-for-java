@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.RecommendedSensitivityLabelUpdate;
 import com.azure.resourcemanager.sql.models.RecommendedSensitivityLabelUpdateKind;
 import com.azure.resourcemanager.sql.models.RecommendedSensitivityLabelUpdateList;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for RecommendedSensitivityLabels Update. */
 public final class RecommendedSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SensitivityLabelsRecommendedUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SensitivityLabelsRecommendedUpdate.json
      */
     /**
      * Sample code: Update recommended sensitivity labels of a given database using an operations batch.
@@ -50,6 +49,6 @@ public final class RecommendedSensitivityLabelsUpdateSamples {
                                     .withSchema("dbo")
                                     .withTable("table1")
                                     .withColumn("column3"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

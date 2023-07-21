@@ -58,8 +58,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
     public interface DatabaseRecommendedActionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<RecommendedActionInner>>> listByDatabaseAdvisor(
@@ -75,9 +74,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions"
-                + "/{recommendedActionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecommendedActionInner>> get(
@@ -94,9 +91,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions"
-                + "/{recommendedActionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecommendedActionInner>> update(
@@ -155,6 +150,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -167,7 +163,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                             databaseName,
                             advisorName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -216,6 +212,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -226,7 +223,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                 databaseName,
                 advisorName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -342,6 +339,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -355,7 +353,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                             advisorName,
                             recommendedActionName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -413,6 +411,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -424,7 +423,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                 advisorName,
                 recommendedActionName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -566,6 +565,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -579,7 +579,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                             advisorName,
                             recommendedActionName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -646,6 +646,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -657,7 +658,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
                 advisorName,
                 recommendedActionName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);

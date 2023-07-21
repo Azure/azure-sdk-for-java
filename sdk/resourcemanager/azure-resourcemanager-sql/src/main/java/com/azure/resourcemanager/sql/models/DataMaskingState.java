@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** The state of the data masking policy. */
 public enum DataMaskingState {
-    /** Enum value Enabled. */
-    ENABLED("Enabled"),
-
     /** Enum value Disabled. */
-    DISABLED("Disabled");
+    DISABLED("Disabled"),
+
+    /** Enum value Enabled. */
+    ENABLED("Enabled");
 
     /** The actual serialized value for a DataMaskingState instance. */
     private final String value;

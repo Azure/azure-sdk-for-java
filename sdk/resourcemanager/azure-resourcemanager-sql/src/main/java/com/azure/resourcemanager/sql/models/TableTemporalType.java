@@ -20,6 +20,15 @@ public final class TableTemporalType extends ExpandableStringEnum<TableTemporalT
     public static final TableTemporalType SYSTEM_VERSIONED_TEMPORAL_TABLE = fromString("SystemVersionedTemporalTable");
 
     /**
+     * Creates a new instance of TableTemporalType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TableTemporalType() {
+    }
+
+    /**
      * Creates or finds a TableTemporalType from its string representation.
      *
      * @param name a name to look for.

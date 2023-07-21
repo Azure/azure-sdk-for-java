@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FailoverGroups ForceFailoverAllowDataLoss. */
 public final class FailoverGroupsForceFailoverAllowDataLossSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupForceFailoverAllowDataLoss.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/FailoverGroupForceFailoverAllowDataLoss.json
      */
     /**
      * Sample code: Forced failover of a failover group allowing data loss.
@@ -24,6 +22,9 @@ public final class FailoverGroupsForceFailoverAllowDataLossSamples {
             .serviceClient()
             .getFailoverGroups()
             .forceFailoverAllowDataLoss(
-                "Default", "failover-group-secondary-server", "failover-group-test-3", Context.NONE);
+                "Default",
+                "failover-group-secondary-server",
+                "failover-group-test-3",
+                com.azure.core.util.Context.NONE);
     }
 }

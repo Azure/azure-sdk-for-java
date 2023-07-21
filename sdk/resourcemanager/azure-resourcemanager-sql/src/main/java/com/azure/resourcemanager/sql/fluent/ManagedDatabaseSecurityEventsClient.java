@@ -35,8 +35,8 @@ public interface ManagedDatabaseSecurityEventsClient {
         String managedInstanceName,
         String databaseName,
         String filter,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         String skiptoken);
 
     /**
@@ -94,8 +94,8 @@ public interface ManagedDatabaseSecurityEventsClient {
         String managedInstanceName,
         String databaseName,
         String filter,
-        Long skip,
-        Long top,
+        Integer skip,
+        Integer top,
         String skiptoken,
         Context context);
 }

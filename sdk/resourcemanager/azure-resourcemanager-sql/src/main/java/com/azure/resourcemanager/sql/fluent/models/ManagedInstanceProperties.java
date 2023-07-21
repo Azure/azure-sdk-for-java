@@ -201,7 +201,9 @@ public final class ManagedInstanceProperties {
     private String keyId;
 
     /*
-     * The Azure Active Directory administrator of the server.
+     * The Azure Active Directory administrator of the instance. This can only be used at instance create time. If used
+     * for instance update, it will be ignored or it will result in an error. For updates individual APIs will need to
+     * be used.
      */
     @JsonProperty(value = "administrators")
     private ManagedInstanceExternalAdministrator administrators;
@@ -736,7 +738,9 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      *
      * @return the administrators value.
      */
@@ -745,7 +749,9 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      *
      * @param administrators the administrators value to set.
      * @return the ManagedInstanceProperties object itself.

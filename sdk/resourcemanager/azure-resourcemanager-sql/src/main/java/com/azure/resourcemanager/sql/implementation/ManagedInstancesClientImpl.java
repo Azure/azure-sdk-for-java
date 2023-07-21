@@ -96,8 +96,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools"
-                + "/{instancePoolName}/managedInstances")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/managedInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceListResult>> listByInstancePool(
@@ -112,8 +111,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceListResult>> listByResourceGroup(
@@ -127,8 +125,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceInner>> getByResourceGroup(
@@ -143,8 +140,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -159,8 +155,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -173,8 +168,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -189,8 +183,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failover(
@@ -204,8 +197,7 @@ public final class ManagedInstancesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/outboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesByManagedInstance(
@@ -217,10 +209,35 @@ public final class ManagedInstancesClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/start")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> start(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/stop")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stop(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/topqueries")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/topqueries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TopQueriesListResult>> listByManagedInstance(
@@ -314,6 +331,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -323,7 +341,7 @@ public final class ManagedInstancesClientImpl
                             this.client.getEndpoint(),
                             expand,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ManagedInstanceInner>>map(
@@ -363,16 +381,11 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                expand,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
+            .list(this.client.getEndpoint(), expand, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -491,6 +504,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -502,7 +516,7 @@ public final class ManagedInstancesClientImpl
                             instancePoolName,
                             expand,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ManagedInstanceInner>>map(
@@ -554,6 +568,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -563,7 +578,7 @@ public final class ManagedInstancesClientImpl
                 instancePoolName,
                 expand,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -704,6 +719,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -714,7 +730,7 @@ public final class ManagedInstancesClientImpl
                             resourceGroupName,
                             expand,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ManagedInstanceInner>>map(
@@ -761,6 +777,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -769,7 +786,7 @@ public final class ManagedInstancesClientImpl
                 resourceGroupName,
                 expand,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -908,6 +925,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -919,7 +937,7 @@ public final class ManagedInstancesClientImpl
                             managedInstanceName,
                             expand,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -961,6 +979,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -970,7 +989,7 @@ public final class ManagedInstancesClientImpl
                 managedInstanceName,
                 expand,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -1069,6 +1088,7 @@ public final class ManagedInstancesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1079,7 +1099,7 @@ public final class ManagedInstancesClientImpl
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1127,6 +1147,7 @@ public final class ManagedInstancesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1135,7 +1156,7 @@ public final class ManagedInstancesClientImpl
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1208,7 +1229,7 @@ public final class ManagedInstancesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1227,7 +1248,9 @@ public final class ManagedInstancesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1342,6 +1365,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1351,7 +1375,7 @@ public final class ManagedInstancesClientImpl
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1391,6 +1415,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1398,7 +1423,7 @@ public final class ManagedInstancesClientImpl
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1458,7 +1483,7 @@ public final class ManagedInstancesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName).getSyncPoller();
     }
 
     /**
@@ -1476,7 +1501,7 @@ public final class ManagedInstancesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
     }
 
     /**
@@ -1587,6 +1612,7 @@ public final class ManagedInstancesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1597,7 +1623,7 @@ public final class ManagedInstancesClientImpl
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1645,6 +1671,7 @@ public final class ManagedInstancesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1653,7 +1680,7 @@ public final class ManagedInstancesClientImpl
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1726,7 +1753,7 @@ public final class ManagedInstancesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginUpdate(
         String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1745,7 +1772,7 @@ public final class ManagedInstancesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginUpdate(
         String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1861,6 +1888,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1871,7 +1899,7 @@ public final class ManagedInstancesClientImpl
                             managedInstanceName,
                             replicaType,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1912,6 +1940,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         context = this.client.mergeContext(context);
         return service
             .failover(
@@ -1920,7 +1949,7 @@ public final class ManagedInstancesClientImpl
                 managedInstanceName,
                 replicaType,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -2007,7 +2036,7 @@ public final class ManagedInstancesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
-        return beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType).getSyncPoller();
     }
 
     /**
@@ -2026,7 +2055,7 @@ public final class ManagedInstancesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String managedInstanceName, ReplicaType replicaType, Context context) {
-        return beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType, context).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType, context).getSyncPoller();
     }
 
     /**
@@ -2158,6 +2187,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2168,7 +2198,7 @@ public final class ManagedInstancesClientImpl
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
@@ -2220,6 +2250,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2228,7 +2259,7 @@ public final class ManagedInstancesClientImpl
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -2326,6 +2357,486 @@ public final class ManagedInstancesClientImpl
     }
 
     /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01-preview";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .start(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01-preview";
+        context = this.client.mergeContext(context);
+        return service
+            .start(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String managedInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, managedInstanceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, managedInstanceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String managedInstanceName) {
+        return this.beginStartAsync(resourceGroupName, managedInstanceName).getSyncPoller();
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        return this.beginStartAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startAsync(String resourceGroupName, String managedInstanceName) {
+        return beginStartAsync(resourceGroupName, managedInstanceName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> startAsync(String resourceGroupName, String managedInstanceName, Context context) {
+        return beginStartAsync(resourceGroupName, managedInstanceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void start(String resourceGroupName, String managedInstanceName) {
+        startAsync(resourceGroupName, managedInstanceName).block();
+    }
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void start(String resourceGroupName, String managedInstanceName, Context context) {
+        startAsync(resourceGroupName, managedInstanceName, context).block();
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01-preview";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .stop(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01-preview";
+        context = this.client.mergeContext(context);
+        return service
+            .stop(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String managedInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, managedInstanceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, managedInstanceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String managedInstanceName) {
+        return this.beginStopAsync(resourceGroupName, managedInstanceName).getSyncPoller();
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        return this.beginStopAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopAsync(String resourceGroupName, String managedInstanceName) {
+        return beginStopAsync(resourceGroupName, managedInstanceName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> stopAsync(String resourceGroupName, String managedInstanceName, Context context) {
+        return beginStopAsync(resourceGroupName, managedInstanceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String managedInstanceName) {
+        stopAsync(resourceGroupName, managedInstanceName).block();
+    }
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String managedInstanceName, Context context) {
+        stopAsync(resourceGroupName, managedInstanceName, context).block();
+    }
+
+    /**
      * Get top resource consuming queries of a managed instance.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -2376,6 +2887,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2393,7 +2905,7 @@ public final class ManagedInstancesClientImpl
                             aggregationFunction,
                             observationMetric,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<TopQueriesInner>>map(
@@ -2461,6 +2973,7 @@ public final class ManagedInstancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2476,7 +2989,7 @@ public final class ManagedInstancesClientImpl
                 aggregationFunction,
                 observationMetric,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(

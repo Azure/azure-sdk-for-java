@@ -14,6 +14,15 @@ public final class ManagedInstanceAdministratorType extends ExpandableStringEnum
     public static final ManagedInstanceAdministratorType ACTIVE_DIRECTORY = fromString("ActiveDirectory");
 
     /**
+     * Creates a new instance of ManagedInstanceAdministratorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstanceAdministratorType() {
+    }
+
+    /**
      * Creates or finds a ManagedInstanceAdministratorType from its string representation.
      *
      * @param name a name to look for.

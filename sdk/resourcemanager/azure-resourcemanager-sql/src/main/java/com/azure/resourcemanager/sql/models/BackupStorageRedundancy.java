@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The storage account type used to store backups for this database. */
+/** The storage redundancy type of the copied backup. */
 public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupStorageRedundancy> {
     /** Static value Geo for BackupStorageRedundancy. */
     public static final BackupStorageRedundancy GEO = fromString("Geo");
@@ -21,6 +21,15 @@ public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupSt
 
     /** Static value GeoZone for BackupStorageRedundancy. */
     public static final BackupStorageRedundancy GEO_ZONE = fromString("GeoZone");
+
+    /**
+     * Creates a new instance of BackupStorageRedundancy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupStorageRedundancy() {
+    }
 
     /**
      * Creates or finds a BackupStorageRedundancy from its string representation.

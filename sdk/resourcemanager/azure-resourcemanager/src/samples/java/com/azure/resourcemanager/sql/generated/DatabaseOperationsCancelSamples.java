@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.util.UUID;
 
 /** Samples for DatabaseOperations Cancel. */
 public final class DatabaseOperationsCancelSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelDatabaseOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CancelDatabaseOperation.json
      */
     /**
      * Sample code: Cancel the database management operation.
@@ -28,6 +27,6 @@ public final class DatabaseOperationsCancelSamples {
                 "sqlcrudtest-6661",
                 "testdb",
                 UUID.fromString("f779414b-e748-4925-8cfe-c8598f7660ae"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

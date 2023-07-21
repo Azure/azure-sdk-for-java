@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobSteps GetByVersion. */
 public final class JobStepsGetByVersionSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobStepByVersion.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobStepByVersion.json
      */
     /**
      * Sample code: Get the specified version of a job step.
@@ -22,6 +20,7 @@ public final class JobStepsGetByVersionSamples {
             .manager()
             .serviceClient()
             .getJobSteps()
-            .getByVersionWithResponse("group1", "server1", "agent1", "job1", 1, "step1", Context.NONE);
+            .getByVersionWithResponse(
+                "group1", "server1", "agent1", "job1", 1, "step1", com.azure.core.util.Context.NONE);
     }
 }

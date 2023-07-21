@@ -61,8 +61,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
     public interface ManagedDatabaseRecommendedSensitivityLabelsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> update(
@@ -123,6 +122,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -133,7 +133,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
                             managedInstanceName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -188,6 +188,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -196,7 +197,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
                 managedInstanceName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 context);
     }

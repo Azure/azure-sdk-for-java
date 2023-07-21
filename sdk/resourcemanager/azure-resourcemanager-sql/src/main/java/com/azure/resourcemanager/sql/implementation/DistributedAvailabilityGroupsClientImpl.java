@@ -71,8 +71,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
     public interface DistributedAvailabilityGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DistributedAvailabilityGroupsListResult>> listByInstance(
@@ -86,9 +85,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DistributedAvailabilityGroupInner>> get(
@@ -103,9 +100,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -121,9 +116,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -137,9 +130,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -199,6 +190,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -209,7 +201,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<DistributedAvailabilityGroupInner>>map(
@@ -260,6 +252,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -268,7 +261,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -398,6 +391,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -409,7 +403,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                             managedInstanceName,
                             distributedAvailabilityGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -461,6 +455,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -470,7 +465,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                 managedInstanceName,
                 distributedAvailabilityGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -587,6 +582,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -598,7 +594,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                             managedInstanceName,
                             distributedAvailabilityGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -658,6 +654,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -667,7 +664,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                 managedInstanceName,
                 distributedAvailabilityGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -765,7 +762,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             String managedInstanceName,
             String distributedAvailabilityGroupName,
             DistributedAvailabilityGroupInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
             .getSyncPoller();
     }
@@ -793,7 +791,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             String distributedAvailabilityGroupName,
             DistributedAvailabilityGroupInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
             .getSyncPoller();
     }
@@ -942,6 +941,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -952,7 +952,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                             managedInstanceName,
                             distributedAvailabilityGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1002,6 +1002,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1010,7 +1011,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                 managedInstanceName,
                 distributedAvailabilityGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -1079,7 +1080,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName)
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName)
             .getSyncPoller();
     }
 
@@ -1102,7 +1104,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String managedInstanceName,
         String distributedAvailabilityGroupName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, context)
             .getSyncPoller();
     }
 
@@ -1238,6 +1241,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1249,7 +1253,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                             managedInstanceName,
                             distributedAvailabilityGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1309,6 +1313,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1318,7 +1323,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                 managedInstanceName,
                 distributedAvailabilityGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1415,7 +1420,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String managedInstanceName,
         String distributedAvailabilityGroupName,
         DistributedAvailabilityGroupInner parameters) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
             .getSyncPoller();
     }
 
@@ -1441,7 +1447,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String distributedAvailabilityGroupName,
         DistributedAvailabilityGroupInner parameters,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
             .getSyncPoller();
     }

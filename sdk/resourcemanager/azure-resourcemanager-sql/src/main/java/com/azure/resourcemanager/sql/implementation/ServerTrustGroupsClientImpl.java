@@ -66,23 +66,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     public interface ServerTrustGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerTrustGroupListResult>> listByLocation(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("locationName") String locationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups/{serverTrustGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustGroupInner>> get(
@@ -97,8 +81,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups/{serverTrustGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -114,8 +97,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups/{serverTrustGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -129,8 +111,21 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ServerTrustGroupListResult>> listByLocation(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustGroupListResult>> listByInstance(
@@ -161,192 +156,6 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerTrustGroupInner>> listByLocationSinglePageAsync(
-        String resourceGroupName, String locationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByLocation(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            locationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ServerTrustGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerTrustGroupInner>> listByLocationSinglePageAsync(
-        String resourceGroupName, String locationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByLocation(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                locationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerTrustGroupInner> listByLocationAsync(String resourceGroupName, String locationName) {
-        return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(resourceGroupName, locationName),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerTrustGroupInner> listByLocationAsync(
-        String resourceGroupName, String locationName, Context context) {
-        return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(resourceGroupName, locationName, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerTrustGroupInner> listByLocation(String resourceGroupName, String locationName) {
-        return new PagedIterable<>(listByLocationAsync(resourceGroupName, locationName));
-    }
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerTrustGroupInner> listByLocation(
-        String resourceGroupName, String locationName, Context context) {
-        return new PagedIterable<>(listByLocationAsync(resourceGroupName, locationName, context));
     }
 
     /**
@@ -387,6 +196,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -398,7 +208,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                             locationName,
                             serverTrustGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -443,6 +253,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -452,7 +263,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                 locationName,
                 serverTrustGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -556,6 +367,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -567,7 +379,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                             locationName,
                             serverTrustGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -623,6 +435,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -632,7 +445,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                 locationName,
                 serverTrustGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -712,7 +525,8 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerTrustGroupInner>, ServerTrustGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters)
             .getSyncPoller();
     }
 
@@ -737,7 +551,8 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
         String serverTrustGroupName,
         ServerTrustGroupInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters, context)
             .getSyncPoller();
     }
 
@@ -869,6 +684,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -879,7 +695,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                             locationName,
                             serverTrustGroupName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -923,6 +739,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -931,7 +748,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                 locationName,
                 serverTrustGroupName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -997,7 +814,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String serverTrustGroupName) {
-        return beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName).getSyncPoller();
     }
 
     /**
@@ -1016,7 +833,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String serverTrustGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName, context).getSyncPoller();
     }
 
     /**
@@ -1093,6 +910,194 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     }
 
     /**
+     * Lists a server trust group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ServerTrustGroupInner>> listByLocationSinglePageAsync(
+        String resourceGroupName, String locationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByLocation(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            locationName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<ServerTrustGroupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists a server trust group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ServerTrustGroupInner>> listByLocationSinglePageAsync(
+        String resourceGroupName, String locationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (locationName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByLocation(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                locationName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists a server trust group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ServerTrustGroupInner> listByLocationAsync(String resourceGroupName, String locationName) {
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(resourceGroupName, locationName),
+            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists a server trust group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ServerTrustGroupInner> listByLocationAsync(
+        String resourceGroupName, String locationName, Context context) {
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(resourceGroupName, locationName, context),
+            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists a server trust group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ServerTrustGroupInner> listByLocation(String resourceGroupName, String locationName) {
+        return new PagedIterable<>(listByLocationAsync(resourceGroupName, locationName));
+    }
+
+    /**
+     * Lists a server trust group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ServerTrustGroupInner> listByLocation(
+        String resourceGroupName, String locationName, Context context) {
+        return new PagedIterable<>(listByLocationAsync(resourceGroupName, locationName, context));
+    }
+
+    /**
      * Gets a server trust groups by instance name.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -1127,6 +1132,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1137,7 +1143,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<ServerTrustGroupInner>>map(
@@ -1188,6 +1194,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1196,7 +1203,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(

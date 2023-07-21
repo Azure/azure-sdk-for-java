@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -53,17 +55,17 @@ public final class ServerProperties {
     private List<ServerPrivateEndpointConnection> privateEndpointConnections;
 
     /*
-     * Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'
+     * Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
      */
     @JsonProperty(value = "minimalTlsVersion")
     private String minimalTlsVersion;
 
     /*
      * Whether or not public endpoint access is allowed for this server.  Value is optional but if passed in, must be
-     * 'Enabled' or 'Disabled'
+     * 'Enabled' or 'Disabled' or 'SecuredByPerimeter'
      */
     @JsonProperty(value = "publicNetworkAccess")
-    private ServerNetworkAccessFlag publicNetworkAccess;
+    private ServerPublicNetworkAccessFlag publicNetworkAccess;
 
     /*
      * Whether or not existing server has a workspace created and if it allows connection from workspace
@@ -90,7 +92,9 @@ public final class ServerProperties {
     private String keyId;
 
     /*
-     * The Azure Active Directory administrator of the server.
+     * The Azure Active Directory administrator of the server. This can only be used at server create time. If used for
+     * server update, it will be ignored or it will result in an error. For updates individual APIs will need to be
+     * used.
      */
     @JsonProperty(value = "administrators")
     private ServerExternalAdministrator administrators;
@@ -101,6 +105,12 @@ public final class ServerProperties {
      */
     @JsonProperty(value = "restrictOutboundNetworkAccess")
     private ServerNetworkAccessFlag restrictOutboundNetworkAccess;
+
+    /*
+     * Status of external governance.
+     */
+    @JsonProperty(value = "externalGovernanceStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private ExternalGovernanceStatus externalGovernanceStatus;
 
     /** Creates an instance of ServerProperties class. */
     public ServerProperties() {
@@ -194,7 +204,7 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
      *
      * @return the minimalTlsVersion value.
      */
@@ -203,7 +213,7 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerProperties object itself.
@@ -215,22 +225,22 @@ public final class ServerProperties {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      *
      * @return the publicNetworkAccess value.
      */
-    public ServerNetworkAccessFlag publicNetworkAccess() {
+    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
 
     /**
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
+    public ServerProperties withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
@@ -308,7 +318,9 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator of the server. This can only be used at
+     * server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
      *
      * @return the administrators value.
      */
@@ -317,7 +329,9 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator of the server. This can only be used at
+     * server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
      *
      * @param administrators the administrators value to set.
      * @return the ServerProperties object itself.
@@ -347,6 +361,15 @@ public final class ServerProperties {
     public ServerProperties withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag restrictOutboundNetworkAccess) {
         this.restrictOutboundNetworkAccess = restrictOutboundNetworkAccess;
         return this;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     *
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.externalGovernanceStatus;
     }
 
     /**

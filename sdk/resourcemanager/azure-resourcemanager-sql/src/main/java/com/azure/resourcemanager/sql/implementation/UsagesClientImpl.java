@@ -57,8 +57,7 @@ public final class UsagesClientImpl implements UsagesClient {
     public interface UsagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools"
-                + "/{instancePoolName}/usages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UsageListResult>> listByInstancePool(
@@ -118,6 +117,7 @@ public final class UsagesClientImpl implements UsagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -129,7 +129,7 @@ public final class UsagesClientImpl implements UsagesClient {
                             instancePoolName,
                             expandChildren,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<UsageInner>>map(
@@ -181,6 +181,7 @@ public final class UsagesClientImpl implements UsagesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -190,7 +191,7 @@ public final class UsagesClientImpl implements UsagesClient {
                 instancePoolName,
                 expandChildren,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(

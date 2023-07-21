@@ -6,9 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sql.models.PrivateEndpointConnectionRequestStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.UUID;
 
 /** An Extension operation result resource. */
@@ -94,33 +92,6 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
      */
     public String errorMessage() {
         return this.innerProperties() == null ? null : this.innerProperties().errorMessage();
-    }
-
-    /**
-     * Get the queuedTime property: Queued time.
-     *
-     * @return the queuedTime value.
-     */
-    public String queuedTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().queuedTime();
-    }
-
-    /**
-     * Get the blobUri property: Blob URI.
-     *
-     * @return the blobUri value.
-     */
-    public String blobUri() {
-        return this.innerProperties() == null ? null : this.innerProperties().blobUri();
-    }
-
-    /**
-     * Get the privateEndpointConnections property: Gets the status of private endpoints associated with this request.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
