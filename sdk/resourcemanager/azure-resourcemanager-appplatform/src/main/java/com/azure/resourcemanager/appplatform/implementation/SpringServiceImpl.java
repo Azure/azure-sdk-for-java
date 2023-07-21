@@ -13,7 +13,6 @@ import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolProperties;
 import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolSizeProperties;
 import com.azure.resourcemanager.appplatform.models.BuildServiceProperties;
-import com.azure.resourcemanager.appplatform.models.BuildServicePropertiesResourceRequests;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
@@ -41,8 +40,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SpringServiceImpl

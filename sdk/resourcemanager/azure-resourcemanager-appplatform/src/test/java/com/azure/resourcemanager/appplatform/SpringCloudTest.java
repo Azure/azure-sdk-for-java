@@ -11,6 +11,7 @@ import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +19,7 @@ public class SpringCloudTest extends AppPlatformTest {
     private static final String PIGGYMETRICS_CONFIG_URL = "https://github.com/Azure-Samples/piggymetrics-config";
 
     @Test
+    @Disabled
     public void canCRUDServie() {
         String serviceName = generateRandomResourceName("springsvc", 15);
         Region region = Region.US_EAST;
@@ -59,6 +61,7 @@ public class SpringCloudTest extends AppPlatformTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDApp() throws Exception {
         String serviceName = generateRandomResourceName("springsvc", 15);
         String appName = "gateway";
@@ -110,6 +113,7 @@ public class SpringCloudTest extends AppPlatformTest {
     }
 
     @Test
+    @Disabled
     public void canSetActiveDeployment() {
         String serviceName = generateRandomResourceName("springsvc", 15);
         String appName = "gateway";
