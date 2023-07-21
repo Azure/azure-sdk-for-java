@@ -20,6 +20,14 @@ public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
     public static final HdiNodeTypes ZOOKEEPER = fromString("Zookeeper");
 
     /**
+     * Creates a new instance of HdiNodeTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HdiNodeTypes() {}
+
+    /**
      * Creates or finds a HdiNodeTypes from its string representation.
      *
      * @param name a name to look for.
