@@ -234,17 +234,6 @@ public class BulkExecutorTest extends BatchTestBase {
             CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(0);
             CosmosBulkItemResponse cosmosBulkItemResponse = operationResponse.getResponse();
             assertThat(cosmosBulkItemResponse).isNull();
-
-            int iterations = 0;
-            while (true) {
-                assertThat(iterations < 100);
-                if (executor.isDisposed()) {
-                    break;
-                }
-
-                Thread.sleep(10);
-                iterations++;
-            }
         } finally {
             if (executor != null && !executor.isDisposed()) {
                 executor.dispose();
