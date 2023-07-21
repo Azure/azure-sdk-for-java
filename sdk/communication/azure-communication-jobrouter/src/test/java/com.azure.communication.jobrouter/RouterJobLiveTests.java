@@ -67,8 +67,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        ChannelConfiguration channelConfiguration = new ChannelConfiguration();
-        channelConfiguration.setCapacityCostPerJob(1);
+        ChannelConfiguration channelConfiguration = new ChannelConfiguration(1);
         Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
             {
                 put("channel1", channelConfiguration);

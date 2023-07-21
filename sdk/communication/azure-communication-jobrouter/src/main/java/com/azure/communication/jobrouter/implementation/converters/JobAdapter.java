@@ -145,19 +145,15 @@ public class JobAdapter {
     }
 
     public static RouterJobMatchingMode convertMatchingModeToPublic(JobMatchingModeInternal internal) {
-        RouterJobMatchingMode matchingMode = new RouterJobMatchingMode()
-            .setModeType(RouterJobMatchModeType.fromString(internal != null
-                ? internal.getModeType().toString() : JobMatchModeTypeInternal.QUEUE_AND_MATCH_MODE.toString()));
-        if (internal == null || internal.getModeType() == JobMatchModeTypeInternal.QUEUE_AND_MATCH_MODE) {
-            matchingMode.setQueueAndMatchMode(new QueueAndMatchMode());
-        } else if (internal.getModeType() == JobMatchModeTypeInternal.SUSPEND_MODE) {
-            matchingMode.setSuspendMode(new SuspendMode());
-        } else if (internal.getModeType() == JobMatchModeTypeInternal.SCHEDULE_AND_SUSPEND_MODE) {
-            matchingMode.setScheduleAndSuspendMode(new ScheduleAndSuspendMode()
-                .setScheduleAt(internal.getScheduleAndSuspendMode().getScheduleAt()));
+        if (internal != null) {
+            if (internal.getModeType() == JobMatchModeTypeInternal.SUSPEND_MODE) {
+                return new RouterJobMatchingMode(new SuspendMode());
+            } else if (internal.getModeType() == JobMatchModeTypeInternal.SCHEDULE_AND_SUSPEND_MODE) {
+                return new RouterJobMatchingMode(new ScheduleAndSuspendMode(internal.getScheduleAndSuspendMode().getScheduleAt()));
+            }
         }
 
-        return matchingMode;
+        return new RouterJobMatchingMode(new QueueAndMatchMode());
     }
 
     public static JobMatchingModeInternal convertMatchingModeToInternal(RouterJobMatchingMode matchingMode) {
