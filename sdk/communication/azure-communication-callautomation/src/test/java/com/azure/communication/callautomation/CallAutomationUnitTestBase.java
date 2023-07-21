@@ -39,6 +39,7 @@ public class CallAutomationUnitTestBase {
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
+    static final String CALL_TRANSFEREE_ID = "transfereeId";
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
