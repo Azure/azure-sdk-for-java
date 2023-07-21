@@ -58,6 +58,6 @@ public final class OperationsResultsLocationsGetWithResponseMockTests {
 
         manager
             .operationsResultsLocations()
-            .getWithResponse("gxffmshkwf", "kgozxwop", com.azure.core.util.Context.NONE);
+            .getWithResponse("hxiidlopedb", "dpyqyybxubmd", com.azure.core.util.Context.NONE);
     }
 }

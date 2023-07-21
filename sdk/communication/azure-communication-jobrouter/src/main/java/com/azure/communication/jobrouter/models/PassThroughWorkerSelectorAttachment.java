@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Attaches a label selector where the value is pass through from the job label with the same key. */
+/** Attaches a worker selector where the value is passed through from the job label with the same key. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("pass-through")
 @Fluent
@@ -30,8 +30,8 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
     /*
      * Describes how long the attached label selector is valid in seconds.
      */
-    @JsonProperty(value = "ttlSeconds")
-    private Double ttlSeconds;
+    @JsonProperty(value = "expiresAfterSeconds")
+    private Double expiresAfterSeconds;
 
     /**
      * Get the key property: The label key to query against.
@@ -74,22 +74,22 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
     }
 
     /**
-     * Get the ttlSeconds property: Describes how long the attached label selector is valid in seconds.
+     * Get the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
      *
-     * @return the ttlSeconds value.
+     * @return the expiresAfterSeconds value.
      */
-    public Double getTtlSeconds() {
-        return this.ttlSeconds;
+    public Double getExpiresAfterSeconds() {
+        return this.expiresAfterSeconds;
     }
 
     /**
-     * Set the ttlSeconds property: Describes how long the attached label selector is valid in seconds.
+     * Set the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
      *
-     * @param ttlSeconds the ttlSeconds value to set.
+     * @param expiresAfterSeconds the expiresAfterSeconds value to set.
      * @return the PassThroughWorkerSelectorAttachment object itself.
      */
-    public PassThroughWorkerSelectorAttachment setTtlSeconds(Double ttlSeconds) {
-        this.ttlSeconds = ttlSeconds;
+    public PassThroughWorkerSelectorAttachment setExpiresAfterSeconds(Double expiresAfterSeconds) {
+        this.expiresAfterSeconds = expiresAfterSeconds;
         return this;
     }
 }

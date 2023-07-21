@@ -7,6 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
@@ -22,14 +25,6 @@ public final class ChatCompletions {
     @Generated
     @JsonProperty(value = "id")
     private String id;
-
-    /*
-     * The first timestamp associated with generation activity for this completions response,
-     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-     */
-    @Generated
-    @JsonProperty(value = "created")
-    private int created;
 
     /*
      * The collection of completions choices associated with this completions response.
@@ -48,27 +43,6 @@ public final class ChatCompletions {
     private CompletionsUsage usage;
 
     /**
-     * Creates an instance of ChatCompletions class.
-     *
-     * @param id the id value to set.
-     * @param created the created value to set.
-     * @param choices the choices value to set.
-     * @param usage the usage value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ChatCompletions(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") int created,
-            @JsonProperty(value = "choices") List<ChatChoice> choices,
-            @JsonProperty(value = "usage") CompletionsUsage usage) {
-        this.id = id;
-        this.created = created;
-        this.choices = choices;
-        this.usage = usage;
-    }
-
-    /**
      * Get the id property: A unique identifier associated with this chat completions response.
      *
      * @return the id value.
@@ -76,17 +50,6 @@ public final class ChatCompletions {
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the created property: The first timestamp associated with generation activity for this completions response,
-     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-     *
-     * @return the created value.
-     */
-    @Generated
-    public int getCreated() {
-        return this.created;
     }
 
     /**
@@ -110,5 +73,69 @@ public final class ChatCompletions {
     @Generated
     public CompletionsUsage getUsage() {
         return this.usage;
+    }
+
+    /*
+     * The first timestamp associated with generation activity for this completions response,
+     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
+     */
+    @Generated
+    @JsonProperty(value = "created")
+    private long createdAt;
+
+    /**
+     * Get the createdAt property: The first timestamp associated with generation activity for this completions
+     * response, represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
+     *
+     * @return the createdAt value.
+     */
+    @Generated
+    public OffsetDateTime getCreatedAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
+    }
+
+    /*
+     * Content filtering results for zero or more prompts in the request. In a streaming request,
+     * results for different prompts may arrive at different times or in different orders.
+     */
+    @Generated
+    @JsonProperty(value = "prompt_annotations")
+    private List<PromptFilterResult> promptFilterResults;
+
+    /**
+     * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
+     * streaming request, results for different prompts may arrive at different times or in different orders.
+     *
+     * @return the promptFilterResults value.
+     */
+    @Generated
+    public List<PromptFilterResult> getPromptFilterResults() {
+        return this.promptFilterResults;
+    }
+
+    /**
+     * Creates an instance of ChatCompletions class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param choices the choices value to set.
+     * @param usage the usage value to set.
+     */
+    @Generated
+    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, CompletionsUsage usage) {
+        this.id = id;
+        this.createdAt = createdAt.toEpochSecond();
+        this.choices = choices;
+        this.usage = usage;
+    }
+
+    @Generated
+    @JsonCreator
+    private ChatCompletions(
+            @JsonProperty(value = "id") String id,
+            @JsonProperty(value = "created") long createdAt,
+            @JsonProperty(value = "choices") List<ChatChoice> choices,
+            @JsonProperty(value = "usage") CompletionsUsage usage) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
     }
 }

@@ -4,15 +4,22 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
+import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.IsManagementType;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer2Configuration;
-import com.azure.resourcemanager.managednetworkfabric.models.Layer3Configuration;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration;
 import com.azure.resourcemanager.managednetworkfabric.models.NniType;
+import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteProperties;
+import java.util.Arrays;
 
 /** Samples for NetworkToNetworkInterconnects Create. */
 public final class NetworkToNetworkInterconnectsCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkToNetworkInterconnects_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkToNetworkInterconnects_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_Create_MaximumSet_Gen.
@@ -23,24 +30,57 @@ public final class NetworkToNetworkInterconnectsCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .networkToNetworkInterconnects()
-            .define("DefaultNNI")
-            .withExistingNetworkFabric("resourceGroupName", "FabricName")
+            .define("example-nni")
+            .withExistingNetworkFabric("example-rg", "example-fabric")
+            .withUseOptionB(BooleanEnumProperty.TRUE)
             .withNniType(NniType.CE)
-            .withIsManagementType(BooleanEnumProperty.TRUE)
-            .withUseOptionB(BooleanEnumProperty.FALSE)
-            .withLayer2Configuration(new Layer2Configuration().withPortCount(10).withMtu(1500))
-            .withLayer3Configuration(
-                new Layer3Configuration()
-                    .withPrimaryIpv4Prefix("172.31.0.0/31")
-                    .withPrimaryIpv6Prefix("3FFE:FFFF:0:CD30::a0/126")
-                    .withSecondaryIpv4Prefix("172.31.0.20/31")
-                    .withSecondaryIpv6Prefix("3FFE:FFFF:0:CD30::a4/126")
-                    .withImportRoutePolicyId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName1")
-                    .withExportRoutePolicyId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName2")
-                    .withPeerAsn(50272)
-                    .withVlanId(2064))
+            .withIsManagementType(IsManagementType.TRUE)
+            .withLayer2Configuration(
+                new Layer2Configuration()
+                    .withMtu(1500)
+                    .withInterfaces(
+                        Arrays
+                            .asList(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice/networkInterfaces/example-networkInterface")))
+            .withOptionBLayer3Configuration(
+                new NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration()
+                    .withPrimaryIpv4Prefix("10.0.0.12/30")
+                    .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
+                    .withSecondaryIpv4Prefix("40.0.0.14/30")
+                    .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")
+                    .withPeerAsn(61234L)
+                    .withVlanId(1234))
+            .withNpbStaticRouteConfiguration(
+                new NpbStaticRouteConfiguration()
+                    .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(25))
+                    .withIpv4Routes(
+                        Arrays
+                            .asList(
+                                new StaticRouteProperties()
+                                    .withPrefix("20.0.0.12/30")
+                                    .withNextHop(Arrays.asList("21.20.20.20"))))
+                    .withIpv6Routes(
+                        Arrays
+                            .asList(
+                                new StaticRouteProperties()
+                                    .withPrefix("3FFE:FFFF:0:CD30::ac/127")
+                                    .withNextHop(Arrays.asList("4FFE:FFFF:0:CD30::ac")))))
+            .withImportRoutePolicy(
+                new ImportRoutePolicyInformation()
+                    .withImportIpv4RoutePolicyId(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
+                    .withImportIpv6RoutePolicyId(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"))
+            .withExportRoutePolicy(
+                new ExportRoutePolicyInformation()
+                    .withExportIpv4RoutePolicyId(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
+                    .withExportIpv6RoutePolicyId(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"))
+            .withEgressAclId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
+            .withIngressAclId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
             .create();
     }
 }

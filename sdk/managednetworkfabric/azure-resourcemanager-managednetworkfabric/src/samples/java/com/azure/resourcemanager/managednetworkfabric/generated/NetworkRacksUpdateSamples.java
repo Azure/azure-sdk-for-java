@@ -4,17 +4,14 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRack;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for NetworkRacks Update. */
 public final class NetworkRacksUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkRacks_Update_MaximumSet_Gen.
@@ -22,21 +19,13 @@ public final class NetworkRacksUpdateSamples {
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkRacksUpdateMaximumSetGen(
-        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) throws IOException {
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         NetworkRack resource =
             manager
                 .networkRacks()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "networkRackName", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("example-rg", "example-rack", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource
-            .update()
-            .withTags(mapOf("keyID", "keyValue"))
-            .withProperties(
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
-            .apply();
+        resource.update().withTags(mapOf("keyID", "fakeTokenPlaceholder")).apply();
     }
 
     @SuppressWarnings("unchecked")

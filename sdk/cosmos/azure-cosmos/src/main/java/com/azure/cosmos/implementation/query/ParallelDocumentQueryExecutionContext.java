@@ -42,6 +42,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -69,9 +70,10 @@ public class ParallelDocumentQueryExecutionContext<T>
         String resourceLink,
         String rewrittenQuery,
         UUID correlatedActivityId,
-        boolean shouldUnwrapSelectValue) {
+        boolean shouldUnwrapSelectValue,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
-                rewrittenQuery, correlatedActivityId, shouldUnwrapSelectValue);
+                rewrittenQuery, correlatedActivityId, shouldUnwrapSelectValue, isQueryCancelledOnTimeout);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
@@ -98,7 +100,8 @@ public class ParallelDocumentQueryExecutionContext<T>
                         || queryInfo.hasAggregates()
                         || queryInfo.hasGroupBy()
                         || queryInfo.hasDCount()
-                        || queryInfo.hasDistinct()));
+                        || queryInfo.hasDistinct()),
+                initParams.isQueryCancelledOnTimeout());
         context.setTop(initParams.getTop());
 
         try {
@@ -119,7 +122,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         CosmosQueryRequestOptions cosmosQueryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
-        ResourceType resourceTypeEnum) {
+        ResourceType resourceTypeEnum,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<>(diagnosticsClientContext,
                                                                                                         queryClient,
@@ -130,7 +134,8 @@ public class ParallelDocumentQueryExecutionContext<T>
                                                                                                         collectionLink,
                                                                                                         sqlQuery.getQueryText(),
                                                                                                         activityId,
-                                                                                                        false);
+                                                                                                        false,
+                                                                                                        isQueryCancelledOnTimeout);
 
         context
             .initializeReadMany(rangeQueryMap, cosmosQueryRequestOptions, collectionRid);

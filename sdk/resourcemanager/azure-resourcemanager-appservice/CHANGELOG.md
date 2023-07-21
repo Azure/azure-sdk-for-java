@@ -6,11 +6,10 @@
 
 - Supported `withContainerSize` for `FunctionApp`.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Updated SKU that automatically set Function App "Always On".
+Function App on `FREE`, `SHARED`, `DYNAMIC` (consumption plan), `ELASTIC_PREMIUM` (premium plan), `ELASTIC_ISOLATED` App Service has "Always On" turned off.
 
 ## 2.28.0 (2023-06-25)
 

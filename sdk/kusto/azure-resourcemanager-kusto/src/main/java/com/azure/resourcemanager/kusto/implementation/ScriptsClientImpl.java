@@ -69,8 +69,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     public interface ScriptsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/scripts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScriptListResult>> listByDatabase(
@@ -85,8 +84,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScriptInner>> get(
@@ -102,8 +100,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -120,8 +117,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -138,8 +134,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scripts/{scriptName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -155,8 +150,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/scriptsCheckNameAvailability")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/scriptsCheckNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -174,7 +168,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +226,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -288,7 +282,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,7 +299,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -324,7 +318,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +335,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -359,7 +353,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Gets a Kusto cluster database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -417,7 +411,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Gets a Kusto cluster database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -473,7 +467,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Gets a Kusto cluster database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -492,7 +486,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Gets a Kusto cluster database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -511,7 +505,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Gets a Kusto cluster database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -528,7 +522,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -594,7 +588,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -663,7 +657,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -687,7 +681,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -719,7 +713,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -740,7 +734,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -767,7 +761,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -788,7 +782,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -815,7 +809,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -834,7 +828,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -860,7 +854,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -926,7 +920,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -995,7 +989,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1019,7 +1013,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1050,7 +1044,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1071,7 +1065,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1098,7 +1092,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1119,7 +1113,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1146,7 +1140,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1165,7 +1159,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1188,9 +1182,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1246,9 +1240,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1302,9 +1296,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1325,9 +1319,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1349,9 +1343,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1367,9 +1361,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1386,9 +1380,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1406,9 +1400,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1427,9 +1421,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1443,9 +1437,9 @@ public final class ScriptsClientImpl implements ScriptsClient {
     }
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -1463,7 +1457,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Checks that the script name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.
@@ -1524,7 +1518,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Checks that the script name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.
@@ -1587,7 +1581,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Checks that the script name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.
@@ -1606,7 +1600,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Checks that the script name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.
@@ -1630,7 +1624,7 @@ public final class ScriptsClientImpl implements ScriptsClient {
     /**
      * Checks that the script name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.
