@@ -29,7 +29,7 @@ public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectWith
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"id\":\"snvpdibmi\",\"name\":\"stbz\",\"type\":\"iwbuqny\"}";
+        String responseStr = "{\"id\":\"wbsreur\",\"name\":\"kfuarenlv\",\"type\":\"tklnvnafvvkyfed\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectWith
             manager
                 .resourceGuards()
                 .getDefaultDeleteProtectedItemRequestsObjectWithResponse(
-                    "frzgbzjed", "st", "vnlvxbcuiiznktwf", com.azure.core.util.Context.NONE)
+                    "jxhpdulontacn", "qwtehtuevr", "rljyoogwxhnsdu", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

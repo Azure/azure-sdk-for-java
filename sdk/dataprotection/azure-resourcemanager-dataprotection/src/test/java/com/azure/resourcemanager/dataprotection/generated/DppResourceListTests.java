@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DppResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DppResourceList model = BinaryData.fromString("{\"nextLink\":\"s\"}").toObject(DppResourceList.class);
-        Assertions.assertEquals("s", model.nextLink());
+        DppResourceList model =
+            BinaryData.fromString("{\"nextLink\":\"hhbcsglummajtjao\"}").toObject(DppResourceList.class);
+        Assertions.assertEquals("hhbcsglummajtjao", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppResourceList model = new DppResourceList().withNextLink("s");
+        DppResourceList model = new DppResourceList().withNextLink("hhbcsglummajtjao");
         model = BinaryData.fromObject(model).toObject(DppResourceList.class);
-        Assertions.assertEquals("s", model.nextLink());
+        Assertions.assertEquals("hhbcsglummajtjao", model.nextLink());
     }
 }

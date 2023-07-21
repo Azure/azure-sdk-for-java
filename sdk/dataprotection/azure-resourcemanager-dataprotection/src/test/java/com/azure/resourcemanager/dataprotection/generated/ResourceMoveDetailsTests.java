@@ -14,29 +14,29 @@ public final class ResourceMoveDetailsTests {
         ResourceMoveDetails model =
             BinaryData
                 .fromString(
-                    "{\"operationId\":\"fxxypininmayhuy\",\"startTimeUtc\":\"kpode\",\"completionTimeUtc\":\"oginuvamiheognar\",\"sourceResourcePath\":\"xth\",\"targetResourcePath\":\"tusivyevcciqihn\"}")
+                    "{\"operationId\":\"b\",\"startTimeUtc\":\"tmut\",\"completionTimeUtc\":\"qktapspwgcuert\",\"sourceResourcePath\":\"kdosvqw\",\"targetResourcePath\":\"mdgbbjfdd\"}")
                 .toObject(ResourceMoveDetails.class);
-        Assertions.assertEquals("fxxypininmayhuy", model.operationId());
-        Assertions.assertEquals("kpode", model.startTimeUtc());
-        Assertions.assertEquals("oginuvamiheognar", model.completionTimeUtc());
-        Assertions.assertEquals("xth", model.sourceResourcePath());
-        Assertions.assertEquals("tusivyevcciqihn", model.targetResourcePath());
+        Assertions.assertEquals("b", model.operationId());
+        Assertions.assertEquals("tmut", model.startTimeUtc());
+        Assertions.assertEquals("qktapspwgcuert", model.completionTimeUtc());
+        Assertions.assertEquals("kdosvqw", model.sourceResourcePath());
+        Assertions.assertEquals("mdgbbjfdd", model.targetResourcePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceMoveDetails model =
             new ResourceMoveDetails()
-                .withOperationId("fxxypininmayhuy")
-                .withStartTimeUtc("kpode")
-                .withCompletionTimeUtc("oginuvamiheognar")
-                .withSourceResourcePath("xth")
-                .withTargetResourcePath("tusivyevcciqihn");
+                .withOperationId("b")
+                .withStartTimeUtc("tmut")
+                .withCompletionTimeUtc("qktapspwgcuert")
+                .withSourceResourcePath("kdosvqw")
+                .withTargetResourcePath("mdgbbjfdd");
         model = BinaryData.fromObject(model).toObject(ResourceMoveDetails.class);
-        Assertions.assertEquals("fxxypininmayhuy", model.operationId());
-        Assertions.assertEquals("kpode", model.startTimeUtc());
-        Assertions.assertEquals("oginuvamiheognar", model.completionTimeUtc());
-        Assertions.assertEquals("xth", model.sourceResourcePath());
-        Assertions.assertEquals("tusivyevcciqihn", model.targetResourcePath());
+        Assertions.assertEquals("b", model.operationId());
+        Assertions.assertEquals("tmut", model.startTimeUtc());
+        Assertions.assertEquals("qktapspwgcuert", model.completionTimeUtc());
+        Assertions.assertEquals("kdosvqw", model.sourceResourcePath());
+        Assertions.assertEquals("mdgbbjfdd", model.targetResourcePath());
     }
 }

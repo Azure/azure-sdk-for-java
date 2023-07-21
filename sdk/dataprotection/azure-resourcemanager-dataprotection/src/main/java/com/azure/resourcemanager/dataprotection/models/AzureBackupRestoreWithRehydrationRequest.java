@@ -104,6 +104,13 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupRestoreWithRehydrationRequest withIdentityDetails(IdentityDetails identityDetails) {
+        super.withIdentityDetails(identityDetails);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
