@@ -51,20 +51,20 @@ public class ReportGenerator {
      */
     public void generateReport() {
         report.setAzureDependencies(computeAzureDependencies());
-        report.setGroupId(getMd5(AzureSdkMojo.mojo.getProject().getGroupId()));
-        report.setArtifactId(getMd5(AzureSdkMojo.mojo.getProject().getArtifactId()));
-        report.setVersion(getMd5(AzureSdkMojo.mojo.getProject().getVersion()));
+        report.setGroupId(getMd5(AzureSdkMojo.getMojo().getProject().getGroupId()));
+        report.setArtifactId(getMd5(AzureSdkMojo.getMojo().getProject().getArtifactId()));
+        report.setVersion(getMd5(AzureSdkMojo.getMojo().getProject().getVersion()));
         writeReportToFile();
     }
 
     private void writeReportToFile() {
-        final String reportFileString = AzureSdkMojo.mojo.getReportFile();
+        final String reportFileString = AzureSdkMojo.getMojo().getReportFile();
         if (reportFileString != null && !reportFileString.isEmpty()) {
             final File reportFile = new File(reportFileString);
             try (FileWriter fileWriter = new FileWriter(reportFile)) {
                 fileWriter.write(BinaryData.fromObject(report).toString());
             } catch (IOException exception) {
-                AzureSdkMojo.mojo.getLog().warn("Unable to write report to " + reportFileString, exception);
+                AzureSdkMojo.getMojo().getLog().warn("Unable to write report to " + reportFileString, exception);
             }
         }
     }
