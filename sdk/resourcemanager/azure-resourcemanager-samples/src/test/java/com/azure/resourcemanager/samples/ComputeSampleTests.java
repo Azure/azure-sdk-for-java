@@ -69,6 +69,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testCreateVirtualMachineUsingSpecializedDiskFromSnapshot() {
         Assertions.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromSnapshot.runSample(azureResourceManager));
     }
@@ -150,6 +151,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageManagedDisks() {
         Assertions.assertTrue(ManageManagedDisks.runSample(azureResourceManager));
     }
@@ -196,6 +198,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testCloneVirtualMachineToNewRegion() {
         Assertions.assertTrue(CloneVirtualMachineToNewRegion.runSample(azureResourceManager));
     }
