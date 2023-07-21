@@ -10,6 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
@@ -22,6 +24,15 @@ public abstract class RegistryTest extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     protected ContainerRegistryManager registryManager;
     protected String rgName;
+
+    private static final String REDACTED_VALUE = "REDACTED";
+
+    public RegistryTest() {
+        addSanitizers(
+            new TestProxySanitizer(String.format("$..%s", "uploadUrl"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer(String.format("$..%s", "logLink"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+        );
+    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(

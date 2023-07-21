@@ -24,7 +24,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
-import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -62,12 +61,10 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -252,7 +249,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
+                interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
                 addSanitizers();
             }
         } else {
@@ -456,13 +453,20 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected abstract void cleanUpResources();
 
     private void addSanitizers() {
-        interceptorManager.addSanitizers(Arrays.asList(
+        List<TestProxySanitizer> sanitizers = new ArrayList<>(Arrays.asList(
             // subscription id
             new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             // Retry-After
             new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)
         ));
+        sanitizers.addAll(this.sanitizers);
+        interceptorManager.addSanitizers(sanitizers);
+    }
+
+    private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
+    protected void addSanitizers(TestProxySanitizer ...sanitizer) {
+        this.sanitizers.addAll(Arrays.asList(sanitizer));
     }
 
     private final class PlaybackTimeoutInterceptor implements InvocationInterceptor {
