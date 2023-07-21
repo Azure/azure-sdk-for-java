@@ -405,35 +405,6 @@ public final class OpenAIClient {
     }
 
     /**
-     * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     * text that continues from or "completes" provided prompt data.
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     *     text that continues from or "completes" provided prompt data.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatCompletions getChatCompletions(
-            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
-        // Generated convenience method for getChatCompletionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getChatCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .getValue()
-                .toObject(ChatCompletions.class);
-    }
-
-    /**
      * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
      * generate text that continues from or "completes" provided prompt data.
      *
