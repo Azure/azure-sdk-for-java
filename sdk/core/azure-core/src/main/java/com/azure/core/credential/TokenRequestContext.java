@@ -112,7 +112,7 @@ public class TokenRequestContext {
      *
      * @param enableCae the flag indicating whether to enable Continuous Access Evaluation (CAE) for
      * the requested token.
-     * @return the updated TokenRequestContext itself
+     * @return the updated TokenRequestContext.
      */
     public TokenRequestContext setEnableCae(boolean enableCae) {
         this.enableCae = enableCae;
