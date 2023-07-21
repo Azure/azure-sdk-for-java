@@ -10,18 +10,24 @@ import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.RouterQueueAssignment;
+import com.azure.communication.jobrouter.models.QueueAndMatchMode;
 import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterJobMatchingMode;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
+import com.azure.communication.jobrouter.models.RouterJobStatus;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueAssignment;
 import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
+import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +43,6 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35706")
     public void unassignJob(HttpClient httpClient) {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
@@ -67,8 +72,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        ChannelConfiguration channelConfiguration = new ChannelConfiguration();
-        channelConfiguration.setCapacityCostPerJob(1);
+        ChannelConfiguration channelConfiguration = new ChannelConfiguration(1);
         Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
             {
                 put("channel1", channelConfiguration);
@@ -89,6 +93,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setChannelConfigurations(channelConfigurations)
             .setQueueAssignments(queueAssignments);
 
+        jobRouterClient.deleteWorker(workerId);
         RouterWorker worker = jobRouterClient.createWorker(createWorkerOptions);
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
@@ -128,6 +133,41 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         jobRouterClient.cancelJob(cancelJobOptions);
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
+        routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @Disabled("Need to add API side fix to pick the matchingMode based on matchingModeType")
+    public void jobScheduling(HttpClient httpClient) {
+        // Setup
+        jobRouterClient = getRouterClient(httpClient);
+        routerAdminClient = getRouterAdministrationClient(httpClient);
+
+        String testName = "schedule-job-1";
+
+        String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
+        DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
+
+        String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
+        RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+
+        String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
+        RouterJob job = jobRouterClient.createJob(new CreateJobOptions(jobId, testName, queue.getId())
+            .setMatchingMode(new RouterJobMatchingMode(new ScheduleAndSuspendMode(OffsetDateTime.now().plusMinutes(5)))));
+
+        // Action
+        RouterJob job2 = jobRouterClient.updateJob(new UpdateJobOptions(jobId)
+            .setMatchingMode(new RouterJobMatchingMode(new QueueAndMatchMode())));
+
+        // Verify
+        assertEquals(job.getStatus(), RouterJobStatus.PENDING_SCHEDULE);
+        assertEquals(job2.getStatus(), RouterJobStatus.QUEUED);
+
+        // Cleanup
+        jobRouterClient.cancelJob(new CancelJobOptions(jobId));
+        jobRouterClient.deleteJob(jobId);
         routerAdminClient.deleteQueue(queueId);
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
