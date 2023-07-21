@@ -649,7 +649,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         List<RoomParticipant> participants = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
 
         // Add 3 participants.
-        AddOrUpdateParticipantsResult addParticipantResponse = roomsAsyncClient.addOrUpdateParticipants(roomId, participants).block();
+        roomsAsyncClient.addOrUpdateParticipants(roomId, participants).block();
 
         // Check participant count, expected 3
         PagedFlux<RoomParticipant> listParticipantsResponse2 = roomsAsyncClient.listParticipants(roomId);
