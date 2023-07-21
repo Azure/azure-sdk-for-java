@@ -5,8 +5,6 @@ import com.azure.sdk.build.tool.models.BuildReport;
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
 import com.azure.sdk.build.tool.util.MavenUtils;
 import com.azure.sdk.build.tool.util.logging.Logger;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.DependencyManagement;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
