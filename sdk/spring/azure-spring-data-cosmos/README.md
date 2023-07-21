@@ -159,15 +159,16 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.diagnosticsThresholds.pointOperationLatencyThresholdInMS}")
     private int pointOperationLatencyThresholdInMS;
-    
+
     @Value("${azure.cosmos.diagnosticsThresholds.nonPointOperationLatencyThresholdInMS}")
     private int nonPointOperationLatencyThresholdInMS;
-    
+
     @Value("${azure.cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
     private int requestChargeThresholdInRU;
-    
+
     @Value("${azure.cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
     private int payloadSizeThresholdInBytes;
+
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -227,15 +228,15 @@ You can customize `DirectConnectionConfig` or `GatewayConnectionConfig` or both 
 You can customize `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS`, `requestChargeThresholdInRU` and `payloadSizeThresholdInBytes` to customize the thresholds for diagnostic logging when combined with `CosmosDiagnosticsHandler` which enables diagnostic logging with the default thresholds when added to the `CosmosClientBuilder`.
 
 ```java readme-sample-AppConfigurationCodeSnippet
-@Bean
-public CosmosClientBuilder getCosmosClientBuilder() {
+    @Bean
+    public CosmosClientBuilder getCosmosClientBuilder() {
 
-    DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
-    GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-    return new CosmosClientBuilder()
-        .endpoint(uri)
-        .directMode(directConnectionConfig, gatewayConnectionConfig)
-        .clientTelemetryConfig(
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        return new CosmosClientBuilder()
+            .endpoint(uri)
+            .directMode(directConnectionConfig, gatewayConnectionConfig)
+            .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
@@ -245,18 +246,18 @@ public CosmosClientBuilder getCosmosClientBuilder() {
                             .setRequestChargeThreshold(requestChargeThresholdInRU)
                     )
                     .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
-}
+    }
 
-@Override
-public CosmosConfig cosmosConfig() {
-    return CosmosConfig.builder()
-                       .enableQueryMetrics(queryMetricsEnabled)
-                       .maxDegreeOfParallelism(maxDegreeOfParallelism)
-                       .maxBufferedItemCount(maxBufferedItemCount)
-                       .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
-                       .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                       .build();
-}
+    @Override
+    public CosmosConfig cosmosConfig() {
+        return CosmosConfig.builder()
+                           .enableQueryMetrics(queryMetricsEnabled)
+                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxBufferedItemCount(maxBufferedItemCount)
+                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
+                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                           .build();
+    }
 ```
 
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
