@@ -100,6 +100,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
+    private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
     /**
      * Sets upper bound execution timeout for each @Test method.
@@ -464,9 +465,15 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         interceptorManager.addSanitizers(sanitizers);
     }
 
-    private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
-    protected void addSanitizers(TestProxySanitizer ...sanitizer) {
-        this.sanitizers.addAll(Arrays.asList(sanitizer));
+    /**
+     * Adds test proxy sanitizers.
+     * <p>
+     * Recommend to call this API in subclass constructor.
+     *
+     * @param sanitizers the test proxy sanitizers.
+     */
+    protected void addSanitizers(TestProxySanitizer ...sanitizers) {
+        this.sanitizers.addAll(Arrays.asList(sanitizers));
     }
 
     private final class PlaybackTimeoutInterceptor implements InvocationInterceptor {
