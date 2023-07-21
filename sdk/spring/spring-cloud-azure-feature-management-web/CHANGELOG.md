@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+## 4.9.1 (2023-07-19)
+
+Fixes a bug where exclusions from the portal don't map correctly resulting in a `java.lang.ClassCastException` [#35823](https://github.com/Azure/azure-sdk-for-java/issues/35823)
+
 ## 4.9.0 (2023-06-29)
 
 Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#490-2023-06-29) for more details.

@@ -23,6 +23,14 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
     public static final OrcCompressionCodec LZO = fromString("lzo");
 
     /**
+     * Creates a new instance of OrcCompressionCodec value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrcCompressionCodec() {}
+
+    /**
      * Creates or finds a OrcCompressionCodec from its string representation.
      *
      * @param name a name to look for.

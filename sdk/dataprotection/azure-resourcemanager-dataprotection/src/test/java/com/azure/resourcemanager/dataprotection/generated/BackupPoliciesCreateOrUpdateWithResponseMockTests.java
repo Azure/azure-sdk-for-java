@@ -33,7 +33,7 @@ public final class BackupPoliciesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"omdjvlpjxxkzbrm\",\"geivsiykzkdncj\",\"xonbzoggculapz\"]},\"id\":\"rpgogtqxep\",\"name\":\"ylbf\",\"type\":\"ajlyjtlvofqzhv\"}";
+            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"idizozsdbccxjmo\",\"fdgnwncypuuwwlt\",\"uqj\"]},\"id\":\"zenkeifzzhmkd\",\"name\":\"svflyhbxcudch\",\"type\":\"gsrboldforobw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +64,11 @@ public final class BackupPoliciesCreateOrUpdateWithResponseMockTests {
         BaseBackupPolicyResource response =
             manager
                 .backupPolicies()
-                .define("uqypfcvle")
-                .withExistingBackupVault("lchpodbzevwrdn", "fukuvsjcswsmystu")
-                .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("pqbmfpjbab")))
+                .define("jtszcof")
+                .withExistingBackupVault("gnl", "zonzlrpiqywnc")
+                .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("htd")))
                 .create();
 
-        Assertions.assertEquals("omdjvlpjxxkzbrm", response.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("idizozsdbccxjmo", response.properties().datasourceTypes().get(0));
     }
 }
