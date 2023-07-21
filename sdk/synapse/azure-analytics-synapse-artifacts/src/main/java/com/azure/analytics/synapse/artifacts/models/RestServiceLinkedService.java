@@ -97,6 +97,12 @@ public class RestServiceLinkedService extends LinkedService {
     private Object encryptedCredential;
 
     /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
+    /*
      * The client ID associated with your application. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clientId")
@@ -381,6 +387,26 @@ public class RestServiceLinkedService extends LinkedService {
      */
     public RestServiceLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

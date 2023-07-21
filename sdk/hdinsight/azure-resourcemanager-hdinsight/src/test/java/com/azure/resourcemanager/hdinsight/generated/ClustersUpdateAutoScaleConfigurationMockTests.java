@@ -11,12 +11,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.Autoscale;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleCapacity;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleConfigurationUpdateParameter;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleRecurrence;
+import com.azure.resourcemanager.hdinsight.models.AutoscaleSchedule;
+import com.azure.resourcemanager.hdinsight.models.AutoscaleTimeAndCapacity;
+import com.azure.resourcemanager.hdinsight.models.DaysOfWeek;
 import com.azure.resourcemanager.hdinsight.models.RoleName;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -66,18 +68,39 @@ public final class ClustersUpdateAutoScaleConfigurationMockTests {
         manager
             .clusters()
             .updateAutoScaleConfiguration(
-                "flvestmjlxrrilo",
-                "apeewchpxlkt",
+                "dtvqe",
+                "rqctmxxdtdd",
                 RoleName.WORKERNODE,
                 new AutoscaleConfigurationUpdateParameter()
                     .withAutoscale(
                         new Autoscale()
                             .withCapacity(
                                 new AutoscaleCapacity()
-                                    .withMinInstanceCount(1984241161)
-                                    .withMaxInstanceCount(463707796))
+                                    .withMinInstanceCount(1948227960)
+                                    .withMaxInstanceCount(1691518178))
                             .withRecurrence(
-                                new AutoscaleRecurrence().withTimeZone("vu").withSchedule(Arrays.asList()))),
-                Context.NONE);
+                                new AutoscaleRecurrence()
+                                    .withTimeZone("tznapxbannovv")
+                                    .withSchedule(
+                                        Arrays
+                                            .asList(
+                                                new AutoscaleSchedule()
+                                                    .withDays(
+                                                        Arrays
+                                                            .asList(
+                                                                DaysOfWeek.FRIDAY,
+                                                                DaysOfWeek.SATURDAY,
+                                                                DaysOfWeek.SATURDAY))
+                                                    .withTimeAndCapacity(new AutoscaleTimeAndCapacity()),
+                                                new AutoscaleSchedule()
+                                                    .withDays(
+                                                        Arrays
+                                                            .asList(
+                                                                DaysOfWeek.WEDNESDAY,
+                                                                DaysOfWeek.SUNDAY,
+                                                                DaysOfWeek.MONDAY,
+                                                                DaysOfWeek.SATURDAY))
+                                                    .withTimeAndCapacity(new AutoscaleTimeAndCapacity()))))),
+                com.azure.core.util.Context.NONE);
     }
 }

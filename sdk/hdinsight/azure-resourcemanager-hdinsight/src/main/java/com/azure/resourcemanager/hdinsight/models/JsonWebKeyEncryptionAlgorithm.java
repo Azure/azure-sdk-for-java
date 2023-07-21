@@ -20,6 +20,15 @@ public final class JsonWebKeyEncryptionAlgorithm extends ExpandableStringEnum<Js
     public static final JsonWebKeyEncryptionAlgorithm RSA1_5 = fromString("RSA1_5");
 
     /**
+     * Creates a new instance of JsonWebKeyEncryptionAlgorithm value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JsonWebKeyEncryptionAlgorithm() {
+    }
+
+    /**
      * Creates or finds a JsonWebKeyEncryptionAlgorithm from its string representation.
      *
      * @param name a name to look for.

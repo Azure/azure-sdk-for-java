@@ -29,7 +29,7 @@ public final class ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjec
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"id\":\"cblembnkbwv\",\"name\":\"xk\",\"type\":\"vqihebwtswbzuwf\"}";
+        String responseStr = "{\"id\":\"lgmtrwahzjmucf\",\"name\":\"yrplrohkpigqfus\",\"type\":\"kzmkwklsnoxaxmqe\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjec
             manager
                 .resourceGuards()
                 .getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
-                    "tmwwi", "h", "hfqpofv", com.azure.core.util.Context.NONE)
+                    "uuuybnchrsziz", "yuel", "etndnbfqyggagf", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

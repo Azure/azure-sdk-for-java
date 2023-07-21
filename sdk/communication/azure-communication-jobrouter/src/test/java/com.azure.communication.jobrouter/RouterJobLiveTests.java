@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
@@ -121,7 +122,10 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         // Cleanup
-        jobRouterClient.cancelJob(jobId, "Done.", "test");
+        CancelJobOptions cancelJobOptions = new CancelJobOptions(jobId)
+            .setNote("Done.")
+            .setDispositionCode("test");
+        jobRouterClient.cancelJob(cancelJobOptions);
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);
