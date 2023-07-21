@@ -12,13 +12,13 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /** The base for storage manager tests. */
-public abstract class RegistryTest extends ResourceManagerTestBase {
+public abstract class RegistryTest extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     protected ContainerRegistryManager registryManager;
     protected String rgName;
