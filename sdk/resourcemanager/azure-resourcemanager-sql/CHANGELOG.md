@@ -1,6 +1,6 @@
 # Release History
 
-## 2.29.0-beta.1 (2023-07-18)
+## 2.29.0-beta.1 (2023-07-21)
 
 ### Other Changes
 
