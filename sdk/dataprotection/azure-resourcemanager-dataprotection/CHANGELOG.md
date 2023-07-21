@@ -1,14 +1,88 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2023-07-21)
+
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.CrossRegionRestoreState` was added
 
-### Bugs Fixed
+* `models.BaseResourceProperties` was added
 
-### Other Changes
+* `models.NamespacedNameResource` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.CrossRegionRestoreSettings` was added
+
+* `models.IdentityDetails` was added
+
+* `models.SecureScoreLevel` was added
+
+#### `models.AzureBackupRecoveryTimeBasedRestoreRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.AzureBackupRestoreRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+* `identityDetails()` was added
+
+#### `models.DeletedBackupInstance` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.AzureBackupRestoreWithRehydrationRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.KubernetesClusterBackupDatasourceParameters` was modified
+
+* `backupHookReferences()` was added
+* `withBackupHookReferences(java.util.List)` was added
+
+#### `models.DatasourceSet` was modified
+
+* `withResourceProperties(models.BaseResourceProperties)` was added
+* `resourceProperties()` was added
+
+#### `models.BackupInstance` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+* `identityDetails()` was added
+
+#### `models.FeatureSettings` was modified
+
+* `crossRegionRestoreSettings()` was added
+* `withCrossRegionRestoreSettings(models.CrossRegionRestoreSettings)` was added
+
+#### `models.BackupVault` was modified
+
+* `secureScore()` was added
+
+#### `models.Datasource` was modified
+
+* `withResourceProperties(models.BaseResourceProperties)` was added
+* `resourceProperties()` was added
+
+#### `models.KubernetesClusterRestoreCriteria` was modified
+
+* `withRestoreHookReferences(java.util.List)` was added
+* `restoreHookReferences()` was added
+
+#### `models.AzureBackupRecoveryPointBasedRestoreRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.AzureBackupJob` was modified
+
+* `rehydrationPriority()` was added
+
+#### `models.DppIdentityDetails` was modified
+
+* `userAssignedIdentities()` was added
+* `withUserAssignedIdentities(java.util.Map)` was added
 
 ## 1.0.0 (2023-06-28)
 
