@@ -422,7 +422,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
                         .searchOperatorInformation(phoneNumbers))
                 .assertNext((OperatorInformationResult result) -> {
-                        assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
+                    assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
                 })
                 .verifyComplete();
     }
