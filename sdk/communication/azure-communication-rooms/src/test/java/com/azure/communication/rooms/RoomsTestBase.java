@@ -48,17 +48,7 @@ public class RoomsTestBase extends TestProxyTestBase {
         builder.endpoint(communicationEndpoint).credential(new AzureKeyCredential(communicationAccessKey))
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
-        }
-
-        if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
-        }
+        configureTestMode(builder);
 
         return builder;
     }
@@ -71,17 +61,7 @@ public class RoomsTestBase extends TestProxyTestBase {
         builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint()).credential(tokenCredential)
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(
-                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
-        }
-
-        if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
-        }
+        configureTestMode(builder);
 
         return builder;
     }
@@ -93,17 +73,8 @@ public class RoomsTestBase extends TestProxyTestBase {
                 .serviceVersion(version)
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(
-                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
-        }
+        configureTestMode(builder);
 
-        if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
-        }
 
         return builder;
     }
@@ -118,19 +89,26 @@ public class RoomsTestBase extends TestProxyTestBase {
                 .credential(new AzureKeyCredential(accessKey))
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
+        configureTestMode(builder);
+
+        return builder;
+    }
+
+    protected void configureTestMode(RoomsClientBuilder builder) {
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(
                     Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
-
-        return builder;
     }
 
     private static TestMode initializeTestMode() {
