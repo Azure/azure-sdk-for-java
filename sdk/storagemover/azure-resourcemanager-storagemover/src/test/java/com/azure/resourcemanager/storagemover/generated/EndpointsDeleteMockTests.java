@@ -56,6 +56,6 @@ public final class EndpointsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.endpoints().delete("riplrbpbewtg", "fgb", "c", com.azure.core.util.Context.NONE);
+        manager.endpoints().delete("rnwb", "ehhseyvjusrts", "hspkdeemao", com.azure.core.util.Context.NONE);
     }
 }

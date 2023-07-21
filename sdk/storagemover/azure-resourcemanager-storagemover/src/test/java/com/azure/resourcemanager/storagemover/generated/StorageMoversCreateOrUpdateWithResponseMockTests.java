@@ -33,7 +33,7 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"sxnkjzkdeslpvlo\",\"provisioningState\":\"Succeeded\"},\"location\":\"ighxpk\",\"tags\":{\"upedeojnabckhs\":\"baiuebbaumny\"},\"id\":\"txp\",\"name\":\"ie\",\"type\":\"tfhvpesapskrdqmh\"}";
+            "{\"properties\":{\"description\":\"clha\",\"provisioningState\":\"Succeeded\"},\"location\":\"abphlw\",\"tags\":{\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"},\"id\":\"xibxujwbhqwalm\",\"name\":\"zyoxaepdkzjan\",\"type\":\"ux\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +64,16 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
         StorageMover response =
             manager
                 .storageMovers()
-                .define("hdwbavxbniwdjs")
-                .withRegion("nxytxh")
-                .withExistingResourceGroup("ux")
-                .withTags(mapOf("lcuhxwtctyqiklb", "bzpfzab", "bhvgy", "ovplw"))
-                .withDescription("s")
+                .define("uynhijg")
+                .withRegion("utrc")
+                .withExistingResourceGroup("drgvtqagn")
+                .withTags(mapOf("dbhrbnlankxm", "azzmhjrunmpxt"))
+                .withDescription("bfs")
                 .create();
 
-        Assertions.assertEquals("ighxpk", response.location());
-        Assertions.assertEquals("baiuebbaumny", response.tags().get("upedeojnabckhs"));
-        Assertions.assertEquals("sxnkjzkdeslpvlo", response.description());
+        Assertions.assertEquals("abphlw", response.location());
+        Assertions.assertEquals("fkts", response.tags().get("hsucoc"));
+        Assertions.assertEquals("clha", response.description());
     }
 
     @SuppressWarnings("unchecked")
