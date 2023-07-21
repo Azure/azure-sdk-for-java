@@ -3,8 +3,10 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 
 /** The ReleasePhoneNumberResult model. */
+@Generated
 public final class ReleasePhoneNumberResult {
 
 }

@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberLocality model. */
 @Immutable
+@Generated
 public final class PhoneNumberLocality {
     /*
      * Represents the localized name of the locality.

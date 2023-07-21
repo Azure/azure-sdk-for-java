@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for BillingFrequency. */
+@Generated
 public final class BillingFrequency extends ExpandableStringEnum<BillingFrequency> {
     /** Static value monthly for BillingFrequency. */
     public static final BillingFrequency MONTHLY = fromString("monthly");

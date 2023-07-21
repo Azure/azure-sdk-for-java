@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -11,6 +12,7 @@ import java.util.List;
 
 /** The PhoneNumberSearchResult model. */
 @Immutable
+@Generated
 public final class PhoneNumberSearchResult {
     /*
      * The search id.

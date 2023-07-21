@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for PhoneNumberCapabilityType. */
+@Generated
 public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneNumberCapabilityType> {
     /** Static value none for PhoneNumberCapabilityType. */
     public static final PhoneNumberCapabilityType NONE = fromString("none");
