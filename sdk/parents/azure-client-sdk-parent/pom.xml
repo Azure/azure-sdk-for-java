@@ -288,7 +288,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <outputDirectory>${packageOutputDirectory}</outputDirectory>
           <archive combine.children="append">
@@ -328,7 +328,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -343,7 +343,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -361,7 +361,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy</id>
@@ -682,7 +682,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+          <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -940,7 +940,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -1024,7 +1024,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -1039,7 +1039,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -1233,7 +1233,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.build.directory}/readme_overview.html</overview>
             </configuration>

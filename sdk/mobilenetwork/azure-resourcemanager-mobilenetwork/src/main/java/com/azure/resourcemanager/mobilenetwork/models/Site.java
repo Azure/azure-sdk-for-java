@@ -106,11 +106,13 @@ public interface Site {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Site definition stages. */
     interface DefinitionStages {
         /** The first stage of the Site definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Site definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -129,6 +131,7 @@ public interface Site {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Site definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -140,6 +143,7 @@ public interface Site {
              */
             WithCreate withExistingMobileNetwork(String resourceGroupName, String mobileNetworkName);
         }
+
         /**
          * The stage of the Site definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -160,6 +164,7 @@ public interface Site {
              */
             Site create(Context context);
         }
+
         /** The stage of the Site definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -171,6 +176,7 @@ public interface Site {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the Site resource.
      *
@@ -195,6 +201,7 @@ public interface Site {
          */
         Site apply(Context context);
     }
+
     /** The Site update stages. */
     interface UpdateStages {
         /** The stage of the Site update allowing to specify tags. */
@@ -208,6 +215,7 @@ public interface Site {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -222,4 +230,25 @@ public interface Site {
      * @return the refreshed resource.
      */
     Site refresh(Context context);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePacketCore(SiteDeletePacketCore parameters);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePacketCore(SiteDeletePacketCore parameters, Context context);
 }

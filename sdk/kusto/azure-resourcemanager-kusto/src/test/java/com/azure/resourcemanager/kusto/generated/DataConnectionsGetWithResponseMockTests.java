@@ -31,7 +31,7 @@ public final class DataConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"kind\":\"DataConnection\",\"location\":\"nersb\",\"id\":\"cucrwnamikze\",\"name\":\"rqbsmswziq\",\"type\":\"fuhok\"}";
+            "{\"kind\":\"DataConnection\",\"location\":\"xhnpo\",\"id\":\"yqwcabvnuil\",\"name\":\"ey\",\"type\":\"swlpaugmrmfj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,9 @@ public final class DataConnectionsGetWithResponseMockTests {
         DataConnection response =
             manager
                 .dataConnections()
-                .getWithResponse(
-                    "irdsvuwcob", "egstmninwjizci", "nghgshej", "tbxqmuluxlxq", com.azure.core.util.Context.NONE)
+                .getWithResponse("xmjpbyep", "mgtvlj", "rc", "yfqi", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("nersb", response.location());
+        Assertions.assertEquals("xhnpo", response.location());
     }
 }

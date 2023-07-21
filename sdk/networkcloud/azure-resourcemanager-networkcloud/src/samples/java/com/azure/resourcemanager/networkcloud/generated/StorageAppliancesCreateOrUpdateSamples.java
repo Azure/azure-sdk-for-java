@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for StorageAppliances CreateOrUpdate. */
 public final class StorageAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/StorageAppliances_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/StorageAppliances_Create.json
      */
     /**
      * Sample code: Create or update storage appliance.
@@ -29,12 +29,12 @@ public final class StorageAppliancesCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                     .withType("CustomLocation"))
             .withAdministratorCredentials(
                 new AdministrativeCredentials().withPassword("fakeTokenPlaceholder").withUsername("adminUser"))
             .withRackId(
-                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
             .withRackSlot(1L)
             .withSerialNumber("BM1219XXX")
             .withStorageApplianceSkuId("684E-3B16-399E")

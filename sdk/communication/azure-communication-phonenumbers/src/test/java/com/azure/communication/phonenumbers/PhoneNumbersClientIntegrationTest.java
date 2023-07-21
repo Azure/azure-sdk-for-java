@@ -121,7 +121,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
+            String phoneNumber = searchResult.getPhoneNumbers().get(0);
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersWithoutContextSync", false)
                     .waitForCompletion();
@@ -143,7 +143,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
+            String phoneNumber = searchResult.getPhoneNumbers().get(0);
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion();
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
@@ -159,7 +159,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilitiesWithoutContext(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber();
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", false).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -171,7 +171,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     @DisabledIfEnvironmentVariable(named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber();
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilities", true).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());

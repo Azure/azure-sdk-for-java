@@ -9,33 +9,32 @@ import com.azure.resourcemanager.hdinsight.fluent.models.ClusterConfigurationsIn
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterConfigurationsInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterConfigurationsInner model =
             BinaryData
                 .fromString(
-                    "{\"configurations\":{\"bjbsybb\":{\"gkakmokzhjjklff\":\"kzbzkdvncjabudu\",\"bizikayuhq\":\"mouwqlgzrfzeey\"},\"dgmfpgvmpipasl\":{\"t\":\"r\"},\"pdrhne\":{\"wutwbdsre\":\"aqfxss\"}}}")
+                    "{\"configurations\":{\"yhrfouyftaakcpw\":{\"xrslpm\":\"gx\",\"qsluicp\":\"twuoegrpkhjwni\",\"modfvuefywsbpfvm\":\"ggkzzlvmbmpa\"},\"smocmbq\":{\"ksmond\":\"zvqtmnubexkp\",\"gkopkwhojvpajqgx\":\"mquxvypo\"},\"uejrjxgc\":{\"zapvhelx\":\"vmkcx\",\"tddckcb\":\"rgly\"}}}")
                 .toObject(ClusterConfigurationsInner.class);
-        Assertions.assertEquals("kzbzkdvncjabudu", model.configurations().get("bjbsybb").get("gkakmokzhjjklff"));
+        Assertions.assertEquals("gx", model.configurations().get("yhrfouyftaakcpw").get("xrslpm"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterConfigurationsInner model =
             new ClusterConfigurationsInner()
                 .withConfigurations(
                     mapOf(
-                        "bjbsybb",
-                        mapOf("gkakmokzhjjklff", "kzbzkdvncjabudu", "bizikayuhq", "mouwqlgzrfzeey"),
-                        "dgmfpgvmpipasl",
-                        mapOf("t", "r"),
-                        "pdrhne",
-                        mapOf("wutwbdsre", "aqfxss")));
+                        "yhrfouyftaakcpw",
+                        mapOf("xrslpm", "gx", "qsluicp", "twuoegrpkhjwni", "modfvuefywsbpfvm", "ggkzzlvmbmpa"),
+                        "smocmbq",
+                        mapOf("ksmond", "zvqtmnubexkp", "gkopkwhojvpajqgx", "mquxvypo"),
+                        "uejrjxgc",
+                        mapOf("zapvhelx", "vmkcx", "tddckcb", "rgly")));
         model = BinaryData.fromObject(model).toObject(ClusterConfigurationsInner.class);
-        Assertions.assertEquals("kzbzkdvncjabudu", model.configurations().get("bjbsybb").get("gkakmokzhjjklff"));
+        Assertions.assertEquals("gx", model.configurations().get("yhrfouyftaakcpw").get("xrslpm"));
     }
 
     @SuppressWarnings("unchecked")

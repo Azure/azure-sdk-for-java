@@ -98,6 +98,7 @@
     <module>sdk/identity</module>
     <module>sdk/imagebuilder</module>
     <module>sdk/iotcentral</module>
+    <module>sdk/iotfirmwaredefense</module>
     <module>sdk/iothub</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
@@ -111,6 +112,7 @@
     <module>sdk/machinelearningservices</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
+    <module>sdk/managednetworkfabric</module>
     <module>sdk/managementgroups</module>
     <module>sdk/maps</module>
     <module>sdk/mariadb</module>
@@ -170,6 +172,7 @@
     <module>sdk/servicelinker</module>
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
+    <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
     <module>sdk/sqlvirtualmachine</module>

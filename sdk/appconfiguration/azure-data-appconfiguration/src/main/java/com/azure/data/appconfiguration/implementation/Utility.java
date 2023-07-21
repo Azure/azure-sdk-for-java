@@ -3,10 +3,17 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
+import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -72,6 +79,18 @@ public class Utility {
         return settingFieldsList;
     }
 
+    //  Iterable to List
+    public static <E> List<E> iterableToList(Iterable<E> iterable) {
+        if (iterable == null) {
+            return null;
+        }
+        List<E> outputList = new ArrayList<>();
+        for (E item : iterable) {
+            outputList.add(item);
+        }
+        return outputList;
+    }
+
     /*
      * Azure Configuration service requires that the ETag value is surrounded in quotation marks.
      *
@@ -86,8 +105,16 @@ public class Utility {
      * Get HTTP header value, if-match or if-none-match.. Used to perform an operation only if the targeted resource's
      * etag matches the value provided.
      */
-    public static String getEtag(boolean isEtagRequired, ConfigurationSetting setting) {
-        return isEtagRequired ? getETagValue(setting.getETag()) : null;
+    public static String getETag(boolean isETagRequired, ConfigurationSetting setting) {
+        return isETagRequired ? getETagValue(setting.getETag()) : null;
+    }
+
+    public static String getETagSnapshot(boolean isETagRequired, ConfigurationSettingSnapshot snapshot) {
+        if (!isETagRequired) {
+            return null;
+        }
+        Objects.requireNonNull(snapshot);
+        return getETagValue(snapshot.getETag());
     }
 
     /*
@@ -130,5 +157,26 @@ public class Utility {
     public static Context addTracingNamespace(Context context) {
         context = context == null ? Context.NONE : context;
         return context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE);
+    }
+
+    public static Response<ConfigurationSettingSnapshot> updateSnapshotSync(String snapshotName,
+        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+        AzureAppConfigurationImpl serviceClient, Context context) {
+
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.updateSnapshotWithResponse(snapshotName,
+                new SnapshotUpdateParameters().setStatus(status),
+                getETagSnapshot(ifUnchanged, snapshot), null, context);
+        return new SimpleResponse<>(response, response.getValue());
+    }
+
+    public static Mono<Response<ConfigurationSettingSnapshot>> updateSnapshotAsync(String snapshotName,
+        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+        AzureAppConfigurationImpl serviceClient) {
+        return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
+                new SnapshotUpdateParameters().setStatus(status),
+                getETagSnapshot(ifUnchanged, snapshot),
+                null)
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 }

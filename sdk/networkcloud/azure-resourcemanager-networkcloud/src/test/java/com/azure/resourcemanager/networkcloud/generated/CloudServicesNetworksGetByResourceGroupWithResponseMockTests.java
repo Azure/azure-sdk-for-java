@@ -32,7 +32,7 @@ public final class CloudServicesNetworksGetByResourceGroupWithResponseMockTests 
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"hj\",\"type\":\"rwgdnqzbrfks\"},\"properties\":{\"additionalEgressEndpoints\":[],\"clusterId\":\"tk\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"tdigsxcdglj\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[],\"hybridAksClustersAssociatedIds\":[\"htomflrytswfp\",\"mdgycxn\",\"skw\"],\"interfaceName\":\"jjyslurlps\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"edwqslsrh\",\"pq\"]},\"location\":\"wskondcbrwimuvqe\",\"tags\":{\"tljqobbpih\":\"ovyrrleaesinu\"},\"id\":\"hcecybmrqbr\",\"name\":\"bbmpxdlvykfre\",\"type\":\"crse\"}";
+            "{\"extendedLocation\":{\"name\":\"attcju\",\"type\":\"plrvkmjcwmjvlg\"},\"properties\":{\"additionalEgressEndpoints\":[],\"associatedResourceIds\":[\"yylizrz\",\"jpsfxsfu\"],\"clusterId\":\"lvt\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"bwidql\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[],\"hybridAksClustersAssociatedIds\":[\"ofizrvjfnmjmvlwy\",\"giblkujrllf\"],\"interfaceName\":\"uidjpuuyjucej\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"ovvtzejetjkln\",\"ikyju\"]},\"location\":\"dbqzolxrzvhqjw\",\"tags\":{\"rrkolawjmjs\":\"tgvgzp\"},\"id\":\"wro\",\"name\":\"cdxfzzzwyjafitl\",\"type\":\"guyn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +63,15 @@ public final class CloudServicesNetworksGetByResourceGroupWithResponseMockTests 
         CloudServicesNetwork response =
             manager
                 .cloudServicesNetworks()
-                .getByResourceGroupWithResponse("klbyulidwcw", "mzegjon", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("nbatzvi", "sowsaael", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("wskondcbrwimuvqe", response.location());
-        Assertions.assertEquals("ovyrrleaesinu", response.tags().get("tljqobbpih"));
-        Assertions.assertEquals("hj", response.extendedLocation().name());
-        Assertions.assertEquals("rwgdnqzbrfks", response.extendedLocation().type());
+        Assertions.assertEquals("dbqzolxrzvhqjw", response.location());
+        Assertions.assertEquals("tgvgzp", response.tags().get("rrkolawjmjs"));
+        Assertions.assertEquals("attcju", response.extendedLocation().name());
+        Assertions.assertEquals("plrvkmjcwmjvlg", response.extendedLocation().type());
         Assertions
             .assertEquals(
-                CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE, response.enableDefaultEgressEndpoints());
+                CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE, response.enableDefaultEgressEndpoints());
     }
 }

@@ -33,128 +33,242 @@ import reactor.core.publisher.Mono;
 @Host("{url}")
 @ServiceInterface(name = "KeyVault")
 public interface CryptographyService {
+    @Post("keys/{key-name}/{key-version}/encrypt")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<KeyOperationResult>> encryptAsync(@HostParam("url") String url,
+                                                    @PathParam("key-name") String keyName,
+                                                    @PathParam("key-version") String keyVersion,
+                                                    @QueryParam("api-version") String apiVersion,
+                                                    @HeaderParam("accept-language") String acceptLanguage,
+                                                    @BodyParam("application/json") KeyOperationParameters parameters,
+                                                    @HeaderParam("Content-Type") String type,
+                                                    Context context);
 
     @Post("keys/{key-name}/{key-version}/encrypt")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyOperationResult>> encrypt(@HostParam("url") String url,
-                                  @PathParam("key-name") String keyName,
-                                  @PathParam("key-version") String keyVersion,
-                                  @QueryParam("api-version") String apiVersion,
-                                  @HeaderParam("accept-language") String acceptLanguage,
-                                  @BodyParam("application/json") KeyOperationParameters parameters,
-                                  @HeaderParam("Content-Type") String type,
-                                  Context context);
+    Response<KeyOperationResult> encrypt(@HostParam("url") String url,
+                                         @PathParam("key-name") String keyName,
+                                         @PathParam("key-version") String keyVersion,
+                                         @QueryParam("api-version") String apiVersion,
+                                         @HeaderParam("accept-language") String acceptLanguage,
+                                         @BodyParam("application/json") KeyOperationParameters parameters,
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
 
     @Post("keys/{key-name}/{key-version}/decrypt")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyOperationResult>> decrypt(@HostParam("url") String url,
-                                @PathParam("key-name") String keyName,
-                                @PathParam("key-version") String keyVersion,
-                                @QueryParam("api-version") String apiVersion,
-                                @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("application/json") KeyOperationParameters parameters,
-                                @HeaderParam("Content-Type") String type,
-                                Context context);
+    Mono<Response<KeyOperationResult>> decryptAsync(@HostParam("url") String url,
+                                                    @PathParam("key-name") String keyName,
+                                                    @PathParam("key-version") String keyVersion,
+                                                    @QueryParam("api-version") String apiVersion,
+                                                    @HeaderParam("accept-language") String acceptLanguage,
+                                                    @BodyParam("application/json") KeyOperationParameters parameters,
+                                                    @HeaderParam("Content-Type") String type,
+                                                    Context context);
 
+    @Post("keys/{key-name}/{key-version}/decrypt")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyOperationResult> decrypt(@HostParam("url") String url,
+                                         @PathParam("key-name") String keyName,
+                                         @PathParam("key-version") String keyVersion,
+                                         @QueryParam("api-version") String apiVersion,
+                                         @HeaderParam("accept-language") String acceptLanguage,
+                                         @BodyParam("application/json") KeyOperationParameters parameters,
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
 
     @Post("keys/{key-name}/{key-version}/sign")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyOperationResult>> sign(@HostParam("url") String url,
-                                @PathParam("key-name") String keyName,
-                                @PathParam("key-version") String keyVersion,
-                                @QueryParam("api-version") String apiVersion,
-                                @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("application/json") KeySignRequest parameters,
-                                @HeaderParam("Content-Type") String type,
-                                Context context);
+    Mono<Response<KeyOperationResult>> signAsync(@HostParam("url") String url,
+                                                 @PathParam("key-name") String keyName,
+                                                 @PathParam("key-version") String keyVersion,
+                                                 @QueryParam("api-version") String apiVersion,
+                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                 @BodyParam("application/json") KeySignRequest parameters,
+                                                 @HeaderParam("Content-Type") String type,
+                                                 Context context);
+
+    @Post("keys/{key-name}/{key-version}/sign")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyOperationResult> sign(@HostParam("url") String url,
+                                      @PathParam("key-name") String keyName,
+                                      @PathParam("key-version") String keyVersion,
+                                      @QueryParam("api-version") String apiVersion,
+                                      @HeaderParam("accept-language") String acceptLanguage,
+                                      @BodyParam("application/json") KeySignRequest parameters,
+                                      @HeaderParam("Content-Type") String type,
+                                      Context context);
 
 
     @Post("keys/{key-name}/{key-version}/verify")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVerifyResponse>> verify(@HostParam("url") String url,
-                                @PathParam("key-name") String keyName,
-                                @PathParam("key-version") String keyVersion,
-                                @QueryParam("api-version") String apiVersion,
-                                @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("application/json") KeyVerifyRequest parameters,
-                                @HeaderParam("Content-Type") String type,
-                                Context context);
+    Mono<Response<KeyVerifyResponse>> verifyAsync(@HostParam("url") String url,
+                                                  @PathParam("key-name") String keyName,
+                                                  @PathParam("key-version") String keyVersion,
+                                                  @QueryParam("api-version") String apiVersion,
+                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                  @BodyParam("application/json") KeyVerifyRequest parameters,
+                                                  @HeaderParam("Content-Type") String type,
+                                                  Context context);
 
+    @Post("keys/{key-name}/{key-version}/verify")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyVerifyResponse> verify(@HostParam("url") String url,
+                                       @PathParam("key-name") String keyName,
+                                       @PathParam("key-version") String keyVersion,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @BodyParam("application/json") KeyVerifyRequest parameters,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
 
 
     @Post("keys/{key-name}/{key-version}/wrapkey")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyOperationResult>> wrapKey(@HostParam("url") String url,
-                                @PathParam("key-name") String keyName,
-                                @PathParam("key-version") String keyVersion,
-                                @QueryParam("api-version") String apiVersion,
-                                @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
-                                @HeaderParam("Content-Type") String type,
-                                Context context);
+    Mono<Response<KeyOperationResult>> wrapKeyAsync(@HostParam("url") String url,
+                                                    @PathParam("key-name") String keyName,
+                                                    @PathParam("key-version") String keyVersion,
+                                                    @QueryParam("api-version") String apiVersion,
+                                                    @HeaderParam("accept-language") String acceptLanguage,
+                                                    @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
+                                                    @HeaderParam("Content-Type") String type,
+                                                    Context context);
+
+    @Post("keys/{key-name}/{key-version}/wrapkey")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyOperationResult> wrapKey(@HostParam("url") String url,
+                                         @PathParam("key-name") String keyName,
+                                         @PathParam("key-version") String keyVersion,
+                                         @QueryParam("api-version") String apiVersion,
+                                         @HeaderParam("accept-language") String acceptLanguage,
+                                         @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
 
     @Post("keys/{key-name}/{key-version}/unwrapkey")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyOperationResult>> unwrapKey(@HostParam("url") String url,
-                                @PathParam("key-name") String keyName,
-                                @PathParam("key-version") String keyVersion,
-                                @QueryParam("api-version") String apiVersion,
-                                @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
-                                @HeaderParam("Content-Type") String type,
-                                Context context);
+    Mono<Response<KeyOperationResult>> unwrapKeyAsync(@HostParam("url") String url,
+                                                      @PathParam("key-name") String keyName,
+                                                      @PathParam("key-version") String keyVersion,
+                                                      @QueryParam("api-version") String apiVersion,
+                                                      @HeaderParam("accept-language") String acceptLanguage,
+                                                      @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
+                                                      @HeaderParam("Content-Type") String type,
+                                                      Context context);
+
+    @Post("keys/{key-name}/{key-version}/unwrapkey")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyOperationResult> unwrapKey(@HostParam("url") String url,
+                                           @PathParam("key-name") String keyName,
+                                           @PathParam("key-version") String keyVersion,
+                                           @QueryParam("api-version") String apiVersion,
+                                           @HeaderParam("accept-language") String acceptLanguage,
+                                           @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
+                                           @HeaderParam("Content-Type") String type,
+                                           Context context);
 
     @Get("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultKey>> getKey(@HostParam("url") String url,
-                                       @PathParam("key-name") String keyName,
-                                       @PathParam("key-version") String keyVersion,
-                                       @QueryParam("api-version") String apiVersion,
-                                       @HeaderParam("accept-language") String acceptLanguage,
-                                       @HeaderParam("Content-Type") String type,
-                                       Context context);
+    Mono<Response<KeyVaultKey>> getKeyAsync(@HostParam("url") String url,
+                                            @PathParam("key-name") String keyName,
+                                            @PathParam("key-version") String keyVersion,
+                                            @QueryParam("api-version") String apiVersion,
+                                            @HeaderParam("accept-language") String acceptLanguage,
+                                            @HeaderParam("Content-Type") String type,
+                                            Context context);
+
+    @Get("keys/{key-name}/{key-version}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyVaultKey> getKey(@HostParam("url") String url,
+                                 @PathParam("key-name") String keyName,
+                                 @PathParam("key-version") String keyVersion,
+                                 @QueryParam("api-version") String apiVersion,
+                                 @HeaderParam("accept-language") String acceptLanguage,
+                                 @HeaderParam("Content-Type") String type,
+                                 Context context);
 
     @Get("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<SecretKey>> getSecret(@HostParam("url") String url,
-                                       @PathParam("secret-name") String keyName,
-                                       @PathParam("secret-version") String keyVersion,
-                                       @QueryParam("api-version") String apiVersion,
-                                       @HeaderParam("accept-language") String acceptLanguage,
-                                       @HeaderParam("Content-Type") String type,
-                                       Context context);
+    Mono<Response<SecretKey>> getSecretAsync(@HostParam("url") String url,
+                                             @PathParam("secret-name") String keyName,
+                                             @PathParam("secret-version") String keyVersion,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
+
+    @Get("secrets/{secret-name}/{secret-version}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<SecretKey> getSecret(@HostParam("url") String url,
+                                  @PathParam("secret-name") String keyName,
+                                  @PathParam("secret-version") String keyVersion,
+                                  @QueryParam("api-version") String apiVersion,
+                                  @HeaderParam("accept-language") String acceptLanguage,
+                                  @HeaderParam("Content-Type") String type,
+                                  Context context);
 
     @Put("secrets/{secret-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<SecretKey>> setSecret(@HostParam("url") String url,
+    Mono<Response<SecretKey>> setSecretAsync(@HostParam("url") String url,
                                              @PathParam("secret-name") String secretName,
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
                                              @BodyParam("application/json") SecretRequestParameters parameters,
                                              @HeaderParam("Content-Type") String type,
                                              Context context);
+
+    @Put("secrets/{secret-name}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<SecretKey> setSecret(@HostParam("url") String url,
+                                  @PathParam("secret-name") String secretName,
+                                  @QueryParam("api-version") String apiVersion,
+                                  @HeaderParam("accept-language") String acceptLanguage,
+                                  @BodyParam("application/json") SecretRequestParameters parameters,
+                                  @HeaderParam("Content-Type") String type,
+                                  Context context);
 }

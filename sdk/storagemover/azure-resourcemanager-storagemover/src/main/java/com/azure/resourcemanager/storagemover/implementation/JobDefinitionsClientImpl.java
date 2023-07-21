@@ -70,8 +70,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
     public interface JobDefinitionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover"
-                + "/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobDefinitionList>> list(
@@ -86,8 +85,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover"
-                + "/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobDefinitionInner>> get(
@@ -103,8 +101,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover"
-                + "/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobDefinitionInner>> createOrUpdate(
@@ -121,8 +118,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover"
-                + "/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobDefinitionInner>> update(
@@ -139,8 +135,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover"
-                + "/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -156,9 +151,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover"
-                + "/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}"
-                + "/startJob")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/startJob")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobRunResourceIdInner>> startJob(
@@ -174,8 +167,7 @@ public final class JobDefinitionsClientImpl implements JobDefinitionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover"
-                + "/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/stopJob")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/stopJob")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobRunResourceIdInner>> stopJob(

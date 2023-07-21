@@ -45,7 +45,7 @@ public class OpenAIProxySample {
 
         Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt).setMaxTokens(100));
 
-        System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+        System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
         for (Choice choice : completions.getChoices()) {
             System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
         }

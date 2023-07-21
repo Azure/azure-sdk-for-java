@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.models.Autoscale;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleCapacity;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleConfigurationUpdateParameter;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 /** Samples for Clusters UpdateAutoScaleConfiguration. */
 public final class ClustersUpdateAutoScaleConfigurationSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/EnableOrUpdateAutoScaleWithLoadBasedConfiguration.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/EnableOrUpdateAutoScaleWithLoadBasedConfiguration.json
      */
     /**
      * Sample code: Enable or Update Autoscale with the load based configuration for HDInsight cluster.
@@ -37,11 +36,11 @@ public final class ClustersUpdateAutoScaleConfigurationSamples {
                     .withAutoscale(
                         new Autoscale()
                             .withCapacity(new AutoscaleCapacity().withMinInstanceCount(3).withMaxInstanceCount(5))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DisableClusterAutoScale.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/DisableClusterAutoScale.json
      */
     /**
      * Sample code: Disable Autoscale for the HDInsight cluster.
@@ -53,11 +52,15 @@ public final class ClustersUpdateAutoScaleConfigurationSamples {
         manager
             .clusters()
             .updateAutoScaleConfiguration(
-                "rg1", "cluster1", RoleName.WORKERNODE, new AutoscaleConfigurationUpdateParameter(), Context.NONE);
+                "rg1",
+                "cluster1",
+                RoleName.WORKERNODE,
+                new AutoscaleConfigurationUpdateParameter(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/EnableOrUpdateAutoScaleWithScheduleBasedConfiguration.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/EnableOrUpdateAutoScaleWithScheduleBasedConfiguration.json
      */
     /**
      * Sample code: Enable or Update Autoscale with the schedule based configuration for HDInsight cluster.
@@ -88,6 +91,6 @@ public final class ClustersUpdateAutoScaleConfigurationSamples {
                                                             .withTime("16:00")
                                                             .withMinInstanceCount(4)
                                                             .withMaxInstanceCount(4)))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

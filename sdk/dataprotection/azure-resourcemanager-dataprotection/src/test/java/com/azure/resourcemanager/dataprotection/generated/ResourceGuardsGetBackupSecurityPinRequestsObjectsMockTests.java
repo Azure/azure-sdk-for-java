@@ -30,7 +30,7 @@ public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"gznmmaxrizkzob\",\"name\":\"pxl\",\"type\":\"lnelxieixynl\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"d\",\"name\":\"gueiookjbsahrtdt\",\"type\":\"elqacslmot\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +61,6 @@ public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsMockTests {
         PagedIterable<DppBaseResource> response =
             manager
                 .resourceGuards()
-                .getBackupSecurityPinRequestsObjects("ovzidsx", "aabzmif", com.azure.core.util.Context.NONE);
+                .getBackupSecurityPinRequestsObjects("mlbnseq", "cjjvpilguooqja", com.azure.core.util.Context.NONE);
     }
 }

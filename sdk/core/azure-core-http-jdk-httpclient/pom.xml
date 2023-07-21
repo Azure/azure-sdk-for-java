@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-jdk-httpclient</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
 
   <name>Microsoft Azure JDK HTTP Client Library</name>
   <description>This package contains the Azure HTTP client library using the JDK HttpClient API.</description>
@@ -72,14 +72,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.42.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using JDK 11 HttpClient -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.42.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -99,7 +99,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.29</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -122,12 +122,6 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-jre8-standalone</artifactId>
-      <version>2.35.0</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-jre8-standalone;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -176,7 +170,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -185,7 +179,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

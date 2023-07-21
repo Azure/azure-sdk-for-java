@@ -4,7 +4,6 @@
 
 module com.azure.ai.documenttranslator {
     requires transitive com.azure.core;
-    requires transitive com.azure.core.experimental;
 
     exports com.azure.ai.documenttranslator;
 }

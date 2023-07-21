@@ -31,7 +31,7 @@ public final class OperationStatusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"endTime\":\"2021-06-13T19:04:17Z\",\"id\":\"epn\",\"name\":\"jcrxgibbdaxcon\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-07-31T05:48:57Z\",\"status\":\"orsukokwbqp\"}";
+            "{\"endTime\":\"2021-03-27T07:28:32Z\",\"id\":\"hlwigdivbkbxg\",\"name\":\"fajuwas\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-01-09T03:36:37Z\",\"status\":\"y\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class OperationStatusGetWithResponseMockTests {
         OperationResource response =
             manager
                 .operationStatus()
-                .getWithResponse("uvwpklvxwmyg", "xpgpq", com.azure.core.util.Context.NONE)
+                .getWithResponse("zyqdrfegcealzx", "hcans", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T19:04:17Z"), response.endTime());
-        Assertions.assertEquals("epn", response.id());
-        Assertions.assertEquals("jcrxgibbdaxcon", response.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T05:48:57Z"), response.startTime());
-        Assertions.assertEquals("orsukokwbqp", response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T07:28:32Z"), response.endTime());
+        Assertions.assertEquals("hlwigdivbkbxg", response.id());
+        Assertions.assertEquals("fajuwas", response.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T03:36:37Z"), response.startTime());
+        Assertions.assertEquals("y", response.status());
     }
 }

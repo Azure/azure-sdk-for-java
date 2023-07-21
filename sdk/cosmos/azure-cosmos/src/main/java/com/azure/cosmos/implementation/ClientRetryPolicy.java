@@ -150,7 +150,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
-            return Mono.just(this.shouldRetryOnSessionNotAvailable());
+            return Mono.just(this.shouldRetryOnSessionNotAvailable(this.request));
         }
 
         // This is for gateway mode, collection recreate scenario is not handled there
@@ -170,9 +170,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         //Meta data request check
-        boolean isMetaDataRequest = (request.getOperationType() != OperationType.ExecuteJavaScript
-            && request.getResourceType() == ResourceType.StoredProcedure)
-            || request.getResourceType() != ResourceType.Document;
+        boolean isMetaDataRequest = request.isMetadataRequest();
 
         //Meta Data Read
         if(isMetaDataRequest && request.isReadOnly()) {
@@ -213,7 +211,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
     }
 
-    private ShouldRetryResult shouldRetryOnSessionNotAvailable() {
+    private ShouldRetryResult shouldRetryOnSessionNotAvailable(RxDocumentServiceRequest request) {
         this.sessionTokenRetryCount++;
 
         if (!this.enableEndpointDiscovery) {
@@ -221,7 +219,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return ShouldRetryResult.noRetry();
         } else {
             if (this.canUseMultipleWriteLocations) {
-                UnmodifiableList<URI> endpoints = this.isReadRequest ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                UnmodifiableList<URI> endpoints =
+                    this.isReadRequest ?
+                        this.globalEndpointManager.getApplicableReadEndpoints(request) : this.globalEndpointManager.getApplicableWriteEndpoints(request);
 
                 if (this.sessionTokenRetryCount > endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried

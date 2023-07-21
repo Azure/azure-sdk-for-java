@@ -15,26 +15,26 @@ public final class AzureCapacityTests {
         AzureCapacity model =
             BinaryData
                 .fromString(
-                    "{\"scaleType\":\"manual\",\"minimum\":471939229,\"maximum\":485576970,\"default\":1074996435}")
+                    "{\"scaleType\":\"none\",\"minimum\":1561651714,\"maximum\":17080551,\"default\":663876246}")
                 .toObject(AzureCapacity.class);
-        Assertions.assertEquals(AzureScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(471939229, model.minimum());
-        Assertions.assertEquals(485576970, model.maximum());
-        Assertions.assertEquals(1074996435, model.defaultProperty());
+        Assertions.assertEquals(AzureScaleType.NONE, model.scaleType());
+        Assertions.assertEquals(1561651714, model.minimum());
+        Assertions.assertEquals(17080551, model.maximum());
+        Assertions.assertEquals(663876246, model.defaultProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureCapacity model =
             new AzureCapacity()
-                .withScaleType(AzureScaleType.MANUAL)
-                .withMinimum(471939229)
-                .withMaximum(485576970)
-                .withDefaultProperty(1074996435);
+                .withScaleType(AzureScaleType.NONE)
+                .withMinimum(1561651714)
+                .withMaximum(17080551)
+                .withDefaultProperty(663876246);
         model = BinaryData.fromObject(model).toObject(AzureCapacity.class);
-        Assertions.assertEquals(AzureScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(471939229, model.minimum());
-        Assertions.assertEquals(485576970, model.maximum());
-        Assertions.assertEquals(1074996435, model.defaultProperty());
+        Assertions.assertEquals(AzureScaleType.NONE, model.scaleType());
+        Assertions.assertEquals(1561651714, model.minimum());
+        Assertions.assertEquals(17080551, model.maximum());
+        Assertions.assertEquals(663876246, model.defaultProperty());
     }
 }

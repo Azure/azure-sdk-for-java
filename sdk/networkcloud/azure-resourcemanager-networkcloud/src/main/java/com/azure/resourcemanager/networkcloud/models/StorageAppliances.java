@@ -220,42 +220,6 @@ public interface StorageAppliances {
         Context context);
 
     /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context);
-
-    /**
      * Retrieve the storage appliance.
      *
      * <p>Get properties of the provided storage appliance.

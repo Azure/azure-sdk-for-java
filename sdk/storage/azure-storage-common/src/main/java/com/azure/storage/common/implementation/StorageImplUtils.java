@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -88,12 +89,15 @@ public class StorageImplUtils {
     private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
         .withLocale(Locale.ROOT);
 
-    private static final DateTimeFormatter NO_SECONDS_FORMATTER =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
-            .withLocale(Locale.ROOT);
+    private static final DateTimeFormatter NO_SECONDS_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
+        .withLocale(Locale.ROOT);
+
+    private static final DateTimeFormatter NO_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        .withLocale(Locale.ROOT);
 
     public static final ExecutorService THREAD_POOL = getThreadPoolWithShutdownHook();
     private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 30;
+
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -351,6 +355,9 @@ public class StorageImplUtils {
             case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
                 formatter = NO_SECONDS_FORMATTER;
                 break;
+            case 10: // "yyyy-MM-dd"-> [2012-01-04] length = 10
+                return new TimeAndFormat(LocalDate.parse(dateString).atStartOfDay(ZoneOffset.UTC).toOffsetDateTime(),
+                    NO_TIME_FORMATTER);
             default:
                 throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
         }

@@ -6,6 +6,15 @@
 - Number Lookup API public preview
 - API version `2023-05-01-preview` is the default
 
+## 1.1.3 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-communication-common` from `1.2.8` to version `1.2.9`.
+
 ## 1.1.2 (2023-05-23)
 
 ### Other Changes
