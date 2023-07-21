@@ -9,11 +9,16 @@ import org.apache.maven.model.Dependency;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 /**
@@ -89,7 +94,7 @@ public class MavenUtils {
                     LOGGER.warn("Got a non-successful response for  " + artifactId + ": " + responseCode);
                 }
             }
-        } catch (Exception exception) {
+        } catch (ParserConfigurationException | IOException | SAXException exception) {
             if (LOGGER.isErrorEnabled()) {
                 LOGGER.error("Got error getting latest maven dependency version. " + exception.getMessage());
             }

@@ -158,15 +158,16 @@ public class DependencyCheckerTool implements Runnable {
         }
         if (!outdatedTransitiveDependencies.isEmpty()) {
             // convert each track one dependency into actionable guidance
-            String message = getString("deprecatedIndirectDependency");
+            StringBuilder message = new StringBuilder(getString("deprecatedIndirectDependency"));
             for (OutdatedDependency outdatedDependency : outdatedDirectDependencies) {
-                message += "\n    - " + outdatedDependency.getOutdatedDependency();
+                message.append("\n    - ")
+                    .append(outdatedDependency.getOutdatedDependency());
             }
             List<String> outdatedTransitiveDependencyGavs = outdatedTransitiveDependencies
                 .stream()
                 .map(OutdatedDependency::getOutdatedDependency)
                 .collect(Collectors.toList());
-            failOrWarn(AzureSdkMojo.getMojo()::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_TRANSITIVE_DEPENDENCY, message, outdatedTransitiveDependencyGavs);
+            failOrWarn(AzureSdkMojo.getMojo()::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_TRANSITIVE_DEPENDENCY, message.toString(), outdatedTransitiveDependencyGavs);
         }
     }
 }
