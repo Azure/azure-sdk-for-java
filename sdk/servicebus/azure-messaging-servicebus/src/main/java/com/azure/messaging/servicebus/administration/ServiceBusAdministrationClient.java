@@ -219,10 +219,8 @@ public final class ServiceBusAdministrationClient {
         if (queueOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'queueOptions' cannot be null."));
         }
-        context = context == null ? Context.NONE : context;
 
-        final Context contextWithHeaders
-            = enableSyncContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+        final Context contextWithHeaders = enableSyncContext(context);
         final String forwardTo = getForwardToEntity(queueOptions.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             queueOptions.setForwardTo(forwardTo);
@@ -406,9 +404,7 @@ public final class ServiceBusAdministrationClient {
         if (subscriptionOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'subscriptionOptions' cannot be null."));
         }
-        context = context == null ? Context.NONE : context;
-        final Context contextWithHeaders
-            = enableSyncContext(getContext(context).addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+        final Context contextWithHeaders = enableSyncContext(getContext(context));
         final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             subscriptionOptions.setForwardTo(forwardTo);
@@ -1468,10 +1464,8 @@ public final class ServiceBusAdministrationClient {
         if (queue == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'queue' cannot be null"));
         }
-        context = context == null ? Context.NONE : context;
 
-        final Context contextWithHeaders
-            = enableSyncContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+        final Context contextWithHeaders = enableSyncContext(context);
         final String forwardTo = getForwardToEntity(queue.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             queue.setForwardTo(forwardTo);
@@ -1630,9 +1624,8 @@ public final class ServiceBusAdministrationClient {
         if (subscription == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'subscription' cannot be null"));
         }
-        context = context == null ? Context.NONE : context;
-        final Context contextWithHeaders
-            = enableSyncContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+
+        final Context contextWithHeaders = enableSyncContext(context);
 
         final String forwardTo = getForwardToEntity(subscription.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {

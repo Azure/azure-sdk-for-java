@@ -1436,9 +1436,8 @@ public final class ServiceBusAdministrationAsyncClient {
         if (createQueueOptions == null) {
             return monoError(LOGGER, new NullPointerException("'createQueueOptions' cannot be null."));
         }
-        context = context == null ? Context.NONE : context;
-        final Context contextWithHeaders
-            = getContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+
+        final Context contextWithHeaders = getContext(context);
 
         final String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
@@ -1524,9 +1523,8 @@ public final class ServiceBusAdministrationAsyncClient {
         if (subscriptionOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'subscriptionOptions' cannot be null."));
         }
-        context = context == null ? Context.NONE : context;
-        final Context contextWithHeaders
-            = getContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+
+        final Context contextWithHeaders = getContext(context);
 
         final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
@@ -1869,6 +1867,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(LOGGER, ex);
         }
     }
+
     /**
      * Gets the first page of queues with context.
      *
@@ -1877,7 +1876,6 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of queues.
      */
     Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
-
         try {
             return listQueues(0, getContext(context));
         } catch (RuntimeException e) {
@@ -2034,10 +2032,9 @@ public final class ServiceBusAdministrationAsyncClient {
         if (queue == null) {
             return monoError(LOGGER, new NullPointerException("'queue' cannot be null"));
         }
-        context = context == null ? Context.NONE : context;
 
-        final Context contextWithHeaders
-            = getContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+        final Context contextWithHeaders = getContext(context);
+
         final String forwardTo = getForwardToEntity(queue.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             queue.setForwardTo(forwardTo);
@@ -2102,8 +2099,8 @@ public final class ServiceBusAdministrationAsyncClient {
         if (subscription == null) {
             return monoError(LOGGER, new NullPointerException("'subscription' cannot be null"));
         }
-        context = context == null ? Context.NONE : context;
-        final Context contextWithHeaders = context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+
+        final Context contextWithHeaders = getContext(context);
         final String forwardTo = getForwardToEntity(subscription.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             subscription.setForwardTo(forwardTo);
@@ -2378,7 +2375,6 @@ public final class ServiceBusAdministrationAsyncClient {
                 }
             });
     }
-
 
     /**
      * Checks if the given entity is an absolute URL, if so return it.
