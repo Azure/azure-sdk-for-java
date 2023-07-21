@@ -32,7 +32,7 @@ public final class UsagesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"hevxcced\",\"currentValue\":3364825341811848774,\"limit\":1362790125818102816,\"name\":{\"value\":\"wzxltjc\",\"localizedValue\":\"hlt\"},\"unit\":\"gcxn\"}]}";
+            "{\"value\":[{\"id\":\"khlg\",\"currentValue\":6332875207430967251,\"limit\":4701280838223186253,\"name\":{\"value\":\"zszuwiwtglxx\",\"localizedValue\":\"jfpgpicrmn\"},\"unit\":\"rgmqgjs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,13 +61,13 @@ public final class UsagesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SignalRServiceUsage> response =
-            manager.usages().list("hfwpracstwit", com.azure.core.util.Context.NONE);
+            manager.usages().list("xqpswok", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hevxcced", response.iterator().next().id());
-        Assertions.assertEquals(3364825341811848774L, response.iterator().next().currentValue());
-        Assertions.assertEquals(1362790125818102816L, response.iterator().next().limit());
-        Assertions.assertEquals("wzxltjc", response.iterator().next().name().value());
-        Assertions.assertEquals("hlt", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("gcxn", response.iterator().next().unit());
+        Assertions.assertEquals("khlg", response.iterator().next().id());
+        Assertions.assertEquals(6332875207430967251L, response.iterator().next().currentValue());
+        Assertions.assertEquals(4701280838223186253L, response.iterator().next().limit());
+        Assertions.assertEquals("zszuwiwtglxx", response.iterator().next().name().value());
+        Assertions.assertEquals("jfpgpicrmn", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("rgmqgjs", response.iterator().next().unit());
     }
 }
