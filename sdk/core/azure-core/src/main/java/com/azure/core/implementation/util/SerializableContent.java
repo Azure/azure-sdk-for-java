@@ -5,6 +5,7 @@ package com.azure.core.implementation.util;
 
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonValue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  */
 public final class SerializableContent extends BinaryDataContent {
 
+    @JsonValue
     private final Object content;
     private final ObjectSerializer serializer;
 
@@ -29,7 +31,8 @@ public final class SerializableContent extends BinaryDataContent {
 
     /**
      * Creates a new instance of {@link SerializableContent}.
-     * @param content The serializable object that forms the content of this instance.
+     *
+     * @param content    The serializable object that forms the content of this instance.
      * @param serializer The serializer that serializes the {@code content}.
      * @throws NullPointerException if {@code serializer} is null.
      */

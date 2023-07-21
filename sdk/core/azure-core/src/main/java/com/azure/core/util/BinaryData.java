@@ -19,6 +19,7 @@ import com.azure.core.util.serializer.JsonSerializerProvider;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonValue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -62,12 +63,12 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Refer to the documentation of each method in the BinaryData class to better understand its performance
  * characteristics, and refer to the samples below to understand the common usage scenarios of this class.
  * </p>
- *
+ * <p>
  * {@link BinaryData} can be created from an {@link InputStream}, a {@link Flux} of {@link ByteBuffer}, a
  * {@link String}, an {@link Object}, a {@link Path file}, or a byte array.
  *
  * <p><strong>A note on data mutability</strong></p>
- *
+ * <p>
  * {@link BinaryData} does not copy data on construction. BinaryData keeps a reference to the source content and is
  * accessed when a read request is made. So, any modifications to the underlying source before the content is read can
  * result in undefined behavior.
@@ -77,7 +78,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </p>
  *
  * <p><strong>Create an instance from a byte array</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
  * <pre>
  * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -87,7 +88,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
  *
  * <p><strong>Create an instance from a String</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
  * <pre>
  * final String data = &quot;Some Data&quot;;
@@ -98,7 +99,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.core.util.BinaryData.fromString#String -->
  *
  * <p><strong>Create an instance from an InputStream</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
  * <pre>
  * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
@@ -108,7 +109,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
  *
  * <p><strong>Create an instance from an Object</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
  * <pre>
  * class Person &#123;
@@ -138,7 +139,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
  *
  * <p><strong>Create an instance from {@code Flux<ByteBuffer>}</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
  * <pre>
  * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -160,7 +161,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
  *
  * <p><strong>Create an instance from a file</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
  * <pre>
  * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
@@ -175,7 +176,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
-    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+    @JsonValue
     private final BinaryDataContent content;
 
     BinaryData(BinaryDataContent content) {
@@ -206,7 +207,7 @@ public final class BinaryData {
      * </p>
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
      * <pre>
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
@@ -234,7 +235,7 @@ public final class BinaryData {
      * </p>
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream-Long -->
      * <pre>
      * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -245,7 +246,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream-Long -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
-     * @param length The length of {@code data} in bytes.
+     * @param length      The length of {@code data} in bytes.
      * @return A {@link BinaryData} representing the {@link InputStream}.
      * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
      * @throws NullPointerException If {@code inputStream} is null.
@@ -259,7 +260,7 @@ public final class BinaryData {
      * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromStreamAsync#InputStream -->
      * <pre>
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
@@ -293,7 +294,7 @@ public final class BinaryData {
      * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
      * <pre>
      * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -315,7 +316,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
-     * @param length The length of {@code data} in bytes.
+     * @param length      The length of {@code data} in bytes.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link InputStream}.
      * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
      * @throws NullPointerException If {@code inputStream} is null.
@@ -330,7 +331,7 @@ public final class BinaryData {
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
      * <p>This method aggregates data into single byte array.</p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -365,7 +366,7 @@ public final class BinaryData {
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
      * <p>This method aggregates data into single byte array.</p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -387,11 +388,11 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
      *
-     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @param data   The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      * @throws IllegalArgumentException if the length is less than zero.
-     * @throws NullPointerException if {@code data} is null.
+     * @throws NullPointerException     if {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length) {
         return fromFlux(data, length, true);
@@ -405,7 +406,7 @@ public final class BinaryData {
      * {@link BinaryData} length even if buffering determines a different length.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -428,12 +429,12 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
      *
-     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
-     * @param length The length of {@code data} in bytes.
+     * @param data          The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @param length        The length of {@code data} in bytes.
      * @param bufferContent A flag indicating whether {@link Flux} should be buffered eagerly or consumption deferred.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      * @throws IllegalArgumentException if the length is less than zero.
-     * @throws NullPointerException if {@code data} is null.
+     * @throws NullPointerException     if {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length, boolean bufferContent) {
         if (data == null) {
@@ -455,21 +456,21 @@ public final class BinaryData {
         //    arrays.
         long[] trueLength = new long[]{0};
         return data.map(buffer -> {
-            int bufferSize = buffer.remaining();
-            ByteBuffer copy = ByteBuffer.allocate(bufferSize);
-            trueLength[0] += bufferSize;
-            copy.put(buffer);
-            copy.flip();
+                int bufferSize = buffer.remaining();
+                ByteBuffer copy = ByteBuffer.allocate(bufferSize);
+                trueLength[0] += bufferSize;
+                copy.put(buffer);
+                copy.flip();
 
-            return copy;
-        })
-        .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
-        .map(buffers -> {
-            // TODO (alzimmer): What should be done when length != null but it differs from the true length
-            //  seen when doing the buffering.
-            return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
-                (length != null) ? length : trueLength[0], true));
-        });
+                return copy;
+            })
+            .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
+            .map(buffers -> {
+                // TODO (alzimmer): What should be done when length != null but it differs from the true length
+                //  seen when doing the buffering.
+                return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
+                    (length != null) ? length : trueLength[0], true));
+            });
     }
 
     /**
@@ -479,7 +480,7 @@ public final class BinaryData {
      * {@link StandardCharsets#UTF_8}.
      * </p>
      * <p><strong>Create an instance from a String</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
      * <pre>
      * final String data = &quot;Some Data&quot;;
@@ -507,7 +508,7 @@ public final class BinaryData {
      * </p>
      *
      * <p><strong>Create an instance from a byte array</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -535,7 +536,7 @@ public final class BinaryData {
      * </p>
      *
      * <p><strong>Create an instance from a ByteBuffer</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
      * <pre>
      * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
@@ -563,7 +564,7 @@ public final class BinaryData {
      * </p>
      *
      * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromListByteBuffer#List -->
      * <pre>
      * final List&lt;ByteBuffer&gt; data = Stream.of&#40;&quot;Some &quot;, &quot;data&quot;&#41;
@@ -590,7 +591,7 @@ public final class BinaryData {
      * implementation is found, a default Jackson-based implementation will be used to serialize the object.
      * </p>
      * <p><strong>Creating an instance from an Object</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
      * <pre>
      * class Person &#123;
@@ -637,7 +638,7 @@ public final class BinaryData {
      * implementation is found, a default Jackson-based implementation will be used to serialize the object.
      * </p>
      * <p><strong>Creating an instance from an Object</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object -->
      * <pre>
      * class Person &#123;
@@ -692,7 +693,7 @@ public final class BinaryData {
      * </ul>
      *
      * <p><strong>Create an instance from an Object</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      * <pre>
      * class Person &#123;
@@ -723,8 +724,8 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      *
-     * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
-     * determines how {@code null} data is serialized.
+     * @param data       The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
+     *                   determines how {@code null} data is serialized.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link BinaryData} representing the serialized object.
      * @throws NullPointerException If {@code serializer} is null.
@@ -752,7 +753,7 @@ public final class BinaryData {
      * </ul>
      *
      * <p><strong>Create an instance from an Object</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
      * <pre>
      * class Person &#123;
@@ -786,8 +787,8 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
      *
-     * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
-     * determines how {@code null} data is serialized.
+     * @param data       The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
+     *                   determines how {@code null} data is serialized.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link Mono} of {@link BinaryData} representing the serialized object.
      * @throws NullPointerException If {@code serializer} is null.
@@ -807,7 +808,7 @@ public final class BinaryData {
      * <p><strong>Create an instance from a file</strong></p>
      *
      * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
      * <pre>
      * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
@@ -829,7 +830,7 @@ public final class BinaryData {
      * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
      *
      * <p><strong>Create an instance from a file</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-int -->
      * <pre>
      * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, 8092&#41;;
@@ -837,13 +838,13 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromFile#Path-int -->
      *
-     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param file      The {@link Path} that will be the {@link BinaryData} data.
      * @param chunkSize The requested size for each read of the path.
      * @return A new {@link BinaryData}.
-     * @throws NullPointerException If {@code file} is null.
+     * @throws NullPointerException     If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
-     * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
-     * @throws UncheckedIOException if the file does not exist.
+     *                                  {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException     if the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
         return new BinaryData(new FileContent(file, chunkSize, null, null));
@@ -857,7 +858,7 @@ public final class BinaryData {
      * <p><strong>Create an instance from a file</strong></p>
      *
      * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
      * <pre>
      * long position = 1024;
@@ -868,14 +869,14 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
      *
-     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param file     The {@link Path} that will be the {@link BinaryData} data.
      * @param position Position, or offset, within the path where reading begins.
-     * @param length Maximum number of bytes to be read from the path.
+     * @param length   Maximum number of bytes to be read from the path.
      * @return A new {@link BinaryData}.
-     * @throws NullPointerException If {@code file} is null.
+     * @throws NullPointerException     If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
-     * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
-     * @throws UncheckedIOException if the file does not exist.
+     *                                  {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException     if the file does not exist.
      */
     public static BinaryData fromFile(Path file, Long position, Long length) {
         return new BinaryData(new FileContent(file, STREAM_READ_SIZE, position, length));
@@ -887,7 +888,7 @@ public final class BinaryData {
      * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
      *
      * <p><strong>Create an instance from a file</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
      * <pre>
      * long position = 1024;
@@ -899,15 +900,15 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
      *
-     * @param file The {@link Path} that will be the {@link BinaryData} data.
-     * @param position Position, or offset, within the path where reading begins.
-     * @param length Maximum number of bytes to be read from the path.
+     * @param file      The {@link Path} that will be the {@link BinaryData} data.
+     * @param position  Position, or offset, within the path where reading begins.
+     * @param length    Maximum number of bytes to be read from the path.
      * @param chunkSize The requested size for each read of the path.
      * @return A new {@link BinaryData}.
-     * @throws NullPointerException If {@code file} is null.
+     * @throws NullPointerException     If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
-     * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
-     * @throws UncheckedIOException if the file does not exist.
+     *                                  {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException     if the file does not exist.
      */
     public static BinaryData fromFile(Path file, Long position, Long length, int chunkSize) {
         return new BinaryData(new FileContent(file, chunkSize, position, length));
@@ -926,7 +927,7 @@ public final class BinaryData {
      *
      * @return A byte array representing this {@link BinaryData}.
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
-     * {@code byte[]}.
+     *                               {@code byte[]}.
      */
     public byte[] toBytes() {
         return content.toBytes();
@@ -941,7 +942,7 @@ public final class BinaryData {
      *
      * @return A {@link String} representing this {@link BinaryData}.
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
-     * {@link String}.
+     *                               {@link String}.
      */
     public String toString() {
         return content.toString();
@@ -960,7 +961,7 @@ public final class BinaryData {
      * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class -->
      * <pre>
      * class Person &#123;
@@ -993,7 +994,7 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.toObject#Class -->
      *
-     * @param <T> Type of the deserialized Object.
+     * @param <T>   Type of the deserialized Object.
      * @param clazz The {@link Class} representing the Object's type.
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code clazz} is null.
@@ -1017,7 +1018,7 @@ public final class BinaryData {
      * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference -->
      * <pre>
      * class Person &#123;
@@ -1051,7 +1052,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
@@ -1076,7 +1077,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
-     * @param <T> Type of the deserialized Object.
+     * @param <T>           Type of the deserialized Object.
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code typeReference} is null.
      * @see JsonSerializer
@@ -1104,7 +1105,7 @@ public final class BinaryData {
      * </ul>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      * <pre>
      * class Person &#123;
@@ -1137,9 +1138,9 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      *
-     * @param clazz The {@link Class} representing the Object's type.
+     * @param clazz      The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
-     * @param <T> Type of the deserialized Object.
+     * @param <T>        Type of the deserialized Object.
      * @return An {@link Object} representing the deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
      * @see ObjectSerializer
@@ -1170,7 +1171,7 @@ public final class BinaryData {
      * </ul>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      * <pre>
      * class Person &#123;
@@ -1205,7 +1206,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
@@ -1226,8 +1227,8 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
-     * @param serializer The {@link ObjectSerializer} used to deserialize object.
-     * @param <T> Type of the deserialized Object.
+     * @param serializer    The {@link ObjectSerializer} used to deserialize object.
+     * @param <T>           Type of the deserialized Object.
      * @return An {@link Object} representing the deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
      * @see ObjectSerializer
@@ -1254,7 +1255,7 @@ public final class BinaryData {
      * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class -->
      * <pre>
      * class Person &#123;
@@ -1292,7 +1293,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class -->
      *
      * @param clazz The {@link Class} representing the Object's type.
-     * @param <T> Type of the deserialized Object.
+     * @param <T>   Type of the deserialized Object.
      * @return A {@link Mono} of {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code clazz} is null.
      * @see JsonSerializer
@@ -1315,7 +1316,7 @@ public final class BinaryData {
      * implementation is found, a default Jackson-based implementation will be used to deserialize the object.
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
      * <pre>
      * class Person &#123;
@@ -1353,7 +1354,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
@@ -1375,7 +1376,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
-     * @param <T> Type of the deserialized Object.
+     * @param <T>           Type of the deserialized Object.
      * @return A {@link Mono} of {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code typeReference} is null.
      * @see JsonSerializer
@@ -1403,7 +1404,7 @@ public final class BinaryData {
      * </ul>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
      * <pre>
      * class Person &#123;
@@ -1440,9 +1441,9 @@ public final class BinaryData {
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
      *
-     * @param clazz The {@link Class} representing the Object's type.
+     * @param clazz      The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
-     * @param <T> Type of the deserialized Object.
+     * @param <T>        Type of the deserialized Object.
      * @return A {@link Mono} of {@link Object} representing the deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
      * @see ObjectSerializer
@@ -1473,7 +1474,7 @@ public final class BinaryData {
      * </ul>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
      * <pre>
      * class Person &#123;
@@ -1512,7 +1513,7 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
@@ -1537,8 +1538,8 @@ public final class BinaryData {
      * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
-     * @param serializer The {@link ObjectSerializer} used to deserialize object.
-     * @param <T> Type of the deserialized Object.
+     * @param serializer    The {@link ObjectSerializer} used to deserialize object.
+     * @param <T>           Type of the deserialized Object.
      * @return A {@link Mono} of {@link Object} representing the deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
      * @see ObjectSerializer
@@ -1553,7 +1554,7 @@ public final class BinaryData {
      * Returns an {@link InputStream} representation of this {@link BinaryData}.
      *
      * <p><strong>Get an InputStream from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.core.util.BinaryData.toStream -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -1576,7 +1577,7 @@ public final class BinaryData {
      * Attempting to mutate the returned {@link ByteBuffer} will throw a {@link ReadOnlyBufferException}.
      *
      * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
-     *
+     * <p>
      * <!-- src_embed com.azure.util.BinaryData.toByteBuffer -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -1621,7 +1622,7 @@ public final class BinaryData {
      * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously regardless of
      * what this method returns.
      * </p>
-     *
+     * <p>
      * <!-- src_embed com.azure.util.BinaryData.replayability -->
      * <pre>
      * BinaryData binaryData = binaryDataProducer&#40;&#41;;
@@ -1634,7 +1635,7 @@ public final class BinaryData {
      * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.util.BinaryData.replayability -->
-     *
+     * <p>
      * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
      * <pre>
      * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;
@@ -1671,7 +1672,7 @@ public final class BinaryData {
      * Replayability does not imply thread-safety. The caller must not use data accessors of returned {@link BinaryData}
      * simultaneously.
      * </p>
-     *
+     * <p>
      * <!-- src_embed com.azure.util.BinaryData.replayability -->
      * <pre>
      * BinaryData binaryData = binaryDataProducer&#40;&#41;;
@@ -1708,7 +1709,7 @@ public final class BinaryData {
      * Replayability does not imply thread-safety. The caller must not use data accessors of returned {@link BinaryData}
      * simultaneously.
      * </p>
-     *
+     * <p>
      * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
      * <pre>
      * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;

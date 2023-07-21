@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -43,7 +45,7 @@ public class CloudEventTests {
     public void testRoundTripCloudEvents() throws IOException {
         final String cloudEventJson = getTestPayloadFromFile("CloudEventDifferentDataTypes.json");
         final CloudEvent cloudEvent = CloudEvent.fromString(cloudEventJson).get(0);
-        final Map<String, Object> map = new HashMap<String, Object>() {
+        final Map<String, Object> map = new HashMap<>() {
             {
                 put("str", "str value");
                 put("number", 1.3);
@@ -96,7 +98,7 @@ public class CloudEventTests {
             assertEquals("application/json", cloudEvent2.getDataContentType());
 
             final BinaryData data2 = cloudEvent.getData();
-            final Map<String, Object> deserializedData2 = data2.toObject(new TypeReference<Map<String, Object>>() {
+            final Map<String, Object> deserializedData2 = data2.toObject(new TypeReference<>() {
             }, SERIALIZER);
 
             // Check if the original map matches the deserialized data map from the serialized String
@@ -229,7 +231,7 @@ public class CloudEventTests {
 
     @Test
     public void serializeJsonData() throws IOException {
-        final Map<String, Object> mapData = new HashMap<String, Object>() {
+        final Map<String, Object> mapData = new HashMap<>() {
             {
                 put("Field1", "Value1");
                 put("Field2", "Value2");
@@ -250,6 +252,33 @@ public class CloudEventTests {
             }, SERIALIZER));
             compareCloudEventContent(cloudEvent, deserializedCloudEvent);
         }
+    }
+
+    @Test
+    public void serializeJsonDataWithObjectMapper() throws IOException {
+        final Map<String, Object> mapData = new HashMap<>() {
+            {
+                put("Field1", "Value1");
+                put("Field2", "Value2");
+            }
+        };
+        final BinaryData binaryData = BinaryData.fromObject(mapData, SERIALIZER);
+        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
+            .setDataSchema("/testSchema")
+            .setSubject("testSubject")
+            .setTime(OffsetDateTime.now())
+            .setSpecVersion("1.0")
+            .addExtensionAttribute("foo", "value");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        final String serializedString = mapper.writeValueAsString(cloudEvent);
+        final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
+        assertEquals(mapData, deserializedCloudEvent.getData().toObject(new TypeReference<Map<String, Object>>() {
+        }, SERIALIZER));
+        compareCloudEventContent(cloudEvent, deserializedCloudEvent);
     }
 
     @ParameterizedTest
@@ -345,7 +374,7 @@ public class CloudEventTests {
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals("{\"foo\":\"value\"}", deserializedCloudEvent.getData().toString());
             final Map<String, String> deserializedMap = deserializedCloudEvent.getData().toObject(
-                new TypeReference<Map<String, String>>() {
+                new TypeReference<>() {
 
                 }, SERIALIZER);
             assertEquals("value", deserializedMap.get("foo"));
