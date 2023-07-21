@@ -4,16 +4,11 @@
 package com.azure.quantum.jobs;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.*;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
 
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +22,14 @@ public class QuantumClientTestBase extends TestProxyTestBase {
     QuantumClientBuilder getClientBuilder(HttpClient httpClient) {
 
         QuantumClientBuilder builder = new QuantumClientBuilder();
+
+        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
+            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+            customSanitizers.add(new TestProxySanitizer("$..containerUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..inputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..outputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(customSanitizers);
+        }
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

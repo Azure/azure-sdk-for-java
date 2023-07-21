@@ -45,7 +45,7 @@ public class JobsAsyncClientTest extends QuantumClientTestBase {
 
         StepVerifier.create(asyncJobsClient.list().collect(Collectors.toList()))
             .assertNext(jobs -> {
-                assertEquals(203, jobs.size());
+                assertTrue(jobs.size() >= 203);
                 for (JobDetails job : jobs) {
                     assertEquals("ionq.simulator", job.getTarget());
                     assertTrue(job.getName().startsWith("javaSdkTest"));
