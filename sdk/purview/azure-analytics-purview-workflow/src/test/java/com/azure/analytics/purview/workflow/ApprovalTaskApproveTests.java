@@ -8,18 +8,16 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class ApprovalTaskApproveTests extends PurviewWorkflowClientTestBase {
-    @Disabled
     @Test
     public void testApprovalTaskApproveTests() {
         BinaryData approvalResponseComment = BinaryData.fromString("{\"comment\":\"Thanks for raising this!\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.approveApprovalTaskWithResponse(
-                        "69b57a00-f5de-4a17-a44a-6479adae373d", approvalResponseComment, requestOptions);
+                        "693f62ad-79f5-4364-822a-d85d7238e47e", approvalResponseComment, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }
