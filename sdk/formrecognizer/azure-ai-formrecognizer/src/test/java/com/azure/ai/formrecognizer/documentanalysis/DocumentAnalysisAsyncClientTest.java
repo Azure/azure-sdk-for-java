@@ -1228,14 +1228,14 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<OperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-read", sourceUrl)
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-read", sourceUrl,
+                new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
-            // confirm, should be returned by the service
-            // Assertions.assertNotNull(analyzeResult.getLanguages());
+            Assertions.assertNotNull(analyzeResult.getLanguages());
         }, INVOICE_PDF);
     }
 
@@ -1248,12 +1248,12 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<OperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
-                    BinaryData.fromStream(data, dataLength))
+                    BinaryData.fromStream(data, dataLength),
+                new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)))
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
-            // confirm, service should return this
-            // Assertions.assertNotNull("de", analyzeResult.getLanguages().get(0).getLocale());
+            Assertions.assertNotNull("de", analyzeResult.getLanguages().get(0).getLocale());
         }, GERMAN_PNG);
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1476,7 +1476,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         testingContainerUrlRunner((sourceUrl) -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-layout", sourceUrl)
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-layout", sourceUrl,
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.BARCODES)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
