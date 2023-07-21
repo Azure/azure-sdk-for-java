@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
-import com.azure.communication.phonenumbers.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;

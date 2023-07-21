@@ -4,19 +4,19 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a search result containing operator information associated with the requested phone numbers. */
-@Fluent
+@Immutable
 public final class OperatorInformationResult {
     /*
      * Results of a search.
      * This array will have one entry per requested phone number which will
      * contain the relevant operator information.
      */
-    @JsonProperty(value = "values")
+    @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperatorInformation> values;
 
     /**
@@ -27,17 +27,5 @@ public final class OperatorInformationResult {
      */
     public List<OperatorInformation> getValues() {
         return this.values;
-    }
-
-    /**
-     * Set the values property: Results of a search. This array will have one entry per requested phone number which
-     * will contain the relevant operator information.
-     *
-     * @param values the values value to set.
-     * @return the OperatorInformationResult object itself.
-     */
-    public OperatorInformationResult setValues(List<OperatorInformation> values) {
-        this.values = values;
-        return this;
     }
 }

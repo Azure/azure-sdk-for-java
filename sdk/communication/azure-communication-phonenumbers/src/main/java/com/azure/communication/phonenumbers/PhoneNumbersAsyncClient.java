@@ -14,7 +14,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
-import com.azure.communication.phonenumbers.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -64,7 +64,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.communication.phonenumbers.asyncclient.instantiation
  * -->
- * 
+ *
  * <pre>
  * PhoneNumbersAsyncClient phoneNumberAsyncClient = new PhoneNumbersClientBuilder&#40;&#41;
  *         .endpoint&#40;endpoint&#41;
@@ -72,7 +72,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *         .httpClient&#40;httpClient&#41;
  *         .buildAsyncClient&#40;&#41;;
  * </pre>
- * 
+ *
  * <!-- end com.azure.communication.phonenumbers.asyncclient.instantiation -->
  *
  * @see PhoneNumbersClientBuilder
@@ -102,13 +102,13 @@ public final class PhoneNumbersAsyncClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.asyncclient.getPurchased
      * -->
-     * 
+     *
      * <pre>
      * PurchasedPhoneNumber phoneNumber = phoneNumberAsyncClient.getPurchasedPhoneNumber&#40;&quot;+18001234567&quot;&#41;.block&#40;&#41;;
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.asyncclient.getPurchased -->
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can
@@ -136,7 +136,7 @@ public final class PhoneNumbersAsyncClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.asyncclient.getPurchasedWithResponse -->
-     * 
+     *
      * <pre>
      * Response&lt;PurchasedPhoneNumber&gt; response = phoneNumberAsyncClient
      *         .getPurchasedPhoneNumberWithResponse&#40;&quot;+18001234567&quot;&#41;.block&#40;&#41;;
@@ -144,7 +144,7 @@ public final class PhoneNumbersAsyncClient {
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end
      * com.azure.communication.phonenumbers.asyncclient.getPurchasedWithResponse -->
      *
@@ -173,14 +173,14 @@ public final class PhoneNumbersAsyncClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.asyncclient.listPurchased
      * -->
-     * 
+     *
      * <pre>
      * PagedFlux&lt;PurchasedPhoneNumber&gt; phoneNumbers = phoneNumberAsyncClient.listPurchasedPhoneNumbers&#40;&#41;;
      * PurchasedPhoneNumber phoneNumber = phoneNumbers.blockFirst&#40;&#41;;
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.asyncclient.listPurchased -->
      *
      * @return A {@link PagedFlux} of {@link PurchasedPhoneNumber} instances
@@ -204,7 +204,7 @@ public final class PhoneNumbersAsyncClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.asyncclient.beginSearchAvailable -->
-     * 
+     *
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;
      *         .setCalling&#40;PhoneNumberCapabilityType.INBOUND&#41;
@@ -224,7 +224,7 @@ public final class PhoneNumbersAsyncClient {
      *     System.out.println&#40;&quot;Phone number costs:&quot; + searchResult.getCost&#40;&#41;.getAmount&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * 
+     *
      * <!-- end
      * com.azure.communication.phonenumbers.asyncclient.beginSearchAvailable -->
      *
@@ -255,7 +255,7 @@ public final class PhoneNumbersAsyncClient {
      * <!-- src_embed
      * com.azure.communication.phonenumbers.asyncclient.beginSearchAvailableWithOptions
      * -->
-     * 
+     *
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;
      *         .setCalling&#40;PhoneNumberCapabilityType.INBOUND&#41;
@@ -275,7 +275,7 @@ public final class PhoneNumbersAsyncClient {
      *     System.out.println&#40;&quot;Phone number costs:&quot; + searchResult.getCost&#40;&#41;.getAmount&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * 
+     *
      * <!-- end
      * com.azure.communication.phonenumbers.asyncclient.beginSearchAvailableWithOptions
      * -->
@@ -409,13 +409,13 @@ public final class PhoneNumbersAsyncClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.asyncclient.beginPurchase
      * -->
-     * 
+     *
      * <pre>
      * AsyncPollResponse&lt;PhoneNumberOperation, PurchasePhoneNumbersResult&gt; purchaseResponse = phoneNumberAsyncClient
      *         .beginPurchasePhoneNumbers&#40;searchId&#41;.blockFirst&#40;&#41;;
      * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.asyncclient.beginPurchase -->
      *
      * @param searchId ID of the search.
@@ -475,13 +475,13 @@ public final class PhoneNumbersAsyncClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.asyncclient.beginRelease
      * -->
-     * 
+     *
      * <pre>
      * AsyncPollResponse&lt;PhoneNumberOperation, ReleasePhoneNumberResult&gt; releaseResponse = phoneNumberAsyncClient
      *         .beginReleasePhoneNumber&#40;&quot;+18001234567&quot;&#41;.blockFirst&#40;&#41;;
      * System.out.println&#40;&quot;Release phone number is complete: &quot; + releaseResponse.getStatus&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.asyncclient.beginRelease -->
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can
@@ -537,7 +537,7 @@ public final class PhoneNumbersAsyncClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.asyncclient.beginUpdateCapabilities -->
-     * 
+     *
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;;
      * capabilities
@@ -554,7 +554,7 @@ public final class PhoneNumbersAsyncClient {
      *     System.out.println&#40;&quot;Phone Number SMS capabilities: &quot; + phoneNumber.getCapabilities&#40;&#41;.getSms&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * 
+     *
      * <!-- end
      * com.azure.communication.phonenumbers.asyncclient.beginUpdateCapabilities -->
      *

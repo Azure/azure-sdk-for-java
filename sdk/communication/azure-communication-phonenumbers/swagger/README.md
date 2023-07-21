@@ -24,9 +24,9 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ### Code generation settings
 ``` yaml
 tag: package-phonenumber-2023-05-01-preview
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4d2e746ac1e094f87bfe0807b1d51b375a6c5517/specification/communication/data-plane/PhoneNumbers/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dbd87dc39174b98d12566902c709a4b3af90c375/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,OperatorDetails,OperatorInformation,OperatorInformationRequest,OperatorInformationResult,OperatorNumberType
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -149,7 +149,6 @@ directive:
       $["properties"]["localizedName"].readOnly = true;
 ```
 
-
 ### Add readonly attribute to PhoneNumberLocalities properties
 ```yaml
 directive:
@@ -190,6 +189,38 @@ directive:
     transform: >
       $["properties"]["localizedName"].readOnly = true;
       $["properties"]["countryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorDetails properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorDetails
+    transform: >
+      $["properties"]["name"].readOnly = true;
+      $["properties"]["mobileNetworkCode"].readOnly = true;
+      $["properties"]["mobileCountryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformation properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformation
+    transform: >
+      $["properties"]["phoneNumber"].readOnly = true;
+      $["properties"]["numberType"].readOnly = true;
+      $["properties"]["isoCountryCode"].readOnly = true;
+      $["properties"]["operatorDetails"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformationResult properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformationResult
+    transform: >
+      $["properties"]["values"].readOnly = true;
 ```
 
 ``` yaml

@@ -4,28 +4,28 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents metadata describing the operator of a phone number. */
-@Fluent
+@Immutable
 public final class OperatorDetails {
     /*
      * Name of the phone operator
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Mobile Network Code
      */
-    @JsonProperty(value = "mobileNetworkCode")
+    @JsonProperty(value = "mobileNetworkCode", access = JsonProperty.Access.WRITE_ONLY)
     private String mobileNetworkCode;
 
     /*
      * Mobile Country Code
      */
-    @JsonProperty(value = "mobileCountryCode")
+    @JsonProperty(value = "mobileCountryCode", access = JsonProperty.Access.WRITE_ONLY)
     private String mobileCountryCode;
 
     /**
@@ -38,17 +38,6 @@ public final class OperatorDetails {
     }
 
     /**
-     * Set the name property: Name of the phone operator.
-     *
-     * @param name the name value to set.
-     * @return the OperatorDetails object itself.
-     */
-    public OperatorDetails setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the mobileNetworkCode property: Mobile Network Code.
      *
      * @return the mobileNetworkCode value.
@@ -58,33 +47,11 @@ public final class OperatorDetails {
     }
 
     /**
-     * Set the mobileNetworkCode property: Mobile Network Code.
-     *
-     * @param mobileNetworkCode the mobileNetworkCode value to set.
-     * @return the OperatorDetails object itself.
-     */
-    public OperatorDetails setMobileNetworkCode(String mobileNetworkCode) {
-        this.mobileNetworkCode = mobileNetworkCode;
-        return this;
-    }
-
-    /**
      * Get the mobileCountryCode property: Mobile Country Code.
      *
      * @return the mobileCountryCode value.
      */
     public String getMobileCountryCode() {
         return this.mobileCountryCode;
-    }
-
-    /**
-     * Set the mobileCountryCode property: Mobile Country Code.
-     *
-     * @param mobileCountryCode the mobileCountryCode value to set.
-     * @return the OperatorDetails object itself.
-     */
-    public OperatorDetails setMobileCountryCode(String mobileCountryCode) {
-        this.mobileCountryCode = mobileCountryCode;
-        return this;
     }
 }
