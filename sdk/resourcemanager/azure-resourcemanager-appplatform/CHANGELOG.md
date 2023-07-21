@@ -1,18 +1,8 @@
 # Release History
 
-## 2.29.0-beta.1 (Unreleased)
+## 2.29.0-beta.1 (2023-07-21)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed `SpringApp` creation failure for some pricing tiers with default settings.
-- Fixed a bug that calling `withActivation` multiple times during `SpringAppDeployment` creation would result in 
-  multiple REST API calls.
-
-### Other Changes
+- Use preview `api-version` `2023-03-01-preview`.
 
 ## 2.28.0 (2023-06-25)
 
