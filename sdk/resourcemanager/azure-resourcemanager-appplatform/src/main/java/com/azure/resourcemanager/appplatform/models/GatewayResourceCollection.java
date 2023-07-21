@@ -25,6 +25,10 @@ public final class GatewayResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GatewayResourceCollection class. */
+    public GatewayResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of gateway resources.
      *

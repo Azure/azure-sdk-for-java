@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public final class NetworkProfile {
     /*
-     * Fully qualified resource Id of the subnet to host Azure Spring Apps
-     * Service Runtime
+     * Fully qualified resource Id of the subnet to host Azure Spring Apps Service Runtime
      */
     @JsonProperty(value = "serviceRuntimeSubnetId")
     private String serviceRuntimeSubnetId;
 
     /*
-     * Fully qualified resource Id of the subnet to host customer apps in Azure
-     * Spring Apps
+     * Fully qualified resource Id of the subnet to host customer apps in Azure Spring Apps
      */
     @JsonProperty(value = "appSubnetId")
     private String appSubnetId;
@@ -32,15 +30,13 @@ public final class NetworkProfile {
     private String serviceCidr;
 
     /*
-     * Name of the resource group containing network resources of Azure Spring
-     * Apps Service Runtime
+     * Name of the resource group containing network resources of Azure Spring Apps Service Runtime
      */
     @JsonProperty(value = "serviceRuntimeNetworkResourceGroup")
     private String serviceRuntimeNetworkResourceGroup;
 
     /*
-     * Name of the resource group containing network resources for customer
-     * apps in Azure Spring Apps
+     * Name of the resource group containing network resources for customer apps in Azure Spring Apps
      */
     @JsonProperty(value = "appNetworkResourceGroup")
     private String appNetworkResourceGroup;
@@ -68,6 +64,10 @@ public final class NetworkProfile {
      */
     @JsonProperty(value = "outboundType")
     private String outboundType;
+
+    /** Creates an instance of NetworkProfile class. */
+    public NetworkProfile() {
+    }
 
     /**
      * Get the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Apps

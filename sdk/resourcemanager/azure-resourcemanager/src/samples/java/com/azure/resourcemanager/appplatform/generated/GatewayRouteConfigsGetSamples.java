@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayRouteConfigs Get. */
 public final class GatewayRouteConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/GatewayRouteConfigs_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/GatewayRouteConfigs_Get.json
      */
     /**
      * Sample code: GatewayRouteConfigs_Get.
@@ -22,6 +20,7 @@ public final class GatewayRouteConfigsGetSamples {
             .manager()
             .serviceClient()
             .getGatewayRouteConfigs()
-            .getWithResponse("myResourceGroup", "myservice", "default", "myRouteConfig", Context.NONE);
+            .getWithResponse(
+                "myResourceGroup", "myservice", "default", "myRouteConfig", com.azure.core.util.Context.NONE);
     }
 }

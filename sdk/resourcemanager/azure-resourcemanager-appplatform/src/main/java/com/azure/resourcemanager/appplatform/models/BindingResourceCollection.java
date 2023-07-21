@@ -25,6 +25,10 @@ public final class BindingResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BindingResourceCollection class. */
+    public BindingResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of Binding resources.
      *

@@ -12,36 +12,32 @@ import java.util.List;
 @Fluent
 public final class GatewayCorsProperties {
     /*
-     * Allowed origins to make cross-site requests. The special value `*`
-     * allows all domains.
+     * Allowed origins to make cross-site requests. The special value `*` allows all domains.
      */
     @JsonProperty(value = "allowedOrigins")
     private List<String> allowedOrigins;
 
     /*
-     * Allowed HTTP methods on cross-site requests. The special value `*`
-     * allows all methods. If not set, `GET` and `HEAD` are allowed by default.
+     * Allowed HTTP methods on cross-site requests. The special value `*` allows all methods. If not set, `GET` and
+     * `HEAD` are allowed by default.
      */
     @JsonProperty(value = "allowedMethods")
     private List<String> allowedMethods;
 
     /*
-     * Allowed headers in cross-site requests. The special value `*` allows
-     * actual requests to send any header.
+     * Allowed headers in cross-site requests. The special value `*` allows actual requests to send any header.
      */
     @JsonProperty(value = "allowedHeaders")
     private List<String> allowedHeaders;
 
     /*
-     * How long, in seconds, the response from a pre-flight request can be
-     * cached by clients.
+     * How long, in seconds, the response from a pre-flight request can be cached by clients.
      */
     @JsonProperty(value = "maxAge")
     private Integer maxAge;
 
     /*
-     * Whether user credentials are supported on cross-site requests. Valid
-     * values: `true`, `false`.
+     * Whether user credentials are supported on cross-site requests. Valid values: `true`, `false`.
      */
     @JsonProperty(value = "allowCredentials")
     private Boolean allowCredentials;
@@ -51,6 +47,10 @@ public final class GatewayCorsProperties {
      */
     @JsonProperty(value = "exposedHeaders")
     private List<String> exposedHeaders;
+
+    /** Creates an instance of GatewayCorsProperties class. */
+    public GatewayCorsProperties() {
+    }
 
     /**
      * Get the allowedOrigins property: Allowed origins to make cross-site requests. The special value `*` allows all

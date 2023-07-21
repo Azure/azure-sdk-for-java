@@ -18,8 +18,7 @@ public final class GatewayRouteConfigProperties {
     private GatewayProvisioningState provisioningState;
 
     /*
-     * The resource Id of the Azure Spring Apps app, required unless route
-     * defines `uri`.
+     * The resource Id of the Azure Spring Apps app, required unless route defines `uri`.
      */
     @JsonProperty(value = "appResourceId")
     private String appResourceId;
@@ -37,11 +36,35 @@ public final class GatewayRouteConfigProperties {
     private GatewayRouteConfigProtocol protocol;
 
     /*
-     * Array of API routes, each route contains properties such as `title`,
-     * `uri`, `ssoEnabled`, `predicates`, `filters`.
+     * Array of API routes, each route contains properties such as `title`, `uri`, `ssoEnabled`, `predicates`,
+     * `filters`.
      */
     @JsonProperty(value = "routes")
     private List<GatewayApiRoute> routes;
+
+    /*
+     * Enable Single Sign-On in app level.
+     */
+    @JsonProperty(value = "ssoEnabled")
+    private Boolean ssoEnabled;
+
+    /*
+     * A number of conditions to evaluate a route for each request in app level. Each predicate may be evaluated
+     * against request headers and parameter values. All of the predicates associated with a route must evaluate to
+     * true for the route to be matched to the request.
+     */
+    @JsonProperty(value = "predicates")
+    private List<String> predicates;
+
+    /*
+     * To modify the request before sending it to the target endpoint, or the received response in app level.
+     */
+    @JsonProperty(value = "filters")
+    private List<String> filters;
+
+    /** Creates an instance of GatewayRouteConfigProperties class. */
+    public GatewayRouteConfigProperties() {
+    }
 
     /**
      * Get the provisioningState property: State of the Spring Cloud Gateway route config.
@@ -133,6 +156,72 @@ public final class GatewayRouteConfigProperties {
      */
     public GatewayRouteConfigProperties withRoutes(List<GatewayApiRoute> routes) {
         this.routes = routes;
+        return this;
+    }
+
+    /**
+     * Get the ssoEnabled property: Enable Single Sign-On in app level.
+     *
+     * @return the ssoEnabled value.
+     */
+    public Boolean ssoEnabled() {
+        return this.ssoEnabled;
+    }
+
+    /**
+     * Set the ssoEnabled property: Enable Single Sign-On in app level.
+     *
+     * @param ssoEnabled the ssoEnabled value to set.
+     * @return the GatewayRouteConfigProperties object itself.
+     */
+    public GatewayRouteConfigProperties withSsoEnabled(Boolean ssoEnabled) {
+        this.ssoEnabled = ssoEnabled;
+        return this;
+    }
+
+    /**
+     * Get the predicates property: A number of conditions to evaluate a route for each request in app level. Each
+     * predicate may be evaluated against request headers and parameter values. All of the predicates associated with a
+     * route must evaluate to true for the route to be matched to the request.
+     *
+     * @return the predicates value.
+     */
+    public List<String> predicates() {
+        return this.predicates;
+    }
+
+    /**
+     * Set the predicates property: A number of conditions to evaluate a route for each request in app level. Each
+     * predicate may be evaluated against request headers and parameter values. All of the predicates associated with a
+     * route must evaluate to true for the route to be matched to the request.
+     *
+     * @param predicates the predicates value to set.
+     * @return the GatewayRouteConfigProperties object itself.
+     */
+    public GatewayRouteConfigProperties withPredicates(List<String> predicates) {
+        this.predicates = predicates;
+        return this;
+    }
+
+    /**
+     * Get the filters property: To modify the request before sending it to the target endpoint, or the received
+     * response in app level.
+     *
+     * @return the filters value.
+     */
+    public List<String> filters() {
+        return this.filters;
+    }
+
+    /**
+     * Set the filters property: To modify the request before sending it to the target endpoint, or the received
+     * response in app level.
+     *
+     * @param filters the filters value to set.
+     * @return the GatewayRouteConfigProperties object itself.
+     */
+    public GatewayRouteConfigProperties withFilters(List<String> filters) {
+        this.filters = filters;
         return this;
     }
 

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.StorageResourceInner;
 import com.azure.resourcemanager.appplatform.models.StorageAccount;
 
 /** Samples for Storages CreateOrUpdate. */
 public final class StoragesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Storages_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Storages_CreateOrUpdate.json
      */
     /**
      * Sample code: Storages_CreateOrUpdate.
@@ -32,7 +31,7 @@ public final class StoragesCreateOrUpdateSamples {
                     .withProperties(
                         new StorageAccount()
                             .withAccountName("storage-account-name")
-                            .withAccountKey("account-key-of-storage-account")),
-                Context.NONE);
+                            .withAccountKey("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 }

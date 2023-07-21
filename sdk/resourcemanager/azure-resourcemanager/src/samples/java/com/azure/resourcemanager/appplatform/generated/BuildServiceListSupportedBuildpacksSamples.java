@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildService ListSupportedBuildpacks. */
 public final class BuildServiceListSupportedBuildpacksSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_ListSupportedBuildpacks.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildService_ListSupportedBuildpacks.json
      */
     /**
      * Sample code: BuildService_ListSupportedBuildpacks.
@@ -22,6 +20,7 @@ public final class BuildServiceListSupportedBuildpacksSamples {
             .manager()
             .serviceClient()
             .getBuildServices()
-            .listSupportedBuildpacksWithResponse("myResourceGroup", "myservice", "default", Context.NONE);
+            .listSupportedBuildpacksWithResponse(
+                "myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

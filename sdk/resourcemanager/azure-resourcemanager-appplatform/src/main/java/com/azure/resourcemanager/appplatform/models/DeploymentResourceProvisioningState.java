@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentResourceProvisioningState. */
+/** Provisioning state of the Deployment. */
 public final class DeploymentResourceProvisioningState
     extends ExpandableStringEnum<DeploymentResourceProvisioningState> {
     /** Static value Creating for DeploymentResourceProvisioningState. */
@@ -22,6 +22,15 @@ public final class DeploymentResourceProvisioningState
 
     /** Static value Failed for DeploymentResourceProvisioningState. */
     public static final DeploymentResourceProvisioningState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of DeploymentResourceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentResourceProvisioningState() {
+    }
 
     /**
      * Creates or finds a DeploymentResourceProvisioningState from its string representation.

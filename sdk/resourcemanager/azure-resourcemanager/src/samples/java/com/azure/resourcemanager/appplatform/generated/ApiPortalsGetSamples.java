@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiPortals Get. */
 public final class ApiPortalsGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ApiPortals_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ApiPortals_Get.json
      */
     /**
      * Sample code: ApiPortals_Get.
@@ -22,6 +20,6 @@ public final class ApiPortalsGetSamples {
             .manager()
             .serviceClient()
             .getApiPortals()
-            .getWithResponse("myResourceGroup", "myservice", "default", Context.NONE);
+            .getWithResponse("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

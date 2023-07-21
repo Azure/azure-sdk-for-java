@@ -22,6 +22,10 @@ public final class StackProperties {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of StackProperties class. */
+    public StackProperties() {
+    }
+
     /**
      * Get the id property: Id of the ClusterStack.
      *

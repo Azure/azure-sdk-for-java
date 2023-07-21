@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Services Stop. */
 public final class ServicesStopSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_Stop.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_Stop.json
      */
     /**
      * Sample code: Services_Stop.
@@ -22,6 +20,6 @@ public final class ServicesStopSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .stop("myResourceGroup", "myservice", Context.NONE);
+            .stop("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

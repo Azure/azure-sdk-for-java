@@ -17,6 +17,10 @@ public final class DeploymentListInner {
     @JsonProperty(value = "deployments")
     private List<String> deployments;
 
+    /** Creates an instance of DeploymentListInner class. */
+    public DeploymentListInner() {
+    }
+
     /**
      * Get the deployments property: A list of deployment resource ids.
      *

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for ConfigServers Validate. */
 public final class ConfigServersValidateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigServers_Validate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ConfigServers_Validate.json
      */
     /**
      * Sample code: ConfigServers_Validate.
@@ -34,6 +33,6 @@ public final class ConfigServersValidateSamples {
                             .withUri("https://github.com/fake-user/fake-repository.git")
                             .withLabel("master")
                             .withSearchPaths(Arrays.asList("/"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

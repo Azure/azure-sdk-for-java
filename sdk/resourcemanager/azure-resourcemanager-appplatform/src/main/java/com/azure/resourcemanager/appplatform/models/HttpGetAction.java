@@ -30,6 +30,10 @@ public final class HttpGetAction extends ProbeAction {
     @JsonProperty(value = "scheme")
     private HttpSchemeType scheme;
 
+    /** Creates an instance of HttpGetAction class. */
+    public HttpGetAction() {
+    }
+
     /**
      * Get the path property: Path to access on the HTTP server.
      *

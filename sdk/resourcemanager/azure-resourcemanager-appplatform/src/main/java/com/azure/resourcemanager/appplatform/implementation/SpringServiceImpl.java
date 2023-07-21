@@ -6,11 +6,13 @@ package com.azure.resourcemanager.appplatform.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildServiceAgentPoolResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.BuildServiceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.ConfigServerResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.MonitoringSettingResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolProperties;
 import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolSizeProperties;
+import com.azure.resourcemanager.appplatform.models.BuildServiceProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
@@ -38,8 +40,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SpringServiceImpl
@@ -293,20 +295,10 @@ public class SpringServiceImpl
                 .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
             if (isEnterpriseTier()) {
                 createOrUpdate = createOrUpdate
-                    // initialize build service agent pool
                     .flatMap(inner ->
-                        manager().serviceClient().getBuildServiceAgentPools().updatePutAsync(
-                            resourceGroupName(),
-                            name(),
-                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                            new BuildServiceAgentPoolResourceInner()
-                                .withProperties(
-                                    new BuildServiceAgentPoolProperties()
-                                        .withPoolSize(
-                                            new BuildServiceAgentPoolSizeProperties()
-                                                .withName("S1"))) // S1, S2, S3, S4, S5.
-                        ).then(Mono.just(inner)));
+                        createDefaultBuildServiceAsync()
+                            .then(initializeDefaultBuildServiceAgentPoolAsync())
+                            .then(Mono.just(inner)));
             }
         } else if (updated) {
             createOrUpdate = manager().serviceClient().getServices().updateAsync(
@@ -435,6 +427,31 @@ public class SpringServiceImpl
         this.configurationServices.clear();
         this.configurationServiceConfig.reset();
         this.serviceRegistries.clear();
+    }
+
+    private Mono<BuildServiceInner> createDefaultBuildServiceAsync() {
+        return manager().serviceClient().getBuildServices()
+            .createOrUpdateAsync(
+                resourceGroupName(),
+                name(),
+                Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                new BuildServiceInner().withProperties(new BuildServiceProperties())
+            );
+    }
+
+    private Mono<BuildServiceAgentPoolResourceInner> initializeDefaultBuildServiceAgentPoolAsync() {
+        return manager().serviceClient().getBuildServiceAgentPools().updatePutAsync(
+            resourceGroupName(),
+            name(),
+            Constants.DEFAULT_TANZU_COMPONENT_NAME,
+            Constants.DEFAULT_TANZU_COMPONENT_NAME,
+            new BuildServiceAgentPoolResourceInner()
+                .withProperties(
+                    new BuildServiceAgentPoolProperties()
+                        .withPoolSize(
+                            new BuildServiceAgentPoolSizeProperties()
+                                .withName("S1"))) // S1, S2, S3, S4, S5.
+        );
     }
 
     // Configuration Service config for Enterprise Tier

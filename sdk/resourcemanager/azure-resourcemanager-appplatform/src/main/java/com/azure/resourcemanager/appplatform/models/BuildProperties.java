@@ -55,6 +55,10 @@ public final class BuildProperties {
     @JsonProperty(value = "resourceRequests")
     private BuildResourceRequests resourceRequests;
 
+    /** Creates an instance of BuildProperties class. */
+    public BuildProperties() {
+    }
+
     /**
      * Get the relativePath property: The relative path of source code.
      *

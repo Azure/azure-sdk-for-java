@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildServiceBuilder List. */
 public final class BuildServiceBuilderListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildServiceBuilder_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildServiceBuilder_List.json
      */
     /**
      * Sample code: BuildServiceBuilder_List.
@@ -22,6 +20,6 @@ public final class BuildServiceBuilderListSamples {
             .manager()
             .serviceClient()
             .getBuildServiceBuilders()
-            .list("myResourceGroup", "myservice", "default", Context.NONE);
+            .list("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

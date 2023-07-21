@@ -16,6 +16,10 @@ public final class ApiPortalCustomDomainProperties {
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
+    /** Creates an instance of ApiPortalCustomDomainProperties class. */
+    public ApiPortalCustomDomainProperties() {
+    }
+
     /**
      * Get the thumbprint property: The thumbprint of bound certificate.
      *

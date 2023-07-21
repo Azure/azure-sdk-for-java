@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.GatewayRouteConfigProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,11 +18,9 @@ public final class GatewayRouteConfigResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GatewayRouteConfigProperties properties;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of GatewayRouteConfigResourceInner class. */
+    public GatewayRouteConfigResourceInner() {
+    }
 
     /**
      * Get the properties property: API route config of the Spring Cloud Gateway.
@@ -43,15 +40,6 @@ public final class GatewayRouteConfigResourceInner extends ProxyResource {
     public GatewayRouteConfigResourceInner withProperties(GatewayRouteConfigProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

@@ -22,6 +22,10 @@ public final class ResourceUploadDefinition {
     @JsonProperty(value = "uploadUrl")
     private String uploadUrl;
 
+    /** Creates an instance of ResourceUploadDefinition class. */
+    public ResourceUploadDefinition() {
+    }
+
     /**
      * Get the relativePath property: Source relative path.
      *

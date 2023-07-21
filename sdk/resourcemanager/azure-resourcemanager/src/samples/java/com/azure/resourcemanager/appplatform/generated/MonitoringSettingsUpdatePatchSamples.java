@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.MonitoringSettingResourceInner;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
 
 /** Samples for MonitoringSettings UpdatePatch. */
 public final class MonitoringSettingsUpdatePatchSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/MonitoringSettings_UpdatePatch.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/MonitoringSettings_UpdatePatch.json
      */
     /**
      * Sample code: MonitoringSettings_UpdatePatch.
@@ -31,8 +30,8 @@ public final class MonitoringSettingsUpdatePatchSamples {
                     .withProperties(
                         new MonitoringSettingProperties()
                             .withTraceEnabled(true)
-                            .withAppInsightsInstrumentationKey("00000000-0000-0000-0000-000000000000")
-                            .withAppInsightsSamplingRate(10.0)),
-                Context.NONE);
+                            .withAppInsightsInstrumentationKey("fakeTokenPlaceholder")
+                            .withAppInsightsSamplingRate(10.0D)),
+                com.azure.core.util.Context.NONE);
     }
 }

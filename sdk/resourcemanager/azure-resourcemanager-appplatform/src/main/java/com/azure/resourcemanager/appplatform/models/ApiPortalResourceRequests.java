@@ -22,6 +22,10 @@ public final class ApiPortalResourceRequests {
     @JsonProperty(value = "memory", access = JsonProperty.Access.WRITE_ONLY)
     private String memory;
 
+    /** Creates an instance of ApiPortalResourceRequests class. */
+    public ApiPortalResourceRequests() {
+    }
+
     /**
      * Get the cpu property: Cpu allocated to each API portal instance.
      *

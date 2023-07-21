@@ -63,11 +63,10 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface GatewayRouteConfigsService {
+    public interface GatewayRouteConfigsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GatewayRouteConfigResourceInner>> get(
@@ -83,8 +82,7 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -101,8 +99,7 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -118,8 +115,7 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GatewayRouteConfigResourceCollection>> list(
@@ -291,25 +287,6 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway route configs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteConfigResourceInner get(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
-        return getAsync(resourceGroupName, serviceName, gatewayName, routeConfigName).block();
-    }
-
-    /**
-     * Get the Spring Cloud Gateway route configs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param gatewayName The name of Spring Cloud Gateway.
-     * @param routeConfigName The name of the Spring Cloud Gateway route config.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -320,6 +297,25 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
     public Response<GatewayRouteConfigResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context).block();
+    }
+
+    /**
+     * Get the Spring Cloud Gateway route configs.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param routeConfigName The name of the Spring Cloud Gateway route config.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Spring Cloud Gateway route configs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteConfigResourceInner get(
+        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
+        return getWithResponse(resourceGroupName, serviceName, gatewayName, routeConfigName, Context.NONE).getValue();
     }
 
     /**
@@ -565,7 +561,8 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         String gatewayName,
         String routeConfigName,
         GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource)
             .getSyncPoller();
     }
@@ -593,7 +590,8 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         String routeConfigName,
         GatewayRouteConfigResourceInner gatewayRouteConfigResource,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource, context)
             .getSyncPoller();
     }
@@ -891,7 +889,7 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName).getSyncPoller();
     }
 
     /**
@@ -911,7 +909,9 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1204,7 +1204,8 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1240,7 +1241,8 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

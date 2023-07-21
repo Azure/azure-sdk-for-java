@@ -29,6 +29,10 @@ public final class ServiceRegistryProperties {
     @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceRegistryInstance> instances;
 
+    /** Creates an instance of ServiceRegistryProperties class. */
+    public ServiceRegistryProperties() {
+    }
+
     /**
      * Get the provisioningState property: State of the Service Registry.
      *

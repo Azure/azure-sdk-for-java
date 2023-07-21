@@ -28,6 +28,10 @@ public final class BuildServiceAgentPoolSizeProperties {
     @JsonProperty(value = "memory", access = JsonProperty.Access.WRITE_ONLY)
     private String memory;
 
+    /** Creates an instance of BuildServiceAgentPoolSizeProperties class. */
+    public BuildServiceAgentPoolSizeProperties() {
+    }
+
     /**
      * Get the name property: The name of build service agent pool size.
      *

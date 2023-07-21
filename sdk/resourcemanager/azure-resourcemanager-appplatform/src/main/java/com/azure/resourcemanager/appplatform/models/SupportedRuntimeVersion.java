@@ -17,8 +17,7 @@ public final class SupportedRuntimeVersion {
     private SupportedRuntimeValue value;
 
     /*
-     * The platform of this runtime version (possible values: "Java" or
-     * ".NET").
+     * The platform of this runtime version (possible values: "Java" or ".NET").
      */
     @JsonProperty(value = "platform")
     private SupportedRuntimePlatform platform;
@@ -28,6 +27,10 @@ public final class SupportedRuntimeVersion {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /** Creates an instance of SupportedRuntimeVersion class. */
+    public SupportedRuntimeVersion() {
+    }
 
     /**
      * Get the value property: The raw value which could be passed to deployment CRUD operations.

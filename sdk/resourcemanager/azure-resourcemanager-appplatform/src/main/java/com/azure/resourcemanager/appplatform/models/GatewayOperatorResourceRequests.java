@@ -28,6 +28,10 @@ public final class GatewayOperatorResourceRequests {
     @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
+    /** Creates an instance of GatewayOperatorResourceRequests class. */
+    public GatewayOperatorResourceRequests() {
+    }
+
     /**
      * Get the cpu property: Cpu allocated to each Spring Cloud Gateway Operator instance.
      *

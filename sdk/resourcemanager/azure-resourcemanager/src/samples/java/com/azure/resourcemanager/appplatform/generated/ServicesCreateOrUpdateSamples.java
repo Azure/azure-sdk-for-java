@@ -4,10 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.IngressConfig;
+import com.azure.resourcemanager.appplatform.models.MarketplaceResource;
 import com.azure.resourcemanager.appplatform.models.NetworkProfile;
 import com.azure.resourcemanager.appplatform.models.ServiceVNetAddons;
 import com.azure.resourcemanager.appplatform.models.Sku;
@@ -17,7 +17,35 @@ import java.util.Map;
 /** Samples for Services CreateOrUpdate. */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_CreateOrUpdate_VNetInjection.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_CreateOrUpdate_Consumption.json
+     */
+    /**
+     * Sample code: Services_CreateOrUpdate_Consumption.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void servicesCreateOrUpdateConsumption(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myservice",
+                new ServiceResourceInner()
+                    .withLocation("eastus")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withProperties(
+                        new ClusterResourceProperties()
+                            .withManagedEnvironmentId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.App/managedEnvironments/myenvironment"))
+                    .withSku(new Sku().withName("S0").withTier("StandardGen2")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_CreateOrUpdate_VNetInjection.json
      */
     /**
      * Sample code: Services_CreateOrUpdate_VNetInjection.
@@ -35,7 +63,7 @@ public final class ServicesCreateOrUpdateSamples {
                 "myservice",
                 new ServiceResourceInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withProperties(
                         new ClusterResourceProperties()
                             .withNetworkProfile(
@@ -48,13 +76,16 @@ public final class ServicesCreateOrUpdateSamples {
                                     .withServiceRuntimeNetworkResourceGroup("my-service-runtime-network-rg")
                                     .withAppNetworkResourceGroup("my-app-network-rg")
                                     .withIngressConfig(new IngressConfig().withReadTimeoutInSeconds(300)))
-                            .withVnetAddons(new ServiceVNetAddons().withLogStreamPublicEndpoint(true)))
+                            .withVnetAddons(
+                                new ServiceVNetAddons()
+                                    .withLogStreamPublicEndpoint(true)
+                                    .withDataPlanePublicEndpoint(true)))
                     .withSku(new Sku().withName("S0").withTier("Standard")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_CreateOrUpdate.json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
@@ -72,14 +103,14 @@ public final class ServicesCreateOrUpdateSamples {
                 "myservice",
                 new ServiceResourceInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withProperties(new ClusterResourceProperties())
                     .withSku(new Sku().withName("S0").withTier("Standard")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_CreateOrUpdate_Enterprise.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_CreateOrUpdate_Enterprise.json
      */
     /**
      * Sample code: Services_CreateOrUpdate_Enterprise.
@@ -97,10 +128,16 @@ public final class ServicesCreateOrUpdateSamples {
                 "myservice",
                 new ServiceResourceInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("key1", "value1"))
-                    .withProperties(new ClusterResourceProperties())
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withProperties(
+                        new ClusterResourceProperties()
+                            .withMarketplaceResource(
+                                new MarketplaceResource()
+                                    .withPlan("tanzu-asc-ent-mtr")
+                                    .withPublisher("vmware-inc")
+                                    .withProduct("azure-spring-cloud-vmware-tanzu-2")))
                     .withSku(new Sku().withName("E0").withTier("Enterprise")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

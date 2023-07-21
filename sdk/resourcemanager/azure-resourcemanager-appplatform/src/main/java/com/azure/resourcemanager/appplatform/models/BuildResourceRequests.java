@@ -11,22 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BuildResourceRequests {
     /*
-     * Optional Cpu allocated to the build resource. 1 core can be represented
-     * by 1 or 1000m.
-     * The default value is 1, this should not exceed build service agent pool
-     * cpu size.
+     * Optional Cpu allocated to the build resource. 1 core can be represented by 1 or 1000m.
+     * The default value is 1, this should not exceed build service agent pool cpu size.
      */
     @JsonProperty(value = "cpu")
     private String cpu;
 
     /*
-     * Optional Memory allocated to the build resource. 1 GB can be represented
-     * by 1Gi or 1024Mi.
-     * The default value is 2Gi, this should not exceed build service agent
-     * pool memory size.
+     * Optional Memory allocated to the build resource. 1 GB can be represented by 1Gi or 1024Mi.
+     * The default value is 2Gi, this should not exceed build service agent pool memory size.
      */
     @JsonProperty(value = "memory")
     private String memory;
+
+    /** Creates an instance of BuildResourceRequests class. */
+    public BuildResourceRequests() {
+    }
 
     /**
      * Get the cpu property: Optional Cpu allocated to the build resource. 1 core can be represented by 1 or 1000m. The

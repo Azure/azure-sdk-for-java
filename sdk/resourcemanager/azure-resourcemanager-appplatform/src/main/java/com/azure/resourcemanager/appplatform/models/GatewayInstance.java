@@ -22,6 +22,10 @@ public final class GatewayInstance {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of GatewayInstance class. */
+    public GatewayInstance() {
+    }
+
     /**
      * Get the name property: Name of the Spring Cloud Gateway instance.
      *

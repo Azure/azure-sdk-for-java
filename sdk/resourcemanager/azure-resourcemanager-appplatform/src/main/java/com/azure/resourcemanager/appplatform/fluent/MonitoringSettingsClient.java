@@ -53,20 +53,6 @@ public interface MonitoringSettingsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Monitoring Setting and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitoringSettingResourceInner get(String resourceGroupName, String serviceName);
-
-    /**
-     * Get the Monitoring Setting and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,6 +62,20 @@ public interface MonitoringSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitoringSettingResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, Context context);
+
+    /**
+     * Get the Monitoring Setting and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Monitoring Setting and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MonitoringSettingResourceInner get(String resourceGroupName, String serviceName);
 
     /**
      * Update the Monitoring Setting.

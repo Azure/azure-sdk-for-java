@@ -63,23 +63,6 @@ public interface GatewayCustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName);
-
-    /**
-     * Get the Spring Cloud Gateway custom domain.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param gatewayName The name of Spring Cloud Gateway.
-     * @param domainName The name of the Spring Cloud Gateway custom domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,6 +72,23 @@ public interface GatewayCustomDomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GatewayCustomDomainResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String gatewayName, String domainName, Context context);
+
+    /**
+     * Get the Spring Cloud Gateway custom domain.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param domainName The name of the Spring Cloud Gateway custom domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Spring Cloud Gateway custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayCustomDomainResourceInner get(
+        String resourceGroupName, String serviceName, String gatewayName, String domainName);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.

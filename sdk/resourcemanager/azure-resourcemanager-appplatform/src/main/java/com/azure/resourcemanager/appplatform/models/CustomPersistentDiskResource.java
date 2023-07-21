@@ -23,6 +23,10 @@ public final class CustomPersistentDiskResource {
     @JsonProperty(value = "storageId", required = true)
     private String storageId;
 
+    /** Creates an instance of CustomPersistentDiskResource class. */
+    public CustomPersistentDiskResource() {
+    }
+
     /**
      * Get the customPersistentDiskProperties property: Properties of the custom persistent disk resource payload.
      *

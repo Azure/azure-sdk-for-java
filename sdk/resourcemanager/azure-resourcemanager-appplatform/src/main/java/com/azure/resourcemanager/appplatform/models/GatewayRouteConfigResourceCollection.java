@@ -25,6 +25,10 @@ public final class GatewayRouteConfigResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GatewayRouteConfigResourceCollection class. */
+    public GatewayRouteConfigResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of Spring Cloud Gateway route config resources.
      *

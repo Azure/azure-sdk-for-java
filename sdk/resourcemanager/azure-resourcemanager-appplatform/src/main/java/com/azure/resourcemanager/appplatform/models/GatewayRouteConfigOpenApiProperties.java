@@ -16,6 +16,10 @@ public final class GatewayRouteConfigOpenApiProperties {
     @JsonProperty(value = "uri")
     private String uri;
 
+    /** Creates an instance of GatewayRouteConfigOpenApiProperties class. */
+    public GatewayRouteConfigOpenApiProperties() {
+    }
+
     /**
      * Get the uri property: The URI of OpenAPI specification.
      *

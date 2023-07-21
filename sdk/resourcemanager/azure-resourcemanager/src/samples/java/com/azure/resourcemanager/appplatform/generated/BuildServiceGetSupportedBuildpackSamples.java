@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildService GetSupportedBuildpack. */
 public final class BuildServiceGetSupportedBuildpackSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_GetSupportedBuildpack.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildService_GetSupportedBuildpack.json
      */
     /**
      * Sample code: BuildService_GetSupportedBuildpack.
@@ -23,6 +21,10 @@ public final class BuildServiceGetSupportedBuildpackSamples {
             .serviceClient()
             .getBuildServices()
             .getSupportedBuildpackWithResponse(
-                "myResourceGroup", "myservice", "default", "tanzu-buildpacks-java-azure", Context.NONE);
+                "myResourceGroup",
+                "myservice",
+                "default",
+                "tanzu-buildpacks-java-azure",
+                com.azure.core.util.Context.NONE);
     }
 }

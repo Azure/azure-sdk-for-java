@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitRepository;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceSettings;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for ConfigurationServices Validate. */
 public final class ConfigurationServicesValidateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigurationServices_Validate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ConfigurationServices_Validate.json
      */
     /**
      * Sample code: ConfigurationServices_Validate.
@@ -41,6 +40,6 @@ public final class ConfigurationServicesValidateSamples {
                                             .withPatterns(Arrays.asList("app/dev"))
                                             .withUri("https://github.com/fake-user/fake-repository")
                                             .withLabel("master")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

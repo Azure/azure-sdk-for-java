@@ -22,6 +22,22 @@ public final class BuildStageProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private KPackBuildStageProvisioningState status;
 
+    /*
+     * The exit code of this build init container.
+     */
+    @JsonProperty(value = "exitCode", access = JsonProperty.Access.WRITE_ONLY)
+    private String exitCode;
+
+    /*
+     * The reason of this build init container.
+     */
+    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
+    private String reason;
+
+    /** Creates an instance of BuildStageProperties class. */
+    public BuildStageProperties() {
+    }
+
     /**
      * Get the name property: The name of this build stage resource.
      *
@@ -38,6 +54,24 @@ public final class BuildStageProperties {
      */
     public KPackBuildStageProvisioningState status() {
         return this.status;
+    }
+
+    /**
+     * Get the exitCode property: The exit code of this build init container.
+     *
+     * @return the exitCode value.
+     */
+    public String exitCode() {
+        return this.exitCode;
+    }
+
+    /**
+     * Get the reason property: The reason of this build init container.
+     *
+     * @return the reason value.
+     */
+    public String reason() {
+        return this.reason;
     }
 
     /**

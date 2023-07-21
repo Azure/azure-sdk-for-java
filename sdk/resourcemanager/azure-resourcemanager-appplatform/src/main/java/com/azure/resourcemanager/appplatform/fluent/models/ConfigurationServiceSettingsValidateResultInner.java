@@ -17,6 +17,10 @@ public final class ConfigurationServiceSettingsValidateResultInner {
     @JsonProperty(value = "gitPropertyValidationResult")
     private ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult;
 
+    /** Creates an instance of ConfigurationServiceSettingsValidateResultInner class. */
+    public ConfigurationServiceSettingsValidateResultInner() {
+    }
+
     /**
      * Get the gitPropertyValidationResult property: Validation result for configuration service settings.
      *

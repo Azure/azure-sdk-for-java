@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,12 @@ public final class AzureFileVolume extends CustomPersistentDiskProperties {
     /*
      * The share name of the Azure File share.
      */
-    @JsonProperty(value = "shareName", required = true)
+    @JsonProperty(value = "shareName")
     private String shareName;
+
+    /** Creates an instance of AzureFileVolume class. */
+    public AzureFileVolume() {
+    }
 
     /**
      * Get the shareName property: The share name of the Azure File share.
@@ -58,6 +61,13 @@ public final class AzureFileVolume extends CustomPersistentDiskProperties {
 
     /** {@inheritDoc} */
     @Override
+    public AzureFileVolume withEnableSubPath(Boolean enableSubPath) {
+        super.withEnableSubPath(enableSubPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureFileVolume withMountOptions(List<String> mountOptions) {
         super.withMountOptions(mountOptions);
         return this;
@@ -71,12 +81,5 @@ public final class AzureFileVolume extends CustomPersistentDiskProperties {
     @Override
     public void validate() {
         super.validate();
-        if (shareName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shareName in model AzureFileVolume"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureFileVolume.class);
 }

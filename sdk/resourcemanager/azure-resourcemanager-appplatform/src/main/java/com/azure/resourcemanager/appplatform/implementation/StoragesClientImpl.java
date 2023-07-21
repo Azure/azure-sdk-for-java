@@ -62,11 +62,10 @@ public final class StoragesClientImpl implements StoragesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface StoragesService {
+    public interface StoragesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/storages/{storageName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageResourceInner>> get(
@@ -81,8 +80,7 @@ public final class StoragesClientImpl implements StoragesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/storages/{storageName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -98,8 +96,7 @@ public final class StoragesClientImpl implements StoragesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/storages/{storageName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -114,8 +111,7 @@ public final class StoragesClientImpl implements StoragesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/storages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageResourceCollection>> list(
@@ -269,23 +265,6 @@ public final class StoragesClientImpl implements StoragesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param storageName The name of the storage resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageResourceInner get(String resourceGroupName, String serviceName, String storageName) {
-        return getAsync(resourceGroupName, serviceName, storageName).block();
-    }
-
-    /**
-     * Get the storage resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param storageName The name of the storage resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -296,6 +275,23 @@ public final class StoragesClientImpl implements StoragesClient {
     public Response<StorageResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String storageName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, storageName, context).block();
+    }
+
+    /**
+     * Get the storage resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param storageName The name of the storage resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageResourceInner get(String resourceGroupName, String serviceName, String storageName) {
+        return getWithResponse(resourceGroupName, serviceName, storageName, Context.NONE).getValue();
     }
 
     /**
@@ -498,7 +494,9 @@ public final class StoragesClientImpl implements StoragesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageResourceInner>, StorageResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String storageName, StorageResourceInner storageResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, storageName, storageResource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, storageName, storageResource)
+            .getSyncPoller();
     }
 
     /**
@@ -522,7 +520,8 @@ public final class StoragesClientImpl implements StoragesClient {
         String storageName,
         StorageResourceInner storageResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, storageName, storageResource, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, storageName, storageResource, context)
             .getSyncPoller();
     }
 
@@ -783,7 +782,7 @@ public final class StoragesClientImpl implements StoragesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String storageName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, storageName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, storageName).getSyncPoller();
     }
 
     /**
@@ -802,7 +801,7 @@ public final class StoragesClientImpl implements StoragesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String storageName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, storageName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, storageName, context).getSyncPoller();
     }
 
     /**
@@ -1069,7 +1068,8 @@ public final class StoragesClientImpl implements StoragesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1105,7 +1105,8 @@ public final class StoragesClientImpl implements StoragesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

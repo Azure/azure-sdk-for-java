@@ -25,6 +25,10 @@ public final class ApiPortalResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ApiPortalResourceCollection class. */
+    public ApiPortalResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of API portal resources.
      *

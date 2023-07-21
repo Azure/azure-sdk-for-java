@@ -92,6 +92,16 @@ public final class AppResourceProperties {
     @JsonProperty(value = "ingressSettings")
     private IngressSettings ingressSettings;
 
+    /*
+     * Collection of auth secrets
+     */
+    @JsonProperty(value = "secrets")
+    private List<Secret> secrets;
+
+    /** Creates an instance of AppResourceProperties class. */
+    public AppResourceProperties() {
+    }
+
     /**
      * Get the publicProperty property: Indicates whether the App exposes public endpoint.
      *
@@ -320,6 +330,26 @@ public final class AppResourceProperties {
     }
 
     /**
+     * Get the secrets property: Collection of auth secrets.
+     *
+     * @return the secrets value.
+     */
+    public List<Secret> secrets() {
+        return this.secrets;
+    }
+
+    /**
+     * Set the secrets property: Collection of auth secrets.
+     *
+     * @param secrets the secrets value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withSecrets(List<Secret> secrets) {
+        this.secrets = secrets;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -342,6 +372,9 @@ public final class AppResourceProperties {
         }
         if (ingressSettings() != null) {
             ingressSettings().validate();
+        }
+        if (secrets() != null) {
+            secrets().forEach(e -> e.validate());
         }
     }
 }

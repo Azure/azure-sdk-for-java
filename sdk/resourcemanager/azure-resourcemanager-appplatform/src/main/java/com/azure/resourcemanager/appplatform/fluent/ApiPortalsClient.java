@@ -60,21 +60,6 @@ public interface ApiPortalsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API portal and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiPortalResourceInner get(String resourceGroupName, String serviceName, String apiPortalName);
-
-    /**
-     * Get the API portal and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param apiPortalName The name of API portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,6 +69,21 @@ public interface ApiPortalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApiPortalResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String apiPortalName, Context context);
+
+    /**
+     * Get the API portal and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param apiPortalName The name of API portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the API portal and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApiPortalResourceInner get(String resourceGroupName, String serviceName, String apiPortalName);
 
     /**
      * Create the default API portal or update the existing API portal.
@@ -416,26 +416,6 @@ public interface ApiPortalsClient {
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param validatePayload Custom domain payload to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainValidateResult validateDomain(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        CustomDomainValidatePayload validatePayload);
-
-    /**
-     * Check the domains are valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param apiPortalName The name of API portal.
-     * @param validatePayload Custom domain payload to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -449,4 +429,24 @@ public interface ApiPortalsClient {
         String apiPortalName,
         CustomDomainValidatePayload validatePayload,
         Context context);
+
+    /**
+     * Check the domains are valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param apiPortalName The name of API portal.
+     * @param validatePayload Custom domain payload to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainValidateResult validateDomain(
+        String resourceGroupName,
+        String serviceName,
+        String apiPortalName,
+        CustomDomainValidatePayload validatePayload);
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayCustomDomains Delete. */
 public final class GatewayCustomDomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/GatewayCustomDomains_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/GatewayCustomDomains_Delete.json
      */
     /**
      * Sample code: GatewayCustomDomains_Delete.
@@ -22,6 +20,6 @@ public final class GatewayCustomDomainsDeleteSamples {
             .manager()
             .serviceClient()
             .getGatewayCustomDomains()
-            .delete("myResourceGroup", "myservice", "default", "myDomainName", Context.NONE);
+            .delete("myResourceGroup", "myservice", "default", "myDomainName", com.azure.core.util.Context.NONE);
     }
 }

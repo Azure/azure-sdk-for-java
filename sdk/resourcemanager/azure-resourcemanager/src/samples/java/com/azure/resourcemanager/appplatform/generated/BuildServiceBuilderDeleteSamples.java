@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildServiceBuilder Delete. */
 public final class BuildServiceBuilderDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildServiceBuilder_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildServiceBuilder_Delete.json
      */
     /**
      * Sample code: BuildServiceBuilder_Delete.
@@ -22,6 +20,6 @@ public final class BuildServiceBuilderDeleteSamples {
             .manager()
             .serviceClient()
             .getBuildServiceBuilders()
-            .delete("myResourceGroup", "myservice", "default", "mybuilder", Context.NONE);
+            .delete("myResourceGroup", "myservice", "default", "mybuilder", com.azure.core.util.Context.NONE);
     }
 }

@@ -37,6 +37,10 @@ public final class ManagedIdentityProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
 
+    /** Creates an instance of ManagedIdentityProperties class. */
+    public ManagedIdentityProperties() {
+    }
+
     /**
      * Get the type property: Type of the managed identity.
      *

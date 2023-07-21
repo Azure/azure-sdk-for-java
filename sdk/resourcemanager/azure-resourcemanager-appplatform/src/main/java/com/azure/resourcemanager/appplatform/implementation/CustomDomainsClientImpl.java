@@ -64,11 +64,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface CustomDomainsService {
+    public interface CustomDomainsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/domains/{domainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainResourceInner>> get(
@@ -84,8 +83,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/domains/{domainName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/domains/{domainName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -119,8 +116,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/domains/{domainName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -137,8 +133,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/domains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainResourceCollection>> list(
@@ -308,25 +303,6 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        return getAsync(resourceGroupName, serviceName, appName, domainName).block();
-    }
-
-    /**
-     * Get the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -337,6 +313,25 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public Response<CustomDomainResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, domainName, context).block();
+    }
+
+    /**
+     * Get the custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the custom domain of one lifecycle application.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainResourceInner get(
+        String resourceGroupName, String serviceName, String appName, String domainName) {
+        return getWithResponse(resourceGroupName, serviceName, appName, domainName, Context.NONE).getValue();
     }
 
     /**
@@ -569,7 +564,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String appName,
         String domainName,
         CustomDomainResourceInner domainResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource)
             .getSyncPoller();
     }
 
@@ -596,7 +592,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String domainName,
         CustomDomainResourceInner domainResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
             .getSyncPoller();
     }
 
@@ -886,7 +883,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String domainName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, domainName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName, domainName).getSyncPoller();
     }
 
     /**
@@ -906,7 +903,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, domainName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName, domainName, context).getSyncPoller();
     }
 
     /**
@@ -1216,7 +1213,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String appName,
         String domainName,
         CustomDomainResourceInner domainResource) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource)
+            .getSyncPoller();
     }
 
     /**
@@ -1242,7 +1241,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String domainName,
         CustomDomainResourceInner domainResource,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
             .getSyncPoller();
     }
 
@@ -1560,7 +1560,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1596,7 +1597,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

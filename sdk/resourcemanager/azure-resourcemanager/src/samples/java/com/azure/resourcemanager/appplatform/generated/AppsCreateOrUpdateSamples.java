@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.AppVNetAddons;
@@ -23,7 +22,7 @@ import java.util.Map;
 /** Samples for Apps CreateOrUpdate. */
 public final class AppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Apps_CreateOrUpdate.json
      */
     /**
      * Sample code: Apps_CreateOrUpdate.
@@ -64,6 +63,7 @@ public final class AppsCreateOrUpdateSamples {
                                             .withCustomPersistentDiskProperties(
                                                 new AzureFileVolume()
                                                     .withMountPath("/mypath1/mypath2")
+                                                    .withEnableSubPath(true)
                                                     .withMountOptions(
                                                         Arrays
                                                             .asList(
@@ -92,11 +92,11 @@ public final class AppsCreateOrUpdateSamples {
                                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
                                     new UserAssignedManagedIdentity())))
                     .withLocation("eastus"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_CreateOrUpdate_VNetInjection.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Apps_CreateOrUpdate_VNetInjection.json
      */
     /**
      * Sample code: Apps_CreateOrUpdate_VNetInjection.
@@ -166,7 +166,7 @@ public final class AppsCreateOrUpdateSamples {
                                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
                                     new UserAssignedManagedIdentity())))
                     .withLocation("eastus"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

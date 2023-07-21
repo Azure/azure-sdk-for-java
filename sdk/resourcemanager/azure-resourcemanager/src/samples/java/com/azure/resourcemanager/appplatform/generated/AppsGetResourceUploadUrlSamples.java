@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Apps GetResourceUploadUrl. */
 public final class AppsGetResourceUploadUrlSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_GetResourceUploadUrl.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Apps_GetResourceUploadUrl.json
      */
     /**
      * Sample code: Apps_GetResourceUploadUrl.
@@ -22,6 +20,7 @@ public final class AppsGetResourceUploadUrlSamples {
             .manager()
             .serviceClient()
             .getApps()
-            .getResourceUploadUrlWithResponse("myResourceGroup", "myservice", "myapp", Context.NONE);
+            .getResourceUploadUrlWithResponse(
+                "myResourceGroup", "myservice", "myapp", com.azure.core.util.Context.NONE);
     }
 }

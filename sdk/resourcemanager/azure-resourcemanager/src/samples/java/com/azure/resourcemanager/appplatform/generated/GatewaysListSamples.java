@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Gateways List. */
 public final class GatewaysListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Gateways_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Gateways_List.json
      */
     /**
      * Sample code: Gateways_List.
@@ -22,6 +20,6 @@ public final class GatewaysListSamples {
             .manager()
             .serviceClient()
             .getGateways()
-            .list("myResourceGroup", "myservice", Context.NONE);
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

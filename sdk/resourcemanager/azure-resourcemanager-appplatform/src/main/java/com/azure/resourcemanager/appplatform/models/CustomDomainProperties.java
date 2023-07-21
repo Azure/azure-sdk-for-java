@@ -34,6 +34,10 @@ public final class CustomDomainProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomainResourceProvisioningState provisioningState;
 
+    /** Creates an instance of CustomDomainProperties class. */
+    public CustomDomainProperties() {
+    }
+
     /**
      * Get the thumbprint property: The thumbprint of bound certificate.
      *

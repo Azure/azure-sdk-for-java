@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomContainer;
@@ -27,7 +26,7 @@ import java.util.Map;
 /** Samples for Deployments CreateOrUpdate. */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_CreateOrUpdate.json
      */
     /**
      * Sample code: Deployments_CreateOrUpdate.
@@ -86,11 +85,11 @@ public final class DeploymentsCreateOrUpdateSamples {
                                             .withFailureThreshold(3))
                                     .withTerminationGracePeriodSeconds(30)))
                     .withSku(new Sku().withName("S0").withTier("Standard").withCapacity(1)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_CreateOrUpdate_CustomContainer.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_CreateOrUpdate_CustomContainer.json
      */
     /**
      * Sample code: Deployments_CreateOrUpdate_CustomContainer.
@@ -122,7 +121,7 @@ public final class DeploymentsCreateOrUpdateSamples {
                                             .withImageRegistryCredential(
                                                 new ImageRegistryCredential()
                                                     .withUsername("myUsername")
-                                                    .withPassword("myPassword"))
+                                                    .withPassword("fakeTokenPlaceholder"))
                                             .withLanguageFramework("springboot")))
                             .withDeploymentSettings(
                                 new DeploymentSettings()
@@ -145,7 +144,7 @@ public final class DeploymentsCreateOrUpdateSamples {
                                             .withPeriodSeconds(10)
                                             .withFailureThreshold(3))
                                     .withTerminationGracePeriodSeconds(30))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

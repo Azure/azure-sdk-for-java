@@ -18,22 +18,20 @@ public final class CustomContainer {
     private String server;
 
     /*
-     * Container image of the custom container. This should be in the form of
-     * <repository>:<tag> without the server name of the registry
+     * Container image of the custom container. This should be in the form of <repository>:<tag> without the server
+     * name of the registry
      */
     @JsonProperty(value = "containerImage")
     private String containerImage;
 
     /*
-     * Entrypoint array. Not executed within a shell. The docker image's
-     * ENTRYPOINT is used if this is not provided.
+     * Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided.
      */
     @JsonProperty(value = "command")
     private List<String> command;
 
     /*
-     * Arguments to the entrypoint. The docker image's CMD is used if this is
-     * not provided.
+     * Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
      */
     @JsonProperty(value = "args")
     private List<String> args;
@@ -49,6 +47,10 @@ public final class CustomContainer {
      */
     @JsonProperty(value = "languageFramework")
     private String languageFramework;
+
+    /** Creates an instance of CustomContainer class. */
+    public CustomContainer() {
+    }
 
     /**
      * Get the server property: The name of the registry that contains the container image.

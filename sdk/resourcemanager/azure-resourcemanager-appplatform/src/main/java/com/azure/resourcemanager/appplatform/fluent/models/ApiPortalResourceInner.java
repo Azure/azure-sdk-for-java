@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.ApiPortalProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,11 +25,9 @@ public final class ApiPortalResourceInner extends ProxyResource {
     @JsonProperty(value = "sku")
     private Sku sku;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of ApiPortalResourceInner class. */
+    public ApiPortalResourceInner() {
+    }
 
     /**
      * Get the properties property: API portal properties payload.
@@ -70,15 +67,6 @@ public final class ApiPortalResourceInner extends ProxyResource {
     public ApiPortalResourceInner withSku(Sku sku) {
         this.sku = sku;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

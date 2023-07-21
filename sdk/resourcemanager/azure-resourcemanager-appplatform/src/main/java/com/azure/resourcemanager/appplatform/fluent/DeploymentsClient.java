@@ -67,22 +67,6 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentResourceInner get(String resourceGroupName, String serviceName, String appName, String deploymentName);
-
-    /**
-     * Get a Deployment and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,6 +76,22 @@ public interface DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+
+    /**
+     * Get a Deployment and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Deployment and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentResourceInner get(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Create a new Deployment or update an exiting Deployment.
@@ -1059,7 +1059,23 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1067,11 +1083,7 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload);
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Enable remote debugging.
@@ -1135,28 +1147,6 @@ public interface DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName);
-
-    /**
-     * Enable remote debugging.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param remoteDebuggingPayload Parameters for enable remote debugging.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote debugging config.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner enableRemoteDebugging(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload);
 
     /**
      * Enable remote debugging.
@@ -1362,23 +1352,6 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote debugging config.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner getRemoteDebuggingConfig(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
-
-    /**
-     * Get remote debugging config.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1388,6 +1361,23 @@ public interface DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RemoteDebuggingInner> getRemoteDebuggingConfigWithResponse(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner getRemoteDebuggingConfig(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Get deployment log file URL.
@@ -1431,23 +1421,6 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LogFileUrlResponseInner getLogFileUrl(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
-
-    /**
-     * Get deployment log file URL.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1457,6 +1430,23 @@ public interface DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LogFileUrlResponseInner> getLogFileUrlWithResponse(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+
+    /**
+     * Get deployment log file URL.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment log file URL.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LogFileUrlResponseInner getLogFileUrl(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Generate Heap Dump.

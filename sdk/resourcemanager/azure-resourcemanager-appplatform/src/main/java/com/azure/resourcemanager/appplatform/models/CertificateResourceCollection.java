@@ -24,6 +24,10 @@ public final class CertificateResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CertificateResourceCollection class. */
+    public CertificateResourceCollection() {
+    }
+
     /**
      * Get the value property: The certificate resources list.
      *

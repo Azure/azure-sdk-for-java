@@ -47,6 +47,10 @@ public final class DeploymentResourceProperties {
     @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<DeploymentInstance> instances;
 
+    /** Creates an instance of DeploymentResourceProperties class. */
+    public DeploymentResourceProperties() {
+    }
+
     /**
      * Get the source property: Uploaded source information of the deployment.
      *

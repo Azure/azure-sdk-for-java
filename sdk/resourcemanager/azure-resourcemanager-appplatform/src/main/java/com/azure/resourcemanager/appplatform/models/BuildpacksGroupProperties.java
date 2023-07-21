@@ -23,6 +23,10 @@ public final class BuildpacksGroupProperties {
     @JsonProperty(value = "buildpacks")
     private List<BuildpackProperties> buildpacks;
 
+    /** Creates an instance of BuildpacksGroupProperties class. */
+    public BuildpacksGroupProperties() {
+    }
+
     /**
      * Get the name property: Buildpack group name.
      *

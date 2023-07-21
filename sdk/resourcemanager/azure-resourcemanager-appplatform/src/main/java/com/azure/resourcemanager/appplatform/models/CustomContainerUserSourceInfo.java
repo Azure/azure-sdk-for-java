@@ -20,6 +20,10 @@ public final class CustomContainerUserSourceInfo extends UserSourceInfo {
     @JsonProperty(value = "customContainer")
     private CustomContainer customContainer;
 
+    /** Creates an instance of CustomContainerUserSourceInfo class. */
+    public CustomContainerUserSourceInfo() {
+    }
+
     /**
      * Get the customContainer property: Custom container payload.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Certificates List. */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Certificates_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Certificates_List.json
      */
     /**
      * Sample code: Certificates_List.
@@ -22,6 +20,6 @@ public final class CertificatesListSamples {
             .manager()
             .serviceClient()
             .getCertificates()
-            .list("myResourceGroup", "myservice", Context.NONE);
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,10 @@ public final class ContainerProbeSettings {
     @JsonProperty(value = "disableProbe")
     private Boolean disableProbe;
 
+    /** Creates an instance of ContainerProbeSettings class. */
+    public ContainerProbeSettings() {
+    }
+
     /**
      * Get the disableProbe property: Indicates whether disable the liveness and readiness probe.
      *

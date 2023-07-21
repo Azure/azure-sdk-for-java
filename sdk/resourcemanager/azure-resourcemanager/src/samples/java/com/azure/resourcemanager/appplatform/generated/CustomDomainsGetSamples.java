@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomDomains Get. */
 public final class CustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/CustomDomains_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/CustomDomains_Get.json
      */
     /**
      * Sample code: CustomDomains_Get.
@@ -22,6 +20,6 @@ public final class CustomDomainsGetSamples {
             .manager()
             .serviceClient()
             .getCustomDomains()
-            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydomain.com", Context.NONE);
+            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydomain.com", com.azure.core.util.Context.NONE);
     }
 }

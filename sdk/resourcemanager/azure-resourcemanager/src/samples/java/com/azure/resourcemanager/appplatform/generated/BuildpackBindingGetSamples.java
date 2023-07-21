@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildpackBinding Get. */
 public final class BuildpackBindingGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildpackBinding_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildpackBinding_Get.json
      */
     /**
      * Sample code: BuildpackBinding_Get.
@@ -22,6 +20,12 @@ public final class BuildpackBindingGetSamples {
             .manager()
             .serviceClient()
             .getBuildpackBindings()
-            .getWithResponse("myResourceGroup", "myservice", "default", "default", "myBuildpackBinding", Context.NONE);
+            .getWithResponse(
+                "myResourceGroup",
+                "myservice",
+                "default",
+                "default",
+                "myBuildpackBinding",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments DisableRemoteDebugging. */
 public final class DeploymentsDisableRemoteDebuggingSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_DisableRemoteDebugging.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_DisableRemoteDebugging.json
      */
     /**
      * Sample code: Deployments_DisableRemoteDebugging.
@@ -22,6 +20,7 @@ public final class DeploymentsDisableRemoteDebuggingSamples {
             .manager()
             .serviceClient()
             .getDeployments()
-            .disableRemoteDebugging("myResourceGroup", "myservice", "myapp", "mydeployment", Context.NONE);
+            .disableRemoteDebugging(
+                "myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }

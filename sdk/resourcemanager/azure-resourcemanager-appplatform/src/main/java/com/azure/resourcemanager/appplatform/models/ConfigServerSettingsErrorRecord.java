@@ -29,6 +29,10 @@ public final class ConfigServerSettingsErrorRecord {
     @JsonProperty(value = "messages")
     private List<String> messages;
 
+    /** Creates an instance of ConfigServerSettingsErrorRecord class. */
+    public ConfigServerSettingsErrorRecord() {
+    }
+
     /**
      * Get the name property: The name of the config server settings error record.
      *

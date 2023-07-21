@@ -66,11 +66,10 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ApiPortalsService {
+    public interface ApiPortalsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiPortalResourceInner>> get(
@@ -85,8 +84,7 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -118,8 +115,7 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiPortalResourceCollection>> list(
@@ -133,8 +129,7 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/validateDomain")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/validateDomain")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainValidateResult>> validateDomain(
@@ -290,23 +285,6 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API portal and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiPortalResourceInner get(String resourceGroupName, String serviceName, String apiPortalName) {
-        return getAsync(resourceGroupName, serviceName, apiPortalName).block();
-    }
-
-    /**
-     * Get the API portal and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param apiPortalName The name of API portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -317,6 +295,23 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
     public Response<ApiPortalResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String apiPortalName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiPortalName, context).block();
+    }
+
+    /**
+     * Get the API portal and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param apiPortalName The name of API portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the API portal and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiPortalResourceInner get(String resourceGroupName, String serviceName, String apiPortalName) {
+        return getWithResponse(resourceGroupName, serviceName, apiPortalName, Context.NONE).getValue();
     }
 
     /**
@@ -523,7 +518,8 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiPortalResourceInner>, ApiPortalResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String apiPortalName, ApiPortalResourceInner apiPortalResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, apiPortalResource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, apiPortalResource)
             .getSyncPoller();
     }
 
@@ -548,7 +544,8 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
         String apiPortalName,
         ApiPortalResourceInner apiPortalResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, apiPortalResource, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, apiPortalResource, context)
             .getSyncPoller();
     }
 
@@ -809,7 +806,7 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String apiPortalName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, apiPortalName).getSyncPoller();
     }
 
     /**
@@ -828,7 +825,7 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String apiPortalName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, context).getSyncPoller();
     }
 
     /**
@@ -1253,28 +1250,6 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param validatePayload Custom domain payload to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainValidateResult validateDomain(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        CustomDomainValidatePayload validatePayload) {
-        return validateDomainAsync(resourceGroupName, serviceName, apiPortalName, validatePayload).block();
-    }
-
-    /**
-     * Check the domains are valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param apiPortalName The name of API portal.
-     * @param validatePayload Custom domain payload to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1293,9 +1268,33 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
     }
 
     /**
+     * Check the domains are valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param apiPortalName The name of API portal.
+     * @param validatePayload Custom domain payload to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainValidateResult validateDomain(
+        String resourceGroupName,
+        String serviceName,
+        String apiPortalName,
+        CustomDomainValidatePayload validatePayload) {
+        return validateDomainWithResponse(resourceGroupName, serviceName, apiPortalName, validatePayload, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1331,7 +1330,8 @@ public final class ApiPortalsClientImpl implements ApiPortalsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

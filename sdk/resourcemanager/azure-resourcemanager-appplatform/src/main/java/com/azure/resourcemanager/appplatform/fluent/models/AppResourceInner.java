@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.ManagedIdentityProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,17 +26,14 @@ public final class AppResourceInner extends ProxyResource {
     private ManagedIdentityProperties identity;
 
     /*
-     * The GEO location of the application, always the same with its parent
-     * resource
+     * The GEO location of the application, always the same with its parent resource
      */
     @JsonProperty(value = "location")
     private String location;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of AppResourceInner class. */
+    public AppResourceInner() {
+    }
 
     /**
      * Get the properties property: Properties of the App resource.
@@ -97,15 +93,6 @@ public final class AppResourceInner extends ProxyResource {
     public AppResourceInner withLocation(String location) {
         this.location = location;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

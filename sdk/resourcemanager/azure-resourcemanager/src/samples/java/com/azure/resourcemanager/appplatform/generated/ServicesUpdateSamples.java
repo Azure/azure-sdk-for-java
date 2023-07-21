@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for Services Update. */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_Update.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_Update.json
      */
     /**
      * Sample code: Services_Update.
@@ -32,10 +31,10 @@ public final class ServicesUpdateSamples {
                 "myservice",
                 new ServiceResourceInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withProperties(new ClusterResourceProperties())
                     .withSku(new Sku().withName("S0").withTier("Standard")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

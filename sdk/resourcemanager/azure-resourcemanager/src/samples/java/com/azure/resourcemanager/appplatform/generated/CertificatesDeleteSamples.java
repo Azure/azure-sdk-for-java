@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Certificates Delete. */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Certificates_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Certificates_Delete.json
      */
     /**
      * Sample code: Certificates_Delete.
@@ -22,6 +20,6 @@ public final class CertificatesDeleteSamples {
             .manager()
             .serviceClient()
             .getCertificates()
-            .delete("myResourceGroup", "myservice", "mycertificate", Context.NONE);
+            .delete("myResourceGroup", "myservice", "mycertificate", com.azure.core.util.Context.NONE);
     }
 }

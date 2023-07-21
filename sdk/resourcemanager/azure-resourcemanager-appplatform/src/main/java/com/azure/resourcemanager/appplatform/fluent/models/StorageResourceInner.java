@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.StorageProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,11 +18,9 @@ public final class StorageResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private StorageProperties properties;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of StorageResourceInner class. */
+    public StorageResourceInner() {
+    }
 
     /**
      * Get the properties property: Properties of the storage resource payload.
@@ -43,15 +40,6 @@ public final class StorageResourceInner extends ProxyResource {
     public StorageResourceInner withProperties(StorageProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

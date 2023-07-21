@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.ActiveDeploymentCollection;
 import java.util.Arrays;
 
 /** Samples for Apps SetActiveDeployments. */
 public final class AppsSetActiveDeploymentsSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_SetActiveDeployments.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Apps_SetActiveDeployments.json
      */
     /**
      * Sample code: Apps_SetActiveDeployments.
@@ -29,6 +28,6 @@ public final class AppsSetActiveDeploymentsSamples {
                 "myservice",
                 "myapp",
                 new ActiveDeploymentCollection().withActiveDeploymentNames(Arrays.asList("default")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.RegenerateTestKeyRequestPayload;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 
 /** Samples for Services RegenerateTestKey. */
 public final class ServicesRegenerateTestKeySamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_RegenerateTestKey.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_RegenerateTestKey.json
      */
     /**
      * Sample code: Services_RegenerateTestKey.
@@ -28,6 +27,6 @@ public final class ServicesRegenerateTestKeySamples {
                 "myResourceGroup",
                 "myservice",
                 new RegenerateTestKeyRequestPayload().withKeyType(TestKeyType.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

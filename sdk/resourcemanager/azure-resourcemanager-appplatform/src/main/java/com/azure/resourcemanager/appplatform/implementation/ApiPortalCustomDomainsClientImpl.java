@@ -64,11 +64,10 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ApiPortalCustomDomainsService {
+    public interface ApiPortalCustomDomainsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiPortalCustomDomainResourceInner>> get(
@@ -84,8 +83,7 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -119,8 +116,7 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiPortalCustomDomainResourceCollection>> list(
@@ -288,25 +284,6 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API portal custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiPortalCustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
-        return getAsync(resourceGroupName, serviceName, apiPortalName, domainName).block();
-    }
-
-    /**
-     * Get the API portal custom domain.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param apiPortalName The name of API portal.
-     * @param domainName The name of the API portal custom domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -317,6 +294,25 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     public Response<ApiPortalCustomDomainResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiPortalName, domainName, context).block();
+    }
+
+    /**
+     * Get the API portal custom domain.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param apiPortalName The name of API portal.
+     * @param domainName The name of the API portal custom domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the API portal custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiPortalCustomDomainResourceInner get(
+        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
+        return getWithResponse(resourceGroupName, serviceName, apiPortalName, domainName, Context.NONE).getValue();
     }
 
     /**
@@ -559,7 +555,8 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
             String apiPortalName,
             String domainName,
             ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource)
             .getSyncPoller();
     }
@@ -588,7 +585,8 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
             String domainName,
             ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource, context)
             .getSyncPoller();
     }
@@ -884,7 +882,7 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName).getSyncPoller();
     }
 
     /**
@@ -904,7 +902,9 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1197,7 +1197,8 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1233,7 +1234,8 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

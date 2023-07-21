@@ -23,6 +23,10 @@ public final class GatewayOperatorProperties {
     @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<GatewayInstance> instances;
 
+    /** Creates an instance of GatewayOperatorProperties class. */
+    public GatewayOperatorProperties() {
+    }
+
     /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
      *

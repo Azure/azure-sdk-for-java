@@ -24,6 +24,10 @@ public final class StorageResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of StorageResourceCollection class. */
+    public StorageResourceCollection() {
+    }
+
     /**
      * Get the value property: The storage resources list.
      *

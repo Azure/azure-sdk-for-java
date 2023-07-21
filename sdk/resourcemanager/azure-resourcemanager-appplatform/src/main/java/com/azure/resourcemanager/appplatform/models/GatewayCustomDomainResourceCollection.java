@@ -25,6 +25,10 @@ public final class GatewayCustomDomainResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GatewayCustomDomainResourceCollection class. */
+    public GatewayCustomDomainResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of Spring Cloud Gateway custom domain resources.
      *

@@ -22,6 +22,10 @@ public final class GatewayResourceRequests {
     @JsonProperty(value = "memory")
     private String memory;
 
+    /** Creates an instance of GatewayResourceRequests class. */
+    public GatewayResourceRequests() {
+    }
+
     /**
      * Get the cpu property: Cpu allocated to each Spring Cloud Gateway instance.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Storages Delete. */
 public final class StoragesDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Storages_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Storages_Delete.json
      */
     /**
      * Sample code: Storages_Delete.
@@ -22,6 +20,6 @@ public final class StoragesDeleteSamples {
             .manager()
             .serviceClient()
             .getStorages()
-            .delete("myResourceGroup", "myservice", "mystorage", Context.NONE);
+            .delete("myResourceGroup", "myservice", "mystorage", com.azure.core.util.Context.NONE);
     }
 }

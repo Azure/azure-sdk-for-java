@@ -24,6 +24,10 @@ public final class CustomDomainResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CustomDomainResourceCollection class. */
+    public CustomDomainResourceCollection() {
+    }
+
     /**
      * Get the value property: The custom domain resources list.
      *

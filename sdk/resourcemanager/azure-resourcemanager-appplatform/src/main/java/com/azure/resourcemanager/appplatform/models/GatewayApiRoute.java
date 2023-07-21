@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public final class GatewayApiRoute {
     /*
-     * A title, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * A title, will be applied to methods in the generated OpenAPI documentation.
      */
     @JsonProperty(value = "title")
     private String title;
 
     /*
-     * A description, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * A description, will be applied to methods in the generated OpenAPI documentation.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -38,24 +36,21 @@ public final class GatewayApiRoute {
     private Boolean ssoEnabled;
 
     /*
-     * Pass currently-authenticated user's identity token to application
-     * service, default is 'false'
+     * Pass currently-authenticated user's identity token to application service, default is 'false'
      */
     @JsonProperty(value = "tokenRelay")
     private Boolean tokenRelay;
 
     /*
-     * A number of conditions to evaluate a route for each request. Each
-     * predicate may be evaluated against request headers and parameter values.
-     * All of the predicates associated with a route must evaluate to true for
-     * the route to be matched to the request.
+     * A number of conditions to evaluate a route for each request. Each predicate may be evaluated against request
+     * headers and parameter values. All of the predicates associated with a route must evaluate to true for the route
+     * to be matched to the request.
      */
     @JsonProperty(value = "predicates")
     private List<String> predicates;
 
     /*
-     * To modify the request before sending it to the target endpoint, or the
-     * received response.
+     * To modify the request before sending it to the target endpoint, or the received response.
      */
     @JsonProperty(value = "filters")
     private List<String> filters;
@@ -67,11 +62,14 @@ public final class GatewayApiRoute {
     private Integer order;
 
     /*
-     * Classification tags, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * Classification tags, will be applied to methods in the generated OpenAPI documentation.
      */
     @JsonProperty(value = "tags")
     private List<String> tags;
+
+    /** Creates an instance of GatewayApiRoute class. */
+    public GatewayApiRoute() {
+    }
 
     /**
      * Get the title property: A title, will be applied to methods in the generated OpenAPI documentation.

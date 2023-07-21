@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Bindings Get. */
 public final class BindingsGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Bindings_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Bindings_Get.json
      */
     /**
      * Sample code: Bindings_Get.
@@ -22,6 +20,6 @@ public final class BindingsGetSamples {
             .manager()
             .serviceClient()
             .getBindings()
-            .getWithResponse("myResourceGroup", "myservice", "myapp", "mybinding", Context.NONE);
+            .getWithResponse("myResourceGroup", "myservice", "myapp", "mybinding", com.azure.core.util.Context.NONE);
     }
 }

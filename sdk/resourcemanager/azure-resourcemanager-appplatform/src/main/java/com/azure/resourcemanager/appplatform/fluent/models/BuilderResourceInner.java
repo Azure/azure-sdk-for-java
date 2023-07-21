@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.BuilderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,11 +18,9 @@ public final class BuilderResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private BuilderProperties properties;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of BuilderResourceInner class. */
+    public BuilderResourceInner() {
+    }
 
     /**
      * Get the properties property: Property of the Builder resource.
@@ -43,15 +40,6 @@ public final class BuilderResourceInner extends ProxyResource {
     public BuilderResourceInner withProperties(BuilderProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

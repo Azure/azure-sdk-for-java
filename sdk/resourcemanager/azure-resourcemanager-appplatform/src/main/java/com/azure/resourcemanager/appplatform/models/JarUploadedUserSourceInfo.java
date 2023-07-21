@@ -26,6 +26,10 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
     @JsonProperty(value = "jvmOptions")
     private String jvmOptions;
 
+    /** Creates an instance of JarUploadedUserSourceInfo class. */
+    public JarUploadedUserSourceInfo() {
+    }
+
     /**
      * Get the runtimeVersion property: Runtime version of the Jar file.
      *

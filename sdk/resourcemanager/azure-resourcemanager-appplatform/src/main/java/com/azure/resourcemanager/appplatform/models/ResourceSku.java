@@ -42,8 +42,7 @@ public final class ResourceSku {
     private List<String> locations;
 
     /*
-     * Gets a list of locations and availability zones in those locations where
-     * the SKU is available.
+     * Gets a list of locations and availability zones in those locations where the SKU is available.
      */
     @JsonProperty(value = "locationInfo")
     private List<ResourceSkuLocationInfo> locationInfo;
@@ -54,6 +53,10 @@ public final class ResourceSku {
      */
     @JsonProperty(value = "restrictions")
     private List<ResourceSkuRestrictions> restrictions;
+
+    /** Creates an instance of ResourceSku class. */
+    public ResourceSku() {
+    }
 
     /**
      * Get the resourceType property: Gets the type of resource the SKU applies to.

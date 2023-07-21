@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServiceRegistries List. */
 public final class ServiceRegistriesListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ServiceRegistries_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ServiceRegistries_List.json
      */
     /**
      * Sample code: ServiceRegistries_List.
@@ -22,6 +20,6 @@ public final class ServiceRegistriesListSamples {
             .manager()
             .serviceClient()
             .getServiceRegistries()
-            .list("myResourceGroup", "myservice", Context.NONE);
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

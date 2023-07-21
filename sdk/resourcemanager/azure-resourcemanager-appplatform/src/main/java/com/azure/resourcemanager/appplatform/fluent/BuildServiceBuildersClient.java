@@ -63,22 +63,6 @@ public interface BuildServiceBuildersClient {
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KPack builder.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BuilderResourceInner get(String resourceGroupName, String serviceName, String buildServiceName, String builderName);
-
-    /**
-     * Get a KPack builder.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,6 +72,22 @@ public interface BuildServiceBuildersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BuilderResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context);
+
+    /**
+     * Get a KPack builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a KPack builder.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BuilderResourceInner get(String resourceGroupName, String serviceName, String buildServiceName, String builderName);
 
     /**
      * Create or update a KPack builder.
@@ -456,23 +456,6 @@ public interface BuildServiceBuildersClient {
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deployments resource ids.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentListInner listDeployments(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
-
-    /**
-     * List deployments that are using the builder.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -482,4 +465,21 @@ public interface BuildServiceBuildersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentListInner> listDeploymentsWithResponse(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context);
+
+    /**
+     * List deployments that are using the builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deployments resource ids.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentListInner listDeployments(
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
 }

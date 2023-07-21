@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Apps Delete. */
 public final class AppsDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Apps_Delete.json
      */
     /**
      * Sample code: Apps_Delete.
@@ -22,6 +20,6 @@ public final class AppsDeleteSamples {
             .manager()
             .serviceClient()
             .getApps()
-            .delete("myResourceGroup", "myservice", "myapp", Context.NONE);
+            .delete("myResourceGroup", "myservice", "myapp", com.azure.core.util.Context.NONE);
     }
 }

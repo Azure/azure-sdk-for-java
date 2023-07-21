@@ -26,6 +26,10 @@ public final class BuildpackBindingLaunchProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> secrets;
 
+    /** Creates an instance of BuildpackBindingLaunchProperties class. */
+    public BuildpackBindingLaunchProperties() {
+    }
+
     /**
      * Get the properties property: Non-sensitive properties for launchProperties.
      *

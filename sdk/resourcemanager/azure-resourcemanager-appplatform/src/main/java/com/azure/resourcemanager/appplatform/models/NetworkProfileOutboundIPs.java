@@ -17,6 +17,10 @@ public final class NetworkProfileOutboundIPs {
     @JsonProperty(value = "publicIPs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> publicIPs;
 
+    /** Creates an instance of NetworkProfileOutboundIPs class. */
+    public NetworkProfileOutboundIPs() {
+    }
+
     /**
      * Get the publicIPs property: A list of public IP addresses.
      *

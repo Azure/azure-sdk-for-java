@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments Get. */
 public final class DeploymentsGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_Get.json
      */
     /**
      * Sample code: Deployments_Get.
@@ -22,11 +20,11 @@ public final class DeploymentsGetSamples {
             .manager()
             .serviceClient()
             .getDeployments()
-            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment", Context.NONE);
+            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_Get_CustomContainer.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_Get_CustomContainer.json
      */
     /**
      * Sample code: Deployments_Get_CustomContainer.
@@ -39,6 +37,6 @@ public final class DeploymentsGetSamples {
             .manager()
             .serviceClient()
             .getDeployments()
-            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment", Context.NONE);
+            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }
