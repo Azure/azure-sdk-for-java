@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixes not moving the request start time in the `responseStaticsList` - See [PR 35705](https://github.com/Azure/azure-sdk-for-java/pull/35705)
+* Fixed request start time in the `CosmosDiagnostics` for individual request responses - See [PR 35705](https://github.com/Azure/azure-sdk-for-java/pull/35705)
 
 #### Other Changes
 

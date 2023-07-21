@@ -1343,7 +1343,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void responseStatisticRequestStartTimeUTC() {
+    public void responseStatisticRequestStartTimeUTCForDirectCall() {
         CosmosAsyncClient client = null;
         FaultInjectionRule faultInjectionRule = null;
 
