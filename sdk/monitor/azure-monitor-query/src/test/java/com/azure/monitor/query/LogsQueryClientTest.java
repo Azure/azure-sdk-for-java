@@ -253,9 +253,10 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null);
         logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null,
-                        new LogsQueryOptions().setIncludeStatistics(true));
+            new LogsQueryOptions().setIncludeStatistics(true));
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null,
+            new LogsQueryOptions().setIncludeStatistics(true));
 
         LogsBatchQueryResultCollection batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
