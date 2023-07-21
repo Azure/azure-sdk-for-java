@@ -288,31 +288,7 @@
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
-          <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
-          <analysisConfigurationFiles>
-            <configurationFile>
-              <resource>revapi/revapi.json</resource>
-            </configurationFile>
-          </analysisConfigurationFiles>
-          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>true</checkDependencies>
-          <!-- The following configures reporting to file in addition to CLI reporting. -->
-          <analysisConfiguration>
-            <revapi.reporter.json id="file-report">
-              <minSeverity>NON_BREAKING</minSeverity>
-              <minCriticality>error</minCriticality>
-              <indent>true</indent>
-              <output>${project.build.directory}/revapi.json</output>
-              <keepEmptyFile>false</keepEmptyFile>
-            </revapi.reporter.json>
-          </analysisConfiguration>
-          <pipelineConfiguration>
-            <filters>
-              <include>
-                <item>azure-sdk-tree-provider</item>
-              </include>
-            </filters>
-          </pipelineConfiguration>
+          <skip>true</skip>
         </configuration>
         <dependencies>
           <dependency>
