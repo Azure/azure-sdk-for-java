@@ -225,7 +225,7 @@ public class BulkExecutorTest extends BatchTestBase {
     }
 
     // tests the partition split retry flow and the regular retry flow
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 2)
     public void executeBulk_preserveOrdering_OnFailures() throws InterruptedException {
         int totalRequest = 100;
         this.container = createContainer(database);
