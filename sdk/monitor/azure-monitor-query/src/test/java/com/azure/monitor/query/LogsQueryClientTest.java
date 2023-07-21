@@ -37,25 +37,21 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static com.azure.monitor.query.LogsQueryAsyncClientTest.RESOURCE_ID;
+import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
+import static com.azure.monitor.query.MonitorQueryTestUtils.LOG_RESOURCE_ID;
+import static com.azure.monitor.query.MonitorQueryTestUtils.LOG_WORKSPACE_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Unit tests for {@link LogsQueryClient}
  */
 public class LogsQueryClientTest extends TestProxyTestBase {
 
-    private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
-            .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
     private LogsQueryClient client;
-    private static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
-            + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
-            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
-            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
-            + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
     @BeforeEach
     public void setup() {
@@ -100,7 +96,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testLogsQuery() {
-        LogsQueryResult queryResults = client.queryWorkspace(WORKSPACE_ID, QUERY_STRING,
+        LogsQueryResult queryResults = client.queryWorkspace(LOG_WORKSPACE_ID, QUERY_STRING,
                 new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                         OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
         assertEquals(1, queryResults.getAllTables().size());
@@ -110,7 +106,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testLogsQueryResource() {
-        LogsQueryResult queryResults = client.queryResource(RESOURCE_ID, QUERY_STRING,
+        LogsQueryResult queryResults = client.queryResource(LOG_RESOURCE_ID, QUERY_STRING,
             new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                 OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
         assertEquals(1, queryResults.getAllTables().size());
@@ -132,7 +128,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         final QueryTimeInterval interval = QueryTimeInterval.LAST_DAY;
 
         // Act
-        final Response<LogsQueryResult> response = client.queryWorkspaceWithResponse(WORKSPACE_ID, query, interval,
+        final Response<LogsQueryResult> response = client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID, query, interval,
             options, Context.NONE);
 
         // Assert
@@ -147,8 +143,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testLogsQueryBatch() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + " | take 2", null);
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + "| take 3", null);
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + "| take 3", null);
 
         LogsBatchQueryResultCollection batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -169,10 +165,10 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testLogsQueryBatchWithServerTimeout() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + " | take 2", null);
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + " | take 5", null,
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take 5", null,
                 new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(20)));
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + "| take 3", null,
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + "| take 3", null,
                 new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(10)));
 
         LogsBatchQueryResultCollection batchResultCollection = client
@@ -199,7 +195,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "multi-workspace "
             + "queries require sending logs to Azure Monitor first. So, run this test in playback or record mode only.")
     public void testMultipleWorkspaces() {
-        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(WORKSPACE_ID,
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID,
                 "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId", null,
                 new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("9dad0092-fd13-403a-b367-a189a090a541")), Context.NONE)
@@ -220,8 +216,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testBatchQueryPartialSuccess() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID,  QUERY_STRING + " | take 2", null);
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + " | take", null);
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID,  QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take", null);
 
         LogsBatchQueryResultCollection batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -238,7 +234,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testStatistics() {
-        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(WORKSPACE_ID,
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID,
                 QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE).getValue();
 
         assertEquals(1, queryResults.getAllTables().size());
@@ -247,7 +243,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testStatisticsResourceQuery() {
-        LogsQueryResult queryResults = client.queryResourceWithResponse(RESOURCE_ID,
+        LogsQueryResult queryResults = client.queryResourceWithResponse(LOG_RESOURCE_ID,
             QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE)
             .getValue();
         assertEquals(1, queryResults.getAllTables().size());
@@ -257,8 +253,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING, null);
-        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING, null,
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null);
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null,
                         new LogsQueryOptions().setIncludeStatistics(true));
 
         LogsBatchQueryResultCollection batchResultCollection = client
@@ -291,7 +287,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             try {
                 // this query should take more than 5 seconds usually, but the server may have cached the
                 // response and may return before 5 seconds. So, retry with another query (different count value)
-                client.queryWorkspaceWithResponse(WORKSPACE_ID, "range x from 1 to " + count + " step 1 | count", null,
+                client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID, "range x from 1 to " + count + " step 1 | count", null,
                         new LogsQueryOptions()
                                 .setServerTimeout(Duration.ofSeconds(5)),
                         Context.NONE);
@@ -310,7 +306,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     public void testVisualization() {
         String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
                 + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
-        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(WORKSPACE_ID,
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID,
                 query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
                 Context.NONE).getValue();
 
@@ -331,7 +327,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     public void testVisualizationResourceQuery() {
         String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
             + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
-        LogsQueryResult queryResults = client.queryResourceWithResponse(RESOURCE_ID,
+        LogsQueryResult queryResults = client.queryResourceWithResponse(LOG_RESOURCE_ID,
             query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
             Context.NONE).getValue();
         assertEquals(1, queryResults.getAllTables().size());

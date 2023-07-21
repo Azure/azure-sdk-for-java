@@ -378,6 +378,10 @@
     },
     "AZURE_MONITOR_LOGS_RESOURCE_ID": {
       "type": "string",
+      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]"
+    },
+    "AZURE_MONITOR_METRICS_RESOURCE_URI": {
+      "type": "string",
       "value": "[resourceId('Microsoft.Eventhub/Namespaces', variables('eventHubsNamespaceName'))]"
     }
   }
