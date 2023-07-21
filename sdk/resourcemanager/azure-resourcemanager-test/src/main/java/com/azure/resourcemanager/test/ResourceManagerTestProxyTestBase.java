@@ -472,7 +472,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      *
      * @param sanitizers the test proxy sanitizers.
      */
-    protected void addSanitizers(TestProxySanitizer ...sanitizers) {
+    protected void addSanitizers(TestProxySanitizer... sanitizers) {
         this.sanitizers.addAll(Arrays.asList(sanitizers));
     }
 
