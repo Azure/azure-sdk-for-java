@@ -12,7 +12,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -64,7 +63,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
