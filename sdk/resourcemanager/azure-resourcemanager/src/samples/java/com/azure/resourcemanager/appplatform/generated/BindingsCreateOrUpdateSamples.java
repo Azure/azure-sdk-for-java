@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for Bindings CreateOrUpdate. */
 public final class BindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Bindings_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Bindings_CreateOrUpdate.json
      */
     /**
      * Sample code: Bindings_CreateOrUpdate.
@@ -36,9 +35,9 @@ public final class BindingsCreateOrUpdateSamples {
                         new BindingResourceProperties()
                             .withResourceId(
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/my-cosmosdb-1")
-                            .withKey("xxxx")
+                            .withKey("fakeTokenPlaceholder")
                             .withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

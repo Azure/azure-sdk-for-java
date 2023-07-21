@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuilderProvisioningState. */
+/** Builder provision status. */
 public final class BuilderProvisioningState extends ExpandableStringEnum<BuilderProvisioningState> {
     /** Static value Creating for BuilderProvisioningState. */
     public static final BuilderProvisioningState CREATING = fromString("Creating");
@@ -24,6 +24,15 @@ public final class BuilderProvisioningState extends ExpandableStringEnum<Builder
 
     /** Static value Deleting for BuilderProvisioningState. */
     public static final BuilderProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of BuilderProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuilderProvisioningState() {
+    }
 
     /**
      * Creates or finds a BuilderProvisioningState from its string representation.

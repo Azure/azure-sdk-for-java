@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildpackBindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingType;
 import com.azure.resourcemanager.appplatform.models.BuildpackBindingLaunchProperties;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for BuildpackBinding CreateOrUpdate. */
 public final class BuildpackBindingCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildpackBinding_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildpackBinding_CreateOrUpdate.json
      */
     /**
      * Sample code: BuildpackBinding_CreateOrUpdate.
@@ -46,7 +45,7 @@ public final class BuildpackBindingCreateOrUpdateSamples {
                                         mapOf(
                                             "connection-string",
                                             "XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXX;XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXXXXXXXX")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

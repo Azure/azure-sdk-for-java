@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildService GetBuildService. */
 public final class BuildServiceGetBuildServiceSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_GetBuildService.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildService_GetBuildService.json
      */
     /**
      * Sample code: BuildService_GetBuildService.
@@ -22,6 +20,6 @@ public final class BuildServiceGetBuildServiceSamples {
             .manager()
             .serviceClient()
             .getBuildServices()
-            .getBuildServiceWithResponse("myResourceGroup", "myservice", "default", Context.NONE);
+            .getBuildServiceWithResponse("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

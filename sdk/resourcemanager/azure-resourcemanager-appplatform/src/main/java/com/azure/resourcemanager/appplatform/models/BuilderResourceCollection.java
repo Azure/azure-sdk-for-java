@@ -25,6 +25,10 @@ public final class BuilderResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BuilderResourceCollection class. */
+    public BuilderResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of Builder resources.
      *

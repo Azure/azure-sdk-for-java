@@ -16,6 +16,10 @@ public final class ConfigServerSettings {
     @JsonProperty(value = "gitProperty")
     private ConfigServerGitProperty gitProperty;
 
+    /** Creates an instance of ConfigServerSettings class. */
+    public ConfigServerSettings() {
+    }
+
     /**
      * Get the gitProperty property: Property of git environment.
      *

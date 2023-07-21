@@ -46,6 +46,10 @@ public final class DeploymentInstance {
     @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
     private String zone;
 
+    /** Creates an instance of DeploymentInstance class. */
+    public DeploymentInstance() {
+    }
+
     /**
      * Get the name property: Name of the deployment instance.
      *

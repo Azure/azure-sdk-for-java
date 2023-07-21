@@ -40,6 +40,10 @@ public final class TestKeys {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of TestKeys class. */
+    public TestKeys() {
+    }
+
     /**
      * Get the primaryKey property: Primary key.
      *

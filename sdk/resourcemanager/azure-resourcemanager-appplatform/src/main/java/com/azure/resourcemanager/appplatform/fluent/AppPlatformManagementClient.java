@@ -74,6 +74,27 @@ public interface AppPlatformManagementClient {
     ServiceRegistriesClient getServiceRegistries();
 
     /**
+     * Gets the ApplicationLiveViewsClient object to access its operations.
+     *
+     * @return the ApplicationLiveViewsClient object.
+     */
+    ApplicationLiveViewsClient getApplicationLiveViews();
+
+    /**
+     * Gets the DevToolPortalsClient object to access its operations.
+     *
+     * @return the DevToolPortalsClient object.
+     */
+    DevToolPortalsClient getDevToolPortals();
+
+    /**
+     * Gets the ContainerRegistriesClient object to access its operations.
+     *
+     * @return the ContainerRegistriesClient object.
+     */
+    ContainerRegistriesClient getContainerRegistries();
+
+    /**
      * Gets the BuildServicesClient object to access its operations.
      *
      * @return the BuildServicesClient object.
@@ -205,4 +226,25 @@ public interface AppPlatformManagementClient {
      * @return the ApiPortalCustomDomainsClient object.
      */
     ApiPortalCustomDomainsClient getApiPortalCustomDomains();
+
+    /**
+     * Gets the ApplicationAcceleratorsClient object to access its operations.
+     *
+     * @return the ApplicationAcceleratorsClient object.
+     */
+    ApplicationAcceleratorsClient getApplicationAccelerators();
+
+    /**
+     * Gets the CustomizedAcceleratorsClient object to access its operations.
+     *
+     * @return the CustomizedAcceleratorsClient object.
+     */
+    CustomizedAcceleratorsClient getCustomizedAccelerators();
+
+    /**
+     * Gets the PredefinedAcceleratorsClient object to access its operations.
+     *
+     * @return the PredefinedAcceleratorsClient object.
+     */
+    PredefinedAcceleratorsClient getPredefinedAccelerators();
 }

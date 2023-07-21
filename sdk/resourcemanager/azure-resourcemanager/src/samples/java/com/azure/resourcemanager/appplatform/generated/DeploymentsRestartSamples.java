@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments Restart. */
 public final class DeploymentsRestartSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_Restart.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_Restart.json
      */
     /**
      * Sample code: Deployments_Restart.
@@ -22,6 +20,6 @@ public final class DeploymentsRestartSamples {
             .manager()
             .serviceClient()
             .getDeployments()
-            .restart("myResourceGroup", "myservice", "myapp", "mydeployment", Context.NONE);
+            .restart("myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }

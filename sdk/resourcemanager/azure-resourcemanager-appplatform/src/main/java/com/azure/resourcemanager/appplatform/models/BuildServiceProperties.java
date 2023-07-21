@@ -11,13 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BuildServiceProperties {
     /*
+     * The resource id of the container registry used in this build service.
+     */
+    @JsonProperty(value = "containerRegistry")
+    private String containerRegistry;
+
+    /*
      * The installed KPack version in this build service.
      */
-    @JsonProperty(value = "kPackVersion")
+    @JsonProperty(value = "kPackVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kPackVersion;
 
     /*
-     * Provisioning state of the KPack build result
+     * Provisioning state of the KPack build service
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private BuildServiceProvisioningState provisioningState;
@@ -27,6 +33,30 @@ public final class BuildServiceProperties {
      */
     @JsonProperty(value = "resourceRequests")
     private BuildServicePropertiesResourceRequests resourceRequests;
+
+    /** Creates an instance of BuildServiceProperties class. */
+    public BuildServiceProperties() {
+    }
+
+    /**
+     * Get the containerRegistry property: The resource id of the container registry used in this build service.
+     *
+     * @return the containerRegistry value.
+     */
+    public String containerRegistry() {
+        return this.containerRegistry;
+    }
+
+    /**
+     * Set the containerRegistry property: The resource id of the container registry used in this build service.
+     *
+     * @param containerRegistry the containerRegistry value to set.
+     * @return the BuildServiceProperties object itself.
+     */
+    public BuildServiceProperties withContainerRegistry(String containerRegistry) {
+        this.containerRegistry = containerRegistry;
+        return this;
+    }
 
     /**
      * Get the kPackVersion property: The installed KPack version in this build service.
@@ -38,18 +68,7 @@ public final class BuildServiceProperties {
     }
 
     /**
-     * Set the kPackVersion property: The installed KPack version in this build service.
-     *
-     * @param kPackVersion the kPackVersion value to set.
-     * @return the BuildServiceProperties object itself.
-     */
-    public BuildServiceProperties withKPackVersion(String kPackVersion) {
-        this.kPackVersion = kPackVersion;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the KPack build result.
+     * Get the provisioningState property: Provisioning state of the KPack build service.
      *
      * @return the provisioningState value.
      */

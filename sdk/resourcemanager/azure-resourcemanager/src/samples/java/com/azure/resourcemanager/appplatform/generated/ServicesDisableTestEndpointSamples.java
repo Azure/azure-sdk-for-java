@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Services DisableTestEndpoint. */
 public final class ServicesDisableTestEndpointSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_DisableTestEndpoint.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_DisableTestEndpoint.json
      */
     /**
      * Sample code: Services_DisableTestEndpoint.
@@ -22,6 +20,6 @@ public final class ServicesDisableTestEndpointSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .disableTestEndpointWithResponse("myResourceGroup", "myservice", Context.NONE);
+            .disableTestEndpointWithResponse("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

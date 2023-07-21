@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RuntimeVersions ListRuntimeVersions. */
 public final class RuntimeVersionsListRuntimeVersionsSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/RuntimeVersions_ListRuntimeVersions.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/RuntimeVersions_ListRuntimeVersions.json
      */
     /**
      * Sample code: RuntimeVersions_ListRuntimeVersions.
@@ -22,6 +20,6 @@ public final class RuntimeVersionsListRuntimeVersionsSamples {
             .manager()
             .serviceClient()
             .getRuntimeVersions()
-            .listRuntimeVersionsWithResponse(Context.NONE);
+            .listRuntimeVersionsWithResponse(com.azure.core.util.Context.NONE);
     }
 }

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 
 /** Samples for Services CheckNameAvailability. */
 public final class ServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_CheckNameAvailability.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_CheckNameAvailability.json
      */
     /**
      * Sample code: Services_CheckNameAvailability.
@@ -26,6 +25,6 @@ public final class ServicesCheckNameAvailabilitySamples {
             .checkNameAvailabilityWithResponse(
                 "eastus",
                 new NameAvailabilityParameters().withType("Microsoft.AppPlatform/Spring").withName("myservice"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

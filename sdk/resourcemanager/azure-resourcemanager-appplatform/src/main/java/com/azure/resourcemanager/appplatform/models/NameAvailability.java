@@ -28,6 +28,10 @@ public final class NameAvailability {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of NameAvailability class. */
+    public NameAvailability() {
+    }
+
     /**
      * Get the nameAvailable property: Indicates whether the name is available.
      *

@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AppVNetAddons {
     /*
-     * Indicates whether the App in vnet injection instance exposes endpoint
-     * which could be accessed from internet.
+     * Indicates whether the App in vnet injection instance exposes endpoint which could be accessed from internet.
      */
     @JsonProperty(value = "publicEndpoint")
     private Boolean publicEndpoint;
 
     /*
-     * URL of the App in vnet injection instance which could be accessed from
-     * internet
+     * URL of the App in vnet injection instance which could be accessed from internet
      */
     @JsonProperty(value = "publicEndpointUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String publicEndpointUrl;
+
+    /** Creates an instance of AppVNetAddons class. */
+    public AppVNetAddons() {
+    }
 
     /**
      * Get the publicEndpoint property: Indicates whether the App in vnet injection instance exposes endpoint which

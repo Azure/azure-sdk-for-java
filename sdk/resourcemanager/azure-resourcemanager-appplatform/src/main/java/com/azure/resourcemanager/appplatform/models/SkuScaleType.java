@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuScaleType. */
+/** Gets or sets the type of the scale. */
 public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
     /** Static value None for SkuScaleType. */
     public static final SkuScaleType NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
 
     /** Static value Automatic for SkuScaleType. */
     public static final SkuScaleType AUTOMATIC = fromString("Automatic");
+
+    /**
+     * Creates a new instance of SkuScaleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuScaleType() {
+    }
 
     /**
      * Creates or finds a SkuScaleType from its string representation.

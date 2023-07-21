@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
 
 /** Samples for Apps ValidateDomain. */
 public final class AppsValidateDomainSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_ValidateDomain.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Apps_ValidateDomain.json
      */
     /**
      * Sample code: Apps_ValidateDomain.
@@ -28,6 +27,6 @@ public final class AppsValidateDomainSamples {
                 "myservice",
                 "myapp",
                 new CustomDomainValidatePayload().withName("mydomain.io"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

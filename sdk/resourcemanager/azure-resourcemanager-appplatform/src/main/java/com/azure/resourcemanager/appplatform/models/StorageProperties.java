@@ -19,6 +19,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "StorageAccount", value = StorageAccount.class)})
 @Immutable
 public class StorageProperties {
+    /** Creates an instance of StorageProperties class. */
+    public StorageProperties() {
+    }
+
     /**
      * Validates the instance.
      *

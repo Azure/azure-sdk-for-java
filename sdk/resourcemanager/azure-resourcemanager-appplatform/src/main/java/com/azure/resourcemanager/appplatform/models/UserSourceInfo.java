@@ -30,6 +30,10 @@ public class UserSourceInfo {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of UserSourceInfo class. */
+    public UserSourceInfo() {
+    }
+
     /**
      * Get the version property: Version of the source.
      *

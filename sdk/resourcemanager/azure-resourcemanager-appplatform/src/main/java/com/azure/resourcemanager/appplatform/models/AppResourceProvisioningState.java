@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppResourceProvisioningState. */
+/** Provisioning state of the App. */
 public final class AppResourceProvisioningState extends ExpandableStringEnum<AppResourceProvisioningState> {
     /** Static value Succeeded for AppResourceProvisioningState. */
     public static final AppResourceProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -24,6 +24,15 @@ public final class AppResourceProvisioningState extends ExpandableStringEnum<App
 
     /** Static value Deleting for AppResourceProvisioningState. */
     public static final AppResourceProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of AppResourceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppResourceProvisioningState() {
+    }
 
     /**
      * Creates or finds a AppResourceProvisioningState from its string representation.

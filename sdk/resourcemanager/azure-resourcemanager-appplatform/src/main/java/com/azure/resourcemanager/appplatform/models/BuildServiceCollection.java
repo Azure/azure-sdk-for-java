@@ -25,6 +25,10 @@ public final class BuildServiceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BuildServiceCollection class. */
+    public BuildServiceCollection() {
+    }
+
     /**
      * Get the value property: Collection of Build service resources.
      *

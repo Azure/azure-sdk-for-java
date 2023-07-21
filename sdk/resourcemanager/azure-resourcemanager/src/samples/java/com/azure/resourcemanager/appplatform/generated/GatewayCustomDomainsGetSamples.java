@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayCustomDomains Get. */
 public final class GatewayCustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/GatewayCustomDomains_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/GatewayCustomDomains_Get.json
      */
     /**
      * Sample code: GatewayCustomDomains_Get.
@@ -22,6 +20,7 @@ public final class GatewayCustomDomainsGetSamples {
             .manager()
             .serviceClient()
             .getGatewayCustomDomains()
-            .getWithResponse("myResourceGroup", "myservice", "default", "myDomainName", Context.NONE);
+            .getWithResponse(
+                "myResourceGroup", "myservice", "default", "myDomainName", com.azure.core.util.Context.NONE);
     }
 }

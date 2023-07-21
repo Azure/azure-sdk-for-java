@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments GetLogFileUrl. */
 public final class DeploymentsGetLogFileUrlSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_GetLogFileUrl.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_GetLogFileUrl.json
      */
     /**
      * Sample code: Deployments_GetLogFileUrl.
@@ -22,6 +20,7 @@ public final class DeploymentsGetLogFileUrlSamples {
             .manager()
             .serviceClient()
             .getDeployments()
-            .getLogFileUrlWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment", Context.NONE);
+            .getLogFileUrlWithResponse(
+                "myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }

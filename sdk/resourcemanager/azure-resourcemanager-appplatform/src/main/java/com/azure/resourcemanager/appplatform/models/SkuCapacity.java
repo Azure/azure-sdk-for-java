@@ -34,6 +34,10 @@ public final class SkuCapacity {
     @JsonProperty(value = "scaleType")
     private SkuScaleType scaleType;
 
+    /** Creates an instance of SkuCapacity class. */
+    public SkuCapacity() {
+    }
+
     /**
      * Get the minimum property: Gets or sets the minimum.
      *

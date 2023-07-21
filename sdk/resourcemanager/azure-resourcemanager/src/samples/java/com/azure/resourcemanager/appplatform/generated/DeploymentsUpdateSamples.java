@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomContainer;
 import com.azure.resourcemanager.appplatform.models.CustomContainerUserSourceInfo;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 /** Samples for Deployments Update. */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_Update.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -43,11 +42,11 @@ public final class DeploymentsUpdateSamples {
                                     .withRelativePath(
                                         "resources/a172cedcae47474b615c54d510a5d84a8dea3032e958587430b413538be3f333-2019082605-e3095339-1723-44b7-8b5e-31b1003978bc")
                                     .withArtifactSelector("sub-module-1"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_Update_CustomContainer.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_Update_CustomContainer.json
      */
     /**
      * Sample code: Deployments_Update_CustomContainer.
@@ -79,7 +78,7 @@ public final class DeploymentsUpdateSamples {
                                             .withImageRegistryCredential(
                                                 new ImageRegistryCredential()
                                                     .withUsername("myNewUsername")
-                                                    .withPassword("<myNewPassword>"))))),
-                Context.NONE);
+                                                    .withPassword("fakeTokenPlaceholder"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

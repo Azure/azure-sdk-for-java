@@ -41,6 +41,10 @@ public final class RequiredTraffic {
     @JsonProperty(value = "direction", access = JsonProperty.Access.WRITE_ONLY)
     private TrafficDirection direction;
 
+    /** Creates an instance of RequiredTraffic class. */
+    public RequiredTraffic() {
+    }
+
     /**
      * Get the protocol property: The protocol of required traffic.
      *

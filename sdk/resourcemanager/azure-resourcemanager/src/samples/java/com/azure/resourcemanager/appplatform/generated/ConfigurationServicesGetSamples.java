@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConfigurationServices Get. */
 public final class ConfigurationServicesGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigurationServices_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ConfigurationServices_Get.json
      */
     /**
      * Sample code: ConfigurationServices_Get.
@@ -22,6 +20,6 @@ public final class ConfigurationServicesGetSamples {
             .manager()
             .serviceClient()
             .getConfigurationServices()
-            .getWithResponse("myResourceGroup", "myservice", "default", Context.NONE);
+            .getWithResponse("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

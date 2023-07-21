@@ -22,6 +22,10 @@ public final class ImageRegistryCredential {
     @JsonProperty(value = "password")
     private String password;
 
+    /** Creates an instance of ImageRegistryCredential class. */
+    public ImageRegistryCredential() {
+    }
+
     /**
      * Get the username property: The username of the image registry credential.
      *

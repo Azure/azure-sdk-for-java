@@ -22,6 +22,10 @@ public final class RemoteDebuggingInner {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of RemoteDebuggingInner class. */
+    public RemoteDebuggingInner() {
+    }
+
     /**
      * Get the port property: Application debugging port.
      *

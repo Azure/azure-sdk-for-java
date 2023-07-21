@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildService GetBuildResultLog. */
 public final class BuildServiceGetBuildResultLogSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_GetBuildResultLog.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildService_GetBuildResultLog.json
      */
     /**
      * Sample code: BuildService_GetBuildResultLog.
@@ -22,6 +20,7 @@ public final class BuildServiceGetBuildResultLogSamples {
             .manager()
             .serviceClient()
             .getBuildServices()
-            .getBuildResultLogWithResponse("myResourceGroup", "myservice", "default", "mybuild", "123", Context.NONE);
+            .getBuildResultLogWithResponse(
+                "myResourceGroup", "myservice", "default", "mybuild", "123", com.azure.core.util.Context.NONE);
     }
 }

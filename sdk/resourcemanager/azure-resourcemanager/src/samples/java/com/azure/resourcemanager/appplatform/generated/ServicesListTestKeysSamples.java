@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Services ListTestKeys. */
 public final class ServicesListTestKeysSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_ListTestKeys.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Services_ListTestKeys.json
      */
     /**
      * Sample code: Services_ListTestKeys.
@@ -22,6 +20,6 @@ public final class ServicesListTestKeysSamples {
             .manager()
             .serviceClient()
             .getServices()
-            .listTestKeysWithResponse("myResourceGroup", "myservice", Context.NONE);
+            .listTestKeysWithResponse("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

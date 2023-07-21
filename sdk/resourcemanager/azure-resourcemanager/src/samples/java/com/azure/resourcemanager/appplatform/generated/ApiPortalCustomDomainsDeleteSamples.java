@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiPortalCustomDomains Delete. */
 public final class ApiPortalCustomDomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ApiPortalCustomDomains_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ApiPortalCustomDomains_Delete.json
      */
     /**
      * Sample code: ApiPortalCustomDomains_Delete.
@@ -22,6 +20,6 @@ public final class ApiPortalCustomDomainsDeleteSamples {
             .manager()
             .serviceClient()
             .getApiPortalCustomDomains()
-            .delete("myResourceGroup", "myservice", "default", "myDomainName", Context.NONE);
+            .delete("myResourceGroup", "myservice", "default", "myDomainName", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Bindings Delete. */
 public final class BindingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Bindings_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Bindings_Delete.json
      */
     /**
      * Sample code: Bindings_Delete.
@@ -22,6 +20,6 @@ public final class BindingsDeleteSamples {
             .manager()
             .serviceClient()
             .getBindings()
-            .delete("myResourceGroup", "myservice", "myapp", "mybinding", Context.NONE);
+            .delete("myResourceGroup", "myservice", "myapp", "mybinding", com.azure.core.util.Context.NONE);
     }
 }

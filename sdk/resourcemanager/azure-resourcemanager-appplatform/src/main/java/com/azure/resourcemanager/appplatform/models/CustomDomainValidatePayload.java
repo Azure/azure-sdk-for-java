@@ -17,6 +17,10 @@ public final class CustomDomainValidatePayload {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of CustomDomainValidatePayload class. */
+    public CustomDomainValidatePayload() {
+    }
+
     /**
      * Get the name property: Name to be validated.
      *

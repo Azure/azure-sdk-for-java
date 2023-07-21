@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.ApiPortalCustomDomainProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,11 +18,9 @@ public final class ApiPortalCustomDomainResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ApiPortalCustomDomainProperties properties;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of ApiPortalCustomDomainResourceInner class. */
+    public ApiPortalCustomDomainResourceInner() {
+    }
 
     /**
      * Get the properties property: The properties of custom domain for API portal.
@@ -43,15 +40,6 @@ public final class ApiPortalCustomDomainResourceInner extends ProxyResource {
     public ApiPortalCustomDomainResourceInner withProperties(ApiPortalCustomDomainProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

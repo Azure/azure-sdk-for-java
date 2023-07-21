@@ -16,6 +16,10 @@ public final class RemoteDebuggingPayload {
     @JsonProperty(value = "port")
     private Integer port;
 
+    /** Creates an instance of RemoteDebuggingPayload class. */
+    public RemoteDebuggingPayload() {
+    }
+
     /**
      * Get the port property: Application debugging port.
      *

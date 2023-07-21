@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments ListForCluster. */
 public final class DeploymentsListForClusterSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_ListForCluster.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_ListForCluster.json
      */
     /**
      * Sample code: Deployments_ListForCluster.
@@ -22,6 +20,6 @@ public final class DeploymentsListForClusterSamples {
             .manager()
             .serviceClient()
             .getDeployments()
-            .listForCluster("myResourceGroup", "myservice", null, Context.NONE);
+            .listForCluster("myResourceGroup", "myservice", null, com.azure.core.util.Context.NONE);
     }
 }

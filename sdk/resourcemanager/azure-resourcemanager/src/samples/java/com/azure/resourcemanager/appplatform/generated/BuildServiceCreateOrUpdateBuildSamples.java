@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildInner;
 import com.azure.resourcemanager.appplatform.models.BuildProperties;
 import com.azure.resourcemanager.appplatform.models.BuildResourceRequests;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for BuildService CreateOrUpdateBuild. */
 public final class BuildServiceCreateOrUpdateBuildSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_CreateOrUpdateBuild.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildService_CreateOrUpdateBuild.json
      */
     /**
      * Sample code: BuildService_CreateOrUpdateBuild.
@@ -43,7 +42,7 @@ public final class BuildServiceCreateOrUpdateBuildSamples {
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/buildServices/default/agentPools/default")
                             .withEnv(mapOf("environmentVariable", "test"))
                             .withResourceRequests(new BuildResourceRequests().withCpu("1").withMemory("2Gi"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

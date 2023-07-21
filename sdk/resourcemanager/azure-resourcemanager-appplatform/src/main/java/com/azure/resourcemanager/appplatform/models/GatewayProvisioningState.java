@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GatewayProvisioningState. */
+/** State of the Spring Cloud Gateway. */
 public final class GatewayProvisioningState extends ExpandableStringEnum<GatewayProvisioningState> {
     /** Static value Creating for GatewayProvisioningState. */
     public static final GatewayProvisioningState CREATING = fromString("Creating");
@@ -24,6 +24,15 @@ public final class GatewayProvisioningState extends ExpandableStringEnum<Gateway
 
     /** Static value Deleting for GatewayProvisioningState. */
     public static final GatewayProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of GatewayProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GatewayProvisioningState() {
+    }
 
     /**
      * Creates or finds a GatewayProvisioningState from its string representation.

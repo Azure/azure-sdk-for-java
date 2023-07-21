@@ -114,23 +114,6 @@ public interface BuildServiceAgentPoolsClient {
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return build service agent pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BuildServiceAgentPoolResourceInner get(
-        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName);
-
-    /**
-     * Get build service agent pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param agentPoolName The name of the build service agent pool resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,6 +123,23 @@ public interface BuildServiceAgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BuildServiceAgentPoolResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName, Context context);
+
+    /**
+     * Get build service agent pool.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param agentPoolName The name of the build service agent pool resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return build service agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BuildServiceAgentPoolResourceInner get(
+        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName);
 
     /**
      * Create or update build service agent pool.

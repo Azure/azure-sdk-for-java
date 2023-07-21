@@ -63,11 +63,10 @@ public final class BindingsClientImpl implements BindingsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface BindingsService {
+    public interface BindingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/bindings/{bindingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BindingResourceInner>> get(
@@ -83,8 +82,7 @@ public final class BindingsClientImpl implements BindingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/bindings/{bindingName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -101,8 +99,7 @@ public final class BindingsClientImpl implements BindingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/bindings/{bindingName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -118,8 +115,7 @@ public final class BindingsClientImpl implements BindingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings/{bindingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/bindings/{bindingName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -136,8 +132,7 @@ public final class BindingsClientImpl implements BindingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/bindings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/bindings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BindingResourceCollection>> list(
@@ -305,24 +300,6 @@ public final class BindingsClientImpl implements BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BindingResourceInner get(String resourceGroupName, String serviceName, String appName, String bindingName) {
-        return getAsync(resourceGroupName, serviceName, appName, bindingName).block();
-    }
-
-    /**
-     * Get a Binding and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -333,6 +310,24 @@ public final class BindingsClientImpl implements BindingsClient {
     public Response<BindingResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, bindingName, context).block();
+    }
+
+    /**
+     * Get a Binding and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Binding and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BindingResourceInner get(String resourceGroupName, String serviceName, String appName, String bindingName) {
+        return getWithResponse(resourceGroupName, serviceName, appName, bindingName, Context.NONE).getValue();
     }
 
     /**
@@ -563,7 +558,8 @@ public final class BindingsClientImpl implements BindingsClient {
         String appName,
         String bindingName,
         BindingResourceInner bindingResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource)
             .getSyncPoller();
     }
 
@@ -590,7 +586,8 @@ public final class BindingsClientImpl implements BindingsClient {
         String bindingName,
         BindingResourceInner bindingResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource, context)
             .getSyncPoller();
     }
 
@@ -880,7 +877,7 @@ public final class BindingsClientImpl implements BindingsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String bindingName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName).getSyncPoller();
     }
 
     /**
@@ -900,7 +897,7 @@ public final class BindingsClientImpl implements BindingsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String bindingName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName, bindingName, context).getSyncPoller();
     }
 
     /**
@@ -1208,7 +1205,9 @@ public final class BindingsClientImpl implements BindingsClient {
         String appName,
         String bindingName,
         BindingResourceInner bindingResource) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource)
+            .getSyncPoller();
     }
 
     /**
@@ -1234,7 +1233,8 @@ public final class BindingsClientImpl implements BindingsClient {
         String bindingName,
         BindingResourceInner bindingResource,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, serviceName, appName, bindingName, bindingResource, context)
             .getSyncPoller();
     }
 
@@ -1551,7 +1551,8 @@ public final class BindingsClientImpl implements BindingsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1587,7 +1588,8 @@ public final class BindingsClientImpl implements BindingsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

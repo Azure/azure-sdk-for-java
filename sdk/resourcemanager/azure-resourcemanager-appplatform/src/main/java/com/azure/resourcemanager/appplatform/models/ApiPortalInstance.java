@@ -22,6 +22,10 @@ public final class ApiPortalInstance {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of ApiPortalInstance class. */
+    public ApiPortalInstance() {
+    }
+
     /**
      * Get the name property: Name of the API portal instance.
      *

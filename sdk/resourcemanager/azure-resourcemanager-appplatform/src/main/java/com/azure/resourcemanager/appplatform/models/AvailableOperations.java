@@ -25,6 +25,10 @@ public final class AvailableOperations {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AvailableOperations class. */
+    public AvailableOperations() {
+    }
+
     /**
      * Get the value property: Collection of available operation details.
      *

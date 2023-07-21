@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details of the user-assigned managed identity assigned to an App. */
 @Immutable
-public class UserAssignedManagedIdentity {
+public final class UserAssignedManagedIdentity {
     /*
      * Principal Id of user-assigned managed identity.
      */
@@ -21,6 +21,10 @@ public class UserAssignedManagedIdentity {
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
+
+    /** Creates an instance of UserAssignedManagedIdentity class. */
+    public UserAssignedManagedIdentity() {
+    }
 
     /**
      * Get the principalId property: Principal Id of user-assigned managed identity.

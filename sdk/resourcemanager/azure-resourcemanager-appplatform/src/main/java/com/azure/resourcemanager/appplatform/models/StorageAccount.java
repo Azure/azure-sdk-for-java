@@ -24,8 +24,12 @@ public final class StorageAccount extends StorageProperties {
     /*
      * The account key of the Azure Storage Account.
      */
-    @JsonProperty(value = "accountKey", required = true)
+    @JsonProperty(value = "accountKey")
     private String accountKey;
+
+    /** Creates an instance of StorageAccount class. */
+    public StorageAccount() {
+    }
 
     /**
      * Get the accountName property: The account name of the Azure Storage Account.

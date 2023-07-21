@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TCPSocketAction")
 @Immutable
 public final class TcpSocketAction extends ProbeAction {
+    /** Creates an instance of TcpSocketAction class. */
+    public TcpSocketAction() {
+    }
+
     /**
      * Validates the instance.
      *

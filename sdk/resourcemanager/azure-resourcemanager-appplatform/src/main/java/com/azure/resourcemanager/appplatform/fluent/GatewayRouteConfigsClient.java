@@ -63,23 +63,6 @@ public interface GatewayRouteConfigsClient {
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway route configs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayRouteConfigResourceInner get(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName);
-
-    /**
-     * Get the Spring Cloud Gateway route configs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param gatewayName The name of Spring Cloud Gateway.
-     * @param routeConfigName The name of the Spring Cloud Gateway route config.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,6 +72,23 @@ public interface GatewayRouteConfigsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GatewayRouteConfigResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context);
+
+    /**
+     * Get the Spring Cloud Gateway route configs.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param routeConfigName The name of the Spring Cloud Gateway route config.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Spring Cloud Gateway route configs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayRouteConfigResourceInner get(
+        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName);
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.

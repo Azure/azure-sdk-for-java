@@ -72,6 +72,10 @@ public final class ConfigServerGitProperty {
     @JsonProperty(value = "strictHostKeyChecking")
     private Boolean strictHostKeyChecking;
 
+    /** Creates an instance of ConfigServerGitProperty class. */
+    public ConfigServerGitProperty() {
+    }
+
     /**
      * Get the repositories property: Repositories of git.
      *

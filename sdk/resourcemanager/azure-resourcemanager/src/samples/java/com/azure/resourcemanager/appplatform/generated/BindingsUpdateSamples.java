@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for Bindings Update. */
 public final class BindingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Bindings_Update.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Bindings_Update.json
      */
     /**
      * Sample code: Bindings_Update.
@@ -34,9 +33,9 @@ public final class BindingsUpdateSamples {
                 new BindingResourceInner()
                     .withProperties(
                         new BindingResourceProperties()
-                            .withKey("xxxx")
+                            .withKey("fakeTokenPlaceholder")
                             .withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -24,6 +24,10 @@ public final class SupportedBuildpacksCollectionInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SupportedBuildpacksCollectionInner class. */
+    public SupportedBuildpacksCollectionInner() {
+    }
+
     /**
      * Get the value property: Collection of supported buildpacks resources.
      *

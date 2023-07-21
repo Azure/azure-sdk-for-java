@@ -35,10 +35,20 @@ public class CustomPersistentDiskProperties {
     private Boolean readOnly;
 
     /*
+     * If set to true, it will create and mount a dedicated directory for every individual app instance.
+     */
+    @JsonProperty(value = "enableSubPath")
+    private Boolean enableSubPath;
+
+    /*
      * These are the mount options for a persistent disk.
      */
     @JsonProperty(value = "mountOptions")
     private List<String> mountOptions;
+
+    /** Creates an instance of CustomPersistentDiskProperties class. */
+    public CustomPersistentDiskProperties() {
+    }
 
     /**
      * Get the mountPath property: The mount path of the persistent disk.
@@ -77,6 +87,28 @@ public class CustomPersistentDiskProperties {
      */
     public CustomPersistentDiskProperties withReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
+        return this;
+    }
+
+    /**
+     * Get the enableSubPath property: If set to true, it will create and mount a dedicated directory for every
+     * individual app instance.
+     *
+     * @return the enableSubPath value.
+     */
+    public Boolean enableSubPath() {
+        return this.enableSubPath;
+    }
+
+    /**
+     * Set the enableSubPath property: If set to true, it will create and mount a dedicated directory for every
+     * individual app instance.
+     *
+     * @param enableSubPath the enableSubPath value to set.
+     * @return the CustomPersistentDiskProperties object itself.
+     */
+    public CustomPersistentDiskProperties withEnableSubPath(Boolean enableSubPath) {
+        this.enableSubPath = enableSubPath;
         return this;
     }
 

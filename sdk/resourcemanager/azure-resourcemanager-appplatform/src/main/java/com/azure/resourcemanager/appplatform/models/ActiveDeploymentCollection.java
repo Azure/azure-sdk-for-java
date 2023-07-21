@@ -17,6 +17,10 @@ public final class ActiveDeploymentCollection {
     @JsonProperty(value = "activeDeploymentNames")
     private List<String> activeDeploymentNames;
 
+    /** Creates an instance of ActiveDeploymentCollection class. */
+    public ActiveDeploymentCollection() {
+    }
+
     /**
      * Get the activeDeploymentNames property: Collection of Deployment name.
      *

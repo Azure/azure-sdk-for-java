@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.DiagnosticParameters;
 
 /** Samples for Deployments GenerateThreadDump. */
 public final class DeploymentsGenerateThreadDumpSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_GenerateThreadDump.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_GenerateThreadDump.json
      */
     /**
      * Sample code: Deployments_GenerateHeapDump.
@@ -29,6 +28,6 @@ public final class DeploymentsGenerateThreadDumpSamples {
                 "myapp",
                 "mydeployment",
                 new DiagnosticParameters().withAppInstance("myappinstance").withFilePath("/byos/diagnose"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

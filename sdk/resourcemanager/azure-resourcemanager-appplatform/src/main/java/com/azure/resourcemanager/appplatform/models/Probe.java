@@ -26,8 +26,7 @@ public final class Probe {
     private boolean disableProbe;
 
     /*
-     * Number of seconds after the App Instance has started before probes are
-     * initiated. More info:
+     * Number of seconds after the App Instance has started before probes are initiated. More info:
      * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
      */
     @JsonProperty(value = "initialDelaySeconds")
@@ -46,19 +45,21 @@ public final class Probe {
     private Integer timeoutSeconds;
 
     /*
-     * Minimum consecutive failures for the probe to be considered failed after
-     * having succeeded. Minimum value is 1.
+     * Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
      */
     @JsonProperty(value = "failureThreshold")
     private Integer failureThreshold;
 
     /*
-     * Minimum consecutive successes for the probe to be considered successful
-     * after having failed. Must be 1 for liveness and startup. Minimum value
-     * is 1.
+     * Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for
+     * liveness and startup. Minimum value is 1.
      */
     @JsonProperty(value = "successThreshold")
     private Integer successThreshold;
+
+    /** Creates an instance of Probe class. */
+    public Probe() {
+    }
 
     /**
      * Get the probeAction property: The action of the probe.

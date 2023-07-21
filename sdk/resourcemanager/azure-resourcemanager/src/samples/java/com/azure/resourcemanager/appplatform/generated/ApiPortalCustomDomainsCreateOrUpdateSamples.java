@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.ApiPortalCustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.ApiPortalCustomDomainProperties;
 
 /** Samples for ApiPortalCustomDomains CreateOrUpdate. */
 public final class ApiPortalCustomDomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ApiPortalCustomDomains_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ApiPortalCustomDomains_CreateOrUpdate.json
      */
     /**
      * Sample code: ApiPortalCustomDomains_CreateOrUpdate.
@@ -31,6 +30,6 @@ public final class ApiPortalCustomDomainsCreateOrUpdateSamples {
                 "myDomainName",
                 new ApiPortalCustomDomainResourceInner()
                     .withProperties(new ApiPortalCustomDomainProperties().withThumbprint("*")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -54,6 +54,24 @@ public final class GatewayProperties {
     private GatewayCorsProperties corsProperties;
 
     /*
+     * Client-Certification Authentication.
+     */
+    @JsonProperty(value = "clientAuth")
+    private GatewayPropertiesClientAuth clientAuth;
+
+    /*
+     * Collection of APM type used in Spring Cloud Gateway
+     */
+    @JsonProperty(value = "apmTypes")
+    private List<ApmType> apmTypes;
+
+    /*
+     * Environment variables of Spring Cloud Gateway
+     */
+    @JsonProperty(value = "environmentVariables")
+    private GatewayPropertiesEnvironmentVariables environmentVariables;
+
+    /*
      * The requested resource quantity for required CPU and Memory.
      */
     @JsonProperty(value = "resourceRequests")
@@ -70,6 +88,10 @@ public final class GatewayProperties {
      */
     @JsonProperty(value = "operatorProperties", access = JsonProperty.Access.WRITE_ONLY)
     private GatewayOperatorProperties operatorProperties;
+
+    /** Creates an instance of GatewayProperties class. */
+    public GatewayProperties() {
+    }
 
     /**
      * Get the provisioningState property: State of the Spring Cloud Gateway.
@@ -190,6 +212,66 @@ public final class GatewayProperties {
     }
 
     /**
+     * Get the clientAuth property: Client-Certification Authentication.
+     *
+     * @return the clientAuth value.
+     */
+    public GatewayPropertiesClientAuth clientAuth() {
+        return this.clientAuth;
+    }
+
+    /**
+     * Set the clientAuth property: Client-Certification Authentication.
+     *
+     * @param clientAuth the clientAuth value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withClientAuth(GatewayPropertiesClientAuth clientAuth) {
+        this.clientAuth = clientAuth;
+        return this;
+    }
+
+    /**
+     * Get the apmTypes property: Collection of APM type used in Spring Cloud Gateway.
+     *
+     * @return the apmTypes value.
+     */
+    public List<ApmType> apmTypes() {
+        return this.apmTypes;
+    }
+
+    /**
+     * Set the apmTypes property: Collection of APM type used in Spring Cloud Gateway.
+     *
+     * @param apmTypes the apmTypes value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withApmTypes(List<ApmType> apmTypes) {
+        this.apmTypes = apmTypes;
+        return this;
+    }
+
+    /**
+     * Get the environmentVariables property: Environment variables of Spring Cloud Gateway.
+     *
+     * @return the environmentVariables value.
+     */
+    public GatewayPropertiesEnvironmentVariables environmentVariables() {
+        return this.environmentVariables;
+    }
+
+    /**
+     * Set the environmentVariables property: Environment variables of Spring Cloud Gateway.
+     *
+     * @param environmentVariables the environmentVariables value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withEnvironmentVariables(GatewayPropertiesEnvironmentVariables environmentVariables) {
+        this.environmentVariables = environmentVariables;
+        return this;
+    }
+
+    /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
      *
      * @return the resourceRequests value.
@@ -241,6 +323,12 @@ public final class GatewayProperties {
         }
         if (corsProperties() != null) {
             corsProperties().validate();
+        }
+        if (clientAuth() != null) {
+            clientAuth().validate();
+        }
+        if (environmentVariables() != null) {
+            environmentVariables().validate();
         }
         if (resourceRequests() != null) {
             resourceRequests().validate();

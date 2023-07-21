@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiPortalCustomDomains List. */
 public final class ApiPortalCustomDomainsListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ApiPortalCustomDomains_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ApiPortalCustomDomains_List.json
      */
     /**
      * Sample code: ApiPortalCustomDomains_List.
@@ -22,6 +20,6 @@ public final class ApiPortalCustomDomainsListSamples {
             .manager()
             .serviceClient()
             .getApiPortalCustomDomains()
-            .list("myResourceGroup", "myservice", "default", Context.NONE);
+            .list("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

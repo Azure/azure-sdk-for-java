@@ -22,6 +22,10 @@ public final class SupportedStackResourceProperties {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of SupportedStackResourceProperties class. */
+    public SupportedStackResourceProperties() {
+    }
+
     /**
      * Get the stackId property: The id of supported stack.
      *

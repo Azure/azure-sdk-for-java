@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.CertificateResourceInner;
 import com.azure.resourcemanager.appplatform.models.KeyVaultCertificateProperties;
 
 /** Samples for Certificates CreateOrUpdate. */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Certificates_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Certificates_CreateOrUpdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -32,8 +31,8 @@ public final class CertificatesCreateOrUpdateSamples {
                     .withProperties(
                         new KeyVaultCertificateProperties()
                             .withVaultUri("https://myvault.vault.azure.net")
-                            .withKeyVaultCertName("mycert")
+                            .withKeyVaultCertName("fakeTokenPlaceholder")
                             .withCertVersion("08a219d06d874795a96db47e06fbb01e")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

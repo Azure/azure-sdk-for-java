@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildService ListSupportedStacks. */
 public final class BuildServiceListSupportedStacksSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_ListSupportedStacks.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildService_ListSupportedStacks.json
      */
     /**
      * Sample code: BuildService_ListSupportedStacks.
@@ -22,6 +20,7 @@ public final class BuildServiceListSupportedStacksSamples {
             .manager()
             .serviceClient()
             .getBuildServices()
-            .listSupportedStacksWithResponse("myResourceGroup", "myservice", "default", Context.NONE);
+            .listSupportedStacksWithResponse(
+                "myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

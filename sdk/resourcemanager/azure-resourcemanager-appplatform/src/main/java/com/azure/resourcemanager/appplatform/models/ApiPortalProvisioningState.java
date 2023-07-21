@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApiPortalProvisioningState. */
+/** State of the API portal. */
 public final class ApiPortalProvisioningState extends ExpandableStringEnum<ApiPortalProvisioningState> {
     /** Static value Creating for ApiPortalProvisioningState. */
     public static final ApiPortalProvisioningState CREATING = fromString("Creating");
@@ -24,6 +24,15 @@ public final class ApiPortalProvisioningState extends ExpandableStringEnum<ApiPo
 
     /** Static value Deleting for ApiPortalProvisioningState. */
     public static final ApiPortalProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of ApiPortalProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApiPortalProvisioningState() {
+    }
 
     /**
      * Creates or finds a ApiPortalProvisioningState from its string representation.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Storages List. */
 public final class StoragesListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Storages_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Storages_List.json
      */
     /**
      * Sample code: Storages_List.
@@ -22,6 +20,6 @@ public final class StoragesListSamples {
             .manager()
             .serviceClient()
             .getStorages()
-            .list("myResourceGroup", "myservice", Context.NONE);
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,10 @@ public final class SupportedBuildpackResourceProperties {
     @JsonProperty(value = "buildpackId")
     private String buildpackId;
 
+    /** Creates an instance of SupportedBuildpackResourceProperties class. */
+    public SupportedBuildpackResourceProperties() {
+    }
+
     /**
      * Get the buildpackId property: The id of supported buildpack.
      *

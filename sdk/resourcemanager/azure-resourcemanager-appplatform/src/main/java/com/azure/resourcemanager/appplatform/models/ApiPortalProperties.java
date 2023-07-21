@@ -65,6 +65,10 @@ public final class ApiPortalProperties {
     @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiPortalInstance> instances;
 
+    /** Creates an instance of ApiPortalProperties class. */
+    public ApiPortalProperties() {
+    }
+
     /**
      * Get the provisioningState property: State of the API portal.
      *

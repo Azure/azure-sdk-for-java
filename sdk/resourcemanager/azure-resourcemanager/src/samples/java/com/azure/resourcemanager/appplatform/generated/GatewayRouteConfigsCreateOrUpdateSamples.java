@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.GatewayRouteConfigResourceInner;
 import com.azure.resourcemanager.appplatform.models.GatewayApiRoute;
 import com.azure.resourcemanager.appplatform.models.GatewayRouteConfigOpenApiProperties;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for GatewayRouteConfigs CreateOrUpdate. */
 public final class GatewayRouteConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/GatewayRouteConfigs_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/GatewayRouteConfigs_CreateOrUpdate.json
      */
     /**
      * Sample code: GatewayRouteConfigs_CreateOrUpdate.
@@ -51,6 +50,6 @@ public final class GatewayRouteConfigsCreateOrUpdateSamples {
                                             .withSsoEnabled(true)
                                             .withPredicates(Arrays.asList("Path=/api5/customer/**"))
                                             .withFilters(Arrays.asList("StripPrefix=2", "RateLimit=1,1s"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

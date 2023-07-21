@@ -16,6 +16,10 @@ public final class GatewayCustomDomainProperties {
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
+    /** Creates an instance of GatewayCustomDomainProperties class. */
+    public GatewayCustomDomainProperties() {
+    }
+
     /**
      * Get the thumbprint property: The thumbprint of bound certificate.
      *

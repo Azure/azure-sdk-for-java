@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,11 +18,9 @@ public final class CustomDomainResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CustomDomainProperties properties;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of CustomDomainResourceInner class. */
+    public CustomDomainResourceInner() {
+    }
 
     /**
      * Get the properties property: Properties of the custom domain resource.
@@ -43,15 +40,6 @@ public final class CustomDomainResourceInner extends ProxyResource {
     public CustomDomainResourceInner withProperties(CustomDomainProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

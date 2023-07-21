@@ -28,6 +28,10 @@ public final class ConfigurationServiceResourceRequests {
     @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
+    /** Creates an instance of ConfigurationServiceResourceRequests class. */
+    public ConfigurationServiceResourceRequests() {
+    }
+
     /**
      * Get the cpu property: Cpu allocated to each Application Configuration Service instance.
      *

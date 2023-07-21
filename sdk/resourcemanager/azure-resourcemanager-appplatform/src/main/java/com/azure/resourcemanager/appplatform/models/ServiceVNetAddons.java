@@ -11,11 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ServiceVNetAddons {
     /*
-     * Indicates whether the log stream in vnet injection instance could be
-     * accessed from internet.
+     * Indicates whether the log stream in vnet injection instance could be accessed from internet.
      */
     @JsonProperty(value = "logStreamPublicEndpoint")
     private Boolean logStreamPublicEndpoint;
+
+    /*
+     * Indicates whether the data plane components(log stream, app connect, remote debugging) in vnet injection
+     * instance could be accessed from internet.
+     */
+    @JsonProperty(value = "dataPlanePublicEndpoint")
+    private Boolean dataPlanePublicEndpoint;
+
+    /** Creates an instance of ServiceVNetAddons class. */
+    public ServiceVNetAddons() {
+    }
 
     /**
      * Get the logStreamPublicEndpoint property: Indicates whether the log stream in vnet injection instance could be
@@ -36,6 +46,28 @@ public final class ServiceVNetAddons {
      */
     public ServiceVNetAddons withLogStreamPublicEndpoint(Boolean logStreamPublicEndpoint) {
         this.logStreamPublicEndpoint = logStreamPublicEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the dataPlanePublicEndpoint property: Indicates whether the data plane components(log stream, app connect,
+     * remote debugging) in vnet injection instance could be accessed from internet.
+     *
+     * @return the dataPlanePublicEndpoint value.
+     */
+    public Boolean dataPlanePublicEndpoint() {
+        return this.dataPlanePublicEndpoint;
+    }
+
+    /**
+     * Set the dataPlanePublicEndpoint property: Indicates whether the data plane components(log stream, app connect,
+     * remote debugging) in vnet injection instance could be accessed from internet.
+     *
+     * @param dataPlanePublicEndpoint the dataPlanePublicEndpoint value to set.
+     * @return the ServiceVNetAddons object itself.
+     */
+    public ServiceVNetAddons withDataPlanePublicEndpoint(Boolean dataPlanePublicEndpoint) {
+        this.dataPlanePublicEndpoint = dataPlanePublicEndpoint;
         return this;
     }
 

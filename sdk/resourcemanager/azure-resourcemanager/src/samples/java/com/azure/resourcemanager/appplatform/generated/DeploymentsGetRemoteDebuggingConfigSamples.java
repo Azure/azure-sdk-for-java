@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments GetRemoteDebuggingConfig. */
 public final class DeploymentsGetRemoteDebuggingConfigSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_GetRemoteDebuggingConfig.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_GetRemoteDebuggingConfig.json
      */
     /**
      * Sample code: Deployments_GetRemoteDebuggingConfig.
@@ -23,6 +21,6 @@ public final class DeploymentsGetRemoteDebuggingConfigSamples {
             .serviceClient()
             .getDeployments()
             .getRemoteDebuggingConfigWithResponse(
-                "myResourceGroup", "myservice", "myapp", "mydeployment", Context.NONE);
+                "myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }

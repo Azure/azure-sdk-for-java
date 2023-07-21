@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.ConfigurationServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitRepository;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for ConfigurationServices CreateOrUpdate. */
 public final class ConfigurationServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigurationServices_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ConfigurationServices_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationServices_CreateOrUpdate.
@@ -47,6 +46,6 @@ public final class ConfigurationServicesCreateOrUpdateSamples {
                                                             .withPatterns(Arrays.asList("app/dev"))
                                                             .withUri("https://github.com/fake-user/fake-repository")
                                                             .withLabel("master")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

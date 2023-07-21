@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.GatewayResourceInner;
 import com.azure.resourcemanager.appplatform.models.GatewayProperties;
 import com.azure.resourcemanager.appplatform.models.GatewayResourceRequests;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.appplatform.models.Sku;
 /** Samples for Gateways CreateOrUpdate. */
 public final class GatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Gateways_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Gateways_CreateOrUpdate.json
      */
     /**
      * Sample code: Gateways_CreateOrUpdate.
@@ -36,6 +35,6 @@ public final class GatewaysCreateOrUpdateSamples {
                             .withPublicProperty(true)
                             .withResourceRequests(new GatewayResourceRequests().withCpu("1").withMemory("1G")))
                     .withSku(new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

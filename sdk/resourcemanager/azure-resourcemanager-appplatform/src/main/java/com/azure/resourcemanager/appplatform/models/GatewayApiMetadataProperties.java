@@ -11,40 +11,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GatewayApiMetadataProperties {
     /*
-     * Title describing the context of the APIs available on the Gateway
-     * instance (default: `Spring Cloud Gateway for K8S`)
+     * Title describing the context of the APIs available on the Gateway instance (default: `Spring Cloud Gateway for
+     * K8S`)
      */
     @JsonProperty(value = "title")
     private String title;
 
     /*
-     * Detailed description of the APIs available on the Gateway instance
-     * (default: `Generated OpenAPI 3 document that describes the API routes
-     * configured.`)
+     * Detailed description of the APIs available on the Gateway instance (default: `Generated OpenAPI 3 document that
+     * describes the API routes configured.`)
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Location of additional documentation for the APIs available on the
-     * Gateway instance
+     * Location of additional documentation for the APIs available on the Gateway instance
      */
     @JsonProperty(value = "documentation")
     private String documentation;
 
     /*
-     * Version of APIs available on this Gateway instance (default:
-     * `unspecified`).
+     * Version of APIs available on this Gateway instance (default: `unspecified`).
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Base URL that API consumers will use to access APIs on the Gateway
-     * instance.
+     * Base URL that API consumers will use to access APIs on the Gateway instance.
      */
     @JsonProperty(value = "serverUrl")
     private String serverUrl;
+
+    /** Creates an instance of GatewayApiMetadataProperties class. */
+    public GatewayApiMetadataProperties() {
+    }
 
     /**
      * Get the title property: Title describing the context of the APIs available on the Gateway instance (default:

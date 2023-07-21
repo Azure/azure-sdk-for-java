@@ -29,6 +29,10 @@ public final class BuilderProperties {
     @JsonProperty(value = "buildpackGroups")
     private List<BuildpacksGroupProperties> buildpackGroups;
 
+    /** Creates an instance of BuilderProperties class. */
+    public BuilderProperties() {
+    }
+
     /**
      * Get the provisioningState property: Builder provision status.
      *

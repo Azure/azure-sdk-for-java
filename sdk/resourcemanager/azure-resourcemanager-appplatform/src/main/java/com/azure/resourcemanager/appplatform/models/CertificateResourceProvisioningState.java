@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateResourceProvisioningState. */
+/** Provisioning state of the Certificate. */
 public final class CertificateResourceProvisioningState
     extends ExpandableStringEnum<CertificateResourceProvisioningState> {
     /** Static value Creating for CertificateResourceProvisioningState. */
@@ -25,6 +25,15 @@ public final class CertificateResourceProvisioningState
 
     /** Static value Deleting for CertificateResourceProvisioningState. */
     public static final CertificateResourceProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of CertificateResourceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateResourceProvisioningState() {
+    }
 
     /**
      * Creates or finds a CertificateResourceProvisioningState from its string representation.

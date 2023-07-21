@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConfigurationServices Delete. */
 public final class ConfigurationServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigurationServices_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/ConfigurationServices_Delete.json
      */
     /**
      * Sample code: ConfigurationServices_Delete.
@@ -22,6 +20,6 @@ public final class ConfigurationServicesDeleteSamples {
             .manager()
             .serviceClient()
             .getConfigurationServices()
-            .delete("myResourceGroup", "myservice", "default", Context.NONE);
+            .delete("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

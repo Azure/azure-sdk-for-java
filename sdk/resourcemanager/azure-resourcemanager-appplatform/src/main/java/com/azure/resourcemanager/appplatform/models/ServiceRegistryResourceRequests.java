@@ -28,6 +28,10 @@ public final class ServiceRegistryResourceRequests {
     @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
+    /** Creates an instance of ServiceRegistryResourceRequests class. */
+    public ServiceRegistryResourceRequests() {
+    }
+
     /**
      * Get the cpu property: Cpu allocated to each Service Registry instance.
      *

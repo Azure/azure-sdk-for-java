@@ -72,6 +72,10 @@ public class CertificateProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateResourceProvisioningState provisioningState;
 
+    /** Creates an instance of CertificateProperties class. */
+    public CertificateProperties() {
+    }
+
     /**
      * Get the thumbprint property: The thumbprint of certificate.
      *

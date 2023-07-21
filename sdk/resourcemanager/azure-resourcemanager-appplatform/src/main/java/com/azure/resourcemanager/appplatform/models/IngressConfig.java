@@ -16,6 +16,10 @@ public final class IngressConfig {
     @JsonProperty(value = "readTimeoutInSeconds")
     private Integer readTimeoutInSeconds;
 
+    /** Creates an instance of IngressConfig class. */
+    public IngressConfig() {
+    }
+
     /**
      * Get the readTimeoutInSeconds property: Ingress read time out in seconds.
      *

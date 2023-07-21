@@ -29,6 +29,10 @@ public final class ResourceSkuLocationInfo {
     @JsonProperty(value = "zoneDetails")
     private List<ResourceSkuZoneDetails> zoneDetails;
 
+    /** Creates an instance of ResourceSkuLocationInfo class. */
+    public ResourceSkuLocationInfo() {
+    }
+
     /**
      * Get the location property: Gets location of the SKU.
      *

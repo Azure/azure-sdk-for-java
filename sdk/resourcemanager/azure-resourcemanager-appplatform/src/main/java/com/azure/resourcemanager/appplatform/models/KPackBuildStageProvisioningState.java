@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KPackBuildStageProvisioningState. */
+/** The provisioning state of this build stage resource. */
 public final class KPackBuildStageProvisioningState extends ExpandableStringEnum<KPackBuildStageProvisioningState> {
     /** Static value NotStarted for KPackBuildStageProvisioningState. */
     public static final KPackBuildStageProvisioningState NOT_STARTED = fromString("NotStarted");
@@ -21,6 +21,15 @@ public final class KPackBuildStageProvisioningState extends ExpandableStringEnum
 
     /** Static value Failed for KPackBuildStageProvisioningState. */
     public static final KPackBuildStageProvisioningState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of KPackBuildStageProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KPackBuildStageProvisioningState() {
+    }
 
     /**
      * Creates or finds a KPackBuildStageProvisioningState from its string representation.

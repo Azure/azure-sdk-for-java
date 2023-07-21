@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ProbeAction {
+    /** Creates an instance of ProbeAction class. */
+    public ProbeAction() {
+    }
+
     /**
      * Validates the instance.
      *

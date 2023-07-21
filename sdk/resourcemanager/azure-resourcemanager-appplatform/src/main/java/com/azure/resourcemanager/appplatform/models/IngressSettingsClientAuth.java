@@ -17,6 +17,10 @@ public final class IngressSettingsClientAuth {
     @JsonProperty(value = "certificates")
     private List<String> certificates;
 
+    /** Creates an instance of IngressSettingsClientAuth class. */
+    public IngressSettingsClientAuth() {
+    }
+
     /**
      * Get the certificates property: Collection of certificate resource id.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildpackBinding Delete. */
 public final class BuildpackBindingDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildpackBinding_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildpackBinding_Delete.json
      */
     /**
      * Sample code: BuildpackBinding_Delete.
@@ -22,6 +20,12 @@ public final class BuildpackBindingDeleteSamples {
             .manager()
             .serviceClient()
             .getBuildpackBindings()
-            .delete("myResourceGroup", "myservice", "default", "default", "myBuildpackBinding", Context.NONE);
+            .delete(
+                "myResourceGroup",
+                "myservice",
+                "default",
+                "default",
+                "myBuildpackBinding",
+                com.azure.core.util.Context.NONE);
     }
 }

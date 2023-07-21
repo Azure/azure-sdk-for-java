@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BuildServiceAgentPool Get. */
 public final class BuildServiceAgentPoolGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildServiceAgentPool_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildServiceAgentPool_Get.json
      */
     /**
      * Sample code: BuildServiceAgentPool_Get.
@@ -22,6 +20,6 @@ public final class BuildServiceAgentPoolGetSamples {
             .manager()
             .serviceClient()
             .getBuildServiceAgentPools()
-            .getWithResponse("myResourceGroup", "myservice", "default", "default", Context.NONE);
+            .getWithResponse("myResourceGroup", "myservice", "default", "default", com.azure.core.util.Context.NONE);
     }
 }

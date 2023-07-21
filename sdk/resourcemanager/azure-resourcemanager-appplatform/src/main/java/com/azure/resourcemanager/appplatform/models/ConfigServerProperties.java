@@ -28,6 +28,10 @@ public final class ConfigServerProperties {
     @JsonProperty(value = "configServer")
     private ConfigServerSettings configServer;
 
+    /** Creates an instance of ConfigServerProperties class. */
+    public ConfigServerProperties() {
+    }
+
     /**
      * Get the provisioningState property: State of the config server.
      *

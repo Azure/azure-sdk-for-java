@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class SsoProperties {
     /*
-     * It defines the specific actions applications can be allowed to do on a
-     * user's behalf
+     * It defines the specific actions applications can be allowed to do on a user's behalf
      */
     @JsonProperty(value = "scope")
     private List<String> scope;
@@ -35,6 +34,10 @@ public final class SsoProperties {
      */
     @JsonProperty(value = "issuerUri")
     private String issuerUri;
+
+    /** Creates an instance of SsoProperties class. */
+    public SsoProperties() {
+    }
 
     /**
      * Get the scope property: It defines the specific actions applications can be allowed to do on a user's behalf.

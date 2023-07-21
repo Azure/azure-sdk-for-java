@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildServiceAgentPoolResourceInner;
 import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolProperties;
 import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolSizeProperties;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolSizePro
 /** Samples for BuildServiceAgentPool UpdatePut. */
 public final class BuildServiceAgentPoolUpdatePutSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildServiceAgentPool_UpdatePut.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildServiceAgentPool_UpdatePut.json
      */
     /**
      * Sample code: BuildServiceAgentPool_UpdatePut.
@@ -34,6 +33,6 @@ public final class BuildServiceAgentPoolUpdatePutSamples {
                     .withProperties(
                         new BuildServiceAgentPoolProperties()
                             .withPoolSize(new BuildServiceAgentPoolSizeProperties().withName("S3"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

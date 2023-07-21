@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BuilderResourceInner;
 import com.azure.resourcemanager.appplatform.models.BuilderProperties;
 import com.azure.resourcemanager.appplatform.models.BuildpackProperties;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for BuildServiceBuilder CreateOrUpdate. */
 public final class BuildServiceBuilderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildServiceBuilder_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/BuildServiceBuilder_CreateOrUpdate.json
      */
     /**
      * Sample code: BuildServiceBuilder_CreateOrUpdate.
@@ -47,6 +46,6 @@ public final class BuildServiceBuilderCreateOrUpdateSamples {
                                                     .asList(
                                                         new BuildpackProperties()
                                                             .withId("tanzu-buildpacks/java-azure")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

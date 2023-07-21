@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.models.RemoteDebuggingPayload;
 
 /** Samples for Deployments EnableRemoteDebugging. */
 public final class DeploymentsEnableRemoteDebuggingSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_EnableRemoteDebugging.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_EnableRemoteDebugging.json
      */
     /**
      * Sample code: Deployments_EnableRemoteDebugging.
@@ -24,6 +23,11 @@ public final class DeploymentsEnableRemoteDebuggingSamples {
             .serviceClient()
             .getDeployments()
             .enableRemoteDebugging(
-                "myResourceGroup", "myservice", "myapp", "mydeployment", new RemoteDebuggingPayload(), Context.NONE);
+                "myResourceGroup",
+                "myservice",
+                "myapp",
+                "mydeployment",
+                new RemoteDebuggingPayload(),
+                com.azure.core.util.Context.NONE);
     }
 }

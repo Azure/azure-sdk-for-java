@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Deployments Start. */
 public final class DeploymentsStartSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_Start.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-03-01-preview/examples/Deployments_Start.json
      */
     /**
      * Sample code: Deployments_Start.
@@ -22,6 +20,6 @@ public final class DeploymentsStartSamples {
             .manager()
             .serviceClient()
             .getDeployments()
-            .start("myResourceGroup", "myservice", "myapp", "mydeployment", Context.NONE);
+            .start("myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }
