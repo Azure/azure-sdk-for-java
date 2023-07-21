@@ -61,9 +61,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.archetype</groupId>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.archetype:maven-archetype-plugin;external_dependency} -->
+                    <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
                 </plugin>
             </plugins>
         </pluginManagement>
