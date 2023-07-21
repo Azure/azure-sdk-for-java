@@ -89,7 +89,20 @@ public class RoomsTestBase extends TestProxyTestBase {
                 .credential(new AzureKeyCredential(accessKey))
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
-        configureTestMode(builder);
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(
+                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+        }
+
+        if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+        }
 
         return builder;
     }
