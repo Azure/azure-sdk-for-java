@@ -85,9 +85,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     DataLakeDirectoryAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String directoryName, BlockBlobAsyncClient blockBlobAsyncClient,
-        AzureSasCredential sasToken, CpkInfo customerProvidedKey) {
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, directoryName, PathResourceType.DIRECTORY,
-            blockBlobAsyncClient, sasToken, customerProvidedKey);
+            blockBlobAsyncClient, sasToken, customerProvidedKey, isTokenCredentialAuthenticated);
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
@@ -95,7 +95,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
             dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient(),
-            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo());
+            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo(),
+            dataLakePathAsyncClient.isTokenCredentialAuthenticated());
     }
 
     /**
@@ -142,7 +143,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(),
-            finalCustomerProvidedKey);
+            finalCustomerProvidedKey, isTokenCredentialAuthenticated());
     }
 
     /**
@@ -695,9 +696,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getFileSystemName(),
-            Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient,
-            this.getSasToken(), getCpkInfo());
+            getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)),
+            blockBlobAsyncClient, this.getSasToken(), getCpkInfo(), isTokenCredentialAuthenticated());
     }
 
     /**

@@ -108,6 +108,8 @@ public class DataLakePathAsyncClient {
 
     private final AzureSasCredential sasToken;
 
+    private final boolean isTokenCredentialAuthenticated;
+
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
      *
@@ -121,8 +123,8 @@ public class DataLakePathAsyncClient {
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
-        BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken,
-        CpkInfo customerProvidedKey) {
+        BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken, CpkInfo customerProvidedKey,
+       boolean isTokenCredentialAuthenticated) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
@@ -155,6 +157,7 @@ public class DataLakePathAsyncClient {
             .buildClient();
 
         this.customerProvidedKey = customerProvidedKey;
+        this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
     }
 
     /**
@@ -284,6 +287,10 @@ public class DataLakePathAsyncClient {
         return this.customerProvidedKey;
     }
 
+    boolean isTokenCredentialAuthenticated() {
+        return this.isTokenCredentialAuthenticated;
+    }
+
     /**
      * Creates a new {@link DataLakePathAsyncClient} with the specified {@code customerProvidedKey}.
      *
@@ -301,7 +308,7 @@ public class DataLakePathAsyncClient {
         }
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getFileSystemName(), getObjectPath(), this.pathResourceType, this.blockBlobAsyncClient, getSasToken(),
-            finalCustomerProvidedKey);
+            finalCustomerProvidedKey, isTokenCredentialAuthenticated);
     }
 
     /**
@@ -630,9 +637,16 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
+        // Pagination only applies to service version 2023-08-03 and later, when using OAuth.
+        Boolean paginated = null;
+        if (getServiceVersion().ordinal() >= DataLakeServiceVersion.V2023_08_03.ordinal()
+            && isTokenCredentialAuthenticated()) {
+            paginated = true;
+        }
+
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().deleteWithResponseAsync(null, null, recursive, null, lac, mac, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.dataLakeStorage.getPaths().deleteWithResponseAsync(null, null, recursive, null, paginated, lac, mac,
+                context).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -1673,7 +1687,7 @@ public class DataLakePathAsyncClient {
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
             prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken,
-            customerProvidedKey);
+            customerProvidedKey, isTokenCredentialAuthenticated);
     }
 
     /**

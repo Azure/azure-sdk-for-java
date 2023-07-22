@@ -34,6 +34,7 @@ import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
@@ -3735,6 +3736,41 @@ class DirectoryAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Ignore("Requires manual OAuth setup and creates 5000+ files")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2023_08_03")
+    def "Delete paginated directory"() {
+        setup:
+        def entityId = "68bff720-253b-428c-b124-603700654ea9"
+        def directoryClient = fsc.getDirectoryClient(generatePathName())
+        directoryClient.create()
+
+        for (int i = 0; i < 5020; i++) {
+            def fileClient = directoryClient.getFileClient(generatePathName())
+            fileClient.createIfNotExists()
+        }
+        def rootDirectory = fsc.getDirectoryClient("/")
+        def acl = rootDirectory.getAccessControl()
+        acl.getAccessControlList().add(new PathAccessControlEntry()
+            .setPermissions(new RolePermissions()
+                .setReadPermission(true)
+                .setWritePermission(true)
+                .setExecutePermission(true))
+            .setAccessControlType(AccessControlType.USER)
+            .setEntityId(entityId))
+
+        rootDirectory.setAccessControlRecursive(acl.getAccessControlList())
+
+        def oAuthServiceClient = getOAuthServiceClient()
+        def oAuthFileSystemClient = oAuthServiceClient.getFileSystemClient(fsc.getFileSystemName())
+        def oAuthDirectoryClient = oAuthFileSystemClient
+            .getDirectoryClient(directoryClient.getDirectoryPath())
+
+        when:
+        def response = oAuthDirectoryClient.deleteWithResponse(false, null, null, Context.NONE)
+        then:
+        response.getStatusCode() == 202
     }
 
     @Unroll

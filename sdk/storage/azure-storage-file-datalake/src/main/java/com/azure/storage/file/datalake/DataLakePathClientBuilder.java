@@ -234,7 +234,7 @@ public final class DataLakePathClientBuilder implements
 
         return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
             pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
-            customerProvidedKey);
+            customerProvidedKey, tokenCredential != null);
     }
 
     /*
