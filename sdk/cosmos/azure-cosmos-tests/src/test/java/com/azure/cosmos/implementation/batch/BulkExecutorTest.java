@@ -19,18 +19,13 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorResultBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
-import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
-import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -152,7 +147,7 @@ public class BulkExecutorTest extends BatchTestBase {
     }
 
     // Write operations should not be retried on a gone exception because the operation might have succeeded.
-    @Test(groups = { "emulator" })
+    @Test(groups = { "emulator" }, timeOut =  TIMEOUT)
     public void executeBulk_OnGoneFailure() throws InterruptedException {
         this.container = createContainer(database);
         if (!ImplementationBridgeHelpers
@@ -220,12 +215,6 @@ public class BulkExecutorTest extends BatchTestBase {
             List<CosmosBulkOperationResponse<BulkExecutorTest>>  bulkResponse =
                 Flux
                     .deferContextual(context -> executor.execute())
-                    .flatMap(response -> {
-                        if (response.getResponse() != null) {
-                            logger.info("Tomas-test " + response.getResponse().getCosmosDiagnostics());
-                        }
-                        return Mono.just(response);
-                    })
                     .collectList()
                     .block();
 
@@ -241,40 +230,6 @@ public class BulkExecutorTest extends BatchTestBase {
             connectionCloseRule.disable();
             serverResponseDelayRule.disable();
         }
-    }
-
-    private FaultInjectionRule injectConnectionFailure(String id,
-                                             CosmosAsyncContainer createdContainer,
-                                             FaultInjectionOperationType operationType, FaultInjectionConnectionErrorType connectionErrorType) {
-
-
-        FaultInjectionConnectionErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
-            .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
-            .interval(Duration.ofMillis(200));
-
-
-        IFaultInjectionResult result = faultInjectionResultBuilder.build();
-
-        FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
-            .operationType(operationType)
-            .connectionType(FaultInjectionConnectionType.DIRECT)
-            .build();
-
-        FaultInjectionRule rule = new FaultInjectionRuleBuilder(id)
-            .condition(condition)
-            .result(result)
-            .hitLimit(1)
-            .build();
-
-
-        FaultInjectorProvider injectorProvider = (FaultInjectorProvider)  ImplementationBridgeHelpers.CosmosAsyncContainerHelper
-            .getCosmosAsyncContainerAccessor()
-            .getOrConfigureFaultInjectorProvider(createdContainer, () -> new FaultInjectorProvider(createdContainer));
-
-
-        injectorProvider.configureFaultInjectionRules(Arrays.asList(rule)).block();
-
-        return rule;
     }
 
 
