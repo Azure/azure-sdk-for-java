@@ -56,8 +56,8 @@ public class CosmosDatabase {
     /**
      * Reads the current Cosmos database.
      * Fetch the details and properties of a database based on its unique identifier.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.read -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.read -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.read_no_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.read_no_params -->
      *
      * @return the {@link CosmosDatabaseResponse}.
      */
@@ -67,8 +67,8 @@ public class CosmosDatabase {
 
     /**
      * Reads the current Cosmos database while specifying additional request options.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.read_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.read_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.read_option_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.read_option_params -->
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
      * @return the {@link CosmosDatabaseResponse}
      */
@@ -88,8 +88,8 @@ public class CosmosDatabase {
 
     /**
      * Delete the current Cosmos database while specifying additional request options.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.delete_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.delete_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.delete_option_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.delete_option_params -->
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
      * @return the {@link CosmosDatabaseResponse}.
      */
@@ -208,8 +208,8 @@ public class CosmosDatabase {
 
     /**
      * Create container if one matching the id in the properties object does not exist.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_containerProperties_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_containerProperties_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop -->
      * @param containerProperties the container properties.
      * @return the cosmos container response.
      */
@@ -219,8 +219,8 @@ public class CosmosDatabase {
 
     /**
      * Create container if one does not exist.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_containerProperties_and_throughput_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_containerProperties_and_throughput_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_through -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_through -->
      * @param containerProperties the container properties.
      * @param throughput the throughput.
      * @return the cosmos container response.
@@ -234,8 +234,8 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container if one matching the id in the properties object does not exist.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_containerProperties_and_throughputProperties_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_containerProperties_and_throughputProperties_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_throughprop -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_throughprop -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
      *
@@ -252,8 +252,8 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container if one matching the id does not exist.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey -->
      * @param id the id.
      * @param partitionKeyPath the partition key path.
      * @return the cosmos container response.
@@ -266,8 +266,8 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container if one matching the id does not exist.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_and_throughput_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_and_throughput_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through -->
      * The throughput settings will only be used if the specified container
      * does not exist and therefor a new container will be created.
      *
@@ -286,8 +286,8 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container if one matching the id does not exist.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_and_throughputProperties_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_and_throughputProperties_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
      *
@@ -346,8 +346,8 @@ public class CosmosDatabase {
 
     /**
      * Query containers in the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers_query_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers_query_params -->
      * @param query the query.
      * @return the {@link CosmosPagedIterable}.
      */
@@ -357,8 +357,8 @@ public class CosmosDatabase {
 
     /**
      * Query containers iterator.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers -->
      * @param query the query.
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
@@ -369,8 +369,8 @@ public class CosmosDatabase {
 
     /**
      * Query containers in the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers_with_querySpec_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers_with_querySpec_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers_spec_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers_spec_params -->
      * @param querySpec the query spec.
      * @return the {@link CosmosPagedIterable}.
      */
@@ -380,8 +380,8 @@ public class CosmosDatabase {
 
     /**
      * Query containers in the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers_with_querySpec_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers_with_querySpec_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryContainers_spec_option_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryContainers_spec_option_params -->
      * @param querySpec the query spec.
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
@@ -432,8 +432,8 @@ public class CosmosDatabase {
 
     /**
      * Read all Cosmos users for the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.readAllUsers -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.readAllUsers -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.readAllUsers_no_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.readAllUsers_no_params -->
      * @return the {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosUserProperties> readAllUsers() {
@@ -442,8 +442,8 @@ public class CosmosDatabase {
 
     /**
      * Read all Cosmos users for the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.readAllUsers_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.readAllUsers_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.readAllUsers_option_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.readAllUsers_option_params -->
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
      */
@@ -464,8 +464,8 @@ public class CosmosDatabase {
 
     /**
      * Query all Cosmos users for the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers_option_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers_option_params -->
      * @param query the query.
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
@@ -476,8 +476,8 @@ public class CosmosDatabase {
 
     /**
      * Query all Cosmos users for the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers_with_querySpec_param -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers_with_querySpec_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers_spec_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers_spec_params -->
      * @param querySpec the query spec.
      * @return the {@link CosmosPagedIterable}.
      */
@@ -487,8 +487,8 @@ public class CosmosDatabase {
 
     /**
      * Query all Cosmos users for the current database.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers_with_querySpec_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers_with_querySpec_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers_two_params -->
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers_two_params -->
      * @param querySpec the query spec.
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.

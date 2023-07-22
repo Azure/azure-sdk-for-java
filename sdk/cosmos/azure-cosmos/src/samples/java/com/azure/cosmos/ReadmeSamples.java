@@ -3,11 +3,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.*;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Mono;
 
@@ -712,121 +714,251 @@ public class ReadmeSamples {
     }
 
     public void сosmosAsyncContainerReadSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.read
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.read_no_params
+        CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+
+        Mono<CosmosContainerResponse> containerResponse = container.read();
+        // END: com.azure.cosmos.CosmosAsyncContainer.read_no_params
+    }
+
+    public void сosmosAsyncContainerReadSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.read_option_params
         CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         Mono<CosmosContainerResponse> containerResponse = container.read(options);
-        // END: com.azure.cosmos.CosmosAsyncContainer.read
+        // END: com.azure.cosmos.CosmosAsyncContainer.read_option_params
+    }
+
+    public void сosmosAsyncContainerReadThirdSample() {
+        Context context = new Context(new Object(), "context");
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.read_context_params
+        CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+
+        Mono<CosmosContainerResponse> containerResponse = container.read(options, context);
+        // END: com.azure.cosmos.CosmosAsyncContainer.read_context_params
     }
 
     public void сosmosAsyncContainerDeleteSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.delete
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.delete_no_params
+        CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+
+        Mono<CosmosContainerResponse> containerResponse = container.delete();
+        // END: com.azure.cosmos.CosmosAsyncContainer.delete_no_params
+    }
+
+    public void сosmosAsyncContainerDeleteSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.delete_option_params
         CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         Mono<CosmosContainerResponse> containerResponse = container.delete(options);
-        // END: com.azure.cosmos.CosmosAsyncContainer.delete
+        // END: com.azure.cosmos.CosmosAsyncContainer.delete_option_params
     }
 
     public void сosmosAsyncContainerReplaceSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.replace
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.replace_properties_params
         String partitionKeyPath = "<PARTITION_KEY_PATH>";
         CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
         CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
-
         Mono<CosmosContainerResponse> containerResponse = container.replace(properties);
-        // END: com.azure.cosmos.CosmosAsyncContainer.replace
+        // END: com.azure.cosmos.CosmosAsyncContainer.replace_properties_params
+    }
+
+    public void сosmosAsyncContainerReplaceSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.replace_option_params
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
+        Mono<CosmosContainerResponse> containerResponse = container.replace(properties, options);
+        // END: com.azure.cosmos.CosmosAsyncContainer.replace_option_params
     }
 
     public void сosmosAsyncContainerCreateItemSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.createItem
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.createItem_no_params
         String partitionKeyPath = "<PARTITION_KEY_PATH>";
         CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
         CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
 
         Mono<CosmosItemResponse<CosmosContainerProperties>> containerResponse =
             container.createItem(properties);
-        // END: com.azure.cosmos.CosmosAsyncContainer.createItem
+        // END: com.azure.cosmos.CosmosAsyncContainer.createItem_no_params
     }
 
-    public void сosmosAsyncDatabaseReadSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.read
-        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
-        CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
-
-        Mono<CosmosDatabaseResponse> response = cosmosAsyncDatabase.read(requestOptions);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.read
-    }
-
-    public void сosmosAsyncDatabaseDeleteSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.delete
-        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
-        CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
-
-        Mono<CosmosDatabaseResponse> response = cosmosAsyncDatabase.delete(requestOptions);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.delete
-    }
-
-    public void сosmosAsyncDatabaseCreateContainerSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainer
+    public void сosmosAsyncContainerCreateItemSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.createItem_two_params
         String partitionKeyPath = "<PARTITION_KEY_PATH>";
-        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
         CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        Mono<CosmosContainerResponse> response = cosmosAsyncDatabase.createContainer(properties);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainer
+        Mono<CosmosItemResponse<CosmosContainerProperties>> containerResponse =
+            container.createItem(properties, options);
+        // END: com.azure.cosmos.CosmosAsyncContainer.createItem_two_params
+    }
+
+    public void сosmosAsyncContainerCreateItemThirdSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.createItem_three_params
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        PartitionKey partitionKey = new PartitionKey(partitionKeyPath);
+        CosmosAsyncContainer container = new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+        CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+
+        Mono<CosmosItemResponse<CosmosContainerProperties>> containerResponse =
+            container.createItem(properties, partitionKey, options);
+        // END: com.azure.cosmos.CosmosAsyncContainer.createItem_three_params
     }
 
     public void сosmosAsyncDatabaseContainerIfNotExistsSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params
         String partitionKeyPath = "<PARTITION_KEY_PATH>";
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
         CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
 
         Mono<CosmosContainerResponse> response =
             cosmosAsyncDatabase.createContainerIfNotExists(properties);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params
+    }
+
+    public void сosmosAsyncDatabaseContainerIfNotExistsSecondSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughput_params
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
+
+        Mono<CosmosContainerResponse> response =
+            cosmosAsyncDatabase.createContainerIfNotExists(properties, throughput);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughput_params
+    }
+
+    public void сosmosAsyncDatabaseContainerIfNotExistsThirdSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughputproperties_params
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(throughput);
+
+        Mono<CosmosContainerResponse> response =
+            cosmosAsyncDatabase.createContainerIfNotExists(properties, throughputProperties);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughputproperties_params
+    }
+
+    public void сosmosAsyncDatabaseContainerIfNotExistsFourthSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_partitionkeypath_params
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+
+        Mono<CosmosContainerResponse> response =
+            cosmosAsyncDatabase.createContainerIfNotExists(id, partitionKeyPath);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_partitionkeypath_params
+    }
+
+    public void сosmosAsyncDatabaseContainerIfNotExistsFifthSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(throughput);
+
+        Mono<CosmosContainerResponse> response =
+            cosmosAsyncDatabase.createContainerIfNotExists(id, partitionKeyPath, throughputProperties);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params
+    }
+
+    public void сosmosAsyncDatabaseContainerIfNotExistsSixthSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_through_params
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosContainerProperties properties = new CosmosContainerProperties(id, partitionKeyPath);
+
+        Mono<CosmosContainerResponse> response =
+            cosmosAsyncDatabase.createContainerIfNotExists(properties, throughput);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_through_params
     }
 
     public void сosmosAsyncDatabaseReadAllContainersSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_option_params
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosContainerProperties> containerProperties =
             cosmosAsyncDatabase.readAllContainers(options);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_option_params
+    }
+
+    public void сosmosAsyncDatabaseReadAllContainersSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_no_params
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+
+        CosmosPagedFlux<CosmosContainerProperties> containerProperties =
+            cosmosAsyncDatabase.readAllContainers();
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_no_params
     }
 
     public void сosmosAsyncDatabaseQueryContainersSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.queryContainers
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_query_params
         String query = "<YOUR_QUERY>";
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
 
         CosmosPagedFlux<CosmosContainerProperties> containerProperties =
             cosmosAsyncDatabase.queryContainers(query);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.queryContainers
+        // END: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_query_params
+    }
+
+    public void сosmosAsyncDatabaseQueryContainersSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_option_params
+        String query = "<YOUR_QUERY>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        SqlQuerySpec spec = new SqlQuerySpec(query);
+
+        CosmosPagedFlux<CosmosContainerProperties> containerProperties =
+            cosmosAsyncDatabase.queryContainers(spec, options);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_option_params
+    }
+
+    public void сosmosAsyncDatabaseQueryContainersThirdSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_option_params
+        String query = "<YOUR_QUERY>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosPagedFlux<CosmosContainerProperties> containerProperties =
+            cosmosAsyncDatabase.queryContainers(query, options);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_option_params
+    }
+
+    public void сosmosAsyncDatabaseQueryContainersFourthSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_params
+        String query = "<YOUR_QUERY>";
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        SqlQuerySpec spec = new SqlQuerySpec(query);
+
+        CosmosPagedFlux<CosmosContainerProperties> containerProperties =
+            cosmosAsyncDatabase.queryContainers(spec);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_params
     }
 
     public void сosmosAsyncDatabaseCreateUserSample() {
         // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createUser
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
         CosmosUserProperties properties = new CosmosUserProperties();
-
         Mono<CosmosUserResponse> userResponse = cosmosAsyncDatabase.createUser(properties);
         // END: com.azure.cosmos.CosmosAsyncDatabase.createUser
     }
-
     public void сosmosAsyncDatabaseUpsertUserSample() {
         // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.upsertUser
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
         CosmosUserProperties properties = new CosmosUserProperties();
-
         Mono<CosmosUserResponse> userResponse = cosmosAsyncDatabase.upsertUser(properties);
         // END: com.azure.cosmos.CosmosAsyncDatabase.upsertUser
     }
-
     public void сosmosAsyncDatabaseCreateClientKeySample() {
         String encryptionAlgorithm = "";
         byte[] wrappedDataEncryptionKey = new byte[]{};
@@ -836,7 +968,6 @@ public class ReadmeSamples {
         ClientEncryptionKey key = new ClientEncryptionKey();
         CosmosClientEncryptionKeyProperties properties =
             new CosmosClientEncryptionKeyProperties(id, encryptionAlgorithm, wrappedDataEncryptionKey, metadata);
-
         Mono<CosmosClientEncryptionKeyResponse> keyProperties =
             cosmosAsyncDatabase.createClientEncryptionKey(properties);
         // END: com.azure.cosmos.CosmosAsyncDatabase.createClientEncryptionKey
@@ -844,22 +975,42 @@ public class ReadmeSamples {
 
     public void сosmosAsyncDatabaseReadAllUsersSample() {
         // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_no_params
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+
+        CosmosPagedFlux<CosmosUserProperties> userProperties =
+            cosmosAsyncDatabase.readAllUsers();
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_no_params
+    }
+
+    public void сosmosAsyncDatabaseReadAllUsersSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_option_params
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosUserProperties> userProperties =
             cosmosAsyncDatabase.readAllUsers(queryRequestOptions);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_option_params
     }
 
     public void сosmosAsyncDatabaseReadAllClientEncryptionKeysSample() {
         // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_no_params
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
-        CosmosUserProperties properties = new CosmosUserProperties();
 
         CosmosPagedFlux<CosmosClientEncryptionKeyProperties> keyProperties =
             cosmosAsyncDatabase.readAllClientEncryptionKeys();
-        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_no_params
+    }
+
+    public void сosmosAsyncDatabaseReadAllClientEncryptionKeysSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_option_params
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosPagedFlux<CosmosClientEncryptionKeyProperties> keyProperties =
+            cosmosAsyncDatabase.readAllClientEncryptionKeys(options);
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_option_params
     }
 
     public void сosmosAsyncDatabaseQueryClientKeysSample() {
@@ -867,7 +1018,6 @@ public class ReadmeSamples {
         String query = "<YOUR_QUERY>";
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
         CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-
         CosmosPagedFlux<CosmosClientEncryptionKeyProperties> clientEncryptionKeys =
             cosmosAsyncDatabase.queryClientEncryptionKeys(query, requestOptions);
         // END: com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys
@@ -905,7 +1055,7 @@ public class ReadmeSamples {
     }
 
     public void cosmosAsyncScriptsQueryTriggersSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncScripts.queryTriggers
+        // BEGIN: com.azure.cosmos.CosmosAsyncScripts.queryTriggers_option_params
         String query = "<YOUR_QUERY>";
         CosmosAsyncScripts asyncScripts =
             new CosmosAsyncScripts(cosmosAsyncContainer);
@@ -914,7 +1064,21 @@ public class ReadmeSamples {
 
         CosmosPagedFlux<CosmosTriggerProperties> triggerProperties =
             asyncScripts.queryTriggers(query, options);
-        // END: com.azure.cosmos.CosmosAsyncScripts.queryTriggers
+        // END: com.azure.cosmos.CosmosAsyncScripts.queryTriggers_option_params
+    }
+
+    public void cosmosAsyncScriptsQueryTriggersSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncScripts.queryTriggers_spec_params
+        String query = "<YOUR_QUERY>";
+        CosmosAsyncScripts asyncScripts =
+            new CosmosAsyncScripts(cosmosAsyncContainer);
+        CosmosQueryRequestOptions options =
+            new CosmosQueryRequestOptions();
+        SqlQuerySpec spec = new SqlQuerySpec(query);
+
+        CosmosPagedFlux<CosmosTriggerProperties> triggerProperties =
+            asyncScripts.queryTriggers(spec, options);
+        // END: com.azure.cosmos.CosmosAsyncScripts.queryTriggers_spec_params
     }
 
     public void cosmosAsyncScriptsCreateStoredProcedureSample() {
@@ -1009,7 +1173,17 @@ public class ReadmeSamples {
     }
 
     public void cosmosAsyncScriptsReadAllTriggersSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncScripts.readAllTriggers
+        // BEGIN: com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_no_params
+        CosmosAsyncScripts asyncScripts =
+            new CosmosAsyncScripts(cosmosAsyncContainer);
+
+        CosmosPagedFlux<CosmosTriggerProperties> triggerProperties =
+            asyncScripts.readAllTriggers();
+        // END: com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_no_params
+    }
+
+    public void cosmosAsyncScriptsReadAllTriggersSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_option_params
         CosmosAsyncScripts asyncScripts =
             new CosmosAsyncScripts(cosmosAsyncContainer);
         CosmosQueryRequestOptions options =
@@ -1017,54 +1191,121 @@ public class ReadmeSamples {
 
         CosmosPagedFlux<CosmosTriggerProperties> triggerProperties =
             asyncScripts.readAllTriggers(options);
-        // END: com.azure.cosmos.CosmosAsyncScripts.readAllTriggers
+        // END: com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_option_params
     }
 
     public void cosmosDatabaseReadSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.read
+        // BEGIN: com.azure.cosmos.CosmosDatabase.read_no_params
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+
+        CosmosDatabaseResponse response = cosmosDatabase.read();
+        // END: com.azure.cosmos.CosmosDatabase.read_no_params
+    }
+
+    public void cosmosDatabaseReadSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.read_option_params
         CosmosDatabase cosmosDatabase =
             new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
         CosmosDatabaseRequestOptions options =
             new CosmosDatabaseRequestOptions();
 
         CosmosDatabaseResponse response = cosmosDatabase.read(options);
-        // END: com.azure.cosmos.CosmosDatabase.read
+        // END: com.azure.cosmos.CosmosDatabase.read_option_params
     }
 
     public void cosmosDatabaseDeleteSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.delete
+        // BEGIN: com.azure.cosmos.CosmosDatabase.delete_option_params
         CosmosDatabase cosmosDatabase =
             new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
         CosmosDatabaseRequestOptions options =
             new CosmosDatabaseRequestOptions();
 
         CosmosDatabaseResponse response = cosmosDatabase.delete(options);
-        // END: com.azure.cosmos.CosmosDatabase.delete
-    }
-
-    public void cosmosDatabaseCreateContainerSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainer
-        String partitionKeyPath = "<PARTITION_KEY_PATH>";
-        CosmosDatabase cosmosDatabase =
-            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
-        CosmosContainerProperties properties =
-            new CosmosContainerProperties(id, partitionKeyPath);
-
-        CosmosContainerResponse response = cosmosDatabase.createContainer(properties);
-        // END: com.azure.cosmos.CosmosDatabase.createContainer
+        // END: com.azure.cosmos.CosmosDatabase.delete_option_params
     }
 
     public void cosmosDatabaseCreateContainerIfNotExistsSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop
         String partitionKeyPath = "<PARTITION_KEY_PATH>";
         CosmosDatabase cosmosDatabase =
             new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
         CosmosContainerProperties properties =
             new CosmosContainerProperties(id, partitionKeyPath);
 
-        CosmosContainerResponse response = cosmosDatabase.createContainerIfNotExists(properties);
-        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists
+        CosmosContainerResponse response =
+            cosmosDatabase.createContainerIfNotExists(properties);
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop
     }
+
+    public void cosmosDatabaseCreateContainerIfNotExistsSecondSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_through
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        CosmosContainerProperties properties =
+            new CosmosContainerProperties(id, partitionKeyPath);
+
+        CosmosContainerResponse response =
+            cosmosDatabase.createContainerIfNotExists(properties, throughput);
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_through
+    }
+
+    public void cosmosDatabaseCreateContainerIfNotExistsThirdSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_throughprop
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        CosmosContainerProperties properties =
+            new CosmosContainerProperties(id, partitionKeyPath);
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createManualThroughput(throughput);
+
+        CosmosContainerResponse response =
+            cosmosDatabase.createContainerIfNotExists(properties, throughputProperties);
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_prop_throughprop
+    }
+
+    public void cosmosDatabaseCreateContainerIfNotExistsFourthSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+
+        CosmosContainerResponse response =
+            cosmosDatabase.createContainerIfNotExists(id, partitionKeyPath);
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey
+    }
+
+    public void cosmosDatabaseCreateContainerIfNotExistsFifthSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+
+        CosmosContainerResponse response =
+            cosmosDatabase.createContainerIfNotExists(id, partitionKeyPath, throughput);
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through
+    }
+
+
+    public void cosmosDatabaseCreateContainerIfNotExistsSixthSample() {
+        int throughput = 1;
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through
+        String partitionKeyPath = "<PARTITION_KEY_PATH>";
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createManualThroughput(throughput);
+
+        CosmosContainerResponse response =
+            cosmosDatabase.createContainerIfNotExists(id, partitionKeyPath, throughputProperties);
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through
+    }
+
 
     public void cosmosDatabaseReadAllContainersSample() {
         // BEGIN: com.azure.cosmos.CosmosDatabase.readAllContainers
@@ -1087,6 +1328,45 @@ public class ReadmeSamples {
         CosmosPagedIterable<CosmosContainerProperties> containerProperties =
             cosmosDatabase.queryContainers(query, options);
         // END: com.azure.cosmos.CosmosDatabase.queryContainers
+    }
+
+    public void cosmosDatabaseQueryContainersSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryContainers_query_params
+        String query = "<YOUR_QUERY>";
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+
+        CosmosPagedIterable<CosmosContainerProperties> containerProperties =
+            cosmosDatabase.queryContainers(query);
+        // END: com.azure.cosmos.CosmosDatabase.queryContainers_query_params
+    }
+
+    public void cosmosDatabaseQueryContainersThirdSample() {
+        String query = "<YOUR_QUERY>";
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryContainers_spec_params
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        SqlQuerySpec spec =
+            new SqlQuerySpec(query);
+
+        CosmosPagedIterable<CosmosContainerProperties> containerProperties =
+            cosmosDatabase.queryContainers(spec);
+        // END: com.azure.cosmos.CosmosDatabase.queryContainers_spec_params
+    }
+
+    public void cosmosDatabaseQueryContainersFourthSample() {
+        String query = "<YOUR_QUERY>";
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryContainers_spec_option_params
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        CosmosQueryRequestOptions options =
+            new CosmosQueryRequestOptions();
+        SqlQuerySpec spec =
+            new SqlQuerySpec(query);
+
+        CosmosPagedIterable<CosmosContainerProperties> containerProperties =
+            cosmosDatabase.queryContainers(spec, options);
+        // END: com.azure.cosmos.CosmosDatabase.queryContainers_spec_option_params
     }
 
     public void cosmosDatabaseGetContainerSample() {
@@ -1121,7 +1401,17 @@ public class ReadmeSamples {
     }
 
     public void cosmosDatabaseReadAllUsersSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllUsers
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllUsers_no_params
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+
+        CosmosPagedIterable<CosmosUserProperties> userProperties =
+            cosmosDatabase.readAllUsers();
+        // END: com.azure.cosmos.CosmosDatabase.readAllUsers_no_params
+    }
+
+    public void cosmosDatabaseReadAllUsersSecondSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllUsers_option_params
         CosmosDatabase cosmosDatabase =
             new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
         CosmosQueryRequestOptions options =
@@ -1129,7 +1419,7 @@ public class ReadmeSamples {
 
         CosmosPagedIterable<CosmosUserProperties> userProperties =
             cosmosDatabase.readAllUsers(options);
-        // END: com.azure.cosmos.CosmosDatabase.readAllUsers
+        // END: com.azure.cosmos.CosmosDatabase.readAllUsers_option_params
     }
 
     public void cosmosDatabaseQueryUsersSample() {
@@ -1141,6 +1431,45 @@ public class ReadmeSamples {
         CosmosPagedIterable<CosmosUserProperties> userProperties =
             cosmosDatabase.queryUsers(query);
         // END: com.azure.cosmos.CosmosDatabase.queryUsers
+    }
+
+    public void cosmosDatabaseQueryUsersSecondSample() {
+        String query = "<YOUR_QUERY>";
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryUsers_spec_params
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        SqlQuerySpec spec = new SqlQuerySpec(query);
+
+        CosmosPagedIterable<CosmosUserProperties> userProperties =
+            cosmosDatabase.queryUsers(spec);
+        // END: com.azure.cosmos.CosmosDatabase.queryUsers_spec_params
+    }
+
+    public void cosmosDatabaseQueryUsersThirdSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryUsers_option_params
+        String query = "<YOUR_QUERY>";
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        CosmosQueryRequestOptions options =
+            new CosmosQueryRequestOptions();
+
+        CosmosPagedIterable<CosmosUserProperties> userProperties =
+            cosmosDatabase.queryUsers(query, options);
+        // END: com.azure.cosmos.CosmosDatabase.queryUsers_option_params
+    }
+
+    public void cosmosDatabaseQueryUsersFourthSample() {
+        String query = "<YOUR_QUERY>";
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryUsers_two_params
+        CosmosDatabase cosmosDatabase =
+            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
+        SqlQuerySpec spec = new SqlQuerySpec(query);
+        CosmosQueryRequestOptions options =
+            new CosmosQueryRequestOptions();
+
+        CosmosPagedIterable<CosmosUserProperties> userProperties =
+            cosmosDatabase.queryUsers(spec, options);
+        // END: com.azure.cosmos.CosmosDatabase.queryUsers_two_params
     }
 
     public void cosmosDatabaseReplaceThroughputSample() {
@@ -1174,6 +1503,7 @@ public class ReadmeSamples {
             cosmosDatabase.readAllClientEncryptionKeys();
         // END: com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys
     }
+
 
     static final class Passenger {
         private final String id;

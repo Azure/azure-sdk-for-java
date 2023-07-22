@@ -406,8 +406,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_containerProperties_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_containerProperties_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created or existing container. In case of failure the {@link Mono} will
@@ -426,8 +426,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_containerProperties_and_throughput_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_containerProperties_and_throughput_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_through_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_through_params -->
      * The throughput setting will only be used if the specified container
      * does not exist and therefore a new container will be created.
      * <p>
@@ -453,8 +453,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_containerProperties_and_throughputProperties_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_containerProperties_and_throughputProperties_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughputproperties_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughputproperties_params -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
      * <p>
@@ -480,8 +480,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_partitionkeypath_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_partitionkeypath_params -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -500,8 +500,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_and_throughputProperties_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_with_id_and_partitionKeyPath_and_throughputProperties_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
      * <p>
@@ -554,8 +554,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos containers.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_option_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -594,8 +594,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos containers.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_no_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_no_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -609,8 +609,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_query_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_query_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -625,8 +625,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_option_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -646,8 +646,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_with_querySpec_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_with_querySpec_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -662,8 +662,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_with_querySpec_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_with_querySpec_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_option_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -740,8 +740,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos users in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_no_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_no_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -755,8 +755,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos users in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_option_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -805,8 +805,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos client encryption keys in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_no_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_no_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -820,8 +820,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos client encryption keys in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_option_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -876,8 +876,8 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos client encryption keys in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.

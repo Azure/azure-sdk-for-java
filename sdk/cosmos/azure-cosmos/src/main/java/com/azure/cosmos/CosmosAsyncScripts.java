@@ -64,8 +64,8 @@ public class CosmosAsyncScripts {
 
     /**
      * Creates a cosmos stored procedure.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.createStoredProcedure_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.createStoredProcedure_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.createStoredProcedure -->
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.createStoredProcedure -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single cosmos stored procedure response with the
      * created cosmos stored procedure.
@@ -107,8 +107,8 @@ public class CosmosAsyncScripts {
 
     /**
      * Reads all cosmos stored procedures in a container.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllStoredProcedures_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllStoredProcedures_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllStoredProcedures -->
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllStoredProcedures -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos stored
      * procedure properties.
@@ -247,8 +247,8 @@ public class CosmosAsyncScripts {
 
     /**
      * Reads all cosmos user defined functions in the container
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllUserDefinedFunctions_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllUserDefinedFunctions_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllUserDefinedFunctions -->
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllUserDefinedFunctions -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read user defined functions.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -366,8 +366,8 @@ public class CosmosAsyncScripts {
 
     /**
      * Reads all triggers in a container
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllTriggers -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllTriggers -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_no_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_no_params -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger
      * properties.
@@ -383,8 +383,8 @@ public class CosmosAsyncScripts {
 
     /**
      * Reads all triggers in a container
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_with_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_with_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_option_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.readAllTriggers_option_params -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger
      * properties.
@@ -426,8 +426,8 @@ public class CosmosAsyncScripts {
 
     /**
      * Query for triggers in the container
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryTriggers -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryTriggers -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryTriggers_option_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryTriggers_option_params -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained triggers.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -447,8 +447,8 @@ public class CosmosAsyncScripts {
 
     /**
      * Query for triggers in the container
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryTriggers_with_querySpec_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryTriggers_with_querySpec_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryTriggers_spec_params -->
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryTriggers_spec_params -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained triggers.
      * In case of failure the {@link CosmosPagedFlux} will error.
