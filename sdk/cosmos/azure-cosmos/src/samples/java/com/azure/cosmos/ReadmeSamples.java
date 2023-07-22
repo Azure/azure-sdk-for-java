@@ -542,6 +542,7 @@ public class ReadmeSamples {
         // BEGIN: com.azure.cosmos.CosmosAsyncUser.replace
         CosmosAsyncUser user = new CosmosAsyncUser(id, cosmosAsyncDatabase);
         CosmosUserProperties properties = new CosmosUserProperties();
+		// END: com.azure.cosmos.CosmosAsyncUser.replace
     }
 
     public void databaseCreateContainerPropsSample() {
@@ -633,6 +634,7 @@ public class ReadmeSamples {
         // BEGIN: com.azure.cosmos.CosmosAsyncUserDefinedFunction.read
         CosmosAsyncUserDefinedFunction userFunction =
             new CosmosAsyncUserDefinedFunction(id, cosmosAsyncContainer);
+        // END: com.azure.cosmos.CosmosAsyncUserDefinedFunction.read
     }
 
     public void databaseCreateContainerThroughputSample() {
@@ -674,6 +676,7 @@ public class ReadmeSamples {
         // BEGIN: com.azure.cosmos.CosmosAsyncUserDefinedFunction.delete
         CosmosAsyncUserDefinedFunction userFunction =
             new CosmosAsyncUserDefinedFunction(id, cosmosAsyncContainer);
+        // END: com.azure.cosmos.CosmosAsyncUserDefinedFunction.delete
     }
 
     public void databaseCreateContainerPartitionKeySample() {
@@ -860,14 +863,14 @@ public class ReadmeSamples {
 
     public void сosmosAsyncDatabaseContainerIfNotExistsFifthSample() {
         int throughput = 1;
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_id_partitionKeyPath_throughputProperties_params
         String partitionKeyPath = "<PARTITION_KEY_PATH>";
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
         ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(throughput);
 
         Mono<CosmosContainerResponse> response =
             cosmosAsyncDatabase.createContainerIfNotExists(id, partitionKeyPath, throughputProperties);
-        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_id_partitionKeyPath_throughputProperties_params
     }
 
     public void сosmosAsyncDatabaseContainerIfNotExistsSixthSample() {
@@ -974,7 +977,6 @@ public class ReadmeSamples {
     }
 
     public void сosmosAsyncDatabaseReadAllUsersSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers
         // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_no_params
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
 
@@ -994,7 +996,6 @@ public class ReadmeSamples {
     }
 
     public void сosmosAsyncDatabaseReadAllClientEncryptionKeysSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys
         // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_no_params
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, cosmosAsyncClient);
 
@@ -1294,7 +1295,7 @@ public class ReadmeSamples {
 
     public void cosmosDatabaseCreateContainerIfNotExistsSixthSample() {
         int throughput = 1;
-        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_throughProperties
         String partitionKeyPath = "<PARTITION_KEY_PATH>";
         CosmosDatabase cosmosDatabase =
             new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
@@ -1303,7 +1304,7 @@ public class ReadmeSamples {
 
         CosmosContainerResponse response =
             cosmosDatabase.createContainerIfNotExists(id, partitionKeyPath, throughputProperties);
-        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_through
+        // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists_id_partitionKey_throughProperties
     }
 
 

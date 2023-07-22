@@ -407,6 +407,14 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a Cosmos container if it does not exist on the service.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; response =
+     *     cosmosAsyncDatabase.createContainerIfNotExists&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
@@ -427,6 +435,14 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a Cosmos container if it does not exist on the service.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_through_params -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; response =
+     *     cosmosAsyncDatabase.createContainerIfNotExists&#40;properties, throughput&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_through_params -->
      * The throughput setting will only be used if the specified container
      * does not exist and therefore a new container will be created.
@@ -454,6 +470,15 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a Cosmos container if it does not exist on the service.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughputproperties_params -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     * ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput&#40;throughput&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; response =
+     *     cosmosAsyncDatabase.createContainerIfNotExists&#40;properties, throughputProperties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_throughputproperties_params -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -481,6 +506,13 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a Cosmos container if it does not exist on the service.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_partitionkeypath_params -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; response =
+     *     cosmosAsyncDatabase.createContainerIfNotExists&#40;id, partitionKeyPath&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_partitionkeypath_params -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
@@ -501,6 +533,14 @@ public class CosmosAsyncDatabase {
     /**
      * Creates a Cosmos container if it does not exist on the service.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
+     * <pre>
+     * String partitionKeyPath = &quot;&lt;PARTITION_KEY_PATH&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosContainerProperties properties = new CosmosContainerProperties&#40;id, partitionKeyPath&#41;;
+     *
+     * Mono&lt;CosmosContainerResponse&gt; response =
+     *     cosmosAsyncDatabase.createContainerIfNotExists&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists_properties_params -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -555,6 +595,13 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos containers.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_option_params -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosContainerProperties&gt; containerProperties =
+     *     cosmosAsyncDatabase.readAllContainers&#40;options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
@@ -595,6 +642,12 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos containers.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_no_params -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosContainerProperties&gt; containerProperties =
+     *     cosmosAsyncDatabase.readAllContainers&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers_no_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
@@ -610,6 +663,13 @@ public class CosmosAsyncDatabase {
     /**
      * Query for cosmos containers in a cosmos database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_query_params -->
+     * <pre>
+     * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosContainerProperties&gt; containerProperties =
+     *     cosmosAsyncDatabase.queryContainers&#40;query&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_query_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
@@ -626,6 +686,14 @@ public class CosmosAsyncDatabase {
     /**
      * Query for cosmos containers in a cosmos database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_option_params -->
+     * <pre>
+     * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosContainerProperties&gt; containerProperties =
+     *     cosmosAsyncDatabase.queryContainers&#40;query, options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
@@ -647,6 +715,14 @@ public class CosmosAsyncDatabase {
     /**
      * Query for cosmos containers in a cosmos database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_params -->
+     * <pre>
+     * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * SqlQuerySpec spec = new SqlQuerySpec&#40;query&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosContainerProperties&gt; containerProperties =
+     *     cosmosAsyncDatabase.queryContainers&#40;spec&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
@@ -663,6 +739,15 @@ public class CosmosAsyncDatabase {
     /**
      * Query for cosmos containers in a cosmos database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_option_params -->
+     * <pre>
+     * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * SqlQuerySpec spec = new SqlQuerySpec&#40;query&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosContainerProperties&gt; containerProperties =
+     *     cosmosAsyncDatabase.queryContainers&#40;spec, options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers_spec_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
@@ -698,6 +783,11 @@ public class CosmosAsyncDatabase {
      * response with the created user. In case of failure the {@link Mono} will
      * error.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createUser -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosUserProperties properties = new CosmosUserProperties&#40;&#41;;
+     * Mono&lt;CosmosUserResponse&gt; userResponse = cosmosAsyncDatabase.createUser&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createUser -->
      * @param userProperties the cosmos user properties
      * @return an {@link Mono} containing the single resource response with the
@@ -713,6 +803,14 @@ public class CosmosAsyncDatabase {
      * response with the created client encryption key. In case of failure the {@link Mono} will
      * error.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createClientEncryptionKey -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * ClientEncryptionKey key = new ClientEncryptionKey&#40;&#41;;
+     * CosmosClientEncryptionKeyProperties properties =
+     *     new CosmosClientEncryptionKeyProperties&#40;id, encryptionAlgorithm, wrappedDataEncryptionKey, metadata&#41;;
+     * Mono&lt;CosmosClientEncryptionKeyResponse&gt; keyProperties =
+     *     cosmosAsyncDatabase.createClientEncryptionKey&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createClientEncryptionKey -->
      * @param keyProperties the cosmos client encryption key properties
      * @return an {@link Mono} containing the single resource response with the
@@ -729,6 +827,11 @@ public class CosmosAsyncDatabase {
      * resource response with the created user. In case of failure the {@link Mono}
      * will error.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.upsertUser -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosUserProperties properties = new CosmosUserProperties&#40;&#41;;
+     * Mono&lt;CosmosUserResponse&gt; userResponse = cosmosAsyncDatabase.upsertUser&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.upsertUser -->
      * @param userProperties the cosmos user properties
      * @return an {@link Mono} containing the single resource response with the
@@ -741,6 +844,12 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos users in a database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_no_params -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosUserProperties&gt; userProperties =
+     *     cosmosAsyncDatabase.readAllUsers&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_no_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
@@ -756,6 +865,13 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos users in a database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_option_params -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions&#40;&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosUserProperties&gt; userProperties =
+     *     cosmosAsyncDatabase.readAllUsers&#40;queryRequestOptions&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
@@ -806,6 +922,12 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos client encryption keys in a database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_no_params -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; keyProperties =
+     *     cosmosAsyncDatabase.readAllClientEncryptionKeys&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_no_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos client encryption keys. In case of
@@ -821,6 +943,13 @@ public class CosmosAsyncDatabase {
     /**
      * Reads all cosmos client encryption keys in a database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_option_params -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; keyProperties =
+     *     cosmosAsyncDatabase.readAllClientEncryptionKeys&#40;options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllClientEncryptionKeys_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos client encryption keys. In case of
@@ -861,6 +990,13 @@ public class CosmosAsyncDatabase {
     /**
      * Query for cosmos client encryption keys in a database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
+     * <pre>
+     * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions&#40;&#41;;
+     * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; clientEncryptionKeys =
+     *     cosmosAsyncDatabase.queryClientEncryptionKeys&#40;query, requestOptions&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained client encryption keys. In case of
@@ -877,6 +1013,13 @@ public class CosmosAsyncDatabase {
     /**
      * Query for cosmos client encryption keys in a database.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
+     * <pre>
+     * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions&#40;&#41;;
+     * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; clientEncryptionKeys =
+     *     cosmosAsyncDatabase.queryClientEncryptionKeys&#40;query, requestOptions&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained client encryption keys. In case of
