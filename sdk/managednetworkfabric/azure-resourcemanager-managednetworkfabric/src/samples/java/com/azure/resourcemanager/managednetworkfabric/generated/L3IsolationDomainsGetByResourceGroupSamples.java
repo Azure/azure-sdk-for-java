@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for L3IsolationDomains GetByResourceGroup. */
 public final class L3IsolationDomainsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: L3IsolationDomains_Get_MaximumSet_Gen.
@@ -18,6 +18,6 @@ public final class L3IsolationDomainsGetByResourceGroupSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .l3IsolationDomains()
-            .getByResourceGroupWithResponse("resourceGroupName", "example-l3domain", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("example-rg", "example-l3domain", com.azure.core.util.Context.NONE);
     }
 }

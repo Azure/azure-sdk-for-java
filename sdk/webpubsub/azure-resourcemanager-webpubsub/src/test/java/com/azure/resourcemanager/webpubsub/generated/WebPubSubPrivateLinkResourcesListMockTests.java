@@ -32,7 +32,7 @@ public final class WebPubSubPrivateLinkResourcesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"xqtnq\",\"requiredMembers\":[\"zlwfffiakp\"],\"requiredZoneNames\":[\"qmt\",\"d\",\"tmmjihyeozph\"],\"shareablePrivateLinkResourceTypes\":[]},\"id\":\"uyqncygupkvipmd\",\"name\":\"cwxqu\",\"type\":\"evzhfsto\"}]}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"jimryvwgcwwpbmz\",\"requiredMembers\":[\"sydsxwefohe\",\"bvopwndyqle\"],\"requiredZoneNames\":[\"klmtkhlowkx\",\"pvbrdfjmzsyz\",\"hotlhikcyychunsj\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"twszhvvuic\",\"properties\":{\"description\":\"trrmhwrb\",\"groupId\":\"pyf\",\"type\":\"bhvjglr\"}},{\"name\":\"uyzlw\",\"properties\":{\"description\":\"emhooclutnpq\",\"groupId\":\"mczjkm\",\"type\":\"kyujxsglhsrrr\"}}]},\"id\":\"ejylmbkzu\",\"name\":\"nigrfihotjewl\",\"type\":\"xuzzjgnrefq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,22 @@ public final class WebPubSubPrivateLinkResourcesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateLinkResource> response =
-            manager.webPubSubPrivateLinkResources().list("ibreb", "aays", com.azure.core.util.Context.NONE);
+            manager.webPubSubPrivateLinkResources().list("d", "saoafcluqvox", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xqtnq", response.iterator().next().groupId());
-        Assertions.assertEquals("zlwfffiakp", response.iterator().next().requiredMembers().get(0));
-        Assertions.assertEquals("qmt", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("jimryvwgcwwpbmz", response.iterator().next().groupId());
+        Assertions.assertEquals("sydsxwefohe", response.iterator().next().requiredMembers().get(0));
+        Assertions.assertEquals("klmtkhlowkx", response.iterator().next().requiredZoneNames().get(0));
+        Assertions
+            .assertEquals("twszhvvuic", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).name());
+        Assertions
+            .assertEquals(
+                "trrmhwrb",
+                response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().description());
+        Assertions
+            .assertEquals(
+                "pyf", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().groupId());
+        Assertions
+            .assertEquals(
+                "bhvjglr", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().type());
     }
 }

@@ -11,15 +11,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetDeviceStatusPropertiesInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetDynamicInterfaceMapsPropertiesItemInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetStaticInterfaceMapsPropertiesItemInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.SupportPackagePropertiesInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevicePatchParameters;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdatePowerCycleProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersionProperties;
-import java.util.List;
+import com.azure.resourcemanager.managednetworkfabric.models.RebootProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
 
 /** An instance of this class provides access to all the operations defined in NetworkDevicesClient. */
 public interface NetworkDevicesClient {
@@ -34,7 +31,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
@@ -52,7 +49,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
@@ -69,7 +66,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceInner create(String resourceGroupName, String networkDeviceName, NetworkDeviceInner body);
@@ -86,7 +83,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceInner create(
@@ -95,7 +92,7 @@ public interface NetworkDevicesClient {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -112,7 +109,7 @@ public interface NetworkDevicesClient {
     /**
      * Gets a Network Device.
      *
-     * <p>Get the Network Device resource details.
+     * <p>Gets the Network Device resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
@@ -135,7 +132,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
@@ -153,7 +150,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkDevice resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
@@ -170,7 +167,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceInner update(String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body);
@@ -187,7 +184,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkDevice resource definition.
+     * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceInner update(
@@ -314,14 +311,16 @@ public interface NetworkDevicesClient {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReboot(String resourceGroupName, String networkDeviceName);
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginReboot(String resourceGroupName, String networkDeviceName, RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -329,15 +328,17 @@ public interface NetworkDevicesClient {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReboot(String resourceGroupName, String networkDeviceName, Context context);
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginReboot(String resourceGroupName, String networkDeviceName, RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -345,13 +346,16 @@ public interface NetworkDevicesClient {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reboot(String resourceGroupName, String networkDeviceName);
+    CommonPostActionResponseForStateUpdateInner reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -359,476 +363,223 @@ public interface NetworkDevicesClient {
      * <p>Reboot the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void reboot(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestoreConfig(String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestoreConfig(
-        String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void restoreConfig(String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Restores the configuration to last applied good configuration from Azure.
-     *
-     * <p>Restore the configuration of the Network Device resource to last known good configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void restoreConfig(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateVersion(String resourceGroupName, String networkDeviceName, UpdateVersionProperties body);
-
-    /**
-     * Implements SKU version upgrade of network device.
-     *
-     * <p>Update the SKU version of the Network Device resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context);
+    CommonPostActionResponseForStateUpdateInner reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of generate support package post action properties.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SupportPackagePropertiesInner>, SupportPackagePropertiesInner> beginGenerateSupportPackage(
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfiguration(String resourceGroupName, String networkDeviceName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginRefreshConfiguration(String resourceGroupName, String networkDeviceName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration the Network Device.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
         String resourceGroupName, String networkDeviceName);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Refreshes the configuration the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of generate support package post action properties.
+     * @return common response for the state updates.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SupportPackagePropertiesInner>, SupportPackagePropertiesInner> beginGenerateSupportPackage(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
         String resourceGroupName, String networkDeviceName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Generate Support Package for the given Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SupportPackagePropertiesInner generateSupportPackage(String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Generate Support Package for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate support package post action properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SupportPackagePropertiesInner generateSupportPackage(
-        String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Update PDU power cycle of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body);
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context);
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePowerCycle(String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update PDU power cycle of the Network Device.
+     * <p>Updates the Administrative state of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context);
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GetDeviceStatusPropertiesInner>, GetDeviceStatusPropertiesInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GetDeviceStatusPropertiesInner>, GetDeviceStatusPropertiesInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GetDeviceStatusPropertiesInner getStatus(String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Gets the running status of the network device.
-     *
-     * <p>Get the running status of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GetDeviceStatusPropertiesInner getStatus(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<List<GetStaticInterfaceMapsPropertiesItemInner>>,
-            List<GetStaticInterfaceMapsPropertiesItemInner>>
-        beginGetStaticInterfaceMaps(String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<List<GetStaticInterfaceMapsPropertiesItemInner>>,
-            List<GetStaticInterfaceMapsPropertiesItemInner>>
-        beginGetStaticInterfaceMaps(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<GetStaticInterfaceMapsPropertiesItemInner> getStaticInterfaceMaps(
-        String resourceGroupName, String networkDeviceName);
-
-    /**
-     * Show the interface maps as per the topology.
-     *
-     * <p>Get the static interface maps for the given Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the static interface maps for the given Network Device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<GetStaticInterfaceMapsPropertiesItemInner> getStaticInterfaceMaps(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the dynamic interface maps for the given Network Device.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<List<GetDynamicInterfaceMapsPropertiesItemInner>>,
-            List<GetDynamicInterfaceMapsPropertiesItemInner>>
-        beginGetDynamicInterfaceMaps(String resourceGroupName, String networkDeviceName);
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkDeviceName, UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the dynamic interface maps for the given Network Device.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<List<GetDynamicInterfaceMapsPropertiesItemInner>>,
-            List<GetDynamicInterfaceMapsPropertiesItemInner>>
-        beginGetDynamicInterfaceMaps(String resourceGroupName, String networkDeviceName, Context context);
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<GetDynamicInterfaceMapsPropertiesItemInner> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName);
+    CommonPostActionResponseForStateUpdateInner upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Get the dynamic interface maps for the given Network Device.
+     * <p>Upgrades the version of the Network Device.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the dynamic interface maps for the given Network Device.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<GetDynamicInterfaceMapsPropertiesItemInner> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdateInner upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context);
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 /** Samples for IpCommunities Create. */
 public final class IpCommunitiesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpCommunities_Create_MaximumSet_Gen.
@@ -24,20 +25,19 @@ public final class IpCommunitiesCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .ipCommunities()
-            .define("example-ipCommunity")
-            .withRegion("EastUS")
-            .withExistingResourceGroup("rgIpCommunityLists")
-            .withTags(mapOf("key2814", ""))
-            .withAction(CommunityActionTypes.PERMIT)
-            .withWellKnownCommunities(
+            .define("example-ipcommunity")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-rg")
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIpCommunityRules(
                 Arrays
                     .asList(
-                        WellKnownCommunities.INTERNET,
-                        WellKnownCommunities.LOCAL_AS,
-                        WellKnownCommunities.NO_EXPORT,
-                        WellKnownCommunities.GSHUT))
-            .withCommunityMembers(Arrays.asList("1234:5678"))
-            .withAnnotation("annotationValue")
+                        new IpCommunityRule()
+                            .withAction(CommunityActionTypes.PERMIT)
+                            .withSequenceNumber(4155123341L)
+                            .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET))
+                            .withCommunityMembers(Arrays.asList("1:1"))))
+            .withAnnotation("annotation")
             .create();
     }
 

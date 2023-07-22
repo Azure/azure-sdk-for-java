@@ -16,6 +16,7 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResourceLis
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -30,7 +31,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"pwoqo\",\"name\":\"macjekn\",\"type\":\"zshq\"},{\"id\":\"impevf\",\"name\":\"mblrrilbywd\",\"type\":\"smiccwrwfscj\"},{\"id\":\"ynszquji\",\"name\":\"dvoqyt\",\"type\":\"byowbblgyavutp\"},{\"id\":\"joxoism\",\"name\":\"ksbpimlqoljx\",\"type\":\"cgxxlxs\"}]}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"disyirnxz\",\"requiredMembers\":[\"exrxzbujrtrhq\",\"wrevkhgnlnzon\",\"lrpiqywnc\"],\"requiredZoneNames\":[\"szcofizeht\",\"hgbjkvrelje\",\"murvzm\",\"ov\"],\"displayName\":\"nashcxlp\"},\"id\":\"jerbdkelvidizozs\",\"name\":\"bccxjmonfdgn\",\"type\":\"n\"},{\"properties\":{\"groupId\":\"uuwwltv\",\"requiredMembers\":[\"ctzenkeifzzhmkd\",\"svflyhbxcudch\",\"gsrboldforobw\"],\"requiredZoneNames\":[\"izbfhfovvacq\",\"btuodxeszabbel\"],\"displayName\":\"umuaslzkwrrwoycq\"},\"id\":\"cwyhahno\",\"name\":\"drkywuhps\",\"type\":\"fuurutlwexx\"},{\"properties\":{\"groupId\":\"lniexz\",\"requiredMembers\":[\"pgepqtybbwwpgda\",\"chzyvlixqnrk\"],\"requiredZoneNames\":[\"jibnxmysu\",\"swqrntvlwijp\",\"ttexoqqpwcyyufmh\",\"uncuw\"],\"displayName\":\"spkcdqzh\"},\"id\":\"ctddun\",\"name\":\"ndy\",\"type\":\"pchrqbn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +62,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
         PrivateLinkResourceListResult response =
             manager
                 .privateLinkResources()
-                .listWithResponse("hvcyyysfg", "otcubi", com.azure.core.util.Context.NONE)
+                .listWithResponse("dlcgqlsismjqfr", "dgamquhiosrsj", com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions.assertEquals("szcofizeht", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

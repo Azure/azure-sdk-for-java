@@ -58,6 +58,6 @@ public final class WebPubSubSharedPrivateLinkResourcesDeleteMockTests {
 
         manager
             .webPubSubSharedPrivateLinkResources()
-            .delete("ratiz", "ronasxift", "zq", com.azure.core.util.Context.NONE);
+            .delete("cdoewbidyv", "eowxvgpi", "deugf", com.azure.core.util.Context.NONE);
     }
 }

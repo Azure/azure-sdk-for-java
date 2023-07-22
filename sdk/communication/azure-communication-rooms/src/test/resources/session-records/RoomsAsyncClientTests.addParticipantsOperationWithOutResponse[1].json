@@ -1,5 +1,5 @@
 {
-  "networkCallRecords" : [ {
+  "networkCallRecords" : [{
     "Method" : "POST",
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
     "Headers" : {

@@ -11,7 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.QueryResultDocumentSemanticFieldState;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -26,7 +25,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
     /*
      * The way the field was used for the semantic enrichment process (fully used, partially used, or unused)
      */
-    private QueryResultDocumentSemanticFieldState state;
+    private SemanticFieldState state;
 
     /** Creates an instance of QueryResultDocumentSemanticField class. */
     public QueryResultDocumentSemanticField() {}
@@ -46,7 +45,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
      *
      * @return the state value.
      */
-    public QueryResultDocumentSemanticFieldState getState() {
+    public SemanticFieldState getState() {
         return this.state;
     }
 
@@ -79,7 +78,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
                             deserializedQueryResultDocumentSemanticField.name = reader.getString();
                         } else if ("state".equals(fieldName)) {
                             deserializedQueryResultDocumentSemanticField.state =
-                                    QueryResultDocumentSemanticFieldState.fromString(reader.getString());
+                                    SemanticFieldState.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

@@ -26,9 +26,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworkManagementClient;
 import com.azure.resourcemanager.mobilenetwork.implementation.AttachedDataNetworksImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.DataNetworksImpl;
+import com.azure.resourcemanager.mobilenetwork.implementation.DiagnosticsPackagesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.MobileNetworkManagementClientBuilder;
 import com.azure.resourcemanager.mobilenetwork.implementation.MobileNetworksImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.OperationsImpl;
+import com.azure.resourcemanager.mobilenetwork.implementation.PacketCapturesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.PacketCoreControlPlaneVersionsImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.PacketCoreControlPlanesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.PacketCoreDataPlanesImpl;
@@ -40,8 +42,10 @@ import com.azure.resourcemanager.mobilenetwork.implementation.SitesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SlicesImpl;
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.DataNetworks;
+import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsPackages;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.Operations;
+import com.azure.resourcemanager.mobilenetwork.models.PacketCaptures;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneVersions;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlanes;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlanes;
@@ -67,9 +71,13 @@ public final class MobileNetworkManager {
 
     private DataNetworks dataNetworks;
 
+    private DiagnosticsPackages diagnosticsPackages;
+
     private MobileNetworks mobileNetworks;
 
     private Operations operations;
+
+    private PacketCaptures packetCaptures;
 
     private PacketCoreControlPlanes packetCoreControlPlanes;
 
@@ -254,7 +262,7 @@ public final class MobileNetworkManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mobilenetwork")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -336,6 +344,18 @@ public final class MobileNetworkManager {
     }
 
     /**
+     * Gets the resource collection API of DiagnosticsPackages.
+     *
+     * @return Resource collection API of DiagnosticsPackages.
+     */
+    public DiagnosticsPackages diagnosticsPackages() {
+        if (this.diagnosticsPackages == null) {
+            this.diagnosticsPackages = new DiagnosticsPackagesImpl(clientObject.getDiagnosticsPackages(), this);
+        }
+        return diagnosticsPackages;
+    }
+
+    /**
      * Gets the resource collection API of MobileNetworks. It manages MobileNetwork.
      *
      * @return Resource collection API of MobileNetworks.
@@ -357,6 +377,18 @@ public final class MobileNetworkManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of PacketCaptures. It manages PacketCapture.
+     *
+     * @return Resource collection API of PacketCaptures.
+     */
+    public PacketCaptures packetCaptures() {
+        if (this.packetCaptures == null) {
+            this.packetCaptures = new PacketCapturesImpl(clientObject.getPacketCaptures(), this);
+        }
+        return packetCaptures;
     }
 
     /**

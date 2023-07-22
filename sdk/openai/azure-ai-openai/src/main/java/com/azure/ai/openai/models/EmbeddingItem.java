@@ -21,25 +21,18 @@ public final class EmbeddingItem {
     @JsonProperty(value = "embedding")
     private List<Double> embedding;
 
-    /*
-     * Index of the prompt to which the EmbeddingItem corresponds.
-     */
-    @Generated
-    @JsonProperty(value = "index")
-    private int index;
-
     /**
      * Creates an instance of EmbeddingItem class.
      *
      * @param embedding the embedding value to set.
-     * @param index the index value to set.
+     * @param promptIndex the promptIndex value to set.
      */
     @Generated
     @JsonCreator
     private EmbeddingItem(
-            @JsonProperty(value = "embedding") List<Double> embedding, @JsonProperty(value = "index") int index) {
+            @JsonProperty(value = "embedding") List<Double> embedding, @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
-        this.index = index;
+        this.promptIndex = promptIndex;
     }
 
     /**
@@ -53,13 +46,20 @@ public final class EmbeddingItem {
         return this.embedding;
     }
 
-    /**
-     * Get the index property: Index of the prompt to which the EmbeddingItem corresponds.
-     *
-     * @return the index value.
+    /*
+     * Index of the prompt to which the EmbeddingItem corresponds.
      */
     @Generated
-    public int getIndex() {
-        return this.index;
+    @JsonProperty(value = "index")
+    private int promptIndex;
+
+    /**
+     * Get the promptIndex property: Index of the prompt to which the EmbeddingItem corresponds.
+     *
+     * @return the promptIndex value.
+     */
+    @Generated
+    public int getPromptIndex() {
+        return this.promptIndex;
     }
 }

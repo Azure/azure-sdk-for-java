@@ -133,6 +133,13 @@ public class IntelliJCredential implements TokenCredential {
                    })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+                request, error))
+            .onErrorMap(error -> {
+                if (identityClient.getIdentityClientOptions().isChained()) {
+                    return new CredentialUnavailableException(error.getMessage(), error);
+                } else {
+                    return error;
+                }
+            });
     }
 }
