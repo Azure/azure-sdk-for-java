@@ -300,7 +300,7 @@ class AdministrationModelConverter {
          *
          * @param entries Items in the page.
          */
-        public FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries) {
+        FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries) {
             this.statusCode = statusCode;
             this.header = header;
             this.request = request;
@@ -314,7 +314,7 @@ class AdministrationModelConverter {
          * @param entries Items in the page.
          * @param skip Number of elements to "skip".
          */
-        public FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries, int skip) {
+        FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries, int skip) {
             this.statusCode = statusCode;
             this.header = header;
             this.request = request;
@@ -356,7 +356,7 @@ class AdministrationModelConverter {
         private final int statusCode;
         private final HttpHeaders headers;
 
-        public EntityNotFoundHttpResponse(Response<T> response) {
+        EntityNotFoundHttpResponse(Response<T> response) {
             super(response.getRequest());
             this.headers = response.getHeaders();
             this.statusCode = response.getStatusCode();
