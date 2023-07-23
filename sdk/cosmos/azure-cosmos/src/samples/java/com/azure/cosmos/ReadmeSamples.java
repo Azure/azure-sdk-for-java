@@ -1320,19 +1320,6 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosDatabase.readAllContainers
     }
 
-    public void cosmosDatabaseQueryContainersSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.queryContainers
-        String query = "<YOUR_QUERY>";
-        CosmosDatabase cosmosDatabase =
-            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
-        CosmosQueryRequestOptions options =
-            new CosmosQueryRequestOptions();
-
-        CosmosPagedIterable<CosmosContainerProperties> containerProperties =
-            cosmosDatabase.queryContainers(query, options);
-        // END: com.azure.cosmos.CosmosDatabase.queryContainers
-    }
-
     public void cosmosDatabaseQueryContainersSecondSample() {
         // BEGIN: com.azure.cosmos.CosmosDatabase.queryContainers_query_params
         String query = "<YOUR_QUERY>";
@@ -1379,28 +1366,6 @@ public class ReadmeSamples {
 
         CosmosContainer cosmosContainer = cosmosDatabase.getContainer(id);
         // END: com.azure.cosmos.CosmosDatabase.getContainer
-    }
-
-    public void cosmosDatabaseCreateUserSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.createUser
-        CosmosDatabase cosmosDatabase =
-            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
-        CosmosUserProperties properties =
-            new CosmosUserProperties();
-
-        CosmosUserResponse response = cosmosDatabase.createUser(properties);
-        // END: com.azure.cosmos.CosmosDatabase.createUser
-    }
-
-    public void cosmosDatabaseUpsertUserSample() {
-        // BEGIN: com.azure.cosmos.CosmosDatabase.upsertUser
-        CosmosDatabase cosmosDatabase =
-            new CosmosDatabase(id, cosmosClient, cosmosAsyncDatabase);
-        CosmosUserProperties properties =
-            new CosmosUserProperties();
-
-        CosmosUserResponse response = cosmosDatabase.upsertUser(properties);
-        // END: com.azure.cosmos.CosmosDatabase.upsertUser
     }
 
     public void cosmosDatabaseReadAllUsersSample() {
