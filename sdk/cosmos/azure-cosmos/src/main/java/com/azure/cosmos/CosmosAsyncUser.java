@@ -66,11 +66,6 @@ public class CosmosAsyncUser {
     /**
      * Reads a cosmos user
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUser.read -->
-     * <pre>
-     * CosmosAsyncUser user = new CosmosAsyncUser&#40;id, cosmosAsyncDatabase&#41;;
-     *
-     * Mono&lt;CosmosUserResponse&gt; response = user.read&#40;&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUser.read -->
      * @return a {@link Mono} containing the single resource response with the read user or an error.
      */
@@ -80,13 +75,7 @@ public class CosmosAsyncUser {
 
     /**
      * Replace a cosmos user
-     <!-- src_embed com.azure.cosmos.CosmosAsyncUser.replace -->
-     * <pre>
-     * CosmosAsyncUser user = new CosmosAsyncUser&#40;id, cosmosAsyncDatabase&#41;;
-     * CosmosUserProperties properties = new CosmosUserProperties&#40;&#41;;
-     *
-     * Mono&lt;CosmosUserResponse&gt; response = user.replace&#40;properties&#41;;
-     * <pre>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncUser.replace -->
      * <!-- end com.azure.cosmos.CosmosAsyncUser.replace -->
      * @param userProperties the user properties to use
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
@@ -97,12 +86,7 @@ public class CosmosAsyncUser {
 
     /**
      * Delete a cosmos user
-     <!-- src_embed com.azure.cosmos.CosmosAsyncUser.delete -->
-     * <pre>
-     * CosmosAsyncUser user = new CosmosAsyncUser&#40;id, cosmosAsyncDatabase&#41;;
-     *
-     * Mono&lt;CosmosUserResponse&gt; response = user.delete&#40;&#41;;
-     * <pre>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncUser.delete -->
      * <!-- end com.azure.cosmos.CosmosAsyncUser.delete -->
      * @return a {@link Mono} containing the single resource response with the deleted user or an error.
      */
@@ -113,16 +97,6 @@ public class CosmosAsyncUser {
     /**
      * Creates a permission.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUser.createPermission -->
-     * <pre>
-     * CosmosAsyncUser user = new CosmosAsyncUser&#40;id, cosmosAsyncDatabase&#41;;
-     * CosmosPermissionProperties properties =
-     *      new CosmosPermissionProperties&#40;&#41;;
-     * CosmosPermissionRequestOptions requestOptions =
-     *      new CosmosPermissionRequestOptions&#40;&#41;;
-     *
-     * Mono&lt;CosmosPermissionResponse&gt; response =
-     *      user.createPermission&#40;properties, requestOptions&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUser.createPermission -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the created permission.
@@ -143,16 +117,6 @@ public class CosmosAsyncUser {
     /**
      * Upserts a permission.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUser.upsertPermission -->
-     * <pre>
-     * CosmosAsyncUser user = new CosmosAsyncUser&#40;id, cosmosAsyncDatabase&#41;;
-     * CosmosPermissionProperties properties =
-     *      new CosmosPermissionProperties&#40;&#41;;
-     * CosmosPermissionRequestOptions requestOptions =
-     *      new CosmosPermissionRequestOptions&#40;&#41;;
-     *
-     * Mono&lt;CosmosPermissionResponse&gt; response =
-     *      user.upsertPermission&#40;properties, requestOptions&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUser.upsertPermission -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the upserted permission.
@@ -174,12 +138,6 @@ public class CosmosAsyncUser {
     /**
      * Reads all permissions.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUser.readAllPermissions -->
-     * <pre>
-     * CosmosAsyncUser user = new CosmosAsyncUser&#40;id, cosmosAsyncDatabase&#41;;
-     *
-     * CosmosPagedFlux&lt;CosmosPermissionProperties&gt; permissions =
-     *      user.readAllPermissions&#40;&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUser.readAllPermissions -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
@@ -266,14 +224,6 @@ public class CosmosAsyncUser {
     /**
      * Query for permissions.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUser.queryPermissions -->
-     * <pre>
-     * CosmosAsyncUser user = new CosmosAsyncUser&#40;id, cosmosAsyncDatabase&#41;;
-     * String query = &quot;YOUR_QUERY&quot;;
-     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
-     *
-     * CosmosPagedFlux&lt;CosmosPermissionProperties&gt; permissions =
-     *      user.queryPermissions&#40;query, options&#41;;
-     * <pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUser.queryPermissions -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained permissions.

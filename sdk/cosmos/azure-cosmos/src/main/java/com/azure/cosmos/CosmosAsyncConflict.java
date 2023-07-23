@@ -56,7 +56,8 @@ public final class CosmosAsyncConflict {
 
     /**
      * Reads a conflict.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncConflict.read -->
+     * <!-- end com.azure.cosmos.CosmosAsyncConflict.read -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response with the read
      * conflict. In case of failure the {@link Mono} will error.
@@ -75,7 +76,8 @@ public final class CosmosAsyncConflict {
 
     /**
      * Deletes a conflict.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncConflict.delete -->
+     * <!-- end com.azure.cosmos.CosmosAsyncConflict.delete -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response for the deleted
      * conflict. In case of failure the {@link Mono} will error.

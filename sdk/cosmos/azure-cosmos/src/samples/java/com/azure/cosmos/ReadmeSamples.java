@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.*;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Mono;
 
@@ -461,20 +462,51 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosAsyncStoredProcedure.read
     }
 
+    public void CosmosAsyncProcedureReadSecondSample() {
+        String id = "ID";
+        CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, client);
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.read_option_params
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+        CosmosAsyncStoredProcedure procedure =
+            new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
+        CosmosStoredProcedureRequestOptions options =
+            new CosmosStoredProcedureRequestOptions();
+
+        Mono<CosmosStoredProcedureResponse> response = procedure.read(options);
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.read_option_params
+    }
+
     public void CosmosAsyncProcedureDeleteSample() {
         String id = "ID";
         CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, client);
         CosmosAsyncContainer cosmosAsyncContainer =
             new CosmosAsyncContainer(id, cosmosAsyncDatabase);
-        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.delete
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.delete_no_params
+        CosmosAsyncStoredProcedure procedure =
+            new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
+
+        Mono<CosmosStoredProcedureResponse> response = procedure.delete();
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.delete_no_params
+    }
+
+    public void CosmosAsyncProcedureDeleteSecondSample() {
+        String id = "ID";
+        String body = "BODY";
+        CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(id, client);
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(id, cosmosAsyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.delete_option_params
         CosmosAsyncStoredProcedure procedure =
             new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
         CosmosStoredProcedureRequestOptions options =
             new CosmosStoredProcedureRequestOptions();
 
-        Mono<CosmosStoredProcedureResponse> response = procedure.delete();
-        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.delete
+        Mono<CosmosStoredProcedureResponse> response = procedure.delete(options);
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.delete_option_params
     }
 
     public void CosmosAsyncProcedureExecuteSample() {
@@ -494,9 +526,9 @@ public class ReadmeSamples {
     public void CosmosAsyncProcedureReplaceSample() {
         String idTemp = "temp";
         CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
-        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.replace
         String id = "ID";
         String body = "BODY";
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.replace
         CosmosAsyncStoredProcedure procedure =
             new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
         CosmosStoredProcedureRequestOptions options =
@@ -508,10 +540,24 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosAsyncStoredProcedure.replace
     }
 
-    public void CosmosAsyncTriggerReadSample() {
-        String temp = "ID";
-        // BEGIN: com.azure.cosmos.CosmosAsyncTrigger.read
+    public void CosmosAsyncProcedureReplaceSecondSample() {
+        String idTemp = "temp";
+        CosmosAsyncClient client = new CosmosClientBuilder().buildAsyncClient();
         String id = "ID";
+        String body = "BODY";
+        // BEGIN: com.azure.cosmos.CosmosAsyncStoredProcedure.replace_properties_params
+        CosmosAsyncStoredProcedure procedure =
+            new CosmosAsyncStoredProcedure(id, cosmosAsyncContainer);
+        CosmosStoredProcedureProperties properties =
+            new CosmosStoredProcedureProperties(id, body);
+
+        procedure.replace(properties);
+        // END: com.azure.cosmos.CosmosAsyncStoredProcedure.replace_properties_params
+    }
+
+    public void CosmosAsyncTriggerReadSample() {
+        String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosAsyncTrigger.read
         CosmosAsyncTrigger trigger =
             new CosmosAsyncTrigger(id, cosmosAsyncContainer);
 
@@ -534,8 +580,8 @@ public class ReadmeSamples {
     }
 
     public void CosmosAsyncTriggerDeleteSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncTrigger.delete
         String id = "ID";
+        // BEGIN: com.azure.cosmos.CosmosAsyncTrigger.delete
         CosmosAsyncTrigger trigger =
             new CosmosAsyncTrigger(id, cosmosAsyncContainer);
 
