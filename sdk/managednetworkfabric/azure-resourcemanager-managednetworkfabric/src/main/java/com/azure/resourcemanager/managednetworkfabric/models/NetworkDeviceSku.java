@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.managednetworkfabric.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceSkuInner;
 import java.util.List;
 
@@ -32,13 +31,6 @@ public interface NetworkDeviceSku {
     String type();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the model property: Model of the network device.
      *
      * @return the model value.
@@ -53,18 +45,11 @@ public interface NetworkDeviceSku {
     String manufacturer();
 
     /**
-     * Gets the supportedVersions property: List of network device interfaces.
+     * Gets the supportedVersions property: List of supported version details of network device.
      *
      * @return the supportedVersions value.
      */
     List<SupportedVersionProperties> supportedVersions();
-
-    /**
-     * Gets the limits property: Network device limits.
-     *
-     * @return the limits value.
-     */
-    DeviceLimits limits();
 
     /**
      * Gets the supportedRoleTypes property: Available roles for the network device.
@@ -81,7 +66,7 @@ public interface NetworkDeviceSku {
     List<DeviceInterfaceProperties> interfaces();
 
     /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

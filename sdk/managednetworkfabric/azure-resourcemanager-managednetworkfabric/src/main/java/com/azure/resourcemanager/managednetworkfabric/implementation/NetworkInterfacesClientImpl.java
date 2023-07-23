@@ -34,7 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkInterfacesClient;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.InterfaceStatusInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfacePatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfacesList;
@@ -119,7 +119,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -136,34 +136,19 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfacesList>> list(
+        Mono<Response<NetworkInterfacesList>> listByNetworkDevice(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("networkDeviceName") String networkDeviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}/getStatus")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getStatus(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkDeviceName") String networkDeviceName,
-            @PathParam("networkInterfaceName") String networkInterfaceName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}/updateAdministrativeState")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
             @HostParam("$host") String endpoint,
@@ -180,7 +165,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfacesList>> listNext(
+        Mono<Response<NetworkInterfacesList>> listByNetworkDeviceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -193,8 +178,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -258,8 +243,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,8 +310,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -354,8 +339,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -385,8 +370,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -405,8 +390,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,8 +417,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -454,8 +439,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,8 +466,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -501,8 +486,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -526,8 +511,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Get the Network Interface resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -584,8 +569,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Get the Network Interface resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -640,8 +625,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Get the Network Interface resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -660,8 +645,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Get the Network Interface resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -680,8 +665,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Get the Network Interface resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -698,8 +683,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -763,8 +748,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,8 +815,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -859,8 +844,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -890,8 +875,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -910,8 +895,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -937,8 +922,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -959,8 +944,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,8 +971,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1006,8 +991,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1031,8 +1016,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1088,8 +1073,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1143,8 +1128,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1167,8 +1152,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1192,8 +1177,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1211,8 +1196,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1233,8 +1218,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1253,8 +1238,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1275,8 +1260,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1292,8 +1277,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1311,14 +1296,14 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkInterfaces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listSinglePageAsync(
+    private Mono<PagedResponse<NetworkInterfaceInner>> listByNetworkDeviceSinglePageAsync(
         String resourceGroupName, String networkDeviceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1345,7 +1330,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             .withContext(
                 context ->
                     service
-                        .list(
+                        .listByNetworkDevice(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -1371,7 +1356,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1379,7 +1364,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @return list of NetworkInterfaces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listSinglePageAsync(
+    private Mono<PagedResponse<NetworkInterfaceInner>> listByNetworkDeviceSinglePageAsync(
         String resourceGroupName, String networkDeviceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1404,7 +1389,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
+            .listByNetworkDevice(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -1429,17 +1414,18 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkInterfaces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkInterfaceInner> listAsync(String resourceGroupName, String networkDeviceName) {
+    private PagedFlux<NetworkInterfaceInner> listByNetworkDeviceAsync(
+        String resourceGroupName, String networkDeviceName) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkDeviceName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listByNetworkDeviceSinglePageAsync(resourceGroupName, networkDeviceName),
+            nextLink -> listByNetworkDeviceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1448,7 +1434,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1456,11 +1442,11 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @return list of NetworkInterfaces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkInterfaceInner> listAsync(
+    private PagedFlux<NetworkInterfaceInner> listByNetworkDeviceAsync(
         String resourceGroupName, String networkDeviceName, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkDeviceName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listByNetworkDeviceSinglePageAsync(resourceGroupName, networkDeviceName, context),
+            nextLink -> listByNetworkDeviceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1469,15 +1455,16 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkInterfaces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> list(String resourceGroupName, String networkDeviceName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, networkDeviceName));
+    public PagedIterable<NetworkInterfaceInner> listByNetworkDevice(
+        String resourceGroupName, String networkDeviceName) {
+        return new PagedIterable<>(listByNetworkDeviceAsync(resourceGroupName, networkDeviceName));
     }
 
     /**
@@ -1486,7 +1473,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1494,300 +1481,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @return list of NetworkInterfaces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> list(
+    public PagedIterable<NetworkInterfaceInner> listByNetworkDevice(
         String resourceGroupName, String networkDeviceName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, networkDeviceName, context));
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getStatusWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getStatus(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkDeviceName,
-                            networkInterfaceName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getStatusWithResponseAsync(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkDeviceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkDeviceName is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getStatus(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkDeviceName,
-                networkInterfaceName,
-                accept,
-                context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InterfaceStatusInner>, InterfaceStatusInner> beginGetStatusAsync(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getStatusWithResponseAsync(resourceGroupName, networkDeviceName, networkInterfaceName);
-        return this
-            .client
-            .<InterfaceStatusInner, InterfaceStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InterfaceStatusInner.class,
-                InterfaceStatusInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InterfaceStatusInner>, InterfaceStatusInner> beginGetStatusAsync(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getStatusWithResponseAsync(resourceGroupName, networkDeviceName, networkInterfaceName, context);
-        return this
-            .client
-            .<InterfaceStatusInner, InterfaceStatusInner>getLroResult(
-                mono, this.client.getHttpPipeline(), InterfaceStatusInner.class, InterfaceStatusInner.class, context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InterfaceStatusInner>, InterfaceStatusInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        return this.beginGetStatusAsync(resourceGroupName, networkDeviceName, networkInterfaceName).getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InterfaceStatusInner>, InterfaceStatusInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
-        return this
-            .beginGetStatusAsync(resourceGroupName, networkDeviceName, networkInterfaceName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InterfaceStatusInner> getStatusAsync(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        return beginGetStatusAsync(resourceGroupName, networkDeviceName, networkInterfaceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InterfaceStatusInner> getStatusAsync(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
-        return beginGetStatusAsync(resourceGroupName, networkDeviceName, networkInterfaceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InterfaceStatusInner getStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        return getStatusAsync(resourceGroupName, networkDeviceName, networkInterfaceName).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InterfaceStatusInner getStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
-        return getStatusAsync(resourceGroupName, networkDeviceName, networkInterfaceName, context).block();
+        return new PagedIterable<>(listByNetworkDeviceAsync(resourceGroupName, networkDeviceName, context));
     }
 
     /**
@@ -1796,13 +1492,14 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
@@ -1863,14 +1560,15 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
@@ -1929,27 +1627,33 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAdministrativeStateAsync(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName,
+            String networkDeviceName,
+            String networkInterfaceName,
+            UpdateAdministrativeState body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAdministrativeStateWithResponseAsync(
                 resourceGroupName, networkDeviceName, networkInterfaceName, body);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1958,29 +1662,36 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAdministrativeStateAsync(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body,
-        Context context) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName,
+            String networkDeviceName,
+            String networkInterfaceName,
+            UpdateAdministrativeState body,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAdministrativeStateWithResponseAsync(
                 resourceGroupName, networkDeviceName, networkInterfaceName, body, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
     }
 
     /**
@@ -1989,20 +1700,22 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body) {
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkDeviceName,
+            String networkInterfaceName,
+            UpdateAdministrativeState body) {
         return this
             .beginUpdateAdministrativeStateAsync(resourceGroupName, networkDeviceName, networkInterfaceName, body)
             .getSyncPoller();
@@ -2014,22 +1727,24 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body,
-        Context context) {
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkDeviceName,
+            String networkInterfaceName,
+            UpdateAdministrativeState body,
+            Context context) {
         return this
             .beginUpdateAdministrativeStateAsync(
                 resourceGroupName, networkDeviceName, networkInterfaceName, body, context)
@@ -2042,16 +1757,16 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAdministrativeStateAsync(
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,
@@ -2067,17 +1782,17 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAdministrativeStateAsync(
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,
@@ -2095,20 +1810,21 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,
         UpdateAdministrativeState body) {
-        updateAdministrativeStateAsync(resourceGroupName, networkDeviceName, networkInterfaceName, body).block();
+        return updateAdministrativeStateAsync(resourceGroupName, networkDeviceName, networkInterfaceName, body).block();
     }
 
     /**
@@ -2117,22 +1833,23 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,
         UpdateAdministrativeState body,
         Context context) {
-        updateAdministrativeStateAsync(resourceGroupName, networkDeviceName, networkInterfaceName, body, context)
+        return updateAdministrativeStateAsync(resourceGroupName, networkDeviceName, networkInterfaceName, body, context)
             .block();
     }
 
@@ -2147,7 +1864,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @return list of NetworkInterfaces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<NetworkInterfaceInner>> listByNetworkDeviceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2159,7 +1876,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(
+                context -> service.listByNetworkDeviceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NetworkInterfaceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2184,7 +1902,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @return list of NetworkInterfaces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkInterfaceInner>> listByNetworkDeviceNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2197,7 +1916,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByNetworkDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

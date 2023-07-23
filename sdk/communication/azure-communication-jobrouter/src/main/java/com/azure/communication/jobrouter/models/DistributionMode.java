@@ -28,14 +28,14 @@ public abstract class DistributionMode {
      * Governs the minimum desired number of active concurrent offers a job can
      * have.
      */
-    @JsonProperty(value = "minConcurrentOffers", required = true)
-    private int minConcurrentOffers;
+    @JsonProperty(value = "minConcurrentOffers")
+    private Integer minConcurrentOffers;
 
     /*
      * Governs the maximum number of active concurrent offers a job can have.
      */
-    @JsonProperty(value = "maxConcurrentOffers", required = true)
-    private int maxConcurrentOffers;
+    @JsonProperty(value = "maxConcurrentOffers")
+    private Integer maxConcurrentOffers;
 
     /*
      * (Optional)
@@ -55,7 +55,7 @@ public abstract class DistributionMode {
      *
      * @return the minConcurrentOffers value.
      */
-    public int getMinConcurrentOffers() {
+    public Integer getMinConcurrentOffers() {
         return this.minConcurrentOffers;
     }
 
@@ -66,7 +66,7 @@ public abstract class DistributionMode {
      * @param minConcurrentOffers the minConcurrentOffers value to set.
      * @return the DistributionMode object itself.
      */
-    public DistributionMode setMinConcurrentOffers(int minConcurrentOffers) {
+    public DistributionMode setMinConcurrentOffers(Integer minConcurrentOffers) {
         this.minConcurrentOffers = minConcurrentOffers;
         return this;
     }
@@ -76,7 +76,7 @@ public abstract class DistributionMode {
      *
      * @return the maxConcurrentOffers value.
      */
-    public int getMaxConcurrentOffers() {
+    public Integer getMaxConcurrentOffers() {
         return this.maxConcurrentOffers;
     }
 
@@ -86,7 +86,7 @@ public abstract class DistributionMode {
      * @param maxConcurrentOffers the maxConcurrentOffers value to set.
      * @return the DistributionMode object itself.
      */
-    public DistributionMode setMaxConcurrentOffers(int maxConcurrentOffers) {
+    public DistributionMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
         this.maxConcurrentOffers = maxConcurrentOffers;
         return this;
     }

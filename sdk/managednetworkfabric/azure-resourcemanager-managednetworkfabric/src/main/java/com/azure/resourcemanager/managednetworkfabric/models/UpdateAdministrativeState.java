@@ -15,7 +15,7 @@ public final class UpdateAdministrativeState extends EnableDisableOnResources {
      * Administrative state.
      */
     @JsonProperty(value = "state")
-    private AdministrativeState state;
+    private EnableDisableState state;
 
     /** Creates an instance of UpdateAdministrativeState class. */
     public UpdateAdministrativeState() {
@@ -26,7 +26,7 @@ public final class UpdateAdministrativeState extends EnableDisableOnResources {
      *
      * @return the state value.
      */
-    public AdministrativeState state() {
+    public EnableDisableState state() {
         return this.state;
     }
 
@@ -36,7 +36,7 @@ public final class UpdateAdministrativeState extends EnableDisableOnResources {
      * @param state the state value to set.
      * @return the UpdateAdministrativeState object itself.
      */
-    public UpdateAdministrativeState withState(AdministrativeState state) {
+    public UpdateAdministrativeState withState(EnableDisableState state) {
         this.state = state;
         return this;
     }

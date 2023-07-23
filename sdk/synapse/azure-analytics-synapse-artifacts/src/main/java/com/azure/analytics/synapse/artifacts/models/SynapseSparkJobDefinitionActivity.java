@@ -512,6 +512,20 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public SynapseSparkJobDefinitionActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseSparkJobDefinitionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SynapseSparkJobDefinitionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

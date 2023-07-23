@@ -13,7 +13,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevice;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleTypes;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +33,7 @@ public final class NetworkDevicesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"version\":\"agttm\",\"networkDeviceSku\":\"mmagoaqylkjzt\",\"networkDeviceRole\":\"CE\",\"provisioningState\":\"Succeeded\",\"networkRackId\":\"jcg\",\"hostName\":\"itpfinzcpdl\",\"serialNumber\":\"rlgjm\",\"annotation\":\"drvcqguef\"},\"location\":\"ompheqdur\",\"tags\":{\"clcdigptajbrzmq\":\"ujlfyoumpcky\",\"lxiutgjcyzyzjdnr\":\"ucycijo\",\"xjeaoqaqbzgyh\":\"jb\",\"v\":\"w\"},\"id\":\"atbwbqam\",\"name\":\"e\",\"type\":\"liys\"}";
+            "{\"properties\":{\"version\":\"lnuzgz\",\"networkDeviceSku\":\"xdusebkc\",\"networkDeviceRole\":\"ToR\",\"networkRackId\":\"punt\",\"managementIpv4Address\":\"masuiqrsnm\",\"managementIpv6Address\":\"ubqwxvsxrbiyzjl\",\"configurationState\":\"Accepted\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"hostName\":\"ukbocsitsxhvsgzp\",\"serialNumber\":\"ieyxjkctyq\",\"annotation\":\"tampq\"},\"location\":\"eftmub\",\"tags\":{\"zeq\":\"oepeqlhbtysy\",\"gyzwfyfdbvoo\":\"ctpqnofkw\",\"iyqmlmw\":\"lmikdsqqykgjjsmv\",\"cvemmriyz\":\"wsmnwbm\"},\"id\":\"vque\",\"name\":\"xplcsinb\",\"type\":\"lolxxhcyn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,24 +64,22 @@ public final class NetworkDevicesCreateMockTests {
         NetworkDevice response =
             manager
                 .networkDevices()
-                .define("erppt")
-                .withRegion("bui")
-                .withExistingResourceGroup("rtudawlpjfel")
-                .withTags(mapOf("b", "vatvcrkd", "ov", "bqxvhcsyhzlwxae"))
-                .withNetworkDeviceSku("alwcjgckbb")
-                .withNetworkDeviceRole(NetworkDeviceRoleTypes.CE)
-                .withHostname("ffatsgftipw")
-                .withSerialNumber("byubhiqdxyurnpn")
-                .withAnnotation("zafccnuhiigb")
+                .define("gseqjte")
+                .withRegion("mqaxtmvmyc")
+                .withExistingResourceGroup("zolrvw")
+                .withTags(mapOf("yvn", "axjdqvvyje", "rdvhbgtuhwh", "jngoq"))
+                .withNetworkDeviceSku("bpvsobamtarir")
+                .withHostname("nbxxyfozbgody")
+                .withSerialNumber("jikfrxvl")
+                .withAnnotation("edpnk")
                 .create();
 
-        Assertions.assertEquals("ompheqdur", response.location());
-        Assertions.assertEquals("ujlfyoumpcky", response.tags().get("clcdigptajbrzmq"));
-        Assertions.assertEquals("mmagoaqylkjzt", response.networkDeviceSku());
-        Assertions.assertEquals(NetworkDeviceRoleTypes.CE, response.networkDeviceRole());
-        Assertions.assertEquals("itpfinzcpdl", response.hostname());
-        Assertions.assertEquals("rlgjm", response.serialNumber());
-        Assertions.assertEquals("drvcqguef", response.annotation());
+        Assertions.assertEquals("eftmub", response.location());
+        Assertions.assertEquals("oepeqlhbtysy", response.tags().get("zeq"));
+        Assertions.assertEquals("xdusebkc", response.networkDeviceSku());
+        Assertions.assertEquals("ukbocsitsxhvsgzp", response.hostname());
+        Assertions.assertEquals("ieyxjkctyq", response.serialNumber());
+        Assertions.assertEquals("tampq", response.annotation());
     }
 
     @SuppressWarnings("unchecked")

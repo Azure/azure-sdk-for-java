@@ -16,14 +16,14 @@ public interface NetworkFabricSkusClient {
     /**
      * Gets a Network Fabric Sku.
      *
-     * <p>Implements Network Fabric Sku GET method.
+     * <p>Implements Network Fabric SKU GET method.
      *
-     * @param networkFabricSkuName Name of the Network Fabric Sku.
+     * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricSku resource definition along with {@link Response}.
+     * @return the Network Fabric SKU resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkFabricSkuInner> getWithResponse(String networkFabricSkuName, Context context);
@@ -31,39 +31,39 @@ public interface NetworkFabricSkusClient {
     /**
      * Gets a Network Fabric Sku.
      *
-     * <p>Implements Network Fabric Sku GET method.
+     * <p>Implements Network Fabric SKU GET method.
      *
-     * @param networkFabricSkuName Name of the Network Fabric Sku.
+     * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricSku resource definition.
+     * @return the Network Fabric SKU resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricSkuInner get(String networkFabricSkuName);
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricSkuInner> list();
 
     /**
-     * List NetworkFabricSkus by subscription.
+     * List Network Fabric SKUs by subscription.
      *
-     * <p>Implements NetworkFabricSkus list by subscription GET method.
+     * <p>Implements Network Fabric SKUs list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricSkus as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricSkuInner> list(Context context);

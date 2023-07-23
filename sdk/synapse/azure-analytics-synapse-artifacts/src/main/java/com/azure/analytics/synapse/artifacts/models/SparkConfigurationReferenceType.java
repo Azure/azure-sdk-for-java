@@ -15,6 +15,14 @@ public final class SparkConfigurationReferenceType extends ExpandableStringEnum<
             fromString("SparkConfigurationReference");
 
     /**
+     * Creates a new instance of SparkConfigurationReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkConfigurationReferenceType() {}
+
+    /**
      * Creates or finds a SparkConfigurationReferenceType from its string representation.
      *
      * @param name a name to look for.

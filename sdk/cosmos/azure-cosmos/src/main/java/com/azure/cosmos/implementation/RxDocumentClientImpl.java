@@ -11,10 +11,10 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.SessionRetryOptions;
-import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -916,8 +916,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
-        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this,
-            getOperationContextAndListenerTuple(options));
+        final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
+
+        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
 
         // Trying to put this logic as low as the query pipeline
         // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
@@ -930,7 +931,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return ObservableHelper.fluxInlineIfPossibleAsObs(
             () -> createQueryInternal(
-                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId),
+                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
             invalidPartitionExceptionRetryPolicy);
     }
 
@@ -941,13 +942,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Class<T> klass,
             ResourceType resourceTypeEnum,
             IDocumentQueryClient queryClient,
-            UUID activityId) {
+            UUID activityId,
+            final AtomicBoolean isQueryCancelledOnTimeout) {
 
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
                 .createDocumentQueryExecutionContextAsync(this, queryClient, resourceTypeEnum, klass, sqlQuery,
                                                           options, resourceLink, false, activityId,
-                                                          Configs.isQueryPlanCachingEnabled(), queryPlanCache);
+                                                          Configs.isQueryPlanCachingEnabled(), queryPlanCache, isQueryCancelledOnTimeout);
 
         AtomicBoolean isFirstResponse = new AtomicBoolean(true);
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {
@@ -977,11 +979,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .CosmosQueryRequestOptionsHelper
                 .getCosmosQueryRequestOptionsAccessor()
                 .toRequestOptions(options);
+
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
                 getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options);
+                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options, isQueryCancelledOnTimeout);
             }
 
             return feedResponseFlux;
@@ -994,13 +997,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
         Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        CosmosQueryRequestOptions requestOptions) {
+        CosmosQueryRequestOptions requestOptions,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
+
         return feedResponseFlux
             .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
+
+                    isQueryCancelledOnTimeout.set(true);
 
                     List<CosmosDiagnostics> cancelledRequestDiagnostics =
                         ImplementationBridgeHelpers
@@ -1998,6 +2005,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                                                   CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
                                                                                                   Mono<T> rxDocumentServiceResponseMono) {
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+            request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
             return rxDocumentServiceResponseMono
                 .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
                 .onErrorMap(throwable -> getCancellationException(request, throwable));
@@ -2008,9 +2016,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static Throwable getCancellationException(RxDocumentServiceRequest request, Throwable throwable) {
         Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
         if (unwrappedException instanceof TimeoutException) {
+
             CosmosException exception = new OperationCancelledException();
             exception.setStackTrace(throwable.getStackTrace());
-            return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
+
+            if (request.requestContext != null) {
+                request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true));
+                return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
+            }
         }
         return throwable;
     }
@@ -2238,8 +2251,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             collectionObs);
 
-        return requestObs.flatMap(req -> patch(request, retryPolicyInstance)
-            .map(resp -> toResourceResponse(resp, Document.class)));
+        Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(req -> {
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+            Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = patch(request, retryPolicyInstance);
+            return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
+        });
+
+        return responseObservable.map(resp -> toResourceResponse(resp, Document.class));
     }
 
     @Override
@@ -2284,9 +2302,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
 
-            return requestObs.flatMap(req -> this
-                .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
-                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+            Mono<RxDocumentServiceResponse> responseObservable =
+                requestObs.flatMap(req -> {
+                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                    Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = this
+                        .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                    return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
+                });
+
+            return responseObservable
+                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
@@ -2359,8 +2384,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
-
-            request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
 
             return requestObs.flatMap(req -> {
                 Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -2699,6 +2722,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         UUID activityId = randomUuid();
+
+        final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
+
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory.createReadManyQueryAsync(this, queryClient, collection.getResourceId(),
@@ -2709,7 +2735,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                           parentResourceLink,
                                                                           activityId,
                                                                           klass,
-                                                                          resourceTypeEnum);
+                                                                          resourceTypeEnum,
+                                                                          isQueryCancelledOnTimeout);
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
     }
 
@@ -2919,6 +2946,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
             UUID activityId = randomUuid();
+
+            final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
+
             IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
 
             final CosmosQueryRequestOptions effectiveOptions =
@@ -2965,7 +2995,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             classOfT, //Document.class
                             ResourceType.Document,
                             queryClient,
-                            activityId);
+                            activityId,
+                            isQueryCancelledOnTimeout);
                     });
                 },
                 invalidPartitionExceptionRetryPolicy);
@@ -4519,11 +4550,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+
         if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
-            this.storeModel.configureFaultInjectorProvider(injectorProvider);
-        } else {
-            throw new IllegalArgumentException("configureFaultInjectorProvider is not supported for gateway mode");
+            this.storeModel.configureFaultInjectorProvider(injectorProvider, this.configs);
+            this.addressResolver.configureFaultInjectorProvider(injectorProvider, this.configs);
         }
+
+        this.gatewayProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
     }
 
     @Override

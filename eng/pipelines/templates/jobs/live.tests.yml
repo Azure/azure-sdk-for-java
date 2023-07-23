@@ -33,7 +33,7 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
 
@@ -60,7 +60,14 @@ jobs:
       - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
         - template: /eng/pipelines/templates/steps/http-fault-injector.yml
 
-      - template: ../steps/install-reporting-tools.yml
+      # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
+      # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
+      # Java 18), then install the latest Java version and use that to run tests.
+      - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
+        parameters:
+          LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
+
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
 
@@ -106,6 +113,8 @@ jobs:
             AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
+
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved

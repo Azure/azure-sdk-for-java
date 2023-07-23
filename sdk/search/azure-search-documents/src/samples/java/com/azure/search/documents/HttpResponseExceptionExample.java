@@ -17,7 +17,7 @@ import com.azure.search.documents.util.SearchPagedFlux;
  * returns a non-successful response
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
- * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * See https://docs.microsoft.com/azure/search/search-get-started-portal
  * </p>
  */
 public class HttpResponseExceptionExample {

@@ -20,7 +20,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Checks that the principal assignment name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
      * @param context The context to associate with this operation.
@@ -39,7 +39,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Checks that the principal assignment name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +56,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Gets a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -72,7 +72,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Gets a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,7 +86,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -105,7 +105,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -126,7 +126,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -145,7 +145,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -166,7 +166,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +181,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -197,7 +197,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +210,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -224,7 +224,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -238,7 +238,7 @@ public interface ClusterPrincipalAssignmentsClient {
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
