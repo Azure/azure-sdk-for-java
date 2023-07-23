@@ -53,6 +53,14 @@ public class CosmosAsyncStoredProcedure {
     /**
      * Read a stored procedure
      * <!-- src_embed com.azure.cosmos.CosmosAsyncStoredProcedure.read -->
+     * <pre>
+     * CosmosAsyncContainer cosmosAsyncContainer =
+     *     new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosAsyncStoredProcedure procedure =
+     *     new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosStoredProcedureResponse&gt; response = procedure.read&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncStoredProcedure.read -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored
@@ -68,6 +76,16 @@ public class CosmosAsyncStoredProcedure {
     /**
      * Read a stored procedure
      * <!-- src_embed com.azure.cosmos.CosmosAsyncStoredProcedure.read_option_params -->
+     * <pre>
+     * CosmosAsyncContainer cosmosAsyncContainer =
+     *     new CosmosAsyncContainer&#40;id, cosmosAsyncDatabase&#41;;
+     * CosmosAsyncStoredProcedure procedure =
+     *     new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
+     * CosmosStoredProcedureRequestOptions options =
+     *     new CosmosStoredProcedureRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosStoredProcedureResponse&gt; response = procedure.read&#40;options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncStoredProcedure.read_option_params -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored
@@ -84,6 +102,12 @@ public class CosmosAsyncStoredProcedure {
     /**
      * Deletes a stored procedure
      * <!-- src_embed com.azure.cosmos.CosmosAsyncStoredProcedure.delete_no_params -->
+     * <pre>
+     * CosmosAsyncStoredProcedure procedure =
+     *     new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosStoredProcedureResponse&gt; response = procedure.delete&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncStoredProcedure.delete_no_params -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
@@ -99,6 +123,14 @@ public class CosmosAsyncStoredProcedure {
     /**
      * Deletes a stored procedure
      * <!-- src_embed com.azure.cosmos.CosmosAsyncStoredProcedure.delete_option_params -->
+     * <pre>
+     * CosmosAsyncStoredProcedure procedure =
+     *     new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
+     * CosmosStoredProcedureRequestOptions options =
+     *     new CosmosStoredProcedureRequestOptions&#40;&#41;;
+     *
+     * Mono&lt;CosmosStoredProcedureResponse&gt; response = procedure.delete&#40;options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncStoredProcedure.delete_option_params -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
@@ -118,14 +150,14 @@ public class CosmosAsyncStoredProcedure {
      * <pre>
      * String id = &quot;ID&quot;;
      * CosmosAsyncStoredProcedure procedure =
-     *      new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
+     *     new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
      * CosmosStoredProcedureRequestOptions options =
-     *      new CosmosStoredProcedureRequestOptions&#40;&#41;;
+     *     new CosmosStoredProcedureRequestOptions&#40;&#41;;
      * List procedureParams = Collections.emptyList&#40;&#41;;
      *
      * Mono&lt;CosmosStoredProcedureResponse&gt; response =
-     *      procedure.execute&#40;procedureParams, options&#41;;
-     * <pre>
+     *     procedure.execute&#40;procedureParams, options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncStoredProcedure.execute -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure
@@ -144,6 +176,14 @@ public class CosmosAsyncStoredProcedure {
     /**
      * Replaces a stored procedure.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncStoredProcedure.replace_properties_params -->
+     * <pre>
+     * CosmosAsyncStoredProcedure procedure =
+     *     new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
+     * CosmosStoredProcedureProperties properties =
+     *     new CosmosStoredProcedureProperties&#40;id, body&#41;;
+     *
+     * procedure.replace&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncStoredProcedure.replace_properties_params -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored
@@ -160,6 +200,16 @@ public class CosmosAsyncStoredProcedure {
     /**
      * Replaces a stored procedure.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncStoredProcedure.replace -->
+     * <pre>
+     * CosmosAsyncStoredProcedure procedure =
+     *     new CosmosAsyncStoredProcedure&#40;id, cosmosAsyncContainer&#41;;
+     * CosmosStoredProcedureRequestOptions options =
+     *     new CosmosStoredProcedureRequestOptions&#40;&#41;;
+     * CosmosStoredProcedureProperties properties =
+     *     new CosmosStoredProcedureProperties&#40;id, body&#41;;
+     *
+     * procedure.replace&#40;properties, options&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncStoredProcedure.replace -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored

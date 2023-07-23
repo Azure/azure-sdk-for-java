@@ -52,6 +52,12 @@ public class CosmosAsyncTrigger {
     /**
      * Reads a cosmos trigger
      * <!-- src_embed com.azure.cosmos.CosmosAsyncTrigger.read -->
+     * <pre>
+     * CosmosAsyncTrigger trigger =
+     *     new CosmosAsyncTrigger&#40;id, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosTriggerResponse&gt; response = trigger.read&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncTrigger.read -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.
@@ -66,6 +72,15 @@ public class CosmosAsyncTrigger {
     /**
      * Replaces a cosmos trigger.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncTrigger.replace -->
+     * <pre>
+     * CosmosAsyncTrigger trigger =
+     *     new CosmosAsyncTrigger&#40;id, cosmosAsyncContainer&#41;;
+     * CosmosTriggerProperties properties =
+     *     new CosmosTriggerProperties&#40;id, body&#41;;
+     *
+     * Mono&lt;CosmosTriggerResponse&gt; response =
+     *     trigger.replace&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncTrigger.replace -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced trigger.
@@ -81,6 +96,12 @@ public class CosmosAsyncTrigger {
     /**
      * Deletes a cosmos trigger.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncTrigger.delete -->
+     * <pre>
+     * CosmosAsyncTrigger trigger =
+     *     new CosmosAsyncTrigger&#40;id, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosTriggerResponse&gt; response = trigger.delete&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncTrigger.delete -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted trigger.

@@ -52,6 +52,13 @@ public class CosmosAsyncUserDefinedFunction {
     /**
      * Read a user defined function.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUserDefinedFunction.read -->
+     * <pre>
+     * CosmosAsyncUserDefinedFunction userFunction =
+     *     new CosmosAsyncUserDefinedFunction&#40;id, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosUserDefinedFunctionResponse&gt; response =
+     *     userFunction.read&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUserDefinedFunction.read -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read user defined
@@ -67,6 +74,15 @@ public class CosmosAsyncUserDefinedFunction {
     /**
      * Replaces a cosmos user defined function.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUserDefinedFunction.replace -->
+     * <pre>
+     * CosmosAsyncUserDefinedFunction userFunction =
+     *     new CosmosAsyncUserDefinedFunction&#40;id, cosmosAsyncContainer&#41;;
+     * CosmosUserDefinedFunctionProperties properties =
+     *     new CosmosUserDefinedFunctionProperties&#40;id, body&#41;;
+     *
+     * Mono&lt;CosmosUserDefinedFunctionResponse&gt; response =
+     *     userFunction.replace&#40;properties&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUserDefinedFunction.replace -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced user
@@ -84,6 +100,12 @@ public class CosmosAsyncUserDefinedFunction {
     /**
      * Deletes a cosmos user defined function.
      * <!-- src_embed com.azure.cosmos.CosmosAsyncUserDefinedFunction.delete -->
+     * <pre>
+     * CosmosAsyncUserDefinedFunction userFunction =
+     *     new CosmosAsyncUserDefinedFunction&#40;id, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosUserDefinedFunctionResponse&gt; response = userFunction.delete&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncUserDefinedFunction.delete -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted user
