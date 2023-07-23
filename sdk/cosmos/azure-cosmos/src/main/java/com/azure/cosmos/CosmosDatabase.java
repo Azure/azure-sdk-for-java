@@ -316,11 +316,6 @@ public class CosmosDatabase {
     /**
      * Create container if one matching the id in the properties object does not exist.
      * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExists -->
-     * <pre>
-     * CosmosContainerProperties containerProperties =
-     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
-     * CosmosContainerResponse container = cosmosDatabase.createContainerIfNotExists&#40;containerProperties&#41;;
-     * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExists -->
      * @param containerProperties the container properties.
      * @return the cosmos container response.
@@ -346,16 +341,6 @@ public class CosmosDatabase {
     /**
      * Creates a Cosmos container if one matching the id in the properties object does not exist.
      * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsProps -->
-     * <pre>
-     * CosmosContainerProperties containerProperties =
-     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
-     * ThroughputProperties throughputProperties =
-     *     ThroughputProperties.createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
-     * CosmosContainerResponse container = cosmosDatabase.createContainerIfNotExists&#40;
-     *     containerProperties,
-     *     throughputProperties
-     * &#41;;
-     * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsProps -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
@@ -427,15 +412,6 @@ public class CosmosDatabase {
     /**
      * Creates a Cosmos container if one matching the id does not exist.
      * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsPartitionKey -->
-     * <pre>
-     * ThroughputProperties throughputProperties =
-     *     ThroughputProperties.createAutoscaledThroughput&#40;autoscaledThroughput&#41;;
-     * CosmosContainerResponse container = cosmosDatabase.createContainerIfNotExists&#40;
-     *     containerId,
-     *     partitionKeyPath,
-     *     throughputProperties
-     * &#41;;
-     * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsPartitionKey -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.

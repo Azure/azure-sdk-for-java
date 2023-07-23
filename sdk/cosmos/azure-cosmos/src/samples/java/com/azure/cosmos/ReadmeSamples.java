@@ -601,8 +601,8 @@ public class ReadmeSamples {
 
     public void readConflictSample() {
         CosmosAsyncClient asyncClient = new CosmosClientBuilder().buildAsyncClient();
-        // BEGIN: com.azure.cosmos.CosmosAsyncConflict.read
         String conflictId = "CONFLICT_ID";
+        // BEGIN: com.azure.cosmos.CosmosAsyncConflict.read
         CosmosAsyncDatabase cosmosAsyncDatabase =
             new CosmosAsyncDatabase(conflictId, asyncClient);
         CosmosAsyncContainer cosmosAsyncContainer =
@@ -639,6 +639,7 @@ public class ReadmeSamples {
         // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties(containerId, partitionKeyDefinition);
+
         CosmosContainerResponse container = cosmosDatabase.createContainerIfNotExists(containerProperties);
         // END: com.azure.cosmos.CosmosDatabase.createContainerIfNotExists
 
