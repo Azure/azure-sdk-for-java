@@ -173,7 +173,7 @@ CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel
                     new RouterWorkerSelector()
                         .setKey("Some-skill")
                         .setLabelOperator(LabelOperator.GREATER_THAN)
-                        .setValue(10);
+                        .setValue(new LabelValue(10));
                 }}
             );
 RouterJob routerJob = jobRouterClient.createJob(createJobOptions);
@@ -188,9 +188,9 @@ Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
     }
 };
 
-Map<String, Object> tags = new HashMap<String, Object>() {
+Map<String, LabelValue> tags = new HashMap<String, LabelValue>() {
     {
-        put("Tag", "Value");
+        put("Tag", new LabelValue("Value"));
     }
 };
 
@@ -200,16 +200,16 @@ Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, Ch
     }
 };
 
-Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
+Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
     {
-        put(jobQueue.getId(), new Object());
+        put(jobQueue.getId(), new RouterQueueAssignment());
     }
 };
 
 CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
     .setLabels(labels)
     .setTags(tags)
-    .setAvailableForOffers(false)
+    .setAvailableForOffers(true)
     .setChannelConfigurations(channelConfigurations)
     .setQueueAssignments(queueAssignments);
 

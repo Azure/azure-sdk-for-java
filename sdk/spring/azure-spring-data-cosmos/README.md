@@ -244,8 +244,8 @@ public CosmosClientBuilder getCosmosClientBuilder() {
                         .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
                         .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
                         .setRequestChargeThreshold(requestChargeThresholdInRU)
-                    )
-                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
+                )
+                .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
 }
 
 @Override
