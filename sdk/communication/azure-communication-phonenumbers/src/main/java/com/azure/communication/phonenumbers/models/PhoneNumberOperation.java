@@ -50,13 +50,13 @@ public final class PhoneNumberOperation {
     /**
      * The PhoneNumberOperation model.
      * 
-     * @param status             The status property: Status of operation.
-     * @param resourceLocation   The resourceLocation property: URL for retrieving
+     * @param status The status property: Status of operation.
+     * @param resourceLocation The resourceLocation property: URL for retrieving
      *                           the result of the operation, if any.
-     * @param createdDateTime    The createdDateTime property: The date that the
+     * @param createdDateTime The createdDateTime property: The date that the
      *                           operation was created.
-     * @param id                 The id property: Id of operation.
-     * @param operationType      The operationType property: The type of operation,
+     * @param id The id property: Id of operation.
+     * @param operationType The operationType property: The type of operation,
      *                           e.g. Search.
      * @param lastActionDateTime The lastActionDateTime property: The most recent
      *                           date that the operation was changed.

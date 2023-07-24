@@ -9,10 +9,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 
 /** Class used for code coverage. */
-@Generated
 public class CodeCoverageAnnotation {
     /** Annotation used to exclude from code coverage */
     @Documented

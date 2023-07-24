@@ -15,10 +15,10 @@ public class PhoneNumberErrorResponseException extends HttpResponseException {
     /**
      * Initializes a new instance of the PhoneNumberErrorResponseException class.
      *
-     * @param message  the exception message or the response content if a message is
+     * @param message the exception message or the response content if a message is
      *                 not available.
      * @param response the HTTP response.
-     * @param value    the deserialized response value.
+     * @param value the deserialized response value.
      */
     public PhoneNumberErrorResponseException(
             String message, HttpResponse response, PhoneNumberError value) {
