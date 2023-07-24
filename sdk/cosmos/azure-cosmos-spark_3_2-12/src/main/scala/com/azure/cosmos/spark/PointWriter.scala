@@ -14,7 +14,6 @@ import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
-import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.util.UUID
@@ -351,7 +350,10 @@ class PointWriter(container: CosmosAsyncContainer,
               patchBulkUpdateItem(container, partitionKeyValue, objectNode)
               return
           } catch {
-              case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
+              case e: CosmosException if (
+                  Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) ||
+                  Exceptions.isPreconditionFailedException(e.getStatusCode) ||
+                  Exceptions.isResourceExistsException(e.getStatusCode)) =>
                   log.logWarning(
                       s"patch update item $patchBulkUpdateOperation attempt #$attempt max remaining retries "
                           + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")

@@ -163,18 +163,28 @@ class BulkWriter(container: CosmosAsyncContainer,
           .CosmosBulkExecutionOptionsHelper
           .getCosmosBulkExecutionOptionsAccessor
           .getMaxMicroBatchInterval(cosmosBulkExecutionOptions)
+      val batchConcurrency = ImplementationBridgeHelpers
+          .CosmosBulkExecutionOptionsHelper
+          .getCosmosBulkExecutionOptionsAccessor
+          .getMaxMicroBatchConcurrency(cosmosBulkExecutionOptions)
 
       readManyInputEmitterOpt
           .get
           .asFlux()
           .publishOn(readManyBoundedElastic)
           .bufferTimeout(bulkBatchSize, batchInterval)
+          .subscribeOn(readManyBoundedElastic)
+          .asScala
           .flatMap(readManyOperations => {
               val cosmosIdentitySet = readManyOperations.map(option => option.cosmosItemIdentity).toSet
 
               // for each batch, use readMany to read items from cosmosdb
-              container
-                  .readMany(cosmosIdentitySet.toList.asJava, classOf[ObjectNode])
+              val requestOptions = new CosmosQueryRequestOptions()
+              ThroughputControlHelper.populateThroughputControlGroupName(requestOptions, writeConfig.throughputControlConfig)
+              ImplementationBridgeHelpers
+                  .CosmosAsyncContainerHelper
+                  .getCosmosAsyncContainerAccessor
+                  .readMany(container, cosmosIdentitySet.toList.asJava, requestOptions, classOf[ObjectNode])
                   .switchIfEmpty(
                       Mono.just(
                           ImplementationBridgeHelpers
@@ -252,8 +262,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                           // so we are not going to make task complete here
                       }
                   })
-          })
-          .subscribeOn(readManyBoundedElastic)
+          }, batchConcurrency)
           .subscribe()
   }
 
@@ -459,6 +468,9 @@ class BulkWriter(container: CosmosAsyncContainer,
               s"Context: ${operationContext.toString} ${getThreadInfo}")
       }
 
+      // The handling will make sure that during retry:
+      // For itemPatchBulkUpdate -> the retry will go through readMany stage -> bulkWrite stage.
+      // For other strategies -> the retry will only go through bulk write stage
       writeConfig.itemWriteStrategy match {
           case ItemWriteStrategy.ItemPatchBulkUpdate => scheduleReadManyInternal(partitionKeyValue, objectNode, operationContext)
           case _ => scheduleBulkWriteInternal(partitionKeyValue, objectNode, operationContext)

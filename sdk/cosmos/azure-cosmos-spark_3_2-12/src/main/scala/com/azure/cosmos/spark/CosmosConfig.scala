@@ -875,7 +875,8 @@ private object CosmosWriteConfig {
       "`ItemDeleteIfNotModified` (deletes based on id/pk of data frame if etag hasn't changed since collecting " +
       "id/pk), `ItemOverwriteIfNotModified` (using create if etag is empty, update/replace with etag pre-condition " +
       "otherwise, if document was updated the pre-condition failure is ignored)," +
-      " `ItemPatchBulkUpdate` (read item, then patch the item locally, then using create if etag is empty, update/replace with etag pre-condition)")
+      " `ItemPatchBulkUpdate` (read item, then patch the item locally, then using create if etag is empty, update/replace with etag pre-condition." +
+        "In cases of any conflict or precondition failure, SDK will retry the above steps to update the documents properly.)")
 
   private val maxRetryCount = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryCount,
     mandatory = false,

@@ -28,7 +28,6 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
-
     private String partitionKeyJson;
     private BulkOperationRetryPolicy bulkOperationRetryPolicy;
 

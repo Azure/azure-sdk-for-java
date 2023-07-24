@@ -166,7 +166,7 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   }
  }
 
-  def createCosmosPatchBulkUpdateOperations(objectNode: ObjectNode): List[PatchOperationCore[JsonNode]] = {
+  private[spark] def createCosmosPatchBulkUpdateOperations(objectNode: ObjectNode): List[PatchOperationCore[JsonNode]] = {
 
       val cosmosPatchBulkUpdateOperations = new ListBuffer[PatchOperationCore[JsonNode]]()
       val fieldIterator = objectNode.fields()
@@ -203,9 +203,9 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
       cosmosPatchBulkUpdateOperations.toList
   }
 
-  def patchBulkUpdateItem(
-                             itemToBeUpdatedOpt: Option[ObjectNode],
-                             patchBulkUpdateOperations: List[PatchOperationCore[JsonNode]]): ObjectNode = {
+  private[spark] def patchBulkUpdateItem(
+                                            itemToBeUpdatedOpt: Option[ObjectNode],
+                                            patchBulkUpdateOperations: List[PatchOperationCore[JsonNode]]): ObjectNode = {
 
       // Do not do the modification on original objectNode, as it maybe used by other patchBulkUpdate operations
       val rootNode = itemToBeUpdatedOpt match {
@@ -258,11 +258,14 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
           parentNode.at(jsonPath) match {
               case _: MissingNode =>
                   parentNode match {
-                      case objectNode: ObjectNode => objectNode.set(jsonPath.getMatchingProperty, Utils.getSimpleObjectMapper().createObjectNode())
+                      case objectNode: ObjectNode =>
+                          objectNode.set(jsonPath.getMatchingProperty, Utils.getSimpleObjectMapper().createObjectNode())
+                          objectNode
                       case arrayNode: ArrayNode =>
                           val arrayIndex = Integer.parseInt(jsonPath.getMatchingProperty)
-                          arrayNode.set(arrayIndex, Utils.getSimpleObjectMapper().createObjectNode())
-                      case _: JsonNode => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass}")
+                          arrayNode.insert(arrayIndex, Utils.getSimpleObjectMapper().createObjectNode())
+                          arrayNode
+                      case _ => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass}")
                   }
 
                   parentNode.at(jsonPath)

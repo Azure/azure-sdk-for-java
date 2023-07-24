@@ -15,7 +15,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 class CosmosConfigSpec extends UnitSpec {
-  //scalastyle:off multiple.string.literals
+//scalastyle:off multiple.string.literals
 
   private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
   private val defaultPatchOperationType = CosmosPatchOperationTypes.Replace
