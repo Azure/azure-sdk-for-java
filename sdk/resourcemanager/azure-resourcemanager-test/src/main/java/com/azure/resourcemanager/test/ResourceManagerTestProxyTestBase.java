@@ -96,6 +96,11 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         }
     };
 
+    /**
+     * Redacted value.
+     */
+    protected static final String REDACTED_VALUE = "REDACTED";
+
     private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestProxyTestBase.class);
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
@@ -459,7 +464,9 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             // Retry-After
-            new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)
+            new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
+            // Microsoft Graph secret
+            new TestProxySanitizer(String.format("$..%s", "secretText"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         ));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);

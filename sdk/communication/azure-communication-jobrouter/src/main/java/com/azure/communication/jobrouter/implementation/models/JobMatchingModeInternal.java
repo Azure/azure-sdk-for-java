@@ -5,10 +5,13 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JobMatchingModeInternal model. */
 @Fluent
+@JsonInclude(Include.ALWAYS)
 public final class JobMatchingModeInternal {
     /*
      * The modeType property.
