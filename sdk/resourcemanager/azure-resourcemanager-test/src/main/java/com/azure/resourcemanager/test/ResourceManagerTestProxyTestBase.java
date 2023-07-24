@@ -96,6 +96,11 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         }
     };
 
+    /**
+     * Redacted value.
+     */
+    protected static final String REDACTED_VALUE = "REDACTED";
+
     private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestProxyTestBase.class);
     private AzureProfile testProfile;
     private AuthFile testAuthFile;

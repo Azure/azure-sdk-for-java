@@ -10,10 +10,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import java.io.ByteArrayOutputStream;
@@ -24,9 +26,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /** The base for storage manager tests. */
-public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
+public abstract class GraphRbacManagementTest extends ResourceManagerTestProxyTestBase {
     protected AuthorizationManager authorizationManager;
     protected ResourceManager resourceManager;
+
+    public GraphRbacManagementTest() {
+        addSanitizers(
+            new TestProxySanitizer(String.format("$..%s", "secretText"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+        );
+    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(
