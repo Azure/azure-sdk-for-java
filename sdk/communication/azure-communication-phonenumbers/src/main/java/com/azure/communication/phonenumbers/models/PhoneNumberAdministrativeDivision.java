@@ -9,8 +9,8 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberAdministrativeDivision model. */
-@Immutable
 @Generated
+@Immutable
 public final class PhoneNumberAdministrativeDivision {
     /*
      * Represents the localized name of the administrative division of the
