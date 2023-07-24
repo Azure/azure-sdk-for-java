@@ -258,6 +258,13 @@ public interface Cluster {
     List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
+     * Gets the migrationCluster property: Properties of the peer cluster involved in a migration to/from this cluster.
+     *
+     * @return the migrationCluster value.
+     */
+    MigrationClusterProperties migrationCluster();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -293,11 +300,13 @@ public interface Cluster {
             DefinitionStages.WithSku,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Cluster definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -316,16 +325,18 @@ public interface Cluster {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Cluster definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -336,6 +347,7 @@ public interface Cluster {
              */
             WithCreate withSku(AzureSku sku);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -379,6 +391,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -389,6 +402,7 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster definition allowing to specify zones. */
         interface WithZones {
             /**
@@ -399,6 +413,7 @@ public interface Cluster {
              */
             WithCreate withZones(List<String> zones);
         }
+
         /** The stage of the Cluster definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -409,6 +424,7 @@ public interface Cluster {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the Cluster definition allowing to specify trustedExternalTenants. */
         interface WithTrustedExternalTenants {
             /**
@@ -419,6 +435,7 @@ public interface Cluster {
              */
             WithCreate withTrustedExternalTenants(List<TrustedExternalTenant> trustedExternalTenants);
         }
+
         /** The stage of the Cluster definition allowing to specify optimizedAutoscale. */
         interface WithOptimizedAutoscale {
             /**
@@ -429,6 +446,7 @@ public interface Cluster {
              */
             WithCreate withOptimizedAutoscale(OptimizedAutoscale optimizedAutoscale);
         }
+
         /** The stage of the Cluster definition allowing to specify enableDiskEncryption. */
         interface WithEnableDiskEncryption {
             /**
@@ -440,6 +458,7 @@ public interface Cluster {
              */
             WithCreate withEnableDiskEncryption(Boolean enableDiskEncryption);
         }
+
         /** The stage of the Cluster definition allowing to specify enableStreamingIngest. */
         interface WithEnableStreamingIngest {
             /**
@@ -451,6 +470,7 @@ public interface Cluster {
              */
             WithCreate withEnableStreamingIngest(Boolean enableStreamingIngest);
         }
+
         /** The stage of the Cluster definition allowing to specify virtualNetworkConfiguration. */
         interface WithVirtualNetworkConfiguration {
             /**
@@ -461,6 +481,7 @@ public interface Cluster {
              */
             WithCreate withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration);
         }
+
         /** The stage of the Cluster definition allowing to specify keyVaultProperties. */
         interface WithKeyVaultProperties {
             /**
@@ -471,6 +492,7 @@ public interface Cluster {
              */
             WithCreate withKeyVaultProperties(KeyVaultProperties keyVaultProperties);
         }
+
         /** The stage of the Cluster definition allowing to specify enablePurge. */
         interface WithEnablePurge {
             /**
@@ -481,6 +503,7 @@ public interface Cluster {
              */
             WithCreate withEnablePurge(Boolean enablePurge);
         }
+
         /** The stage of the Cluster definition allowing to specify languageExtensions. */
         interface WithLanguageExtensions {
             /**
@@ -491,6 +514,7 @@ public interface Cluster {
              */
             WithCreate withLanguageExtensions(LanguageExtensionsList languageExtensions);
         }
+
         /** The stage of the Cluster definition allowing to specify enableDoubleEncryption. */
         interface WithEnableDoubleEncryption {
             /**
@@ -502,6 +526,7 @@ public interface Cluster {
              */
             WithCreate withEnableDoubleEncryption(Boolean enableDoubleEncryption);
         }
+
         /** The stage of the Cluster definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -514,6 +539,7 @@ public interface Cluster {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the Cluster definition allowing to specify allowedIpRangeList. */
         interface WithAllowedIpRangeList {
             /**
@@ -525,6 +551,7 @@ public interface Cluster {
              */
             WithCreate withAllowedIpRangeList(List<String> allowedIpRangeList);
         }
+
         /** The stage of the Cluster definition allowing to specify engineType. */
         interface WithEngineType {
             /**
@@ -535,6 +562,7 @@ public interface Cluster {
              */
             WithCreate withEngineType(EngineType engineType);
         }
+
         /** The stage of the Cluster definition allowing to specify acceptedAudiences. */
         interface WithAcceptedAudiences {
             /**
@@ -545,6 +573,7 @@ public interface Cluster {
              */
             WithCreate withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences);
         }
+
         /** The stage of the Cluster definition allowing to specify enableAutoStop. */
         interface WithEnableAutoStop {
             /**
@@ -557,6 +586,7 @@ public interface Cluster {
              */
             WithCreate withEnableAutoStop(Boolean enableAutoStop);
         }
+
         /** The stage of the Cluster definition allowing to specify restrictOutboundNetworkAccess. */
         interface WithRestrictOutboundNetworkAccess {
             /**
@@ -569,6 +599,7 @@ public interface Cluster {
              */
             WithCreate withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess);
         }
+
         /** The stage of the Cluster definition allowing to specify allowedFqdnList. */
         interface WithAllowedFqdnList {
             /**
@@ -580,6 +611,7 @@ public interface Cluster {
              */
             WithCreate withAllowedFqdnList(List<String> allowedFqdnList);
         }
+
         /** The stage of the Cluster definition allowing to specify publicIpType. */
         interface WithPublicIpType {
             /**
@@ -592,6 +624,7 @@ public interface Cluster {
              */
             WithCreate withPublicIpType(PublicIpType publicIpType);
         }
+
         /** The stage of the Cluster definition allowing to specify virtualClusterGraduationProperties. */
         interface WithVirtualClusterGraduationProperties {
             /**
@@ -602,6 +635,7 @@ public interface Cluster {
              */
             WithCreate withVirtualClusterGraduationProperties(String virtualClusterGraduationProperties);
         }
+
         /** The stage of the Cluster definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -614,6 +648,7 @@ public interface Cluster {
              */
             WithCreate withIfMatch(String ifMatch);
         }
+
         /** The stage of the Cluster definition allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -627,6 +662,7 @@ public interface Cluster {
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -672,6 +708,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify tags. */
@@ -684,6 +721,7 @@ public interface Cluster {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster update allowing to specify sku. */
         interface WithSku {
             /**
@@ -694,6 +732,7 @@ public interface Cluster {
              */
             Update withSku(AzureSku sku);
         }
+
         /** The stage of the Cluster update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -704,6 +743,7 @@ public interface Cluster {
              */
             Update withIdentity(Identity identity);
         }
+
         /** The stage of the Cluster update allowing to specify trustedExternalTenants. */
         interface WithTrustedExternalTenants {
             /**
@@ -714,6 +754,7 @@ public interface Cluster {
              */
             Update withTrustedExternalTenants(List<TrustedExternalTenant> trustedExternalTenants);
         }
+
         /** The stage of the Cluster update allowing to specify optimizedAutoscale. */
         interface WithOptimizedAutoscale {
             /**
@@ -724,6 +765,7 @@ public interface Cluster {
              */
             Update withOptimizedAutoscale(OptimizedAutoscale optimizedAutoscale);
         }
+
         /** The stage of the Cluster update allowing to specify enableDiskEncryption. */
         interface WithEnableDiskEncryption {
             /**
@@ -735,6 +777,7 @@ public interface Cluster {
              */
             Update withEnableDiskEncryption(Boolean enableDiskEncryption);
         }
+
         /** The stage of the Cluster update allowing to specify enableStreamingIngest. */
         interface WithEnableStreamingIngest {
             /**
@@ -746,6 +789,7 @@ public interface Cluster {
              */
             Update withEnableStreamingIngest(Boolean enableStreamingIngest);
         }
+
         /** The stage of the Cluster update allowing to specify virtualNetworkConfiguration. */
         interface WithVirtualNetworkConfiguration {
             /**
@@ -756,6 +800,7 @@ public interface Cluster {
              */
             Update withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration);
         }
+
         /** The stage of the Cluster update allowing to specify keyVaultProperties. */
         interface WithKeyVaultProperties {
             /**
@@ -766,6 +811,7 @@ public interface Cluster {
              */
             Update withKeyVaultProperties(KeyVaultProperties keyVaultProperties);
         }
+
         /** The stage of the Cluster update allowing to specify enablePurge. */
         interface WithEnablePurge {
             /**
@@ -776,6 +822,7 @@ public interface Cluster {
              */
             Update withEnablePurge(Boolean enablePurge);
         }
+
         /** The stage of the Cluster update allowing to specify languageExtensions. */
         interface WithLanguageExtensions {
             /**
@@ -786,6 +833,7 @@ public interface Cluster {
              */
             Update withLanguageExtensions(LanguageExtensionsList languageExtensions);
         }
+
         /** The stage of the Cluster update allowing to specify enableDoubleEncryption. */
         interface WithEnableDoubleEncryption {
             /**
@@ -797,6 +845,7 @@ public interface Cluster {
              */
             Update withEnableDoubleEncryption(Boolean enableDoubleEncryption);
         }
+
         /** The stage of the Cluster update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -809,6 +858,7 @@ public interface Cluster {
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the Cluster update allowing to specify allowedIpRangeList. */
         interface WithAllowedIpRangeList {
             /**
@@ -820,6 +870,7 @@ public interface Cluster {
              */
             Update withAllowedIpRangeList(List<String> allowedIpRangeList);
         }
+
         /** The stage of the Cluster update allowing to specify engineType. */
         interface WithEngineType {
             /**
@@ -830,6 +881,7 @@ public interface Cluster {
              */
             Update withEngineType(EngineType engineType);
         }
+
         /** The stage of the Cluster update allowing to specify acceptedAudiences. */
         interface WithAcceptedAudiences {
             /**
@@ -840,6 +892,7 @@ public interface Cluster {
              */
             Update withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences);
         }
+
         /** The stage of the Cluster update allowing to specify enableAutoStop. */
         interface WithEnableAutoStop {
             /**
@@ -852,6 +905,7 @@ public interface Cluster {
              */
             Update withEnableAutoStop(Boolean enableAutoStop);
         }
+
         /** The stage of the Cluster update allowing to specify restrictOutboundNetworkAccess. */
         interface WithRestrictOutboundNetworkAccess {
             /**
@@ -864,6 +918,7 @@ public interface Cluster {
              */
             Update withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess);
         }
+
         /** The stage of the Cluster update allowing to specify allowedFqdnList. */
         interface WithAllowedFqdnList {
             /**
@@ -875,6 +930,7 @@ public interface Cluster {
              */
             Update withAllowedFqdnList(List<String> allowedFqdnList);
         }
+
         /** The stage of the Cluster update allowing to specify publicIpType. */
         interface WithPublicIpType {
             /**
@@ -887,6 +943,7 @@ public interface Cluster {
              */
             Update withPublicIpType(PublicIpType publicIpType);
         }
+
         /** The stage of the Cluster update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -900,6 +957,7 @@ public interface Cluster {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -950,6 +1008,27 @@ public interface Cluster {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void start(Context context);
+
+    /**
+     * Migrate data from a Kusto cluster to another cluster.
+     *
+     * @param clusterMigrateRequest The cluster migrate request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void migrate(ClusterMigrateRequest clusterMigrateRequest);
+
+    /**
+     * Migrate data from a Kusto cluster to another cluster.
+     *
+     * @param clusterMigrateRequest The cluster migrate request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void migrate(ClusterMigrateRequest clusterMigrateRequest, Context context);
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.

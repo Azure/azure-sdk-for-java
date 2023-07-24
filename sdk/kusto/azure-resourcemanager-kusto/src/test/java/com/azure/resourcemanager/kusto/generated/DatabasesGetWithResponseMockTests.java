@@ -31,7 +31,7 @@ public final class DatabasesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"kind\":\"Database\",\"location\":\"vfcjnaeoisrvhmg\",\"id\":\"r\",\"name\":\"fukiscvwmzhw\",\"type\":\"lefaxvxilcbtgn\"}";
+            "{\"kind\":\"Database\",\"location\":\"hzvechndbnwieho\",\"id\":\"ewjwiuubw\",\"name\":\"fqsfa\",\"type\":\"aqtferr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class DatabasesGetWithResponseMockTests {
         Database response =
             manager
                 .databases()
-                .getWithResponse("xg", "moy", "cdyuibhmfdnbzyd", com.azure.core.util.Context.NONE)
+                .getWithResponse("mo", "ayzejnhlbkpbz", "cpilj", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vfcjnaeoisrvhmg", response.location());
+        Assertions.assertEquals("hzvechndbnwieho", response.location());
     }
 }
