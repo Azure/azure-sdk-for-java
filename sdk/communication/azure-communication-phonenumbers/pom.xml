@@ -170,36 +170,6 @@
           </rules>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-        <configuration>
-         <additionalparam>-Xdoclint:all -Xdoclint:-missing</additionalparam>
-         <additionalOptions>-Xdoclint:all -Xdoclint:-missing</additionalOptions>
-         <additionalJOptions>
-            <additionalJOption>-Xdoclint:all</additionalJOption>
-            <additionalJOption>-Xdoclint:-missing</additionalJOption>
-         </additionalJOptions>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-            <configuration>
-              <analysisConfiguration>
-                <revapi.differences>
-                  <differences>
-                    <item>
-                      <code>java.annotation.added"</code>
-                      <justification>This Code is used to exclude from code coverage</justification>
-                    </item>
-                  </differences>
-                </revapi.differences>
-              </analysisConfiguration>
-            </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
