@@ -10,8 +10,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -29,12 +27,6 @@ import java.util.List;
 public abstract class GraphRbacManagementTest extends ResourceManagerTestProxyTestBase {
     protected AuthorizationManager authorizationManager;
     protected ResourceManager resourceManager;
-
-    public GraphRbacManagementTest() {
-        addSanitizers(
-            new TestProxySanitizer(String.format("$..%s", "secretText"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
-        );
-    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(
