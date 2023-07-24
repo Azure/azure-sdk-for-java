@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for RouteFilters UpdateTags. */
 public final class RouteFiltersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/RouteFilterUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RouteFilterUpdateTags.json
      */
     /**
      * Sample code: Update route filter tags.
@@ -27,7 +27,7 @@ public final class RouteFiltersUpdateTagsSamples {
             .updateTagsWithResponse(
                 "rg1",
                 "filterName",
-                new TagsObject().withTags(mapOf("key1", "value1")),
+                new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 

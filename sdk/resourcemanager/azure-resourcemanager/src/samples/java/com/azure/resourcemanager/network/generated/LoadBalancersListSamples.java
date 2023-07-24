@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for LoadBalancers List. */
 public final class LoadBalancersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/LoadBalancerListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/LoadBalancerListAll.json
      */
     /**
      * Sample code: List all load balancers.

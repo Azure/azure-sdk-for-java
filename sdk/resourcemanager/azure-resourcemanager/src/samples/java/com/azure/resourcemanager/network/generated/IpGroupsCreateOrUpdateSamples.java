@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for IpGroups CreateOrUpdate. */
 public final class IpGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/IpGroupsCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/IpGroupsCreate.json
      */
     /**
      * Sample code: CreateOrUpdate_IpGroups.
@@ -30,7 +30,7 @@ public final class IpGroupsCreateOrUpdateSamples {
                 "ipGroups1",
                 new IpGroupInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withIpAddresses(Arrays.asList("13.64.39.16/32", "40.74.146.80/31", "40.74.147.32/28")),
                 com.azure.core.util.Context.NONE);
     }

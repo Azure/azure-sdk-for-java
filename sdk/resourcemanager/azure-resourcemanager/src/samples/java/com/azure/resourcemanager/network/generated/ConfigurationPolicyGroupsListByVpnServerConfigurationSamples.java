@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ConfigurationPolicyGroups ListByVpnServerConfiguration. */
 public final class ConfigurationPolicyGroupsListByVpnServerConfigurationSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ConfigurationPolicyGroupListByVpnServerConfiguration.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ConfigurationPolicyGroupListByVpnServerConfiguration.json
      */
     /**
      * Sample code: ConfigurationPolicyGroupListByVpnServerConfiguration.

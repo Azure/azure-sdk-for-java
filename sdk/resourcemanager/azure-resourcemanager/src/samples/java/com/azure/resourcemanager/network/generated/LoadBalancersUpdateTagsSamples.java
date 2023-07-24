@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for LoadBalancers UpdateTags. */
 public final class LoadBalancersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/LoadBalancerUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/LoadBalancerUpdateTags.json
      */
     /**
      * Sample code: Update load balancer tags.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PublicIpAddresses DdosProtectionStatus. */
 public final class PublicIpAddressesDdosProtectionStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/PublicIpAddressGetDdosProtectionStatus.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/PublicIpAddressGetDdosProtectionStatus.json
      */
     /**
      * Sample code: Get Ddos Protection Status of a Public IP Address.
