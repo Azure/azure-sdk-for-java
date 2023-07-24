@@ -69,7 +69,8 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the phoneNumbers property: The phone numbers that are available. Can be fewer than the desired search
+     * Get the phoneNumbers property: The phone numbers that are available. Can be
+     * fewer than the desired search
      * quantity.
      *
      * @return the phoneNumbers value.
@@ -79,7 +80,8 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the phoneNumberType property: The phone number's type, e.g. geographic, or tollFree.
+     * Get the phoneNumberType property: The phone number's type, e.g. geographic,
+     * or tollFree.
      *
      * @return the phoneNumberType value.
      */
@@ -115,8 +117,10 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the searchExpiresBy property: The date that this search result expires and phone numbers are no longer on
-     * hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
+     * Get the searchExpiresBy property: The date that this search result expires
+     * and phone numbers are no longer on
+     * hold. A search result expires in less than 15min, e.g.
+     * 2020-11-19T16:31:49.048Z.
      *
      * @return the searchExpiresBy value.
      */

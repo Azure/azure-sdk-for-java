@@ -22,9 +22,10 @@ public final class PhoneNumberError {
 
     /**
      * Constructs a new PhoneNumberError
+     * 
      * @param message The message of the original error
-     * @param code The error code
-     * @param target The target of the error
+     * @param code    The error code
+     * @param target  The target of the error
      * @param details Additional details
      */
     public PhoneNumberError(String message, String code, String target, List<PhoneNumberError> details) {
@@ -62,7 +63,8 @@ public final class PhoneNumberError {
     }
 
     /**
-     * Get the details property: Further details about specific errors that led to this error.
+     * Get the details property: Further details about specific errors that led to
+     * this error.
      *
      * @return the details value.
      */

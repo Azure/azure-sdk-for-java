@@ -49,15 +49,21 @@ public final class PhoneNumberOperation {
 
     /**
      * The PhoneNumberOperation model.
-     * @param status The status property: Status of operation.
-     * @param resourceLocation The resourceLocation property: URL for retrieving the result of the operation, if any.
-     * @param createdDateTime The createdDateTime property: The date that the operation was created.
-     * @param id The id property: Id of operation.
-     * @param operationType The operationType property: The type of operation, e.g. Search.
-     * @param lastActionDateTime The lastActionDateTime property: The most recent date that the operation was changed.
+     * 
+     * @param status             The status property: Status of operation.
+     * @param resourceLocation   The resourceLocation property: URL for retrieving
+     *                           the result of the operation, if any.
+     * @param createdDateTime    The createdDateTime property: The date that the
+     *                           operation was created.
+     * @param id                 The id property: Id of operation.
+     * @param operationType      The operationType property: The type of operation,
+     *                           e.g. Search.
+     * @param lastActionDateTime The lastActionDateTime property: The most recent
+     *                           date that the operation was changed.
      */
-    public PhoneNumberOperation(PhoneNumberOperationStatus status, String resourceLocation, OffsetDateTime createdDateTime, String id,
-        PhoneNumberOperationType operationType, OffsetDateTime lastActionDateTime) {
+    public PhoneNumberOperation(PhoneNumberOperationStatus status, String resourceLocation,
+            OffsetDateTime createdDateTime, String id,
+            PhoneNumberOperationType operationType, OffsetDateTime lastActionDateTime) {
         this.status = status;
         this.resourceLocation = resourceLocation;
         this.createdDateTime = createdDateTime;
@@ -76,7 +82,8 @@ public final class PhoneNumberOperation {
     }
 
     /**
-     * Get the resourceLocation property: URL for retrieving the result of the operation, if any.
+     * Get the resourceLocation property: URL for retrieving the result of the
+     * operation, if any.
      *
      * @return the resourceLocation value.
      */
@@ -112,7 +119,8 @@ public final class PhoneNumberOperation {
     }
 
     /**
-     * Get the lastActionDateTime property: The most recent date that the operation was changed.
+     * Get the lastActionDateTime property: The most recent date that the operation
+     * was changed.
      *
      * @return the lastActionDateTime value.
      */

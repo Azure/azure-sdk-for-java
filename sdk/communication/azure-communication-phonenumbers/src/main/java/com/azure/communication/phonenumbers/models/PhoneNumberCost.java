@@ -40,7 +40,8 @@ public final class PhoneNumberCost {
     }
 
     /**
-     * Get the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
+     * Get the currencyCode property: The ISO 4217 currency code for the cost
+     * amount, e.g. USD.
      *
      * @return the currencyCode value.
      */
@@ -49,7 +50,8 @@ public final class PhoneNumberCost {
     }
 
     /**
-     * Get the billingFrequency property: The frequency with which the cost gets billed.
+     * Get the billingFrequency property: The frequency with which the cost gets
+     * billed.
      *
      * @return the billingFrequency value.
      */

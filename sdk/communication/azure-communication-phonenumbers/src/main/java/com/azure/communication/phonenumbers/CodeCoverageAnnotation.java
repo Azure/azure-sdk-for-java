@@ -14,10 +14,10 @@ import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 /** Class usedfor code coverage. */
 @Generated
 public class CodeCoverageAnnotation {
-/** Annotation used to exclude from code coverage */
+    /** Annotation used to exclude from code coverage */
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR})
+    @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR })
     public @interface Generated {
     }
 }
