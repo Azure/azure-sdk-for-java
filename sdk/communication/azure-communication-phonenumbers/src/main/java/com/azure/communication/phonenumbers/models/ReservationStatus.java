@@ -11,6 +11,7 @@ import java.util.Collection;
 
 /**
  * @deprecated Defines values for ReservationStatus. 
+ * @Generated Defines Exclusion from code coverage
  */
 @Deprecated
 @Generated

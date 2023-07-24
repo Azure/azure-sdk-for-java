@@ -8,7 +8,9 @@ import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberCost model. */
+/** The PhoneNumberCost model. 
+ * @Generated Defines Exclusion from code coverage
+*/
 @Immutable
 @Generated
 public final class PhoneNumberCost {

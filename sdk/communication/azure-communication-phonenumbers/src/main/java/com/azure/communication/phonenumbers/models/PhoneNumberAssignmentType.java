@@ -9,7 +9,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PhoneNumberAssignmentType. */
+/** Defines values for PhoneNumberAssignmentType. 
+ * @Generated Defines Exclusion from code coverage
+*/
 @Generated
 public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneNumberAssignmentType> {
     /** Static value person for PhoneNumberAssignmentType. */

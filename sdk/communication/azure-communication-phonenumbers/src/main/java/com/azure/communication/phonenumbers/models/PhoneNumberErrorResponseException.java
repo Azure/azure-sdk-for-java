@@ -9,6 +9,7 @@ import com.azure.core.http.HttpResponse;
 
 /**
  * Exception thrown on phone number specific errors
+ * @Generated Defines Exclusion from code coverage
  */
 @Generated
 public class PhoneNumberErrorResponseException extends HttpResponseException {
