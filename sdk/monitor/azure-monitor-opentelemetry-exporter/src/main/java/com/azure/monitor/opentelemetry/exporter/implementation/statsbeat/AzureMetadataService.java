@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 class AzureMetadataService implements Runnable {
 
@@ -46,14 +47,16 @@ class AzureMetadataService implements Runnable {
     private final AttachStatsbeat attachStatsbeat;
     private final CustomDimensions customDimensions;
     private final HttpPipeline httpPipeline;
+    private final Consumer<MetadataInstanceResponse> vmMetadataServiceCallback;
 
-    AzureMetadataService(AttachStatsbeat attachStatsbeat, CustomDimensions customDimensions) {
+    AzureMetadataService(AttachStatsbeat attachStatsbeat, CustomDimensions customDimensions, Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
         this.attachStatsbeat = attachStatsbeat;
         this.customDimensions = customDimensions;
         this.httpPipeline =
             new HttpPipelineBuilder()
                 .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                 .build();
+        this.vmMetadataServiceCallback = vmMetadataServiceCallback;
     }
 
     void scheduleWithFixedDelay(long interval) {
@@ -128,9 +131,12 @@ class AzureMetadataService implements Runnable {
                 json,
                 e);
             scheduledExecutor.shutdown();
-            return;
+            metadataInstanceResponse = null;
         }
 
-        updateMetadata(metadataInstanceResponse);
+        vmMetadataServiceCallback.accept(metadataInstanceResponse);
+        if (metadataInstanceResponse != null) {
+            updateMetadata(metadataInstanceResponse);
+        }
     }
 }
