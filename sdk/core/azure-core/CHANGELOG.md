@@ -1,14 +1,9 @@
 # Release History
 
-## 1.42.0-beta.1 (Unreleased)
+## 1.42.0-beta.1 (2023-07-24)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added `setEnableCae` and `isCaeEnabled` APIs to `TokenRequestContext` to indicate CAE authentication flow to be used downstream.
 
 ## 1.41.0 (2023-07-06)
 
