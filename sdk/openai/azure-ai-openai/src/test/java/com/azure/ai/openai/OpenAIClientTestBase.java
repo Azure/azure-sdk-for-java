@@ -4,8 +4,11 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.FunctionDefinition;
+import com.azure.ai.openai.models.FunctionDefinition.FunctionDefinitionBuilder;
+import com.azure.ai.openai.models.FunctionParameters;
+import com.azure.ai.openai.models.FunctionProperties;
+import com.azure.ai.openai.models.FunctionParameters.FunctionParametersBuilder;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -22,6 +25,7 @@ import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
+import com.azure.ai.openai.models.FunctionProperties.FunctionPropertiesBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -33,7 +37,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -49,44 +55,45 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .httpClient(httpClient)
-            .serviceVersion(serviceVersion);
+                .httpClient(httpClient)
+                .serviceVersion(serviceVersion);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
-                .endpoint("https://localhost:8080")
-                .credential(new AzureKeyCredential(FAKE_API_KEY));
+                    .endpoint("https://localhost:8080")
+                    .credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
             builder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         } else {
             builder
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         }
         return builder;
     }
 
     OpenAIClientBuilder getNonAzureOpenAIClientBuilder(HttpClient httpClient) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .httpClient(httpClient);
+                .httpClient(httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
-                .credential(new NonAzureOpenAIKeyCredential(FAKE_API_KEY));
+                    .credential(new NonAzureOpenAIKeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
             builder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new NonAzureOpenAIKeyCredential(
+                            Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         } else {
             builder
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+                    .credential(new NonAzureOpenAIKeyCredential(
+                            Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
         return builder;
     }
-
 
     @Test
     public abstract void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
@@ -137,8 +144,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getImageGenerationRunner(Consumer<ImageGenerationOptions> testRunner) {
         testRunner.accept(
-            new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
-        );
+                new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh"));
     }
 
     void getChatFunctionForNonAzureRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
@@ -175,9 +181,25 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     private ChatCompletionsOptions getChatMessagesWithFunction() {
-        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
-        Parameters parameters = new Parameters();
-        functionDefinition.setParameters(parameters);
+        Map<String, FunctionProperties> properties = new HashMap<>();
+        properties.put("location", new FunctionPropertiesBuilder()
+                .type("string")
+                .description("The city and state, e.g. San Francisco, CA")
+                .build());
+        properties.put("unit", new FunctionPropertiesBuilder().type("string")
+                .enumString(Arrays.asList("celsius", "fahrenheit"))
+                .build());
+        FunctionParameters functionParameters = new FunctionParametersBuilder()
+                .type("object")
+                .properties(properties)
+                .required(Arrays.asList("location", "unit"))
+                .build();
+        FunctionDefinition functionDefinition = new FunctionDefinitionBuilder()
+                .name("MyFunction")
+                .description("Get the current weather")
+                .parameters(functionParameters)
+                .build();
+
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
         List<ChatMessage> chatMessages = new ArrayList<>();
@@ -232,7 +254,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getUsage());
     }
 
-    // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
+    // We are currently using the same model. Eventually we will have a separate one
+    // for the streaming scenario
     static void assertChatCompletionsStream(ChatCompletions chatCompletions) {
         if (chatCompletions.getId() != null && !chatCompletions.getId().isEmpty()) {
             assertNotNull(chatCompletions.getId());
@@ -242,7 +265,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
     }
 
-    // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
+    // We are currently using the same model. Eventually we will have a separate one
+    // for the streaming scenario
     static void assertCompletionsStream(Completions completions) {
         if (completions.getId() != null && !completions.getId().isEmpty()) {
             assertNotNull(completions.getId());
@@ -252,7 +276,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
     }
 
-    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole, ChatCompletions actual) {
+    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole,
+            ChatCompletions actual) {
         List<ChatChoice> choices = actual.getChoices();
         assertNotNull(choices);
         assertTrue(choices.size() > 0);
@@ -260,7 +285,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getUsage());
     }
 
-    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole chatRole, List<ChatChoice> actual) {
+    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole chatRole,
+            List<ChatChoice> actual) {
         assertEquals(choiceCount, actual.size());
         for (int i = 0; i < actual.size(); i++) {
             assertChatChoice(i, expectedFinishReason, chatRole, actual.get(i));
