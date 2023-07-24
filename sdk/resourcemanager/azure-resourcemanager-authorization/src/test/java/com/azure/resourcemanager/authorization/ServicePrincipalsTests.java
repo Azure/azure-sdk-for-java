@@ -83,7 +83,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canConsumeServicePrincipalPassword() {
         if (skipInPlayback()) {
             return;
