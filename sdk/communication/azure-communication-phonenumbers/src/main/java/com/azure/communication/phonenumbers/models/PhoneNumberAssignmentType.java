@@ -4,13 +4,11 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for PhoneNumberAssignmentType. */
-@Generated
 public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneNumberAssignmentType> {
     /** Static value person for PhoneNumberAssignmentType. */
     public static final PhoneNumberAssignmentType PERSON = fromString("person");

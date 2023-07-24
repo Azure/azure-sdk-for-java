@@ -3,14 +3,12 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
  * Exception thrown on phone number specific errors
  */
-@Generated
 public class PhoneNumberErrorResponseException extends HttpResponseException {
     /**
      * Initializes a new instance of the PhoneNumberErrorResponseException class.

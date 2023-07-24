@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 
 /** The PhoneNumberSearchOptions model. */
 @Fluent
-@Generated
 public final class PhoneNumberSearchOptions {
 
     private String areaCode;
