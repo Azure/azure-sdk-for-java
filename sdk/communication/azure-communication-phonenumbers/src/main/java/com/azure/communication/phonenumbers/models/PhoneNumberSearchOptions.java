@@ -15,7 +15,6 @@ public final class PhoneNumberSearchOptions {
 
     /**
      * Sets the area code property.
-     * 
      * @param areaCode the areaCode value to set.
      * @return the PhoneNumberSearchOptions object itself.
      */
@@ -26,7 +25,6 @@ public final class PhoneNumberSearchOptions {
 
     /**
      * Gets the area code property.
-     * 
      * @return the area code.
      */
     public String getAreaCode() {
@@ -35,7 +33,6 @@ public final class PhoneNumberSearchOptions {
 
     /**
      * Sets the quantity property.
-     * 
      * @param quantity the quantity to set.
      * @return the PhoneNumberSearchOptions object itself.
      */
@@ -46,7 +43,6 @@ public final class PhoneNumberSearchOptions {
 
     /**
      * Gets the quantity property.
-     * 
      * @return the quantity.
      */
     public Integer getQuantity() {
@@ -54,9 +50,7 @@ public final class PhoneNumberSearchOptions {
     }
 
     /**
-     * Sets the locality property. Examples of a locality are city and town. This is
-     * applied only on geographic phone number searches.
-     * 
+     * Sets the locality property.  Examples of a locality are city and town. This is applied only on geographic phone number searches.
      * @param locality the quantity to set.
      * @return the PhoneNumberSearchOptions object itself.
      */
@@ -66,8 +60,7 @@ public final class PhoneNumberSearchOptions {
     }
 
     /**
-     * Gets the locality property. Examples of a locality are city and town.
-     * 
+     * Gets the locality property.  Examples of a locality are city and town.
      * @return the quantity.
      */
     public String getLocality() {
@@ -75,10 +68,7 @@ public final class PhoneNumberSearchOptions {
     }
 
     /**
-     * Sets the administrative division property. Examples of a administrative
-     * division are state and province. This is applied only on geographic phone
-     * number searches.
-     * 
+     * Sets the administrative division property.  Examples of a administrative division are state and province. This is applied only on geographic phone number searches.
      * @param administrativeDivision the quantity to set.
      * @return the PhoneNumberSearchOptions object itself.
      */
@@ -88,9 +78,7 @@ public final class PhoneNumberSearchOptions {
     }
 
     /**
-     * Gets the administrative division property. Examples of a administrative
-     * division are state and province.
-     * 
+     * Gets the administrative division property.  Examples of a administrative division are state and province.
      * @return the quantity.
      */
     public String getAdministrativeDivision() {

@@ -44,8 +44,7 @@ public final class PhoneNumberOffering {
     }
 
     /**
-     * Get the assignmentType property: Represents the assignment type of the
-     * offering.
+     * Get the assignmentType property: Represents the assignment type of the offering.
      *
      * @return the assignmentType value.
      */

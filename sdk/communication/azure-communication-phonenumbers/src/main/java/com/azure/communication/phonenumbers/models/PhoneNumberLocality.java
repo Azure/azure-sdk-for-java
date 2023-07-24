@@ -23,8 +23,7 @@ public final class PhoneNumberLocality {
     private PhoneNumberAdministrativeDivision administrativeDivision;
 
     /**
-     * Get the localizedName property: Represents the localized name of the
-     * locality.
+     * Get the localizedName property: Represents the localized name of the locality.
      *
      * @return the localizedName value.
      */
@@ -33,8 +32,7 @@ public final class PhoneNumberLocality {
     }
 
     /**
-     * Get the administrativeDivision property: Represents an administrative
-     * division. e.g. state or province.
+     * Get the administrativeDivision property: Represents an administrative division. e.g. state or province.
      *
      * @return the administrativeDivision value.
      */

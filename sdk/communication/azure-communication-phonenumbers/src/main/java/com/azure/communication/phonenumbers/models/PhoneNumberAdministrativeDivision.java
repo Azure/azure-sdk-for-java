@@ -25,8 +25,7 @@ public final class PhoneNumberAdministrativeDivision {
     private String abbreviatedName;
 
     /**
-     * Get the localizedName property: Represents the localized name of the
-     * administrative division of the locality.
+     * Get the localizedName property: Represents the localized name of the administrative division of the locality.
      * e.g. state or province localized name.
      *
      * @return the localizedName value.
@@ -36,8 +35,7 @@ public final class PhoneNumberAdministrativeDivision {
     }
 
     /**
-     * Get the abbreviatedName property: Represents the abbreviated name of the
-     * administrative division of the locality.
+     * Get the abbreviatedName property: Represents the abbreviated name of the administrative division of the locality.
      * e.g. state or province abbreviation such as WA (Washington).
      *
      * @return the abbreviatedName value.
