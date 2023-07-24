@@ -4,13 +4,11 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberCost model. */
 @Immutable
-@Generated
 public final class PhoneNumberCost {
     /*
      * The cost amount.
