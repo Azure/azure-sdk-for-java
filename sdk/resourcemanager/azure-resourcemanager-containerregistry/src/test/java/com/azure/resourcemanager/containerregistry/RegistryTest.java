@@ -25,8 +25,6 @@ public abstract class RegistryTest extends ResourceManagerTestProxyTestBase {
     protected ContainerRegistryManager registryManager;
     protected String rgName;
 
-    private static final String REDACTED_VALUE = "REDACTED";
-
     public RegistryTest() {
         addSanitizers(
             new TestProxySanitizer(String.format("$..%s", "uploadUrl"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
