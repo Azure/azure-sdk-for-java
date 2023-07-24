@@ -4,7 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: monitor
-      SupportedClouds: 'Public,UsGov'
+      SupportedClouds: 'Public,UsGov,China'
       Artifacts:
         - name: azure-monitor-ingestion
           groupId: com.azure
