@@ -1345,6 +1345,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void responseStatisticRequestStartTimeUTCForDirectCall() {
         CosmosAsyncClient client = null;
+        String databaseId = DatabaseForTest.generateId();
         FaultInjectionRule faultInjectionRule = null;
 
         try {
@@ -1355,8 +1356,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build()
                 ).buildAsyncClient();
 
-            CosmosAsyncContainer container =
-                client.getDatabase(containerDirect.asyncContainer.getDatabase().getId()).getContainer(containerDirect.getId());
+            createDatabase(client, databaseId);
+            CosmosAsyncContainer container = createCollection(client, databaseId, getCollectionDefinition());
 
             TestItem testItem = TestItem.createNewItem();
             container.createItem(testItem).block();
