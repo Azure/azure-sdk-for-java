@@ -60,11 +60,11 @@ public final class ClustersDetachFollowerDatabasesMockTests {
         manager
             .clusters()
             .detachFollowerDatabases(
-                "xscyhwzdgirujbz",
-                "omvzzbtd",
+                "r",
+                "fukiscvwmzhw",
                 new FollowerDatabaseDefinitionInner()
-                    .withClusterResourceId("qvpn")
-                    .withAttachedDatabaseConfigurationName("yujviylwdshfssn"),
+                    .withClusterResourceId("lefaxvxilcbtgn")
+                    .withAttachedDatabaseConfigurationName("nzeyqxtjj"),
                 com.azure.core.util.Context.NONE);
     }
 }

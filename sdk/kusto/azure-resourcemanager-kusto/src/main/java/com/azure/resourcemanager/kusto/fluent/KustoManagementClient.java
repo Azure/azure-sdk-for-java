@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for KustoManagementClient class. */
 public interface KustoManagementClient {
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -86,6 +85,13 @@ public interface KustoManagementClient {
      * @return the ManagedPrivateEndpointsClient object.
      */
     ManagedPrivateEndpointsClient getManagedPrivateEndpoints();
+
+    /**
+     * Gets the DatabaseOperationsClient object to access its operations.
+     *
+     * @return the DatabaseOperationsClient object.
+     */
+    DatabaseOperationsClient getDatabaseOperations();
 
     /**
      * Gets the DatabasePrincipalAssignmentsClient object to access its operations.

@@ -15,26 +15,26 @@ public final class TargetDetailsTests {
         TargetDetails model =
             BinaryData
                 .fromString(
-                    "{\"filePrefix\":\"bnhlmc\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"p\",\"targetResourceArmId\":\"gitvg\"}")
+                    "{\"filePrefix\":\"m\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"gqqqxh\",\"targetResourceArmId\":\"xrxc\"}")
                 .toObject(TargetDetails.class);
-        Assertions.assertEquals("bnhlmc", model.filePrefix());
+        Assertions.assertEquals("m", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("p", model.url());
-        Assertions.assertEquals("gitvg", model.targetResourceArmId());
+        Assertions.assertEquals("gqqqxh", model.url());
+        Assertions.assertEquals("xrxc", model.targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetDetails model =
             new TargetDetails()
-                .withFilePrefix("bnhlmc")
+                .withFilePrefix("m")
                 .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID)
-                .withUrl("p")
-                .withTargetResourceArmId("gitvg");
+                .withUrl("gqqqxh")
+                .withTargetResourceArmId("xrxc");
         model = BinaryData.fromObject(model).toObject(TargetDetails.class);
-        Assertions.assertEquals("bnhlmc", model.filePrefix());
+        Assertions.assertEquals("m", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("p", model.url());
-        Assertions.assertEquals("gitvg", model.targetResourceArmId());
+        Assertions.assertEquals("gqqqxh", model.url());
+        Assertions.assertEquals("xrxc", model.targetResourceArmId());
     }
 }

@@ -13,7 +13,7 @@ public final class EndpointListTests {
         EndpointList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"tbvpysszdnru\",\"provisioningState\":\"Succeeded\"},\"id\":\"hmuouqfprwzwbn\",\"name\":\"uitnwuiz\",\"type\":\"a\"},{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"ufizuckyf\",\"provisioningState\":\"Succeeded\"},\"id\":\"idf\",\"name\":\"zwdzuh\",\"type\":\"ymwisdkft\"},{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"xmnteiwaop\",\"provisioningState\":\"Succeeded\"},\"id\":\"jcmmxdcufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"}],\"nextLink\":\"wzjeiach\"}")
+                    "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"tyxolniwpwc\",\"provisioningState\":\"Succeeded\"},\"id\":\"fkgiawxk\",\"name\":\"ryplwckbasyypn\",\"type\":\"dhsgcba\"}],\"nextLink\":\"hejkotynqgou\"}")
                 .toObject(EndpointList.class);
     }
 

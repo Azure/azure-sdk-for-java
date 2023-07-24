@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0 (2023-07-20)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Enabled sending telemetry to Azure Application Insights.
+- Added frequency to track the number of times a service method call is made.
 
 ## 1.0.0-beta.1 (2022-02-28)
 

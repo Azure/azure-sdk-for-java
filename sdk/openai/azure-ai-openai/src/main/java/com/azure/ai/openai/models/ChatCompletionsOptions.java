@@ -6,7 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.ai.openai.implementation.models.FunctionCallModelBase;
 import com.azure.ai.openai.implementation.models.FunctionCallPreset;
 import com.azure.ai.openai.implementation.models.FunctionCallPresetFunctionCallModel;
-import com.azure.ai.openai.implementation.models.FunctionDefinition;
 import com.azure.ai.openai.implementation.models.FunctionNameFunctionCallModel;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;

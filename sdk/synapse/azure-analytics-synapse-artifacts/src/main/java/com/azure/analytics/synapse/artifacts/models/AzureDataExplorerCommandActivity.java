@@ -108,6 +108,20 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public AzureDataExplorerCommandActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureDataExplorerCommandActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

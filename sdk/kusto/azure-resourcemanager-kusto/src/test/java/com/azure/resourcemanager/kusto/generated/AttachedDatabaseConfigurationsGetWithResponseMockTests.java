@@ -32,7 +32,7 @@ public final class AttachedDatabaseConfigurationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"tkgdojbmxva\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"de\",\"clusterResourceId\":\"svecuijpxtxs\",\"attachedDatabaseNames\":[\"rtujwsawddjibab\",\"vit\",\"tvtzeexavoxtfg\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[],\"tablesToExclude\":[],\"externalTablesToInclude\":[],\"externalTablesToExclude\":[],\"materializedViewsToInclude\":[],\"materializedViewsToExclude\":[],\"functionsToInclude\":[],\"functionsToExclude\":[]},\"databaseNameOverride\":\"q\",\"databaseNamePrefix\":\"sfj\"},\"id\":\"cbslhhx\",\"name\":\"db\",\"type\":\"vodhtn\"}";
+            "{\"location\":\"pqxpx\",\"properties\":{\"provisioningState\":\"Deleting\",\"databaseName\":\"ngjsaasi\",\"clusterResourceId\":\"xtmkzjvkviir\",\"attachedDatabaseNames\":[\"grwsdp\",\"ra\",\"zvzbglbyv\",\"ctctbrxkjz\"],\"defaultPrincipalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"fmsh\"],\"tablesToExclude\":[\"bkgozxwopdbydpi\",\"qaclnapxbiy\",\"nugj\",\"nfsm\"],\"externalTablesToInclude\":[\"tuxuuyilflq\",\"iquvrehm\",\"njhvsujztc\",\"ytqj\"],\"externalTablesToExclude\":[\"auunfprnjletlx\"],\"materializedViewsToInclude\":[\"pddouifamowaziyn\",\"nlqwzdvpiwhx\",\"szdtmaajquh\"],\"materializedViewsToExclude\":[\"lrjvmtyg\"],\"functionsToInclude\":[\"zyos\",\"spshckfkyjp\",\"sp\"],\"functionsToExclude\":[\"sdfppyogtie\",\"ujtv\"]},\"databaseNameOverride\":\"kcnyx\",\"databaseNamePrefix\":\"munjdxvglnkvx\"},\"id\":\"xpaglqivbgkc\",\"name\":\"khpzvuqdflv\",\"type\":\"niypfpubcpzg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,26 @@ public final class AttachedDatabaseConfigurationsGetWithResponseMockTests {
         AttachedDatabaseConfiguration response =
             manager
                 .attachedDatabaseConfigurations()
-                .getWithResponse("ktp", "ymerteeammxq", "ekkkzd", com.azure.core.util.Context.NONE)
+                .getWithResponse("rdhlis", "gwflq", "mpizru", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("tkgdojbmxva", response.location());
-        Assertions.assertEquals("de", response.databaseName());
-        Assertions.assertEquals("svecuijpxtxs", response.clusterResourceId());
-        Assertions.assertEquals(DefaultPrincipalsModificationKind.UNION, response.defaultPrincipalsModificationKind());
-        Assertions.assertEquals("q", response.databaseNameOverride());
-        Assertions.assertEquals("sfj", response.databaseNamePrefix());
+        Assertions.assertEquals("pqxpx", response.location());
+        Assertions.assertEquals("ngjsaasi", response.databaseName());
+        Assertions.assertEquals("xtmkzjvkviir", response.clusterResourceId());
+        Assertions
+            .assertEquals(DefaultPrincipalsModificationKind.REPLACE, response.defaultPrincipalsModificationKind());
+        Assertions.assertEquals("fmsh", response.tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("bkgozxwopdbydpi", response.tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("tuxuuyilflq", response.tableLevelSharingProperties().externalTablesToInclude().get(0));
+        Assertions
+            .assertEquals("auunfprnjletlx", response.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions
+            .assertEquals(
+                "pddouifamowaziyn", response.tableLevelSharingProperties().materializedViewsToInclude().get(0));
+        Assertions.assertEquals("lrjvmtyg", response.tableLevelSharingProperties().materializedViewsToExclude().get(0));
+        Assertions.assertEquals("zyos", response.tableLevelSharingProperties().functionsToInclude().get(0));
+        Assertions.assertEquals("sdfppyogtie", response.tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("kcnyx", response.databaseNameOverride());
+        Assertions.assertEquals("munjdxvglnkvx", response.databaseNamePrefix());
     }
 }
