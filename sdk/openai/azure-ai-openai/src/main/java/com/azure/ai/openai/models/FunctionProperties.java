@@ -45,7 +45,7 @@ public final class FunctionProperties {
      * Can't creates an instance of FunctionProperties class from constructor.
      * Instance will be created using FunctionPropertiesBuilder.
      *
-     * @param builder
+     * @param builder FunctionPropertiesBuilder
      */
     private FunctionProperties(FunctionPropertiesBuilder builder) {
         this.type = builder.type;
@@ -99,7 +99,7 @@ public final class FunctionProperties {
         /**
          * Set type of property.
          *
-         * @param type
+         * @param type Type of property.
          * @return FunctionPropertiesBuilder
          */
         public FunctionPropertiesBuilder type(String type) {
@@ -110,7 +110,7 @@ public final class FunctionProperties {
         /**
          * Set description of property.
          *
-         * @param description
+         * @param description Description of property.
          * @return FunctionPropertiesBuilder
          */
         public FunctionPropertiesBuilder description(String description) {
@@ -121,7 +121,7 @@ public final class FunctionProperties {
         /**
          * Set enum values for the property.
          *
-         * @param enumString
+         * @param enumString Enum values for the property.
          * @return FunctionPropertiesBuilder
          */
         public FunctionPropertiesBuilder enumString(List<String> enumString) {

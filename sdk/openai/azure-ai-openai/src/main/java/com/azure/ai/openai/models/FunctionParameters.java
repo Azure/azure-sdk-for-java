@@ -46,7 +46,7 @@ public final class FunctionParameters {
      * Can't creates an instance of FunctionParameters class from constructor.
      * Instance will be created using FunctionParametersBuilder.
      *
-     * @param builder
+     * @param builder FunctionParametersBuilder
      */
     private FunctionParameters(FunctionParametersBuilder builder) {
         this.type = builder.type;
@@ -97,7 +97,7 @@ public final class FunctionParameters {
         /**
          * Set type of parameter.
          *
-         * @param type
+         * @param type Type of parameter. 
          * @return FunctionParametersBuilder instance
          */
         public FunctionParametersBuilder type(String type) {
@@ -108,7 +108,7 @@ public final class FunctionParameters {
         /**
          * Set properties of parameter.
          *
-         * @param properties
+         * @param properties Properties of parameter.
          * @return FunctionParametersBuilder instance
          */
         public FunctionParametersBuilder properties(Map<String, FunctionProperties> properties) {
@@ -119,7 +119,7 @@ public final class FunctionParameters {
         /**
          * Set required properties.
          *
-         * @param required
+         * @param required List of required properties.
          * @return FunctionParametersBuilder instance
          */
         public FunctionParametersBuilder required(List<String> required) {
