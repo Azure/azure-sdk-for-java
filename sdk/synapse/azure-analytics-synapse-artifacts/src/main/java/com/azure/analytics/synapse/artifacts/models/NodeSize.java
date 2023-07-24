@@ -32,6 +32,14 @@ public final class NodeSize extends ExpandableStringEnum<NodeSize> {
     public static final NodeSize XXXLARGE = fromString("XXXLarge");
 
     /**
+     * Creates a new instance of NodeSize value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NodeSize() {}
+
+    /**
      * Creates or finds a NodeSize from its string representation.
      *
      * @param name a name to look for.

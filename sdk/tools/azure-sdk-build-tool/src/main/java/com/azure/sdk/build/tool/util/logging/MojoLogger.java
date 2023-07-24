@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.util.logging;
 
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
@@ -6,15 +9,19 @@ import org.apache.maven.plugin.logging.Log;
 /**
  * An implementation of {@link Logger} that uses the Maven plugin logger.
  */
-public class MojoLogger implements Logger {
-    private static MojoLogger INSTANCE;
-    private Log mojoLog;
+public final class MojoLogger implements Logger {
+    private static MojoLogger instance;
+    private final Log mojoLog;
 
+    /**
+     * Returns the singleton instance of {@link MojoLogger}.
+     * @return The singleton instance of {@link MojoLogger}.
+     */
     public static Logger getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MojoLogger(AzureSdkMojo.MOJO.getLog());
+        if (instance == null) {
+            instance = new MojoLogger(AzureSdkMojo.getMojo().getLog());
         }
-        return INSTANCE;
+        return instance;
     }
 
     private MojoLogger(Log mojoLog) {

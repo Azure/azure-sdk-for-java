@@ -17,6 +17,14 @@ public final class SalesforceSinkWriteBehavior extends ExpandableStringEnum<Sale
     public static final SalesforceSinkWriteBehavior UPSERT = fromString("Upsert");
 
     /**
+     * Creates a new instance of SalesforceSinkWriteBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SalesforceSinkWriteBehavior() {}
+
+    /**
      * Creates or finds a SalesforceSinkWriteBehavior from its string representation.
      *
      * @param name a name to look for.

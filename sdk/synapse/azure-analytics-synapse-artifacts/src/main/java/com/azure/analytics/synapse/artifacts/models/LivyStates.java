@@ -44,6 +44,14 @@ public final class LivyStates extends ExpandableStringEnum<LivyStates> {
     public static final LivyStates RECOVERING = fromString("recovering");
 
     /**
+     * Creates a new instance of LivyStates value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LivyStates() {}
+
+    /**
      * Creates or finds a LivyStates from its string representation.
      *
      * @param name a name to look for.

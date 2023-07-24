@@ -7,19 +7,18 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ResourceId;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceIdTests {
-    @Test
-    public void testDeserialize() {
-        ResourceId model = BinaryData.fromString("{\"id\":\"hm\"}").toObject(ResourceId.class);
-        Assertions.assertEquals("hm", model.id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceId model = BinaryData.fromString("{\"id\":\"idokgjlj\"}").toObject(ResourceId.class);
+        Assertions.assertEquals("idokgjlj", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceId model = new ResourceId().withId("hm");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceId model = new ResourceId().withId("idokgjlj");
         model = BinaryData.fromObject(model).toObject(ResourceId.class);
-        Assertions.assertEquals("hm", model.id());
+        Assertions.assertEquals("idokgjlj", model.id());
     }
 }
