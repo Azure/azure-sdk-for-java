@@ -161,7 +161,7 @@ public final class ServiceBusAdministrationAsyncClient {
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
 
-        this.converter = new AdministrationModelConverter(LOGGER);
+        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint(), serializer);
     }
 
     /**
@@ -2371,92 +2371,4 @@ public final class ServiceBusAdministrationAsyncClient {
             });
     }
 
-    /**
-     * Checks if the given entity is an absolute URL, if so return it.
-     * Otherwise, construct the URL from the given entity and return that.
-     *
-     * @param entity : entity to forward messages to.
-     *
-     * @return Forward to Entity represented as an absolute URL
-     */
-    private String getAbsoluteUrlFromEntity(String entity) {
-        // Check if passed entity is an absolute URL
-        try {
-            URL url = new URL(entity);
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // Entity is not a URL, continue.
-        }
-        UrlBuilder urlBuilder = new UrlBuilder();
-        urlBuilder.setScheme("https");
-        urlBuilder.setHost(managementClient.getEndpoint());
-        urlBuilder.setPath(entity);
-
-        try {
-            URL url = urlBuilder.toUrl();
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // This is not expected.
-            LOGGER.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'",
-                managementClient.getEndpoint(), entity);
-            LOGGER.logThrowableAsError(ex);
-        }
-        return null;
-    }
-
-    /**
-     * Maps an exception from the ATOM APIs to its associated {@link HttpResponseException}.
-     *
-     * @param exception Exception from the ATOM API.
-     *
-     * @return The corresponding {@link HttpResponseException} or {@code throwable} if it is not an instance of {@link
-     *     ServiceBusManagementErrorException}.
-     */
-    private static Throwable mapException(Throwable exception) {
-        if (!(exception instanceof ServiceBusManagementErrorException)) {
-            return exception;
-        }
-
-        final ServiceBusManagementErrorException managementError = ((ServiceBusManagementErrorException) exception);
-        final ServiceBusManagementError error = managementError.getValue();
-        final HttpResponse errorHttpResponse = managementError.getResponse();
-
-        final int statusCode = error != null && error.getCode() != null
-            ? error.getCode()
-            : errorHttpResponse.getStatusCode();
-        final String errorDetail = error != null && error.getDetail() != null
-            ? error.getDetail()
-            : managementError.getMessage();
-
-        switch (statusCode) {
-            case 401:
-                return new ClientAuthenticationException(errorDetail, managementError.getResponse(), exception);
-            case 404:
-                return new ResourceNotFoundException(errorDetail, managementError.getResponse(), exception);
-            case 409:
-                return new ResourceExistsException(errorDetail, managementError.getResponse(), exception);
-            case 412:
-                return new ResourceModifiedException(errorDetail, managementError.getResponse(), exception);
-            default:
-                return new HttpResponseException(errorDetail, managementError.getResponse(), exception);
-        }
-    }
-
-    private String getForwardDlqEntity(String forwardDlqToEntity, Context contextWithHeaders) {
-        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
-            converter.addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
-                forwardDlqToEntity, contextWithHeaders);
-            return getAbsoluteUrlFromEntity(forwardDlqToEntity);
-        }
-        return null;
-    }
-
-    private String getForwardToEntity(String forwardToEntity, Context contextWithHeaders) {
-        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
-            converter.addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
-                forwardToEntity, contextWithHeaders);
-            return getAbsoluteUrlFromEntity(forwardToEntity);
-        }
-        return null;
-    }
 }

@@ -3,6 +3,11 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -13,8 +18,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContentImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyContentImpl;
@@ -32,6 +39,8 @@ import com.azure.messaging.servicebus.administration.implementation.models.RuleD
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
+import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
@@ -59,6 +68,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
 /**
  * Package-private class for transformations from public models to internal implementation for communication with
@@ -68,9 +79,14 @@ class AdministrationModelConverter {
     static final String CONTENT_TYPE = "application/xml";
 
     private final ClientLogger logger;
+    private final String serviceBusNamespace;
+    private final ServiceBusManagementSerializer serializer;
 
-    AdministrationModelConverter(ClientLogger logger) {
+    AdministrationModelConverter(ClientLogger logger, String serviceBusNamespace,
+        ServiceBusManagementSerializer serializer) {
         this.logger = logger;
+        this.serviceBusNamespace = serviceBusNamespace;
+        this.serializer = serializer;
     }
 
     /**
@@ -281,6 +297,128 @@ class AdministrationModelConverter {
     Context getContext(Context context) {
         context = context == null ? Context.NONE : context;
         return context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+    }
+
+    /**
+     * Checks if the given entity is an absolute URL, if so return it. Otherwise, construct the URL from the given
+     * entity and return that.
+     *
+     * @param entity : entity to forward messages to.
+     *
+     * @return Forward to Entity represented as an absolute URL
+     */
+    String getAbsoluteUrlFromEntity(String entity) {
+        // Check if passed entity is an absolute URL
+        try {
+            URL url = new URL(entity);
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // Entity is not a URL, continue.
+        }
+        UrlBuilder urlBuilder = new UrlBuilder();
+        urlBuilder.setScheme("https");
+        urlBuilder.setHost(serviceBusNamespace);
+        urlBuilder.setPath(entity);
+
+        try {
+            URL url = urlBuilder.toUrl();
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // This is not expected.
+            logger.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'", serviceBusNamespace,
+                entity);
+            logger.logThrowableAsError(ex);
+        }
+        return null;
+    }
+
+    /**
+     * Checks if the given entity is an absolute URL, if so return it.
+     * Otherwise, construct the URL from the given entity and return that.
+     *
+     * @param entity : entity to forward messages to.
+     *
+     * @return Forward to Entity represented as an absolute URL
+     */
+    String getForwardDlqEntity(String entity) {
+        // Check if passed entity is an absolute URL
+        try {
+            URL url = new URL(entity);
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // Entity is not a URL, continue.
+        }
+        UrlBuilder urlBuilder = new UrlBuilder();
+        urlBuilder.setScheme("https");
+        urlBuilder.setHost(serviceBusNamespace);
+        urlBuilder.setPath(entity);
+
+        try {
+            URL url = urlBuilder.toUrl();
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // This is not expected.
+            logger.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'", serviceBusNamespace,
+                entity);
+            logger.logThrowableAsError(ex);
+        }
+        return null;
+    }
+
+    String getForwardDlqEntity(String forwardDlqToEntity, Context contextWithHeaders) {
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            return getAbsoluteUrlFromEntity(forwardDlqToEntity);
+        }
+        return null;
+    }
+
+    String getForwardToEntity(String forwardToEntity, Context contextWithHeaders) {
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            return getAbsoluteUrlFromEntity(forwardToEntity);
+        }
+        return null;
+    }
+
+    /**
+     * Maps an exception from the ATOM APIs to its associated {@link HttpResponseException}.
+     *
+     * @param exception Exception from the ATOM API.
+     *
+     * @return The corresponding {@link HttpResponseException} or {@code throwable} if it is not an instance of {@link
+     *     ServiceBusManagementErrorException}.
+     */
+    static Throwable mapException(Throwable exception) {
+        if (!(exception instanceof ServiceBusManagementErrorException)) {
+            return exception;
+        }
+
+        final ServiceBusManagementErrorException managementError = ((ServiceBusManagementErrorException) exception);
+        final ServiceBusManagementError error = managementError.getValue();
+        final HttpResponse errorHttpResponse = managementError.getResponse();
+
+        final int statusCode = error != null && error.getCode() != null
+            ? error.getCode()
+            : errorHttpResponse.getStatusCode();
+        final String errorDetail = error != null && error.getDetail() != null
+            ? error.getDetail()
+            : managementError.getMessage();
+
+        switch (statusCode) {
+            case 401:
+                return new ClientAuthenticationException(errorDetail, managementError.getResponse(), exception);
+            case 404:
+                return new ResourceNotFoundException(errorDetail, managementError.getResponse(), exception);
+            case 409:
+                return new ResourceExistsException(errorDetail, managementError.getResponse(), exception);
+            case 412:
+                return new ResourceModifiedException(errorDetail, managementError.getResponse(), exception);
+            default:
+                return new HttpResponseException(errorDetail, managementError.getResponse(), exception);
+        }
     }
 
     /**

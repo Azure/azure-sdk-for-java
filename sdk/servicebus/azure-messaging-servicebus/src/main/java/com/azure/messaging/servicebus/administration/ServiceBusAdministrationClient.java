@@ -135,7 +135,7 @@ public final class ServiceBusAdministrationClient {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
-        this.converter = new AdministrationModelConverter(LOGGER);
+        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint(), serializer);
     }
 
     /**
@@ -1779,48 +1779,5 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
                 "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
-    }
-
-    private String getAbsoluteUrlFromEntity(String entity) {
-        // Check if passed entity is an absolute URL
-        try {
-            URL url = new URL(entity);
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // Entity is not a URL, continue.
-        }
-        UrlBuilder urlBuilder = new UrlBuilder();
-        urlBuilder.setScheme("https");
-        urlBuilder.setHost(managementClient.getEndpoint());
-        urlBuilder.setPath(entity);
-
-        try {
-            URL url = urlBuilder.toUrl();
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // This is not expected.
-            LOGGER.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'",
-                managementClient.getEndpoint(), entity);
-            LOGGER.logThrowableAsError(ex);
-        }
-        return null;
-    }
-
-    private String getForwardDlqEntity(String forwardDlqToEntity, Context contextWithHeaders) {
-        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
-            converter.addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
-                forwardDlqToEntity, contextWithHeaders);
-            return getAbsoluteUrlFromEntity(forwardDlqToEntity);
-        }
-        return null;
-    }
-
-    private String getForwardToEntity(String forwardToEntity, Context contextWithHeaders) {
-        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
-            converter.addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
-                forwardToEntity, contextWithHeaders);
-            return getAbsoluteUrlFromEntity(forwardToEntity);
-        }
-        return null;
     }
 }
