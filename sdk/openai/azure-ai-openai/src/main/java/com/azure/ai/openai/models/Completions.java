@@ -7,6 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
@@ -22,14 +25,6 @@ public final class Completions {
     @Generated
     @JsonProperty(value = "id")
     private String id;
-
-    /*
-     * The first timestamp associated with generation activity for this completions response,
-     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-     */
-    @Generated
-    @JsonProperty(value = "created")
-    private int created;
 
     /*
      * The collection of completions choices associated with this completions response.
@@ -48,27 +43,6 @@ public final class Completions {
     private CompletionsUsage usage;
 
     /**
-     * Creates an instance of Completions class.
-     *
-     * @param id the id value to set.
-     * @param created the created value to set.
-     * @param choices the choices value to set.
-     * @param usage the usage value to set.
-     */
-    @Generated
-    @JsonCreator
-    private Completions(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") int created,
-            @JsonProperty(value = "choices") List<Choice> choices,
-            @JsonProperty(value = "usage") CompletionsUsage usage) {
-        this.id = id;
-        this.created = created;
-        this.choices = choices;
-        this.usage = usage;
-    }
-
-    /**
      * Get the id property: A unique identifier associated with this completions response.
      *
      * @return the id value.
@@ -76,17 +50,6 @@ public final class Completions {
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the created property: The first timestamp associated with generation activity for this completions response,
-     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
-     *
-     * @return the created value.
-     */
-    @Generated
-    public int getCreated() {
-        return this.created;
     }
 
     /**
@@ -129,5 +92,50 @@ public final class Completions {
     @Generated
     public List<PromptFilterResult> getPromptFilterResults() {
         return this.promptFilterResults;
+    }
+
+    /*
+     * The first timestamp associated with generation activity for this completions response,
+     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
+     */
+    @Generated
+    @JsonProperty(value = "created")
+    private long createdAt;
+
+    /**
+     * Creates an instance of Completions class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param choices the choices value to set.
+     * @param usage the usage value to set.
+     */
+    @Generated
+    private Completions(String id, OffsetDateTime createdAt, List<Choice> choices, CompletionsUsage usage) {
+        this.id = id;
+        this.createdAt = createdAt.toEpochSecond();
+        this.choices = choices;
+        this.usage = usage;
+    }
+
+    @Generated
+    @JsonCreator
+    private Completions(
+            @JsonProperty(value = "id") String id,
+            @JsonProperty(value = "created") long createdAt,
+            @JsonProperty(value = "choices") List<Choice> choices,
+            @JsonProperty(value = "usage") CompletionsUsage usage) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
+    }
+
+    /**
+     * Get the createdAt property: The first timestamp associated with generation activity for this completions
+     * response, represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
+     *
+     * @return the createdAt value.
+     */
+    @Generated
+    public OffsetDateTime getCreatedAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
 }

@@ -22,7 +22,7 @@ public final class ExpressRouteConnectionInformation {
      * Authorization key for the circuit, must be of type Microsoft.Network/expressRouteCircuits/authorizations. The
      * Auth Key is a mandatory attribute.
      */
-    @JsonProperty(value = "expressRouteAuthorizationKey", required = true)
+    @JsonProperty(value = "expressRouteAuthorizationKey")
     private String expressRouteAuthorizationKey;
 
     /** Creates an instance of ExpressRouteConnectionInformation class. */

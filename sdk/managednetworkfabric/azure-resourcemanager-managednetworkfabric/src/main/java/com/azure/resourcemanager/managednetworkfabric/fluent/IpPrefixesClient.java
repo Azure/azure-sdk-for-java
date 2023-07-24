@@ -27,7 +27,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(
@@ -45,7 +45,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(
@@ -62,7 +62,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpPrefixInner create(String resourceGroupName, String ipPrefixName, IpPrefixInner body);
@@ -79,7 +79,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpPrefixInner create(String resourceGroupName, String ipPrefixName, IpPrefixInner body, Context context);
@@ -95,7 +95,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response}.
+     * @return the IP Prefix resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpPrefixInner> getByResourceGroupWithResponse(
@@ -111,7 +111,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpPrefixInner getByResourceGroup(String resourceGroupName, String ipPrefixName);
@@ -127,7 +127,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(
@@ -145,7 +145,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(
@@ -162,7 +162,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpPrefixInner update(String resourceGroupName, String ipPrefixName, IpPrefixPatch body);
@@ -179,7 +179,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpPrefixInner update(String resourceGroupName, String ipPrefixName, IpPrefixPatch body, Context context);
@@ -253,7 +253,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpPrefixInner> listByResourceGroup(String resourceGroupName);
@@ -268,7 +268,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpPrefixInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -280,7 +280,7 @@ public interface IpPrefixesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpPrefixInner> list();
@@ -294,7 +294,7 @@ public interface IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpPrefixInner> list(Context context);

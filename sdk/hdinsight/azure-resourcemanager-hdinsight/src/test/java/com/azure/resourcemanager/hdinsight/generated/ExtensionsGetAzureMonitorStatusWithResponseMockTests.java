@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.AzureMonitorResponse;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ExtensionsGetAzureMonitorStatusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"clusterMonitoringEnabled\":true,\"workspaceId\":\"iuubwefqsf\",\"selectedConfigurations\":{\"configurationVersion\":\"qtferrqwexjkmf\",\"globalConfigurations\":{\"abtqwpwyawbzasqb\":\"jwogqqnobpudc\",\"kyexaoguyaipi\":\"clj\",\"um\":\"sdaultxij\"},\"tableList\":[]}}";
+            "{\"clusterMonitoringEnabled\":true,\"workspaceId\":\"khvuhxepmrutz\",\"selectedConfigurations\":{\"configurationVersion\":\"aobn\",\"globalConfigurations\":{\"ywart\":\"jdjltymkmvgui\",\"j\":\"pphkixkykxds\",\"kkflrmymyincqlhr\":\"emmucfxh\"},\"tableList\":[{\"name\":\"lmiiiovg\"},{\"name\":\"gxuugqkctotio\"},{\"name\":\"xteqdptjgwdtg\"},{\"name\":\"ranblwphqlkccu\"}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,13 +60,15 @@ public final class ExtensionsGetAzureMonitorStatusWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureMonitorResponse response =
-            manager.extensions().getAzureMonitorStatusWithResponse("hahzvechndbnwi", "hol", Context.NONE).getValue();
+            manager
+                .extensions()
+                .getAzureMonitorStatusWithResponse("fsxzecp", "xw", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals(true, response.clusterMonitoringEnabled());
-        Assertions.assertEquals("iuubwefqsf", response.workspaceId());
-        Assertions.assertEquals("qtferrqwexjkmf", response.selectedConfigurations().configurationVersion());
-        Assertions
-            .assertEquals(
-                "jwogqqnobpudc", response.selectedConfigurations().globalConfigurations().get("abtqwpwyawbzasqb"));
+        Assertions.assertEquals("khvuhxepmrutz", response.workspaceId());
+        Assertions.assertEquals("aobn", response.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("jdjltymkmvgui", response.selectedConfigurations().globalConfigurations().get("ywart"));
+        Assertions.assertEquals("lmiiiovg", response.selectedConfigurations().tableList().get(0).name());
     }
 }

@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/iotfirmwaredefense/ci.yml
+      - sdk/iotfirmwaredefense/azure-resourcemanager-iotfirmwaredefense/
+    exclude:
+      - sdk/iotfirmwaredefense/pom.xml
+      - sdk/iotfirmwaredefense/azure-resourcemanager-iotfirmwaredefense/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/iotfirmwaredefense/ci.yml
+      - sdk/iotfirmwaredefense/azure-resourcemanager-iotfirmwaredefense/
+    exclude:
+      - sdk/iotfirmwaredefense/pom.xml
+      - sdk/iotfirmwaredefense/azure-resourcemanager-iotfirmwaredefense/pom.xml
+
+parameters:
+  - name: release_azureresourcemanageriotfirmwaredefense
+    displayName: azure-resourcemanager-iotfirmwaredefense
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: iotfirmwaredefense
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-iotfirmwaredefense
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageriotfirmwaredefense
+        releaseInBatch: ${{ parameters.release_azureresourcemanageriotfirmwaredefense }}

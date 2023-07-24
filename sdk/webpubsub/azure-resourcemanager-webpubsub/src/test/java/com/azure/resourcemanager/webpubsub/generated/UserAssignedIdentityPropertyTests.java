@@ -12,7 +12,7 @@ public final class UserAssignedIdentityPropertyTests {
     public void testDeserialize() throws Exception {
         UserAssignedIdentityProperty model =
             BinaryData
-                .fromString("{\"principalId\":\"vbvmeu\",\"clientId\":\"ivyhzceuojgjrwju\"}")
+                .fromString("{\"principalId\":\"rfdwoyu\",\"clientId\":\"ziuiefozbhdm\"}")
                 .toObject(UserAssignedIdentityProperty.class);
     }
 

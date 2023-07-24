@@ -12,6 +12,7 @@ import com.azure.resourcemanager.webpubsub.models.ManagedIdentityType;
 import com.azure.resourcemanager.webpubsub.models.NetworkAcl;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointAcl;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.ServiceKind;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubRequestType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
@@ -23,7 +24,7 @@ import java.util.Map;
 /** Samples for WebPubSub CreateOrUpdate. */
 public final class WebPubSubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSub_CreateOrUpdate.
@@ -36,8 +37,9 @@ public final class WebPubSubCreateOrUpdateSamples {
             .define("myWebPubSubService")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
-            .withTags(mapOf("key1", "value1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
+            .withKind(ServiceKind.WEB_PUB_SUB)
             .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED))
             .withTls(new WebPubSubTlsSettings().withClientCertEnabled(false))
             .withLiveTraceConfiguration(

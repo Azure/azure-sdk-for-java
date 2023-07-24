@@ -10,16 +10,16 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.L2IsolationDomainsClient;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ArpPropertiesInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationDomainInner;
-import com.azure.resourcemanager.managednetworkfabric.models.ArpProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomain;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomains;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import java.util.Collections;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 
 public final class L2IsolationDomainsImpl implements L2IsolationDomains {
     private static final ClientLogger LOGGER = new ClientLogger(L2IsolationDomainsImpl.class);
@@ -68,71 +68,68 @@ public final class L2IsolationDomainsImpl implements L2IsolationDomains {
         this.serviceClient().delete(resourceGroupName, l2IsolationDomainName, context);
     }
 
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body) {
-        this.serviceClient().updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body);
-    }
-
-    public void updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        this.serviceClient().updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body, context);
-    }
-
-    public void clearArpTable(String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        this.serviceClient().clearArpTable(resourceGroupName, l2IsolationDomainName, body);
-    }
-
-    public void clearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        this.serviceClient().clearArpTable(resourceGroupName, l2IsolationDomainName, body, context);
-    }
-
-    public void clearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body) {
-        this.serviceClient().clearNeighborTable(resourceGroupName, l2IsolationDomainName, body);
-    }
-
-    public void clearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context) {
-        this.serviceClient().clearNeighborTable(resourceGroupName, l2IsolationDomainName, body, context);
-    }
-
-    public Map<String, ArpProperties> getArpEntries(String resourceGroupName, String l2IsolationDomainName) {
-        Map<String, ArpPropertiesInner> inner =
-            this.serviceClient().getArpEntries(resourceGroupName, l2IsolationDomainName);
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body);
         if (inner != null) {
-            return Collections
-                .unmodifiableMap(
-                    inner
-                        .entrySet()
-                        .stream()
-                        .collect(
-                            Collectors
-                                .toMap(
-                                    Map.Entry::getKey,
-                                    inner1 -> new ArpPropertiesImpl(inner1.getValue(), this.manager()))));
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
         } else {
-            return Collections.emptyMap();
+            return null;
         }
     }
 
-    public Map<String, ArpProperties> getArpEntries(
-        String resourceGroupName, String l2IsolationDomainName, Context context) {
-        Map<String, ArpPropertiesInner> inner =
-            this.serviceClient().getArpEntries(resourceGroupName, l2IsolationDomainName, context);
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, l2IsolationDomainName, body, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableMap(
-                    inner
-                        .entrySet()
-                        .stream()
-                        .collect(
-                            Collectors
-                                .toMap(
-                                    Map.Entry::getKey,
-                                    inner1 -> new ArpPropertiesImpl(inner1.getValue(), this.manager()))));
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
         } else {
-            return Collections.emptyMap();
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l2IsolationDomainName) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, l2IsolationDomainName);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String l2IsolationDomainName, Context context) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, l2IsolationDomainName, context);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String l2IsolationDomainName) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, l2IsolationDomainName);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String l2IsolationDomainName, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, l2IsolationDomainName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
         }
     }
 

@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabri
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of NetworkFabricSkus. */
+/** List of Network Fabric SKUs. */
 @Fluent
 public final class NetworkFabricSkusListResult {
     /*
-     * List of NetworkFabricSku resources.
+     * List of Network Fabric SKU resources.
      */
     @JsonProperty(value = "value")
     private List<NetworkFabricSkuInner> value;
@@ -29,7 +29,7 @@ public final class NetworkFabricSkusListResult {
     }
 
     /**
-     * Get the value property: List of NetworkFabricSku resources.
+     * Get the value property: List of Network Fabric SKU resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class NetworkFabricSkusListResult {
     }
 
     /**
-     * Set the value property: List of NetworkFabricSku resources.
+     * Set the value property: List of Network Fabric SKU resources.
      *
      * @param value the value value to set.
      * @return the NetworkFabricSkusListResult object itself.

@@ -7,24 +7,25 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
-import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
-/** The L3IsolationDomain resource definition. */
+/** The L3 Isolation Domain resource definition. */
 @Fluent
 public final class L3IsolationDomainInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
-    private L3IsolationDomainProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private L3IsolationDomainProperties innerProperties = new L3IsolationDomainProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -69,7 +70,7 @@ public final class L3IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the networkFabricId property: Network Fabric ARM resource id.
+     * Get the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @return the networkFabricId value.
      */
@@ -78,7 +79,7 @@ public final class L3IsolationDomainInner extends Resource {
     }
 
     /**
-     * Set the networkFabricId property: Network Fabric ARM resource id.
+     * Set the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @param networkFabricId the networkFabricId value to set.
      * @return the L3IsolationDomainInner object itself.
@@ -92,41 +93,30 @@ public final class L3IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the disabledOnResources property: List of resources the L3 Isolation Domain is disabled on. Can be either
-     * entire NetworkFabric or NetworkRack.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the disabledOnResources value.
+     * @return the configurationState value.
      */
-    public List<String> disabledOnResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().disabledOnResources();
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
     }
 
     /**
-     * Get the administrativeState property: Administrative state of the IsolationDomain. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
-    }
-
-    /**
-     * Get the optionBDisabledOnResources property: List of resources the OptionB is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the optionBDisabledOnResources value.
-     */
-    public List<String> optionBDisabledOnResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().optionBDisabledOnResources();
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
     }
 
     /**
@@ -177,7 +167,7 @@ public final class L3IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Get the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @return the aggregateRouteConfiguration value.
      */
@@ -186,7 +176,7 @@ public final class L3IsolationDomainInner extends Resource {
     }
 
     /**
-     * Set the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Set the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainInner object itself.
@@ -201,34 +191,11 @@ public final class L3IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the description property: L3 Isolation Domain description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: L3 Isolation Domain description.
-     *
-     * @param description the description value to set.
-     * @return the L3IsolationDomainInner object itself.
-     */
-    public L3IsolationDomainInner withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new L3IsolationDomainProperties();
-        }
-        this.innerProperties().withDescription(description);
-        return this;
-    }
-
-    /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
      *
      * @return the connectedSubnetRoutePolicy value.
      */
-    public L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
+    public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
         return this.innerProperties() == null ? null : this.innerProperties().connectedSubnetRoutePolicy();
     }
 
@@ -239,7 +206,7 @@ public final class L3IsolationDomainInner extends Resource {
      * @return the L3IsolationDomainInner object itself.
      */
     public L3IsolationDomainInner withConnectedSubnetRoutePolicy(
-        L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainProperties();
         }
@@ -276,8 +243,15 @@ public final class L3IsolationDomainInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model L3IsolationDomainInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(L3IsolationDomainInner.class);
 }

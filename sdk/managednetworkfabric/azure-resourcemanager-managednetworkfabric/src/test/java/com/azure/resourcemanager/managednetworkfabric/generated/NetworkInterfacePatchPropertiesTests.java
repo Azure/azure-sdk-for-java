@@ -12,16 +12,14 @@ public final class NetworkInterfacePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfacePatchProperties model =
-            BinaryData
-                .fromString("{\"annotation\":\"hwagohbuffkmrqe\"}")
-                .toObject(NetworkInterfacePatchProperties.class);
-        Assertions.assertEquals("hwagohbuffkmrqe", model.annotation());
+            BinaryData.fromString("{\"annotation\":\"yqhfnkv\"}").toObject(NetworkInterfacePatchProperties.class);
+        Assertions.assertEquals("yqhfnkv", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfacePatchProperties model = new NetworkInterfacePatchProperties().withAnnotation("hwagohbuffkmrqe");
+        NetworkInterfacePatchProperties model = new NetworkInterfacePatchProperties().withAnnotation("yqhfnkv");
         model = BinaryData.fromObject(model).toObject(NetworkInterfacePatchProperties.class);
-        Assertions.assertEquals("hwagohbuffkmrqe", model.annotation());
+        Assertions.assertEquals("yqhfnkv", model.annotation());
     }
 }

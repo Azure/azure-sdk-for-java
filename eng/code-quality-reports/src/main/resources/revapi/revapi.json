@@ -277,6 +277,16 @@
           "new": ".* com.azure.security.attestation.*attestTpm.*"
         },
         {
+          "code": "java.annotation.added",
+          "new": "class com.azure.cosmos.models.ChangeFeedMetaData",
+          "justification": "Fixes a bug to deserilize the conflictResolutionTimestamp Instant object."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
+          "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
+        },
+        {
           "code": "java.method.returnTypeChanged",
           "old": "method com.azure.resourcemanager.compute.models.StorageAccountType com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::storageAccountType()",
           "new": "method com.azure.resourcemanager.compute.models.EdgeZoneStorageAccountType com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::storageAccountType()",
