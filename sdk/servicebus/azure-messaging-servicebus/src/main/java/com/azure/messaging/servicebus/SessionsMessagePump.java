@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -146,8 +147,8 @@ final class SessionsMessagePump implements AsyncCloseable {
             if (!rollingReceiversRef.compareAndSet(EMPTY, rollingReceivers)) {
                 // A concurrent call already began the pumping, lets cleanup and throw.
                 for (RollingSessionReceiver rollingReceiver : rollingReceivers) {
-                    // No AmqpLinks were created or associated wire calls were made at this point. So the below closeAsync()
-                    // effectively runs synchronously, disposing the Scheduler associated with each RollingSessionReceiver.
+                    // No AmqpLinks were created or associated wire calls were made at this point. So the closeAsync()
+                    // calls runs synchronously, disposing the Scheduler associated with each RollingSessionReceiver.
                     rollingReceiver.closeAsync().subscribe();
                 }
                 throwIfTerminatedOrInitialized(rollingReceiversRef.get());
@@ -322,12 +323,12 @@ final class SessionsMessagePump implements AsyncCloseable {
 
         private Mono<Void> closeAsync(TerminationReason reason) {
             logger.atInfo().log("Roller terminated. Reason:" + reason);
-            final Mono<Void> closesLinkStream = sessionLinkStream.closeAsync();
+            sessionLinkStream.close();
             final Mono<Void> closesState = Mono.defer(() -> {
                 final State<ServiceBusSessionReactorReceiver> state = super.getAndSet(TERMINATED);
                 return state.closeAsync();
             });
-            return Flux.concatDelayError(closesLinkStream, closesState)
+            return closesState
                 .doFinally(__ -> {
                     workerScheduler.dispose();
                 }).then();
@@ -427,27 +428,17 @@ final class SessionsMessagePump implements AsyncCloseable {
             }
         }
 
-        private static final class SessionLinkStream extends AtomicReference<State<ServiceBusReceiveLink>> {
-            private static final State<ServiceBusReceiveLink> TERMINATED = State.terminated();
+        private static final class SessionLinkStream extends AtomicBoolean {
             private final Mono<ServiceBusReceiveLink> nextSessionLink;
 
             SessionLinkStream(Mono<ServiceBusReceiveLink> nextSessionLink) {
-                super(null);
+                super(false);
                 this.nextSessionLink = Mono.defer(() -> {
-                    final State<ServiceBusReceiveLink> lastState = super.get();
-                    return lastState == TERMINATED
-                        ? Mono.error(new TerminatedException("session-link-stream"))
-                        : nextSessionLink;
+                    final boolean isTerminated = super.get();
+                    return isTerminated ? Mono.error(new TerminatedException("session-link-stream")) : nextSessionLink;
                 }).map(nextLink -> {
-                    final State<ServiceBusReceiveLink> lastState = super.get();
-                    if (lastState == TERMINATED) {
-                        nextLink.closeAsync().subscribe();
-                        throw new TerminatedException("session-link-stream");
-                    }
-                    // 1. The lastState.receiver already closed; otherwise MessageFlux wouldn't have requested for nextLink.
-                    // 2. See notes on 'RollingSessionReceiver::nextSessionReceiver()' for the possible race between
-                    //    compareAndSet and getAndSet(State.DISPOSED). The same explanation is applicable here.
-                    if (!super.compareAndSet(lastState, new State<>(nextLink))) {
+                    final boolean isTerminated = super.get();
+                    if (isTerminated) {
                         nextLink.closeAsync().subscribe();
                         throw new TerminatedException("session-link-stream");
                     }
@@ -464,9 +455,8 @@ final class SessionsMessagePump implements AsyncCloseable {
                     });
             }
 
-            Mono<Void> closeAsync() {
-                final State<ServiceBusReceiveLink> state = super.getAndSet(TERMINATED);
-                return state.closeAsync();
+            void close() {
+                super.set(true); // mark terminated.
             }
 
             private static Flux<ServiceBusReceiveLink> nonEagerRepeat(Mono<ServiceBusReceiveLink> source) {
