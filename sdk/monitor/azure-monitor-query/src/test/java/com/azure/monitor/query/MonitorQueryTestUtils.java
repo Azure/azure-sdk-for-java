@@ -22,7 +22,7 @@ public abstract class MonitorQueryTestUtils {
         + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
         + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
         + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
-        + "range x from 1 to 10 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
+        + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
     public static final HashMap<String, String> ENDPOINTS = new HashMap<String, String>() {
         {

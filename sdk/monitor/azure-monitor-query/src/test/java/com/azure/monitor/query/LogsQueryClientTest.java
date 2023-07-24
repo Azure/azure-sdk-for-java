@@ -13,7 +13,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -253,8 +252,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null,
-            new LogsQueryOptions().setIncludeStatistics(true));
+        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null);
         logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null,
             new LogsQueryOptions().setIncludeStatistics(true));
 
