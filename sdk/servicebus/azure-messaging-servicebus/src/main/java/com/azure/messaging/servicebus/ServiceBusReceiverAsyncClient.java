@@ -237,12 +237,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ConnectionCacheWrapper connectionCacheWrapper;
+    private final boolean isOnV2;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
-    private final ServiceBusSessionManager sessionManager;
+    private final IServiceBusSessionManager sessionManager;
     private final boolean isSessionEnabled;
     private final Semaphore completionLock = new Semaphore(1);
     private final String identifier;
@@ -283,6 +284,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             // Assert the internal invariant for above 'sessionManager = null' i.e, session-unaware call-sites should not set these options.
             throw new IllegalStateException("Session-specific options are not expected to be present on a client for session unaware entity.");
         }
+        this.isOnV2 = this.connectionCacheWrapper.isV2();
         this.isSessionEnabled = false;
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
@@ -299,11 +301,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
-    // Client to work with a session-enabled entity (client to receive from one-session or receive from multiple-sessions).
+    // Client to work with a session-enabled entity (client to receive from one-session (V1, V2) or receive from multiple-sessions (V1)).
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
                                   ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
                                   ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
-                                  ServiceBusSessionManager sessionManager) {
+                                  IServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -315,7 +317,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
+        this.isOnV2 = this.connectionCacheWrapper.isV2();
         this.isSessionEnabled = true;
+        final boolean isV2SessionManager = this.sessionManager instanceof ServiceBusSingleSessionManager;
+        // Once side-by-side support for V1 is no longer needed, we'll directly use the "ServiceBusSingleSessionManager" type
+        // in the constructor and IServiceBusSessionManager interface will be deleted (so excuse the temporary 'I' prefix
+        // used to avoid type conflict with V1 ServiceBusSessionManager, V1 ServiceBusSessionManager will also be deleted
+        // once side-by-side support for V1 is no longer needed).
+        if (isOnV2 ^ isV2SessionManager) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("For V2 Session, the manager should be ServiceBusSingleSessionManager, and ConnectionCache should be on V2."));
+        }
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, renewal -> {
@@ -832,9 +844,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
-        if (connectionCacheWrapper.isV2()) {
+        if (isOnV2) {
             if (isSessionEnabled) {
-                return fluxError(LOGGER, new IllegalStateException("Session-Receive and V2-Stack combination is unexpected."));
+                return sessionReactiveReceiveV2();
             } else {
                 return nonSessionReactiveReceiveV2();
             }
@@ -879,7 +891,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesWithContext(1);
     }
 
-    Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
+    private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
@@ -1455,7 +1467,22 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             }));
 
         Mono<Void> updateDispositionOperation;
-        if (sessionManager != null) {
+        if (isOnV2 && isSessionEnabled) {
+            // 'this.sessionManager': Already validated for non-null & ServiceBusSingleSessionManager type in the Constructor.
+            updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
+                // Unlike V1, in V2, if the lock token cannot be found on the session link, we won't fall back to
+                // 'performOnManagement'. We learned that once the session link is closed, the session is lost, and
+                // settlement cannot be performed on the management node (Same approach in .NET, JS, Go).
+                .then(Mono.fromRunnable(() -> {
+                    LOGGER.atInfo()
+                        .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                        .log("Disposition completed.");
+                    message.setIsSettled();
+                }));
+        } else if (sessionManager != null) {
             updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
                 propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
@@ -1574,7 +1601,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionCacheWrapper.getRetryOptions());
         final ServiceBusAsyncConsumer newConsumer;
-        if (connectionCacheWrapper.isV2()) {
+        if (isOnV2) {
             final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
                 CreditFlowMode.RequestDriven, retryPolicy);
             newConsumer = new ServiceBusAsyncConsumer(linkName, messageFlux, messageSerializer, receiverOptions);
@@ -1716,16 +1743,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     boolean isV2() {
-        return connectionCacheWrapper.isV2();
+        return isOnV2;
     }
 
     Flux<ServiceBusReceivedMessage> nonSessionProcessorReceiveV2() {
-        assert !isSessionEnabled && connectionCacheWrapper.isV2();
+        assert  isOnV2 && !isSessionEnabled;
         return getOrCreateConsumer().receive();
     }
 
-    Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveV2() {
-        assert !isSessionEnabled && connectionCacheWrapper.isV2();
+    private Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveV2() {
+        assert  isOnV2 && !isSessionEnabled;
 
         final boolean enableAutoDisposition = receiverOptions.isEnableAutoComplete();
         final boolean enableAutoLockRenew = receiverOptions.isAutoLockRenewEnabled();
@@ -1742,8 +1769,32 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveV2() {
-        assert !isSessionEnabled && connectionCacheWrapper.isV2();
+        assert  isOnV2 && !isSessionEnabled;
         return getOrCreateConsumer().receive();
+    }
+
+    private Flux<ServiceBusReceivedMessage> sessionReactiveReceiveV2() {
+        assert isOnV2 && isSessionEnabled && sessionManager instanceof ServiceBusSingleSessionManager;
+        final ServiceBusSingleSessionManager singleSessionManager = (ServiceBusSingleSessionManager) sessionManager;
+        // Note: Once side-by-side support for V1 is no longer needed, we'll update the ServiceBusSingleSessionManager::receive()
+        // to return Flux<ServiceBusReceivedMessage> and delete ServiceBusSingleSessionManager.receiveMessages(), which removes
+        // the above casting and type check assertion.
+        final Flux<ServiceBusReceivedMessage> messages = singleSessionManager.receiveMessages();
+        final boolean enableAutoDisposition = receiverOptions.isEnableAutoComplete();
+        if (enableAutoDisposition) {
+            // AutoDisposition(Complete|Abandon) and AutoLockRenew features in Low-Level Reactor Receiver Client are
+            // slated for deprecation.
+            return new AutoDispositionLockRenew(messages, this, true, false, completionLock);
+        } else {
+            return messages;
+        }
+    }
+
+    Flux<ServiceBusReceivedMessage> sessionSyncReceiveV2() {
+        assert isOnV2 && isSessionEnabled && sessionManager instanceof ServiceBusSingleSessionManager;
+        final ServiceBusSingleSessionManager singleSessionManager = (ServiceBusSingleSessionManager) sessionManager;
+        // Note: See the note in sessionReactiveReceiveV2().
+        return singleSessionManager.receiveMessages();
     }
 
     /**

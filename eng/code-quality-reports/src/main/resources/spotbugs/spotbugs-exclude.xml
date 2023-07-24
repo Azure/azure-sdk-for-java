@@ -2710,5 +2710,54 @@
       name="~com\.azure\.messaging\.servicebus\.NonSessionProcessor\$RollingMessagePump"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
+  <!-- False positives -->
+  <Match>
+    <Class
+        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver"/>
+    <Or>
+      <Field name="instrumentation"/>
+      <Field name="logger"/>
+      <Field name="messageFlux"/>
+      <Field name="receiversTracker"/>
+      <Field name="tracer"/>
+      <Field name="managementNode"/>
+      <Field name="serializer"/>
+      <Field name="workerScheduler"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class
+        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$SessionLinkStream"/>
+    <Or>
+      <Field name="nextSessionLink"/>
+      <Field name="sessionReceiver"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class
+        name="~com\.azure\.messaging\.servicebus\.ServiceBusSingleSessionManager\$SessionReceiverStream"/>
+    <Or>
+      <Field name="sessionReceiver"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <!-- The RollingSessionReceiver, SessionLinkStream, $SessionReceiverStream doesn't need to be serializable -->
+  <Match>
+    <Class
+        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$SessionLinkStream"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+        name="~com\.azure\.messaging\.servicebus\.ServiceBusSingleSessionManager\$SessionReceiverStream"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
 
 </FindBugsFilter>

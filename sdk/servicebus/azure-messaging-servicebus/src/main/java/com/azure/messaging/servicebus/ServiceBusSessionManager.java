@@ -50,7 +50,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 /**
  * Package-private class that manages session aware message receiving.
  */
-class ServiceBusSessionManager implements AutoCloseable {
+class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManager {
     // Time to delay before trying to accept another session.
     private static final String TRACKING_ID_KEY = "trackingId";
 
@@ -131,7 +131,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      *
      * @return The name of the link, or {@code null} if there is no open link with that {@code sessionId}.
      */
-    String getLinkName(String sessionId) {
+    public String getLinkName(String sessionId) {
         final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
     }
@@ -150,7 +150,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      *
      * @return A Flux of messages merged from different sessions.
      */
-    Flux<ServiceBusMessageContext> receive() {
+    public Flux<ServiceBusMessageContext> receive() {
         if (!isStarted.getAndSet(true)) {
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
@@ -194,7 +194,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @return {@code true} if the {@code lockToken} was updated on receive link. {@code false} otherwise. This means
      *     there isn't an open link with that {@code sessionId}.
      */
-    Mono<Boolean> updateDisposition(String lockToken, String sessionId,
+    public Mono<Boolean> updateDisposition(String lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
         String deadLetterDescription, ServiceBusTransactionContext transactionContext) {
 
