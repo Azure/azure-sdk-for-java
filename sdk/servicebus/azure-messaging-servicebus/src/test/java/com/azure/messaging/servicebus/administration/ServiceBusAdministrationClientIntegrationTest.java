@@ -4,7 +4,10 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -13,7 +16,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.messaging.servicebus.TestUtils;
-import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -37,6 +39,9 @@ import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperti
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -281,10 +286,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final CreateQueueOptions options = new CreateQueueOptions();
         final ServiceBusAdministrationClient client = getClient();
 
-        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+        ResourceExistsException exception = assertThrows(ResourceExistsException.class,
             () -> client.createQueue(queueName, options),
             "Queue exists exception not thrown when creating a queue with existing name");
-        assertTrue(exception.getMessage().contains("409"));
     }
 
     @Test
@@ -293,10 +297,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String subscriptionName = getSubscriptionBaseName();
         final ServiceBusAdministrationClient client = getClient();
 
-        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+        ResourceExistsException exception = assertThrows(ResourceExistsException.class,
             () -> client.createSubscription(topicName, subscriptionName),
             "Queue exists exception not thrown when creating a queue with existing name");
-        assertTrue(exception.getMessage().contains("409"));
     }
 
     @Test
@@ -491,10 +494,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 10);
 
-        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
             () ->  client.getSubscription(topicName, subscriptionName),
             "Subscription exists! But should not. Incorrect getSubscription behavior");
-        assertTrue(exception.getMessage().contains("Status code 404"));
     }
 
     @Test
@@ -504,6 +506,20 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String subscriptionName = getSubscriptionBaseName();
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
+    }
+
+    @Test
+    void getSubscriptionExistsDoesNotExist() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = "subscription-session-not-exist";
+
+        // Act
+        boolean response = client.getSubscriptionExists(topicName, subscriptionName);
+
+        // Assert
+        assertFalse(response);
     }
 
     @Test
@@ -552,10 +568,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
 
-        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+        ClientAuthenticationException exception = assertThrows(ClientAuthenticationException.class,
             () -> client.getSubscriptionRuntimeProperties(topicName, subscriptionName),
             "Subscription runtime properties accessible by unauthorized client! This should not be possible.");
-        assertTrue(exception.getMessage().contains("Status code 401"));
     }
 
     @Test
@@ -579,7 +594,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(contents.getAction());
         assertTrue(contents.getAction() instanceof EmptyRuleAction);
     }
-
 
     @Test
     void deleteQueue() {
