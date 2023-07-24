@@ -409,7 +409,7 @@ public final class LogsQueryClient {
         Objects.requireNonNull(resourceId, "'resourceId' cannot be null.");
         Objects.requireNonNull(query, "'query' cannot be null.");
 
-        if (resourceId != null && resourceId.startsWith("/")) {
+        if (resourceId.startsWith("/")) {
             resourceId = resourceId.substring(1);
         }
 

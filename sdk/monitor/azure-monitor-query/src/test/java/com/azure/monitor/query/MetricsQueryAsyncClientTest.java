@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
@@ -36,7 +35,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.monitor.query.MonitorQueryTestUtils.METRIC_RESOURCE_URI;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getMetricResourceUri;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,6 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
 
     private MetricsQueryAsyncClient client;
+
+    private String resourceUri;
 
     private static Stream<Arguments> getFilterPredicate() {
         return Arrays.asList(
@@ -84,6 +85,7 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
 
     @BeforeEach
     public void setup() {
+        resourceUri = getMetricResourceUri(interceptorManager.isPlaybackMode());
         MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
@@ -115,7 +117,7 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
     @Test
     public void testMetricsQuery() {
         StepVerifier.create(client
-                        .queryResourceWithResponse(METRIC_RESOURCE_URI, Arrays.asList("SuccessfulRequests"),
+                        .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
                                 new MetricsQueryOptions()
                                         .setMetricNamespace("Microsoft.EventHub/namespaces")
                                         .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
@@ -148,7 +150,7 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
     @MethodSource("getFilterPredicate")
     public void testAggregation(AggregationType aggregationType, Predicate<MetricValue> metricValuePredicate) {
         StepVerifier.create(client
-                        .queryResourceWithResponse(METRIC_RESOURCE_URI, Arrays.asList("SuccessfulRequests"),
+                        .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
                                 new MetricsQueryOptions()
                                         .setMetricNamespace("Microsoft.EventHub/namespaces")
                                         .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
@@ -211,7 +213,7 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
         );
 
         StepVerifier.create(client
-                        .listMetricDefinitions(METRIC_RESOURCE_URI)
+                        .listMetricDefinitions(resourceUri)
                         .collectList())
                 .assertNext(metricDefinitions -> assertTrue(metricDefinitions.stream()
                         .map(MetricDefinition::getName)
@@ -222,7 +224,7 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     public void testMetricsNamespaces() {
-        StepVerifier.create(client.listMetricNamespaces(METRIC_RESOURCE_URI, null).collectList())
+        StepVerifier.create(client.listMetricNamespaces(resourceUri, null).collectList())
                 .assertNext(namespaces -> assertEquals(1, namespaces.size()))
                 .verifyComplete();
     }

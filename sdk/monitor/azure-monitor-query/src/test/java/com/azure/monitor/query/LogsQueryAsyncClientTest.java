@@ -12,7 +12,6 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -37,9 +36,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
-import static com.azure.monitor.query.MonitorQueryTestUtils.LOG_RESOURCE_ID;
-import static com.azure.monitor.query.MonitorQueryTestUtils.LOG_WORKSPACE_ID;
+import static com.azure.monitor.query.MonitorQueryTestUtils.*;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -52,8 +50,14 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     private LogsQueryAsyncClient client;
 
+    private String workspaceId;
+
+    private String resourceId;
+
     @BeforeEach
     public void setup() {
+        workspaceId = getLogWorkspaceId(interceptorManager.isPlaybackMode());
+        resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
@@ -95,7 +99,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     public void testLogsQuery() {
-        StepVerifier.create(client.queryWorkspace(LOG_WORKSPACE_ID, QUERY_STRING,
+        StepVerifier.create(client.queryWorkspace(workspaceId, QUERY_STRING,
                         new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                                 OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC))))
                 .assertNext(queryResults -> {
@@ -108,7 +112,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     public void testLogsResourceQuery() {
-        StepVerifier.create(client.queryResource(LOG_RESOURCE_ID, QUERY_STRING,
+        StepVerifier.create(client.queryResource(resourceId, QUERY_STRING,
                 QueryTimeInterval.ALL))
             .assertNext(queryResults -> {
                 assertEquals(1, queryResults.getAllTables().size());
@@ -131,7 +135,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         final QueryTimeInterval interval = QueryTimeInterval.LAST_DAY;
 
         // Act
-        StepVerifier.create(client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID,
+        StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId,
                         query, interval, options, Context.NONE))
                 .assertNext(response -> {
                     // Assert
@@ -148,8 +152,8 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     @Test
     public void testLogsQueryBatch() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take 2", null);
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + "| take 3", null);
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + "| take 3", null);
 
         StepVerifier.create(client
                         .queryBatchWithResponse(logsBatchQuery, Context.NONE))
@@ -172,10 +176,10 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     @Test
     public void testLogsQueryBatchWithServerTimeout() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take 2", null);
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take 5", null,
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 5", null,
                 new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(20)));
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + "| take 3", null,
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + "| take 3", null,
                 new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(10)));
 
         StepVerifier.create(client
@@ -204,7 +208,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "multi-workspace "
             + "queries require sending logs to Azure Monitor first. So, run this test in playback or record mode only.")
     public void testMultipleWorkspaces() {
-        StepVerifier.create(client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID,
+        StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId,
                         "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId", null,
                         new LogsQueryOptions()
                                 .setAdditionalWorkspaces(Arrays.asList("9dad0092-fd13-403a-b367-a189a090a541")),
@@ -226,8 +230,8 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     @Test
     public void testBatchQueryPartialSuccess() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take 2", null);
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING + " | take", null);
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take", null);
 
         StepVerifier.create(client
                         .queryBatchWithResponse(logsBatchQuery, Context.NONE))
@@ -247,7 +251,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     public void testStatistics() {
-        StepVerifier.create(client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID,
+        StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId,
                         QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE))
                 .assertNext(response -> {
                     LogsQueryResult queryResults = response.getValue();
@@ -259,7 +263,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     public void testStatisticsResourceQuery() {
-        StepVerifier.create(client.queryResourceWithResponse(LOG_RESOURCE_ID,
+        StepVerifier.create(client.queryResourceWithResponse(resourceId,
                 QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE))
             .assertNext(response -> {
                 LogsQueryResult queryResults = response.getValue();
@@ -272,9 +276,8 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     @Test
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null,
-            new LogsQueryOptions().setIncludeStatistics(true));
-        logsBatchQuery.addWorkspaceQuery(LOG_WORKSPACE_ID, QUERY_STRING, null,
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING, null);
+        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING, null,
             new LogsQueryOptions().setIncludeStatistics(true));
 
         StepVerifier.create(client
@@ -308,7 +311,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         long count = 1000000006959L;
         // this query should take more than 5 seconds usually, but the server may have cached the
         // response and may return before 5 seconds. So, retry with another query (different count value)
-        StepVerifier.create(client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID, "range x from 1 to " + count + " "
+        StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId, "range x from 1 to " + count + " "
                                         + "step 1 | count",
                                 null,
                                 new LogsQueryOptions()
@@ -328,7 +331,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     public void testVisualization() {
         String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
                 + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
-        StepVerifier.create(client.queryWorkspaceWithResponse(LOG_WORKSPACE_ID,
+        StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId,
                         query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
                         Context.NONE))
                 .assertNext(response -> {
@@ -355,7 +358,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     public void testVisualizationResourceQuery() {
         String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
             + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
-        StepVerifier.create(client.queryResourceWithResponse(LOG_RESOURCE_ID,
+        StepVerifier.create(client.queryResourceWithResponse(resourceId,
                 query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
                 Context.NONE))
             .assertNext(response -> {

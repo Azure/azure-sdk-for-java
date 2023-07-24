@@ -8,15 +8,15 @@ import com.azure.core.util.Configuration;
 import java.util.HashMap;
 
 public abstract class MonitorQueryTestUtils {
-
-    public static final String LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
+    private static final String LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
 
-    public static final String LOG_RESOURCE_ID = Configuration.getGlobalConfiguration()
+    private static final String LOG_RESOURCE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_RESOURCE_ID");
 
-    public static final String METRIC_RESOURCE_URI = Configuration.getGlobalConfiguration()
+    private static final String METRIC_RESOURCE_URI = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_METRICS_RESOURCE_URI");
+
 
     public static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
         + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
@@ -31,6 +31,30 @@ public abstract class MonitorQueryTestUtils {
             put("AzureUSGovernment", "https://api.loganalytics.us/v1");
         }
     };
+
+    public static String getLogWorkspaceId(boolean isPlaybackMode) {
+        if (isPlaybackMode) {
+            return "d2d0e126-fa1e-4b0a-b647-250cdd471e68";
+        } else {
+            return LOG_WORKSPACE_ID;
+        }
+    }
+
+    public static String getLogResourceId(boolean isPlaybackMode) {
+        if (isPlaybackMode) {
+            return "subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage";
+        } else {
+            return LOG_RESOURCE_ID;
+        }
+    }
+
+    public static String getMetricResourceUri(boolean isPlaybackMode) {
+        if (isPlaybackMode) {
+            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-jairmyree-test/providers/Microsoft.EventHub/namespaces/eventhubt9a76fe3bdd7263f8";
+        } else {
+            return METRIC_RESOURCE_URI;
+        }
+    }
 
     public static String getLogEndpoint() {
         return ENDPOINTS.get(Configuration.getGlobalConfiguration().get("MONITOR_ENVIRONMENT"));

@@ -11,7 +11,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
@@ -38,7 +37,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.monitor.query.MonitorQueryTestUtils.METRIC_RESOURCE_URI;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getMetricResourceUri;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -47,6 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class MetricsQueryClientTest extends TestProxyTestBase {
     private MetricsQueryClient client;
+
+    private String resourceUri;
 
     private static Stream<Arguments> getFilterPredicate() {
         return Arrays.asList(
@@ -85,6 +86,7 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
 
     @BeforeEach
     public void setup() {
+        resourceUri = getMetricResourceUri(interceptorManager.isPlaybackMode());
         MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
@@ -116,7 +118,7 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testMetricsQuery() {
         Response<MetricsQueryResult> metricsResponse = client
-            .queryResourceWithResponse(METRIC_RESOURCE_URI, Arrays.asList("SuccessfulRequests"),
+            .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
                 new MetricsQueryOptions()
                     .setMetricNamespace("Microsoft.EventHub/namespaces")
                     .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
@@ -145,7 +147,7 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
     @MethodSource("getFilterPredicate")
     public void testAggregation(AggregationType aggregationType, Predicate<MetricValue> metricValuePredicate) {
         Response<MetricsQueryResult> metricsResponse = client
-                .queryResourceWithResponse(METRIC_RESOURCE_URI, Arrays.asList("SuccessfulRequests"),
+                .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
                         new MetricsQueryOptions()
                                 .setMetricNamespace("Microsoft.EventHub/namespaces")
                                 .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
@@ -167,7 +169,7 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testMetricsDefinition() {
         PagedIterable<MetricDefinition> metricsDefinitions = client
-                .listMetricDefinitions(METRIC_RESOURCE_URI);
+                .listMetricDefinitions(resourceUri);
 
         List<String> knownMetricsDefinitions = Arrays.asList(
             "SuccessfulRequests",
@@ -215,7 +217,7 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testMetricsNamespaces() {
-        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(METRIC_RESOURCE_URI, null);
+        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(resourceUri, null);
         assertEquals(1, metricsNamespaces.stream().count());
     }
 }
