@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VpnSiteLinks ListByVpnSite. */
 public final class VpnSiteLinksListByVpnSiteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnSiteLinkListByVpnSite.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnSiteLinkListByVpnSite.json
      */
     /**
      * Sample code: VpnSiteLinkListByVpnSite.

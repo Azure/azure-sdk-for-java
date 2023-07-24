@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for P2SVpnGateways Reset. */
 public final class P2SVpnGatewaysResetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/P2SVpnGatewayReset.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/P2SVpnGatewayReset.json
      */
     /**
      * Sample code: ResetP2SVpnGateway.
