@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The PhoneNumberSearchResult model. 
- *  @Generated Defines Exclusion from code coverage
-*/
+/** The PhoneNumberSearchResult model. */
 @Immutable
 @Generated
 public final class PhoneNumberSearchResult {

@@ -7,9 +7,7 @@ import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Immutable;
 import java.util.List;
 
-/** The Phone Number Services error. 
- * @Generated Defines Exclusion from code coverage
-*/
+/** The Phone Number Services error. */
 @Immutable
 @Generated
 public final class PhoneNumberError {

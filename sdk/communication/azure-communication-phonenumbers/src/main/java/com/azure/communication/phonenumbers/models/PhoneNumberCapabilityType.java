@@ -9,9 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PhoneNumberCapabilityType. 
- * @Generated Defines Exclusion from code coverage
-*/
+/** Defines values for PhoneNumberCapabilityType. */
 @Generated
 public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneNumberCapabilityType> {
     /** Static value none for PhoneNumberCapabilityType. */

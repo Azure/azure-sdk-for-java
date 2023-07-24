@@ -9,9 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingFrequency. 
- * @Generated Defines Exclusion from code coverage
-*/
+/** Defines values for BillingFrequency. */
 @Generated
 public final class BillingFrequency extends ExpandableStringEnum<BillingFrequency> {
     /** Static value monthly for BillingFrequency. */
