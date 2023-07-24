@@ -71,20 +71,13 @@ public class FunctionCallSample {
     }
 
     private static FunctionDefinition getFunctionDefinition() {
-        FunctionProperties location = new FunctionPropertiesBuilder()
-                .type("string")
-                .description("The city and state, e.g. San Francisco, CA")
-                .build();
-        FunctionProperties unit = new FunctionPropertiesBuilder()
-                .type("string")
-                .enumString(Arrays.asList("celsius", "fahrenheit"))
-                .build();
         Map<String, FunctionProperties> properties = new HashMap<>();
         properties.put("location", new FunctionPropertiesBuilder()
                 .type("string")
                 .description("The city and state, e.g. San Francisco, CA")
                 .build());
-        properties.put("unit", new FunctionPropertiesBuilder().type("string")
+        properties.put("unit", new FunctionPropertiesBuilder()
+                .type("string")
                 .enumString(Arrays.asList("celsius", "fahrenheit"))
                 .build());
         FunctionParameters functionParameters = new FunctionParametersBuilder()
