@@ -275,6 +275,23 @@
           "regex": true,
           "code": "java.method.(returnTypeTypeParametersChanged|parameterTypeChanged|returnTypeChanged)",
           "new": ".* com.azure.security.attestation.*attestTpm.*"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.compute.models.StorageAccountType com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::storageAccountType()",
+          "new": "method com.azure.resourcemanager.compute.models.EdgeZoneStorageAccountType com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::storageAccountType()",
+          "justification": "ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::withStorageAccountType(===com.azure.resourcemanager.compute.models.StorageAccountType===)",
+          "new": "parameter com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation com.azure.resourcemanager.compute.models.GalleryTargetExtendedLocation::withStorageAccountType(===com.azure.resourcemanager.compute.models.EdgeZoneStorageAccountType===)",
+          "justification": "ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE"
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.compute.models.StorageAccountType.STANDARD_SSD_LRS",
+          "justification": "Fix field removed."
         }
       ]
     }
