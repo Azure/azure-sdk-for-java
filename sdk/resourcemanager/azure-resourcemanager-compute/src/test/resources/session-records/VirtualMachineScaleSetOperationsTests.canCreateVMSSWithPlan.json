@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25357/providers/Microsoft.Network/virtualNetworks/vmssvnet283102?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25357/providers/Microsoft.Network/virtualNetworks/vmssvnet283102?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.26.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "ac4ddc58-9015-492e-bc15-093979aaaf4b",
@@ -51,14 +51,14 @@
       "Content-Length" : "1309",
       "x-ms-request-id" : "ec1b47e7-6620-4e5d-a4f7-d00b45e35e95",
       "Body" : "{\r\n  \"name\": \"vmssvnet283102\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25357/providers/Microsoft.Network/virtualNetworks/vmssvnet283102\",\r\n  \"etag\": \"W/\\\"10b7bff5-1308-43b8-a529-306e0fc419a2\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"e9818e83-dd08-4981-bbb6-523d6ea19d2d\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25357/providers/Microsoft.Network/virtualNetworks/vmssvnet283102/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"10b7bff5-1308-43b8-a529-306e0fc419a2\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/28\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Disabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/ec1b47e7-6620-4e5d-a4f7-d00b45e35e95?api-version=2022-11-01",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/ec1b47e7-6620-4e5d-a4f7-d00b45e35e95?api-version=2023-02-01",
       "x-ms-client-request-id" : "ac4ddc58-9015-492e-bc15-093979aaaf4b",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/ec1b47e7-6620-4e5d-a4f7-d00b45e35e95?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/ec1b47e7-6620-4e5d-a4f7-d00b45e35e95?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.26.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "83c4dbd8-27a0-4ed0-8c69-8160fd8e6e7e"
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25357/providers/Microsoft.Network/virtualNetworks/vmssvnet283102?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg25357/providers/Microsoft.Network/virtualNetworks/vmssvnet283102?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.26.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "6aa91999-f87a-4ddf-b528-c52a5149d77c"

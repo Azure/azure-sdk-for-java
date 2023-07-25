@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for NetworkInterfaces ListCloudServiceRoleInstanceNetworkInterfaces. */
 public final class NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/CloudServiceRoleInstanceNetworkInterfaceList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/CloudServiceRoleInstanceNetworkInterfaceList.json
      */
     /**
      * Sample code: List cloud service role instance network interfaces.
