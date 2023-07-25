@@ -114,12 +114,6 @@
           </plugin>
 
           <plugin>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-          </plugin>
-
-          <plugin>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-maven-plugin</artifactId>
             <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
