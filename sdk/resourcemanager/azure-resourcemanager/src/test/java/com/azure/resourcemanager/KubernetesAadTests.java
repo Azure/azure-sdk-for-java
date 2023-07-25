@@ -151,26 +151,16 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
             Assertions.assertEquals(0, kubernetesCluster.azureActiveDirectoryGroupIds().size());
             Assertions.assertTrue(kubernetesCluster.isLocalAccountsEnabled());
 
+            // Since kubernetes version 1.25, disableLocalAccounts can only be set on Azure AD integration enabled cluster.
             kubernetesCluster.update()
+                .withAzureActiveDirectoryGroup(group.id())
                 .disableLocalAccounts()
                 .apply();
 
-            Assertions.assertEquals(0, kubernetesCluster.azureActiveDirectoryGroupIds().size());
             Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
-
-            // failed to get credential due to lack of permission
-            KubernetesCluster kubernetesCluster1 = kubernetesCluster;
-            Assertions.assertThrows(ManagementException.class, () -> {
-                List<CredentialResult> credentialResults1 = kubernetesCluster1.userKubeConfigs();
-            });
-
-            kubernetesCluster.update()
-                .withAzureActiveDirectoryGroup(group.id())
-                .apply();
 
             Assertions.assertEquals(1, kubernetesCluster.azureActiveDirectoryGroupIds().size());
             Assertions.assertEquals(group.id(), kubernetesCluster.azureActiveDirectoryGroupIds().get(0));
-            Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
 
             // admin group
             credentialResults = kubernetesCluster.userKubeConfigs();
