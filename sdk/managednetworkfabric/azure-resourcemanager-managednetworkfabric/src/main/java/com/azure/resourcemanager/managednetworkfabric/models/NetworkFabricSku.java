@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.managednetworkfabric.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricSkuInner;
+import java.util.List;
 
 /** An immutable client-side representation of NetworkFabricSku. */
 public interface NetworkFabricSku {
@@ -31,49 +31,43 @@ public interface NetworkFabricSku {
     String type();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the typePropertiesType property: Type of Network Fabric Sku.
+     * Gets the typePropertiesType property: Type of Network Fabric SKU.
      *
      * @return the typePropertiesType value.
      */
-    String typePropertiesType();
+    FabricSkuType typePropertiesType();
 
     /**
-     * Gets the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU.
+     * Gets the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU. The
+     * value of max count racks is 4 for 4 rack SKU and 8 for 8 rack SKU.
      *
      * @return the maxComputeRacks value.
      */
     Integer maxComputeRacks();
 
     /**
-     * Gets the minSupportedVer property: Minimum supported version.
+     * Gets the maximumServerCount property: Maximum number of servers available for this Network Fabric SKU.
      *
-     * @return the minSupportedVer value.
+     * @return the maximumServerCount value.
      */
-    String minSupportedVer();
+    Integer maximumServerCount();
 
     /**
-     * Gets the maxSupportedVer property: Maximum supported version.
+     * Gets the supportedVersions property: List of supported Network Fabric SKU versions.
      *
-     * @return the maxSupportedVer value.
+     * @return the supportedVersions value.
      */
-    String maxSupportedVer();
+    List<String> supportedVersions();
 
     /**
-     * Gets the detailsUri property: The URI gives full details of sku.
+     * Gets the details property: URL providing detailed configuration of the fabric SKU.
      *
-     * @return the detailsUri value.
+     * @return the details value.
      */
-    String detailsUri();
+    String details();
 
     /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

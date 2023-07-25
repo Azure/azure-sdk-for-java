@@ -14,6 +14,7 @@ import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockedConstruction;
+import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -68,6 +69,91 @@ public class ClientSecretCredentialTest {
             when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
             when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
+        })) {
+            // test
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+
+            accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testValidSecretsCAE() throws Exception {
+        // setup
+        String secret = "secret";
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setEnableCae(true);
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net").setEnableCae(true);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithConfidentialClient(request1))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalToken(token1, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+            when(identityClient.authenticateWithConfidentialClient(request2))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalToken(token2, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            StepVerifier.create(credential.getToken(request2))
+                .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        // mock
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request1))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalTokenSync(token1, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+            when(identitySyncClient.authenticateWithConfidentialClient(request2))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalTokenSync(token2, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
         })) {
             // test
             ClientSecretCredential credential =

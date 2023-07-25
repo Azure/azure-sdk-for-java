@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpPrefixInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of IpPrefixes. */
+/** List of IP Prefixes. */
 @Fluent
 public final class IpPrefixesListResult {
     /*
-     * List of IPPrefix resources.
+     * List of IP Prefix resources.
      */
     @JsonProperty(value = "value")
     private List<IpPrefixInner> value;
@@ -29,7 +29,7 @@ public final class IpPrefixesListResult {
     }
 
     /**
-     * Get the value property: List of IPPrefix resources.
+     * Get the value property: List of IP Prefix resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class IpPrefixesListResult {
     }
 
     /**
-     * Set the value property: List of IPPrefix resources.
+     * Set the value property: List of IP Prefix resources.
      *
      * @param value the value value to set.
      * @return the IpPrefixesListResult object itself.

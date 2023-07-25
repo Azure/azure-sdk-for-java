@@ -4,17 +4,17 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import java.util.Arrays;
 
 /** Samples for InternalNetworks UpdateBgpAdministrativeState. */
 public final class InternalNetworksUpdateBgpAdministrativeStateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/InternalNetworks_updateBgpAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/InternalNetworks_UpdateBgpAdministrativeState_MaximumSet_Gen.json
      */
     /**
-     * Sample code: InternalNetworks_updateBgpAdministrativeState_MaximumSet_Gen.
+     * Sample code: InternalNetworks_UpdateBgpAdministrativeState_MaximumSet_Gen.
      *
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
@@ -23,15 +23,10 @@ public final class InternalNetworksUpdateBgpAdministrativeStateSamples {
         manager
             .internalNetworks()
             .updateBgpAdministrativeState(
-                "resourceGroupName",
+                "example-rg",
                 "example-l3domain",
-                "example-internalnetwork",
-                new UpdateAdministrativeState()
-                    .withResourceIds(
-                        Arrays
-                            .asList(
-                                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/example-l3domain/internalNetworks/example-internalnetwork"))
-                    .withState(AdministrativeState.ENABLE),
+                "example-internalNetwork",
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
                 com.azure.core.util.Context.NONE);
     }
 }

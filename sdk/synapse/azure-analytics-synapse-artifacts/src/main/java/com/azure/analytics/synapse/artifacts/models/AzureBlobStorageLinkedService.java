@@ -93,6 +93,25 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.authenticationType")
+    private AzureStorageAuthenticationType authenticationType;
+
+    /*
+     * Container uri of the Azure Blob Storage resource only support for anonymous access. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.containerUri")
+    private Object containerUri;
+
     /** Creates an instance of AzureBlobStorageLinkedService class. */
     public AzureBlobStorageLinkedService() {}
 
@@ -335,6 +354,68 @@ public class AzureBlobStorageLinkedService extends LinkedService {
      */
     public AzureBlobStorageLinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @return the authenticationType value.
+     */
+    public AzureStorageAuthenticationType getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setAuthenticationType(AzureStorageAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @return the containerUri value.
+     */
+    public Object getContainerUri() {
+        return this.containerUri;
+    }
+
+    /**
+     * Set the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @param containerUri the containerUri value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setContainerUri(Object containerUri) {
+        this.containerUri = containerUri;
         return this;
     }
 

@@ -6,11 +6,10 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceSkuProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
 import com.azure.resourcemanager.managednetworkfabric.models.DeviceInterfaceProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.DeviceLimits;
-import com.azure.resourcemanager.managednetworkfabric.models.IsCurrentVersion;
-import com.azure.resourcemanager.managednetworkfabric.models.IsTestVersion;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleName;
+import com.azure.resourcemanager.managednetworkfabric.models.SupportedConnectorProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.SupportedVersionProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -21,91 +20,97 @@ public final class NetworkDeviceSkuPropertiesTests {
         NetworkDeviceSkuProperties model =
             BinaryData
                 .fromString(
-                    "{\"model\":\"gumhjglikkxws\",\"manufacturer\":\"lbqpvuzlmvfelf\",\"supportedVersions\":[{\"version\":\"lcrpw\",\"vendorOsVersion\":\"eznoig\",\"vendorFirmwareVersion\":\"njwmwkpnbsazejj\",\"isCurrent\":\"false\",\"isTest\":\"false\"},{\"version\":\"hsxttaugzxnf\",\"vendorOsVersion\":\"zpxdt\",\"vendorFirmwareVersion\":\"dm\",\"isCurrent\":\"true\",\"isTest\":\"false\"},{\"version\":\"uenvrkp\",\"vendorOsVersion\":\"uaibrebqaaysj\",\"vendorFirmwareVersion\":\"xqtnq\",\"isCurrent\":\"true\",\"isTest\":\"true\"},{\"version\":\"fffiak\",\"vendorOsVersion\":\"pqqmted\",\"vendorFirmwareVersion\":\"mmji\",\"isCurrent\":\"true\",\"isTest\":\"true\"}],\"limits\":{\"physicalInterfaceCount\":951782119,\"maxSubInterfaces\":1018976472,\"maxTunnelInterfaces\":52872288,\"maxVirtualRouterFunctions\":1025592132,\"maxBorderGatewayProtocolPeers\":1587371608,\"maxBidirectionalForwardingDetectionPeers\":367245568},\"supportedRoleTypes\":[\"Management\"],\"interfaces\":[{\"identifier\":\"dscwxqupevzhf\",\"interfaceType\":\"otxhojujby\",\"supportedConnectorTypes\":[]}],\"provisioningState\":\"Failed\"}")
+                    "{\"model\":\"dimjuktirzkau\",\"manufacturer\":\"u\",\"supportedVersions\":[{\"version\":\"fq\",\"vendorOsVersion\":\"wgofmhx\",\"vendorFirmwareVersion\":\"jlvzklk\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"NPB\",\"CE\",\"Management\"],\"interfaces\":[{\"identifier\":\"vlbishjvpzapt\",\"interfaceType\":\"skaoizjixwf\",\"supportedConnectorTypes\":[{\"connectorType\":\"y\",\"maxSpeedInMbps\":89327285}]},{\"identifier\":\"wnujvqynvav\",\"interfaceType\":\"mdmuqoh\",\"supportedConnectorTypes\":[{\"connectorType\":\"a\",\"maxSpeedInMbps\":1688024813},{\"connectorType\":\"drwjcljbrhlh\",\"maxSpeedInMbps\":1496418758},{\"connectorType\":\"dbwen\",\"maxSpeedInMbps\":226649221},{\"connectorType\":\"fhxrzfr\",\"maxSpeedInMbps\":359961335}]},{\"identifier\":\"iucwv\",\"interfaceType\":\"llukhkrcqxgcbvz\",\"supportedConnectorTypes\":[{\"connectorType\":\"cbpokstsinvago\",\"maxSpeedInMbps\":1606479022},{\"connectorType\":\"d\",\"maxSpeedInMbps\":1543016379},{\"connectorType\":\"dvcehqw\",\"maxSpeedInMbps\":607181789},{\"connectorType\":\"nmxgnm\",\"maxSpeedInMbps\":1672771636}]}],\"provisioningState\":\"Deleting\"}")
                 .toObject(NetworkDeviceSkuProperties.class);
-        Assertions.assertEquals("gumhjglikkxws", model.model());
-        Assertions.assertEquals("lbqpvuzlmvfelf", model.manufacturer());
-        Assertions.assertEquals("lcrpw", model.supportedVersions().get(0).version());
-        Assertions.assertEquals("eznoig", model.supportedVersions().get(0).vendorOsVersion());
-        Assertions.assertEquals("njwmwkpnbsazejj", model.supportedVersions().get(0).vendorFirmwareVersion());
-        Assertions.assertEquals(IsCurrentVersion.FALSE, model.supportedVersions().get(0).isCurrent());
-        Assertions.assertEquals(IsTestVersion.FALSE, model.supportedVersions().get(0).isTest());
-        Assertions.assertEquals(951782119, model.limits().physicalInterfaceCount());
-        Assertions.assertEquals(1018976472, model.limits().maxSubInterfaces());
-        Assertions.assertEquals(52872288, model.limits().maxTunnelInterfaces());
-        Assertions.assertEquals(1025592132, model.limits().maxVirtualRouterFunctions());
-        Assertions.assertEquals(1587371608, model.limits().maxBorderGatewayProtocolPeers());
-        Assertions.assertEquals(367245568, model.limits().maxBidirectionalForwardingDetectionPeers());
-        Assertions.assertEquals(NetworkDeviceRoleName.MANAGEMENT, model.supportedRoleTypes().get(0));
-        Assertions.assertEquals("dscwxqupevzhf", model.interfaces().get(0).identifier());
-        Assertions.assertEquals("otxhojujby", model.interfaces().get(0).interfaceType());
+        Assertions.assertEquals("dimjuktirzkau", model.model());
+        Assertions.assertEquals("u", model.manufacturer());
+        Assertions.assertEquals("fq", model.supportedVersions().get(0).version());
+        Assertions.assertEquals("wgofmhx", model.supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("jlvzklk", model.supportedVersions().get(0).vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.supportedVersions().get(0).isDefault());
+        Assertions.assertEquals(NetworkDeviceRoleName.NPB, model.supportedRoleTypes().get(0));
+        Assertions.assertEquals("vlbishjvpzapt", model.interfaces().get(0).identifier());
+        Assertions.assertEquals("skaoizjixwf", model.interfaces().get(0).interfaceType());
+        Assertions.assertEquals("y", model.interfaces().get(0).supportedConnectorTypes().get(0).connectorType());
+        Assertions.assertEquals(89327285, model.interfaces().get(0).supportedConnectorTypes().get(0).maxSpeedInMbps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkDeviceSkuProperties model =
             new NetworkDeviceSkuProperties()
-                .withModel("gumhjglikkxws")
-                .withManufacturer("lbqpvuzlmvfelf")
+                .withModel("dimjuktirzkau")
+                .withManufacturer("u")
                 .withSupportedVersions(
                     Arrays
                         .asList(
                             new SupportedVersionProperties()
-                                .withVersion("lcrpw")
-                                .withVendorOsVersion("eznoig")
-                                .withVendorFirmwareVersion("njwmwkpnbsazejj")
-                                .withIsCurrent(IsCurrentVersion.FALSE)
-                                .withIsTest(IsTestVersion.FALSE),
-                            new SupportedVersionProperties()
-                                .withVersion("hsxttaugzxnf")
-                                .withVendorOsVersion("zpxdt")
-                                .withVendorFirmwareVersion("dm")
-                                .withIsCurrent(IsCurrentVersion.TRUE)
-                                .withIsTest(IsTestVersion.FALSE),
-                            new SupportedVersionProperties()
-                                .withVersion("uenvrkp")
-                                .withVendorOsVersion("uaibrebqaaysj")
-                                .withVendorFirmwareVersion("xqtnq")
-                                .withIsCurrent(IsCurrentVersion.TRUE)
-                                .withIsTest(IsTestVersion.TRUE),
-                            new SupportedVersionProperties()
-                                .withVersion("fffiak")
-                                .withVendorOsVersion("pqqmted")
-                                .withVendorFirmwareVersion("mmji")
-                                .withIsCurrent(IsCurrentVersion.TRUE)
-                                .withIsTest(IsTestVersion.TRUE)))
-                .withLimits(
-                    new DeviceLimits()
-                        .withPhysicalInterfaceCount(951782119)
-                        .withMaxSubInterfaces(1018976472)
-                        .withMaxTunnelInterfaces(52872288)
-                        .withMaxVirtualRouterFunctions(1025592132)
-                        .withMaxBorderGatewayProtocolPeers(1587371608)
-                        .withMaxBidirectionalForwardingDetectionPeers(367245568))
-                .withSupportedRoleTypes(Arrays.asList(NetworkDeviceRoleName.MANAGEMENT))
+                                .withVersion("fq")
+                                .withVendorOsVersion("wgofmhx")
+                                .withVendorFirmwareVersion("jlvzklk")
+                                .withIsDefault(BooleanEnumProperty.FALSE)))
+                .withSupportedRoleTypes(
+                    Arrays
+                        .asList(NetworkDeviceRoleName.NPB, NetworkDeviceRoleName.CE, NetworkDeviceRoleName.MANAGEMENT))
                 .withInterfaces(
                     Arrays
                         .asList(
                             new DeviceInterfaceProperties()
-                                .withIdentifier("dscwxqupevzhf")
-                                .withInterfaceType("otxhojujby")
-                                .withSupportedConnectorTypes(Arrays.asList())));
+                                .withIdentifier("vlbishjvpzapt")
+                                .withInterfaceType("skaoizjixwf")
+                                .withSupportedConnectorTypes(
+                                    Arrays
+                                        .asList(
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("y")
+                                                .withMaxSpeedInMbps(89327285))),
+                            new DeviceInterfaceProperties()
+                                .withIdentifier("wnujvqynvav")
+                                .withInterfaceType("mdmuqoh")
+                                .withSupportedConnectorTypes(
+                                    Arrays
+                                        .asList(
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("a")
+                                                .withMaxSpeedInMbps(1688024813),
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("drwjcljbrhlh")
+                                                .withMaxSpeedInMbps(1496418758),
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("dbwen")
+                                                .withMaxSpeedInMbps(226649221),
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("fhxrzfr")
+                                                .withMaxSpeedInMbps(359961335))),
+                            new DeviceInterfaceProperties()
+                                .withIdentifier("iucwv")
+                                .withInterfaceType("llukhkrcqxgcbvz")
+                                .withSupportedConnectorTypes(
+                                    Arrays
+                                        .asList(
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("cbpokstsinvago")
+                                                .withMaxSpeedInMbps(1606479022),
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("d")
+                                                .withMaxSpeedInMbps(1543016379),
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("dvcehqw")
+                                                .withMaxSpeedInMbps(607181789),
+                                            new SupportedConnectorProperties()
+                                                .withConnectorType("nmxgnm")
+                                                .withMaxSpeedInMbps(1672771636)))));
         model = BinaryData.fromObject(model).toObject(NetworkDeviceSkuProperties.class);
-        Assertions.assertEquals("gumhjglikkxws", model.model());
-        Assertions.assertEquals("lbqpvuzlmvfelf", model.manufacturer());
-        Assertions.assertEquals("lcrpw", model.supportedVersions().get(0).version());
-        Assertions.assertEquals("eznoig", model.supportedVersions().get(0).vendorOsVersion());
-        Assertions.assertEquals("njwmwkpnbsazejj", model.supportedVersions().get(0).vendorFirmwareVersion());
-        Assertions.assertEquals(IsCurrentVersion.FALSE, model.supportedVersions().get(0).isCurrent());
-        Assertions.assertEquals(IsTestVersion.FALSE, model.supportedVersions().get(0).isTest());
-        Assertions.assertEquals(951782119, model.limits().physicalInterfaceCount());
-        Assertions.assertEquals(1018976472, model.limits().maxSubInterfaces());
-        Assertions.assertEquals(52872288, model.limits().maxTunnelInterfaces());
-        Assertions.assertEquals(1025592132, model.limits().maxVirtualRouterFunctions());
-        Assertions.assertEquals(1587371608, model.limits().maxBorderGatewayProtocolPeers());
-        Assertions.assertEquals(367245568, model.limits().maxBidirectionalForwardingDetectionPeers());
-        Assertions.assertEquals(NetworkDeviceRoleName.MANAGEMENT, model.supportedRoleTypes().get(0));
-        Assertions.assertEquals("dscwxqupevzhf", model.interfaces().get(0).identifier());
-        Assertions.assertEquals("otxhojujby", model.interfaces().get(0).interfaceType());
+        Assertions.assertEquals("dimjuktirzkau", model.model());
+        Assertions.assertEquals("u", model.manufacturer());
+        Assertions.assertEquals("fq", model.supportedVersions().get(0).version());
+        Assertions.assertEquals("wgofmhx", model.supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("jlvzklk", model.supportedVersions().get(0).vendorFirmwareVersion());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.supportedVersions().get(0).isDefault());
+        Assertions.assertEquals(NetworkDeviceRoleName.NPB, model.supportedRoleTypes().get(0));
+        Assertions.assertEquals("vlbishjvpzapt", model.interfaces().get(0).identifier());
+        Assertions.assertEquals("skaoizjixwf", model.interfaces().get(0).interfaceType());
+        Assertions.assertEquals("y", model.interfaces().get(0).supportedConnectorTypes().get(0).connectorType());
+        Assertions.assertEquals(89327285, model.interfaces().get(0).supportedConnectorTypes().get(0).maxSpeedInMbps());
     }
 }

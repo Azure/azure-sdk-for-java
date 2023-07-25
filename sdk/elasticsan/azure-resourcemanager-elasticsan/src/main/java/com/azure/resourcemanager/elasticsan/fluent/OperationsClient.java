@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanRPOperationInner;
+import com.azure.resourcemanager.elasticsan.fluent.models.OperationInner;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
@@ -20,7 +20,7 @@ public interface OperationsClient {
      * @return a list of ElasticSan operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ElasticSanRPOperationInner> list();
+    PagedIterable<OperationInner> list();
 
     /**
      * Gets a list of ElasticSan operations.
@@ -32,5 +32,5 @@ public interface OperationsClient {
      * @return a list of ElasticSan operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ElasticSanRPOperationInner> list(Context context);
+    PagedIterable<OperationInner> list(Context context);
 }

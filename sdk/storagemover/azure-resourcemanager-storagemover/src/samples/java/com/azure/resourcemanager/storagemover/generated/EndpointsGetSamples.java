@@ -7,14 +7,61 @@ package com.azure.resourcemanager.storagemover.generated;
 /** Samples for Endpoints Get. */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Get.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_SmbMount.json
      */
     /**
-     * Sample code: Endpoints_Get.
+     * Sample code: Endpoints_Get_SmbMount.
      *
      * @param manager Entry point to StorageMoverManager.
      */
-    public static void endpointsGet(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+    public static void endpointsGetSmbMount(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager
+            .endpoints()
+            .getWithResponse(
+                "examples-rg", "examples-storageMoverName", "examples-endpointName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_AzureStorageBlobContainer.json
+     */
+    /**
+     * Sample code: Endpoints_Get_AzureStorageBlobContainer.
+     *
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void endpointsGetAzureStorageBlobContainer(
+        com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager
+            .endpoints()
+            .getWithResponse(
+                "examples-rg", "examples-storageMoverName", "examples-endpointName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_NfsMount.json
+     */
+    /**
+     * Sample code: Endpoints_Get_NfsMount.
+     *
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void endpointsGetNfsMount(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager
+            .endpoints()
+            .getWithResponse(
+                "examples-rg", "examples-storageMoverName", "examples-endpointName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_AzureStorageSmbFileShare.json
+     */
+    /**
+     * Sample code: Endpoints_Get_AzureStorageSmbFileShare.
+     *
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void endpointsGetAzureStorageSmbFileShare(
+        com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
         manager
             .endpoints()
             .getWithResponse(

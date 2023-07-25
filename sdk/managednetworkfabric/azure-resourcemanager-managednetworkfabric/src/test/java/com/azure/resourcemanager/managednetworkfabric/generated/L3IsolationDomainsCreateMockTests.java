@@ -12,9 +12,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.AggregateRoute;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomain;
-import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
 import java.nio.ByteBuffer;
@@ -38,7 +40,7 @@ public final class L3IsolationDomainsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"networkFabricId\":\"k\",\"disabledOnResources\":[\"wwgzwxjlmecvog\",\"gzyvnee\"],\"administrativeState\":\"Enabled\",\"optionBDisabledOnResources\":[\"htmoqqtlffhzbkr\"],\"provisioningState\":\"Succeeded\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[],\"ipv6Routes\":[]},\"description\":\"nq\",\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"dogiyetesyp\",\"administrativeState\":\"Disabled\"},\"annotation\":\"ztjhqtfbovnynkbw\"},\"location\":\"njuhpsprkzya\",\"tags\":{\"vmaonurjt\":\"accxnafbwqroohtu\"},\"id\":\"mghihp\",\"name\":\"ecmslclbl\",\"type\":\"jxl\"}";
+            "{\"properties\":{\"networkFabricId\":\"pncjqbgbnoqnowv\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"rv\"},{\"prefix\":\"polnvgpppdilbdvx\"}],\"ipv6Routes\":[{\"prefix\":\"lz\"},{\"prefix\":\"gapspx\"},{\"prefix\":\"wblscrmzquuz\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"gouxnro\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"hesywyw\",\"exportIpv6RoutePolicyId\":\"gyo\"}},\"annotation\":\"ifrzcwuejmxlfzl\"},\"location\":\"yrgr\",\"tags\":{\"jovlxqtvmvzpniq\":\"hrau\",\"nkgtlh\":\"xmrg\"},\"id\":\"krazkioiyecz\",\"name\":\"vzmsvzngheq\",\"type\":\"hehgvmmnoyz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,39 +71,48 @@ public final class L3IsolationDomainsCreateMockTests {
         L3IsolationDomain response =
             manager
                 .l3IsolationDomains()
-                .define("gaqi")
-                .withRegion("zlpdwwex")
-                .withExistingResourceGroup("eksgbuxantuygd")
-                .withTags(
-                    mapOf(
-                        "uuzivensrpmeyyvp",
-                        "vlazipbhpwvqsgny",
-                        "gsksrfhf",
-                        "patlbijp",
-                        "bnxwc",
-                        "olmk",
-                        "fgbrtt",
-                        "ommpvfqaw"))
-                .withNetworkFabricId("rpiwrqofulo")
+                .define("ttjnknpbqgzk")
+                .withRegion("enmjogxgrg")
+                .withExistingResourceGroup("ssvgyoggkzt")
+                .withNetworkFabricId("obc")
+                .withTags(mapOf("i", "iwbn", "vvmrn", "rs"))
                 .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
                 .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
                 .withAggregateRouteConfiguration(
-                    new AggregateRouteConfiguration().withIpv4Routes(Arrays.asList()).withIpv6Routes(Arrays.asList()))
-                .withDescription("fsrucv")
+                    new AggregateRouteConfiguration()
+                        .withIpv4Routes(
+                            Arrays
+                                .asList(new AggregateRoute().withPrefix("yu"), new AggregateRoute().withPrefix("pnnh")))
+                        .withIpv6Routes(
+                            Arrays
+                                .asList(
+                                    new AggregateRoute().withPrefix("kffeon"),
+                                    new AggregateRoute().withPrefix("nvmujyiqyw"),
+                                    new AggregateRoute().withPrefix("pxmliytd"))))
                 .withConnectedSubnetRoutePolicy(
-                    new L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy()
-                        .withExportRoutePolicyId("pcjttbstvjeaqn"))
-                .withAnnotation("fkoxmlghktuidvr")
+                    new ConnectedSubnetRoutePolicy()
+                        .withExportRoutePolicyId("runbkil")
+                        .withExportRoutePolicy(
+                            new L3ExportRoutePolicy()
+                                .withExportIpv4RoutePolicyId("ekbirhyvsyuv")
+                                .withExportIpv6RoutePolicyId("emorszffiukltrv")))
+                .withAnnotation("oguoxcsdqox")
                 .create();
 
-        Assertions.assertEquals("njuhpsprkzya", response.location());
-        Assertions.assertEquals("accxnafbwqroohtu", response.tags().get("vmaonurjt"));
-        Assertions.assertEquals("k", response.networkFabricId());
-        Assertions.assertEquals(RedistributeConnectedSubnets.FALSE, response.redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, response.redistributeStaticRoutes());
-        Assertions.assertEquals("nq", response.description());
-        Assertions.assertEquals("dogiyetesyp", response.connectedSubnetRoutePolicy().exportRoutePolicyId());
-        Assertions.assertEquals("ztjhqtfbovnynkbw", response.annotation());
+        Assertions.assertEquals("yrgr", response.location());
+        Assertions.assertEquals("hrau", response.tags().get("jovlxqtvmvzpniq"));
+        Assertions.assertEquals("pncjqbgbnoqnowv", response.networkFabricId());
+        Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, response.redistributeConnectedSubnets());
+        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, response.redistributeStaticRoutes());
+        Assertions.assertEquals("rv", response.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("lz", response.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("gouxnro", response.connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions
+            .assertEquals(
+                "hesywyw", response.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions
+            .assertEquals("gyo", response.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("ifrzcwuejmxlfzl", response.annotation());
     }
 
     @SuppressWarnings("unchecked")

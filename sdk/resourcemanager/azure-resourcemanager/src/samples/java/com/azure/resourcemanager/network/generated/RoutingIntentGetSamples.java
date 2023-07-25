@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for RoutingIntent Get. */
 public final class RoutingIntentGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/RoutingIntentGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RoutingIntentGet.json
      */
     /**
      * Sample code: RouteTableGet.

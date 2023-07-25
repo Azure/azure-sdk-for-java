@@ -6,6 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.configuration;
 import reactor.util.annotation.Nullable;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Locale;
@@ -89,7 +91,7 @@ public final class StatsbeatConnectionString {
     public static StatsbeatConnectionString create(
         ConnectionString connectionString,
         @Nullable String instrumentationKey,
-        @Nullable String ingestionEndpoint) {
+        String ingestionEndpoint) {
 
         if (instrumentationKey == null || instrumentationKey.isEmpty()) {
             InstrumentationKeyEndpointPair pair =
@@ -111,8 +113,8 @@ public final class StatsbeatConnectionString {
             ingestionEndpoint += "/";
         }
         try {
-            endpointUrl = new URL(ingestionEndpoint);
-        } catch (MalformedURLException e) {
+            endpointUrl = new URI(ingestionEndpoint).toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new IllegalArgumentException("could not construct statsbeat endpoint uri", e);
         }
 

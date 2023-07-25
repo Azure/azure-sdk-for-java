@@ -3,11 +3,6 @@
 
 package com.azure.maps.traffic;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.IOException;
-import java.time.Duration;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoBoundingBox;
@@ -24,14 +19,17 @@ import com.azure.maps.traffic.models.TrafficFlowTileOptions;
 import com.azure.maps.traffic.models.TrafficFlowTileStyle;
 import com.azure.maps.traffic.models.TrafficIncidentDetailOptions;
 import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import reactor.test.StepVerifier;
+
+import java.io.IOException;
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TrafficAsyncClientTest extends TrafficClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -64,7 +62,7 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                     validateGetTrafficFlowTile(actualResults.toBytes());
                 } catch (IOException e) {
                     Assertions.fail("Unable to get traffic flow tile");
-                }  
+                }
             }).verifyComplete();
     }
 

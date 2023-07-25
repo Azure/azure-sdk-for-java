@@ -81,6 +81,13 @@ public class AzureBackupRecoveryPointBasedRestoreRequest extends AzureBackupRest
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupRecoveryPointBasedRestoreRequest withIdentityDetails(IdentityDetails identityDetails) {
+        super.withIdentityDetails(identityDetails);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

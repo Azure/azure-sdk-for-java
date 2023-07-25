@@ -219,10 +219,10 @@ public final class CallAutomationAsyncClient {
             .setOperationContext(createCallOptions.getOperationContext());
 
         // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-        if (createCallOptions.getCallInvite().getSipHeaders() != null || createCallOptions.getCallInvite().getVoipHeaders() != null) {
+        if (createCallOptions.getCallInvite().getCustomContext().getSipHeaders() != null || createCallOptions.getCallInvite().getCustomContext().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallOptions.getCallInvite().getSipHeaders());
-            customContext.setVoipHeaders(createCallOptions.getCallInvite().getVoipHeaders());
+            customContext.setSipHeaders(createCallOptions.getCallInvite().getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallOptions.getCallInvite().getCustomContext().getVoipHeaders());
             request.setCustomContext(customContext);
         }
 
@@ -251,10 +251,10 @@ public final class CallAutomationAsyncClient {
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
-        if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
+        if (createCallGroupOptions.getCustomContext().getSipHeaders() != null || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
-            customContext.setVoipHeaders(createCallGroupOptions.getVoipHeaders());
+            customContext.setSipHeaders(createCallGroupOptions.getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallGroupOptions.getCustomContext().getVoipHeaders());
             request.setCustomContext(customContext);
         }
 
@@ -393,10 +393,10 @@ public final class CallAutomationAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (redirectCallOptions.getTargetParticipant().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getVoipHeaders() != null) {
+            if (redirectCallOptions.getTargetParticipant().getCustomContext().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getCustomContext().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getSipHeaders());
-                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getVoipHeaders());
+                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getCustomContext().getSipHeaders());
+                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getCustomContext().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 

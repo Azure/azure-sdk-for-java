@@ -34,8 +34,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkRacksClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackInner;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRacksListResult;
+import com.azure.resourcemanager.managednetworkfabric.models.TagsUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -106,7 +106,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("networkRackName") String networkRackName,
-            @BodyParam("application/json") NetworkRackPatch body,
+            @BodyParam("application/json") TagsUpdate body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -180,7 +180,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -239,7 +240,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -294,7 +296,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkRack resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkRackInner>, NetworkRackInner> beginCreateAsync(
@@ -322,7 +324,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkRack resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkRackInner>, NetworkRackInner> beginCreateAsync(
@@ -347,7 +349,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
@@ -367,7 +369,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
@@ -386,7 +388,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkRackInner> createAsync(
@@ -408,7 +410,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkRackInner> createAsync(
@@ -429,7 +431,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRackInner create(String resourceGroupName, String networkRackName, NetworkRackInner body) {
@@ -448,7 +450,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRackInner create(
@@ -621,11 +623,12 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body) {
+        String resourceGroupName, String networkRackName, TagsUpdate body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -680,11 +683,12 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body, Context context) {
+        String resourceGroupName, String networkRackName, TagsUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -735,11 +739,11 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkRack resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdateAsync(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body) {
+        String resourceGroupName, String networkRackName, TagsUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, networkRackName, body);
         return this
             .client
@@ -763,11 +767,11 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkRack resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdateAsync(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body, Context context) {
+        String resourceGroupName, String networkRackName, TagsUpdate body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, networkRackName, body, context);
@@ -788,11 +792,11 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body) {
+        String resourceGroupName, String networkRackName, TagsUpdate body) {
         return this.beginUpdateAsync(resourceGroupName, networkRackName, body).getSyncPoller();
     }
 
@@ -808,11 +812,11 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body, Context context) {
+        String resourceGroupName, String networkRackName, TagsUpdate body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, networkRackName, body, context).getSyncPoller();
     }
 
@@ -827,11 +831,10 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkRackInner> updateAsync(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body) {
+    private Mono<NetworkRackInner> updateAsync(String resourceGroupName, String networkRackName, TagsUpdate body) {
         return beginUpdateAsync(resourceGroupName, networkRackName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -849,11 +852,11 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition on successful completion of {@link Mono}.
+     * @return the Network Rack resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkRackInner> updateAsync(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body, Context context) {
+        String resourceGroupName, String networkRackName, TagsUpdate body, Context context) {
         return beginUpdateAsync(resourceGroupName, networkRackName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -870,10 +873,10 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkRackInner update(String resourceGroupName, String networkRackName, NetworkRackPatch body) {
+    public NetworkRackInner update(String resourceGroupName, String networkRackName, TagsUpdate body) {
         return updateAsync(resourceGroupName, networkRackName, body).block();
     }
 
@@ -889,11 +892,10 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkRackInner update(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body, Context context) {
+    public NetworkRackInner update(String resourceGroupName, String networkRackName, TagsUpdate body, Context context) {
         return updateAsync(resourceGroupName, networkRackName, body, context).block();
     }
 
@@ -1149,7 +1151,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -1157,7 +1159,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1202,7 +1204,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -1211,7 +1213,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listByResourceGroupSinglePageAsync(
@@ -1254,7 +1256,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -1262,7 +1264,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedFlux}.
+     * @return list of Network Racks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkRackInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1272,7 +1274,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -1281,7 +1283,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedFlux}.
+     * @return list of Network Racks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkRackInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1291,7 +1293,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -1299,7 +1301,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> listByResourceGroup(String resourceGroupName) {
@@ -1307,7 +1309,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -1316,7 +1318,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1324,13 +1326,13 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listSinglePageAsync() {
@@ -1370,7 +1372,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
@@ -1378,7 +1380,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listSinglePageAsync(Context context) {
@@ -1415,13 +1417,13 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedFlux}.
+     * @return list of Network Racks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkRackInner> listAsync() {
@@ -1430,7 +1432,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
@@ -1438,7 +1440,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedFlux}.
+     * @return list of Network Racks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkRackInner> listAsync(Context context) {
@@ -1447,13 +1449,13 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> list() {
@@ -1461,7 +1463,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
     }
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
@@ -1469,7 +1471,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkRackInner> list(Context context) {
@@ -1484,7 +1486,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1522,7 +1524,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listByResourceGroupNextSinglePageAsync(
@@ -1559,7 +1561,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1597,7 +1599,7 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkRackInner>> listBySubscriptionNextSinglePageAsync(

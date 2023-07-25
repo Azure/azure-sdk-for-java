@@ -12,7 +12,7 @@ public final class DppBaseResourceInnerTests {
     public void testDeserialize() throws Exception {
         DppBaseResourceInner model =
             BinaryData
-                .fromString("{\"id\":\"lyzrpzbchckqqzqi\",\"name\":\"iysui\",\"type\":\"ynkedyatrwyhqmib\"}")
+                .fromString("{\"id\":\"m\",\"name\":\"kufgmj\",\"type\":\"wr\"}")
                 .toObject(DppBaseResourceInner.class);
     }
 
