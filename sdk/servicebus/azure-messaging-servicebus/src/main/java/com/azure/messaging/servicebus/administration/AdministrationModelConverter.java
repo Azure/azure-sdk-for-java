@@ -250,13 +250,18 @@ class AdministrationModelConverter {
             .setContent(content);
     }
 
-    CreateSubscriptionBodyImpl getUpdateSubscriptionBody(SubscriptionProperties subscription) {
-        final SubscriptionDescriptionImpl implementation = EntityHelper.toImplementation(subscription);
-        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
-            .setType(CONTENT_TYPE)
-            .setSubscriptionDescription(implementation);
-        return new CreateSubscriptionBodyImpl()
-            .setContent(content);
+    CreateSubscriptionBodyImpl getUpdateSubscriptionBody(SubscriptionProperties subscription, Context context) {
+        final String forwardTo = getForwardToEntity(subscription.getForwardTo(), context);
+        if (forwardTo != null) {
+            subscription.setForwardTo(forwardTo);
+        }
+        final String forwardDlq
+            = getForwardDlqEntity(subscription.getForwardDeadLetteredMessagesTo(), context);
+        if (forwardDlq != null) {
+            subscription.setForwardDeadLetteredMessagesTo(forwardDlq);
+        }
+
+        return getCreateSubscriptionBody(EntityHelper.toImplementation(subscription));
     }
 
     CreateTopicBodyImpl getUpdateTopicBody(TopicProperties topic) {
