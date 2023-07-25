@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos._
+import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosException}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.ItemBulkOperation
 import com.azure.cosmos.models._
@@ -81,11 +81,11 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val pendingRetries = new AtomicLong(0)
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
-  private val bulkInputEmitter: Sinks.Many[models.CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+  private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
   // TODO: fabianm - remove this later
   // Leaving activeOperations here primarily for debugging purposes (for example in case of hangs)
-  private val activeBulkWriteOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[models.CosmosItemOperation]().asScala
+  private val activeBulkWriteOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
   private val activeReadManyOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[ReadManyOperation]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
 
@@ -359,7 +359,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val subscriptionDisposable: Disposable = {
     log.logTrace(s"subscriptionDisposable, Context: ${operationContext.toString} ${getThreadInfo}")
 
-    val bulkOperationResponseFlux: SFlux[models.CosmosBulkOperationResponse[Object]] =
+    val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
       container
           .executeBulkOperations[Object](
             bulkInputEmitter.asFlux().publishOn(bulkWriterBoundedElastic),
@@ -439,7 +439,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     // this means if the semaphore can't be acquired within 10 minutes
     // the first attempt will always assume it wasn't stale - so effectively we
     // allow staleness for ten additional minutes - which is perfectly fine
-    var activeOperationsSnapshot = mutable.Set.empty[models.CosmosItemOperation]
+    var activeOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
     var activeReadManyOperationsSnapshot = mutable.Set.empty[ReadManyOperation]
     log.logTrace(
       s"Before TryAcquire ${totalScheduledMetrics.get}, Context: ${operationContext.toString} ${getThreadInfo}")
@@ -657,7 +657,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private[this] def getActiveOperationsLog(
-                                              activeOperationsSnapshot: mutable.Set[models.CosmosItemOperation],
+                                              activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
                                               activeReadManyOperationsSnapshot: mutable.Set[ReadManyOperation]): String = {
     val sb = new StringBuilder()
 
@@ -694,7 +694,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private[this] def throwIfProgressStaled
   (
     operationName: String,
-    activeOperationsSnapshot: mutable.Set[models.CosmosItemOperation],
+    activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
     activeReadManyOperationsSnapshot: mutable.Set[ReadManyOperation],
     numberOfIntervalsWithIdenticalActiveOperationSnapshots: AtomicLong
   ) = {

@@ -254,7 +254,7 @@ class PointWriter(container: CosmosAsyncContainer,
                               createOperation: CreateOperation): Unit = {
 
     var exceptionOpt = Option.empty[Exception]
-    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+    for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
@@ -269,7 +269,7 @@ class PointWriter(container: CosmosAsyncContainer,
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"create item $createOperation attempt #$attempt max remaining retries"
-              + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+              + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)
       }
     }
@@ -284,7 +284,7 @@ class PointWriter(container: CosmosAsyncContainer,
                               upsertOperation: UpsertOperation): Unit = {
 
     var exceptionOpt = Option.empty[Exception]
-    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+    for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
@@ -297,7 +297,7 @@ class PointWriter(container: CosmosAsyncContainer,
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"upsert item $upsertOperation attempt #$attempt max remaining retries "
-              + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+              + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)
       }
     }
@@ -316,7 +316,7 @@ class PointWriter(container: CosmosAsyncContainer,
 
     var exceptionOpt = Option.empty[Exception]
 
-    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+    for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
         patchItem(container, partitionKeyValue, objectNode)
         return
@@ -324,7 +324,7 @@ class PointWriter(container: CosmosAsyncContainer,
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"patch item $patchOperation attempt #$attempt max remaining retries "
-             + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+             + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)
       }
     }
@@ -345,7 +345,7 @@ class PointWriter(container: CosmosAsyncContainer,
       val patchBulkUpdateOperation = PatchBulkUpdateOperation(taskDiagnosticsContext,
           CosmosItemIdentifier(objectNode.get(CosmosConstants.Properties.Id).asText(), partitionKeyValue))
 
-      for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+      for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
           try {
               patchBulkUpdateItem(container, partitionKeyValue, objectNode)
               return
@@ -356,7 +356,7 @@ class PointWriter(container: CosmosAsyncContainer,
                   Exceptions.isResourceExistsException(e.getStatusCode)) =>
                   log.logWarning(
                       s"patch update item $patchBulkUpdateOperation attempt #$attempt max remaining retries "
-                          + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+                          + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
                   exceptionOpt = Option.apply(e)
           }
       }
@@ -423,7 +423,7 @@ class PointWriter(container: CosmosAsyncContainer,
                               deleteOperation: DeleteOperation): Unit = {
 
     var exceptionOpt = Option.empty[Exception]
-    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+    for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
@@ -451,7 +451,7 @@ class PointWriter(container: CosmosAsyncContainer,
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"delete item attempt #$attempt max remaining retries"
-              + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+              + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)
       }
     }
@@ -471,7 +471,7 @@ class PointWriter(container: CosmosAsyncContainer,
   ): Unit = {
 
     var exceptionOpt = Option.empty[Exception]
-    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+    for (attempt <- 0 to cosmosWriteConfig.maxRetryCount) {
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
@@ -498,7 +498,7 @@ class PointWriter(container: CosmosAsyncContainer,
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"replace item if not modified attempt #$attempt max remaining retries"
-              + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+              + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)
       }
     }

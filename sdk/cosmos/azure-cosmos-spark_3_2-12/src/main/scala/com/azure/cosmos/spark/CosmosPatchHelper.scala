@@ -10,7 +10,7 @@ import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.core.JsonPointer
-import com.fasterxml.jackson.databind.node._
+import com.fasterxml.jackson.databind.node.{ArrayNode, BigIntegerNode, DecimalNode, DoubleNode, FloatNode, IntNode, LongNode, MissingNode, ObjectNode, ShortNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 
 import java.io.IOException
