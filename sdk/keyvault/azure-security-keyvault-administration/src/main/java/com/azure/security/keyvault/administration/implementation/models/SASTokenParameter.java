@@ -4,38 +4,26 @@
 
 package com.azure.security.keyvault.administration.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SASTokenParameter model. */
-@Immutable
-public final class SASTokenParameter implements JsonSerializable<SASTokenParameter> {
+@Fluent
+public final class SASTokenParameter {
     /*
      * Azure Blob storage container Uri
      */
-    private final String storageResourceUri;
+    @JsonProperty(value = "storageResourceUri", required = true)
+    private String storageResourceUri;
 
     /*
      * The SAS token pointing to an Azure Blob storage container
      */
-    private final String token;
+    @JsonProperty(value = "token", required = true)
+    private String token;
 
-    /**
-     * Creates an instance of SASTokenParameter class.
-     *
-     * @param storageResourceUri the storageResourceUri value to set.
-     * @param token the token value to set.
-     */
-    public SASTokenParameter(String storageResourceUri, String token) {
-        this.storageResourceUri = storageResourceUri;
-        this.token = token;
-    }
+    /** Creates an instance of SASTokenParameter class. */
+    public SASTokenParameter() {}
 
     /**
      * Get the storageResourceUri property: Azure Blob storage container Uri.
@@ -47,6 +35,17 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
     }
 
     /**
+     * Set the storageResourceUri property: Azure Blob storage container Uri.
+     *
+     * @param storageResourceUri the storageResourceUri value to set.
+     * @return the SASTokenParameter object itself.
+     */
+    public SASTokenParameter setStorageResourceUri(String storageResourceUri) {
+        this.storageResourceUri = storageResourceUri;
+        return this;
+    }
+
+    /**
      * Get the token property: The SAS token pointing to an Azure Blob storage container.
      *
      * @return the token value.
@@ -55,60 +54,14 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
         return this.token;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("storageResourceUri", this.storageResourceUri);
-        jsonWriter.writeStringField("token", this.token);
-        return jsonWriter.writeEndObject();
-    }
-
     /**
-     * Reads an instance of SASTokenParameter from the JsonReader.
+     * Set the token property: The SAS token pointing to an Azure Blob storage container.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SASTokenParameter if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SASTokenParameter.
+     * @param token the token value to set.
+     * @return the SASTokenParameter object itself.
      */
-    public static SASTokenParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean storageResourceUriFound = false;
-                    String storageResourceUri = null;
-                    boolean tokenFound = false;
-                    String token = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("storageResourceUri".equals(fieldName)) {
-                            storageResourceUri = reader.getString();
-                            storageResourceUriFound = true;
-                        } else if ("token".equals(fieldName)) {
-                            token = reader.getString();
-                            tokenFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (storageResourceUriFound && tokenFound) {
-                        SASTokenParameter deserializedSASTokenParameter =
-                                new SASTokenParameter(storageResourceUri, token);
-
-                        return deserializedSASTokenParameter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!storageResourceUriFound) {
-                        missingProperties.add("storageResourceUri");
-                    }
-                    if (!tokenFound) {
-                        missingProperties.add("token");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+    public SASTokenParameter setToken(String token) {
+        this.token = token;
+        return this;
     }
 }
