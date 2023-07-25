@@ -3,8 +3,6 @@
 
 package com.azure.monitor.ingestion;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -111,22 +109,6 @@ public final class ReadmeSamples {
                 Context.NONE);
         // END: readme-sample-uploadLogs-error-handler
     }
-
-    /**
-     * Enable HTTP request and response logging.
-     */
-    public void tsgEnableHttpLogging() {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        // BEGIN: readme-sample-enablehttplogging
-        LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder()
-            .credential(credential)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
-        // END: readme-sample-enablehttplogging
-    }
-
-
 
     private List<Object> getLogs() {
         return null;
