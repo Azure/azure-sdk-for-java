@@ -19,6 +19,17 @@ public final class TransferCallToParticipantOptions {
     private final CommunicationIdentifier targetParticipant;
     private final CustomContext customContext;
     private String callbackUrlOverride;
+    
+    /**
+     *  Participant being transferred away
+     */
+    private CommunicationIdentifier transferee;
+
+
+
+    /**
+     * The operational context
+     */
     private String operationContext;
 
     /**
@@ -78,6 +89,26 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+    
+    /**
+     * Get transferee.
+     *
+     * @return the transferee
+     */
+    public CommunicationIdentifier getTransferee() {
+        return transferee;
+    }
+    
+    /**
+     * Set the transferee.
+     *
+     * @param transferee the transferee to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setTransferee(CommunicationIdentifier transferee) {
+        this.transferee = transferee;
         return this;
     }
 

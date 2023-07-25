@@ -334,6 +334,31 @@ public final class VolumePatch extends Resource {
     }
 
     /**
+     * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
+     * directory which provides access to each of the volume's snapshots.
+     *
+     * @return the snapshotDirectoryVisible value.
+     */
+    public Boolean snapshotDirectoryVisible() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotDirectoryVisible();
+    }
+
+    /**
+     * Set the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
+     * directory which provides access to each of the volume's snapshots.
+     *
+     * @param snapshotDirectoryVisible the snapshotDirectoryVisible value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

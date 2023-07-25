@@ -38,7 +38,7 @@ async function defaultInfo() {
 
     console.log("--autorest");
     console.log(
-        "\tThe version of AutoRest Core. E.g. 3.9.3, or the location of AutoRest repo, e.g. E:\\repo\\autorest"
+        "\tThe version of AutoRest Core. E.g. 3.9.6, or the location of AutoRest repo, e.g. E:\\repo\\autorest"
     );
 
     console.log("--autorest-java");
@@ -61,7 +61,7 @@ async function defaultInfo() {
 
 const maxParallelism = parseInt(args["parallel"], 10) || os.cpus().length;
 var projects = args["projects"];
-var autoRestVersion = "3.9.3"; // default
+var autoRestVersion = "3.9.6"; // default
 if (args["autorest"] !== undefined) {
     autoRestVersion = args["autorest"];
 }

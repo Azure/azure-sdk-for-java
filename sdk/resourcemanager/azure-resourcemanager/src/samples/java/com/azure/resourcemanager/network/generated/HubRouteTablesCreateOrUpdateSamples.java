@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for HubRouteTables CreateOrUpdate. */
 public final class HubRouteTablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/HubRouteTablePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/HubRouteTablePut.json
      */
     /**
      * Sample code: RouteTablePut.

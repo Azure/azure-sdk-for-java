@@ -83,7 +83,14 @@ public class AzureCliCredential implements TokenCredential {
         return identityClient.authenticateWithAzureCli(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+                error))
+            .onErrorMap(error -> {
+                if (identityClient.getIdentityClientOptions().isChained()) {
+                    return new CredentialUnavailableException(error.getMessage(), error);
+                } else {
+                    return error;
+                }
+            });
     }
 
     @Override
@@ -94,7 +101,11 @@ public class AzureCliCredential implements TokenCredential {
             return accessToken;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            throw e;
+            if (identityClient.getIdentityClientOptions().isChained()) {
+                throw new CredentialUnavailableException(e.getMessage(), e);
+            } else {
+                throw e;
+            }
         }
     }
 }
