@@ -467,8 +467,15 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
             // Microsoft Graph secret
             new TestProxySanitizer(String.format("$..%s", "secretText"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // Microsoft.Storage secret
+            new TestProxySanitizer("$..keys[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // SQL
-            new TestProxySanitizer(String.format("$..%s", "administratorLoginPassword"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer(String.format("$..%s", "administratorLoginPassword"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // EH/SB
+            new TestProxySanitizer(String.format("$..%s", "aliasPrimaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer(String.format("$..%s", "aliasSecondaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer(String.format("$..%s", "primaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer(String.format("$..%s", "secondaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         ));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);

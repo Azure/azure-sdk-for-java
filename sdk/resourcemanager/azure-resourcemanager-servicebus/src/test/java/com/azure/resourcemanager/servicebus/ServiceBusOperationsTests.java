@@ -11,8 +11,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -45,15 +43,6 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     private ResourceManager resourceManager;
     private ServiceBusManager serviceBusManager;
     private String rgName = "";
-
-    public ServiceBusOperationsTests() {
-        addSanitizers(
-            new TestProxySanitizer(String.format("$..%s", "aliasPrimaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "aliasSecondaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "primaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "secondaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
-        );
-    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(
