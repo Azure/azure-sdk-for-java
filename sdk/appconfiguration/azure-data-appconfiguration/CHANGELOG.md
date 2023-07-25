@@ -1,32 +1,5 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.5.0-beta.1 (2023-07-11)
-
-### Features Added
-
-- Added new feature, `Configuration Setting Snapshot` to the library. You can create, get,
-  update(archive and recover) a snapshot, and list snapshots.
-- Added new APIs to support listing configuration settings by given snapshot name and setting 
-  fields.
-
-### Other Changes
-
-#### Dependency Updates
-
-- Added a new dependency `azure-json`, version `1.0.1`.
-- Upgraded `azure-core` from `1.40.0` to version `1.40.1`.
-- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
-
 ## 1.4.6 (2023-06-20)
 
 ### Other Changes
@@ -36,6 +9,7 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
+
 ## 1.4.5 (2023-05-23)
 
 ### Other Changes
@@ -44,6 +18,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.4.4 (2023-04-18)
 
@@ -57,13 +32,14 @@
 
 - Fixed a race condition of invalid signature issue by not sharing `Mac` instance in class-level per request operation.
   `Mac` isn't thread-safe, multiple threads could use it at once.
-
+  
 ### Other Changes
 
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
 
 ## 1.4.3 (2023-03-16)
 
@@ -74,6 +50,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
+
 ## 1.4.2 (2023-02-16)
 
 ### Other Changes
@@ -82,6 +59,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
 
 ## 1.4.1 (2023-01-17)
 
