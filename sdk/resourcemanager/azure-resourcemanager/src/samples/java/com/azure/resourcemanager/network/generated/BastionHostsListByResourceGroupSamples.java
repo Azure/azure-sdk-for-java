@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for BastionHosts ListByResourceGroup. */
 public final class BastionHostsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/BastionHostListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/BastionHostListByResourceGroup.json
      */
     /**
      * Sample code: List all Bastion Hosts for a given resource group.

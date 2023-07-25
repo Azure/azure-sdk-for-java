@@ -7,7 +7,7 @@ package com.azure.resourcemanager.netapp.generated;
 /** Samples for Volumes ReInitializeReplication. */
 public final class VolumesReInitializeReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_ReInitializeReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_ReInitializeReplication.json
      */
     /**
      * Sample code: Volumes_ReInitializeReplication.
