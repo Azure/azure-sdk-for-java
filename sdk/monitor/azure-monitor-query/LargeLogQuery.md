@@ -62,7 +62,7 @@ This sample provides two functions to convert a `LogsQuery` into a `LogsBatchQue
 based upon the approximate* maximum amount of rows to be present in each query. The other function splits the query into multiple smaller queries based upon
 the approximate* maximum size of the data in bytes to be present in each query.
 
-_*If multiple rows have the exact same TimeGenerated, the queries in the batch query may exceed the maximum amount of rows/bytes_
+_*If multiple rows have the exact same `TimeGenerated` (or another timestamp column), the queries in the batch query may exceed the maximum amount of rows/bytes_
 
 #### Splitting by Rows
 
