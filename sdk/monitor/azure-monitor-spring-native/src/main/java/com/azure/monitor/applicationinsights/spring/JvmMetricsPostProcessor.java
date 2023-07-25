@@ -14,15 +14,29 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;
 
+/**
+ * A bean post processor for JVM metrics
+ */
 // See https://github.com/Azure/azure-sdk-for-java/issues/35725
 public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
 
     private final AzureTelemetryActivation azureTelemetryActivation;
 
+    /**
+     * Create an instance of JvmMetricsPostProcessor
+     * @param azureTelemetryActivation
+     */
     public JvmMetricsPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
         this.azureTelemetryActivation = azureTelemetryActivation;
     }
 
+    /**
+     * Post process after initialization
+     * @param bean
+     * @param beanName
+     * @return a bean
+     * @throws BeansException
+     */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (azureTelemetryActivation.isTrue() && bean instanceof OpenTelemetry) {
@@ -37,6 +51,9 @@ public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
         return bean;
     }
 
+    /**
+     * @return the order
+     */
     @Override
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE - 1;
