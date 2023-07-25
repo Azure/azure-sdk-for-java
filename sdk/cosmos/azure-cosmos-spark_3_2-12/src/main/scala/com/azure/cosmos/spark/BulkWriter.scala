@@ -94,6 +94,28 @@ class BulkWriter(container: CosmosAsyncContainer,
     )
   ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
 
+  writeConfig.maxMicroBatchPayloadSizeInBytes match {
+    case Some(customMaxMicroBatchPayloadSizeInBytes) =>
+      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        .getCosmosBulkExecutionOptionsAccessor
+        .setMaxMicroBatchPayloadSizeInBytes(
+          cosmosBulkExecutionOptions,
+          customMaxMicroBatchPayloadSizeInBytes
+        )
+    case None =>
+  }
+
+  writeConfig.initialMicroBatchSize match {
+    case Some(customInitialMicroBatchSize) =>
+      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        .getCosmosBulkExecutionOptionsAccessor
+        .setMaxMicroBatchSize(
+          cosmosBulkExecutionOptions,
+          customInitialMicroBatchSize
+        )
+    case None =>
+  }
+
   private val operationContext = initializeOperationContext()
   private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
     case ItemWriteStrategy.ItemPatch => Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
