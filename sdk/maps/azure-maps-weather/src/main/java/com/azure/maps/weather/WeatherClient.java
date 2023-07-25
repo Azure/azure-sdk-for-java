@@ -41,7 +41,7 @@ import com.azure.maps.weather.models.Waypoint;
 import com.azure.maps.weather.models.WeatherAlongRouteResult;
 import com.azure.maps.weather.models.WeatherDataUnit;
 
-/** Initializes a new instance of the synchronous WeatherClient type. 
+/** Initializes a new instance of the synchronous WeatherClient type.
  * {@link WeatherClient} instances are created via the {@link WeatherClientBuilder}, as shown below.
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.weather.sync.builder.key.instantiation -->
@@ -64,7 +64,7 @@ public final class WeatherClient {
     /**
      * Initializes an instance of Weathers client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
     @Generated
     WeatherClient(WeatherAsyncClient asyncClient) {
@@ -73,7 +73,7 @@ public final class WeatherClient {
 
     /**
      * **Get Hourly Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_hourly_forecast -->
      * <pre>
      * client.getHourlyForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 12, null&#41;;
@@ -116,7 +116,7 @@ public final class WeatherClient {
 
     /**
      * **Get Hourly Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_hourly_forecast -->
      * <pre>
      * client.getHourlyForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 12, null&#41;;
@@ -160,7 +160,7 @@ public final class WeatherClient {
 
     /**
      * **Get Minute Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_minute_forecast -->
      * <pre>
      * client.getMinuteForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, 15, null&#41;;
@@ -197,7 +197,7 @@ public final class WeatherClient {
 
     /**
      * **Get Minute Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_minute_forecast -->
      * <pre>
      * client.getMinuteForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, 15, null&#41;;
@@ -236,7 +236,7 @@ public final class WeatherClient {
 
     /**
      * **Get Quarter-Day Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_quarter_day_forecast -->
      * <pre>
      * client.getQuarterDayForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 1, null&#41;;
@@ -275,7 +275,7 @@ public final class WeatherClient {
 
     /**
      * **Get Quarter-Day Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_quarter_day_forecast -->
      * <pre>
      * client.getQuarterDayForecast&#40;new GeoPosition&#40;-122.138874, 47.632346&#41;, null, 1, null&#41;;
@@ -315,7 +315,7 @@ public final class WeatherClient {
 
     /**
      * **Get Current Conditions**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
      * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
@@ -361,7 +361,7 @@ public final class WeatherClient {
 
     /**
      * **Get Current Conditions**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
      * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
@@ -408,7 +408,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_forecast -->
      * <pre>
      * client.getDailyForecast&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, null, 5, null&#41;;
@@ -449,7 +449,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Forecast**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_forecast -->
      * <pre>
      * client.getDailyForecast&#40;new GeoPosition&#40;30.0734812, 62.6490341&#41;, null, 5, null&#41;;
@@ -492,7 +492,7 @@ public final class WeatherClient {
 
     /**
      * **Get Weather along route**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_weather_along_route -->
      * <pre>
      * List&lt;Waypoint&gt; waypoints = Arrays.asList&#40;
@@ -564,7 +564,7 @@ public final class WeatherClient {
 
     /**
      * **Get Weather along route**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_weather_along_route -->
      * <pre>
      * List&lt;Waypoint&gt; waypoints = Arrays.asList&#40;
@@ -638,7 +638,7 @@ public final class WeatherClient {
 
     /**
      * **Get Severe Weather Alerts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_severe_weather_alerts -->
      * <pre>
      * client.getSevereWeatherAlerts&#40;new GeoPosition&#40;-85.06431274043842, 30.324604968788467&#41;, null, true&#41;;
@@ -679,7 +679,7 @@ public final class WeatherClient {
 
     /**
      * **Get Severe Weather Alerts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_severe_weather_alerts -->
      * <pre>
      * client.getSevereWeatherAlerts&#40;new GeoPosition&#40;-85.06431274043842, 30.324604968788467&#41;, null, true&#41;;
@@ -722,7 +722,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Indices**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_indices -->
      * <pre>
      * client.getDailyIndices&#40;new GeoPosition&#40;-79.37849, 43.84745&#41;, null, null, null, 11&#41;;
@@ -772,7 +772,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Indices**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_indices -->
      * <pre>
      * client.getDailyIndices&#40;new GeoPosition&#40;-79.37849, 43.84745&#41;, null, null, null, 11&#41;;
@@ -824,7 +824,7 @@ public final class WeatherClient {
 
     /**
      * **Get Tropical Storm Active**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_tropical_storm_active -->
      * <pre>
      * client.getTropicalStormActive&#40;&#41;;
@@ -849,7 +849,7 @@ public final class WeatherClient {
 
     /**
      * **Get Tropical Storm Active**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_tropical_storm_active -->
      * <pre>
      * client.getTropicalStormActive&#40;&#41;;
@@ -875,7 +875,7 @@ public final class WeatherClient {
 
     /**
      * **Get Tropical Storm Search**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_tropical_storm_search -->
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
@@ -917,7 +917,7 @@ public final class WeatherClient {
      * &#125;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_tropical_storm_search -->
-     * 
+     *
      * <p>**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
      *
      * <p>Search government-issued tropical storms by year, basin ID, and government ID. Information about the tropical
@@ -941,7 +941,7 @@ public final class WeatherClient {
 
     /**
      * **Get Tropical Storm Forecasts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_tropical_storm_forecast -->
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
@@ -974,7 +974,7 @@ public final class WeatherClient {
 
     /**
      * **Get Tropical Storm Forecasts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_tropical_storm_forecast -->
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
@@ -1009,7 +1009,7 @@ public final class WeatherClient {
 
     /**
      * **Get Tropical Storm Locations**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_tropical_storm_locations -->
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
@@ -1041,7 +1041,7 @@ public final class WeatherClient {
 
     /**
      * **Get Tropical Storm Locations**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_tropical_storm_locations -->
      * <pre>
      * ActiveStormResult result = client.getTropicalStormActive&#40;&#41;;
@@ -1075,7 +1075,7 @@ public final class WeatherClient {
 
     /**
      * **Get Current Air Quality**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_current_air_quality -->
      * <pre>
      * client.getCurrentAirQuality&#40;
@@ -1111,7 +1111,7 @@ public final class WeatherClient {
 
     /**
      * **Get Current Air Quality**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_current_air_quality -->
      * <pre>
      * client.getCurrentAirQuality&#40;
@@ -1150,7 +1150,7 @@ public final class WeatherClient {
 
     /**
      * **Get Air Quality Daily Forecasts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_air_quality_daily_forecasts -->
      * <pre>
      * client.getAirQualityDailyForecasts&#40;
@@ -1188,7 +1188,7 @@ public final class WeatherClient {
 
     /**
      * **Get Air Quality Daily Forecasts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_air_quality_daily_forecasts -->
      * <pre>
      * client.getAirQualityDailyForecasts&#40;
@@ -1227,7 +1227,7 @@ public final class WeatherClient {
 
     /**
      * **Get Air Quality Hourly Forecasts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_air_quality_hourly_forecasts -->
      * <pre>
      * client.getAirQualityHourlyForecasts&#40;
@@ -1267,7 +1267,7 @@ public final class WeatherClient {
 
     /**
      * **Get Air Quality Hourly Forecasts**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_air_quality_hourly_forecasts -->
      * <pre>
      * client.getAirQualityHourlyForecasts&#40;
@@ -1309,7 +1309,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Historical Actuals**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_historical_actuals -->
      * <pre>
      * LocalDate before = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
@@ -1348,7 +1348,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Historical Actuals**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_historical_actuals -->
      * <pre>
      * LocalDate before = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
@@ -1363,7 +1363,7 @@ public final class WeatherClient {
      * precipitation, snowfall, snow depth and cooling/heating degree day information, for the day at a given coordinate
      * location. The data is requested for a specified date range, up to 31 days in a single API request. Generally,
      * historical data may be available as far back as the last 5 to 40+ years, depending on the location.
-     * 
+     *
      * @param position The applicable query specified as a comma separated string composed by longitude followed by
      *     latitude e.g. "-122.125679,47.641268".
      * @param startDate Start date in ISO 8601 format, for example, 2019-10-27. The date range supported is 1 to 31
@@ -1388,7 +1388,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Historical Records**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_historical_records -->
      * <pre>
      * LocalDate before = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
@@ -1426,7 +1426,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Historical Records**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_historical_records -->
      * <pre>
      * LocalDate before = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
@@ -1466,7 +1466,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Historical Normals**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_historical_normals -->
      * <pre>
      * LocalDate before = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;
@@ -1507,7 +1507,7 @@ public final class WeatherClient {
 
     /**
      * **Get Daily Historical Normals**
-     * 
+     *
      * <!-- src_embed com.azure.maps.weather.sync.get_daily_historical_normals -->
      * <pre>
      * LocalDate before = LocalDate.now&#40;&#41;.minusDays&#40;30&#41;;

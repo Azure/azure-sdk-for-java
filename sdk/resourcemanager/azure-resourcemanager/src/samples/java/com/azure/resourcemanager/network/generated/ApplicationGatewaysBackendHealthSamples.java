@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ApplicationGateways BackendHealth. */
 public final class ApplicationGatewaysBackendHealthSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayBackendHealthGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ApplicationGatewayBackendHealthGet.json
      */
     /**
      * Sample code: Get Backend Health.

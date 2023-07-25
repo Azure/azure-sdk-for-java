@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for AzureFirewalls PacketCapture. */
 public final class AzureFirewallsPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/AzureFirewallPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/AzureFirewallPacketCapture.json
      */
     /**
      * Sample code: AzureFirewallPacketCapture.

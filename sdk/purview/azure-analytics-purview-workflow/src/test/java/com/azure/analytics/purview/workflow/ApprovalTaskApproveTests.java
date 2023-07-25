@@ -17,7 +17,7 @@ public final class ApprovalTaskApproveTests extends PurviewWorkflowClientTestBas
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.approveApprovalTaskWithResponse(
-                        "69b57a00-f5de-4a17-a44a-6479adae373d", approvalResponseComment, requestOptions);
+                        "693f62ad-79f5-4364-822a-d85d7238e47e", approvalResponseComment, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

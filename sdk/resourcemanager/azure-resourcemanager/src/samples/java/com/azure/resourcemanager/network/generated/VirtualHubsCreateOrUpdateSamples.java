@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for VirtualHubs CreateOrUpdate. */
 public final class VirtualHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualHubPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualHubPut.json
      */
     /**
      * Sample code: VirtualHubPut.
@@ -30,7 +30,7 @@ public final class VirtualHubsCreateOrUpdateSamples {
                 "virtualHub2",
                 new VirtualHubInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withVirtualWan(
                         new SubResource()
                             .withId(

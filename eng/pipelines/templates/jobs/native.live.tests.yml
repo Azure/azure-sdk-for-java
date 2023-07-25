@@ -32,7 +32,7 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
 
@@ -54,7 +54,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
 
-      - template: ../steps/install-reporting-tools.yml
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
 

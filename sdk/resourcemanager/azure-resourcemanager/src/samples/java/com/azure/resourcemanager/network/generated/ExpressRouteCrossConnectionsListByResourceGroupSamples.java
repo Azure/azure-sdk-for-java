@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ExpressRouteCrossConnections ListByResourceGroup. */
 public final class ExpressRouteCrossConnectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCrossConnectionListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ExpressRouteCrossConnectionListByResourceGroup.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionListByResourceGroup.

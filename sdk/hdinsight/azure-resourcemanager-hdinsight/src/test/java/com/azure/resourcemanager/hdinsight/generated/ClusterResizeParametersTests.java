@@ -7,20 +7,19 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ClusterResizeParameters;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterResizeParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterResizeParameters model =
-            BinaryData.fromString("{\"targetInstanceCount\":2008133985}").toObject(ClusterResizeParameters.class);
-        Assertions.assertEquals(2008133985, model.targetInstanceCount());
+            BinaryData.fromString("{\"targetInstanceCount\":485357732}").toObject(ClusterResizeParameters.class);
+        Assertions.assertEquals(485357732, model.targetInstanceCount());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterResizeParameters model = new ClusterResizeParameters().withTargetInstanceCount(2008133985);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterResizeParameters model = new ClusterResizeParameters().withTargetInstanceCount(485357732);
         model = BinaryData.fromObject(model).toObject(ClusterResizeParameters.class);
-        Assertions.assertEquals(2008133985, model.targetInstanceCount());
+        Assertions.assertEquals(485357732, model.targetInstanceCount());
     }
 }

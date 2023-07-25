@@ -12,11 +12,11 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RemoteDependencyTelemetryBuilder;
@@ -24,44 +24,20 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.RequestT
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedDuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedTime;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Pattern;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class QuickPulseTestBase extends TestBase {
+public class QuickPulseTestBase extends TestProxyTestBase {
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
-
-    @Override
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        this.testContextManager =
-            new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
-        String playbackRecordName = "quickPulsePingPlayback";
-        if (testInfo.getTestMethod().get().getName().toLowerCase(Locale.ROOT).contains("post")) {
-            playbackRecordName = "quickPulsePingAndPostPlayback";
-        }
-        interceptorManager =
-            new InterceptorManager(
-                testContextManager.getTestName(),
-                new HashMap<>(),
-                testContextManager.doNotRecordTest(),
-                playbackRecordName);
-        testResourceNamer =
-            new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
-        beforeTest();
-    }
 
     HttpPipeline getHttpPipelineWithAuthentication() {
         if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
@@ -75,20 +51,24 @@ public class QuickPulseTestBase extends TestBase {
                 new BearerTokenAuthenticationPolicy(
                     credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
         } else {
-            return getHttpPipeline();
+            return getHttpPipeline(new BearerTokenAuthenticationPolicy(new MockTokenCredential()));
         }
     }
 
     HttpPipeline getHttpPipeline(HttpPipelinePolicy... policies) {
         HttpClient httpClient;
-        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-            httpClient = HttpClient.createDefault();
-        } else {
-            httpClient = interceptorManager.getPlaybackClient();
+        List<HttpPipelinePolicy> allPolicies = new ArrayList<>(Arrays.asList(policies));
+        httpClient = HttpClient.createDefault();
+        if (getTestMode() == TestMode.RECORD) {
+            allPolicies.add(interceptorManager.getRecordPolicy());
         }
-        List<HttpPipelinePolicy> allPolicies = new ArrayList<>();
-        allPolicies.add(interceptorManager.getRecordPolicy());
-        allPolicies.addAll(Arrays.asList(policies));
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            httpClient = interceptorManager.getPlaybackClient();
+            interceptorManager.addMatchers(
+                Arrays.asList(new BodilessMatcher(), new CustomMatcher()
+                    .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-qps-transmission-time"))));
+        }
         return new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))

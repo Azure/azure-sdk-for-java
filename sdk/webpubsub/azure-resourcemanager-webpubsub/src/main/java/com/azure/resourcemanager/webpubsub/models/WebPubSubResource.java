@@ -57,6 +57,13 @@ public interface WebPubSubResource {
     ResourceSku sku();
 
     /**
+     * Gets the kind property: The kind of the service.
+     *
+     * @return the kind value.
+     */
+    ServiceKind kind();
+
+    /**
      * Gets the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
@@ -64,7 +71,7 @@ public interface WebPubSubResource {
     ManagedIdentity identity();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -223,11 +230,13 @@ public interface WebPubSubResource {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The WebPubSubResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the WebPubSubResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -246,17 +255,18 @@ public interface WebPubSubResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
-             *     value from the Azure Resource Manager API or the portal.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the WebPubSubResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -264,6 +274,7 @@ public interface WebPubSubResource {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithSku,
+                DefinitionStages.WithKind,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithTls,
                 DefinitionStages.WithLiveTraceConfiguration,
@@ -287,6 +298,7 @@ public interface WebPubSubResource {
              */
             WebPubSubResource create(Context context);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -297,6 +309,7 @@ public interface WebPubSubResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -307,6 +320,18 @@ public interface WebPubSubResource {
              */
             WithCreate withSku(ResourceSku sku);
         }
+
+        /** The stage of the WebPubSubResource definition allowing to specify kind. */
+        interface WithKind {
+            /**
+             * Specifies the kind property: The kind of the service.
+             *
+             * @param kind The kind of the service.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(ServiceKind kind);
+        }
+
         /** The stage of the WebPubSubResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -317,6 +342,7 @@ public interface WebPubSubResource {
              */
             WithCreate withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify tls. */
         interface WithTls {
             /**
@@ -327,6 +353,7 @@ public interface WebPubSubResource {
              */
             WithCreate withTls(WebPubSubTlsSettings tls);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify liveTraceConfiguration. */
         interface WithLiveTraceConfiguration {
             /**
@@ -338,6 +365,7 @@ public interface WebPubSubResource {
              */
             WithCreate withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify resourceLogConfiguration. */
         interface WithResourceLogConfiguration {
             /**
@@ -349,6 +377,7 @@ public interface WebPubSubResource {
              */
             WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
@@ -359,6 +388,7 @@ public interface WebPubSubResource {
              */
             WithCreate withNetworkACLs(WebPubSubNetworkACLs networkACLs);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -373,6 +403,7 @@ public interface WebPubSubResource {
              */
             WithCreate withPublicNetworkAccess(String publicNetworkAccess);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -385,6 +416,7 @@ public interface WebPubSubResource {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the WebPubSubResource definition allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
@@ -398,6 +430,7 @@ public interface WebPubSubResource {
             WithCreate withDisableAadAuth(Boolean disableAadAuth);
         }
     }
+
     /**
      * Begins update for the WebPubSubResource resource.
      *
@@ -432,6 +465,7 @@ public interface WebPubSubResource {
          */
         WebPubSubResource apply(Context context);
     }
+
     /** The WebPubSubResource update stages. */
     interface UpdateStages {
         /** The stage of the WebPubSubResource update allowing to specify tags. */
@@ -444,6 +478,7 @@ public interface WebPubSubResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify sku. */
         interface WithSku {
             /**
@@ -454,6 +489,7 @@ public interface WebPubSubResource {
              */
             Update withSku(ResourceSku sku);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -464,6 +500,7 @@ public interface WebPubSubResource {
              */
             Update withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify tls. */
         interface WithTls {
             /**
@@ -474,6 +511,7 @@ public interface WebPubSubResource {
              */
             Update withTls(WebPubSubTlsSettings tls);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify liveTraceConfiguration. */
         interface WithLiveTraceConfiguration {
             /**
@@ -485,6 +523,7 @@ public interface WebPubSubResource {
              */
             Update withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify resourceLogConfiguration. */
         interface WithResourceLogConfiguration {
             /**
@@ -496,6 +535,7 @@ public interface WebPubSubResource {
              */
             Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
@@ -506,6 +546,7 @@ public interface WebPubSubResource {
              */
             Update withNetworkACLs(WebPubSubNetworkACLs networkACLs);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -520,6 +561,7 @@ public interface WebPubSubResource {
              */
             Update withPublicNetworkAccess(String publicNetworkAccess);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -532,6 +574,7 @@ public interface WebPubSubResource {
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the WebPubSubResource update allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
@@ -545,6 +588,7 @@ public interface WebPubSubResource {
             Update withDisableAadAuth(Boolean disableAadAuth);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

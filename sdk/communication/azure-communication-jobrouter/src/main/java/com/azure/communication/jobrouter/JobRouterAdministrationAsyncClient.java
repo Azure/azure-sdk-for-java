@@ -58,11 +58,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p><strong>Instantiating an asynchronous JobRouter Administration Client</strong></p>
  * <!-- src_embed com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; Initialize the router administration client builder
+ * &#47;&#47; Initialize the jobrouter administration client builder
  * final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the jobrouter administration client
- * JobRouterAdministrationAsyncClient jobRouterAdministrationClient = builder.buildAsyncClient&#40;&#41;;
+ * JobRouterAdministrationAsyncClient jobrouterAdministrationClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation -->
