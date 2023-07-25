@@ -60,7 +60,7 @@ private[cosmos] class CosmosRowConverter(private val objectMapper: ObjectMapper,
         rowData: Any
     ): Option[JsonNode] = {
         fieldType match {
-            case TimestampNTZType => convertToJsonNodeConditionally(rowData.asInstanceOf[java.time.LocalDateTime].toString)
+            case TimestampNTZType if rowData.isInstanceOf[java.time.LocalDateTime] => convertToJsonNodeConditionally(rowData.asInstanceOf[java.time.LocalDateTime].toString)
             case _ =>
                 throw new Exception(s"Cannot cast $rowData into a Json value. $fieldType has no matching Json value.")
         }
@@ -68,7 +68,7 @@ private[cosmos] class CosmosRowConverter(private val objectMapper: ObjectMapper,
 
     override def convertSparkDataTypeToJsonNodeNonNullForSparkRuntimeSpecificDataType(fieldType: DataType, rowData: Any): JsonNode = {
         fieldType match {
-            case TimestampNTZType => objectMapper.convertValue(rowData.asInstanceOf[java.time.LocalDateTime].toString, classOf[JsonNode])
+            case TimestampNTZType if rowData.isInstanceOf[java.time.LocalDateTime] => objectMapper.convertValue(rowData.asInstanceOf[java.time.LocalDateTime].toString, classOf[JsonNode])
             case _ =>
                 throw new Exception(s"Cannot cast $rowData into a Json value. $fieldType has no matching Json value.")
         }
@@ -122,7 +122,7 @@ private[cosmos] class CosmosRowConverter(private val objectMapper: ObjectMapper,
         catch {
             case _: Exception =>
                 try {
-                    val odt = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME) //yyyy-MM-ddTHH:mm:ssZ
+                    val odt = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME)
                     Some(odt)
                 }
                 catch {
