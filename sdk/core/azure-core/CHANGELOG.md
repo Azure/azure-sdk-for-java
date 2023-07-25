@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where serialization of `com.azure.core.models.CloudEvent` through an external ObjectMapper was incorrect. ([#36000](https://github.com/Azure/azure-sdk-for-java/pull/36087))
+
 ### Other Changes
 
 ## 1.41.0 (2023-07-06)
