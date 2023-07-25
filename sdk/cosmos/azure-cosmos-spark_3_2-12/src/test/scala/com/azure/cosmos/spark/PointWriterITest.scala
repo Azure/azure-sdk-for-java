@@ -817,7 +817,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       // if the item does not exists, patchBulkUpdate essentially will create those items
       // Validate that patchBulkUpdate can create items successfully
       val writeConfig = CosmosWriteConfig(
-          ItemWriteStrategy.ItemPatchBulkUpdate,
+          ItemWriteStrategy.ItemBulkUpdate,
           5,
           bulkEnabled = false,
           bulkMaxPendingOperations = Some(900),
@@ -857,7 +857,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
       val writeConfig = CosmosWriteConfig(
-          ItemWriteStrategy.ItemPatchBulkUpdate,
+          ItemWriteStrategy.ItemBulkUpdate,
           5,
           bulkEnabled = false,
           bulkMaxPendingOperations = Some(900),

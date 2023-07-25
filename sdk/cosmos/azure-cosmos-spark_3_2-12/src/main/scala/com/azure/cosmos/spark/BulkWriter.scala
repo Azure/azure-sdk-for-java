@@ -102,13 +102,13 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   private val operationContext = initializeOperationContext()
   private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
-    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchBulkUpdate =>
+    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemBulkUpdate =>
         Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
     case _ => None
   }
   private val readManyInputEmitterOpt: Option[Sinks.Many[ReadManyOperation]] = {
       writeConfig.itemWriteStrategy match {
-          case ItemWriteStrategy.ItemPatchBulkUpdate => Some(Sinks.many().unicast().onBackpressureBuffer())
+          case ItemWriteStrategy.ItemBulkUpdate => Some(Sinks.many().unicast().onBackpressureBuffer())
           case _ => None
       }
   }
@@ -145,7 +145,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   private val readManySubscriptionDisposableOpt: Option[Disposable] = {
       writeConfig.itemWriteStrategy match {
-          case ItemWriteStrategy.ItemPatchBulkUpdate => Some(createReadManySubscriptionDisposable())
+          case ItemWriteStrategy.ItemBulkUpdate => Some(createReadManySubscriptionDisposable())
           case  _ => None
       }
   }
@@ -245,7 +245,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                                       OperationContext(
                                           readManyOperation.operationContext.itemId,
                                           readManyOperation.operationContext.partitionKeyValue,
-                                          None,
+                                          eTag = None,
                                           readManyOperation.operationContext.attemptNumber,
                                           Some(readManyOperation.objectNode)
                                       ))
@@ -264,7 +264,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                       .doFinally(signalType => {
                           for (readManyOperation <- readManyOperations) {
                               activeReadManyOperations.remove(readManyOperation)
-                              // for ItemPatchBulkUpdate strategy, each active task includes two stages: ReadMany + BulkWrite
+                              // for ItemBulkUpdate strategy, each active task includes two stages: ReadMany + BulkWrite
                               // so we are not going to make task complete here
                           }
                       })
@@ -477,10 +477,10 @@ class BulkWriter(container: CosmosAsyncContainer,
       }
 
       // The handling will make sure that during retry:
-      // For itemPatchBulkUpdate -> the retry will go through readMany stage -> bulkWrite stage.
+      // For itemBulkUpdate -> the retry will go through readMany stage -> bulkWrite stage.
       // For other strategies -> the retry will only go through bulk write stage
       writeConfig.itemWriteStrategy match {
-          case ItemWriteStrategy.ItemPatchBulkUpdate => scheduleReadManyInternal(partitionKeyValue, objectNode, operationContext)
+          case ItemWriteStrategy.ItemBulkUpdate => scheduleReadManyInternal(partitionKeyValue, objectNode, operationContext)
           case _ => scheduleBulkWriteInternal(partitionKeyValue, objectNode, operationContext)
       }
   }
@@ -893,8 +893,8 @@ class BulkWriter(container: CosmosAsyncContainer,
       var returnValue = false
       if (operationContext.attemptNumber < writeConfig.maxRetryCount) {
           returnValue = writeConfig.itemWriteStrategy match {
-              case ItemWriteStrategy.ItemPatchBulkUpdate =>
-                  this.shouldRetryForItempatchBulkUpdate(statusCode, subStatusCode)
+              case ItemWriteStrategy.ItemBulkUpdate =>
+                  this.shouldRetryForItemPatchBulkUpdate(statusCode, subStatusCode)
               case _ => Exceptions.canBeTransientFailure(statusCode, subStatusCode)
           }
       }
@@ -905,7 +905,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     returnValue
   }
 
-  private def shouldRetryForItempatchBulkUpdate(statusCode: Int, subStatusCode: Int): Boolean = {
+  private def shouldRetryForItemPatchBulkUpdate(statusCode: Int, subStatusCode: Int): Boolean = {
       Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
           Exceptions.isResourceExistsException(statusCode) ||
           Exceptions.isPreconditionFailedException(statusCode)

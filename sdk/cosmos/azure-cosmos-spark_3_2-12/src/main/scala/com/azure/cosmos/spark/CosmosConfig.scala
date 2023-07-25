@@ -86,7 +86,7 @@ private[spark] object CosmosConfigNames {
   val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
   val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
   val WritePatchFilterPredicate = "spark.cosmos.write.patch.filter"
-  val WritePatchBulkUpdateColumnConfigs = "spark.cosmos.write.patchBulkUpdate.columnConfigs"
+  val WriteBulkUpdateColumnConfigs = "spark.cosmos.write.bulkUpdate.columnConfigs"
   val WriteStrategy = "spark.cosmos.write.strategy"
   val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
   val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
@@ -171,7 +171,7 @@ private[spark] object CosmosConfigNames {
     WritePatchDefaultOperationType,
     WritePatchColumnConfigs,
     WritePatchFilterPredicate,
-    WritePatchBulkUpdateColumnConfigs,
+    WriteBulkUpdateColumnConfigs,
     WriteStrategy,
     WriteMaxRetryCount,
     ChangeFeedStartFrom,
@@ -790,7 +790,7 @@ private[spark] object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemPatchBulkUpdate = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemBulkUpdate = Value
 }
 
 private object CosmosPatchOperationTypes extends Enumeration {
@@ -875,7 +875,7 @@ private object CosmosWriteConfig {
       "`ItemDeleteIfNotModified` (deletes based on id/pk of data frame if etag hasn't changed since collecting " +
       "id/pk), `ItemOverwriteIfNotModified` (using create if etag is empty, update/replace with etag pre-condition " +
       "otherwise, if document was updated the pre-condition failure is ignored)," +
-      " `ItemPatchBulkUpdate` (read item, then patch the item locally, then using create if etag is empty, update/replace with etag pre-condition." +
+      " `ItemBulkUpdate` (read item, then patch the item locally, then using create if etag is empty, update/replace with etag pre-condition." +
         "In cases of any conflict or precondition failure, SDK will retry the above steps to update the documents properly.)")
 
   private val maxRetryCount = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryCount,
@@ -913,7 +913,7 @@ private object CosmosWriteConfig {
     helpMessage = "Used for conditional patch. Please see examples here: " +
      "https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started#java")
 
-  private val patchBulkUpdateColumnConfigs = CosmosConfigEntry[TrieMap[String, CosmosPatchColumnConfig]](key = CosmosConfigNames.WritePatchBulkUpdateColumnConfigs,
+  private val patchBulkUpdateColumnConfigs = CosmosConfigEntry[TrieMap[String, CosmosPatchColumnConfig]](key = CosmosConfigNames.WriteBulkUpdateColumnConfigs,
       mandatory = false,
       parseFromStringFunction = columnConfigsString => parsePatchBulkUpdateColumnConfigs(columnConfigsString),
       helpMessage = "Cosmos DB patch update column configs. It can be any of the follow supported patterns:" +
@@ -1027,7 +1027,7 @@ private object CosmosWriteConfig {
                                   val columnConfig =
                                       CosmosPatchColumnConfig(
                                           columnName = columnName,
-                                          CosmosPatchOperationTypes.Set, // for ItemPatchBulkUpdate, we only support set patch operation
+                                          CosmosPatchOperationTypes.Set, // for ItemBulkUpdate, we only support set patch operation
                                           mappingPath = mappingPath,
                                           isRawJson
                                       )
@@ -1065,7 +1065,7 @@ private object CosmosWriteConfig {
         val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
         val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)
         patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMap, patchFilter))
-      case ItemWriteStrategy.ItemPatchBulkUpdate =>
+      case ItemWriteStrategy.ItemBulkUpdate =>
         val patchColumnConfigMapOpt = CosmosConfigEntry.parse(cfg, patchBulkUpdateColumnConfigs)
         patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMapOpt.getOrElse(new TrieMap[String, CosmosPatchColumnConfig])))
       case _ =>

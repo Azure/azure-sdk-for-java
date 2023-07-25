@@ -127,7 +127,7 @@ object CosmosPatchTestHelper {
                            patchPredicateFilter: Option[String] = None): BulkWriter = {
      val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
      val writeConfigForPatch = CosmosWriteConfig(
-         ItemWriteStrategy.ItemPatchBulkUpdate,
+         ItemWriteStrategy.ItemBulkUpdate,
          5,
          bulkEnabled = true,
          patchConfigs = Some(patchConfigs))
@@ -158,7 +158,7 @@ object CosmosPatchTestHelper {
 
      val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
      val writeConfigForPatch = CosmosWriteConfig(
-         ItemWriteStrategy.ItemPatchBulkUpdate,
+         ItemWriteStrategy.ItemBulkUpdate,
          5,
          bulkEnabled = false,
          patchConfigs = Some(patchConfigs))

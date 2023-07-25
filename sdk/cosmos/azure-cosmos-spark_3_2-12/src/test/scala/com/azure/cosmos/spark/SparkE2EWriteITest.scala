@@ -513,7 +513,7 @@ class SparkE2EWriteITest
               "spark.cosmos.accountKey" -> cosmosMasterKey,
               "spark.cosmos.database" -> cosmosDatabase,
               "spark.cosmos.container" -> cosmosContainer,
-              "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemPatchBulkUpdate.toString,
+              "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemBulkUpdate.toString,
               "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
               "spark.cosmos.write.patch.columnConfigs" -> patchColumnConfigString
           )
@@ -578,7 +578,7 @@ class SparkE2EWriteITest
               "spark.cosmos.accountKey" -> cosmosMasterKey,
               "spark.cosmos.database" -> cosmosDatabase,
               "spark.cosmos.container" -> cosmosContainer,
-              "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemPatchBulkUpdate.toString,
+              "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemBulkUpdate.toString,
               "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
               "spark.cosmos.write.patchBulkUpdate.columnConfigs" -> patchColumnConfigString
           )

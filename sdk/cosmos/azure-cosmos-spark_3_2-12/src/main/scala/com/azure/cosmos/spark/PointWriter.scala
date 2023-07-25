@@ -69,7 +69,7 @@ class PointWriter(container: CosmosAsyncContainer,
     "PointWriter")
 
   private val cosmosPatchHelpOpt = cosmosWriteConfig.itemWriteStrategy match {
-    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchBulkUpdate =>
+    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemBulkUpdate =>
         Some(new CosmosPatchHelper(diagnosticsConfig, cosmosWriteConfig.patchConfigs.get))
     case _ => None
   }
@@ -93,7 +93,7 @@ class PointWriter(container: CosmosAsyncContainer,
         deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=true)
       case ItemWriteStrategy.ItemPatch =>
         patchWithRetryAsync(partitionKeyValue, objectNode)
-      case ItemWriteStrategy.ItemPatchBulkUpdate =>
+      case ItemWriteStrategy.ItemBulkUpdate =>
         patchBulkUpdateWithRetry(partitionKeyValue, objectNode)
     }
   }

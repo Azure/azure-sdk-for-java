@@ -188,7 +188,7 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                           case CosmosPatchOperationTypes.Set =>
                               cosmosPatchBulkUpdateOperations +=
                                   new PatchOperationCore[JsonNode](PatchOperationType.SET, userDefinedColumnConfig.mappingPath, effectiveNode)
-                          case _ => throw new RuntimeException(s"Patch operation type is not supported for itemPatchBulkUpdate write strategy")
+                          case _ => throw new RuntimeException(s"Patch operation type is not supported for itemBulkUpdate write strategy")
                       }
                   }
 
@@ -244,15 +244,19 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                   case parentIsArrayNode: ArrayNode =>
                       val arrayIndex = Integer.parseInt(fieldPath)
                       parentIsArrayNode.set(arrayIndex, pathValue)
-                  case _ => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass} in patchBulkUpdateFields") // we should never reach here
+                  case _ => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass} in bulkUpdateFields") // we should never reach here
               }
 
               rootNode
-          case _ => throw new RuntimeException(s"PatchOperationType $patchOperationType is not supported for ItemPatchBulkUpdate") // we should have never reach here
+          case _ => throw new RuntimeException(s"PatchOperationType $patchOperationType is not supported for ItemBulkUpdate") // we should have never reach here
       }
   }
 
   private[this] def getOrCreateNextParentNode(parentNode: JsonNode, childPath: String): JsonNode = {
+
+      // Construct a json pointer
+      // Probably just a bad naming, but there is no background compiling activities etc, should be light weighted
+      // But if in the future we found this part causes perf issue etc, can reconsider using simple string type
       val jsonPath = JsonPointer.compile(childPath)
       val nextParentNode =
           parentNode.at(jsonPath) match {

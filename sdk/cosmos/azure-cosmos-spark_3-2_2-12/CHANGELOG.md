@@ -3,7 +3,7 @@
 ### 4.21.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added new strategy `ItemPatchBulkUpdate` to allow patch with more than 10 columns - See [PR 35977](https://github.com/Azure/azure-sdk-for-java/pull/35977)
+* Added new strategy `ItemBulkUpdate` to allow patch with more than 10 columns - See [PR 35977](https://github.com/Azure/azure-sdk-for-java/pull/35977)
 
 #### Breaking Changes
 

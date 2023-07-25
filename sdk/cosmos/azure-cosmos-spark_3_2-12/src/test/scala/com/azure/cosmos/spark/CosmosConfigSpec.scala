@@ -1021,7 +1021,7 @@ class CosmosConfigSpec extends UnitSpec {
   "Default patchBulkUpdate config" should "be valid" in {
       val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
       val userConfig = Map(
-          "spark.cosmos.write.strategy" -> "ItemPatchBulkUpdate",
+          "spark.cosmos.write.strategy" -> "ItemBulkUpdate",
       )
       val writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
       writeConfig should not be null
@@ -1109,7 +1109,7 @@ class CosmosConfigSpec extends UnitSpec {
       testParameters.foreach(testParameter => {
 
           val userConfig = Map(
-              "spark.cosmos.write.strategy" -> "ItemPatchBulkUpdate",
+              "spark.cosmos.write.strategy" -> "ItemBulkUpdate",
               "spark.cosmos.write.patchBulkUpdate.columnConfigs" -> s"${testParameter.overrideConfigsString}"
           )
 
