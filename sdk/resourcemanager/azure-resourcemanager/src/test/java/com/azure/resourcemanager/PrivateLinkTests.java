@@ -115,6 +115,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         }
     }
 
+    @Disabled("During Private Link operation, received invalid response from private link service Microsoft.Storage/storageAccounts.")
     @Test
     public void testPrivateEndpoint() {
         String saName2 = generateRandomResourceName("sa", 10);
