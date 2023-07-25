@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.MetricName;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
 import com.azure.resourcemanager.cognitiveservices.models.UnitType;
-import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -19,65 +19,68 @@ public final class UsageListResultInnerTests {
         UsageListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"unit\":\"Seconds\",\"name\":{\"value\":\"jpqyegu\",\"localizedValue\":\"hb\"},\"quotaPeriod\":\"hejjz\",\"limit\":70.33604475808148,\"currentValue\":63.32915383545625,\"nextResetTime\":\"slfhotwm\",\"status\":\"InOverage\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"jnpg\",\"localizedValue\":\"ftadehxnltyfs\"},\"quotaPeriod\":\"pusuesn\",\"limit\":42.583161707778174,\"currentValue\":20.416251033380174,\"nextResetTime\":\"orxzdmohctbqvud\",\"status\":\"Blocked\"},{\"unit\":\"Count\",\"name\":{\"value\":\"owgujjugwdkcglhs\",\"localizedValue\":\"zj\"},\"quotaPeriod\":\"ggd\",\"limit\":92.2174087854439,\"currentValue\":3.8497339257224095,\"nextResetTime\":\"ofqweykhmenevfye\",\"status\":\"Blocked\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"i\",\"localizedValue\":\"yvdcsitynnaa\"},\"quotaPeriod\":\"ectehf\",\"limit\":43.32844185113748,\"currentValue\":61.13135450146281,\"nextResetTime\":\"vhezrkgqhcj\",\"status\":\"Unknown\"}]}")
+                    "{\"nextLink\":\"mohctb\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"ndnvo\",\"localizedValue\":\"ujjugwdkcglh\"},\"quotaPeriod\":\"azjdyggd\",\"limit\":92.2174087854439,\"currentValue\":3.8497339257224095,\"nextResetTime\":\"ofqweykhmenevfye\",\"status\":\"Blocked\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"i\",\"localizedValue\":\"yvdcsitynnaa\"},\"quotaPeriod\":\"ectehf\",\"limit\":43.32844185113748,\"currentValue\":61.13135450146281,\"nextResetTime\":\"vhezrkgqhcj\",\"status\":\"Unknown\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"kqsleyyvxy\",\"localizedValue\":\"pkc\"},\"quotaPeriod\":\"tpngjcrcczsqpjh\",\"limit\":15.683771184024254,\"currentValue\":5.670664395942426,\"nextResetTime\":\"sounqecanoaeu\",\"status\":\"Included\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"rpmopjmc\",\"localizedValue\":\"tuo\"},\"quotaPeriod\":\"hfuiuaodsfc\",\"limit\":36.548139076292394,\"currentValue\":48.52450589513511,\"nextResetTime\":\"ozmyzydagfu\",\"status\":\"Included\"}]}")
                 .toObject(UsageListResultInner.class);
-        Assertions.assertEquals(UnitType.SECONDS, model.value().get(0).unit());
-        Assertions.assertEquals("jpqyegu", model.value().get(0).name().value());
-        Assertions.assertEquals("hb", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("hejjz", model.value().get(0).quotaPeriod());
-        Assertions.assertEquals(70.33604475808148D, model.value().get(0).limit());
-        Assertions.assertEquals(63.32915383545625D, model.value().get(0).currentValue());
-        Assertions.assertEquals("slfhotwm", model.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.IN_OVERAGE, model.value().get(0).status());
+        Assertions.assertEquals("mohctb", model.nextLink());
+        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, model.value().get(0).unit());
+        Assertions.assertEquals("ndnvo", model.value().get(0).name().value());
+        Assertions.assertEquals("ujjugwdkcglh", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("azjdyggd", model.value().get(0).quotaPeriod());
+        Assertions.assertEquals(92.2174087854439D, model.value().get(0).limit());
+        Assertions.assertEquals(3.8497339257224095D, model.value().get(0).currentValue());
+        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, model.value().get(0).status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UsageListResultInner model =
             new UsageListResultInner()
+                .withNextLink("mohctb")
                 .withValue(
                     Arrays
                         .asList(
-                            new Usage()
-                                .withUnit(UnitType.SECONDS)
-                                .withName(new MetricName().withValue("jpqyegu").withLocalizedValue("hb"))
-                                .withQuotaPeriod("hejjz")
-                                .withLimit(70.33604475808148D)
-                                .withCurrentValue(63.32915383545625D)
-                                .withNextResetTime("slfhotwm")
-                                .withStatus(QuotaUsageStatus.IN_OVERAGE),
-                            new Usage()
-                                .withUnit(UnitType.MILLISECONDS)
-                                .withName(new MetricName().withValue("jnpg").withLocalizedValue("ftadehxnltyfs"))
-                                .withQuotaPeriod("pusuesn")
-                                .withLimit(42.583161707778174D)
-                                .withCurrentValue(20.416251033380174D)
-                                .withNextResetTime("orxzdmohctbqvud")
-                                .withStatus(QuotaUsageStatus.BLOCKED),
-                            new Usage()
-                                .withUnit(UnitType.COUNT)
-                                .withName(new MetricName().withValue("owgujjugwdkcglhs").withLocalizedValue("zj"))
-                                .withQuotaPeriod("ggd")
+                            new UsageInner()
+                                .withUnit(UnitType.BYTES_PER_SECOND)
+                                .withName(new MetricName().withValue("ndnvo").withLocalizedValue("ujjugwdkcglh"))
+                                .withQuotaPeriod("azjdyggd")
                                 .withLimit(92.2174087854439D)
                                 .withCurrentValue(3.8497339257224095D)
                                 .withNextResetTime("ofqweykhmenevfye")
                                 .withStatus(QuotaUsageStatus.BLOCKED),
-                            new Usage()
+                            new UsageInner()
                                 .withUnit(UnitType.BYTES)
                                 .withName(new MetricName().withValue("i").withLocalizedValue("yvdcsitynnaa"))
                                 .withQuotaPeriod("ectehf")
                                 .withLimit(43.32844185113748D)
                                 .withCurrentValue(61.13135450146281D)
                                 .withNextResetTime("vhezrkgqhcj")
-                                .withStatus(QuotaUsageStatus.UNKNOWN)));
+                                .withStatus(QuotaUsageStatus.UNKNOWN),
+                            new UsageInner()
+                                .withUnit(UnitType.MILLISECONDS)
+                                .withName(new MetricName().withValue("kqsleyyvxy").withLocalizedValue("pkc"))
+                                .withQuotaPeriod("tpngjcrcczsqpjh")
+                                .withLimit(15.683771184024254D)
+                                .withCurrentValue(5.670664395942426D)
+                                .withNextResetTime("sounqecanoaeu")
+                                .withStatus(QuotaUsageStatus.INCLUDED),
+                            new UsageInner()
+                                .withUnit(UnitType.BYTES_PER_SECOND)
+                                .withName(new MetricName().withValue("rpmopjmc").withLocalizedValue("tuo"))
+                                .withQuotaPeriod("hfuiuaodsfc")
+                                .withLimit(36.548139076292394D)
+                                .withCurrentValue(48.52450589513511D)
+                                .withNextResetTime("ozmyzydagfu")
+                                .withStatus(QuotaUsageStatus.INCLUDED)));
         model = BinaryData.fromObject(model).toObject(UsageListResultInner.class);
-        Assertions.assertEquals(UnitType.SECONDS, model.value().get(0).unit());
-        Assertions.assertEquals("jpqyegu", model.value().get(0).name().value());
-        Assertions.assertEquals("hb", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("hejjz", model.value().get(0).quotaPeriod());
-        Assertions.assertEquals(70.33604475808148D, model.value().get(0).limit());
-        Assertions.assertEquals(63.32915383545625D, model.value().get(0).currentValue());
-        Assertions.assertEquals("slfhotwm", model.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.IN_OVERAGE, model.value().get(0).status());
+        Assertions.assertEquals("mohctb", model.nextLink());
+        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, model.value().get(0).unit());
+        Assertions.assertEquals("ndnvo", model.value().get(0).name().value());
+        Assertions.assertEquals("ujjugwdkcglh", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("azjdyggd", model.value().get(0).quotaPeriod());
+        Assertions.assertEquals(92.2174087854439D, model.value().get(0).limit());
+        Assertions.assertEquals(3.8497339257224095D, model.value().get(0).currentValue());
+        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, model.value().get(0).status());
     }
 }

@@ -5,41 +5,83 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpPrefixPatchProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
-/** The IPPrefix patch resource definition. */
+/** The IP Prefix patch resource definition. */
 @Fluent
-public final class IpPrefixPatch {
+public final class IpPrefixPatch extends TagsUpdate {
     /*
-     * Resource tags
+     * IP Prefix patchable properties.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    @JsonProperty(value = "properties")
+    private IpPrefixPatchProperties innerProperties;
 
     /** Creates an instance of IpPrefixPatch class. */
     public IpPrefixPatch() {
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the innerProperties property: IP Prefix patchable properties.
      *
-     * @return the tags value.
+     * @return the innerProperties value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    private IpPrefixPatchProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IpPrefixPatch withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
-     * Set the tags property: Resource tags.
+     * Get the ipPrefixRules property: The list of IP Prefix Rules.
      *
-     * @param tags the tags value to set.
+     * @return the ipPrefixRules value.
+     */
+    public List<IpPrefixRule> ipPrefixRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipPrefixRules();
+    }
+
+    /**
+     * Set the ipPrefixRules property: The list of IP Prefix Rules.
+     *
+     * @param ipPrefixRules the ipPrefixRules value to set.
      * @return the IpPrefixPatch object itself.
      */
-    public IpPrefixPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
+    public IpPrefixPatch withIpPrefixRules(List<IpPrefixRule> ipPrefixRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpPrefixPatchProperties();
+        }
+        this.innerProperties().withIpPrefixRules(ipPrefixRules);
+        return this;
+    }
+
+    /**
+     * Get the annotation property: Switch configuration description.
+     *
+     * @return the annotation value.
+     */
+    public String annotation() {
+        return this.innerProperties() == null ? null : this.innerProperties().annotation();
+    }
+
+    /**
+     * Set the annotation property: Switch configuration description.
+     *
+     * @param annotation the annotation value to set.
+     * @return the IpPrefixPatch object itself.
+     */
+    public IpPrefixPatch withAnnotation(String annotation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpPrefixPatchProperties();
+        }
+        this.innerProperties().withAnnotation(annotation);
         return this;
     }
 
@@ -48,6 +90,11 @@ public final class IpPrefixPatch {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

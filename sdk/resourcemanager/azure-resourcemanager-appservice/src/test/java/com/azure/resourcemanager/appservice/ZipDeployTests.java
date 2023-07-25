@@ -28,7 +28,7 @@ public class ZipDeployTests extends AppServiceTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canZipDeployFunction() {
         if (skipInPlayback()) {
             return;

@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
+import com.azure.cosmos.implementation.MetadataRequestRetryPolicy;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -337,6 +338,18 @@ public class GatewayAddressCache implements IAddressCache {
         String collectionRid,
         List<String> partitionKeyRangeIds,
         boolean forceRefresh) {
+
+        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManager);
+        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+        return BackoffRetryUtility.executeRetry(() -> this.getServerAddressesViaGatewayInternalAsync(
+            request, collectionRid, partitionKeyRangeIds, forceRefresh), metadataRequestRetryPolicy);
+    }
+
+    private Mono<List<Address>> getServerAddressesViaGatewayInternalAsync(RxDocumentServiceRequest request,
+                                                                          String collectionRid,
+                                                                          List<String> partitionKeyRangeIds,
+                                                                          boolean forceRefresh) {
         if (logger.isDebugEnabled()) {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.TopologyParameters;
 /** Samples for NetworkWatchers GetTopology. */
 public final class NetworkWatchersGetTopologySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkWatcherTopologyGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherTopologyGet.json
      */
     /**
      * Sample code: Get Topology.

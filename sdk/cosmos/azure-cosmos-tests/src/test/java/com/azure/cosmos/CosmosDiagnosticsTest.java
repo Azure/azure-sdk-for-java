@@ -48,6 +48,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
@@ -1338,6 +1339,73 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             if (client2 != null) {
                 client2.close();
             }
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void responseStatisticRequestStartTimeUTCForDirectCall() {
+        CosmosAsyncClient client = null;
+        String databaseId = DatabaseForTest.generateId();
+        FaultInjectionRule faultInjectionRule = null;
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .endToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build()
+                ).buildAsyncClient();
+
+            createDatabase(client, databaseId);
+            CosmosAsyncContainer container = createCollection(client, databaseId, getCollectionDefinition());
+
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+
+            faultInjectionRule =
+                new FaultInjectionRuleBuilder("PARTITION_IS_MIGRATING")
+                    .condition(
+                        new FaultInjectionConditionBuilder()
+                            .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                            .build()
+                    )
+                    .result(
+                        FaultInjectionResultBuilders
+                            .getResultBuilder(FaultInjectionServerErrorType.PARTITION_IS_MIGRATING)
+                            .times(1)
+                            .build()
+                    )
+                    .duration(Duration.ofMinutes(5))
+                    .build();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
+
+            CosmosDiagnostics cosmosDiagnostics = null;
+            try {
+                cosmosDiagnostics = container.createItem(TestItem.createNewItem())
+                    .block()
+                    .getDiagnostics();
+
+            } catch (Exception exception) {
+                fail("Request should succeeded, but failed with " + exception);
+            }
+
+            List<ClientSideRequestStatistics> clientSideRequestStatistics = (List<ClientSideRequestStatistics>) cosmosDiagnostics.getClientSideRequestStatistics();
+            List<ClientSideRequestStatistics.StoreResponseStatistics> responseStatistic = clientSideRequestStatistics.get(0).getResponseStatisticsList();
+
+            assert responseStatistic.size() == 2;
+
+            Instant firstRequestStartTime = responseStatistic.get(0).getRequestStartTimeUTC();
+            Instant secondRequestStartTime = responseStatistic.get(1).getRequestStartTimeUTC();
+
+            assert firstRequestStartTime != null && secondRequestStartTime != null;
+            assert firstRequestStartTime != secondRequestStartTime;
+            assert firstRequestStartTime.compareTo(secondRequestStartTime) < 0;
+
+        } finally {
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
+            }
+            safeClose(client);
         }
     }
 

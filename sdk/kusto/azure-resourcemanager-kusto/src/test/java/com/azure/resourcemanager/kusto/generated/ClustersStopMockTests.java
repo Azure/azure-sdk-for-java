@@ -56,6 +56,6 @@ public final class ClustersStopMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.clusters().stop("wiithtywub", "cbihwqk", com.azure.core.util.Context.NONE);
+        manager.clusters().stop("iayz", "iykhy", com.azure.core.util.Context.NONE);
     }
 }

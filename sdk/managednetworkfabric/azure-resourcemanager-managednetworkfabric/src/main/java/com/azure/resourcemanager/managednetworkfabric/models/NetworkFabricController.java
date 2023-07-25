@@ -60,14 +60,14 @@ public interface NetworkFabricController {
      *
      * @return the infrastructureServices value.
      */
-    InfrastructureServices infrastructureServices();
+    ControllerServices infrastructureServices();
 
     /**
      * Gets the workloadServices property: WorkloadServices IP ranges.
      *
      * @return the workloadServices value.
      */
-    WorkloadServices workloadServices();
+    ControllerServices workloadServices();
 
     /**
      * Gets the managedResourceGroupConfiguration property: Managed Resource Group configuration properties.
@@ -87,11 +87,27 @@ public interface NetworkFabricController {
     /**
      * Gets the workloadManagementNetwork property: A workload management network is required for all the tenant
      * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
-     * any other MSFT/Public endpoints.
+     * any other MSFT/Public endpoints. This is used for the backward compatibility.
      *
      * @return the workloadManagementNetwork value.
      */
     Boolean workloadManagementNetwork();
+
+    /**
+     * Gets the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the
+     * tenant (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access
+     * internet or any other MSFT/Public endpoints.
+     *
+     * @return the isWorkloadManagementNetworkEnabled value.
+     */
+    IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled();
+
+    /**
+     * Gets the tenantInternetGatewayIds property: List of tenant InternetGateway resource IDs.
+     *
+     * @return the tenantInternetGatewayIds value.
+     */
+    List<String> tenantInternetGatewayIds();
 
     /**
      * Gets the ipv4AddressSpace property: IPv4 Network Fabric Controller Address Space.
@@ -108,12 +124,11 @@ public interface NetworkFabricController {
     String ipv6AddressSpace();
 
     /**
-     * Gets the operationalState property: The Operational Status would always be NULL. Look only in to the Provisioning
-     * state for the latest status.
+     * Gets the nfcSku property: Network Fabric Controller SKU.
      *
-     * @return the operationalState value.
+     * @return the nfcSku value.
      */
-    NetworkFabricControllerOperationalState operationalState();
+    NfcSku nfcSku();
 
     /**
      * Gets the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
@@ -184,11 +199,13 @@ public interface NetworkFabricController {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The NetworkFabricController definition stages. */
     interface DefinitionStages {
         /** The first stage of the NetworkFabricController definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the NetworkFabricController definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -207,6 +224,7 @@ public interface NetworkFabricController {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the NetworkFabricController definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -217,6 +235,7 @@ public interface NetworkFabricController {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the NetworkFabricController definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -224,8 +243,10 @@ public interface NetworkFabricController {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithManagedResourceGroupConfiguration,
+                DefinitionStages.WithIsWorkloadManagementNetworkEnabled,
                 DefinitionStages.WithIpv4AddressSpace,
                 DefinitionStages.WithIpv6AddressSpace,
+                DefinitionStages.WithNfcSku,
                 DefinitionStages.WithInfrastructureExpressRouteConnections,
                 DefinitionStages.WithWorkloadExpressRouteConnections,
                 DefinitionStages.WithAnnotation {
@@ -244,6 +265,7 @@ public interface NetworkFabricController {
              */
             NetworkFabricController create(Context context);
         }
+
         /** The stage of the NetworkFabricController definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -254,6 +276,7 @@ public interface NetworkFabricController {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /**
          * The stage of the NetworkFabricController definition allowing to specify managedResourceGroupConfiguration.
          */
@@ -268,6 +291,25 @@ public interface NetworkFabricController {
             WithCreate withManagedResourceGroupConfiguration(
                 ManagedResourceGroupConfiguration managedResourceGroupConfiguration);
         }
+
+        /**
+         * The stage of the NetworkFabricController definition allowing to specify isWorkloadManagementNetworkEnabled.
+         */
+        interface WithIsWorkloadManagementNetworkEnabled {
+            /**
+             * Specifies the isWorkloadManagementNetworkEnabled property: A workload management network is required for
+             * all the tenant (workload) traffic. This traffic is only dedicated for Tenant workloads which are required
+             * to access internet or any other MSFT/Public endpoints..
+             *
+             * @param isWorkloadManagementNetworkEnabled A workload management network is required for all the tenant
+             *     (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access
+             *     internet or any other MSFT/Public endpoints.
+             * @return the next definition stage.
+             */
+            WithCreate withIsWorkloadManagementNetworkEnabled(
+                IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled);
+        }
+
         /** The stage of the NetworkFabricController definition allowing to specify ipv4AddressSpace. */
         interface WithIpv4AddressSpace {
             /**
@@ -278,6 +320,7 @@ public interface NetworkFabricController {
              */
             WithCreate withIpv4AddressSpace(String ipv4AddressSpace);
         }
+
         /** The stage of the NetworkFabricController definition allowing to specify ipv6AddressSpace. */
         interface WithIpv6AddressSpace {
             /**
@@ -288,6 +331,18 @@ public interface NetworkFabricController {
              */
             WithCreate withIpv6AddressSpace(String ipv6AddressSpace);
         }
+
+        /** The stage of the NetworkFabricController definition allowing to specify nfcSku. */
+        interface WithNfcSku {
+            /**
+             * Specifies the nfcSku property: Network Fabric Controller SKU..
+             *
+             * @param nfcSku Network Fabric Controller SKU.
+             * @return the next definition stage.
+             */
+            WithCreate withNfcSku(NfcSku nfcSku);
+        }
+
         /**
          * The stage of the NetworkFabricController definition allowing to specify
          * infrastructureExpressRouteConnections.
@@ -306,6 +361,7 @@ public interface NetworkFabricController {
             WithCreate withInfrastructureExpressRouteConnections(
                 List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections);
         }
+
         /** The stage of the NetworkFabricController definition allowing to specify workloadExpressRouteConnections. */
         interface WithWorkloadExpressRouteConnections {
             /**
@@ -321,6 +377,7 @@ public interface NetworkFabricController {
             WithCreate withWorkloadExpressRouteConnections(
                 List<ExpressRouteConnectionInformation> workloadExpressRouteConnections);
         }
+
         /** The stage of the NetworkFabricController definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -332,6 +389,7 @@ public interface NetworkFabricController {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the NetworkFabricController resource.
      *
@@ -359,18 +417,20 @@ public interface NetworkFabricController {
          */
         NetworkFabricController apply(Context context);
     }
+
     /** The NetworkFabricController update stages. */
     interface UpdateStages {
         /** The stage of the NetworkFabricController update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Azure resource tags that will replace the existing ones..
+             * Specifies the tags property: Resource tags.
              *
-             * @param tags Azure resource tags that will replace the existing ones.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
+
         /**
          * The stage of the NetworkFabricController update allowing to specify infrastructureExpressRouteConnections.
          */
@@ -388,6 +448,7 @@ public interface NetworkFabricController {
             Update withInfrastructureExpressRouteConnections(
                 List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections);
         }
+
         /** The stage of the NetworkFabricController update allowing to specify workloadExpressRouteConnections. */
         interface WithWorkloadExpressRouteConnections {
             /**
@@ -404,6 +465,7 @@ public interface NetworkFabricController {
                 List<ExpressRouteConnectionInformation> workloadExpressRouteConnections);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -418,48 +480,4 @@ public interface NetworkFabricController {
      * @return the refreshed resource.
      */
     NetworkFabricController refresh(Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void enableWorkloadManagementNetwork();
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void enableWorkloadManagementNetwork(Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void disableWorkloadManagementNetwork();
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void disableWorkloadManagementNetwork(Context context);
 }

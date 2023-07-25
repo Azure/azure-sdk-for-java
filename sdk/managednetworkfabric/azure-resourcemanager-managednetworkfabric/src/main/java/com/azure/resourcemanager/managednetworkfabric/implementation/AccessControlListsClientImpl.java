@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -27,12 +28,20 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.AccessControlListsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListsListResult;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AccessControlListsClient. */
@@ -64,9 +73,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessControlListInner>> create(
+        Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -93,9 +102,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessControlListInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -108,9 +117,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -144,6 +153,49 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/updateAdministrativeState")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("accessControlListName") String accessControlListName,
+            @BodyParam("application/json") UpdateAdministrativeState body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/resync")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> resync(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("accessControlListName") String accessControlListName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/validateConfiguration")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("accessControlListName") String accessControlListName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -165,7 +217,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
     }
 
     /**
-     * Create Access Control List.
+     * Creates Access Control List.
      *
      * <p>Implements Access Control List PUT method.
      *
@@ -175,11 +227,11 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Access Control List resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessControlListInner>> createWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String accessControlListName, AccessControlListInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -224,7 +276,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
     }
 
     /**
-     * Create Access Control List.
+     * Creates Access Control List.
      *
      * <p>Implements Access Control List PUT method.
      *
@@ -235,11 +287,11 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Access Control List resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessControlListInner>> createWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -281,7 +333,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
     }
 
     /**
-     * Create Access Control List.
+     * Creates Access Control List.
      *
      * <p>Implements Access Control List PUT method.
      *
@@ -291,17 +343,24 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the Access Control List resource definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessControlListInner> createAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AccessControlListInner>, AccessControlListInner> beginCreateAsync(
         String resourceGroupName, String accessControlListName, AccessControlListInner body) {
-        return createWithResponseAsync(resourceGroupName, accessControlListName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accessControlListName, body);
+        return this
+            .client
+            .<AccessControlListInner, AccessControlListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AccessControlListInner.class,
+                AccessControlListInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Create Access Control List.
+     * Creates Access Control List.
      *
      * <p>Implements Access Control List PUT method.
      *
@@ -312,16 +371,26 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of the Access Control List resource definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessControlListInner> createWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AccessControlListInner>, AccessControlListInner> beginCreateAsync(
         String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context) {
-        return createWithResponseAsync(resourceGroupName, accessControlListName, body, context).block();
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, accessControlListName, body, context);
+        return this
+            .client
+            .<AccessControlListInner, AccessControlListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AccessControlListInner.class,
+                AccessControlListInner.class,
+                context);
     }
 
     /**
-     * Create Access Control List.
+     * Creates Access Control List.
      *
      * <p>Implements Access Control List PUT method.
      *
@@ -331,12 +400,114 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
+        String resourceGroupName, String accessControlListName, AccessControlListInner body) {
+        return this.beginCreateAsync(resourceGroupName, accessControlListName, body).getSyncPoller();
+    }
+
+    /**
+     * Creates Access Control List.
+     *
+     * <p>Implements Access Control List PUT method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginCreate(
+        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context) {
+        return this.beginCreateAsync(resourceGroupName, accessControlListName, body, context).getSyncPoller();
+    }
+
+    /**
+     * Creates Access Control List.
+     *
+     * <p>Implements Access Control List PUT method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccessControlListInner> createAsync(
+        String resourceGroupName, String accessControlListName, AccessControlListInner body) {
+        return beginCreateAsync(resourceGroupName, accessControlListName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates Access Control List.
+     *
+     * <p>Implements Access Control List PUT method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccessControlListInner> createAsync(
+        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, accessControlListName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates Access Control List.
+     *
+     * <p>Implements Access Control List PUT method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessControlListInner create(
         String resourceGroupName, String accessControlListName, AccessControlListInner body) {
-        return createWithResponse(resourceGroupName, accessControlListName, body, Context.NONE).getValue();
+        return createAsync(resourceGroupName, accessControlListName, body).block();
+    }
+
+    /**
+     * Creates Access Control List.
+     *
+     * <p>Implements Access Control List PUT method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessControlListInner create(
+        String resourceGroupName, String accessControlListName, AccessControlListInner body, Context context) {
+        return createAsync(resourceGroupName, accessControlListName, body, context).block();
     }
 
     /**
@@ -349,8 +520,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Access Control List resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessControlListInner>> getByResourceGroupWithResponseAsync(
@@ -402,8 +573,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Access Control List resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessControlListInner>> getByResourceGroupWithResponseAsync(
@@ -451,7 +622,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition on successful completion of {@link Mono}.
+     * @return the Access Control List resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessControlListInner> getByResourceGroupAsync(
@@ -471,7 +642,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the Access Control List resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessControlListInner> getByResourceGroupWithResponse(
@@ -489,7 +660,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition.
+     * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessControlListInner getByResourceGroup(String resourceGroupName, String accessControlListName) {
@@ -497,7 +668,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
     }
 
     /**
-     * Updates a Access Control List.
+     * Updates the Access Control List.
      *
      * <p>API to update certain properties of the Access Control List resource.
      *
@@ -507,11 +678,11 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Access Control List resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessControlListInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accessControlListName, AccessControlListPatch body) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -556,7 +727,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
     }
 
     /**
-     * Updates a Access Control List.
+     * Updates the Access Control List.
      *
      * <p>API to update certain properties of the Access Control List resource.
      *
@@ -567,11 +738,11 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Access Control List resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessControlListInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -613,7 +784,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
     }
 
     /**
-     * Updates a Access Control List.
+     * Updates the Access Control List.
      *
      * <p>API to update certain properties of the Access Control List resource.
      *
@@ -623,17 +794,24 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the Access Control List resource definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessControlListInner> updateAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdateAsync(
         String resourceGroupName, String accessControlListName, AccessControlListPatch body) {
-        return updateWithResponseAsync(resourceGroupName, accessControlListName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accessControlListName, body);
+        return this
+            .client
+            .<AccessControlListInner, AccessControlListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AccessControlListInner.class,
+                AccessControlListInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Updates a Access Control List.
+     * Updates the Access Control List.
      *
      * <p>API to update certain properties of the Access Control List resource.
      *
@@ -644,16 +822,26 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of the Access Control List resource definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessControlListInner> updateWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdateAsync(
         String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context) {
-        return updateWithResponseAsync(resourceGroupName, accessControlListName, body, context).block();
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, accessControlListName, body, context);
+        return this
+            .client
+            .<AccessControlListInner, AccessControlListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AccessControlListInner.class,
+                AccessControlListInner.class,
+                context);
     }
 
     /**
-     * Updates a Access Control List.
+     * Updates the Access Control List.
      *
      * <p>API to update certain properties of the Access Control List resource.
      *
@@ -663,12 +851,114 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
+        String resourceGroupName, String accessControlListName, AccessControlListPatch body) {
+        return this.beginUpdateAsync(resourceGroupName, accessControlListName, body).getSyncPoller();
+    }
+
+    /**
+     * Updates the Access Control List.
+     *
+     * <p>API to update certain properties of the Access Control List resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Access Control List properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AccessControlListInner>, AccessControlListInner> beginUpdate(
+        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, accessControlListName, body, context).getSyncPoller();
+    }
+
+    /**
+     * Updates the Access Control List.
+     *
+     * <p>API to update certain properties of the Access Control List resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Access Control List properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccessControlListInner> updateAsync(
+        String resourceGroupName, String accessControlListName, AccessControlListPatch body) {
+        return beginUpdateAsync(resourceGroupName, accessControlListName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the Access Control List.
+     *
+     * <p>API to update certain properties of the Access Control List resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Access Control List properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccessControlListInner> updateAsync(
+        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, accessControlListName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the Access Control List.
+     *
+     * <p>API to update certain properties of the Access Control List resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Access Control List properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessControlListInner update(
         String resourceGroupName, String accessControlListName, AccessControlListPatch body) {
-        return updateWithResponse(resourceGroupName, accessControlListName, body, Context.NONE).getValue();
+        return updateAsync(resourceGroupName, accessControlListName, body).block();
+    }
+
+    /**
+     * Updates the Access Control List.
+     *
+     * <p>API to update certain properties of the Access Control List resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Access Control List properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Access Control List resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessControlListInner update(
+        String resourceGroupName, String accessControlListName, AccessControlListPatch body, Context context) {
+        return updateAsync(resourceGroupName, accessControlListName, body, context).block();
     }
 
     /**
@@ -684,7 +974,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accessControlListName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String accessControlListName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -735,7 +1026,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String accessControlListName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -780,11 +1071,16 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accessControlListName) {
-        return deleteWithResponseAsync(resourceGroupName, accessControlListName).flatMap(ignored -> Mono.empty());
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String accessControlListName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accessControlListName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -798,11 +1094,92 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String accessControlListName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, accessControlListName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accessControlListName) {
+        return this.beginDeleteAsync(resourceGroupName, accessControlListName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String accessControlListName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accessControlListName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accessControlListName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accessControlListName, context).block();
+    private Mono<Void> deleteAsync(String resourceGroupName, String accessControlListName) {
+        return beginDeleteAsync(resourceGroupName, accessControlListName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String accessControlListName, Context context) {
+        return beginDeleteAsync(resourceGroupName, accessControlListName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -818,7 +1195,24 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accessControlListName) {
-        deleteWithResponse(resourceGroupName, accessControlListName, Context.NONE);
+        deleteAsync(resourceGroupName, accessControlListName).block();
+    }
+
+    /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accessControlListName, Context context) {
+        deleteAsync(resourceGroupName, accessControlListName, context).block();
     }
 
     /**
@@ -830,7 +1224,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -884,7 +1278,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listByResourceGroupSinglePageAsync(
@@ -935,7 +1329,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedFlux}.
+     * @return list of Access Control Lists as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessControlListInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -954,7 +1348,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedFlux}.
+     * @return list of Access Control Lists as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessControlListInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -972,7 +1366,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessControlListInner> listByResourceGroup(String resourceGroupName) {
@@ -989,7 +1383,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessControlListInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1003,7 +1397,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listSinglePageAsync() {
@@ -1051,7 +1445,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listSinglePageAsync(Context context) {
@@ -1094,7 +1488,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedFlux}.
+     * @return list of Access Control Lists as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessControlListInner> listAsync() {
@@ -1111,7 +1505,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedFlux}.
+     * @return list of Access Control Lists as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessControlListInner> listAsync(Context context) {
@@ -1126,7 +1520,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessControlListInner> list() {
@@ -1142,11 +1536,864 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessControlListInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accessControlListName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter accessControlListName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateAdministrativeState(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            accessControlListName,
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accessControlListName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter accessControlListName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateAdministrativeState(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                accessControlListName,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAdministrativeStateWithResponseAsync(resourceGroupName, accessControlListName, body);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAdministrativeStateWithResponseAsync(resourceGroupName, accessControlListName, body, context);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body) {
+        return this.beginUpdateAdministrativeStateAsync(resourceGroupName, accessControlListName, body).getSyncPoller();
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context) {
+        return this
+            .beginUpdateAdministrativeStateAsync(resourceGroupName, accessControlListName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, accessControlListName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, accessControlListName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body) {
+        return updateAdministrativeStateAsync(resourceGroupName, accessControlListName, body).block();
+    }
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context) {
+        return updateAdministrativeStateAsync(resourceGroupName, accessControlListName, body, context).block();
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(
+        String resourceGroupName, String accessControlListName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accessControlListName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter accessControlListName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .resync(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            accessControlListName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(
+        String resourceGroupName, String accessControlListName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accessControlListName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter accessControlListName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .resync(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                accessControlListName,
+                accept,
+                context);
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginResyncAsync(String resourceGroupName, String accessControlListName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceGroupName, accessControlListName);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginResyncAsync(String resourceGroupName, String accessControlListName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resyncWithResponseAsync(resourceGroupName, accessControlListName, context);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginResync(String resourceGroupName, String accessControlListName) {
+        return this.beginResyncAsync(resourceGroupName, accessControlListName).getSyncPoller();
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginResync(String resourceGroupName, String accessControlListName, Context context) {
+        return this.beginResyncAsync(resourceGroupName, accessControlListName, context).getSyncPoller();
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(
+        String resourceGroupName, String accessControlListName) {
+        return beginResyncAsync(resourceGroupName, accessControlListName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(
+        String resourceGroupName, String accessControlListName, Context context) {
+        return beginResyncAsync(resourceGroupName, accessControlListName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String accessControlListName) {
+        return resyncAsync(resourceGroupName, accessControlListName).block();
+    }
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner resync(
+        String resourceGroupName, String accessControlListName, Context context) {
+        return resyncAsync(resourceGroupName, accessControlListName, context).block();
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
+        String resourceGroupName, String accessControlListName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accessControlListName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter accessControlListName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .validateConfiguration(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            accessControlListName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
+        String resourceGroupName, String accessControlListName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accessControlListName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter accessControlListName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .validateConfiguration(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                accessControlListName,
+                accept,
+                context);
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String accessControlListName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateConfigurationWithResponseAsync(resourceGroupName, accessControlListName);
+        return this
+            .client
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String accessControlListName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateConfigurationWithResponseAsync(resourceGroupName, accessControlListName, context);
+        return this
+            .client
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
+                context);
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String accessControlListName) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, accessControlListName).getSyncPoller();
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String accessControlListName, Context context) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, accessControlListName, context).getSyncPoller();
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
+        String resourceGroupName, String accessControlListName) {
+        return beginValidateConfigurationAsync(resourceGroupName, accessControlListName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
+        String resourceGroupName, String accessControlListName, Context context) {
+        return beginValidateConfigurationAsync(resourceGroupName, accessControlListName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String accessControlListName) {
+        return validateConfigurationAsync(resourceGroupName, accessControlListName).block();
+    }
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String accessControlListName, Context context) {
+        return validateConfigurationAsync(resourceGroupName, accessControlListName, context).block();
     }
 
     /**
@@ -1157,7 +2404,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1195,7 +2442,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listByResourceGroupNextSinglePageAsync(
@@ -1232,7 +2479,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1270,7 +2517,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessControlListInner>> listBySubscriptionNextSinglePageAsync(
