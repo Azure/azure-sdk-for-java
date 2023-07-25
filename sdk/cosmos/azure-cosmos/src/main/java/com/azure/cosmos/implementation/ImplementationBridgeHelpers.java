@@ -425,10 +425,6 @@ public class ImplementationBridgeHelpers {
 
             CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize);
 
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
-
             int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options, int maxMicroBatchPayloadSizeInBytes);
