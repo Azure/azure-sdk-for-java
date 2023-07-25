@@ -74,7 +74,8 @@ public final class DisksClientImpl
     public interface DisksService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
+                + "/{diskName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -89,7 +90,8 @@ public final class DisksClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
+                + "/{diskName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -104,7 +106,8 @@ public final class DisksClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
+                + "/{diskName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiskInner>> getByResourceGroup(
@@ -118,7 +121,8 @@ public final class DisksClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
+                + "/{diskName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -154,7 +158,8 @@ public final class DisksClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/beginGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
+                + "/{diskName}/beginGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> grantAccess(
@@ -169,7 +174,8 @@ public final class DisksClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/endGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
+                + "/{diskName}/endGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> revokeAccess(
@@ -241,7 +247,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -300,7 +306,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -522,7 +528,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -581,7 +587,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -794,7 +800,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -846,7 +852,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -947,7 +953,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         return FluxUtil
             .withContext(
                 context ->
@@ -997,7 +1003,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1186,7 +1192,7 @@ public final class DisksClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1241,7 +1247,7 @@ public final class DisksClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1347,7 +1353,7 @@ public final class DisksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1390,7 +1396,7 @@ public final class DisksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1500,7 +1506,7 @@ public final class DisksClientImpl
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1560,7 +1566,7 @@ public final class DisksClientImpl
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1782,7 +1788,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         return FluxUtil
             .withContext(
                 context ->
@@ -1832,7 +1838,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         context = this.client.mergeContext(context);
         return service
             .revokeAccess(

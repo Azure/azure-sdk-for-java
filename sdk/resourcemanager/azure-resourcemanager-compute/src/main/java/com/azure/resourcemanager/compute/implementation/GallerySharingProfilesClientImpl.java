@@ -60,7 +60,8 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     public interface GallerySharingProfilesService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/share")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(

@@ -79,7 +79,8 @@ public final class DiskAccessesClientImpl
     public interface DiskAccessesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -94,7 +95,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -109,7 +111,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskAccessInner>> getByResourceGroup(
@@ -123,7 +126,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -137,7 +141,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskAccessList>> listByResourceGroup(
@@ -161,7 +166,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResultInner>> getPrivateLinkResources(
@@ -175,7 +181,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> updateAPrivateEndpointConnection(
@@ -191,7 +198,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<PrivateEndpointConnectionInner>> getAPrivateEndpointConnection(
@@ -206,7 +214,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteAPrivateEndpointConnection(
@@ -221,7 +230,8 @@ public final class DiskAccessesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskAccesses/{diskAccessName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<PrivateEndpointConnectionListResult>> listPrivateEndpointConnections(
@@ -304,7 +314,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -363,7 +373,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -592,7 +602,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -651,7 +661,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -874,7 +884,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -927,7 +937,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1028,7 +1038,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1080,7 +1090,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1274,7 +1284,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1329,7 +1339,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1435,7 +1445,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1478,7 +1488,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1582,7 +1592,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1635,7 +1645,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1760,7 +1770,7 @@ public final class DiskAccessesClientImpl
         } else {
             privateEndpointConnection.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1837,7 +1847,7 @@ public final class DiskAccessesClientImpl
         } else {
             privateEndpointConnection.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2144,7 +2154,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2205,7 +2215,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2326,7 +2336,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2386,7 +2396,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2615,7 +2625,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2677,7 +2687,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

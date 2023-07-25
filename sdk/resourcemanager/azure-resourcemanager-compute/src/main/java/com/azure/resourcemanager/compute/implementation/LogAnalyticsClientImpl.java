@@ -61,7 +61,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     public interface LogAnalyticsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getRequestRateByInterval")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
+                + "/getRequestRateByInterval")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> exportRequestRateByInterval(
@@ -75,7 +76,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getThrottledRequests")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
+                + "/getThrottledRequests")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> exportThrottledRequests(

@@ -71,7 +71,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
     public interface GalleryApplicationVersionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -88,7 +89,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -105,7 +107,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GalleryApplicationVersionInner>> get(
@@ -122,7 +125,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -138,7 +142,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GalleryApplicationVersionList>> listByGalleryApplication(

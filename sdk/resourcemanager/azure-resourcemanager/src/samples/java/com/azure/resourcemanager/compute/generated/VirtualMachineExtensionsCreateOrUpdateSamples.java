@@ -39,7 +39,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                 "aaaaaaaaaaaaa",
                 new VirtualMachineExtensionInner()
                     .withLocation("westus")
-                    .withTags(mapOf("key9183", "fakeTokenPlaceholder"))
+                    .withTags(mapOf("key9183", "aa"))
                     .withForceUpdateTag("a")
                     .withPublisher("extPublisher")
                     .withTypePropertiesType("extType")

@@ -70,7 +70,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     public interface CapacityReservationsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
+                + "/{capacityReservationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -86,7 +88,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
+                + "/{capacityReservationName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -102,7 +106,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
+                + "/{capacityReservationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -117,7 +123,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
+                + "/{capacityReservationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CapacityReservationInner>> get(
@@ -133,7 +141,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CapacityReservationListResult>> listByCapacityReservationGroup(

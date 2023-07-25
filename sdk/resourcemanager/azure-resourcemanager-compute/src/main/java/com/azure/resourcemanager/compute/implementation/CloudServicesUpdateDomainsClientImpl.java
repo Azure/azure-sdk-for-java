@@ -67,7 +67,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     public interface CloudServicesUpdateDomainsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/updateDomains/{updateDomain}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/updateDomains/{updateDomain}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> walkUpdateDomain(
@@ -83,7 +84,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/updateDomains/{updateDomain}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/updateDomains/{updateDomain}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<UpdateDomainInner>> getUpdateDomain(
@@ -98,7 +100,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/updateDomains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/updateDomains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<UpdateDomainListResult>> listUpdateDomains(

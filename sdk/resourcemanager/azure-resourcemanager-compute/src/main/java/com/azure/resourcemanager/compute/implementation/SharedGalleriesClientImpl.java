@@ -72,7 +72,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries"
+                + "/{galleryUniqueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SharedGalleryInner>> get(

@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Identity for the virtual machine. */
 @Fluent
-public final class VirtualMachineIdentity {
+public class VirtualMachineIdentity {
     /*
      * The principal id of virtual machine identity. This property will only be provided for a system assigned
      * identity.

@@ -58,7 +58,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
     public interface CloudServiceRolesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roles/{roleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/roles/{roleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CloudServiceRoleInner>> get(
@@ -73,7 +74,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roles")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/roles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CloudServiceRoleListResult>> list(

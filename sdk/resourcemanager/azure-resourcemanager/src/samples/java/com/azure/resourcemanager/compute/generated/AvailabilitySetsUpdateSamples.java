@@ -49,7 +49,7 @@ public final class AvailabilitySetsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaa",
                 new AvailabilitySetUpdate()
-                    .withTags(mapOf("key2574", "fakeTokenPlaceholder"))
+                    .withTags(mapOf("key2574", "aaaaaaaa"))
                     .withSku(new Sku().withName("DSv3-Type1").withTier("aaa").withCapacity(7L))
                     .withPlatformUpdateDomainCount(20)
                     .withPlatformFaultDomainCount(2)

@@ -67,7 +67,9 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     public interface DiskRestorePointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
+                + "/diskRestorePoints/{diskRestorePointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskRestorePointInner>> get(
@@ -83,7 +85,9 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
+                + "/diskRestorePoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskRestorePointList>> listByRestorePoint(
@@ -98,7 +102,9 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/beginGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
+                + "/diskRestorePoints/{diskRestorePointName}/beginGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> grantAccess(
@@ -115,7 +121,9 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/endGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
+                + "/diskRestorePoints/{diskRestorePointName}/endGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> revokeAccess(
@@ -188,7 +196,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -257,7 +265,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -385,7 +393,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -454,7 +462,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -612,7 +620,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -690,7 +698,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1016,7 +1024,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1085,7 +1093,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

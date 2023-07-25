@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Identity for the virtual machine scale set. */
 @Fluent
-public final class VirtualMachineScaleSetIdentity {
+public class VirtualMachineScaleSetIdentity {
     /*
      * The principal id of virtual machine scale set identity. This property will only be provided for a system
      * assigned identity.
