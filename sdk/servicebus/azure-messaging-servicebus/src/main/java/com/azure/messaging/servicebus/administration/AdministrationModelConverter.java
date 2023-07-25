@@ -47,7 +47,9 @@ import com.azure.messaging.servicebus.administration.implementation.models.Subsc
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
@@ -105,60 +107,38 @@ class AdministrationModelConverter {
             });
     }
 
-    /**
-     * Create Queue Body
-     *
-     * @param createQueueOptions Create Queue Body options
-     * @return {@link CreateQueueBodyImpl}
-     */
-    CreateQueueBodyImpl getCreateQueueBody(QueueDescriptionImpl createQueueOptions) {
+    //region Create entity methods
+
+    CreateQueueBodyImpl getCreateQueueBody(QueueDescriptionImpl queueDescription) {
         final CreateQueueBodyContentImpl content = new CreateQueueBodyContentImpl()
             .setType(CONTENT_TYPE)
-            .setQueueDescription(createQueueOptions);
+            .setQueueDescription(queueDescription);
         return new CreateQueueBodyImpl()
             .setContent(content);
     }
 
-    CreateTopicBodyImpl getUpdateTopicBody(TopicProperties topic) {
-        final TopicDescriptionImpl implementation = EntityHelper.toImplementation(topic);
-        final CreateTopicBodyContentImpl content = new CreateTopicBodyContentImpl()
-            .setType(CONTENT_TYPE)
-            .setTopicDescription(implementation);
-        return new CreateTopicBodyImpl()
-            .setContent(content);
-    }
+    /**
+     * Generates a create queue request based on the create options.
+     *
+     * @param createQueueOptions Options for queue creation.
+     * @param context Context.
+     *
+     * @return The queue create request.
+     */
+    CreateQueueBodyImpl getCreateQueueBody(CreateQueueOptions createQueueOptions, Context context) {
 
-    CreateTopicBodyImpl getCreateTopicBody(TopicDescriptionImpl topicOptions) {
-        final CreateTopicBodyContentImpl content = new CreateTopicBodyContentImpl()
-            .setType(CONTENT_TYPE)
-            .setTopicDescription(topicOptions);
-        return new CreateTopicBodyImpl()
-            .setContent(content);
-    }
+        final String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), context);
+        if (forwardTo != null) {
+            createQueueOptions.setForwardTo(forwardTo);
+        }
 
-    CreateRuleBodyImpl getUpdateRuleBody(RuleProperties rule) {
-        final RuleDescriptionImpl implementation = EntityHelper.toImplementation(rule);
-        final CreateRuleBodyContentImpl content = new CreateRuleBodyContentImpl()
-            .setType(CONTENT_TYPE)
-            .setRuleDescription(implementation);
-        return new CreateRuleBodyImpl()
-            .setContent(content);
-    }
+        final String forwardDlq
+            = getForwardDlqEntity(createQueueOptions.getForwardDeadLetteredMessagesTo(), context);
+        if (forwardDlq != null) {
+            createQueueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
+        }
 
-    CreateSubscriptionBodyImpl getUpdateSubscriptionBody(SubscriptionProperties subscription) {
-        final SubscriptionDescriptionImpl implementation = EntityHelper.toImplementation(subscription);
-        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
-            .setType(CONTENT_TYPE)
-            .setSubscriptionDescription(implementation);
-        return new CreateSubscriptionBodyImpl()
-            .setContent(content);
-    }
-
-    CreateSubscriptionBodyImpl getCreateSubscriptionBody(SubscriptionDescriptionImpl subscriptionDescription) {
-        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
-            .setType(CONTENT_TYPE)
-            .setSubscriptionDescription(subscriptionDescription);
-        return new CreateSubscriptionBodyImpl().setContent(content);
+        return getCreateQueueBody(EntityHelper.getQueueDescription(createQueueOptions));
     }
 
     CreateRuleBodyImpl getCreateRuleBody(String ruleName, CreateRuleOptions ruleOptions) {
@@ -179,6 +159,119 @@ class AdministrationModelConverter {
         return new CreateRuleBodyImpl().setContent(content);
     }
 
+    CreateSubscriptionBodyImpl getCreateSubscriptionBody(SubscriptionDescriptionImpl subscriptionDescription) {
+        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
+            .setType(CONTENT_TYPE)
+            .setSubscriptionDescription(subscriptionDescription);
+        return new CreateSubscriptionBodyImpl().setContent(content);
+    }
+
+    /**
+     * Generates a create subscription request based on options. {@code ruleName} and {@code ruleOptions} are optional.
+     * No rules are created if they are null.
+     *
+     * @param subscriptionOptions Options associated with creating the subscription.
+     * @param ruleName Optional, rule name.
+     * @param ruleOptions Optional, operations associated with rule.
+     * @param context Context with request.
+     *
+     * @return A create subscription request.
+     *
+     * @throws IllegalArgumentException if {@code ruleOptions} is not null but the filter is null.
+     */
+    CreateSubscriptionBodyImpl getCreateSubscriptionBody(CreateSubscriptionOptions subscriptionOptions, String ruleName,
+        CreateRuleOptions ruleOptions, Context context) {
+
+        final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), context);
+        if (forwardTo != null) {
+            subscriptionOptions.setForwardTo(forwardTo);
+        }
+        final String forwardDlq = getForwardDlqEntity(subscriptionOptions.getForwardDeadLetteredMessagesTo(), context);
+        if (forwardDlq != null) {
+            subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
+        }
+
+        if (ruleOptions != null) {
+            if (ruleOptions.getFilter() == null) {
+                throw new IllegalArgumentException("'RuleFilter' cannot be null.");
+            }
+
+            final RuleDescriptionImpl rule = new RuleDescriptionImpl()
+                .setAction(ruleOptions.getAction() != null
+                    ? EntityHelper.toImplementation(ruleOptions.getAction())
+                    : null)
+                .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
+                .setName(ruleName);
+            subscriptionOptions.setDefaultRule(EntityHelper.toModel(rule));
+        }
+
+        return getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
+    }
+
+    CreateTopicBodyImpl getCreateTopicBody(TopicDescriptionImpl topicOptions) {
+        final CreateTopicBodyContentImpl content = new CreateTopicBodyContentImpl()
+            .setType(CONTENT_TYPE)
+            .setTopicDescription(topicOptions);
+        return new CreateTopicBodyImpl()
+            .setContent(content);
+    }
+
+    //endregion
+
+    //region Update entity methods
+
+    /**
+     * Generates a create queue request based on the existing queue properties.
+     *
+     * @param queue Queue to create request for.
+     * @param context Context.
+     * @return A create queue request with the corresponding properties.
+     */
+    CreateQueueBodyImpl getUpdateQueueBody(QueueProperties queue, Context context) {
+        final String forwardTo = getForwardToEntity(queue.getForwardTo(), context);
+        if (forwardTo != null) {
+            queue.setForwardTo(forwardTo);
+        }
+
+        final String forwardDlq = getForwardDlqEntity(queue.getForwardDeadLetteredMessagesTo(), context);
+        if (forwardDlq != null) {
+            queue.setForwardDeadLetteredMessagesTo(forwardDlq);
+        }
+
+        return getCreateQueueBody(EntityHelper.toImplementation(queue));
+    }
+
+    CreateRuleBodyImpl getUpdateRuleBody(RuleProperties rule) {
+        final RuleDescriptionImpl implementation = EntityHelper.toImplementation(rule);
+        final CreateRuleBodyContentImpl content = new CreateRuleBodyContentImpl()
+            .setType(CONTENT_TYPE)
+            .setRuleDescription(implementation);
+        return new CreateRuleBodyImpl()
+            .setContent(content);
+    }
+
+    CreateSubscriptionBodyImpl getUpdateSubscriptionBody(SubscriptionProperties subscription) {
+        final SubscriptionDescriptionImpl implementation = EntityHelper.toImplementation(subscription);
+        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
+            .setType(CONTENT_TYPE)
+            .setSubscriptionDescription(implementation);
+        return new CreateSubscriptionBodyImpl()
+            .setContent(content);
+    }
+
+    CreateTopicBodyImpl getUpdateTopicBody(TopicProperties topic) {
+        final TopicDescriptionImpl implementation = EntityHelper.toImplementation(topic);
+        final CreateTopicBodyContentImpl content = new CreateTopicBodyContentImpl()
+            .setType(CONTENT_TYPE)
+            .setTopicDescription(implementation);
+        return new CreateTopicBodyImpl()
+            .setContent(content);
+    }
+
+    //endregion
+
+    //region List entity methods
+
     List<TopicProperties> getTopics(TopicDescriptionFeedImpl feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getTopicDescription() != null)
@@ -193,6 +286,22 @@ class AdministrationModelConverter {
             .collect(Collectors.toList());
     }
 
+    List<RuleProperties> getRules(RuleDescriptionFeedImpl feed) {
+        return feed.getEntry().stream()
+            .filter(e -> e.getContent() != null && e.getContent().getRuleDescription() != null)
+            .map(e -> EntityHelper.toModel(e.getContent().getRuleDescription()))
+            .collect(Collectors.toList());
+    }
+
+    //endregion
+
+    List<SubscriptionProperties> getSubscriptions(String topicName, SubscriptionDescriptionFeedImpl feed) {
+        return feed.getEntry().stream()
+            .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
+            .map(e -> getSubscriptionProperties(topicName, e))
+            .collect(Collectors.toList());
+    }
+
     QueueProperties getQueueProperties(QueueDescriptionEntryImpl e) {
         final String queueName = e.getTitle().getContent();
         final QueueProperties queueProperties = EntityHelper.toModel(
@@ -201,20 +310,6 @@ class AdministrationModelConverter {
         EntityHelper.setQueueName(queueProperties, queueName);
 
         return queueProperties;
-    }
-
-    List<RuleProperties> getRules(RuleDescriptionFeedImpl feed) {
-        return feed.getEntry().stream()
-            .filter(e -> e.getContent() != null && e.getContent().getRuleDescription() != null)
-            .map(e -> EntityHelper.toModel(e.getContent().getRuleDescription()))
-            .collect(Collectors.toList());
-    }
-
-    List<SubscriptionProperties> getSubscriptions(String topicName, SubscriptionDescriptionFeedImpl feed) {
-        return feed.getEntry().stream()
-            .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
-            .map(e -> getSubscriptionProperties(topicName, e))
-            .collect(Collectors.toList());
     }
 
     SubscriptionProperties getSubscriptionProperties(String topicName, SubscriptionDescriptionEntryImpl entry) {
@@ -340,7 +435,7 @@ class AdministrationModelConverter {
      *
      * @return Forward to Entity represented as an absolute URL
      */
-    String getForwardDlqEntity(String entity) {
+    private String getForwardDlqEntity(String entity) {
         // Check if passed entity is an absolute URL
         try {
             URL url = new URL(entity);
@@ -365,7 +460,7 @@ class AdministrationModelConverter {
         return null;
     }
 
-    String getForwardDlqEntity(String forwardDlqToEntity, Context contextWithHeaders) {
+    private String getForwardDlqEntity(String forwardDlqToEntity, Context contextWithHeaders) {
         if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
             addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
                 forwardDlqToEntity, contextWithHeaders);
@@ -374,7 +469,7 @@ class AdministrationModelConverter {
         return null;
     }
 
-    String getForwardToEntity(String forwardToEntity, Context contextWithHeaders) {
+    private String getForwardToEntity(String forwardToEntity, Context contextWithHeaders) {
         if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
             addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
                 forwardToEntity, contextWithHeaders);
