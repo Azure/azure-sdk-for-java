@@ -321,8 +321,10 @@ public class TestVirtualNetworkGateway {
             Assertions
                 .assertEquals(
                     certificateName, vngw1.vpnClientConfiguration().vpnClientRootCertificates().get(0).name());
-            String profile = vngw1.generateVpnProfile();
-            System.out.println(profile);
+
+            // contains credential in the profile string
+//            String profile = vngw1.generateVpnProfile();
+//            System.out.println(profile);
             return vngw1;
         }
 

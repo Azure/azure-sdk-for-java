@@ -115,12 +115,11 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         }
     }
 
-    @Disabled("During Private Link operation, received invalid response from private link service Microsoft.Storage/storageAccounts.")
     @Test
     public void testPrivateEndpoint() {
-        String saName2 = generateRandomResourceName("sa", 10);
+//        String saName2 = generateRandomResourceName("sa", 10);
         String peName2 = generateRandomResourceName("pe", 10);
-        String pecName2 = generateRandomResourceName("pec", 10);
+//        String pecName2 = generateRandomResourceName("pec", 10);
 
         String saDomainName = saName + ".blob.core.windows.net";
         System.out.println("storage account domain name: " + saDomainName);
@@ -176,31 +175,31 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         privateEndpoint.refresh();
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
-        // update private endpoint
-        StorageAccount storageAccount2 = azureResourceManager.storageAccounts().define(saName2)
-            .withRegion(region)
-            .withNewResourceGroup(rgName)
-            .create();
-
-        privateEndpoint.update()
-            .updatePrivateLinkServiceConnection(pecName)
-                .withRequestMessage("request2")
-                .parent()
-            .apply();
-
-        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
-        Assertions.assertEquals("request2", privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
-
-        privateEndpoint.update()
-            .withoutPrivateLinkServiceConnection(pecName)
-            .definePrivateLinkServiceConnection(pecName2)
-                .withResource(storageAccount2)
-                .withSubResource(PrivateLinkSubResourceName.STORAGE_FILE)
-                .attach()
-            .apply();
-
-        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_FILE), privateEndpoint.privateLinkServiceConnections().get(pecName2).subResourceNames());
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName2).state().status());
+//        // update private endpoint
+//        StorageAccount storageAccount2 = azureResourceManager.storageAccounts().define(saName2)
+//            .withRegion(region)
+//            .withNewResourceGroup(rgName)
+//            .create();
+//
+//        privateEndpoint.update()
+//            .updatePrivateLinkServiceConnection(pecName)
+//                .withRequestMessage("request2")
+//                .parent()
+//            .apply();
+//
+//        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+//        Assertions.assertEquals("request2", privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
+//
+//        privateEndpoint.update()
+//            .withoutPrivateLinkServiceConnection(pecName)
+//            .definePrivateLinkServiceConnection(pecName2)
+//                .withResource(storageAccount2)
+//                .withSubResource(PrivateLinkSubResourceName.STORAGE_FILE)
+//                .attach()
+//            .apply();
+//
+//        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_FILE), privateEndpoint.privateLinkServiceConnections().get(pecName2).subResourceNames());
+//        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName2).state().status());
 
         // delete
         azureResourceManager.privateEndpoints().deleteById(privateEndpoint.id());
