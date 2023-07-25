@@ -56,6 +56,6 @@ public final class WebPubSubsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.webPubSubs().delete("lxorjaltolmncws", "bqwcsdbnwdcf", com.azure.core.util.Context.NONE);
+        manager.webPubSubs().delete("asiibmiybnnust", "nlj", com.azure.core.util.Context.NONE);
     }
 }

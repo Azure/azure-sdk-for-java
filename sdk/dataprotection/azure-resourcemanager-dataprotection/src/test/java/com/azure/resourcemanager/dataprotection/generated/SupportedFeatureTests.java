@@ -16,23 +16,23 @@ public final class SupportedFeatureTests {
         SupportedFeature model =
             BinaryData
                 .fromString(
-                    "{\"featureName\":\"fzxiavrmb\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"i\",\"rjqc\"]}")
+                    "{\"featureName\":\"hud\",\"supportStatus\":\"Invalid\",\"exposureControlledFeatures\":[\"kkqfqjbvle\",\"rfmluiqtq\",\"fa\"]}")
                 .toObject(SupportedFeature.class);
-        Assertions.assertEquals("fzxiavrmb", model.featureName());
-        Assertions.assertEquals(FeatureSupportStatus.ALPHA_PREVIEW, model.supportStatus());
-        Assertions.assertEquals("i", model.exposureControlledFeatures().get(0));
+        Assertions.assertEquals("hud", model.featureName());
+        Assertions.assertEquals(FeatureSupportStatus.INVALID, model.supportStatus());
+        Assertions.assertEquals("kkqfqjbvle", model.exposureControlledFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SupportedFeature model =
             new SupportedFeature()
-                .withFeatureName("fzxiavrmb")
-                .withSupportStatus(FeatureSupportStatus.ALPHA_PREVIEW)
-                .withExposureControlledFeatures(Arrays.asList("i", "rjqc"));
+                .withFeatureName("hud")
+                .withSupportStatus(FeatureSupportStatus.INVALID)
+                .withExposureControlledFeatures(Arrays.asList("kkqfqjbvle", "rfmluiqtq", "fa"));
         model = BinaryData.fromObject(model).toObject(SupportedFeature.class);
-        Assertions.assertEquals("fzxiavrmb", model.featureName());
-        Assertions.assertEquals(FeatureSupportStatus.ALPHA_PREVIEW, model.supportStatus());
-        Assertions.assertEquals("i", model.exposureControlledFeatures().get(0));
+        Assertions.assertEquals("hud", model.featureName());
+        Assertions.assertEquals(FeatureSupportStatus.INVALID, model.supportStatus());
+        Assertions.assertEquals("kkqfqjbvle", model.exposureControlledFeatures().get(0));
     }
 }

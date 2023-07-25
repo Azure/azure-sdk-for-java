@@ -12,6 +12,7 @@ import com.azure.resourcemanager.webpubsub.models.ManagedIdentity;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.ServiceKind;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,13 +35,19 @@ public final class WebPubSubResourceInner extends Resource {
     private WebPubSubProperties innerProperties;
 
     /*
+     * The kind of the service
+     */
+    @JsonProperty(value = "kind")
+    private ServiceKind kind;
+
+    /*
      * A class represent managed identities used for request and response
      */
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -79,6 +86,26 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
+     * Get the kind property: The kind of the service.
+     *
+     * @return the kind value.
+     */
+    public ServiceKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind of the service.
+     *
+     * @param kind the kind value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withKind(ServiceKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
      * Get the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
@@ -99,7 +126,7 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */

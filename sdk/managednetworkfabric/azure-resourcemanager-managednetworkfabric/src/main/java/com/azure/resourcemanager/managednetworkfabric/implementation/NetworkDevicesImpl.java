@@ -10,22 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkDevicesClient;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetDeviceStatusPropertiesInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetDynamicInterfaceMapsPropertiesItemInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.GetStaticInterfaceMapsPropertiesItemInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.SupportPackagePropertiesInner;
-import com.azure.resourcemanager.managednetworkfabric.models.GetDeviceStatusProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.GetDynamicInterfaceMapsPropertiesItem;
-import com.azure.resourcemanager.managednetworkfabric.models.GetStaticInterfaceMapsPropertiesItem;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevice;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevices;
-import com.azure.resourcemanager.managednetworkfabric.models.SupportPackageProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdatePowerCycleProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersionProperties;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.azure.resourcemanager.managednetworkfabric.models.RebootProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
 
 public final class NetworkDevicesImpl implements NetworkDevices {
     private static final ClientLogger LOGGER = new ClientLogger(NetworkDevicesImpl.class);
@@ -93,141 +85,91 @@ public final class NetworkDevicesImpl implements NetworkDevices {
         return Utils.mapPage(inner, inner1 -> new NetworkDeviceImpl(inner1, this.manager()));
     }
 
-    public void reboot(String resourceGroupName, String networkDeviceName) {
-        this.serviceClient().reboot(resourceGroupName, networkDeviceName);
-    }
-
-    public void reboot(String resourceGroupName, String networkDeviceName, Context context) {
-        this.serviceClient().reboot(resourceGroupName, networkDeviceName, context);
-    }
-
-    public void restoreConfig(String resourceGroupName, String networkDeviceName) {
-        this.serviceClient().restoreConfig(resourceGroupName, networkDeviceName);
-    }
-
-    public void restoreConfig(String resourceGroupName, String networkDeviceName, Context context) {
-        this.serviceClient().restoreConfig(resourceGroupName, networkDeviceName, context);
-    }
-
-    public void updateVersion(String resourceGroupName, String networkDeviceName, UpdateVersionProperties body) {
-        this.serviceClient().updateVersion(resourceGroupName, networkDeviceName, body);
-    }
-
-    public void updateVersion(
-        String resourceGroupName, String networkDeviceName, UpdateVersionProperties body, Context context) {
-        this.serviceClient().updateVersion(resourceGroupName, networkDeviceName, body, context);
-    }
-
-    public SupportPackageProperties generateSupportPackage(String resourceGroupName, String networkDeviceName) {
-        SupportPackagePropertiesInner inner =
-            this.serviceClient().generateSupportPackage(resourceGroupName, networkDeviceName);
+    public CommonPostActionResponseForStateUpdate reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().reboot(resourceGroupName, networkDeviceName, body);
         if (inner != null) {
-            return new SupportPackagePropertiesImpl(inner, this.manager());
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public SupportPackageProperties generateSupportPackage(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        SupportPackagePropertiesInner inner =
-            this.serviceClient().generateSupportPackage(resourceGroupName, networkDeviceName, context);
+    public CommonPostActionResponseForStateUpdate reboot(
+        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().reboot(resourceGroupName, networkDeviceName, body, context);
         if (inner != null) {
-            return new SupportPackagePropertiesImpl(inner, this.manager());
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public void updatePowerCycle(String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body) {
-        this.serviceClient().updatePowerCycle(resourceGroupName, networkDeviceName, body);
-    }
-
-    public void updatePowerCycle(
-        String resourceGroupName, String networkDeviceName, UpdatePowerCycleProperties body, Context context) {
-        this.serviceClient().updatePowerCycle(resourceGroupName, networkDeviceName, body, context);
-    }
-
-    public GetDeviceStatusProperties getStatus(String resourceGroupName, String networkDeviceName) {
-        GetDeviceStatusPropertiesInner inner = this.serviceClient().getStatus(resourceGroupName, networkDeviceName);
-        if (inner != null) {
-            return new GetDeviceStatusPropertiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public GetDeviceStatusProperties getStatus(String resourceGroupName, String networkDeviceName, Context context) {
-        GetDeviceStatusPropertiesInner inner =
-            this.serviceClient().getStatus(resourceGroupName, networkDeviceName, context);
-        if (inner != null) {
-            return new GetDeviceStatusPropertiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps(
+    public CommonPostActionResponseForStateUpdate refreshConfiguration(
         String resourceGroupName, String networkDeviceName) {
-        List<GetStaticInterfaceMapsPropertiesItemInner> inner =
-            this.serviceClient().getStaticInterfaceMaps(resourceGroupName, networkDeviceName);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().refreshConfiguration(resourceGroupName, networkDeviceName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new GetStaticInterfaceMapsPropertiesItemImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
-            return Collections.emptyList();
+            return null;
         }
     }
 
-    public List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps(
+    public CommonPostActionResponseForStateUpdate refreshConfiguration(
         String resourceGroupName, String networkDeviceName, Context context) {
-        List<GetStaticInterfaceMapsPropertiesItemInner> inner =
-            this.serviceClient().getStaticInterfaceMaps(resourceGroupName, networkDeviceName, context);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().refreshConfiguration(resourceGroupName, networkDeviceName, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new GetStaticInterfaceMapsPropertiesItemImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
-            return Collections.emptyList();
+            return null;
         }
     }
 
-    public List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName) {
-        List<GetDynamicInterfaceMapsPropertiesItemInner> inner =
-            this.serviceClient().getDynamicInterfaceMaps(resourceGroupName, networkDeviceName);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, networkDeviceName, body);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new GetDynamicInterfaceMapsPropertiesItemImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
-            return Collections.emptyList();
+            return null;
         }
     }
 
-    public List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps(
-        String resourceGroupName, String networkDeviceName, Context context) {
-        List<GetDynamicInterfaceMapsPropertiesItemInner> inner =
-            this.serviceClient().getDynamicInterfaceMaps(resourceGroupName, networkDeviceName, context);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, networkDeviceName, body, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new GetDynamicInterfaceMapsPropertiesItemImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
-            return Collections.emptyList();
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().upgrade(resourceGroupName, networkDeviceName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().upgrade(resourceGroupName, networkDeviceName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
         }
     }
 

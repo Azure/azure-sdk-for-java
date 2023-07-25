@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for VpnServerConfigurations UpdateTags. */
 public final class VpnServerConfigurationsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnServerConfigurationUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnServerConfigurationUpdateTags.json
      */
     /**
      * Sample code: VpnServerConfigurationUpdate.
@@ -27,7 +27,7 @@ public final class VpnServerConfigurationsUpdateTagsSamples {
             .updateTagsWithResponse(
                 "rg1",
                 "vpnServerConfiguration1",
-                new TagsObject().withTags(mapOf("key1", "value1", "key2", "value2")),
+                new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 

@@ -31,7 +31,7 @@ public final class ProjectsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"dttouwaboekqvkel\",\"provisioningState\":\"Succeeded\"},\"id\":\"bxwyjsflhhcaa\",\"name\":\"n\",\"type\":\"ixisxyawjoy\"}";
+            "{\"properties\":{\"description\":\"jznb\",\"provisioningState\":\"Succeeded\"},\"id\":\"wuwprzqlv\",\"name\":\"ualupjmkh\",\"type\":\"xobbcswsrt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +60,11 @@ public final class ProjectsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Project response =
-            manager.projects().getWithResponse("pwo", "uh", "fpbsjyofdxl", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .projects()
+                .getWithResponse("klwndnhjdauwhv", "l", "zbtd", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("dttouwaboekqvkel", response.description());
+        Assertions.assertEquals("jznb", response.description());
     }
 }

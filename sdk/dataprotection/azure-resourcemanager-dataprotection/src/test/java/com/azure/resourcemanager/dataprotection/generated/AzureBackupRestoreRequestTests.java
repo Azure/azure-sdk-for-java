@@ -6,6 +6,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
+import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.RecoveryOption;
 import com.azure.resourcemanager.dataprotection.models.RestoreTargetInfoBase;
 import com.azure.resourcemanager.dataprotection.models.SourceDataStoreType;
@@ -17,12 +18,14 @@ public final class AzureBackupRestoreRequestTests {
         AzureBackupRestoreRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"tsthsucocm\"},\"sourceDataStoreType\":\"SnapshotStore\",\"sourceResourceId\":\"azt\"}")
+                    "{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"bpbewtghfgb\"},\"sourceDataStoreType\":\"ArchiveStore\",\"sourceResourceId\":\"wxzvlvqhjkb\",\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"nmxiebwwaloayqc\"}}")
                 .toObject(AzureBackupRestoreRequest.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("tsthsucocm", model.restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.SNAPSHOT_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("azt", model.sourceResourceId());
+        Assertions.assertEquals("bpbewtghfgb", model.restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("wxzvlvqhjkb", model.sourceResourceId());
+        Assertions.assertEquals(false, model.identityDetails().useSystemAssignedIdentity());
+        Assertions.assertEquals("nmxiebwwaloayqc", model.identityDetails().userAssignedIdentityArmUrl());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,13 +35,19 @@ public final class AzureBackupRestoreRequestTests {
                 .withRestoreTargetInfo(
                     new RestoreTargetInfoBase()
                         .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                        .withRestoreLocation("tsthsucocm"))
-                .withSourceDataStoreType(SourceDataStoreType.SNAPSHOT_STORE)
-                .withSourceResourceId("azt");
+                        .withRestoreLocation("bpbewtghfgb"))
+                .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
+                .withSourceResourceId("wxzvlvqhjkb")
+                .withIdentityDetails(
+                    new IdentityDetails()
+                        .withUseSystemAssignedIdentity(false)
+                        .withUserAssignedIdentityArmUrl("nmxiebwwaloayqc"));
         model = BinaryData.fromObject(model).toObject(AzureBackupRestoreRequest.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("tsthsucocm", model.restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.SNAPSHOT_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("azt", model.sourceResourceId());
+        Assertions.assertEquals("bpbewtghfgb", model.restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("wxzvlvqhjkb", model.sourceResourceId());
+        Assertions.assertEquals(false, model.identityDetails().useSystemAssignedIdentity());
+        Assertions.assertEquals("nmxiebwwaloayqc", model.identityDetails().userAssignedIdentityArmUrl());
     }
 }

@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for ConnectivityConfigurations CreateOrUpdate. */
 public final class ConnectivityConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerConnectivityConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerConnectivityConfigurationPut.json
      */
     /**
      * Sample code: ConnectivityConfigurationsPut.

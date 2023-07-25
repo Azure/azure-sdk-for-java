@@ -7,41 +7,29 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Layer 3 primary and secondary ip address prefixes. */
+/** Layer 3 primary and secondary IP Address prefixes. */
 @Fluent
 public class Layer3IpPrefixProperties {
     /*
-     * IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The values can be specified at the time
-     * of creation or can be updated afterwards. Any update to the values post-provisioning may disrupt traffic. The
-     * 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs are to be
-     * configured on PE1 and PE2 for Option B interfaces.
+     * IPv4 Address Prefix.
      */
     @JsonProperty(value = "primaryIpv4Prefix")
     private String primaryIpv4Prefix;
 
     /*
-     * IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a0/126. The values can be specified
-     * at the time of creation or can be updated afterwards. Any update to the values post-provisioning may disrupt
-     * traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs
-     * are to be configured on PE1 and PE2 for Option B interfaces.
+     * IPv6 Address Prefix.
      */
     @JsonProperty(value = "primaryIpv6Prefix")
     private String primaryIpv6Prefix;
 
     /*
-     * Secondary IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.20/31. The values can be specified
-     * at the time of creation or can be updated afterwards. Any update to the values post-provisioning may disrupt
-     * traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs
-     * are to be configured on PE1 and PE2 for Option B interfaces.
+     * Secondary IPv4 Address Prefix.
      */
     @JsonProperty(value = "secondaryIpv4Prefix")
     private String secondaryIpv4Prefix;
 
     /*
-     * Secondary IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a4/126. The values can be
-     * specified at the time of creation or can be updated afterwards. Any update to the values post-provisioning may
-     * disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and
-     * 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Secondary IPv6 Address Prefix.
      */
     @JsonProperty(value = "secondaryIpv6Prefix")
     private String secondaryIpv6Prefix;
@@ -51,10 +39,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Get the primaryIpv4Prefix property: IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The
-     * values can be specified at the time of creation or can be updated afterwards. Any update to the values
-     * post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B
-     * interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Get the primaryIpv4Prefix property: IPv4 Address Prefix.
      *
      * @return the primaryIpv4Prefix value.
      */
@@ -63,10 +48,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Set the primaryIpv4Prefix property: IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The
-     * values can be specified at the time of creation or can be updated afterwards. Any update to the values
-     * post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B
-     * interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Set the primaryIpv4Prefix property: IPv4 Address Prefix.
      *
      * @param primaryIpv4Prefix the primaryIpv4Prefix value to set.
      * @return the Layer3IpPrefixProperties object itself.
@@ -77,10 +59,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Get the primaryIpv6Prefix property: IPv6 Address Prefix of CE-PE interconnect links. Example:
-     * 3FFE:FFFF:0:CD30::a0/126. The values can be specified at the time of creation or can be updated afterwards. Any
-     * update to the values post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and
-     * CE2 for Option B interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Get the primaryIpv6Prefix property: IPv6 Address Prefix.
      *
      * @return the primaryIpv6Prefix value.
      */
@@ -89,10 +68,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Set the primaryIpv6Prefix property: IPv6 Address Prefix of CE-PE interconnect links. Example:
-     * 3FFE:FFFF:0:CD30::a0/126. The values can be specified at the time of creation or can be updated afterwards. Any
-     * update to the values post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and
-     * CE2 for Option B interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Set the primaryIpv6Prefix property: IPv6 Address Prefix.
      *
      * @param primaryIpv6Prefix the primaryIpv6Prefix value to set.
      * @return the Layer3IpPrefixProperties object itself.
@@ -103,10 +79,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Get the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix of CE-PE interconnect links. Example:
-     * 172.31.0.20/31. The values can be specified at the time of creation or can be updated afterwards. Any update to
-     * the values post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for
-     * Option B interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Get the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
      *
      * @return the secondaryIpv4Prefix value.
      */
@@ -115,10 +88,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Set the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix of CE-PE interconnect links. Example:
-     * 172.31.0.20/31. The values can be specified at the time of creation or can be updated afterwards. Any update to
-     * the values post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for
-     * Option B interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Set the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
      *
      * @param secondaryIpv4Prefix the secondaryIpv4Prefix value to set.
      * @return the Layer3IpPrefixProperties object itself.
@@ -129,10 +99,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Get the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix of CE-PE interconnect links. Example:
-     * 3FFE:FFFF:0:CD30::a4/126. The values can be specified at the time of creation or can be updated afterwards. Any
-     * update to the values post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and
-     * CE2 for Option B interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Get the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
      *
      * @return the secondaryIpv6Prefix value.
      */
@@ -141,10 +108,7 @@ public class Layer3IpPrefixProperties {
     }
 
     /**
-     * Set the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix of CE-PE interconnect links. Example:
-     * 3FFE:FFFF:0:CD30::a4/126. The values can be specified at the time of creation or can be updated afterwards. Any
-     * update to the values post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and
-     * CE2 for Option B interfaces. The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+     * Set the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
      *
      * @param secondaryIpv6Prefix the secondaryIpv6Prefix value to set.
      * @return the Layer3IpPrefixProperties object itself.

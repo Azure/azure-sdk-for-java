@@ -32,7 +32,7 @@ public final class DppResourceGuardProxiesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"cqiosmgbza\",\"resourceGuardOperationDetails\":[],\"lastUpdatedTime\":\"dl\",\"description\":\"tlt\"},\"id\":\"prltzkatbhjmz\",\"name\":\"nbsoqeqalarv\",\"type\":\"agunbtgfebw\"}]}";
+            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"mzgwe\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"xwefohecbvopwndy\",\"defaultResourceRequest\":\"eallklmtkhlo\"},{\"vaultCriticalOperation\":\"x\",\"defaultResourceRequest\":\"vbrdfjmzsyzfho\"}],\"lastUpdatedTime\":\"h\",\"description\":\"cyychunsjlp\"},\"id\":\"twszhvvuic\",\"name\":\"hvtrrmhwrbfdpyf\",\"type\":\"ubhvj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,30 @@ public final class DppResourceGuardProxiesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ResourceGuardProxyBaseResource> response =
-            manager.dppResourceGuardProxies().list("pfnznthjtwkj", "osrxuzvoa", com.azure.core.util.Context.NONE);
+            manager.dppResourceGuardProxies().list("v", "xmycjimryvwgcw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cqiosmgbza", response.iterator().next().properties().resourceGuardResourceId());
-        Assertions.assertEquals("dl", response.iterator().next().properties().lastUpdatedTime());
-        Assertions.assertEquals("tlt", response.iterator().next().properties().description());
+        Assertions.assertEquals("mzgwe", response.iterator().next().properties().resourceGuardResourceId());
+        Assertions
+            .assertEquals(
+                "xwefohecbvopwndy",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .resourceGuardOperationDetails()
+                    .get(0)
+                    .vaultCriticalOperation());
+        Assertions
+            .assertEquals(
+                "eallklmtkhlo",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .resourceGuardOperationDetails()
+                    .get(0)
+                    .defaultResourceRequest());
+        Assertions.assertEquals("h", response.iterator().next().properties().lastUpdatedTime());
+        Assertions.assertEquals("cyychunsjlp", response.iterator().next().properties().description());
     }
 }
