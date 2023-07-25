@@ -28,9 +28,6 @@ public final class MongoDBParameter {
     @JsonProperty(value = "command", required = true)
     private String command;
 
-    /** Creates an instance of MongoDBParameter class. */
-    public MongoDBParameter() {}
-
     /**
      * Get the connectionString property: The connection string of this MongoDB.
      *
