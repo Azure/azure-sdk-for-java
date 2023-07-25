@@ -25,7 +25,8 @@ public class CancelJobOptions {
      */
     private String dispositionCode;
 
-    /** Creates an instance of CancelJobRequest class.
+    /**
+     * Creates an instance of CancelJobRequest class.
      *
      * @param jobId Id of the job to cancel.
      */

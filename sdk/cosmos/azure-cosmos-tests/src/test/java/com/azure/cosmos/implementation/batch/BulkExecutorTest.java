@@ -3,19 +3,31 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BatchTestBase;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
-import com.azure.cosmos.models.CosmosBulkOperations;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosItemOperation;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -28,6 +40,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,7 +54,7 @@ public class BulkExecutorTest extends BatchTestBase {
     private CosmosAsyncDatabase database;
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public BulkExecutorTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -132,6 +145,94 @@ public class BulkExecutorTest extends BatchTestBase {
             iterations++;
         }
     }
+
+    // Write operations should not be retried on a gone exception because the operation might have succeeded.
+    @Test(groups = { "emulator" }, timeOut =  TIMEOUT)
+    public void executeBulk_OnGoneFailure() throws InterruptedException {
+        this.container = createContainer(database);
+        if (!ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getConnectionMode(this.client)
+            .equals(ConnectionMode.DIRECT.toString())) {
+            throw new SkipException("Failure injection for gone exception only supported for DIRECT mode");
+        }
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        String duplicatePK = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString();
+
+        BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(id, 2, 4, "type1",
+            duplicatePK);
+        CosmosItemOperation createOperation = (CosmosBulkOperations.getCreateItemOperation(eventDoc,
+            new PartitionKey(duplicatePK)));
+        cosmosItemOperations.add(createOperation);
+
+        // configure fault injection rules
+        // using the combination of connection close and response delay to simulate a client generated gone for write operations
+        FaultInjectionRule connectionCloseRule =
+            new FaultInjectionRuleBuilder("connectionClose-" + UUID.randomUUID())
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
+                        .interval(Duration.ofMillis(200))
+                        .build()
+                )
+                .duration(Duration.ofSeconds(10))
+                .build();
+
+        FaultInjectionRule serverResponseDelayRule =
+            new FaultInjectionRuleBuilder("serverResponseDelay-" + UUID.randomUUID())
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                        .delay(Duration.ofSeconds(1))
+                        .build()
+                )
+                .duration(Duration.ofSeconds(10))
+                .build();
+
+        final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
+            this.container,
+            Flux.fromIterable(cosmosItemOperations),
+            new CosmosBulkExecutionOptions());
+
+        try {
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(container, Arrays.asList(connectionCloseRule, serverResponseDelayRule))
+                .block();
+
+            List<CosmosBulkOperationResponse<BulkExecutorTest>>  bulkResponse =
+                Flux
+                    .deferContextual(context -> executor.execute())
+                    .collectList()
+                    .block();
+
+            assertThat(bulkResponse.size()).isEqualTo(1);
+
+            CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(0);
+            CosmosBulkItemResponse cosmosBulkItemResponse = operationResponse.getResponse();
+            assertThat(cosmosBulkItemResponse).isNull();
+        } finally {
+            if (executor != null && !executor.isDisposed()) {
+                executor.dispose();
+            }
+            connectionCloseRule.disable();
+            serverResponseDelayRule.disable();
+        }
+    }
+
+
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_complete() throws InterruptedException {

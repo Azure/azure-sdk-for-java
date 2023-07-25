@@ -66,6 +66,9 @@ public class UsernamePasswordCredential implements TokenCredential {
     private final IdentitySyncClient identitySyncClient;
     private final String authorityHost;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
+    private boolean isCaeEnabledRequestCached;
+    private boolean isCaeDisabledRequestCached;
+    private boolean isCachePopulated;
 
     /**
      * Creates a UserCredential with the given identity client options.
@@ -98,14 +101,25 @@ public class UsernamePasswordCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
-            if (cachedToken.get() != null) {
+            isCachePopulated = isCachePopulated(request);
+            if (isCachePopulated) {
                 return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
         }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
-            .map(this::updateCache)
+            .map(msalToken -> {
+                AccessToken accessToken = updateCache(msalToken);
+                if (request.isCaeEnabled()) {
+                    isCaeEnabledRequestCached = true;
+                    isCaeDisabledRequestCached = false;
+                } else {
+                    isCaeDisabledRequestCached = true;
+                    isCaeEnabledRequestCached = false;
+                }
+                return accessToken;
+            })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
                 request, error));
@@ -165,5 +179,10 @@ public class UsernamePasswordCredential implements TokenCredential {
                                 identityClient.getTenantId(), identityClient.getClientId()),
                     msalToken.getAccount().getTenantProfiles()));
         return msalToken;
+    }
+
+    private boolean isCachePopulated(TokenRequestContext request) {
+        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+            || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

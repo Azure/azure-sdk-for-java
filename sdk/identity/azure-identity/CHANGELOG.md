@@ -1,14 +1,14 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.10.0-beta.1 (2023-07-24)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added CAE Authentication support for Service principal authentication.
 
 ### Other Changes
+
+#### Behavioral Breaking Change
+- CAE Authentication is disabled by default. It needs to be enabled by invoking `setEnableCae` on `TokenRequestContext` class.
 
 ## 1.9.2 (2023-07-10)
 

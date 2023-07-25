@@ -248,8 +248,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertEquals(2, page2.getPageNumber());
         assertEquals(1, page1.getSpans().size());
         assertEquals(1, page2.getSpans().size());
-        assertEquals(216, page1.getSpans().get(0).getLength());
-        assertEquals(217, page2.getSpans().get(0).getOffset());
+        assertEquals(205, page1.getSpans().get(0).getLength());
+        assertEquals(206, page2.getSpans().get(0).getOffset());
 
         DocumentPage receiptPage1 = analyzeResult.getPages().get(0);
         DocumentPage receiptPage2 = analyzeResult.getPages().get(1);
@@ -580,7 +580,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[] table = new int[] {3, 5, 10};
+        int[] table = new int[] {2, 5, 10};
         Assertions.assertEquals(1, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             DocumentTable actualDocumentTable = analyzeResult.getTables().get(i);
@@ -608,7 +608,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[][] table = new int[][] {{5, 4, 20}, {3, 3, 6}};
+        int[][] table = new int[][] {{5, 4, 20}, {3, 2, 6}};
         Assertions.assertEquals(2, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             int j = 0;

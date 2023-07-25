@@ -168,7 +168,7 @@ public abstract class IdentityClientBase {
 
     }
 
-    ConfidentialClientApplication getConfidentialClient() {
+    ConfidentialClientApplication getConfidentialClient(boolean enableCae) {
         if (clientId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "A non-null value for client ID must be provided for user authentication."));
@@ -225,6 +225,12 @@ public abstract class IdentityClientBase {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
 
+        if (enableCae) {
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            applicationBuilder.clientCapabilities(set);
+        }
+
         applicationBuilder.sendX5c(options.isIncludeX5c());
 
         initializeHttpPipelineAdapter();
@@ -242,7 +248,7 @@ public abstract class IdentityClientBase {
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
-                tokenCache = new PersistentTokenCacheImpl()
+                tokenCache = new PersistentTokenCacheImpl(enableCae)
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 applicationBuilder.setTokenCacheAccessAspect(tokenCache);
@@ -266,7 +272,7 @@ public abstract class IdentityClientBase {
         return confidentialClientApplication;
     }
 
-    PublicClientApplication getPublicClient(boolean sharedTokenCacheCredential) {
+    PublicClientApplication getPublicClient(boolean sharedTokenCacheCredential, boolean enableCae) {
         if (clientId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "A non-null value for client ID must be provided for user authentication."));
@@ -297,7 +303,7 @@ public abstract class IdentityClientBase {
             builder.executorService(options.getExecutorService());
         }
 
-        if (!options.isCp1Disabled()) {
+        if (enableCae) {
             Set<String> set = new HashSet<>(1);
             set.add("CP1");
             builder.clientCapabilities(set);
@@ -307,7 +313,7 @@ public abstract class IdentityClientBase {
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
-                tokenCache = new PersistentTokenCacheImpl()
+                tokenCache = new PersistentTokenCacheImpl(enableCae)
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 builder.setTokenCacheAccessAspect(tokenCache);
@@ -440,6 +446,11 @@ public abstract class IdentityClientBase {
         OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.isCaeEnabled() && request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(customClaimRequest);
+        }
         return builder.build();
     }
 
@@ -451,7 +462,7 @@ public abstract class IdentityClientBase {
                 .tenant(IdentityUtil
                     .resolveTenantId(tenantId, request, options));
 
-        if (request.getClaims() != null) {
+        if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             builder.claims(customClaimRequest);
         }
@@ -467,7 +478,7 @@ public abstract class IdentityClientBase {
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()),
                 username, password.toCharArray());
 
-        if (request.getClaims() != null) {
+        if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest
                 .formatAsClaimsRequest(request.getClaims());
             userNamePasswordParametersBuilder.claims(customClaimRequest);
