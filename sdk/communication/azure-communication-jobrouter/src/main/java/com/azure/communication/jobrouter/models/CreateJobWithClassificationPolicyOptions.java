@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Request options to create a job.
+ * Request options to create a job with classification policy.
  * Job: A unit of work to be routed.
  */
-public final class CreateJobOptions {
+public class CreateJobWithClassificationPolicyOptions {
     /**
      * The id of the job.
      */
@@ -27,9 +27,14 @@ public final class CreateJobOptions {
     private final String channelId;
 
     /**
+     * The Id of the Classification policy used for classifying a job.
+     */
+    private final String classificationPolicyId;
+
+    /**
      * The Id of the Queue that this job is queued to.
      */
-    private final String queueId;
+    private String queueId;
 
     /**
      * The priority of this job.
@@ -83,7 +88,7 @@ public final class CreateJobOptions {
      * @param matchingMode the matchingMode value to set.
      * @return the RouterJobInternal object itself.
      */
-    public CreateJobOptions setMatchingMode(RouterJobMatchingMode matchingMode) {
+    public CreateJobWithClassificationPolicyOptions setMatchingMode(RouterJobMatchingMode matchingMode) {
         this.matchingMode = matchingMode;
         return this;
     }
@@ -92,12 +97,12 @@ public final class CreateJobOptions {
      * Constructor for CreateJobOptions.
      * @param id The id of the job.
      * @param channelId The channel identifier. eg. voice, chat, etc.
-     * @param queueId The Id of the Queue that this job is queued to.
+     * @param classificationPolicyId The Id of the classification Policy.
      */
-    public CreateJobOptions(String id, String channelId, String queueId) {
+    public CreateJobWithClassificationPolicyOptions(String id, String channelId, String classificationPolicyId) {
         this.id = id;
         this.channelId = channelId;
-        this.queueId = queueId;
+        this.classificationPolicyId = classificationPolicyId;
     }
 
     /**
@@ -105,7 +110,7 @@ public final class CreateJobOptions {
      * @param priority The priority of this job.
      * @return this
      */
-    public CreateJobOptions setPriority(Integer priority) {
+    public CreateJobWithClassificationPolicyOptions setPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -115,8 +120,18 @@ public final class CreateJobOptions {
      * @param channelReference Reference to an external parent context, eg. call ID.
      * @return this
      */
-    public CreateJobOptions setChannelReference(String channelReference) {
+    public CreateJobWithClassificationPolicyOptions setChannelReference(String channelReference) {
         this.channelReference = channelReference;
+        return this;
+    }
+
+    /**
+     * Sets classificationPolicyId.
+     * @param queueId The Id of a queue for the job.
+     * @return this
+     */
+    public CreateJobWithClassificationPolicyOptions setQueueId(String queueId) {
+        this.queueId = queueId;
         return this;
     }
 
@@ -125,7 +140,7 @@ public final class CreateJobOptions {
      * @param dispositionCode Reason code for cancelled or closed jobs.
      * @return this
      */
-    public CreateJobOptions setDispositionCode(String dispositionCode) {
+    public CreateJobWithClassificationPolicyOptions setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;
     }
@@ -136,7 +151,7 @@ public final class CreateJobOptions {
      *   satisfy in order to process this job.
      * @return this
      */
-    public CreateJobOptions setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
+    public CreateJobWithClassificationPolicyOptions setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
@@ -147,7 +162,7 @@ public final class CreateJobOptions {
      *   rules engines to make decisions.
      * @return this
      */
-    public CreateJobOptions setLabels(Map<String, LabelValue> labels) {
+    public CreateJobWithClassificationPolicyOptions setLabels(Map<String, LabelValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -157,7 +172,7 @@ public final class CreateJobOptions {
      * @param tags A set of non-identifying attributes attached to this job.
      * @return this
      */
-    public CreateJobOptions setTags(Map<String, LabelValue> tags) {
+    public CreateJobWithClassificationPolicyOptions setTags(Map<String, LabelValue> tags) {
         this.tags = tags;
         return this;
     }
@@ -167,7 +182,7 @@ public final class CreateJobOptions {
      * @param notes Notes attached to a job, sorted by timestamp.
      * @return this
      */
-    public CreateJobOptions setNotes(List<RouterJobNote> notes) {
+    public CreateJobWithClassificationPolicyOptions setNotes(List<RouterJobNote> notes) {
         this.notes = notes;
         return this;
     }
@@ -194,6 +209,14 @@ public final class CreateJobOptions {
      */
     public String getChannelId() {
         return this.channelId;
+    }
+
+    /**
+     * Returns the Id of the Classification policy used for classifying a job.
+     * @return classificationPolicyId
+     */
+    public String getClassificationPolicyId() {
+        return this.classificationPolicyId;
     }
 
     /**
