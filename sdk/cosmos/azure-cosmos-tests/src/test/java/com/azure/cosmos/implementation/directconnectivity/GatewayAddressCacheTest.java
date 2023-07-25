@@ -1228,7 +1228,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
     }
 
-    @Test(groups = {"direct"}, timeOut = 3 * TIMEOUT)
+    @Test(groups = {"direct"}, timeOut = 2 * TIMEOUT)
     public void tryGetAddress_repeatedlySetUnhealthyStatus_forceRefresh() throws InterruptedException, URISyntaxException {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
