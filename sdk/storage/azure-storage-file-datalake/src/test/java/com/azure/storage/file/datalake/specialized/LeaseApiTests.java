@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake.specialized;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeTestBase;
@@ -21,7 +22,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,9 +55,10 @@ public class LeaseApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> acquireLeaseSupplier() {
         return Stream.of(
+            // proposedId | leaseTime | leaseStateType | leaseDurationType
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 
@@ -90,6 +91,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> validLeaseConditions() {
         return Stream.of(
+            // modified | unmodified | match | noneMatch
             Arguments.of(null, null, null, null),
             Arguments.of(OLD_DATE, null, null, null),
             Arguments.of(null, NEW_DATE, null, null),
@@ -116,6 +118,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> invalidLeaseConditions() {
         return Stream.of(
+            // modified | unmodified | match | noneMatch
             Arguments.of(NEW_DATE, null, null, null),
             Arguments.of(null, OLD_DATE, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null),
@@ -430,6 +433,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> invalidModifiedConditions() {
         return Stream.of(
+            // modified | unmodified
             Arguments.of(NEW_DATE, null),
             Arguments.of(null, OLD_DATE)
         );
@@ -476,6 +480,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> validModifiedConditions() {
         return Stream.of(
+            // modified | unmodified
             Arguments.of(null, null),
             Arguments.of(OLD_DATE, null),
             Arguments.of(null, NEW_DATE)
@@ -503,6 +508,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> invalidMatchConditions() {
         return Stream.of(
+            // match | noneMatch
             Arguments.of(RECEIVED_ETAG, null),
             Arguments.of(null, GARBAGE_ETAG)
         );
@@ -585,7 +591,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
         if (breakPeriod != null) {
             // If running in live mode wait for the lease to break so we can delete the file system after the test completes
-            sleepIfRunningAgainstService(breakPeriod * 1000);;
+            sleepIfRunningAgainstService(breakPeriod * 1000);
         }
     }
 

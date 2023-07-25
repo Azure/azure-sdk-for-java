@@ -7,7 +7,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
@@ -24,7 +23,6 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ServiceVersion;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -43,7 +41,6 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
 import okhttp3.ConnectionPool;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -171,11 +168,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
     }
 
-    //TODO: Should this go in core.
-    protected static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
-        return FluxUtil.collectBytesInByteBufferStream(content).map(ByteBuffer::wrap);
-    }
-
     protected DataLakeServiceClient getOAuthServiceClient() {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint());
@@ -196,7 +188,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected DataLakeServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
-        return getServiceClient(credential, endpoint);
+        return getServiceClientBuilder(credential, endpoint).buildClient();
     }
 
     protected DataLakeServiceClient getServiceClient(StorageSharedKeyCredential credential,
@@ -500,23 +492,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected String setupPathLeaseCondition(DataLakeDirectoryAsyncClient dac, String leaseID) {
-        String responseLeaseId = null;
-
-        if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
-            responseLeaseId =
-                new DataLakeLeaseClientBuilder().directoryAsyncClient(dac).buildAsyncClient().acquireLease(-1).block();
-        }
-
-        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
-    }
-
-    protected HttpRequest getMockRequest() {
-        return new HttpRequest(HttpMethod.POST,
-            "http://devtest.blob.core.windows.net/test-container/test-blob").setHeader(HttpHeaderName.CONTENT_ENCODING,
-            "en-US");
-    }
-
     protected static void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
         assertEquals(expected.size(), actual.size());
 
@@ -587,7 +562,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 int readCount1 = stream1.read(buffer1);
                 int readCount2 = stream2.read(buffer2);
 
-                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
                 assertEquals(readCount1, readCount2);
                 assertArraysEqual(buffer1, buffer2);
 
@@ -716,10 +690,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         } else {
             return interceptorManager.getPlaybackClient();
         }
-    }
-
-    protected String getPrimaryConnectionString() {
-        return ENVIRONMENT.getPrimaryAccount().getConnectionString();
     }
 
     protected static boolean olderThan(DataLakeServiceVersion targetVersion) {

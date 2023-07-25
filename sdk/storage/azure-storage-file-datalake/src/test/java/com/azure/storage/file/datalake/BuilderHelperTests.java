@@ -143,6 +143,7 @@ public class BuilderHelperTests extends DataLakeTestBase {
 
     private static Stream<Arguments> clientAndLogOptions() {
         return Stream.of(
+            // logOptionsUA | clientOptionsUA | expectedUA
             Arguments.of("log-options-id", null, "log-options-id"),
             Arguments.of(null, "client-options-id", "client-options-id"),
             // Client options preferred over log options

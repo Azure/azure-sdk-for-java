@@ -20,7 +20,6 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -387,7 +386,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
@@ -631,7 +630,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
@@ -1122,6 +1121,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     private static Stream<Arguments> setHTTPHeadersHeadersSupplier() throws NoSuchAlgorithmException {
         return Stream.of(
+            // cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType
             Arguments.of(null, null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language",
                 Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes())), "type")
@@ -2833,9 +2833,9 @@ public class FileApiTest extends DataLakeTestBase {
 
         DataLakeFileAsyncClient fcAsync = getFileAsyncClient(getDataLakeCredential(), fc.getFileUrl());
 
-         Mono<byte[]> uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(),
+        Mono<byte[]> uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(),
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4L * Constants.MB), true)
-             .then(FluxUtil.collectBytesInByteBufferStream(fcAsync.read()));
+            .then(FluxUtil.collectBytesInByteBufferStream(fcAsync.read()));
 
         StepVerifier.create(uploadOperation)
             .assertNext(bytes -> compareListToBuffer(dataList, ByteBuffer.wrap(bytes)))
@@ -3280,7 +3280,7 @@ public class FileApiTest extends DataLakeTestBase {
     private void uploadSmallJson(int numCopies) {
         StringBuilder b = new StringBuilder();
         b.append("{\n");
-        for(int i = 0; i < numCopies; i++) {
+        for (int i = 0; i < numCopies; i++) {
             b.append(String.format("\t\"name%d\": \"owner%d\",\n", i, i));
         }
         b.append('}');

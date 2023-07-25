@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,8 +35,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -56,9 +57,7 @@ public class LargeFileTests extends DataLakeTestBase {
     private static final long DEFAULT_SINGLE_UPLOAD_THRESHOLD = 100L * Constants.MB;
     private static final long LARGE_BLOCK_SIZE = 2500L * Constants.MB;
 
-    private final List<Long> appendPayloadSizes = Collections.synchronizedList(new ArrayList<>());
-    private final AtomicLong count = new AtomicLong();
-
+    private CountingPolicy countingPolicy;
     private DataLakeFileClient fc;
     private DataLakeFileAsyncClient fcAsync;
 
@@ -66,8 +65,9 @@ public class LargeFileTests extends DataLakeTestBase {
     public void setup() {
         String fileName = generatePathName();
         DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient(fileName);
-        fc = getFileClient(getDataLakeCredential(), fileClient.getFileUrl(), new CountingPolicy());
-        fcAsync = getFileAsyncClient(getDataLakeCredential(), fileClient.getFileUrl(), new CountingPolicy());
+        countingPolicy = new CountingPolicy();
+        fc = getFileClient(getDataLakeCredential(), fileClient.getFileUrl(), countingPolicy);
+        fcAsync = getFileAsyncClient(getDataLakeCredential(), fileClient.getFileUrl(), countingPolicy);
 
         fileClient.create();
     }
@@ -78,8 +78,8 @@ public class LargeFileTests extends DataLakeTestBase {
 
         fc.append(stream, 0, LARGE_BLOCK_SIZE);
 
-        assertEquals(1, count.get());
-        assertEquals(LARGE_BLOCK_SIZE, appendPayloadSizes.get(0));
+        assertEquals(1, countingPolicy.count.get());
+        assertEquals(LARGE_BLOCK_SIZE, countingPolicy.appendPayloadSizes.get(0));
     }
 
     @Test
@@ -88,35 +88,35 @@ public class LargeFileTests extends DataLakeTestBase {
 
         StepVerifier.create(fcAsync.append(data, 0, LARGE_BLOCK_SIZE)).verifyComplete();
 
-        assertEquals(1, count.get());
-        assertEquals(LARGE_BLOCK_SIZE, appendPayloadSizes.get(0));
+        assertEquals(1, countingPolicy.count.get());
+        assertEquals(LARGE_BLOCK_SIZE, countingPolicy.appendPayloadSizes.get(0));
     }
 
     @Test
     public void uploadLargeDataAsync() {
-        long tail = (long) Constants.MB;
+        long tail = Constants.MB;
         Flux<ByteBuffer> data = createLargeBuffer(LARGE_BLOCK_SIZE + tail);
 
         StepVerifier.create(fcAsync.upload(data, new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE), true))
             .expectNextCount(1)
             .verifyComplete();
 
-        assertEquals(2, count.get());
-        assertTrue(appendPayloadSizes.contains(LARGE_BLOCK_SIZE));
-        assertTrue(appendPayloadSizes.contains(tail));
+        assertEquals(2, countingPolicy.count.get());
+        assertTrue(countingPolicy.appendPayloadSizes.contains(LARGE_BLOCK_SIZE));
+        assertTrue(countingPolicy.appendPayloadSizes.contains(tail));
     }
 
     @Test
     public void uploadLargeFile() {
-        long tail = (long) Constants.MB;
+        long tail = Constants.MB;
         File file = getLargeRandomFile(LARGE_BLOCK_SIZE + tail);
 
         fc.uploadFromFile(file.toPath().toString(), new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE),
             null, null, null, null);
 
-        assertEquals(2, count.get());
-        assertTrue(appendPayloadSizes.contains(LARGE_BLOCK_SIZE));
-        assertTrue(appendPayloadSizes.contains(tail));
+        assertEquals(2, countingPolicy.count.get());
+        assertTrue(countingPolicy.appendPayloadSizes.contains(LARGE_BLOCK_SIZE));
+        assertTrue(countingPolicy.appendPayloadSizes.contains(tail));
     }
 
     // This test does not send large payload over the wire
@@ -129,11 +129,12 @@ public class LargeFileTests extends DataLakeTestBase {
 
         StepVerifier.create(fcAsync.upload(data, transferOptions, true)).expectNextCount(1).verifyComplete();
 
-        assertEquals(expectedAppendRequests, count.get());
+        assertEquals(expectedAppendRequests, countingPolicy.count.get());
     }
 
     private static Stream<Arguments> shouldHonorDefaultSingleUploadThresholdSupplier() {
         return Stream.of(
+            // dataSize, expectedAppendRequests
             Arguments.of(DEFAULT_SINGLE_UPLOAD_THRESHOLD, 1),
             Arguments.of(DEFAULT_SINGLE_UPLOAD_THRESHOLD + 1, 11)
         );
@@ -182,13 +183,13 @@ public class LargeFileTests extends DataLakeTestBase {
 
     File getLargeRandomFile(long size) {
         try {
-            File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+            File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
             file.deleteOnExit();
 
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 if (size > Constants.MB) {
                     for (int i = 0; i < size / Constants.MB; i++) {
-                        int dataSize = (int) Math.min(Constants.MB, size - i * Constants.MB);
+                        int dataSize = (int) Math.min(Constants.MB, size - (long) i * Constants.MB);
                         fos.write(getRandomByteArray(dataSize));
                     }
                 } else {
@@ -206,7 +207,10 @@ public class LargeFileTests extends DataLakeTestBase {
      * This class is intended for large payload test cases only and reports directly into this test class's
      * state members.
      */
-    private final class CountingPolicy implements HttpPipelinePolicy {
+    private static final class CountingPolicy implements HttpPipelinePolicy {
+        private final AtomicInteger count = new AtomicInteger();
+        private final List<Long> appendPayloadSizes = Collections.synchronizedList(new ArrayList<>());
+
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
             HttpPipelineNextPolicy httpPipelineNextPolicy) {

@@ -356,6 +356,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> setMetadataACSupplier() {
         return Stream.of(
+            // modified | leaseID
             Arguments.of(null, null),
             Arguments.of(OLD_DATE, null),
             Arguments.of(null, RECEIVED_LEASE_ID)
@@ -374,6 +375,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     private static Stream<Arguments> setMetadataACFailSupplier() {
+        // modified | leaseID
         return Stream.of(Arguments.of(NEW_DATE, null), Arguments.of(null, GARBAGE_LEASE_ID));
     }
 
@@ -391,6 +393,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> setMetadataACIllegalSupplier() {
         return Stream.of(
+            // unmodified | match | noneMatch
             Arguments.of(NEW_DATE, null, null),
             Arguments.of(null, RECEIVED_ETAG, null),
             Arguments.of(null, null, GARBAGE_ETAG)
@@ -437,6 +440,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> modifiedAndLeaseIdSupplier() {
         return Stream.of(
+            // modified | unmodified | leaseID
             Arguments.of(null, null, null),
             Arguments.of(OLD_DATE, null, null),
             Arguments.of(null, NEW_DATE, null),
@@ -458,6 +462,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> invalidModifiedAndLeaseIdSupplier() {
         return Stream.of(
+            // modified | unmodified | leaseID
             Arguments.of(NEW_DATE, null, null),
             Arguments.of(null, OLD_DATE, null),
             Arguments.of(null, null, GARBAGE_LEASE_ID)
@@ -477,6 +482,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> invalidMatchSupplier() {
         return Stream.of(
+            // match | noneMatch
             Arguments.of(RECEIVED_ETAG, null),
             Arguments.of(null, GARBAGE_ETAG)
         );
@@ -586,7 +592,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     @Test
     public void createFileError() {
-        assertThrows(DataLakeStorageException.class, () ->dataLakeFileSystemClient.createFileWithResponse(
+        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.createFileWithResponse(
             generatePathName(), null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
             Context.NONE));
     }
@@ -616,6 +622,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> cacheAndContentSupplier() {
         return Stream.of(
+            // cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
             Arguments.of(null, null, null, null, null),
             Arguments.of("control", "disposition", "encoding", "language", "type")
         );
@@ -656,6 +663,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> modifiedMatchAndLeaseIdSupplier() {
         return Stream.of(
+            // modified | unmodified | match | noneMatch | leaseID
             Arguments.of(null, null, null, null, null),
             Arguments.of(OLD_DATE, null, null, null, null),
             Arguments.of(null, NEW_DATE, null, null, null),
@@ -686,6 +694,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> invalidModifiedMatchAndLeaseIdSupplier() {
         return Stream.of(
+            // modified | unmodified | match | noneMatch | leaseID
             Arguments.of(NEW_DATE, null, null, null, null),
             Arguments.of(null, OLD_DATE, null, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null, null),
@@ -759,6 +768,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> cacheAndContentWithMd5Supplier() {
         return Stream.of(
+            // cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
             Arguments.of(null, null, null, null, null, "application/octet-stream"),
             Arguments.of("control", "disposition", "encoding", "language", null, "type")
         );
@@ -781,7 +791,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
@@ -1004,7 +1014,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
@@ -1013,8 +1023,8 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsFileOptionsWithPermissionsAndUmask() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
-         DataLakeFileClient result = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
-             .getValue();
+        DataLakeFileClient result = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+            .getValue();
 
         PathAccessControl acl = result.getAccessControlWithResponse(true, null, null, null).getValue();
 
@@ -1281,7 +1291,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             .getProperties();
 
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(response.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), response.getMetadata().get(k));
         }
@@ -1403,7 +1413,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
@@ -1524,7 +1534,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             .getProperties();
 
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(response.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), response.getMetadata().get(k));
         }
@@ -1612,7 +1622,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }

@@ -569,6 +569,7 @@ public class SasTests extends DataLakeTestBase {
         // sas but the construction of the string to sign.
         // Signed resource is tested elsewhere, as we work some minor magic in choosing which value to use.
         return Stream.of(
+            // startTime | identifier | ipRange | protocol | cacheControl | disposition | encoding | language | type | expectedStringToSign
             Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), null, null, null, null, null, null,
                 null, null, "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, "id", null, null, null, null, null, null, null, "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\nid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
@@ -630,6 +631,7 @@ public class SasTests extends DataLakeTestBase {
     private static Stream<Arguments> sasImplUtilStringToSignUserDelegationKeySupplier() {
         // We test string to sign functionality directly related to user delegation sas specific parameters
         return Stream.of(
+            // startTime | keyOid | keyTid | keyStart | keyExpiry | keyService | keyVersion | keyValue | ipRange | protocol | cacheControl | disposition | encoding | language | type | saoid | suoid | cid | expectedStringToSign
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), null, null, null, null, null, null,

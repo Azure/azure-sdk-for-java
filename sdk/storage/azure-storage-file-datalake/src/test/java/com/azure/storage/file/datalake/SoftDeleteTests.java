@@ -97,7 +97,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
     @DisabledIf("olderThan20200804ServiceVersion")
     @ParameterizedTest
     @ValueSource(strings = {"!'();[]@&%=+\\$,#äÄöÖüÜß;", "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
-        " my cool directory ","directory"})
+        " my cool directory ", "directory"})
     public void restorePathSpecialCharacters(String name) {
         name = Utility.urlEncode(name);
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient("dir" + name);

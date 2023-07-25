@@ -54,6 +54,7 @@ public class AzuriteUrlTests extends DataLakeTestBase {
 
     private static Stream<Arguments> azuriteUrlParserSupplier() {
         return Stream.of(
+            // endpoint | scheme | host | accountName | fileSystem | path | expectedUrl
             Arguments.of("http://127.0.0.1:10000/devstoreaccount1", "http", "127.0.0.1:10000", "devstoreaccount1", null,
                 null, "http://127.0.0.1:10000/devstoreaccount1"),
             Arguments.of("http://127.0.0.1:10000/devstoreaccount1/fileSystem", "http", "127.0.0.1:10000",

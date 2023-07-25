@@ -109,6 +109,7 @@ public class ModelTests {
 
     private static Stream<Arguments> pathPermissionsParseOctalSupplier() {
         return Stream.of(
+            // octal, owner, group, other, stickyBit
             Arguments.of("1421", RolePermissions.parseOctal(4), RolePermissions.parseOctal(2),
                 RolePermissions.parseOctal(1), true),
             Arguments.of("0123", null, null, null, false)

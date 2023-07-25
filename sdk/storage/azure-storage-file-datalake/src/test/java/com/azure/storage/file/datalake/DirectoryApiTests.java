@@ -438,7 +438,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertEquals(statusCode, dc.createWithResponse(new DataLakePathCreateOptions().setMetadata(metadata), null, null).getStatusCode());
         PathProperties properties = dc.getProperties();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), properties.getMetadata().get(k));
         }
@@ -549,7 +549,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         PathProperties response = dc.getProperties();
 
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(response.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), response.getMetadata().get(k));
         }
@@ -1144,9 +1144,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         PathSetAccessControlRecursiveOptions options = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
         // Mock a policy that will return an error on the call with the continuation token
-        HttpPipelinePolicy mockPolicy = (context, next) -> {
-            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process();
-        };
+        HttpPipelinePolicy mockPolicy = (context, next) ->
+            context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process();
 
         dc = getDirectoryClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
@@ -1969,7 +1968,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () ->dc.getAccessControlWithResponse(false, drc, null, null));
+        assertThrows(DataLakeStorageException.class, () -> dc.getAccessControlWithResponse(false, drc, null, null));
     }
 
     @Test
@@ -2076,7 +2075,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setCreatePermission(true)
             .setAddPermission(true)
             .setDeletePermission(true);
-        String sas = dataLakeFileSystemClient.generateSas( new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        String sas = dataLakeFileSystemClient.generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
         DataLakeDirectoryClient client = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), dc.getDirectoryPath());
 
         DataLakeDirectoryClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
@@ -2267,7 +2266,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         Map<String, String> responseMetadata = dc.getProperties().getMetadata();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(responseMetadata.containsKey(k));
             assertEquals(metadata.get(k), responseMetadata.get(k));
         }
@@ -2288,7 +2287,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         Map<String, String> responseMetadata = dc.getProperties().getMetadata();
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(responseMetadata.containsKey(k));
             assertEquals(metadata.get(k), responseMetadata.get(k));
         }
@@ -2694,7 +2693,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
 
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(response.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), response.getMetadata().get(k));
         }
@@ -2810,7 +2809,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .getProperties();
 
         // Directory adds a directory metadata value
-        for(String k : metadata.keySet()) {
+        for (String k : metadata.keySet()) {
             assertTrue(response.getMetadata().containsKey(k));
             assertEquals(metadata.get(k), response.getMetadata().get(k));
         }
@@ -3059,7 +3058,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     private void setupDirectoryForListing(DataLakeDirectoryClient client) {
         // Create 3 subdirs
         DataLakeDirectoryClient foo = client.createSubdirectory("foo");
-        DataLakeDirectoryClient bar = client.createSubdirectory("bar");
+        client.createSubdirectory("bar");
         DataLakeDirectoryClient baz = client.createSubdirectory("baz");
 
         // Create subdirs for foo

@@ -159,7 +159,7 @@ public class DataLakeServiceSasModelsTests {
         DataLakeSasImplUtil implUtil = new DataLakeSasImplUtil(v, "containerName", "blobName", false);
 
         NullPointerException ex = assertThrows(NullPointerException.class, () -> implUtil.generateSas(null, Context.NONE));
-        assertTrue(ex.getMessage().contains("storageSharedKeyCredential"));;
+        assertTrue(ex.getMessage().contains("storageSharedKeyCredential"));
 
         ex = assertThrows(NullPointerException.class, () ->  implUtil.generateUserDelegationSas(null, "accountName", Context.NONE));
         assertTrue(ex.getMessage().contains("delegationKey"));
