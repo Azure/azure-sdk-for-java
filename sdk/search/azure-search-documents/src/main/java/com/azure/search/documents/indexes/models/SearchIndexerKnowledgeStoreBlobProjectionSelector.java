@@ -7,8 +7,8 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Abstract class to share properties between concrete selectors. */
@@ -18,14 +18,17 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
     /*
      * Blob container to store projections in.
      */
-    private final String storageContainer;
+    @JsonProperty(value = "storageContainer", required = true)
+    private String storageContainer;
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStoreBlobProjectionSelector class.
      *
      * @param storageContainer the storageContainer value to set.
      */
-    public SearchIndexerKnowledgeStoreBlobProjectionSelector(String storageContainer) {
+    @JsonCreator
+    public SearchIndexerKnowledgeStoreBlobProjectionSelector(
+            @JsonProperty(value = "storageContainer", required = true) String storageContainer) {
         this.storageContainer = storageContainer;
     }
 
@@ -71,17 +74,5 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("referenceKeyName", getReferenceKeyName());
-        jsonWriter.writeStringField("generatedKeyName", getGeneratedKeyName());
-        jsonWriter.writeStringField("source", getSource());
-        jsonWriter.writeStringField("sourceContext", getSourceContext());
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("storageContainer", this.storageContainer);
-        return jsonWriter.writeEndObject();
     }
 }

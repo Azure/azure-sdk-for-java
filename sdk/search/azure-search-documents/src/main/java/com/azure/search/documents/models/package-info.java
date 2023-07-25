@@ -5,7 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 /**
- * Package containing the data models for SearchIndexClient. Client that can be used to query an index and upload,
- * merge, or delete documents.
+ * Package containing classes for SearchIndexClient. Client that can be used to query an index and upload, merge, or
+ * delete documents.
  */
 package com.azure.search.documents.models;

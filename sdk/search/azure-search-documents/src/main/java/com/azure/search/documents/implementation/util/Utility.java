@@ -5,8 +5,6 @@ package com.azure.search.documents.implementation.util;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -31,15 +29,19 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.SearchDocument;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.models.IndexBatch;
-import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.SearchAudience;
-import com.azure.search.documents.models.SuggestOptions;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -51,38 +53,59 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+
+    // Type reference that used across many places. Have one copy here to minimize the memory.
+    public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
+        new TypeReference<Map<String, Object>>() {
+        };
+
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().set("return-client-request-id", "true");
 
     private static final DecimalFormat COORDINATE_FORMATTER = new DecimalFormat();
 
+    private static final JacksonAdapter DEFAULT_SERIALIZER_ADAPTER;
+
     /*
      * Representation of the Multi-Status HTTP response code.
      */
     private static final int MULTI_STATUS_CODE = 207;
 
-    /*
-     * Exception message to use if the document isn't found.
-     */
-    private static final String DOCUMENT_NOT_FOUND = "Document not found.";
-
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
-    private static final Context STATIC_ENABLE_REST_PROXY_CONTEXT;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-        STATIC_ENABLE_REST_PROXY_CONTEXT = Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+
+        JacksonAdapter adapter = new JacksonAdapter();
+
+        UntypedObjectDeserializer defaultDeserializer = new UntypedObjectDeserializer(null, null);
+        Iso8601DateDeserializer iso8601DateDeserializer = new Iso8601DateDeserializer(defaultDeserializer);
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(Object.class, iso8601DateDeserializer);
+
+        adapter.serializer()
+            .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+            .registerModule(Iso8601DateSerializer.getModule())
+            .registerModule(module);
+
+        DEFAULT_SERIALIZER_ADAPTER = adapter;
+    }
+
+    public static JacksonAdapter getDefaultSerializerAdapter() {
+        return DEFAULT_SERIALIZER_ADAPTER;
+    }
+
+    public static <T> T convertValue(Object initialValue, Class<T> newValueType) throws IOException {
+        return DEFAULT_SERIALIZER_ADAPTER.serializer().convertValue(initialValue, newValueType);
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
@@ -143,36 +166,23 @@ public final class Utility {
             .build();
     }
 
-    public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponseAsync(SearchIndexClientImpl restClient,
+    public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
         List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
         Context context, ClientLogger logger) {
         try {
             return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
-                    ? Mono.error(new IndexBatchException(response.getValue()))
-                    : Mono.just(response));
+                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
+                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    public static Response<IndexDocumentsResult> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
-        Context context, ClientLogger logger) {
-        return executeRestCallWithExceptionHandling(() -> {
-            Response<IndexDocumentsResult> response = restClient.getDocuments()
-                .indexWithResponse(new IndexBatch(actions), null, enableSyncRestProxy(context));
-            if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
-                throw new IndexBatchException(response.getValue());
-            }
-            return response;
-        });
-    }
-
     public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
-        String indexName, HttpPipeline httpPipeline) {
-        return new SearchIndexClientImpl(httpPipeline, endpoint, indexName, serviceVersion.getVersion());
+        String indexName, HttpPipeline httpPipeline, SerializerAdapter adapter) {
+        return new SearchIndexClientImpl(httpPipeline, adapter, endpoint, indexName, serviceVersion.getVersion());
     }
 
     public static synchronized String formatCoordinate(double coordinate) {
@@ -185,63 +195,6 @@ public final class Utility {
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
-    }
-
-    public static  <T> T executeRestCallWithExceptionHandling(Supplier<T> supplier) {
-        try {
-            return supplier.get();
-        } catch (com.azure.search.documents.indexes.implementation.models.SearchErrorException exception) {
-            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
-        } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
-            throw new HttpResponseException(exception.getMessage(), exception.getResponse());
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
-        }
-    }
-
-    public static Context enableSyncRestProxy(Context context) {
-        if (context == null || context == Context.NONE) {
-            return STATIC_ENABLE_REST_PROXY_CONTEXT;
-        } else {
-            return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-        }
-    }
-
-    /**
-     * Ensures that all suggest parameters are correctly set. This method should be used when {@link SuggestOptions} is
-     * passed to the Search service.
-     *
-     * @param suggestOptions suggest parameters
-     * @return SuggestOptions ensured suggest parameters
-     */
-    public static SuggestOptions ensureSuggestOptions(SuggestOptions suggestOptions) {
-        if (suggestOptions == null) {
-            return null;
-        }
-
-        return CoreUtils.isNullOrEmpty(suggestOptions.getSelect()) ? suggestOptions.setSelect("*") : suggestOptions;
-    }
-
-    /**
-     * Converts the {@link Throwable} into a more descriptive exception type if the {@link SearchDocument} isn't found.
-     *
-     * @param throwable Throwable thrown during a API call.
-     * @return The {@link Throwable} mapped to a more descriptive exception type if the {@link SearchDocument}
-     * isn't found, otherwise the passed {@link Throwable} unmodified.
-     */
-    public static Throwable exceptionMapper(Throwable throwable) {
-        if (!(throwable instanceof SearchErrorException)) {
-            return throwable;
-        }
-
-        return mapSearchErrorException((SearchErrorException) throwable);
-    }
-
-    public static HttpResponseException mapSearchErrorException(SearchErrorException exception) {
-        if (exception.getResponse().getStatusCode() == 404) {
-            return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
-        }
-        return new HttpResponseException(exception.getMessage(), exception.getResponse());
     }
 
     private Utility() {

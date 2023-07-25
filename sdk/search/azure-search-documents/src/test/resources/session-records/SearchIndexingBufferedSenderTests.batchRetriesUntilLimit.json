@@ -1,0 +1,169 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3a01623d-68e8-4130-9267-36f9ad226d55",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9375d4d8-c076-4c85-9863-bedf7f7ee75f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d6debfea-62a3-483e-80e9-968c5f2e543b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aa3b2bf7-b9dd-442f-b186-912b028ca2e0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8163f5b9-0876-4c37-a2c3-577bbf63d338",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cd1d1525-226c-4073-b5b9-e56049ed7bb6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae72f175-df9a-49cc-9d1b-f7f63dcf3fcb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d0b62d07-b3dc-4d03-923b-af4d0f430962",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f24b7f08-bb6c-4fad-83c8-8c707eb31370",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6518a3ab-f2c8-4fee-ab3a-6c080c2e82c9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "52b7ebed-aca8-47d1-87b2-782260e7faf9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "55",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":409}]}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
