@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for VpnConnections CreateOrUpdate. */
 public final class VpnConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnConnectionPut.json
      */
     /**
      * Sample code: VpnConnectionPut.

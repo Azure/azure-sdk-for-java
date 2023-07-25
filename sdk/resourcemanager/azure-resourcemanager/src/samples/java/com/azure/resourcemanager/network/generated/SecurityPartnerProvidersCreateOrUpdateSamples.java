@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for SecurityPartnerProviders CreateOrUpdate. */
 public final class SecurityPartnerProvidersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/SecurityPartnerProviderPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/SecurityPartnerProviderPut.json
      */
     /**
      * Sample code: Create Security Partner Provider.
@@ -31,7 +31,7 @@ public final class SecurityPartnerProvidersCreateOrUpdateSamples {
                 "securityPartnerProvider",
                 new SecurityPartnerProviderInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withSecurityProviderName(SecurityProviderName.ZSCALER)
                     .withVirtualHub(
                         new SubResource()
