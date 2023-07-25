@@ -5,6 +5,8 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.policy.RetryOptions
@@ -12,6 +14,7 @@ import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.core.util.HttpClientOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
@@ -3738,19 +3741,25 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Ignore("Requires manual OAuth setup and creates 5000+ files")
+//    @Ignore("Requires manual OAuth setup and creates 5000+ files")
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2023_08_03")
     def "Delete paginated directory"() {
         setup:
         def entityId = "68bff720-253b-428c-b124-603700654ea9"
-        def directoryClient = fsc.getDirectoryClient(generatePathName())
+
+        def fsClient = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
+            .buildClient()
+
+        def directoryClient = fsClient.getDirectoryClient(generatePathName())
         directoryClient.create()
 
         for (int i = 0; i < 5020; i++) {
             def fileClient = directoryClient.getFileClient(generatePathName())
             fileClient.createIfNotExists()
         }
-        def rootDirectory = fsc.getDirectoryClient("/")
+        def rootDirectory = fsClient.getDirectoryClient("/")
         def acl = rootDirectory.getAccessControl()
         acl.getAccessControlList().add(new PathAccessControlEntry()
             .setPermissions(new RolePermissions()
@@ -3763,14 +3772,17 @@ class DirectoryAPITest extends APISpec {
         rootDirectory.setAccessControlRecursive(acl.getAccessControlList())
 
         def oAuthServiceClient = getOAuthServiceClient()
-        def oAuthFileSystemClient = oAuthServiceClient.getFileSystemClient(fsc.getFileSystemName())
+        def oAuthFileSystemClient = oAuthServiceClient.getFileSystemClient(fsClient.getFileSystemName())
         def oAuthDirectoryClient = oAuthFileSystemClient
             .getDirectoryClient(directoryClient.getDirectoryPath())
 
+        // test is failing with this exception:
+        // DataLakeStorage Status code 404, "{"error":{"code":"PathNotFound","message":"The specified path does not exist.\nRequestId:70db0a7a-001f-0046-1592-beee45000000\nTime:2023-07-25T00:57:30.1357302Z"}}"
+
         when:
-        def response = oAuthDirectoryClient.deleteWithResponse(false, null, null, Context.NONE)
+        def response = oAuthDirectoryClient.deleteWithResponse(true, null, null, Context.NONE)
         then:
-        response.getStatusCode() == 202
+        response.getStatusCode() == 200
     }
 
     @Unroll
