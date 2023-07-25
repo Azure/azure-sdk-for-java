@@ -106,7 +106,7 @@ public class Uri {
             HealthStatus newStatus = previousStatus;
             switch (status) {
                 case Unhealthy:
-                    if (previousStatus != HealthStatus.Unhealthy) {
+                    if (previousStatus != HealthStatus.Unhealthy || this.lastTransitionToUnhealthyTimestamp == null) {
                         this.lastTransitionToUnhealthyTimestamp = Instant.now();
                     }
                     newStatus = status;
