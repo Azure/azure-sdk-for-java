@@ -3,7 +3,12 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 
-/** The PurchasePhoneNumbersResult model. */
+/** 
+ * The PurchasePhoneNumbersResult model.
+ * @Generated Defines Value for exclusion from code coverage
+ */
+@Generated
 public final class PurchasePhoneNumbersResult {
 }
