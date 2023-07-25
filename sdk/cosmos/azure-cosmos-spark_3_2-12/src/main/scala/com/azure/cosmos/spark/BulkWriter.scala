@@ -109,7 +109,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     case Some(customInitialMicroBatchSize) =>
       ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
         .getCosmosBulkExecutionOptionsAccessor
-        .setMaxMicroBatchSize(
+        .setInitialMicroBatchSize(
           cosmosBulkExecutionOptions,
           customInitialMicroBatchSize
         )

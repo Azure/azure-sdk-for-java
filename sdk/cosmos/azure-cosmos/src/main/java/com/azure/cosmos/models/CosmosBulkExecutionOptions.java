@@ -22,6 +22,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  */
 public final class CosmosBulkExecutionOptions {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+
+    private int initialMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
@@ -105,6 +107,15 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
+        return this;
+    }
+
+    int getInitialMicroBatchSize() {
+        return initialMicroBatchSize;
+    }
+
+    CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+        this.initialMicroBatchSize = initialMicroBatchSize;
         return this;
     }
 
@@ -409,6 +420,16 @@ public final class CosmosBulkExecutionOptions {
                     double maxRetryRate) {
 
                     return options.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
+                }
+
+                @Override
+                public int getInitialMicroBatchSize(CosmosBulkExecutionOptions options) {
+                    return options.getInitialMicroBatchSize();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize) {
+                    return options.setInitialMicroBatchSize(initialMicroBatchSize);
                 }
 
                 @Override
