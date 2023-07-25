@@ -78,6 +78,7 @@ class AzureMetadataService implements Runnable {
 
     // visible for testing
     private void updateMetadata(MetadataInstanceResponse metadataInstanceResponse) {
+        vmMetadataServiceCallback.accept(metadataInstanceResponse);
         attachStatsbeat.updateMetadataInstance(metadataInstanceResponse);
         customDimensions.setResourceProvider(ResourceProvider.RP_VM);
 
@@ -131,12 +132,9 @@ class AzureMetadataService implements Runnable {
                 json,
                 e);
             scheduledExecutor.shutdown();
-            metadataInstanceResponse = null;
+            return;
         }
 
-        vmMetadataServiceCallback.accept(metadataInstanceResponse);
-        if (metadataInstanceResponse != null) {
-            updateMetadata(metadataInstanceResponse);
-        }
+        updateMetadata(metadataInstanceResponse);
     }
 }
