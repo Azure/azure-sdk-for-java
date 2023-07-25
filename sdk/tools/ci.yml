@@ -29,6 +29,8 @@ pr:
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  variables:
+    Skip.CreateApiReview: true
   parameters:
     ServiceDirectory: tools
     Artifacts:
