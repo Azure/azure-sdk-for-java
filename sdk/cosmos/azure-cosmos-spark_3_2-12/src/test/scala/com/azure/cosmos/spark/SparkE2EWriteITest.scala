@@ -596,7 +596,7 @@ class SparkE2EWriteITest
               "spark.cosmos.container" -> cosmosContainer,
               "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemBulkUpdate.toString,
               "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
-              "spark.cosmos.write.patchBulkUpdate.columnConfigs" -> patchColumnConfigString
+              "spark.cosmos.write.bulkUpdate.columnConfigs" -> patchColumnConfigString
           )
 
           val newSpark = getSpark
