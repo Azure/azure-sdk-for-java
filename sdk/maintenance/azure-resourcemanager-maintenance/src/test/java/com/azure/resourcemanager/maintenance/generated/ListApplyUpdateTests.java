@@ -18,11 +18,11 @@ public final class ListApplyUpdateTests {
         ListApplyUpdate model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"status\":\"RetryNow\",\"resourceId\":\"zqqedq\",\"lastUpdateTime\":\"2021-11-23T05:43:53Z\"},\"id\":\"iqfouflmmnkz\",\"name\":\"modmglougpb\",\"type\":\"wtmutduq\"}]}")
+                    "{\"value\":[{\"properties\":{\"status\":\"RetryNow\",\"resourceId\":\"bhvgy\",\"lastUpdateTime\":\"2021-10-04T15:02:42Z\"},\"id\":\"svmkfssxquk\",\"name\":\"fpl\",\"type\":\"mg\"},{\"properties\":{\"status\":\"RetryLater\",\"resourceId\":\"zkd\",\"lastUpdateTime\":\"2021-10-06T03:42:02Z\"},\"id\":\"vlopwiyighx\",\"name\":\"kdwzbaiuebbaumny\",\"type\":\"upedeojnabckhs\"}]}")
                 .toObject(ListApplyUpdate.class);
         Assertions.assertEquals(UpdateStatus.RETRY_NOW, model.value().get(0).status());
-        Assertions.assertEquals("zqqedq", model.value().get(0).resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-23T05:43:53Z"), model.value().get(0).lastUpdateTime());
+        Assertions.assertEquals("bhvgy", model.value().get(0).resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T15:02:42Z"), model.value().get(0).lastUpdateTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,11 +34,15 @@ public final class ListApplyUpdateTests {
                         .asList(
                             new ApplyUpdateInner()
                                 .withStatus(UpdateStatus.RETRY_NOW)
-                                .withResourceId("zqqedq")
-                                .withLastUpdateTime(OffsetDateTime.parse("2021-11-23T05:43:53Z"))));
+                                .withResourceId("bhvgy")
+                                .withLastUpdateTime(OffsetDateTime.parse("2021-10-04T15:02:42Z")),
+                            new ApplyUpdateInner()
+                                .withStatus(UpdateStatus.RETRY_LATER)
+                                .withResourceId("zkd")
+                                .withLastUpdateTime(OffsetDateTime.parse("2021-10-06T03:42:02Z"))));
         model = BinaryData.fromObject(model).toObject(ListApplyUpdate.class);
         Assertions.assertEquals(UpdateStatus.RETRY_NOW, model.value().get(0).status());
-        Assertions.assertEquals("zqqedq", model.value().get(0).resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-23T05:43:53Z"), model.value().get(0).lastUpdateTime());
+        Assertions.assertEquals("bhvgy", model.value().get(0).resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T15:02:42Z"), model.value().get(0).lastUpdateTime());
     }
 }
