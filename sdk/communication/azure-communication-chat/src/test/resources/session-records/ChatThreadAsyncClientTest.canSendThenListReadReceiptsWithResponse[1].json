@@ -167,6 +167,61 @@
           }
         }
       }
+    },
+    ,
+    {
+      "RequestUri": "https://REDACTED/chat/threads/19:KhGgVeTuGicnMSoOuJETAHAiTZR0d_pF5TC2c8YmdA01@thread.v2/readReceipts?api-version=2021-09-07",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "33",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-azure-communication-chat/1.4.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "486cc171-d99e-46c0-8fd3-d7434565dd96"
+      },
+      "RequestBody": {
+        "chatMessageId": "1689036135611"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-03-07, 2021-04-05-preview6, 2021-09-07, 2023-04-01-preview, 2023-07-01-preview",
+        "Content-Length": "0",
+        "Date": "Tue, 11 Jul 2023 00:42:15 GMT",
+        "MS-CV": "kxq3m/JOmUal3QDKaSl86w.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "X-Azure-Ref": "0Z6WsZAAAAAC3XiQVAaowQKBeNwwWyTxnV1NURURHRTAxMjEAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "78ms"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/chat/threads/19:KhGgVeTuGicnMSoOuJETAHAiTZR0d_pF5TC2c8YmdA01@thread.v2/readReceipts?api-version=2021-09-07",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-communication-chat/1.4.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "16c4b177-49f9-446a-b8ca-4830a2de67f5"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-03-07, 2021-04-05-preview6, 2021-09-07, 2023-04-01-preview, 2023-07-01-preview",
+        "Content-Length": "12",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 11 Jul 2023 00:42:15 GMT",
+        "MS-CV": "anMRnvz/MESj18CZN8/hVA.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "X-Azure-Ref": "0Z6WsZAAAAADT5QVUNQl0SYgWsy9WZBgfV1NURURHRTAxMjEAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "132ms"
+      },
+      "ResponseBody": {
+        "value": []
+      }
     }
   ],
   "Variables": {}
