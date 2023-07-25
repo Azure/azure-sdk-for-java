@@ -114,7 +114,6 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             httpClient,
             new NonAzureOpenAIKeyCredential("not_token_looking_string"));
 
-        client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
