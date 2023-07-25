@@ -72,9 +72,7 @@ public class JobAdapter {
             .setLabels(labels)
             .setNotes(notes)
             .setPriority(createJobOptions.getPriority())
-            .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setDispositionCode(createJobOptions.getDispositionCode())
-            .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setRequestedWorkerSelectors(workerSelectorsInternal)
             .setTags(tags)
             .setMatchingMode(convertMatchingModeToInternal(createJobOptions.getMatchingMode()));
@@ -109,7 +107,6 @@ public class JobAdapter {
             .setPriority(createJobWithClassificationPolicyOptions.getPriority())
             .setClassificationPolicyId(createJobWithClassificationPolicyOptions.getClassificationPolicyId())
             .setDispositionCode(createJobWithClassificationPolicyOptions.getDispositionCode())
-            .setClassificationPolicyId(createJobWithClassificationPolicyOptions.getClassificationPolicyId())
             .setRequestedWorkerSelectors(workerSelectorsInternal)
             .setTags(tags)
             .setMatchingMode(convertMatchingModeToInternal(createJobWithClassificationPolicyOptions.getMatchingMode()));
