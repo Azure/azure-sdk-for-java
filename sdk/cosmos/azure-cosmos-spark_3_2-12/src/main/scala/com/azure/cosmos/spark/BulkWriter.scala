@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 // scalastyle:off underscore.import
 import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosException}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.implementation.batch.ItemBulkOperation
+import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, ItemBulkOperation}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
@@ -100,6 +100,28 @@ class BulkWriter(container: CosmosAsyncContainer,
     )
   ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
 
+  writeConfig.maxMicroBatchPayloadSizeInBytes match {
+    case Some(customMaxMicroBatchPayloadSizeInBytes) =>
+      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        .getCosmosBulkExecutionOptionsAccessor
+        .setMaxMicroBatchPayloadSizeInBytes(
+          cosmosBulkExecutionOptions,
+          customMaxMicroBatchPayloadSizeInBytes
+        )
+    case None =>
+  }
+
+  writeConfig.initialMicroBatchSize match {
+    case Some(customInitialMicroBatchSize) =>
+      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        .getCosmosBulkExecutionOptionsAccessor
+        .setInitialMicroBatchSize(
+          cosmosBulkExecutionOptions,
+          customInitialMicroBatchSize
+        )
+    case None =>
+  }
+
   private val operationContext = initializeOperationContext()
   private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
     case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemBulkUpdate =>
@@ -155,10 +177,8 @@ class BulkWriter(container: CosmosAsyncContainer,
 
       // We start from using the bulk batch size and interval and concurrency
       // If in the future, there is a need to separate the configuration, can re-consider
-      val bulkBatchSize = ImplementationBridgeHelpers
-          .CosmosBulkExecutionOptionsHelper
-          .getCosmosBulkExecutionOptionsAccessor
-          .getMaxMicroBatchSize(cosmosBulkExecutionOptions)
+      val bulkBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST
+
       val batchInterval = ImplementationBridgeHelpers
           .CosmosBulkExecutionOptionsHelper
           .getCosmosBulkExecutionOptionsAccessor
@@ -369,8 +389,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     bulkOperationResponseFlux.subscribe(
       resp => {
-
-        var isGettingRetried = new AtomicBoolean(false)
+        val isGettingRetried = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeBulkWriteOperations.remove(itemOperation)
@@ -433,7 +452,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     var acquisitionAttempt = 0
     val activeTasksSemaphoreTimeout = 10
     val operationContext = OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
-    var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
+    val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
     // Don't clone the activeOperations for the first iteration
     // to reduce perf impact before the Semaphore has been acquired
     // this means if the semaphore can't be acquired within 10 minutes

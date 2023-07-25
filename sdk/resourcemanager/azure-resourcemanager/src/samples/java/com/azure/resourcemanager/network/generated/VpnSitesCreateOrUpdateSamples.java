@@ -19,7 +19,7 @@ import java.util.Map;
 /** Samples for VpnSites CreateOrUpdate. */
 public final class VpnSitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnSitePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnSitePut.json
      */
     /**
      * Sample code: VpnSiteCreate.
@@ -37,7 +37,7 @@ public final class VpnSitesCreateOrUpdateSamples {
                 "vpnSite1",
                 new VpnSiteInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withVirtualWan(
                         new SubResource()
                             .withId(

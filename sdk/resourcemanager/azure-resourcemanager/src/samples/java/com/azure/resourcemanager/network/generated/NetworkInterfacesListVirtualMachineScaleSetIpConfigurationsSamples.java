@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for NetworkInterfaces ListVirtualMachineScaleSetIpConfigurations. */
 public final class NetworkInterfacesListVirtualMachineScaleSetIpConfigurationsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VmssNetworkInterfaceIpConfigList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VmssNetworkInterfaceIpConfigList.json
      */
     /**
      * Sample code: List virtual machine scale set network interface ip configurations.

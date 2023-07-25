@@ -13,6 +13,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -38,6 +39,13 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     private OpenAIAsyncClient getNonAzureOpenAIAsyncClient(HttpClient httpClient) {
         return getNonAzureOpenAIClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .buildAsyncClient();
+    }
+
+    private OpenAIAsyncClient getNonAzureOpenAIAsyncClient(HttpClient httpClient, NonAzureOpenAIKeyCredential keyCredential) {
+        return getNonAzureOpenAIClientBuilder(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .credential(keyCredential)
             .buildAsyncClient();
     }
 
@@ -102,7 +110,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsBadSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAIAsyncClient(httpClient);
+        client = getNonAzureOpenAIAsyncClient(
+            httpClient,
+            new NonAzureOpenAIKeyCredential("not_token_looking_string"));
+
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
@@ -117,7 +128,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAIAsyncClient(httpClient);
+        client = getNonAzureOpenAIAsyncClient(
+            httpClient,
+            new NonAzureOpenAIKeyCredential("sk-123456789012345678901234567890123456789012345678"));
+
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)),

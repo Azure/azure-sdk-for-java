@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for NetworkManagerCommits Post. */
 public final class NetworkManagerCommitsPostSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerCommitPost.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerCommitPost.json
      */
     /**
      * Sample code: NetworkManageCommitPost.

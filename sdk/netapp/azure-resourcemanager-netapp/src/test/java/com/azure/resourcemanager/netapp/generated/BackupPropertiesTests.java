@@ -14,17 +14,17 @@ public final class BackupPropertiesTests {
         BackupProperties model =
             BinaryData
                 .fromString(
-                    "{\"backupId\":\"washr\",\"creationDate\":\"2021-08-01T13:56:15Z\",\"provisioningState\":\"cnqxwbpokulpi\",\"size\":6830630218833714201,\"label\":\"sipqii\",\"backupType\":\"Manual\",\"failureReason\":\"qerpqlpqwcc\",\"volumeName\":\"qgbdbuta\",\"useExistingSnapshot\":true}")
+                    "{\"backupId\":\"r\",\"creationDate\":\"2021-06-25T23:16:19Z\",\"provisioningState\":\"squyfxrxxlep\",\"size\":589149955906359493,\"label\":\"jezwlwnw\",\"backupType\":\"Manual\",\"failureReason\":\"cvydypatdoo\",\"volumeName\":\"jkniodko\",\"useExistingSnapshot\":false}")
                 .toObject(BackupProperties.class);
-        Assertions.assertEquals("sipqii", model.label());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
+        Assertions.assertEquals("jezwlwnw", model.label());
+        Assertions.assertEquals(false, model.useExistingSnapshot());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupProperties model = new BackupProperties().withLabel("sipqii").withUseExistingSnapshot(true);
+        BackupProperties model = new BackupProperties().withLabel("jezwlwnw").withUseExistingSnapshot(false);
         model = BinaryData.fromObject(model).toObject(BackupProperties.class);
-        Assertions.assertEquals("sipqii", model.label());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
+        Assertions.assertEquals("jezwlwnw", model.label());
+        Assertions.assertEquals(false, model.useExistingSnapshot());
     }
 }
