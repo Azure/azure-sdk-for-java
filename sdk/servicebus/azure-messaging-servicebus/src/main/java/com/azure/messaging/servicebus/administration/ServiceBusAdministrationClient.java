@@ -17,8 +17,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
@@ -33,8 +31,8 @@ import com.azure.messaging.servicebus.administration.implementation.models.Names
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
@@ -54,7 +52,6 @@ import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperti
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
@@ -62,8 +59,6 @@ import java.util.Objects;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.NUMBER_OF_ELEMENTS;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.QUEUES_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.TOPICS_ENTITY_TYPE;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
 /**
  * A <b>synchronous</b> client for managing a Service Bus namespace.
@@ -199,17 +194,8 @@ public final class ServiceBusAdministrationClient {
         }
 
         final Context contextWithHeaders = enableSyncContext(context);
-        final String forwardTo = getForwardToEntity(queueOptions.getForwardTo(), contextWithHeaders);
-        if (forwardTo != null) {
-            queueOptions.setForwardTo(forwardTo);
-        }
-        final String forwardDlq
-            = getForwardDlqEntity(queueOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
-        if (forwardDlq != null) {
-            queueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
-        }
-        final CreateQueueBodyImpl createEntity =
-            converter.getCreateQueueBody(EntityHelper.getQueueDescription(queueOptions));
+        final CreateQueueBodyImpl createEntity = converter.getCreateQueueBody(queueOptions, contextWithHeaders);
+
         return deserializeQueue(entityClient.putWithResponse(queueName, createEntity, null,
             contextWithHeaders));
     }
@@ -378,30 +364,8 @@ public final class ServiceBusAdministrationClient {
     public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
         CreateSubscriptionOptions subscriptionOptions, Context context) {
 
-        converter.validateTopicName(topicName);
-        converter.validateSubscriptionName(subscriptionName);
-
-        if (subscriptionOptions == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'subscriptionOptions' cannot be null."));
-        }
-
-        final Context contextWithHeaders = enableSyncContext(converter.getContext(context));
-        final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
-        if (forwardTo != null) {
-            subscriptionOptions.setForwardTo(forwardTo);
-        }
-        final String forwardDlq
-            = getForwardDlqEntity(subscriptionOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
-        if (forwardDlq != null) {
-            subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
-        }
-
-        final CreateSubscriptionBodyImpl createEntity = converter.getCreateSubscriptionBody(
-            EntityHelper.getSubscriptionDescription(subscriptionOptions));
-
-        return converter.getSubscriptionPropertiesSimpleResponse(topicName, managementClient.getSubscriptions()
-            .putWithResponse(topicName, subscriptionName, createEntity, null, contextWithHeaders));
-
+        return createSubscriptionWithResponse(topicName, subscriptionName, null, subscriptionOptions,
+            null, context);
     }
 
     /**
@@ -427,21 +391,23 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
-        String ruleName,
-        CreateSubscriptionOptions subscriptionOptions,
-        CreateRuleOptions ruleOptions,
+        String ruleName, CreateSubscriptionOptions subscriptionOptions, CreateRuleOptions ruleOptions,
         Context context) {
-        if (ruleOptions == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'CreateRuleOptions' cannot be null."));
-        }
-        Objects.requireNonNull(ruleOptions.getFilter(), "'RuleFilter' cannot be null.");
-        final RuleDescriptionImpl rule = new RuleDescriptionImpl()
-            .setAction(ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null)
-            .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
-            .setName(ruleName);
-        subscriptionOptions.setDefaultRule(EntityHelper.toModel(rule));
-        return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions, context);
+        converter.validateTopicName(topicName);
+        converter.validateSubscriptionName(subscriptionName);
 
+        if (subscriptionOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'subscriptionOptions' cannot be null."));
+        }
+
+        final Context contextWithHeaders = converter.getContext(context);
+        final CreateSubscriptionBodyImpl createEntity = converter.getCreateSubscriptionBody(subscriptionOptions,
+            ruleName, ruleOptions, contextWithHeaders);
+
+        final Response<SubscriptionDescriptionEntryImpl> response = managementClient.getSubscriptions()
+            .putWithResponse(topicName, subscriptionName, createEntity, null, contextWithHeaders);
+
+        return converter.getSubscriptionPropertiesSimpleResponse(topicName, response);
     }
 
     /**
@@ -1451,17 +1417,7 @@ public final class ServiceBusAdministrationClient {
         }
 
         final Context contextWithHeaders = enableSyncContext(context);
-        final String forwardTo = getForwardToEntity(queue.getForwardTo(), contextWithHeaders);
-        if (forwardTo != null) {
-            queue.setForwardTo(forwardTo);
-        }
-        final String forwardDlq
-            = getForwardDlqEntity(queue.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
-        if (forwardDlq != null) {
-            queue.setForwardDeadLetteredMessagesTo(forwardDlq);
-        }
-
-        final CreateQueueBodyImpl createEntity = converter.getCreateQueueBody(EntityHelper.toImplementation(queue));
+        final CreateQueueBodyImpl createEntity = converter.getUpdateQueueBody(queue, contextWithHeaders);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         final Response<Object> response =
@@ -1611,20 +1567,9 @@ public final class ServiceBusAdministrationClient {
         }
 
         final Context contextWithHeaders = enableSyncContext(context);
-
-        final String forwardTo = getForwardToEntity(subscription.getForwardTo(), contextWithHeaders);
-        if (forwardTo != null) {
-            subscription.setForwardTo(forwardTo);
-        }
-        final String forwardDlq
-            = getForwardDlqEntity(subscription.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
-        if (forwardDlq != null) {
-            subscription.setForwardDeadLetteredMessagesTo(forwardDlq);
-        }
-
         final String topicName = subscription.getTopicName();
-
-        final CreateSubscriptionBodyImpl createEntity = converter.getUpdateSubscriptionBody(subscription);
+        final CreateSubscriptionBodyImpl createEntity = converter.getUpdateSubscriptionBody(subscription,
+            contextWithHeaders);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         return converter.getSubscriptionPropertiesSimpleResponse(topicName, managementClient.getSubscriptions()
