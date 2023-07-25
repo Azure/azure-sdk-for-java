@@ -22,7 +22,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
     private String rgName = "";
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCreateAllPopularImageVM() {
         if (skipInPlayback()) {
             return;
