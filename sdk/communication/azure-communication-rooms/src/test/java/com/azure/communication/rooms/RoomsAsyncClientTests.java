@@ -3,29 +3,32 @@
 
 package com.azure.communication.rooms;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.rooms.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.rooms.models.*;
+import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
+import com.azure.communication.rooms.models.CommunicationRoom;
+import com.azure.communication.rooms.models.CreateRoomOptions;
+import com.azure.communication.rooms.models.ParticipantRole;
+import com.azure.communication.rooms.models.RemoveParticipantsResult;
+import com.azure.communication.rooms.models.RoomParticipant;
+import com.azure.communication.rooms.models.UpdateRoomOptions;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import java.util.Arrays;
-import java.util.List;
-
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RoomsAsyncClientTests extends RoomsTestBase {
     private RoomsAsyncClient roomsAsyncClient;
