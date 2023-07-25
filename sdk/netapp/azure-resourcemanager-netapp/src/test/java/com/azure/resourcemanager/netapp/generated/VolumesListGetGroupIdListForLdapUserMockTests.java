@@ -9,12 +9,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.ApplicationType;
-import com.azure.resourcemanager.netapp.models.VolumeGroup;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,15 +24,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class VolumeGroupsListByNetAppAccountMockTests {
+public final class VolumesListGetGroupIdListForLdapUserMockTests {
     @Test
-    public void testListByNetAppAccount() throws Exception {
+    public void testListGetGroupIdListForLdapUser() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"sihclafzvaylp\",\"id\":\"sqqw\",\"name\":\"cmwqkchcxwa\",\"type\":\"ewzjkjexfd\",\"properties\":{\"provisioningState\":\"hpsylkksh\",\"groupMetaData\":{\"groupDescription\":\"f\",\"applicationType\":\"SAP-HANA\",\"applicationIdentifier\":\"zjrgyww\",\"globalPlacementRules\":[],\"deploymentSpecId\":\"xs\",\"volumesCount\":1807969898585209027}}}]}";
+        String responseStr = "{\"groupIdsForLdapUser\":[\"tttwgdslqxih\",\"rmooizqse\",\"pxiutc\",\"apzhyrpetoge\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,13 +59,17 @@ public final class VolumeGroupsListByNetAppAccountMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VolumeGroup> response =
-            manager.volumeGroups().listByNetAppAccount("wl", "xjwet", com.azure.core.util.Context.NONE);
+        GetGroupIdListForLdapUserResponse response =
+            manager
+                .volumes()
+                .listGetGroupIdListForLdapUser(
+                    "teusqczkvyklxu",
+                    "yja",
+                    "fmmfblcqcu",
+                    "bgq",
+                    new GetGroupIdListForLdapUserRequest().withUsername("brta"),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sihclafzvaylp", response.iterator().next().location());
-        Assertions.assertEquals("f", response.iterator().next().groupMetadata().groupDescription());
-        Assertions.assertEquals(ApplicationType.SAP_HANA, response.iterator().next().groupMetadata().applicationType());
-        Assertions.assertEquals("zjrgyww", response.iterator().next().groupMetadata().applicationIdentifier());
-        Assertions.assertEquals("xs", response.iterator().next().groupMetadata().deploymentSpecId());
+        Assertions.assertEquals("tttwgdslqxih", response.groupIdsForLdapUser().get(0));
     }
 }
