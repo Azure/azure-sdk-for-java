@@ -24,7 +24,7 @@ public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
 
     /**
      * Create an instance of JvmMetricsPostProcessor
-     * @param azureTelemetryActivation
+     * @param azureTelemetryActivation the azure telemetry activation
      */
     public JvmMetricsPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
         this.azureTelemetryActivation = azureTelemetryActivation;
@@ -32,8 +32,8 @@ public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
 
     /**
      * Post process after initialization
-     * @param bean
-     * @param beanName
+     * @param bean a bean
+     * @param beanName name of the bean
      * @return a bean
      * @throws BeansException
      */

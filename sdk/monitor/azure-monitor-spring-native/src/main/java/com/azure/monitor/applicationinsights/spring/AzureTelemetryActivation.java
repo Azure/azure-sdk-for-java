@@ -3,8 +3,6 @@
 
 package com.azure.monitor.applicationinsights.spring;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-
 /**
  * Azure telemetry activation
  */

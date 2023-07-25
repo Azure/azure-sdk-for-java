@@ -33,9 +33,9 @@ public class AzureTelemetryConfig {
 
     /**
      * Create an instance of AzureTelemetryConfig
-     * @param connectionStringSysProp
-     * @param azureTelemetryActivation
-     * @param httpPipeline
+     * @param connectionStringSysProp connection string system property
+     * @param azureTelemetryActivation a instance of AzureTelemetryActivation
+     * @param httpPipeline an instance of HttpPipeline
      */
     public AzureTelemetryConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureTelemetryActivation azureTelemetryActivation, ObjectProvider<HttpPipeline> httpPipeline) {
         if (azureTelemetryActivation.isTrue()) {
