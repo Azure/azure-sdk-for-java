@@ -474,6 +474,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer(String.format("$..%s", "accessSAS"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // SQL password
             new TestProxySanitizer(String.format("$..%s", "administratorLoginPassword"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer(String.format("$..%s", "hubDatabasePassword"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // EH/SB key and connection string
             new TestProxySanitizer(String.format("$..%s", "aliasPrimaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer(String.format("$..%s", "aliasSecondaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
