@@ -17,12 +17,12 @@ public final class CapacityPoolPatchTests {
         CapacityPoolPatch model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"size\":8593552720128453851,\"qosType\":\"Auto\",\"coolAccess\":true},\"location\":\"spyd\",\"tags\":{\"kbldngkpocipa\":\"oenkouknvudwti\"},\"id\":\"yxoegukgjnp\",\"name\":\"ucgygevqz\",\"type\":\"typmrbpizcdrqjsd\"}")
+                    "{\"properties\":{\"size\":1060860454952890618,\"qosType\":\"Manual\",\"coolAccess\":true},\"location\":\"krh\",\"tags\":{\"duala\":\"ljuahaquhcdh\",\"rcrgvx\":\"xqpvfadmw\"},\"id\":\"vgomz\",\"name\":\"fmisg\",\"type\":\"bnbbeldawkz\"}")
                 .toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("spyd", model.location());
-        Assertions.assertEquals("oenkouknvudwti", model.tags().get("kbldngkpocipa"));
-        Assertions.assertEquals(8593552720128453851L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals("krh", model.location());
+        Assertions.assertEquals("ljuahaquhcdh", model.tags().get("duala"));
+        Assertions.assertEquals(1060860454952890618L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
     }
 
@@ -30,16 +30,16 @@ public final class CapacityPoolPatchTests {
     public void testSerialize() throws Exception {
         CapacityPoolPatch model =
             new CapacityPoolPatch()
-                .withLocation("spyd")
-                .withTags(mapOf("kbldngkpocipa", "oenkouknvudwti"))
-                .withSize(8593552720128453851L)
-                .withQosType(QosType.AUTO)
+                .withLocation("krh")
+                .withTags(mapOf("duala", "ljuahaquhcdh", "rcrgvx", "xqpvfadmw"))
+                .withSize(1060860454952890618L)
+                .withQosType(QosType.MANUAL)
                 .withCoolAccess(true);
         model = BinaryData.fromObject(model).toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("spyd", model.location());
-        Assertions.assertEquals("oenkouknvudwti", model.tags().get("kbldngkpocipa"));
-        Assertions.assertEquals(8593552720128453851L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals("krh", model.location());
+        Assertions.assertEquals("ljuahaquhcdh", model.tags().get("duala"));
+        Assertions.assertEquals(1060860454952890618L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
     }
 

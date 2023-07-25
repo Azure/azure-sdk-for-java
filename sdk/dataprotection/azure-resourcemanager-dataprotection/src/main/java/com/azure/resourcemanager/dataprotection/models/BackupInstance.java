@@ -81,6 +81,13 @@ public class BackupInstance {
     private ValidationType validationType;
 
     /*
+     * Contains information of the Identity Details for the BI.
+     * If it is null, default will be considered as System Assigned.
+     */
+    @JsonProperty(value = "identityDetails")
+    private IdentityDetails identityDetails;
+
+    /*
      * The objectType property.
      */
     @JsonProperty(value = "objectType", required = true)
@@ -264,6 +271,28 @@ public class BackupInstance {
     }
 
     /**
+     * Get the identityDetails property: Contains information of the Identity Details for the BI. If it is null, default
+     * will be considered as System Assigned.
+     *
+     * @return the identityDetails value.
+     */
+    public IdentityDetails identityDetails() {
+        return this.identityDetails;
+    }
+
+    /**
+     * Set the identityDetails property: Contains information of the Identity Details for the BI. If it is null, default
+     * will be considered as System Assigned.
+     *
+     * @param identityDetails the identityDetails value to set.
+     * @return the BackupInstance object itself.
+     */
+    public BackupInstance withIdentityDetails(IdentityDetails identityDetails) {
+        this.identityDetails = identityDetails;
+        return this;
+    }
+
+    /**
      * Get the objectType property: The objectType property.
      *
      * @return the objectType value.
@@ -314,6 +343,9 @@ public class BackupInstance {
         }
         if (datasourceAuthCredentials() != null) {
             datasourceAuthCredentials().validate();
+        }
+        if (identityDetails() != null) {
+            identityDetails().validate();
         }
         if (objectType() == null) {
             throw LOGGER

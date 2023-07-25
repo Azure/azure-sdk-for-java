@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -17,10 +16,14 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class TransferCallToParticipantOptions {
-
     private final CommunicationIdentifier targetParticipant;
-    private final Map<String, String> sipHeaders;
-    private final Map<String, String> voipHeaders;
+    private final CustomContext customContext;
+    private String callbackUrlOverride;
+    
+    /**
+     *  Participant being transferred away
+     */
+    private CommunicationIdentifier transferee;
 
 
 
@@ -36,8 +39,7 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.voipHeaders = new HashMap<String, String>();
-        this.sipHeaders = null;
+        this.customContext = new CustomContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -47,44 +49,27 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions(CommunicationUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.voipHeaders = new HashMap<String, String>();
-        this.sipHeaders = null;
-    }
-
-    /**
-     * Constructor
-     *
-     * @param targetParticipant {@link CommunicationUserIdentifier}contains information for TranferTarget.
-     * @param voipHeaders custom headers to voip target
-     */
-    public TransferCallToParticipantOptions(CommunicationUserIdentifier targetParticipant, Map<String, String> voipHeaders) {
-        this.targetParticipant = targetParticipant;
-        this.voipHeaders = voipHeaders == null ? new HashMap<String, String>() : voipHeaders;
-        this.sipHeaders = null;
+        this.customContext = new CustomContext(null, new HashMap<String, String>());
     }
 
     /**
      * Constructor
      *
      * @param targetParticipant {@link PhoneNumberIdentifier}contains information for TranferTarget.
-     * @param sipHeaders custom headers to PSTN target
      */
-    public TransferCallToParticipantOptions(PhoneNumberIdentifier targetParticipant, Map<String, String> sipHeaders) {
+    public TransferCallToParticipantOptions(PhoneNumberIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.voipHeaders = null;
-        this.sipHeaders = sipHeaders == null ? new HashMap<String, String>() : sipHeaders;
+        this.customContext = new CustomContext(new HashMap<String, String>(), null);
     }
 
     /**
      * Constructor
      *
      * @param targetParticipant {@link MicrosoftTeamsUserIdentifier}contains information for TranferTarget.
-     * @param voipHeaders custom headers to voip target
      */
-    public TransferCallToParticipantOptions(MicrosoftTeamsUserIdentifier targetParticipant, Map<String, String> voipHeaders) {
+    public TransferCallToParticipantOptions(MicrosoftTeamsUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.voipHeaders = voipHeaders == null ? new HashMap<String, String>() : voipHeaders;
-        this.sipHeaders = null;
+        this.customContext = new CustomContext(null, new HashMap<String, String>());
     }
 
     /**
@@ -106,6 +91,26 @@ public final class TransferCallToParticipantOptions {
         this.operationContext = operationContext;
         return this;
     }
+    
+    /**
+     * Get transferee.
+     *
+     * @return the transferee
+     */
+    public CommunicationIdentifier getTransferee() {
+        return transferee;
+    }
+    
+    /**
+     * Set the transferee.
+     *
+     * @param transferee the transferee to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setTransferee(CommunicationIdentifier transferee) {
+        this.transferee = transferee;
+        return this;
+    }
 
     /**
      * Get the call information to transfer target
@@ -116,18 +121,30 @@ public final class TransferCallToParticipantOptions {
     }
 
     /**
-     *  Get custom headers for voip target
-     * @return the customHeaders for voip target
+     *  get custom context
+     * @return custom context
      */
-    public Map<String, String> getVoipHeaders() {
-        return voipHeaders;
+    public CustomContext getCustomContext() {
+        return customContext;
     }
 
     /**
-     *  Get custom headers for PSTN target
-     * @return custom headers for PSTN target
+     * Get the callbackUrlOverride.
+     *
+     * @return the callbackUrlOverride
      */
-    public Map<String, String> getSipHeaders() {
-        return sipHeaders;
+    public String  getCallbackUrlOverride() {
+        return callbackUrlOverride;
+    }
+
+    /**
+     * Set the operationContext.
+     *
+     * @param callbackUrlOverride the callbackUrlOverride to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setCallbackUrlOverride(String callbackUrlOverride) {
+        this.callbackUrlOverride = callbackUrlOverride;
+        return this;
     }
 }

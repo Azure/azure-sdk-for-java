@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ScriptActionsGetExecutionDetailWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"scriptExecutionId\":6090285266807754763,\"startTime\":\"qxeiiqbimhtmwwi\",\"endTime\":\"ehfqpofvwbc\",\"status\":\"embnkbw\",\"operation\":\"vxkdivqihebwtswb\",\"executionSummary\":[{\"status\":\"m\",\"instanceCount\":1527664829},{\"status\":\"gegizvcjfel\",\"instanceCount\":953969053},{\"status\":\"ubggbqigkxkb\",\"instanceCount\":861534572}],\"debugInformation\":\"akgacyrcmjdm\",\"name\":\"pofap\",\"uri\":\"uhrylniofr\",\"parameters\":\"bzjedmstk\",\"roles\":[\"l\",\"xbcuiiznkt\",\"f\"],\"applicationName\":\"snvpdibmi\"}";
+            "{\"scriptExecutionId\":2607460445370912418,\"startTime\":\"huxiqhzlraymez\",\"endTime\":\"skihmxrfd\",\"status\":\"jrednwyysh\",\"operation\":\"w\",\"executionSummary\":[{\"status\":\"uafpwzyifrk\",\"instanceCount\":1842303000},{\"status\":\"xeqipx\",\"instanceCount\":1931684247},{\"status\":\"imsfayorp\",\"instanceCount\":450350421},{\"status\":\"jogeslabnsmjkwyn\",\"instanceCount\":360618774}],\"debugInformation\":\"kqsykvwjtqpke\",\"name\":\"myltj\",\"uri\":\"rspxklur\",\"parameters\":\"lfg\",\"roles\":[\"nnnoytz\",\"osewxi\",\"pxvkqma\",\"pxvpifdfaif\"],\"applicationName\":\"yzeyuubeid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +60,15 @@ public final class ScriptActionsGetExecutionDetailWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RuntimeScriptActionDetail response =
-            manager.scriptActions().getExecutionDetailWithResponse("yqo", "mpqoxw", "o", Context.NONE).getValue();
+            manager
+                .scriptActions()
+                .getExecutionDetailWithResponse(
+                    "hnhjtfvpndpmi", "jpnwynudql", "zsauzp", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("pofap", response.name());
-        Assertions.assertEquals("uhrylniofr", response.uri());
-        Assertions.assertEquals("bzjedmstk", response.parameters());
-        Assertions.assertEquals("l", response.roles().get(0));
+        Assertions.assertEquals("myltj", response.name());
+        Assertions.assertEquals("rspxklur", response.uri());
+        Assertions.assertEquals("lfg", response.parameters());
+        Assertions.assertEquals("nnnoytz", response.roles().get(0));
     }
 }

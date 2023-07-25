@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for NetworkInterfaces CreateOrUpdate. */
 public final class NetworkInterfacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create network interface with Gateway Load Balancer Consumer configured.
@@ -55,7 +55,7 @@ public final class NetworkInterfacesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkInterfaceCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkInterfaceCreate.json
      */
     /**
      * Sample code: Create network interface.

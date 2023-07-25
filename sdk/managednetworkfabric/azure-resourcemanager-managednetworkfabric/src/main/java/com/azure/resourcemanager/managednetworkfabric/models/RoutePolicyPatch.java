@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyPatchableProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
-/** The RoutePolicy patch resource definition. */
+/** The Route Policy patch resource definition. */
 @Fluent
-public final class RoutePolicyPatch {
+public final class RoutePolicyPatch extends TagsUpdate {
     /*
-     * Resource tags
+     * The RoutePolicy patchable properties.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    @JsonProperty(value = "properties")
+    private RoutePolicyPatchableProperties innerProperties;
 
     /** Creates an instance of RoutePolicyPatch class. */
     public RoutePolicyPatch() {
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the innerProperties property: The RoutePolicy patchable properties.
      *
-     * @return the tags value.
+     * @return the innerProperties value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    private RoutePolicyPatchableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RoutePolicyPatch withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
-     * Set the tags property: Resource tags.
+     * Get the statements property: Route Policy statements.
      *
-     * @param tags the tags value to set.
+     * @return the statements value.
+     */
+    public List<RoutePolicyStatementProperties> statements() {
+        return this.innerProperties() == null ? null : this.innerProperties().statements();
+    }
+
+    /**
+     * Set the statements property: Route Policy statements.
+     *
+     * @param statements the statements value to set.
      * @return the RoutePolicyPatch object itself.
      */
-    public RoutePolicyPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
+    public RoutePolicyPatch withStatements(List<RoutePolicyStatementProperties> statements) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePolicyPatchableProperties();
+        }
+        this.innerProperties().withStatements(statements);
         return this;
     }
 
@@ -48,6 +67,11 @@ public final class RoutePolicyPatch {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

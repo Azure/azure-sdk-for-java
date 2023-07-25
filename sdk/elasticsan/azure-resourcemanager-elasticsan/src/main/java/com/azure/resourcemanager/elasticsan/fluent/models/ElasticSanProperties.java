@@ -74,6 +74,12 @@ public final class ElasticSanProperties {
     @JsonProperty(value = "totalSizeTiB", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalSizeTiB;
 
+    /*
+     * The list of Private Endpoint Connections.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
     /** Creates an instance of ElasticSanProperties class. */
     public ElasticSanProperties() {
     }
@@ -213,6 +219,15 @@ public final class ElasticSanProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -224,6 +239,9 @@ public final class ElasticSanProperties {
                     new IllegalArgumentException("Missing required property sku in model ElasticSanProperties"));
         } else {
             sku().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 

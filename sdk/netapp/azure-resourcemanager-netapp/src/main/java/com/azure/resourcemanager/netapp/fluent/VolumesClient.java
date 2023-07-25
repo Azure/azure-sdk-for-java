@@ -11,12 +11,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
@@ -592,6 +594,104 @@ public interface VolumesClient {
         String poolName,
         String volumeName,
         BreakFileLocksRequest body,
+        Context context);
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
+        beginListGetGroupIdListForLdapUser(
+            String resourceGroupName,
+            String accountName,
+            String poolName,
+            String volumeName,
+            GetGroupIdListForLdapUserRequest body);
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
+        beginListGetGroupIdListForLdapUser(
+            String resourceGroupName,
+            String accountName,
+            String poolName,
+            String volumeName,
+            GetGroupIdListForLdapUserRequest body,
+            Context context);
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body);
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body,
         Context context);
 
     /**

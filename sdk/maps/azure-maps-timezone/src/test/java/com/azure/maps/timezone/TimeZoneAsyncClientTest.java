@@ -3,25 +3,23 @@
 
 package com.azure.maps.timezone;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.IOException;
-import java.time.Duration;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoPosition;
 import com.azure.maps.timezone.models.TimeZoneCoordinateOptions;
 import com.azure.maps.timezone.models.TimeZoneIdOptions;
 import com.azure.maps.timezone.models.TimeZoneOptions;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import reactor.test.StepVerifier;
+
+import java.io.IOException;
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -200,7 +198,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
             }).verifyComplete();
     }
 
-    // Test async get iana version 
+    // Test async get iana version
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testAsyncGetIanaVersion(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {

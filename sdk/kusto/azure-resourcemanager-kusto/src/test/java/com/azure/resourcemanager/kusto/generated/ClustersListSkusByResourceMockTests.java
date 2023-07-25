@@ -35,7 +35,7 @@ public final class ClustersListSkusByResourceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"dunvmnnrwrbiorkt\",\"sku\":{\"name\":\"Standard_E4ads_v5\",\"capacity\":681185824,\"tier\":\"Basic\"},\"capacity\":{\"scaleType\":\"none\",\"minimum\":1788432373,\"maximum\":1472152819,\"default\":2074857851}}]}";
+            "{\"value\":[{\"resourceType\":\"kylkdghrj\",\"sku\":{\"name\":\"Standard_EC16as_v5+3TB_PS\",\"capacity\":1782916526,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":102339077,\"maximum\":234998658,\"default\":442898580}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class ClustersListSkusByResourceMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AzureResourceSku> response =
-            manager.clusters().listSkusByResource("l", "wey", com.azure.core.util.Context.NONE);
+            manager.clusters().listSkusByResource("rphkmcrjdqnsdfz", "bg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dunvmnnrwrbiorkt", response.iterator().next().resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_E4ADS_V5, response.iterator().next().sku().name());
-        Assertions.assertEquals(681185824, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(AzureSkuTier.BASIC, response.iterator().next().sku().tier());
-        Assertions.assertEquals(AzureScaleType.NONE, response.iterator().next().capacity().scaleType());
-        Assertions.assertEquals(1788432373, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(1472152819, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(2074857851, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals("kylkdghrj", response.iterator().next().resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_EC16AS_V5_3TB_PS, response.iterator().next().sku().name());
+        Assertions.assertEquals(1782916526, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(AzureSkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals(AzureScaleType.MANUAL, response.iterator().next().capacity().scaleType());
+        Assertions.assertEquals(102339077, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(234998658, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(442898580, response.iterator().next().capacity().defaultProperty());
     }
 }

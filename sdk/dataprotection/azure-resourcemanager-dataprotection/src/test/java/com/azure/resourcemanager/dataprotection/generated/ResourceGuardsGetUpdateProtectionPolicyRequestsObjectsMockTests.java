@@ -30,8 +30,7 @@ public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsMockTes
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"zuawxtzxpuamwa\",\"name\":\"xrvxcushsphai\",\"type\":\"xyasflvgsgzw\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"ktsysidfvclglxn\",\"name\":\"ijtk\",\"type\":\"sqo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +61,7 @@ public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsMockTes
         PagedIterable<DppBaseResource> response =
             manager
                 .resourceGuards()
-                .getUpdateProtectionPolicyRequestsObjects("ex", "mlfmkqs", com.azure.core.util.Context.NONE);
+                .getUpdateProtectionPolicyRequestsObjects(
+                    "jurbuhhlkyqltqsr", "gtuwkff", com.azure.core.util.Context.NONE);
     }
 }

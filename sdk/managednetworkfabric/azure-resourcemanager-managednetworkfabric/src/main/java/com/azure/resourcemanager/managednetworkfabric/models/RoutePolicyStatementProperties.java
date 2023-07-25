@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Route Policy Statement properties.. */
+/** Route Policy Statement properties. */
 @Fluent
 public final class RoutePolicyStatementProperties extends AnnotationResource {
     /*

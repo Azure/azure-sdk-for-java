@@ -159,7 +159,9 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .create();
 
         try {
-            Assertions.assertTrue(resourceId.equalsIgnoreCase(setting.resourceId()));
+            if (!isPlaybackMode()) {
+                Assertions.assertTrue(resourceId.equalsIgnoreCase(setting.resourceId()));
+            }
             Assertions.assertTrue(sa.id().equalsIgnoreCase(setting.storageAccountId()));
 
             Assertions.assertFalse(setting.logs().isEmpty());
@@ -328,11 +330,12 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .define(dsName)
             .withResource(wpsResource.id())
             .withStorageAccount(sa.id())
-            .withLog("Security", 7)
+            .withLog("MessagingLogs", 7)
             .create();
 
         // add category group "audit" to log settings
         DiagnosticSettingsResourceInner inner = setting.innerModel();
+        inner.logs().clear();   // Remove category "MessagingLogs". Diagnostic setting does not support mix of log category and log category group.
         inner.logs().add(new LogSettings().withCategoryGroup("audit").withEnabled(true).withRetentionPolicy(new RetentionPolicy().withEnabled(false)));
         monitorManager.serviceClient().getDiagnosticSettingsOperations().createOrUpdate(wpsResource.id(), dsName, inner);
 
