@@ -7,29 +7,43 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** Describes a condition that must be met against a set of labels for worker selection. */
 @Fluent
 public final class RouterWorkerSelector {
+    /**
+     * Creates an instance of RouterWorkerSelector class.
+     *
+     * @param key The label key to query against
+     * @param labelOperator Describes how the value of the label is compared to the value defined on the worker selector
+     * @param value The value to compare against the actual label value with the given operator
+     */
+    public RouterWorkerSelector(String key, LabelOperator labelOperator, LabelValue value) {
+        this.key = Objects.requireNonNull(key, "'key' cannot be null.");
+        this.labelOperator = Objects.requireNonNull(labelOperator, "'labelOperator' cannot be null.");
+        this.value = value;
+    }
+
     /*
      * The label key to query against
      */
     @JsonProperty(value = "key", required = true)
-    private String key;
+    private final String key;
 
     /*
      * Describes how the value of the label is compared to the value defined on
      * the label selector
      */
     @JsonProperty(value = "labelOperator", required = true)
-    private LabelOperator labelOperator;
+    private final LabelOperator labelOperator;
 
     /*
      * The value to compare against the actual label value with the given
      * operator
      */
     @JsonProperty(value = "value")
-    private LabelValue value;
+    private final LabelValue value;
 
     /*
      * Describes how long this label selector is valid in seconds.
@@ -66,17 +80,6 @@ public final class RouterWorkerSelector {
     }
 
     /**
-     * Set the key property: The label key to query against.
-     *
-     * @param key the key value to set.
-     * @return the RouterWorkerSelector object itself.
-     */
-    public RouterWorkerSelector setKey(String key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
      * Get the labelOperator property: Describes how the value of the label is compared to the value defined on the
      * label selector.
      *
@@ -87,35 +90,12 @@ public final class RouterWorkerSelector {
     }
 
     /**
-     * Set the labelOperator property: Describes how the value of the label is compared to the value defined on the
-     * label selector.
-     *
-     * @param labelOperator the labelOperator value to set.
-     * @return the RouterWorkerSelector object itself.
-     */
-    public RouterWorkerSelector setLabelOperator(LabelOperator labelOperator) {
-        this.labelOperator = labelOperator;
-        return this;
-    }
-
-    /**
      * Get the value property: The value to compare against the actual label value with the given operator.
      *
      * @return the LabelValue value.
      */
     public LabelValue getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The value to compare against the actual label value with the given operator.
-     *
-     * @param value the LabelValue value to set.
-     * @return the RouterWorkerSelector object itself.
-     */
-    public RouterWorkerSelector setValue(LabelValue value) {
-        this.value = value;
-        return this;
     }
 
     /**

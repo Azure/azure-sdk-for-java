@@ -7,22 +7,35 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
+import java.util.Objects;
 
 /** A rule that defines actions to execute upon a specific trigger. */
 @Fluent
 public final class ExceptionRule {
+    /**
+     * Creates an instance of ExceptionRule class.
+     *
+     * @param trigger The trigger for this exception rule
+     * @param actions A dictionary collection of actions to perform once the exception is
+     *      triggered. Key is the Id of each exception action.
+     */
+    public ExceptionRule(ExceptionTrigger trigger, Map<String, ExceptionAction> actions) {
+        this.trigger = Objects.requireNonNull(trigger, "'trigger' cannot be null.");
+        this.actions = Objects.requireNonNull(actions, "'actions' cannot be null.");
+    }
+
     /*
      * The trigger for this exception rule
      */
     @JsonProperty(value = "trigger", required = true)
-    private ExceptionTrigger trigger;
+    private final ExceptionTrigger trigger;
 
     /*
      * A dictionary collection of actions to perform once the exception is
      * triggered. Key is the Id of each exception action.
      */
     @JsonProperty(value = "actions", required = true)
-    private Map<String, ExceptionAction> actions;
+    private final Map<String, ExceptionAction> actions;
 
     /**
      * Get the trigger property: The trigger for this exception rule.
@@ -34,17 +47,6 @@ public final class ExceptionRule {
     }
 
     /**
-     * Set the trigger property: The trigger for this exception rule.
-     *
-     * @param trigger the trigger value to set.
-     * @return the ExceptionRule object itself.
-     */
-    public ExceptionRule setTrigger(ExceptionTrigger trigger) {
-        this.trigger = trigger;
-        return this;
-    }
-
-    /**
      * Get the actions property: A dictionary collection of actions to perform once the exception is triggered. Key is
      * the Id of each exception action.
      *
@@ -52,17 +54,5 @@ public final class ExceptionRule {
      */
     public Map<String, ExceptionAction> getActions() {
         return this.actions;
-    }
-
-    /**
-     * Set the actions property: A dictionary collection of actions to perform once the exception is triggered. Key is
-     * the Id of each exception action.
-     *
-     * @param actions the actions value to set.
-     * @return the ExceptionRule object itself.
-     */
-    public ExceptionRule setActions(Map<String, ExceptionAction> actions) {
-        this.actions = actions;
-        return this;
     }
 }

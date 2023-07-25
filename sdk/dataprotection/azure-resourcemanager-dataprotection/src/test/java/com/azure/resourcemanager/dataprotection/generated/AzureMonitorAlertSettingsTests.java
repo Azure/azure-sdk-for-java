@@ -14,16 +14,16 @@ public final class AzureMonitorAlertSettingsTests {
     public void testDeserialize() throws Exception {
         AzureMonitorAlertSettings model =
             BinaryData
-                .fromString("{\"alertsForAllJobFailures\":\"Enabled\"}")
+                .fromString("{\"alertsForAllJobFailures\":\"Disabled\"}")
                 .toObject(AzureMonitorAlertSettings.class);
-        Assertions.assertEquals(AlertsState.ENABLED, model.alertsForAllJobFailures());
+        Assertions.assertEquals(AlertsState.DISABLED, model.alertsForAllJobFailures());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMonitorAlertSettings model =
-            new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED);
+            new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED);
         model = BinaryData.fromObject(model).toObject(AzureMonitorAlertSettings.class);
-        Assertions.assertEquals(AlertsState.ENABLED, model.alertsForAllJobFailures());
+        Assertions.assertEquals(AlertsState.DISABLED, model.alertsForAllJobFailures());
     }
 }

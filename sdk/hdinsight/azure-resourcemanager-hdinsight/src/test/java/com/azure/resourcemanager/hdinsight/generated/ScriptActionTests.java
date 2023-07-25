@@ -7,26 +7,25 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ScriptAction;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScriptActionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScriptAction model =
             BinaryData
-                .fromString("{\"name\":\"mbmbexppbh\",\"uri\":\"q\",\"parameters\":\"rolfpfp\"}")
+                .fromString("{\"name\":\"rq\",\"uri\":\"b\",\"parameters\":\"oczvy\"}")
                 .toObject(ScriptAction.class);
-        Assertions.assertEquals("mbmbexppbh", model.name());
-        Assertions.assertEquals("q", model.uri());
-        Assertions.assertEquals("rolfpfp", model.parameters());
+        Assertions.assertEquals("rq", model.name());
+        Assertions.assertEquals("b", model.uri());
+        Assertions.assertEquals("oczvy", model.parameters());
     }
 
-    @Test
-    public void testSerialize() {
-        ScriptAction model = new ScriptAction().withName("mbmbexppbh").withUri("q").withParameters("rolfpfp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ScriptAction model = new ScriptAction().withName("rq").withUri("b").withParameters("oczvy");
         model = BinaryData.fromObject(model).toObject(ScriptAction.class);
-        Assertions.assertEquals("mbmbexppbh", model.name());
-        Assertions.assertEquals("q", model.uri());
-        Assertions.assertEquals("rolfpfp", model.parameters());
+        Assertions.assertEquals("rq", model.name());
+        Assertions.assertEquals("b", model.uri());
+        Assertions.assertEquals("oczvy", model.parameters());
     }
 }

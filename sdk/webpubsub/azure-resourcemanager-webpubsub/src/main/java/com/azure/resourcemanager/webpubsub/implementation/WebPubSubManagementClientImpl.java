@@ -30,6 +30,7 @@ import com.azure.resourcemanager.webpubsub.fluent.WebPubSubHubsClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubManagementClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateLinkResourcesClient;
+import com.azure.resourcemanager.webpubsub.fluent.WebPubSubReplicasClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubSharedPrivateLinkResourcesClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubsClient;
 import java.io.IOException;
@@ -44,15 +45,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the WebPubSubManagementClientImpl type. */
 @ServiceClient(builder = WebPubSubManagementClientBuilder.class)
 public final class WebPubSubManagementClientImpl implements WebPubSubManagementClient {
-    /**
-     * Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -216,6 +213,18 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         return this.webPubSubPrivateLinkResources;
     }
 
+    /** The WebPubSubReplicasClient object to access its operations. */
+    private final WebPubSubReplicasClient webPubSubReplicas;
+
+    /**
+     * Gets the WebPubSubReplicasClient object to access its operations.
+     *
+     * @return the WebPubSubReplicasClient object.
+     */
+    public WebPubSubReplicasClient getWebPubSubReplicas() {
+        return this.webPubSubReplicas;
+    }
+
     /** The WebPubSubSharedPrivateLinkResourcesClient object to access its operations. */
     private final WebPubSubSharedPrivateLinkResourcesClient webPubSubSharedPrivateLinkResources;
 
@@ -235,8 +244,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Gets subscription Id which uniquely identify the Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     WebPubSubManagementClientImpl(
@@ -251,7 +259,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-02-01";
+        this.apiVersion = "2023-06-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.webPubSubs = new WebPubSubsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
@@ -260,6 +268,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         this.webPubSubHubs = new WebPubSubHubsClientImpl(this);
         this.webPubSubPrivateEndpointConnections = new WebPubSubPrivateEndpointConnectionsClientImpl(this);
         this.webPubSubPrivateLinkResources = new WebPubSubPrivateLinkResourcesClientImpl(this);
+        this.webPubSubReplicas = new WebPubSubReplicasClientImpl(this);
         this.webPubSubSharedPrivateLinkResources = new WebPubSubSharedPrivateLinkResourcesClientImpl(this);
     }
 

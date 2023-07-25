@@ -15,23 +15,23 @@ public final class AzureBackupRehydrationRequestTests {
         AzureBackupRehydrationRequest model =
             BinaryData
                 .fromString(
-                    "{\"recoveryPointId\":\"nlqidybyxczf\",\"rehydrationPriority\":\"High\",\"rehydrationRetentionDuration\":\"aaxdbabphlwrq\"}")
+                    "{\"recoveryPointId\":\"qlveualupjmkh\",\"rehydrationPriority\":\"High\",\"rehydrationRetentionDuration\":\"bbcswsrtjri\"}")
                 .toObject(AzureBackupRehydrationRequest.class);
-        Assertions.assertEquals("nlqidybyxczf", model.recoveryPointId());
+        Assertions.assertEquals("qlveualupjmkh", model.recoveryPointId());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
-        Assertions.assertEquals("aaxdbabphlwrq", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("bbcswsrtjri", model.rehydrationRetentionDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupRehydrationRequest model =
             new AzureBackupRehydrationRequest()
-                .withRecoveryPointId("nlqidybyxczf")
+                .withRecoveryPointId("qlveualupjmkh")
                 .withRehydrationPriority(RehydrationPriority.HIGH)
-                .withRehydrationRetentionDuration("aaxdbabphlwrq");
+                .withRehydrationRetentionDuration("bbcswsrtjri");
         model = BinaryData.fromObject(model).toObject(AzureBackupRehydrationRequest.class);
-        Assertions.assertEquals("nlqidybyxczf", model.recoveryPointId());
+        Assertions.assertEquals("qlveualupjmkh", model.recoveryPointId());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
-        Assertions.assertEquals("aaxdbabphlwrq", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("bbcswsrtjri", model.rehydrationRetentionDuration());
     }
 }

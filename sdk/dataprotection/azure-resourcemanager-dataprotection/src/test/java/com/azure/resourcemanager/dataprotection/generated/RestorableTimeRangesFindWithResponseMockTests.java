@@ -33,7 +33,7 @@ public final class RestorableTimeRangesFindWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"restorableTimeRanges\":[],\"objectType\":\"jerbdkelvidizozs\"},\"id\":\"ccxjm\",\"name\":\"nfdgn\",\"type\":\"n\"}";
+            "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"ilrmcaykggnox\",\"endTime\":\"ztrksxwpndf\",\"objectType\":\"fnznth\"}],\"objectType\":\"wkjaos\"},\"id\":\"uzvoamktcqiosm\",\"name\":\"bzahgxqd\",\"type\":\"yrtltlaprltzkat\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,19 @@ public final class RestorableTimeRangesFindWithResponseMockTests {
             manager
                 .restorableTimeRanges()
                 .findWithResponse(
-                    "revkhgnlnzo",
-                    "zlrpiqywncvj",
-                    "szcofizeht",
+                    "ltsxoatf",
+                    "g",
+                    "pnpbswveflocc",
                     new AzureBackupFindRestorableTimeRangesRequest()
                         .withSourceDataStoreType(RestoreSourceDataStoreType.OPERATIONAL_STORE)
-                        .withStartTime("bjkvreljeamu")
-                        .withEndTime("zmlovuanash"),
+                        .withStartTime("ozihmipgawt")
+                        .withEndTime("pkyjcxcjxgrytfm"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("jerbdkelvidizozs", response.properties().objectType());
+        Assertions.assertEquals("ilrmcaykggnox", response.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("ztrksxwpndf", response.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("fnznth", response.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("wkjaos", response.properties().objectType());
     }
 }

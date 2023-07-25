@@ -52,7 +52,7 @@ com.azure:azure-analytics-purview-scanning;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-administration;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-workflow;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.12;1.0.0-beta.13
+com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.13;1.0.0-beta.14
 com.azure:azure-analytics-synapse-spark;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
@@ -192,9 +192,9 @@ com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management-web;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management;4.9.0;4.10.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.9.0;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-feature-management-web;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-feature-management;4.9.1;4.10.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;4.9.1;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-dependencies;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-messaging-azure;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;4.9.0;4.10.0-beta.1
@@ -242,7 +242,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;4.9.0;4.10.0-b
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;4.9.0;4.10.0-beta.1
 com.azure.spring:spring-cloud-azure-trace-sleuth;4.9.0;4.10.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.28.0;2.29.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appplatform;2.28.0;2.29.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appplatform;2.28.0;2.29.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.28.0;2.29.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.28.0;2.29.0-beta.1
@@ -264,14 +264,14 @@ com.azure.resourcemanager:azure-resourcemanager-redis;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-search;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-servicebus;2.28.0;2.29.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-sql;2.28.0;2.29.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-sql;2.28.0;2.29.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storage;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.28.0;2.29.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mediaservices;2.3.0;2.4.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mysql;1.0.2;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.2;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.6;1.0.0-beta.7
@@ -356,7 +356,7 @@ com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.1.0;1.2
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.7;1.0.0-beta.8
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0-beta.4;1.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.2;1.0.0-beta.3
@@ -367,7 +367,7 @@ com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-loadtesting;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.2
@@ -407,7 +407,7 @@ com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.0
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-providerhub;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-reservations;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-storagemover;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-storagemover;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-voiceservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0;1.1.0-beta.1
@@ -419,8 +419,11 @@ com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0-beta.2;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managementgroups;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-iotfirmwaredefense;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-quantum;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-sphere;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
-com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
+com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
@@ -429,6 +432,9 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+unreleased_com.azure:azure-core;1.42.0-beta.1
+unreleased_com.azure:azure-core-http-netty;1.14.0-beta.1
+
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
