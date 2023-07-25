@@ -1286,6 +1286,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Uri unhealthyAddressUri = addressInfosFromCache.get(0).getPhysicalUri();
         unhealthyAddressUri.setUnhealthy();
         Thread.sleep(60 * 1000);
+        // setting uri as Unhealthy on a still Unhealthy uri should still cause address refresh to be triggerred
         unhealthyAddressUri.setUnhealthy();
         // using forceRefresh false
         // but as there is one address has been stuck in unhealthy status for more than 1 min,
