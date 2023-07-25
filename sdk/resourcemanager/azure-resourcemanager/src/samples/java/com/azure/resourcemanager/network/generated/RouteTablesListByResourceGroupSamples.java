@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for RouteTables ListByResourceGroup. */
 public final class RouteTablesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/RouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RouteTableList.json
      */
     /**
      * Sample code: List route tables in resource group.
