@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationD
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of L2IsolationDomains. */
+/** List of L2 Isolation Domains. */
 @Fluent
 public final class L2IsolationDomainsListResult {
     /*
-     * Displays list of L2IsolationDomain resources.
+     * Displays list of L2 Isolation Domain resources.
      */
     @JsonProperty(value = "value")
     private List<L2IsolationDomainInner> value;
@@ -29,7 +29,7 @@ public final class L2IsolationDomainsListResult {
     }
 
     /**
-     * Get the value property: Displays list of L2IsolationDomain resources.
+     * Get the value property: Displays list of L2 Isolation Domain resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class L2IsolationDomainsListResult {
     }
 
     /**
-     * Set the value property: Displays list of L2IsolationDomain resources.
+     * Set the value property: Displays list of L2 Isolation Domain resources.
      *
      * @param value the value value to set.
      * @return the L2IsolationDomainsListResult object itself.

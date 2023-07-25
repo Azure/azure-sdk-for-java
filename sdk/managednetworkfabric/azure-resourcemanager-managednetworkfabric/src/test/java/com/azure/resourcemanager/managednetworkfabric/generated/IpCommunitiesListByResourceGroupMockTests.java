@@ -34,7 +34,7 @@ public final class IpCommunitiesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"action\":\"Permit\",\"wellKnownCommunities\":[\"GShut\",\"Internet\"],\"communityMembers\":[\"xrjvzuyturmlm\"],\"provisioningState\":\"Canceled\",\"annotation\":\"lbau\"},\"location\":\"opionszon\",\"tags\":{\"jmyccxlzhcoxov\":\"gajinnixjawrtmj\",\"sfnrdtjxt\":\"ekhenl\",\"cq\":\"r\",\"uslvyjtcvuwkasi\":\"jvidttge\"},\"id\":\"iesfuug\",\"name\":\"tuqfecjxeygtu\",\"type\":\"xu\"}]}";
+            "{\"value\":[{\"properties\":{\"configurationState\":\"Accepted\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":3384626957394506065,\"wellKnownCommunities\":[\"LocalAS\"],\"communityMembers\":[\"andbp\",\"rrhyjxcqcaczzvwa\",\"ztt\"]}],\"annotation\":\"qyfydql\"},\"location\":\"slgyfybdsvkllrz\",\"tags\":{\"jthprgfwhfzhhr\":\"hkbchcazkg\",\"zq\":\"rmrfyyqjcni\"},\"id\":\"sddcuqddlda\",\"name\":\"yvfzt\",\"type\":\"ew\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,20 @@ public final class IpCommunitiesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IpCommunity> response =
-            manager.ipCommunities().listByResourceGroup("oc", com.azure.core.util.Context.NONE);
+            manager.ipCommunities().listByResourceGroup("irzyudrq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("opionszon", response.iterator().next().location());
-        Assertions.assertEquals("gajinnixjawrtmj", response.iterator().next().tags().get("jmyccxlzhcoxov"));
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().action());
-        Assertions.assertEquals(WellKnownCommunities.GSHUT, response.iterator().next().wellKnownCommunities().get(0));
-        Assertions.assertEquals("xrjvzuyturmlm", response.iterator().next().communityMembers().get(0));
-        Assertions.assertEquals("lbau", response.iterator().next().annotation());
+        Assertions.assertEquals("slgyfybdsvkllrz", response.iterator().next().location());
+        Assertions.assertEquals("hkbchcazkg", response.iterator().next().tags().get("jthprgfwhfzhhr"));
+        Assertions
+            .assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().ipCommunityRules().get(0).action());
+        Assertions
+            .assertEquals(3384626957394506065L, response.iterator().next().ipCommunityRules().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(
+                WellKnownCommunities.LOCAL_AS,
+                response.iterator().next().ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions
+            .assertEquals("andbp", response.iterator().next().ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("qyfydql", response.iterator().next().annotation());
     }
 }

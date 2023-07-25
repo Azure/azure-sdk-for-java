@@ -56,6 +56,8 @@ public final class BackupInstancesStopProtectionMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.backupInstances().stopProtection("hdjhlimmbcx", "h", "cporxvxcjz", com.azure.core.util.Context.NONE);
+        manager
+            .backupInstances()
+            .stopProtection("kzobgopxlhsln", "lxieixynllxecwcr", "jphslhcaw", com.azure.core.util.Context.NONE);
     }
 }

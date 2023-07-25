@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessContro
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of AccessControlLists. */
+/** List of Access Control Lists. */
 @Fluent
 public final class AccessControlListsListResult {
     /*
-     * List of AccessControlList resources.
+     * List of Access Control List resources.
      */
     @JsonProperty(value = "value")
     private List<AccessControlListInner> value;
@@ -29,7 +29,7 @@ public final class AccessControlListsListResult {
     }
 
     /**
-     * Get the value property: List of AccessControlList resources.
+     * Get the value property: List of Access Control List resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class AccessControlListsListResult {
     }
 
     /**
-     * Set the value property: List of AccessControlList resources.
+     * Set the value property: List of Access Control List resources.
      *
      * @param value the value value to set.
      * @return the AccessControlListsListResult object itself.

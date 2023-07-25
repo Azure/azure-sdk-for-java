@@ -36,7 +36,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"mduvw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"xwmygdxpgpqc\",\"actionsRequired\":\"sze\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"crxgibb\",\"axconfozauo\",\"sukokwbqplhl\",\"nuuepzlrp\"]},\"location\":\"soldweyuqdunv\",\"etag\":\"nrwrbiork\",\"id\":\"alywjhhgdn\",\"name\":\"xmsivfomiloxggdu\",\"type\":\"iqndieuzaofj\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wmqtibx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"dt\",\"actionsRequired\":\"cttadi\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"mrsieekp\"]},\"location\":\"aapm\",\"etag\":\"qmeqwigpibudqwyx\",\"id\":\"beybpmzznrtffyaq\",\"name\":\"tmhheioqa\",\"type\":\"hvseufuqyrx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,28 +67,27 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .define("cbhernntiewdj")
-                .withExistingAccount("jkqa", "qgzsles")
-                .withRegion("lfg")
+                .define("tpwb")
+                .withExistingAccount("qtgdqohmcwsl", "riz")
+                .withRegion("ohguuf")
                 .withProperties(
                     new PrivateEndpointConnectionProperties()
                         .withPrivateEndpoint(new PrivateEndpoint())
                         .withPrivateLinkServiceConnectionState(
                             new PrivateLinkServiceConnectionState()
                                 .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                                .withDescription("kmr")
-                                .withActionsRequired("mvvhmxtdrjfuta"))
-                        .withGroupIds(Arrays.asList("vewzcj", "nmwcpmgu", "adraufactkahzo", "ajjziuxxpshne")))
+                                .withDescription("izakak")
+                                .withActionsRequired("kjpdnjzhajo"))
+                        .withGroupIds(Arrays.asList("muoyxprimr", "opteecj", "eislstvasylwx", "zaum")))
                 .create();
 
         Assertions
             .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING,
+                PrivateEndpointServiceConnectionStatus.REJECTED,
                 response.properties().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals("xwmygdxpgpqc", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("sze", response.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("crxgibb", response.properties().groupIds().get(0));
-        Assertions.assertEquals("soldweyuqdunv", response.location());
+        Assertions.assertEquals("dt", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("cttadi", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("mrsieekp", response.properties().groupIds().get(0));
+        Assertions.assertEquals("aapm", response.location());
     }
 }

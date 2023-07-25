@@ -5,25 +5,34 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.AzureCommunicationServicesImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
-import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
-import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferRequest;
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterJobStatusSelectorInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerStateSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
+import com.azure.communication.jobrouter.models.CloseJobOptions;
+import com.azure.communication.jobrouter.models.CompleteJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
+import com.azure.communication.jobrouter.models.ListJobsOptions;
+import com.azure.communication.jobrouter.models.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.CloseJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.ListJobsOptions;
-import com.azure.communication.jobrouter.models.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 import com.azure.core.annotation.ReturnType;
@@ -44,16 +53,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Async Client that supports job router operations.
  *
  * <p><strong>Instantiating an asynchronous job router Client</strong></p>
- * <!-- src_embed com.azure.communication.jobrouter.routerasyncclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.jobrouterasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; Initialize the router client builder
+ * &#47;&#47; Initialize the jobrouter client builder
  * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
- * &#47;&#47; Build the router client
+ * &#47;&#47; Build the jobrouter client
  * JobRouterAsyncClient jobRouterAsyncClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.jobrouter.routerasyncclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.jobrouterasyncclient.instantiation -->
  *
  * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -81,7 +90,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         try {
-            RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
             return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
@@ -108,7 +117,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         try {
-            RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
             return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -127,7 +136,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> updateJob(UpdateJobOptions updateJobOptions) {
         try {
-            RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            RouterJobInternal routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
             return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
@@ -154,16 +163,18 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> updateJobWithResponse(UpdateJobOptions updateJobOptions) {
         try {
-            RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            RouterJobInternal routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
             return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<RouterJob>> upsertJobWithResponse(String id, RouterJob routerJob, Context context) {
+    Mono<Response<RouterJob>> upsertJobWithResponse(String id, RouterJobInternal routerJob, Context context) {
         try {
-            return jobRouter.upsertJobWithResponseAsync(id, routerJob, context);
+            context = context == null ? Context.NONE : context;
+            return jobRouter.upsertJobWithResponseAsync(id, routerJob, context)
+                .map(response -> new SimpleResponse<>(response, RouterJobConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -215,7 +226,8 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<RouterJob>> getJobWithResponse(String id, Context context) {
         try {
-            return jobRouter.getJobWithResponseAsync(id, context);
+            return jobRouter.getJobWithResponseAsync(id, context)
+                .map(response -> new SimpleResponse<>(response, RouterJobConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -330,19 +342,20 @@ public final class JobRouterAsyncClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param jobId Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     * provided, default value of "Cancelled" is set.
+     * @param cancelJobOptions options object for cancel job operation.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelJob(String jobId, String note, String dispositionCode) {
+    public Mono<Void> cancelJob(CancelJobOptions cancelJobOptions) {
         try {
-            return withContext(context -> cancelJobWithResponse(jobId, note, dispositionCode, context)
+            return withContext(context -> cancelJobWithResponse(
+                cancelJobOptions.getJobId(),
+                cancelJobOptions.getNote(),
+                cancelJobOptions.getDispositionCode(),
+                context)
                 .flatMap(
                     (Response<Void> res) -> {
                         if (res.getValue() != null) {
@@ -359,19 +372,19 @@ public final class JobRouterAsyncClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param jobId Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     * provided, default value of "Cancelled" is set.
+     * @param cancelJobOptions options object to cancel a job.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelJobWithResponse(String jobId, String note, String dispositionCode) {
+    public Mono<Response<Void>> cancelJobWithResponse(CancelJobOptions cancelJobOptions) {
         try {
-            return withContext(context -> cancelJobWithResponse(jobId, note, dispositionCode, context));
+            return withContext(context -> cancelJobWithResponse(cancelJobOptions.getJobId(),
+                cancelJobOptions.getNote(),
+                cancelJobOptions.getDispositionCode(),
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -390,18 +403,20 @@ public final class JobRouterAsyncClient {
     /**
      * Completes an assigned job.
      *
-     * @param jobId Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param completeJobOptions options for completeJob request.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> completeJob(String jobId, String assignmentId, String note) {
+    public Mono<Void> completeJob(CompleteJobOptions completeJobOptions) {
         try {
-            return withContext(context -> completeJobWithResponse(jobId, assignmentId, note, context)
+            return withContext(context -> completeJobWithResponse(
+                completeJobOptions.getJobId(),
+                completeJobOptions.getAssignmentId(),
+                completeJobOptions.getNote(),
+                context)
                 .flatMap(
                     (Response<Void> res) -> {
                         if (res.getValue() != null) {
@@ -418,18 +433,20 @@ public final class JobRouterAsyncClient {
     /**
      * Completes an assigned job.
      *
-     * @param jobId Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param  completeJobOptions Options object for CompleteJob.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> completeJobWithResponse(String jobId, String assignmentId, String note) {
+    public Mono<Response<Void>> completeJobWithResponse(CompleteJobOptions completeJobOptions) {
         try {
-            return withContext(context -> completeJobWithResponse(jobId, assignmentId, note, context));
+            return withContext(context -> completeJobWithResponse(
+                completeJobOptions.getJobId(),
+                completeJobOptions.getAssignmentId(),
+                completeJobOptions.getJobId(),
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -495,7 +512,7 @@ public final class JobRouterAsyncClient {
                     closeJobOptions.getJobId(),
                     closeJobOptions.getAssignmentId(),
                     closeJobOptions.getDispositionCode(),
-                    closeJobOptions.getCloseTime(),
+                    closeJobOptions.getCloseAt(),
                     closeJobOptions.getNote(),
                     context
                 ).map(result -> new SimpleResponse<Void>(
@@ -555,9 +572,12 @@ public final class JobRouterAsyncClient {
             return jobRouter.unassignJobActionWithResponseAsync(
                 unassignJobOptions.getJobId(),
                 unassignJobOptions.getAssignmentId(),
-                new UnassignJobRequest(),
+                new UnassignJobRequest().setSuspendMatching(unassignJobOptions.isSuspendMatching()),
                 context
-            );
+            ).map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                new UnassignJobResult()
+                    .setJobId(result.getValue().getJobId())
+                    .setUnassignmentCount(result.getValue().getUnassignmentCount())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -573,7 +593,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterJobItem> listJobs() {
         try {
-            return jobRouter.listJobsAsync(null, null, null, null, null, null, null);
+            return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(null, null, null, null, null, null, null));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -591,13 +611,14 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions) {
         try {
-            return jobRouter.listJobsAsync(listJobsOptions.getJobStateSelector(),
+            return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(
+                RouterJobStatusSelectorInternal.fromString(listJobsOptions.getStatus().toString()),
                 listJobsOptions.getQueueId(),
                 listJobsOptions.getChannelId(),
                 listJobsOptions.getClassificationPolicyId(),
                 listJobsOptions.getScheduledBefore(),
                 listJobsOptions.getScheduledAfter(),
-                listJobsOptions.getMaxPageSize());
+                listJobsOptions.getMaxPageSize()));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -615,14 +636,15 @@ public final class JobRouterAsyncClient {
      */
     PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions, Context context) {
         try {
-            return jobRouter.listJobsAsync(listJobsOptions.getJobStateSelector(),
+            return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(
+                RouterJobStatusSelectorInternal.fromString(listJobsOptions.getStatus().toString()),
                 listJobsOptions.getQueueId(),
                 listJobsOptions.getChannelId(),
                 listJobsOptions.getClassificationPolicyId(),
                 listJobsOptions.getScheduledBefore(),
                 listJobsOptions.getScheduledAfter(),
                 listJobsOptions.getMaxPageSize(),
-                context);
+                context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -674,7 +696,14 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<RouterJobPositionDetails>> getQueuePositionWithResponse(String id, Context context) {
         try {
-            return jobRouter.getInQueuePositionWithResponseAsync(id, context);
+            return jobRouter.getInQueuePositionWithResponseAsync(id, context)
+                .map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                    new RouterJobPositionDetails()
+                        .setJobId(result.getValue().getJobId())
+                        .setQueueId(result.getValue().getQueueId())
+                        .setPosition(result.getValue().getPosition())
+                        .setQueueLength(result.getValue().getQueueLength())
+                        .setEstimatedWaitTimeMinutes(result.getValue().getEstimatedWaitTimeMinutes())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -728,7 +757,12 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<AcceptJobOfferResult>> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
         try {
-            return jobRouter.acceptJobActionWithResponseAsync(workerId, offerId, context);
+            return jobRouter.acceptJobActionWithResponseAsync(workerId, offerId, context)
+                .map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                    new AcceptJobOfferResult()
+                        .setJobId(result.getValue().getJobId())
+                        .setAssignmentId(result.getValue().getAssignmentId())
+                        .setWorkerId(result.getValue().getWorkerId())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -737,17 +771,16 @@ public final class JobRouterAsyncClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> declineJobOffer(String workerId, String offerId) {
+    public Mono<Void> declineJobOffer(DeclineJobOfferOptions options) {
         try {
-            return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context)
+            return withContext(context -> declineJobOfferWithResponse(options, context)
                 .flatMap(
                     (Response<Void> res) -> {
                         if (res.getValue() != null) {
@@ -764,25 +797,25 @@ public final class JobRouterAsyncClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> declineJobOfferWithResponse(String workerId, String offerId) {
+    public Mono<Response<Void>> declineJobOfferWithResponse(DeclineJobOfferOptions options) {
         try {
-            return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context));
+            return withContext(context -> declineJobOfferWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
+    Mono<Response<Void>> declineJobOfferWithResponse(DeclineJobOfferOptions options, Context context) {
         try {
-            return jobRouter.declineJobActionWithResponseAsync(workerId, offerId, new DeclineJobOfferRequest(), context)
+            return jobRouter.declineJobActionWithResponseAsync(options.getWorkerId(), options.getOfferId(),
+                    new DeclineJobOfferRequest().setRetryOfferAt(options.getRetryOfferAt()), context)
                 .map(result -> new SimpleResponse<Void>(
                     result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
         } catch (RuntimeException ex) {
@@ -836,7 +869,13 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<RouterQueueStatistics>> getQueueStatisticsWithResponse(String id, Context context) {
         try {
-            return jobRouter.getQueueStatisticsWithResponseAsync(id, context);
+            return jobRouter.getQueueStatisticsWithResponseAsync(id, context)
+                .map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                    new RouterQueueStatistics()
+                        .setQueueId(result.getValue().getQueueId())
+                        .setLength(result.getValue().getLength())
+                        .setLongestJobWaitTimeMinutes(result.getValue().getLongestJobWaitTimeMinutes())
+                        .setEstimatedWaitTimeMinutes(result.getValue().getEstimatedWaitTimeMinutes())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -854,7 +893,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions) {
         try {
-            RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+            RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context)
                 .flatMap(
                     (Response<RouterWorker> res) -> {
@@ -881,7 +920,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions) {
         try {
-            RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+            RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -900,7 +939,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> updateWorker(UpdateWorkerOptions updateWorkerOptions) {
         try {
-            RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+            RouterWorkerInternal routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context)
                 .flatMap(
                     (Response<RouterWorker> res) -> {
@@ -927,16 +966,17 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> updateWorkerWithResponse(UpdateWorkerOptions updateWorkerOptions) {
         try {
-            RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+            RouterWorkerInternal routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
+    Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorkerInternal routerWorker, Context context) {
         try {
-            return jobRouter.upsertWorkerWithResponseAsync(id, routerWorker, context);
+            return jobRouter.upsertWorkerWithResponseAsync(id, routerWorker, context)
+                .map(response -> new SimpleResponse<>(response, RouterWorkerConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -988,7 +1028,8 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<RouterWorker>> getWorkerWithResponse(String id, Context context) {
         try {
-            return jobRouter.getWorkerWithResponseAsync(id, context);
+            return jobRouter.getWorkerWithResponseAsync(id, context)
+                .map(response -> new SimpleResponse<>(response, RouterWorkerConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1056,7 +1097,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterWorkerItem> listWorkers() {
         try {
-            return jobRouter.listWorkersAsync(null, null, null, null, null);
+            return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(null, null, null, null, null));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1074,11 +1115,12 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions) {
         try {
-            return jobRouter.listWorkersAsync(listWorkersOptions.getWorkerStateSelector(),
+            return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(
+                RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getState().toString()),
                 listWorkersOptions.getChannelId(),
                 listWorkersOptions.getQueueId(),
                 listWorkersOptions.getHasCapacity(),
-                listWorkersOptions.getMaxPageSize());
+                listWorkersOptions.getMaxPageSize()));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1086,12 +1128,13 @@ public final class JobRouterAsyncClient {
 
     PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions, Context context) {
         try {
-            return jobRouter.listWorkersAsync(listWorkersOptions.getWorkerStateSelector(),
+            return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(
+                RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getState().toString()),
                 listWorkersOptions.getChannelId(),
                 listWorkersOptions.getQueueId(),
                 listWorkersOptions.getHasCapacity(),
                 listWorkersOptions.getMaxPageSize(),
-                context);
+                context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

@@ -10,6 +10,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PipelinedDocumentQueryParams<T> {
     private int top = -1;
@@ -25,6 +26,7 @@ public class PipelinedDocumentQueryParams<T> {
     private CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final QueryInfo queryInfo;
     private final List<FeedRangeEpkImpl> feedRanges;
+    private final AtomicBoolean isQueryCancelledOnTimeout;
 
     public PipelinedDocumentQueryParams(
         ResourceType resourceTypeEnum,
@@ -38,7 +40,8 @@ public class PipelinedDocumentQueryParams<T> {
         QueryInfo queryInfo,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         UUID correlatedActivityId,
-        List<FeedRangeEpkImpl> feedRanges) {
+        List<FeedRangeEpkImpl> feedRanges,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         this.resourceTypeEnum = resourceTypeEnum;
         this.resourceType = resourceType;
@@ -52,6 +55,7 @@ public class PipelinedDocumentQueryParams<T> {
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         this.correlatedActivityId = correlatedActivityId;
         this.feedRanges = feedRanges;
+        this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
     }
 
     public int getTop() {
@@ -114,6 +118,10 @@ public class PipelinedDocumentQueryParams<T> {
         return feedRanges;
     }
 
+    public AtomicBoolean isQueryCancelledOnTimeout() {
+        return isQueryCancelledOnTimeout;
+    }
+
     public <TNew> PipelinedDocumentQueryParams<TNew> convertGenericType(Class<TNew> tNew) {
         return new PipelinedDocumentQueryParams<>(
             this.resourceTypeEnum,
@@ -127,6 +135,7 @@ public class PipelinedDocumentQueryParams<T> {
             this.queryInfo,
             this.cosmosQueryRequestOptions,
             this.correlatedActivityId,
-            this.feedRanges);
+            this.feedRanges,
+            this.isQueryCancelledOnTimeout);
     }
 }

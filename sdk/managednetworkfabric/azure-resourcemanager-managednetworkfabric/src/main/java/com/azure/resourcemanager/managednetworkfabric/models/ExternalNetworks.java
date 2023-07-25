@@ -16,13 +16,13 @@ public interface ExternalNetworks {
      * <p>Implements ExternalNetworks GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item along with {@link Response}.
+     * @return defines the External Network resource along with {@link Response}.
      */
     Response<ExternalNetwork> getWithResponse(
         String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context);
@@ -33,12 +33,12 @@ public interface ExternalNetworks {
      * <p>Implements ExternalNetworks GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item.
+     * @return defines the External Network resource.
      */
     ExternalNetwork get(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName);
 
@@ -48,8 +48,8 @@ public interface ExternalNetworks {
      * <p>Implements ExternalNetworks DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -62,8 +62,8 @@ public interface ExternalNetworks {
      * <p>Implements ExternalNetworks DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,13 +77,13 @@ public interface ExternalNetworks {
      * <p>Implements External Networks list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExternalNetworks as paginated response with {@link PagedIterable}.
+     * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ExternalNetwork> list(String resourceGroupName, String l3IsolationDomainName);
+    PagedIterable<ExternalNetwork> listByL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName);
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
@@ -91,14 +91,15 @@ public interface ExternalNetworks {
      * <p>Implements External Networks list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExternalNetworks as paginated response with {@link PagedIterable}.
+     * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ExternalNetwork> list(String resourceGroupName, String l3IsolationDomainName, Context context);
+    PagedIterable<ExternalNetwork> listByL3IsolationDomain(
+        String resourceGroupName, String l3IsolationDomainName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -106,14 +107,15 @@ public interface ExternalNetworks {
      * <p>Executes update operation to enable or disable administrative State for externalNetwork.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateAdministrativeState(
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
@@ -125,15 +127,16 @@ public interface ExternalNetworks {
      * <p>Executes update operation to enable or disable administrative State for externalNetwork.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateAdministrativeState(
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
@@ -141,163 +144,45 @@ public interface ExternalNetworks {
         Context context);
 
     /**
-     * Executes BGP state update operation to the underlying resources.
+     * Executes Static Route BFD state update operation to the underlying resources.
      *
-     * <p>Update BGP for externalNetwork.
+     * <p>Update Static Route BFD for external Network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBgpAdministrativeState(
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body);
 
     /**
-     * Executes BGP state update operation to the underlying resources.
+     * Executes Static Route BFD state update operation to the underlying resources.
      *
-     * <p>Update BGP for externalNetwork.
+     * <p>Update Static Route BFD for external Network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBgpAdministrativeState(
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
-        Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
         Context context);
 
     /**
@@ -309,7 +194,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item along with {@link Response}.
+     * @return defines the External Network resource along with {@link Response}.
      */
     ExternalNetwork getById(String id);
 
@@ -323,7 +208,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item along with {@link Response}.
+     * @return defines the External Network resource along with {@link Response}.
      */
     Response<ExternalNetwork> getByIdWithResponse(String id, Context context);
 

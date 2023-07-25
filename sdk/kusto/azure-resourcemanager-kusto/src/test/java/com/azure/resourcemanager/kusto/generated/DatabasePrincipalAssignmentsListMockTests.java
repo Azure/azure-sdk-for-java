@@ -34,7 +34,7 @@ public final class DatabasePrincipalAssignmentsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"principalId\":\"qxfuojrngif\",\"role\":\"Ingestor\",\"tenantId\":\"pasccbi\",\"principalType\":\"App\",\"tenantName\":\"zdlyjdfqw\",\"principalName\":\"yoqufdvruz\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"j\"},\"id\":\"pctf\",\"name\":\"mdxotngfdgu\",\"type\":\"eyzihgrky\"}]}";
+            "{\"value\":[{\"properties\":{\"principalId\":\"apqofyuicdhz\",\"role\":\"Viewer\",\"tenantId\":\"bwwg\",\"principalType\":\"App\",\"tenantName\":\"ibidmhmwffp\",\"principalName\":\"muvapc\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"rv\"},\"id\":\"eyoxoyyukphai\",\"name\":\"moiroqb\",\"type\":\"shbraga\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,13 @@ public final class DatabasePrincipalAssignmentsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatabasePrincipalAssignment> response =
-            manager.databasePrincipalAssignments().list("qqoli", "r", "aiouaubrjt", com.azure.core.util.Context.NONE);
+            manager
+                .databasePrincipalAssignments()
+                .list("hrdd", "tfgxqbawpcb", "nzqcy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qxfuojrngif", response.iterator().next().principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.iterator().next().role());
-        Assertions.assertEquals("pasccbi", response.iterator().next().tenantId());
+        Assertions.assertEquals("apqofyuicdhz", response.iterator().next().principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, response.iterator().next().role());
+        Assertions.assertEquals("bwwg", response.iterator().next().tenantId());
         Assertions.assertEquals(PrincipalType.APP, response.iterator().next().principalType());
     }
 }

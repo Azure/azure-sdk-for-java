@@ -13,7 +13,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import java.io.ByteArrayOutputStream;
@@ -24,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /** The base for storage manager tests. */
-public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
+public abstract class GraphRbacManagementTest extends ResourceManagerTestProxyTestBase {
     protected AuthorizationManager authorizationManager;
     protected ResourceManager resourceManager;
 

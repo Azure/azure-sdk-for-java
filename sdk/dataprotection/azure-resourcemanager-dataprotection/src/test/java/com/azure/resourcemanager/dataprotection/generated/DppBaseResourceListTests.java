@@ -16,9 +16,9 @@ public final class DppBaseResourceListTests {
         DppBaseResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"jfqka\",\"name\":\"wiipfpub\",\"type\":\"bwwift\"},{\"id\":\"qkvpuvksgplsakn\",\"name\":\"fsynljphuop\",\"type\":\"dlqiyntorzih\"}],\"nextLink\":\"osjswsr\"}")
+                    "{\"value\":[{\"id\":\"ximerqfobwyznk\",\"name\":\"kutwpf\",\"type\":\"a\"},{\"id\":\"hrskdsnfd\",\"name\":\"oakgtdlmkkzev\",\"type\":\"hewpusdsttwv\"}],\"nextLink\":\"vbbejdcng\"}")
                 .toObject(DppBaseResourceList.class);
-        Assertions.assertEquals("osjswsr", model.nextLink());
+        Assertions.assertEquals("vbbejdcng", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,8 +26,8 @@ public final class DppBaseResourceListTests {
         DppBaseResourceList model =
             new DppBaseResourceList()
                 .withValue(Arrays.asList(new DppBaseResourceInner(), new DppBaseResourceInner()))
-                .withNextLink("osjswsr");
+                .withNextLink("vbbejdcng");
         model = BinaryData.fromObject(model).toObject(DppBaseResourceList.class);
-        Assertions.assertEquals("osjswsr", model.nextLink());
+        Assertions.assertEquals("vbbejdcng", model.nextLink());
     }
 }

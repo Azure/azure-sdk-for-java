@@ -31,7 +31,7 @@ public final class OperationStatusResourceGroupContextsGetByResourceGroupWithRes
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"endTime\":\"2021-04-05T04:42:26Z\",\"id\":\"iqndieuzaofj\",\"name\":\"vcyy\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-05-03T11:29:59Z\",\"status\":\"otcubi\"}";
+            "{\"endTime\":\"2021-06-09T05:24:22Z\",\"id\":\"ulxunsmjbnkpp\",\"name\":\"nenlsvxeizzg\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-09-02T06:11:57Z\",\"status\":\"rmffeyc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class OperationStatusResourceGroupContextsGetByResourceGroupWithRes
         OperationResource response =
             manager
                 .operationStatusResourceGroupContexts()
-                .getByResourceGroupWithResponse("omi", "ox", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("vxevblb", "ednljl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T04:42:26Z"), response.endTime());
-        Assertions.assertEquals("iqndieuzaofj", response.id());
-        Assertions.assertEquals("vcyy", response.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T11:29:59Z"), response.startTime());
-        Assertions.assertEquals("otcubi", response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T05:24:22Z"), response.endTime());
+        Assertions.assertEquals("ulxunsmjbnkpp", response.id());
+        Assertions.assertEquals("nenlsvxeizzg", response.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T06:11:57Z"), response.startTime());
+        Assertions.assertEquals("rmffeyc", response.status());
     }
 }

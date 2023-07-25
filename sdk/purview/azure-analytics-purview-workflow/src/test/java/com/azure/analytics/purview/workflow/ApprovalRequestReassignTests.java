@@ -13,13 +13,12 @@ import org.junit.jupiter.api.Test;
 public final class ApprovalRequestReassignTests extends PurviewWorkflowClientTestBase {
     @Test
     public void testApprovalRequestReassignTests() {
-        BinaryData reassignCommand =
-                BinaryData.fromString(
-                        "{\"reassignments\":[{\"reassignFrom\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"reassignTo\":\"7645223c-cdca-43e9-98c8-bd4d97e79e5e\"}]}");
+        BinaryData reassignCommand = BinaryData.fromString(
+            "{\"reassignments\":[{\"reassignFrom\":\"285c34a9-c3d0-4a53-8eed-e2e3eaecb662\",\"reassignTo\":\"ed67245e-fa55-48a4-8cbd-dc4b97e146ab\"}]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.reassignWorkflowTaskWithResponse(
-                        "5b2ae679-13d3-4a50-9938-582eba7bf716", reassignCommand, requestOptions);
+                        "db95ce8c-4afd-404b-ac69-3be8794c5655", reassignCommand, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

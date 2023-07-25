@@ -6,9 +6,8 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,12 +20,6 @@ public final class NetworkInterfaceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties", required = true)
     private NetworkInterfaceProperties innerProperties = new NetworkInterfaceProperties();
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /** Creates an instance of NetworkInterfaceInner class. */
     public NetworkInterfaceInner() {
@@ -42,16 +35,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the physicalIdentifier property: physicalIdentifier of the network interface.
+     * Get the physicalIdentifier property: Physical Identifier of the network interface.
      *
      * @return the physicalIdentifier value.
      */
@@ -60,25 +44,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
     }
 
     /**
-     * Get the administrativeState property: administrativeState of the network interface. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the connectedTo property: The arm resource id of the interface or compute server its connected to.
+     * Get the connectedTo property: The ARM resource id of the interface or compute server its connected to.
      *
      * @return the connectedTo value.
      */
@@ -96,7 +62,7 @@ public final class NetworkInterfaceInner extends ProxyResource {
     }
 
     /**
-     * Get the ipv4Address property: ipv4Address.
+     * Get the ipv4Address property: IPv4Address of the interface.
      *
      * @return the ipv4Address value.
      */
@@ -105,12 +71,30 @@ public final class NetworkInterfaceInner extends ProxyResource {
     }
 
     /**
-     * Get the ipv6Address property: ipv6Address.
+     * Get the ipv6Address property: IPv6Address of the interface.
      *
      * @return the ipv6Address value.
      */
     public String ipv6Address() {
         return this.innerProperties() == null ? null : this.innerProperties().ipv6Address();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
     }
 
     /**

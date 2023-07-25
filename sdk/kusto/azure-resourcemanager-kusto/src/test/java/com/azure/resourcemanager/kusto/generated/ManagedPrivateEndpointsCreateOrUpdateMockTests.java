@@ -31,7 +31,7 @@ public final class ManagedPrivateEndpointsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateLinkResourceId\":\"pmjerbdkelvidiz\",\"privateLinkResourceRegion\":\"sdbccxjmonfdgnwn\",\"groupId\":\"ypuuwwltvuqjctze\",\"requestMessage\":\"eifzzhmk\",\"provisioningState\":\"Succeeded\"},\"id\":\"flyh\",\"name\":\"xcudchxgsr\",\"type\":\"oldforobw\"}";
+            "{\"properties\":{\"privateLinkResourceId\":\"fuijtkbus\",\"privateLinkResourceRegion\":\"gsfikayiansha\",\"groupId\":\"ujtjiqxfz\",\"requestMessage\":\"qttv\",\"provisioningState\":\"Succeeded\"},\"id\":\"hjpenuygbq\",\"name\":\"qqekewvnqvcdlgu\",\"type\":\"ucmfdj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,17 +62,17 @@ public final class ManagedPrivateEndpointsCreateOrUpdateMockTests {
         ManagedPrivateEndpoint response =
             manager
                 .managedPrivateEndpoints()
-                .define("qvwre")
-                .withExistingCluster("hcz", "xrxzbujrtr")
-                .withPrivateLinkResourceId("h")
-                .withPrivateLinkResourceRegion("lnzonzlrpiqywn")
-                .withGroupId("vjtszcofize")
-                .withRequestMessage("dhgbjkvre")
+                .define("oebn")
+                .withExistingCluster("kjbsah", "tdtpdelqacslmo")
+                .withPrivateLinkResourceId("o")
+                .withPrivateLinkResourceRegion("cjkgdirazftxej")
+                .withGroupId("ab")
+                .withRequestMessage("ujtmvcopexcmjurb")
                 .create();
 
-        Assertions.assertEquals("pmjerbdkelvidiz", response.privateLinkResourceId());
-        Assertions.assertEquals("sdbccxjmonfdgnwn", response.privateLinkResourceRegion());
-        Assertions.assertEquals("ypuuwwltvuqjctze", response.groupId());
-        Assertions.assertEquals("eifzzhmk", response.requestMessage());
+        Assertions.assertEquals("fuijtkbus", response.privateLinkResourceId());
+        Assertions.assertEquals("gsfikayiansha", response.privateLinkResourceRegion());
+        Assertions.assertEquals("ujtjiqxfz", response.groupId());
+        Assertions.assertEquals("qttv", response.requestMessage());
     }
 }

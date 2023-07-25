@@ -9,35 +9,34 @@ import com.azure.resourcemanager.hdinsight.models.VersionSpec;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VersionSpecTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VersionSpec model =
             BinaryData
                 .fromString(
-                    "{\"friendlyName\":\"rdvstkwqqtch\",\"displayName\":\"lmfmtdaay\",\"isDefault\":false,\"componentVersions\":{\"xg\":\"gpiohgwxrtfudxe\",\"pkukghi\":\"qagvrvm\",\"wi\":\"dblx\"}}")
+                    "{\"friendlyName\":\"ncwsob\",\"displayName\":\"csdbnwdcfhuc\",\"isDefault\":true,\"componentVersions\":{\"vxb\":\"vglsbjjca\",\"udutnco\":\"t\",\"xqtvcofu\":\"mr\",\"vkg\":\"f\"}}")
                 .toObject(VersionSpec.class);
-        Assertions.assertEquals("rdvstkwqqtch", model.friendlyName());
-        Assertions.assertEquals("lmfmtdaay", model.displayName());
-        Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.componentVersions().get("xg"));
+        Assertions.assertEquals("ncwsob", model.friendlyName());
+        Assertions.assertEquals("csdbnwdcfhuc", model.displayName());
+        Assertions.assertEquals(true, model.isDefault());
+        Assertions.assertEquals("vglsbjjca", model.componentVersions().get("vxb"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VersionSpec model =
             new VersionSpec()
-                .withFriendlyName("rdvstkwqqtch")
-                .withDisplayName("lmfmtdaay")
-                .withIsDefault(false)
-                .withComponentVersions(mapOf("xg", "gpiohgwxrtfudxe", "pkukghi", "qagvrvm", "wi", "dblx"));
+                .withFriendlyName("ncwsob")
+                .withDisplayName("csdbnwdcfhuc")
+                .withIsDefault(true)
+                .withComponentVersions(mapOf("vxb", "vglsbjjca", "udutnco", "t", "xqtvcofu", "mr", "vkg", "f"));
         model = BinaryData.fromObject(model).toObject(VersionSpec.class);
-        Assertions.assertEquals("rdvstkwqqtch", model.friendlyName());
-        Assertions.assertEquals("lmfmtdaay", model.displayName());
-        Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.componentVersions().get("xg"));
+        Assertions.assertEquals("ncwsob", model.friendlyName());
+        Assertions.assertEquals("csdbnwdcfhuc", model.displayName());
+        Assertions.assertEquals(true, model.isDefault());
+        Assertions.assertEquals("vglsbjjca", model.componentVersions().get("vxb"));
     }
 
     @SuppressWarnings("unchecked")
