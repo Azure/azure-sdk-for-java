@@ -63,6 +63,6 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
             eventHubProducerAsyncClient.close();
             eventHubProducerClient.close();
             return Mono.empty();
-        }).timeout(Duration.ofSeconds(30)).then(super.cleanupAsync()).timeout(Duration.ofSeconds(30)).then();
+        }).take(Duration.ofSeconds(30)).then(super.cleanupAsync()).take(Duration.ofSeconds(30)).then();
     }
 }
