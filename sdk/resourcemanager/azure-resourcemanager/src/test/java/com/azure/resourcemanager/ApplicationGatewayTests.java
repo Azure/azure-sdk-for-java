@@ -18,6 +18,8 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpCon
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendServerHealth;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOperationalState;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRule;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
@@ -170,6 +172,8 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
                     .toBackend("nicBackend")
                     .attach()
                     .withExistingSubnet(network.subnets().get("subnet1")) // Backend for connecting the VMs via NICs
+                    .withTier(ApplicationGatewayTier.WAF_V2)
+                    .withSize(ApplicationGatewaySkuName.WAF_V2)
                     .create();
 
             // Connect the 1st VM via NIC IP config
@@ -290,7 +294,6 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
                 .define(name)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
                 .fromPrivateFrontend()
@@ -299,6 +302,8 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
                 .toBackendIPAddress("11.1.1.1")
                 .toBackendIPAddress("11.1.1.2")
                 .attach()
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
                 .create();
 
         // Test stop/start
@@ -330,7 +335,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
                     .toBackendHttpPort(8080)
                     .toBackendIPAddress("10.0.0.1")
                     .toBackendIPAddress("10.0.0.2")
-                    .attach());
+                    .attach()
+                    .withTier(ApplicationGatewayTier.WAF_V2)
+                    .withSize(ApplicationGatewaySkuName.WAF_V2));
 
         agCreatables
             .add(
@@ -345,7 +352,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
                     .toBackendHttpPort(8080)
                     .toBackendIPAddress("10.0.0.3")
                     .toBackendIPAddress("10.0.0.4")
-                    .attach());
+                    .attach()
+                    .withTier(ApplicationGatewayTier.WAF_V2)
+                    .withSize(ApplicationGatewaySkuName.WAF_V2));
 
         CreatedResources<ApplicationGateway> created = azureResourceManager.applicationGateways().create(agCreatables);
         List<ApplicationGateway> ags = new ArrayList<>();

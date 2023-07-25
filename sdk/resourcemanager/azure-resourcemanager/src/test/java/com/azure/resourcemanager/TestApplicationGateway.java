@@ -93,6 +93,8 @@ public class TestApplicationGateway {
                                 .toBackendIPAddress("11.1.1.1")
                                 .toBackendIPAddress("11.1.1.2")
                                 .attach()
+                                .withTier(ApplicationGatewayTier.WAF_V2)
+                                .withSize(ApplicationGatewaySkuName.WAF_V2)
                                 .create();
                         }
                     });
@@ -106,8 +108,8 @@ public class TestApplicationGateway {
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
             Assertions.assertTrue(appGateway != null);
-            Assertions.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
-            Assertions.assertTrue(ApplicationGatewaySkuName.STANDARD_SMALL.equals(appGateway.size()));
+            Assertions.assertTrue(ApplicationGatewayTier.WAF_V2.equals(appGateway.tier()));
+            Assertions.assertTrue(ApplicationGatewaySkuName.WAF_V2.equals(appGateway.size()));
             Assertions.assertTrue(appGateway.instanceCount() == 1);
 
             // Verify frontend ports
