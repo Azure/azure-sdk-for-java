@@ -45,7 +45,7 @@ public class CloudEventTests {
     public void testRoundTripCloudEvents() throws IOException {
         final String cloudEventJson = getTestPayloadFromFile("CloudEventDifferentDataTypes.json");
         final CloudEvent cloudEvent = CloudEvent.fromString(cloudEventJson).get(0);
-        final Map<String, Object> map = new HashMap<>() {
+        final Map<String, Object> map = new HashMap<String, Object>() {
             {
                 put("str", "str value");
                 put("number", 1.3);
@@ -98,7 +98,7 @@ public class CloudEventTests {
             assertEquals("application/json", cloudEvent2.getDataContentType());
 
             final BinaryData data2 = cloudEvent.getData();
-            final Map<String, Object> deserializedData2 = data2.toObject(new TypeReference<>() {
+            final Map<String, Object> deserializedData2 = data2.toObject(new TypeReference<Map<String, Object>>() {
             }, SERIALIZER);
 
             // Check if the original map matches the deserialized data map from the serialized String
@@ -231,7 +231,7 @@ public class CloudEventTests {
 
     @Test
     public void serializeJsonData() throws IOException {
-        final Map<String, Object> mapData = new HashMap<>() {
+        final Map<String, Object> mapData = new HashMap<String, Object>() {
             {
                 put("Field1", "Value1");
                 put("Field2", "Value2");
@@ -256,7 +256,7 @@ public class CloudEventTests {
 
     @Test
     public void serializeJsonDataWithObjectMapper() throws IOException {
-        final Map<String, Object> mapData = new HashMap<>() {
+        final Map<String, Object> mapData = new HashMap<String, Object>() {
             {
                 put("Field1", "Value1");
                 put("Field2", "Value2");
@@ -374,7 +374,7 @@ public class CloudEventTests {
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals("{\"foo\":\"value\"}", deserializedCloudEvent.getData().toString());
             final Map<String, String> deserializedMap = deserializedCloudEvent.getData().toObject(
-                new TypeReference<>() {
+                new TypeReference<Map<String, String>>() {
 
                 }, SERIALIZER);
             assertEquals("value", deserializedMap.get("foo"));
