@@ -35,7 +35,7 @@ public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
      * @param bean a bean
      * @param beanName name of the bean
      * @return a bean
-     * @throws BeansException
+     * @throws BeansException  a bean exception
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
