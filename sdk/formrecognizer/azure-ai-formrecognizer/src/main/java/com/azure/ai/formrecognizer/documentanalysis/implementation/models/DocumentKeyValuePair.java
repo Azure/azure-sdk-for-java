@@ -4,12 +4,11 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object representing a form field with distinct field label (key) and field value (may be empty). */
-@Immutable
+@Fluent
 public final class DocumentKeyValuePair {
     /*
      * Field label of the key-value pair.
@@ -29,19 +28,8 @@ public final class DocumentKeyValuePair {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /**
-     * Creates an instance of DocumentKeyValuePair class.
-     *
-     * @param key the key value to set.
-     * @param confidence the confidence value to set.
-     */
-    @JsonCreator
-    private DocumentKeyValuePair(
-            @JsonProperty(value = "key", required = true) DocumentKeyValueElement key,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
-        this.key = key;
-        this.confidence = confidence;
-    }
+    /** Creates an instance of DocumentKeyValuePair class. */
+    public DocumentKeyValuePair() {}
 
     /**
      * Get the key property: Field label of the key-value pair.
@@ -50,6 +38,17 @@ public final class DocumentKeyValuePair {
      */
     public DocumentKeyValueElement getKey() {
         return this.key;
+    }
+
+    /**
+     * Set the key property: Field label of the key-value pair.
+     *
+     * @param key the key value to set.
+     * @return the DocumentKeyValuePair object itself.
+     */
+    public DocumentKeyValuePair setKey(DocumentKeyValueElement key) {
+        this.key = key;
+        return this;
     }
 
     /**
@@ -62,11 +61,33 @@ public final class DocumentKeyValuePair {
     }
 
     /**
+     * Set the value property: Field value of the key-value pair.
+     *
+     * @param value the value value to set.
+     * @return the DocumentKeyValuePair object itself.
+     */
+    public DocumentKeyValuePair setValue(DocumentKeyValueElement value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
      * Get the confidence property: Confidence of correctly extracting the key-value pair.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * Set the confidence property: Confidence of correctly extracting the key-value pair.
+     *
+     * @param confidence the confidence value to set.
+     * @return the DocumentKeyValuePair object itself.
+     */
+    public DocumentKeyValuePair setConfidence(float confidence) {
+        this.confidence = confidence;
+        return this;
     }
 }

@@ -21,6 +21,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -61,13 +62,26 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
+     */
+    public void useAzureKeyCredentialDocumentModelAdministrationClient() {
+        // BEGIN: readme-sample-createDocumentModelAdministrationClient
+        DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildClient();
+        // END: readme-sample-createDocumentModelAdministrationClient
+    }
+
+    /**
      * Code snippet for getting async client using AAD authentication.
      */
-    public void useAadClient() {
+    public void useAadAsyncClient() {
         // BEGIN: readme-sample-createDocumentAnalysisClientWithAAD
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(credential)
             .buildClient();
         // END: readme-sample-createDocumentAnalysisClientWithAAD
     }
@@ -82,7 +96,7 @@ public class ReadmeSamples {
         // analyze document layout using file input stream
         File layoutDocument = new File("local/file_path/filename.png");
         Path filePath = layoutDocument.toPath();
-        BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
+        BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
             documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
@@ -444,24 +458,13 @@ public class ReadmeSamples {
      * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
      */
     public void enableLoggingDocumentAnalysisClient() {
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         // BEGIN: readme-sample-enablehttplogging
         DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
             .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(defaultCredential)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         // END: readme-sample-enablehttplogging
-    }
-
-    public void beginClassifyDocumentFromUrl() throws IOException {
-        // BEGIN: readme-sample-classifyDocument
-        String documentUrl = "{file_source_url}";
-        String classifierId = "{custom_trained_classifier_id}";
-
-        documentAnalysisClient.beginClassifyDocumentFromUrl(classifierId, documentUrl, Context.NONE)
-            .getFinalResult()
-            .getDocuments()
-            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
-        // END: readme-sample-classifyDocument
     }
 }

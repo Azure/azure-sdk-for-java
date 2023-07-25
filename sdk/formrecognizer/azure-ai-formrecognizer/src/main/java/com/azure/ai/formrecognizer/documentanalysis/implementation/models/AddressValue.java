@@ -4,11 +4,11 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Address field value. */
-@Immutable
+@Fluent
 public final class AddressValue {
     /*
      * House or building number.
@@ -58,44 +58,8 @@ public final class AddressValue {
     @JsonProperty(value = "streetAddress")
     private String streetAddress;
 
-    /*
-     * Apartment or office number
-     */
-    @JsonProperty(value = "unit")
-    private String unit;
-
-    /*
-     * Districts or boroughs within a city, such as Brooklyn in New York City or City of Westminster in London.
-     */
-    @JsonProperty(value = "cityDistrict")
-    private String cityDistrict;
-
-    /*
-     * Second-level administrative division used in certain locales.
-     */
-    @JsonProperty(value = "stateDistrict")
-    private String stateDistrict;
-
-    /*
-     * Unofficial neighborhood name, like Chinatown.
-     */
-    @JsonProperty(value = "suburb")
-    private String suburb;
-
-    /*
-     * Build name, such as World Trade Center.
-     */
-    @JsonProperty(value = "house")
-    private String house;
-
-    /*
-     * Floor number, such as 3F.
-     */
-    @JsonProperty(value = "level")
-    private String level;
-
     /** Creates an instance of AddressValue class. */
-    private AddressValue() {}
+    public AddressValue() {}
 
     /**
      * Get the houseNumber property: House or building number.
@@ -104,6 +68,17 @@ public final class AddressValue {
      */
     public String getHouseNumber() {
         return this.houseNumber;
+    }
+
+    /**
+     * Set the houseNumber property: House or building number.
+     *
+     * @param houseNumber the houseNumber value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+        return this;
     }
 
     /**
@@ -116,12 +91,34 @@ public final class AddressValue {
     }
 
     /**
+     * Set the poBox property: Post office box number.
+     *
+     * @param poBox the poBox value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setPoBox(String poBox) {
+        this.poBox = poBox;
+        return this;
+    }
+
+    /**
      * Get the road property: Street name.
      *
      * @return the road value.
      */
     public String getRoad() {
         return this.road;
+    }
+
+    /**
+     * Set the road property: Street name.
+     *
+     * @param road the road value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setRoad(String road) {
+        this.road = road;
+        return this;
     }
 
     /**
@@ -134,12 +131,34 @@ public final class AddressValue {
     }
 
     /**
+     * Set the city property: Name of city, town, village, etc.
+     *
+     * @param city the city value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setCity(String city) {
+        this.city = city;
+        return this;
+    }
+
+    /**
      * Get the state property: First-level administrative division.
      *
      * @return the state value.
      */
     public String getState() {
         return this.state;
+    }
+
+    /**
+     * Set the state property: First-level administrative division.
+     *
+     * @param state the state value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setState(String state) {
+        this.state = state;
+        return this;
     }
 
     /**
@@ -152,12 +171,34 @@ public final class AddressValue {
     }
 
     /**
+     * Set the postalCode property: Postal code used for mail sorting.
+     *
+     * @param postalCode the postalCode value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+        return this;
+    }
+
+    /**
      * Get the countryRegion property: Country/region.
      *
      * @return the countryRegion value.
      */
     public String getCountryRegion() {
         return this.countryRegion;
+    }
+
+    /**
+     * Set the countryRegion property: Country/region.
+     *
+     * @param countryRegion the countryRegion value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setCountryRegion(String countryRegion) {
+        this.countryRegion = countryRegion;
+        return this;
     }
 
     /**
@@ -170,57 +211,13 @@ public final class AddressValue {
     }
 
     /**
-     * Get the unit property: Apartment or office number.
+     * Set the streetAddress property: Street-level address, excluding city, state, countryRegion, and postalCode.
      *
-     * @return the unit value.
+     * @param streetAddress the streetAddress value to set.
+     * @return the AddressValue object itself.
      */
-    public String getUnit() {
-        return this.unit;
-    }
-
-    /**
-     * Get the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City of
-     * Westminster in London.
-     *
-     * @return the cityDistrict value.
-     */
-    public String getCityDistrict() {
-        return this.cityDistrict;
-    }
-
-    /**
-     * Get the stateDistrict property: Second-level administrative division used in certain locales.
-     *
-     * @return the stateDistrict value.
-     */
-    public String getStateDistrict() {
-        return this.stateDistrict;
-    }
-
-    /**
-     * Get the suburb property: Unofficial neighborhood name, like Chinatown.
-     *
-     * @return the suburb value.
-     */
-    public String getSuburb() {
-        return this.suburb;
-    }
-
-    /**
-     * Get the house property: Build name, such as World Trade Center.
-     *
-     * @return the house value.
-     */
-    public String getHouse() {
-        return this.house;
-    }
-
-    /**
-     * Get the level property: Floor number, such as 3F.
-     *
-     * @return the level value.
-     */
-    public String getLevel() {
-        return this.level;
+    public AddressValue setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+        return this;
     }
 }

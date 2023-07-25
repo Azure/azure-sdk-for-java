@@ -61,18 +61,8 @@ public final class DocumentPage {
      */
     private List<DocumentLine> lines;
 
-    /*
-     * Extracted barcodes from the page.
-     */
-    private List<DocumentBarcode> barcodes;
-
-    /*
-     * Extracted formulas from the page.
-     */
-    private List<DocumentFormula> formulas;
-
     /**
-     * Get the 1-based page number in the input document.
+     * Get the pageNumber property: 1-based page number in the input document.
      *
      * @return the pageNumber value.
      */
@@ -91,7 +81,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the general orientation of the content in clockwise direction, measured in degrees
+     * Get the angle property: The general orientation of the content in clockwise direction, measured in degrees
      * between (-180, 180].
      *
      * @return the angle value.
@@ -112,7 +102,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the width of the image/PDF in pixels/inches, respectively.
+     * Get the width property: The width of the image/PDF in pixels/inches, respectively.
      *
      * @return the width value.
      */
@@ -131,7 +121,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the height of the image/PDF in pixels/inches, respectively.
+     * Get the height property: The height of the image/PDF in pixels/inches, respectively.
      *
      * @return the height value.
      */
@@ -150,7 +140,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the unit used by the width, height, and boundingBox properties. For images, the unit is
+     * Get the unit property: The unit used by the width, height, and boundingBox properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
      *
      * @return the unit value.
@@ -171,7 +161,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the location of the page in the reading order concatenated content.
+     * Get the spans property: Location of the page in the reading order concatenated content.
      *
      * @return the spans value.
      */
@@ -190,7 +180,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the extracted words from the page.
+     * Get the words property: Extracted words from the page.
      *
      * @return the words value.
      */
@@ -209,7 +199,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the extracted selection marks from the page.
+     * Get the selectionMarks property: Extracted selection marks from the page.
      *
      * @return the selectionMarks value.
      */
@@ -228,7 +218,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the extracted lines from the page, potentially containing both textual and visual elements.
+     * Get the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
      *
      * @return the lines value.
      */
@@ -244,44 +234,6 @@ public final class DocumentPage {
      */
     private void setLines(List<DocumentLine> lines) {
         this.lines = lines;
-    }
-
-    /**
-     * Get the extracted barcodes from the page.
-     *
-     * @return the barcodes value.
-     */
-    public List<DocumentBarcode> getBarcodes() {
-        return this.barcodes;
-    }
-
-    /**
-     * Set the barcodes property: Extracted barcodes from the page.
-     *
-     * @param barcodes the barcodes value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setBarcodes(List<DocumentBarcode> barcodes) {
-        this.barcodes = barcodes;
-    }
-
-    /**
-     * Get the extracted formulas from the page.
-     *
-     * @return the formulas value.
-     */
-    public List<DocumentFormula> getFormulas() {
-        return this.formulas;
-    }
-
-    /**
-     * Set the formulas property: Extracted formulas from the page.
-     *
-     * @param formulas the formulas value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setFormulas(List<DocumentFormula> formulas) {
-        this.formulas = formulas;
     }
 
     static {
@@ -329,16 +281,6 @@ public final class DocumentPage {
             @Override
             public void setLines(DocumentPage documentPage, List<DocumentLine> lines) {
                 documentPage.setLines(lines);
-            }
-
-            @Override
-            public void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas) {
-                documentPage.setFormulas(formulas);
-            }
-
-            @Override
-            public void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
-                documentPage.setBarcodes(barcodes);
             }
         });
     }

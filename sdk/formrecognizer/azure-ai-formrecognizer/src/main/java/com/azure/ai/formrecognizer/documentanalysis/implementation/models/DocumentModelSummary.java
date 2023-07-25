@@ -4,14 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Document model summary. */
-@Immutable
+@Fluent
 public final class DocumentModelSummary {
     /*
      * Unique document model name.
@@ -32,12 +31,6 @@ public final class DocumentModelSummary {
     private OffsetDateTime createdDateTime;
 
     /*
-     * Date and time (UTC) when the document model will expire.
-     */
-    @JsonProperty(value = "expirationDateTime")
-    private OffsetDateTime expirationDateTime;
-
-    /*
      * API version used to create this document model.
      */
     @JsonProperty(value = "apiVersion")
@@ -49,19 +42,8 @@ public final class DocumentModelSummary {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of DocumentModelSummary class.
-     *
-     * @param modelId the modelId value to set.
-     * @param createdDateTime the createdDateTime value to set.
-     */
-    @JsonCreator
-    private DocumentModelSummary(
-            @JsonProperty(value = "modelId", required = true) String modelId,
-            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime) {
-        this.modelId = modelId;
-        this.createdDateTime = createdDateTime;
-    }
+    /** Creates an instance of DocumentModelSummary class. */
+    public DocumentModelSummary() {}
 
     /**
      * Get the modelId property: Unique document model name.
@@ -70,6 +52,17 @@ public final class DocumentModelSummary {
      */
     public String getModelId() {
         return this.modelId;
+    }
+
+    /**
+     * Set the modelId property: Unique document model name.
+     *
+     * @param modelId the modelId value to set.
+     * @return the DocumentModelSummary object itself.
+     */
+    public DocumentModelSummary setModelId(String modelId) {
+        this.modelId = modelId;
+        return this;
     }
 
     /**
@@ -82,6 +75,17 @@ public final class DocumentModelSummary {
     }
 
     /**
+     * Set the description property: Document model description.
+     *
+     * @param description the description value to set.
+     * @return the DocumentModelSummary object itself.
+     */
+    public DocumentModelSummary setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Get the createdDateTime property: Date and time (UTC) when the document model was created.
      *
      * @return the createdDateTime value.
@@ -91,12 +95,14 @@ public final class DocumentModelSummary {
     }
 
     /**
-     * Get the expirationDateTime property: Date and time (UTC) when the document model will expire.
+     * Set the createdDateTime property: Date and time (UTC) when the document model was created.
      *
-     * @return the expirationDateTime value.
+     * @param createdDateTime the createdDateTime value to set.
+     * @return the DocumentModelSummary object itself.
      */
-    public OffsetDateTime getExpirationDateTime() {
-        return this.expirationDateTime;
+    public DocumentModelSummary setCreatedDateTime(OffsetDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+        return this;
     }
 
     /**
@@ -109,11 +115,33 @@ public final class DocumentModelSummary {
     }
 
     /**
+     * Set the apiVersion property: API version used to create this document model.
+     *
+     * @param apiVersion the apiVersion value to set.
+     * @return the DocumentModelSummary object itself.
+     */
+    public DocumentModelSummary setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
      *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Set the tags property: List of key-value tag attributes associated with the document model.
+     *
+     * @param tags the tags value to set.
+     * @return the DocumentModelSummary object itself.
+     */
+    public DocumentModelSummary setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 }

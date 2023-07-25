@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.documentanalysis;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
@@ -16,8 +15,10 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -30,6 +31,7 @@ import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.InputStream;
@@ -37,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -91,8 +94,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
@@ -101,13 +102,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getTestProxySanitizers());
-        }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 
@@ -122,7 +119,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .audience(audience);
@@ -134,23 +131,22 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new MockTokenCredential());
+                builder.credential(new TokenCredential() {
+                    @Override
+                    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+                        return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+                    }
+                });
                 setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getTestProxySanitizers());
-        }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
     static TokenCredential getCredentialByAuthority(String endpoint) {
@@ -196,9 +192,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
-    void beginClassifierRunner(Consumer<String> testRunner) {
-        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
     void validatePngReceiptData(AnalyzeResult actualAnalyzeResult) {
         validateReceipt(actualAnalyzeResult);
 
@@ -248,8 +241,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertEquals(2, page2.getPageNumber());
         assertEquals(1, page1.getSpans().size());
         assertEquals(1, page2.getSpans().size());
-        assertEquals(205, page1.getSpans().get(0).getLength());
-        assertEquals(206, page2.getSpans().get(0).getOffset());
+        assertEquals(216, page1.getSpans().get(0).getLength());
+        assertEquals(217, page2.getSpans().get(0).getOffset());
 
         DocumentPage receiptPage1 = analyzeResult.getPages().get(0);
         DocumentPage receiptPage2 = analyzeResult.getPages().get(1);
@@ -347,7 +340,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         // assert contact name page number
         DocumentField contactNameField = businessCard1Fields.get("ContactNames").getValueAsList().get(0);
-        assertEquals("JOHN\nSINGER", contactNameField.getContent());
+        assertEquals("JOHN SINGER", contactNameField.getContent());
         assertNotNull(contactNameField.getConfidence());
 
         assertEquals(2, businessCard2.getPageNumber());
@@ -415,12 +408,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertEquals(EXPECTED_MERCHANT_NAME, invoicePage1Fields.get("VendorName")
             .getValueAsString());
         assertNotNull(invoicePage1Fields.get("VendorName").getConfidence());
-        DocumentField subtotalField = invoicePage1Fields.get("Subtotal");
-        CurrencyValue subtotal =
-            subtotalField.getValueAsCurrency();
-        Assertions.assertEquals(100.0, subtotal.getAmount());
-        Assertions.assertEquals("USD", subtotal.getCode());
-        Assertions.assertEquals("$", subtotal.getSymbol());
 
         Map<String, DocumentField> itemsMap
             = invoicePage1Fields.get("Items").getValueAsList().get(0).getValueAsMap();
@@ -430,7 +417,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(itemsMap.get("Date").getConfidence());
         assertEquals("34278587", itemsMap.get("ProductCode").getValueAsString());
         assertNotNull(itemsMap.get("ProductCode").getConfidence());
-        Assertions.assertNotNull(analyzeResult.getPages());
+        // assertEquals(DocumentFieldType.CURRENCY, itemsMap.get("Tax").getType());
+        // Assertions.assertNotNull(itemsMap.get("Tax").getConfidence());
     }
 
     static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {
@@ -580,7 +568,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[] table = new int[] {2, 5, 10};
+        int[] table = new int[] {3, 5, 10};
         Assertions.assertEquals(1, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             DocumentTable actualDocumentTable = analyzeResult.getTables().get(i);
@@ -790,8 +778,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         AddressValue employeeAddrFields = employeeFields.get("Address")
             .getValueAsAddress();
         assertEquals("WA", employeeAddrFields.getState());
-        // service regression
-        // assertEquals("12345", employeeAddrFields.getPostalCode());
+        assertEquals("12345", employeeAddrFields.getPostalCode());
         assertEquals("BUFFALO", employeeAddrFields.getCity());
         assertEquals("4567 MAIN STREET", employeeAddrFields.getStreetAddress());
         assertEquals("4567", employeeAddrFields.getHouseNumber());
@@ -804,8 +791,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         Map<String, DocumentField> employerFields = w2Fields.get("Employer").getValueAsMap();
         AddressValue employerAddress = employerFields.get("Address").getValueAsAddress();
         assertEquals("WA", employerAddress.getState());
-        // service regression
-        // assertEquals("98765", employerAddress.getPostalCode());
+        assertEquals("98765", employerAddress.getPostalCode());
         assertEquals("REDMOND", employerAddress.getCity());
         assertEquals("CONTOSO LTD", employerFields.get("Name")
             .getValueAsString());

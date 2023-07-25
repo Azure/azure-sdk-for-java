@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Summary information for the built and prebuilt models.
+ * Model summary for the built and prebuilt models.
  */
 @Immutable
 public final class DocumentModelSummary {
@@ -33,8 +33,6 @@ public final class DocumentModelSummary {
      * List of key-value tag attributes associated with the model.
      */
     private Map<String, String> tags;
-    private OffsetDateTime expiresOn;
-
 
     /**
      * Get the unique model identifier.
@@ -106,19 +104,6 @@ public final class DocumentModelSummary {
         this.tags = tags;
     }
 
-    /**
-     * Get the Date and time (UTC) when the document model will expire.
-     *
-     * @return the expiresOn value.
-     */
-    public OffsetDateTime getExpiresOn() {
-        return expiresOn;
-    }
-
-    private void setExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
-    }
-
     static {
         DocumentModelSummaryHelper.setAccessor(new DocumentModelSummaryHelper.DocumentModelSummaryAccessor() {
             @Override
@@ -139,11 +124,6 @@ public final class DocumentModelSummary {
             @Override
             public void setTags(DocumentModelSummary documentModelSummary, Map<String, String> tags) {
                 documentModelSummary.setTags(tags);
-            }
-
-            @Override
-            public void setExpiresOn(DocumentModelSummary documentModelSummary, OffsetDateTime expiresOn) {
-                documentModelSummary.setExpiresOn(expiresOn);
             }
         });
     }

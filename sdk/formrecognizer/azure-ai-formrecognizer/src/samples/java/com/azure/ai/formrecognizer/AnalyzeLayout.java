@@ -40,7 +40,7 @@ public class AnalyzeLayout {
         File selectionMarkDocument = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/forms/selectionMarkForm.pdf");
         Path filePath = selectionMarkDocument.toPath();
-        BinaryData selectionMarkDocumentData = BinaryData.fromFile(filePath, (int) selectionMarkDocument.length());
+        BinaryData selectionMarkDocumentData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", selectionMarkDocumentData);

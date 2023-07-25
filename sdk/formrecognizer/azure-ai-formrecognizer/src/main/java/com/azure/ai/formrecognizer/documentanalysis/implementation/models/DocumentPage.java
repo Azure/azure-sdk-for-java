@@ -4,13 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Content and layout elements extracted from a page from the input. */
-@Immutable
+@Fluent
 public final class DocumentPage {
     /*
      * 1-based page number in the input document.
@@ -67,31 +66,8 @@ public final class DocumentPage {
     @JsonProperty(value = "lines")
     private List<DocumentLine> lines;
 
-    /*
-     * Extracted barcodes from the page.
-     */
-    @JsonProperty(value = "barcodes")
-    private List<DocumentBarcode> barcodes;
-
-    /*
-     * Extracted formulas from the page.
-     */
-    @JsonProperty(value = "formulas")
-    private List<DocumentFormula> formulas;
-
-    /**
-     * Creates an instance of DocumentPage class.
-     *
-     * @param pageNumber the pageNumber value to set.
-     * @param spans the spans value to set.
-     */
-    @JsonCreator
-    private DocumentPage(
-            @JsonProperty(value = "pageNumber", required = true) int pageNumber,
-            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
-        this.pageNumber = pageNumber;
-        this.spans = spans;
-    }
+    /** Creates an instance of DocumentPage class. */
+    public DocumentPage() {}
 
     /**
      * Get the pageNumber property: 1-based page number in the input document.
@@ -100,6 +76,17 @@ public final class DocumentPage {
      */
     public int getPageNumber() {
         return this.pageNumber;
+    }
+
+    /**
+     * Set the pageNumber property: 1-based page number in the input document.
+     *
+     * @param pageNumber the pageNumber value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+        return this;
     }
 
     /**
@@ -113,6 +100,18 @@ public final class DocumentPage {
     }
 
     /**
+     * Set the angle property: The general orientation of the content in clockwise direction, measured in degrees
+     * between (-180, 180].
+     *
+     * @param angle the angle value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setAngle(Float angle) {
+        this.angle = angle;
+        return this;
+    }
+
+    /**
      * Get the width property: The width of the image/PDF in pixels/inches, respectively.
      *
      * @return the width value.
@@ -122,12 +121,34 @@ public final class DocumentPage {
     }
 
     /**
+     * Set the width property: The width of the image/PDF in pixels/inches, respectively.
+     *
+     * @param width the width value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setWidth(Float width) {
+        this.width = width;
+        return this;
+    }
+
+    /**
      * Get the height property: The height of the image/PDF in pixels/inches, respectively.
      *
      * @return the height value.
      */
     public Float getHeight() {
         return this.height;
+    }
+
+    /**
+     * Set the height property: The height of the image/PDF in pixels/inches, respectively.
+     *
+     * @param height the height value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setHeight(Float height) {
+        this.height = height;
+        return this;
     }
 
     /**
@@ -141,12 +162,35 @@ public final class DocumentPage {
     }
 
     /**
+     * Set the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
+     * "pixel". For PDF, the unit is "inch".
+     *
+     * @param unit the unit value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setUnit(LengthUnit unit) {
+        this.unit = unit;
+        return this;
+    }
+
+    /**
      * Get the spans property: Location of the page in the reading order concatenated content.
      *
      * @return the spans value.
      */
     public List<DocumentSpan> getSpans() {
         return this.spans;
+    }
+
+    /**
+     * Set the spans property: Location of the page in the reading order concatenated content.
+     *
+     * @param spans the spans value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setSpans(List<DocumentSpan> spans) {
+        this.spans = spans;
+        return this;
     }
 
     /**
@@ -159,12 +203,34 @@ public final class DocumentPage {
     }
 
     /**
+     * Set the words property: Extracted words from the page.
+     *
+     * @param words the words value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setWords(List<DocumentWord> words) {
+        this.words = words;
+        return this;
+    }
+
+    /**
      * Get the selectionMarks property: Extracted selection marks from the page.
      *
      * @return the selectionMarks value.
      */
     public List<DocumentSelectionMark> getSelectionMarks() {
         return this.selectionMarks;
+    }
+
+    /**
+     * Set the selectionMarks property: Extracted selection marks from the page.
+     *
+     * @param selectionMarks the selectionMarks value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
+        this.selectionMarks = selectionMarks;
+        return this;
     }
 
     /**
@@ -177,20 +243,13 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the barcodes property: Extracted barcodes from the page.
+     * Set the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
      *
-     * @return the barcodes value.
+     * @param lines the lines value to set.
+     * @return the DocumentPage object itself.
      */
-    public List<DocumentBarcode> getBarcodes() {
-        return this.barcodes;
-    }
-
-    /**
-     * Get the formulas property: Extracted formulas from the page.
-     *
-     * @return the formulas value.
-     */
-    public List<DocumentFormula> getFormulas() {
-        return this.formulas;
+    public DocumentPage setLines(List<DocumentLine> lines) {
+        this.lines = lines;
+        return this;
     }
 }

@@ -5,8 +5,6 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
-import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
-import com.azure.ai.formrecognizer.documentanalysis.models.FontWeight;
 
 import java.util.List;
 
@@ -28,11 +26,6 @@ public final class DocumentStyleHelper {
         void setIsHandwritten(DocumentStyle documentStyle, Boolean isHandwritten);
 
         void setConfidence(DocumentStyle documentStyle, Float confidence);
-        void setColor(DocumentStyle documentStyle, String color);
-        void setFontWeight(DocumentStyle documentStyle, FontWeight fontWeight);
-        void setSimilarFontFamily(DocumentStyle documentStyle, String similarFontFamily);
-        void setBackgroundColor(DocumentStyle documentStyle, String backgroundColor);
-        void setFontStyle(DocumentStyle documentStyle, FontStyle fontStyle);
     }
 
     /**
@@ -40,7 +33,7 @@ public final class DocumentStyleHelper {
      *
      * @param documentStyleAccessor The accessor.
      */
-    public static void setAccessor(final DocumentStyleAccessor documentStyleAccessor) {
+    public static void setAccessor(final DocumentStyleHelper.DocumentStyleAccessor documentStyleAccessor) {
         accessor = documentStyleAccessor;
     }
 
@@ -54,25 +47,5 @@ public final class DocumentStyleHelper {
 
     static void setConfidence(DocumentStyle documentStyle, Float confidence) {
         accessor.setConfidence(documentStyle, confidence);
-    }
-
-    static void setSimilarFontFamily(DocumentStyle documentStyle, String similarFontFamily) {
-        accessor.setSimilarFontFamily(documentStyle, similarFontFamily);
-    }
-
-    static void setFontStyle(DocumentStyle documentStyle, FontStyle fontStyle) {
-        accessor.setFontStyle(documentStyle, fontStyle);
-    }
-
-    static void setFontWeight(DocumentStyle documentStyle, FontWeight fontWeight) {
-        accessor.setFontWeight(documentStyle, fontWeight);
-    }
-
-    static void setColor(DocumentStyle documentStyle, String color) {
-        accessor.setColor(documentStyle, color);
-    }
-
-    static void setBackgroundColor(DocumentStyle documentStyle, String backgroundColor) {
-        accessor.setBackgroundColor(documentStyle, backgroundColor);
     }
 }
