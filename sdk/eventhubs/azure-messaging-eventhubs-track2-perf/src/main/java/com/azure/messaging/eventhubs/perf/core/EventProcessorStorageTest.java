@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -110,11 +111,11 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfOption
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return super.cleanupAsync().then(Mono.defer(() -> {
+        return Mono.defer(() -> {
             eventProcessorClient.stop();
             System.out.println("Began cleanup");
             return Mono.empty();
-        }));
+        }).then(super.cleanupAsync()).timeout(Duration.ofMinutes(1));
     }
 
     @Override
