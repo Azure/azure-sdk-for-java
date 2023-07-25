@@ -1,14 +1,63 @@
 # Release History
 
-## 1.0.0-beta.13 (Unreleased)
+## 1.0.0-beta.13 (2023-07-25)
 
-### Features Added
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2022-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Backup` was modified
 
-### Other Changes
+* `systemData()` was removed
+
+#### `models.Snapshot` was modified
+
+* `systemData()` was removed
+
+#### `models.SubvolumeInfo` was modified
+
+* `systemData()` was removed
+
+### Features Added
+
+* `models.GetGroupIdListForLdapUserRequest` was added
+
+* `models.GetGroupIdListForLdapUserResponse` was added
+
+#### `models.Volume` was modified
+
+* `originatingResourceId()` was added
+* `listGetGroupIdListForLdapUser(models.GetGroupIdListForLdapUserRequest,com.azure.core.util.Context)` was added
+* `listGetGroupIdListForLdapUser(models.GetGroupIdListForLdapUserRequest)` was added
+* `actualThroughputMibps()` was added
+
+#### `models.Volume$Update` was modified
+
+* `withSnapshotDirectoryVisible(java.lang.Boolean)` was added
+
+#### `models.VolumePatch` was modified
+
+* `snapshotDirectoryVisible()` was added
+* `withSnapshotDirectoryVisible(java.lang.Boolean)` was added
+
+#### `models.Volumes` was modified
+
+* `listGetGroupIdListForLdapUser(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.GetGroupIdListForLdapUserRequest,com.azure.core.util.Context)` was added
+* `listGetGroupIdListForLdapUser(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.GetGroupIdListForLdapUserRequest)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `actualThroughputMibps()` was added
+* `originatingResourceId()` was added
 
 ## 1.0.0-beta.12 (2023-03-16)
 

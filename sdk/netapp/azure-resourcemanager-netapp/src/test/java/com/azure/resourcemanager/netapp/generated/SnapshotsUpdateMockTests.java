@@ -31,7 +31,7 @@ public final class SnapshotsUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"wf\",\"properties\":{\"snapshotId\":\"b\",\"created\":\"2021-10-31T22:34:11Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"mdy\",\"name\":\"hdwdi\",\"type\":\"umbnraauzzp\"}";
+            "{\"location\":\"cbslhhx\",\"properties\":{\"snapshotId\":\"xvodhtnsir\",\"created\":\"2021-11-25T21:38:07Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"es\",\"name\":\"kdlpa\",\"type\":\"zrcxfailcfxwmdbo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,14 @@ public final class SnapshotsUpdateMockTests {
             manager
                 .snapshots()
                 .update(
-                    "gzuriglaecxndt",
-                    "cokpv",
-                    "mlqtmldgxob",
-                    "irclnpk",
-                    "iayz",
-                    "dataiykhy",
+                    "wprtu",
+                    "wsawddjibabxvi",
+                    "itvtzeexavo",
+                    "tfgle",
+                    "dmdqb",
+                    "datapypqtgsfj",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wf", response.location());
+        Assertions.assertEquals("cbslhhx", response.location());
     }
 }
