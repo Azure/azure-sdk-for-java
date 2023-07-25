@@ -82,7 +82,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -91,7 +91,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-public class AzureResourceManagerTests extends ResourceManagerTestBase {
+public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
 
     @Override
@@ -307,7 +307,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     @Test
     public void testManagementLocks() throws Exception {
         // Prepare a VM
-        final String password = ResourceManagerTestBase.password();
+        final String password = ResourceManagerTestProxyTestBase.password();
         final String rgName = generateRandomResourceName("rg", 15);
         final String vmName = generateRandomResourceName("vm", 15);
         final String storageName = generateRandomResourceName("st", 15);

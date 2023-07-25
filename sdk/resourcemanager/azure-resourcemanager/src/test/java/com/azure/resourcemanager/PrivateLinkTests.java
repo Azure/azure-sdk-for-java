@@ -43,7 +43,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatin
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -60,7 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PrivateLinkTests extends ResourceManagerTestBase {
+public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 
     private AzureResourceManager azureResourceManager;
     private String rgName;

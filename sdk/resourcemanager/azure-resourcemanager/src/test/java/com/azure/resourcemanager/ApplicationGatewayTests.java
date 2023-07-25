@@ -34,14 +34,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class ApplicationGatewayTests extends ResourceManagerTestBase {
+public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
 
     @Override
@@ -103,7 +103,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
         String testId = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
-        String password = ResourceManagerTestBase.password();
+        String password = ResourceManagerTestProxyTestBase.password();
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
 

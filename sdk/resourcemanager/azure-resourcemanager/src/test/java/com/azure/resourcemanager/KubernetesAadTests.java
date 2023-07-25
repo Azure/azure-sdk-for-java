@@ -20,7 +20,7 @@ import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class KubernetesAadTests extends ResourceManagerTestBase {
+public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
 
     private AzureResourceManager azureResourceManager;
     private String rgName;
