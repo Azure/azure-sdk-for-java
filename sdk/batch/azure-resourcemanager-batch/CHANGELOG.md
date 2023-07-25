@@ -1,14 +1,152 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0 (2023-07-25)
 
-### Features Added
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK. Batch Client. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.PrivateEndpointConnectionsUpdateHeaders` was removed
 
-### Other Changes
+* `models.BatchAccountsCreateResponse` was removed
+
+* `models.PoolsDeleteHeaders` was removed
+
+* `models.BatchAccountsDeleteHeaders` was removed
+
+* `models.CertificatesDeleteResponse` was removed
+
+* `models.BatchAccountsDeleteResponse` was removed
+
+* `models.CertificatesDeleteHeaders` was removed
+
+* `models.BatchAccountsCreateHeaders` was removed
+
+* `models.PrivateEndpointConnectionsUpdateResponse` was removed
+
+* `models.PoolsDeleteResponse` was removed
+
+#### `models.NetworkConfiguration` was modified
+
+* `withDynamicVNetAssignmentScope(models.DynamicVNetAssignmentScope)` was removed
+* `dynamicVNetAssignmentScope()` was removed
+
+#### `models.ContainerConfiguration` was modified
+
+* `java.lang.String type()` -> `models.ContainerType type()`
+* `withType(java.lang.String)` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionRequired()` was removed
+
+#### `models.Certificate$Definition` was modified
+
+* `withData(java.lang.String)` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,java.lang.String)` was removed
+
+### Features Added
+
+* `models.ContainerType` was added
+
+* `models.NetworkProfile` was added
+
+* `models.EndpointAccessProfile` was added
+
+* `models.NodeCommunicationMode` was added
+
+* `models.EndpointAccessDefaultAction` was added
+
+* `models.IpRule` was added
+
+#### `models.NetworkConfiguration` was modified
+
+* `enableAcceleratedNetworking()` was added
+* `withEnableAcceleratedNetworking(java.lang.Boolean)` was added
+* `dynamicVnetAssignmentScope()` was added
+* `withDynamicVnetAssignmentScope(models.DynamicVNetAssignmentScope)` was added
+
+#### `BatchManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.Application` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.BatchAccount` was modified
+
+* `networkProfile()` was added
+* `nodeManagementEndpoint()` was added
+* `resourceGroupName()` was added
+
+#### `models.BatchAccountUpdateParameters` was modified
+
+* `publicNetworkAccess()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccessType)` was added
+* `withNetworkProfile(models.NetworkProfile)` was added
+* `networkProfile()` was added
+
+#### `models.Certificate` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `groupIds()` was added
+
+#### `models.ContainerConfiguration` was modified
+
+* `withType(models.ContainerType)` was added
+
+#### `BatchManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.VMExtension` was modified
+
+* `enableAutomaticUpgrade()` was added
+* `withEnableAutomaticUpgrade(java.lang.Boolean)` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionsRequired()` was added
+
+#### `models.BatchAccount$Definition` was modified
+
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was added
+
+#### `models.BatchAccount$Update` was modified
+
+* `withNetworkProfile(models.NetworkProfile)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccessType)` was added
+
+#### `models.BatchAccountCreateParameters` was modified
+
+* `withNetworkProfile(models.NetworkProfile)` was added
+* `networkProfile()` was added
+
+#### `models.Pool` was modified
+
+* `resourceGroupName()` was added
+* `currentNodeCommunicationMode()` was added
+* `targetNodeCommunicationMode()` was added
+
+#### `models.Pool$Update` was modified
+
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was added
 
 ## 1.1.0-beta.1 (2022-11-24)
 
