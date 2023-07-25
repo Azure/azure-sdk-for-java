@@ -48,7 +48,7 @@ public class LargeQuerySample {
             else {
                 queryString = String.format("%1$s | where %4$s >= datetime('%2$s') and %4$s < datetime('%3$s')", originalQuery, endpoints.get(i), endpoints.get(i + 1), timeColumn);
             }
-            batchQuery.addWorkspaceQuery(WORKSPACE_ID,queryString, null);
+            batchQuery.addWorkspaceQuery(WORKSPACE_ID, queryString, null);
         }
 
         return batchQuery;
