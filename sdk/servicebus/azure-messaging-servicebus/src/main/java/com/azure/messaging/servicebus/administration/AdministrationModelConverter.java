@@ -484,40 +484,50 @@ class AdministrationModelConverter {
     }
 
     /**
-     * Maps an exception from the ATOM APIs to its associated {@link HttpResponseException}.
+     * Maps an exception to its associated {@link HttpResponseException}. If it is not an ATOM API exception, the
+     * exception is returned as-is.
      *
      * @param exception Exception from the ATOM API.
      *
-     * @return The corresponding {@link HttpResponseException} or {@code throwable} if it is not an instance of {@link
-     *     ServiceBusManagementErrorException}.
+     * @return The corresponding {@link HttpResponseException} or {@code throwable} if it is not an instance of
+     *     {@link ServiceBusManagementErrorException}.
      */
     static Throwable mapException(Throwable exception) {
         if (!(exception instanceof ServiceBusManagementErrorException)) {
             return exception;
         }
 
-        final ServiceBusManagementErrorException managementError = ((ServiceBusManagementErrorException) exception);
-        final ServiceBusManagementError error = managementError.getValue();
-        final HttpResponse errorHttpResponse = managementError.getResponse();
+        return mapException((ServiceBusManagementErrorException) exception);
+    }
+
+    /**
+     * Maps an exception from the ATOM APIs to its associated {@link HttpResponseException}.
+     *
+     * @param exception The ATOM API exception.
+     * @return Remapped exception.
+     */
+    static RuntimeException mapException(ServiceBusManagementErrorException exception) {
+        final ServiceBusManagementError error = exception.getValue();
+        final HttpResponse errorHttpResponse = exception.getResponse();
 
         final int statusCode = error != null && error.getCode() != null
             ? error.getCode()
             : errorHttpResponse.getStatusCode();
         final String errorDetail = error != null && error.getDetail() != null
             ? error.getDetail()
-            : managementError.getMessage();
+            : exception.getMessage();
 
         switch (statusCode) {
             case 401:
-                return new ClientAuthenticationException(errorDetail, managementError.getResponse(), exception);
+                return new ClientAuthenticationException(errorDetail, errorHttpResponse, exception);
             case 404:
-                return new ResourceNotFoundException(errorDetail, managementError.getResponse(), exception);
+                return new ResourceNotFoundException(errorDetail, errorHttpResponse, exception);
             case 409:
-                return new ResourceExistsException(errorDetail, managementError.getResponse(), exception);
+                return new ResourceExistsException(errorDetail, errorHttpResponse, exception);
             case 412:
-                return new ResourceModifiedException(errorDetail, managementError.getResponse(), exception);
+                return new ResourceModifiedException(errorDetail, errorHttpResponse, exception);
             default:
-                return new HttpResponseException(errorDetail, managementError.getResponse(), exception);
+                return new HttpResponseException(errorDetail, errorHttpResponse, exception);
         }
     }
 
