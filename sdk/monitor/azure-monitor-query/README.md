@@ -172,6 +172,7 @@ Each set of metric values is a time series with the following characteristics:
   - [Map logs query results to a model](#map-logs-query-results-to-a-model)
   - [Handle logs query response](#handle-logs-query-response)
   - [Query logs by resource id](#query-logs-by-resource-id)
+  - [Create a log client for non-public Azure clouds](#configure-clients-for-non-public-azure-clouds)
 - [Batch logs query](#batch-logs-query)
 - [Advanced logs query scenarios](#advanced-logs-query-scenarios)
   - [Set logs query timeout](#set-logs-query-timeout)
@@ -181,6 +182,7 @@ Each set of metric values is a time series with the following characteristics:
 - [Metrics query](#metrics-query)
   - [Handle metrics query response](#handle-metrics-query-response)
   - [Get average and count metrics](#get-average-and-count-metrics)
+  - [Create a metrics client for non-public Azure clouds](#configure-clients-for-non-public-azure-clouds)
 
 ### Logs query
 
