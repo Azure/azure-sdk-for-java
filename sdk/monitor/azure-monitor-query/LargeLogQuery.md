@@ -7,7 +7,7 @@ not be possible to retrieve all the expected data in a single query. For example
 data returned may exceed the stated limits. One approach for overcoming these limits is to split the queries into multiple smaller queries
 using different time ranges.
 
-**Disclaimer:** This approach of spliting data retrieval into smaller queries is good when dealing with a few GBs of data or a few millions
+**Disclaimer:** This approach of splitting data retrieval into smaller queries is good when dealing with a few GBs of data or a few millions
 of records per hour. For larger data sets, 
 [exporting](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/logs-data-export?tabs=portal) is recommended.
 
