@@ -165,7 +165,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     bulkOperationResponseFlux.subscribe(
       resp => {
-        var isGettingRetried = new AtomicBoolean(false)
+        val isGettingRetried = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeOperations.remove(itemOperation)
@@ -228,7 +228,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     var acquisitionAttempt = 0
     val activeOperationsSemaphoreTimeout = 10
     val operationContext = OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
-    var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
+    val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
     // Don't clone the activeOperations for the first iteration
     // to reduce perf impact before the Semaphore has been acquired
     // this means if the semaphore can't be acquired within 10 minutes
@@ -241,7 +241,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       log.logDebug(s"Not able to acquire semaphore, Context: ${operationContext.toString} ${getThreadInfo}")
       if (subscriptionDisposable.isDisposed) {
         captureIfFirstFailure(
-          new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"));
+          new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"))
       }
 
       throwIfProgressStaled(
@@ -318,7 +318,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
 
-    val requestOptions = new CosmosBulkPatchItemRequestOptions();
+    val requestOptions = new CosmosBulkPatchItemRequestOptions()
     if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
       requestOptions.setFilterPredicate(patchConfigs.filter.get)
     }
@@ -374,7 +374,7 @@ class BulkWriter(container: CosmosAsyncContainer,
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} ${getThreadInfo}")
 
-      this.pendingRetries.incrementAndGet();
+      this.pendingRetries.incrementAndGet()
 
       // this is to ensure the submission will happen on a different thread in background
       // and doesn't block the active thread
