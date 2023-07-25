@@ -40,6 +40,7 @@
 | `spark.cosmos.write.bulk.maxPendingOperations`   | None   | Cosmos DB Item Write bulk mode maximum pending operations. Defines a limit of bulk operations being processed concurrently. If not specified it will be determined based on the Spark executor VM Size. If the volume of data is large for the provisioned throughput on the destination container, this setting can be adjusted by following the estimation of `1000 x Cores` |
 | `spark.cosmos.write.bulk.enabled`      | `true`   | Cosmos DB Item Write bulk enabled |
 | `spark.cosmos.write.bulk.targetedPayloadSizeInBytes`   | `220201`  | When the targeted payload size is reached for buffered documents, the request is sent to the backend. The default value is optimized for small documents <= 10 KB - when documents often exceed 110 KB, it can help to increase this value to up to about `1500000` (should still be smaller than 2 MB). |
+| `spark.cosmos.write.bulk.initialBatchSize` | `100` | Cosmos DB initial bulk micro batch size - a micro batch will be flushed to the backend when the number of documents enqueued exceeds this size - or the target payload size is met. The micro batch size is getting automatically tuned based on the throttling rate. By default the initial micro batch size is 100. Reduce this when you want to avoid that the first few requests consume too many RUs. |
 
 #### Patch Config
 | Config Property Name      | Default | Description |
