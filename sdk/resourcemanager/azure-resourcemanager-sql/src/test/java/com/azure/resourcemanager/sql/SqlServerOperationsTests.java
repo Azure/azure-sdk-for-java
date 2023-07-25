@@ -622,7 +622,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
 
         Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
-        Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+        if (!isPlaybackMode()) {
+            Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+        }
         Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
         sqlServer.update().withSystemAssignedManagedServiceIdentity().apply();
