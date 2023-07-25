@@ -63,6 +63,6 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
             eventHubProducerAsyncClient.close();
             eventHubProducerClient.close();
             return 1;
-        }).timeout(Duration.ofMinutes(1)).then();
+        }).timeout(Duration.ofSeconds(30)).then(super.cleanupAsync()).timeout(Duration.ofSeconds(30)).then();
     }
 }
