@@ -58,7 +58,7 @@ static LogsBatchQuery createBatchQueryFromLargeQuery(String originalQuery,
 
 ### Defining the Query-BatchQuery conversion Functions
 
-This sample provids two functions to convert a `LogsQuery` into a `LogsBatchQuery`. One function splits the query into multiple smaller queries
+This sample provides two functions to convert a `LogsQuery` into a `LogsBatchQuery`. One function splits the query into multiple smaller queries
 based upon the approximate* maximum amount of rows to be present in each query. The other function splits the query into multiple smaller queries based upon
 the approximate* maximum size of the data in bytes to be present in each query.
 
