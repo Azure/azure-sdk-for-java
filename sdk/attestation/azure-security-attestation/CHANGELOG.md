@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.15 (Unreleased)
+## 1.1.14 (2023-06-21)
 
 ### Other Changes
 
