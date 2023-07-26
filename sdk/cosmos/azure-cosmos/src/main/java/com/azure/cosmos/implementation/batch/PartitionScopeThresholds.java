@@ -38,7 +38,7 @@ public class PartitionScopeThresholds {
         this.targetMicroBatchSize = new AtomicInteger(
             ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
                 .getCosmosBulkExecutionOptionsAccessor()
-                .getMaxMicroBatchSize(options));
+                .getInitialMicroBatchSize(options));
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
 
@@ -106,16 +106,12 @@ public class PartitionScopeThresholds {
         int microBatchSizeBefore = this.targetMicroBatchSize.get();
         int microBatchSizeAfter = microBatchSizeBefore;
 
-        int maxMicroBatchSize = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-            .getCosmosBulkExecutionOptionsAccessor()
-            .getMaxMicroBatchSize(options);
-
-        if (retryRate < this.minRetryRate && microBatchSizeBefore < maxMicroBatchSize) {
+        if (retryRate < this.minRetryRate && microBatchSizeBefore < BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST) {
             int targetedNewBatchSize = Math.min(
                 Math.min(
                     microBatchSizeBefore * 2,
-                    microBatchSizeBefore + (int)(maxMicroBatchSize * this.avgRetryRate)),
-                maxMicroBatchSize);
+                    microBatchSizeBefore + (int)(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST * this.avgRetryRate)),
+                BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
             if (this.targetMicroBatchSize.compareAndSet(microBatchSizeBefore, targetedNewBatchSize)) {
                 microBatchSizeAfter = targetedNewBatchSize;
             }

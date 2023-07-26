@@ -28,7 +28,7 @@ public final class PhoneNumberType extends ExpandableStringEnum<PhoneNumberType>
     }
 
     /**
-     * Gets known PhoneNumberType values.
+     * Gives a collection of PhoneNumberType values
      *
      * @return known PhoneNumberType values.
      */

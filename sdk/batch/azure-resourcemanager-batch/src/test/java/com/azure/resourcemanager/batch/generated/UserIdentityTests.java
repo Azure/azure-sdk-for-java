@@ -10,32 +10,32 @@ import com.azure.resourcemanager.batch.models.AutoUserSpecification;
 import com.azure.resourcemanager.batch.models.ElevationLevel;
 import com.azure.resourcemanager.batch.models.UserIdentity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UserIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UserIdentity model =
             BinaryData
-                .fromString("{\"userName\":\"gj\",\"autoUser\":{\"scope\":\"Task\",\"elevationLevel\":\"NonAdmin\"}}")
+                .fromString(
+                    "{\"userName\":\"iirqtd\",\"autoUser\":{\"scope\":\"Pool\",\"elevationLevel\":\"NonAdmin\"}}")
                 .toObject(UserIdentity.class);
-        Assertions.assertEquals("gj", model.username());
-        Assertions.assertEquals(AutoUserScope.TASK, model.autoUser().scope());
+        Assertions.assertEquals("iirqtd", model.username());
+        Assertions.assertEquals(AutoUserScope.POOL, model.autoUser().scope());
         Assertions.assertEquals(ElevationLevel.NON_ADMIN, model.autoUser().elevationLevel());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserIdentity model =
             new UserIdentity()
-                .withUsername("gj")
+                .withUsername("iirqtd")
                 .withAutoUser(
                     new AutoUserSpecification()
-                        .withScope(AutoUserScope.TASK)
+                        .withScope(AutoUserScope.POOL)
                         .withElevationLevel(ElevationLevel.NON_ADMIN));
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
-        Assertions.assertEquals("gj", model.username());
-        Assertions.assertEquals(AutoUserScope.TASK, model.autoUser().scope());
+        Assertions.assertEquals("iirqtd", model.username());
+        Assertions.assertEquals(AutoUserScope.POOL, model.autoUser().scope());
         Assertions.assertEquals(ElevationLevel.NON_ADMIN, model.autoUser().elevationLevel());
     }
 }

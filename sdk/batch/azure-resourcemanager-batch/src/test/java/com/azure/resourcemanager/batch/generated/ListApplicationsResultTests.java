@@ -9,38 +9,45 @@ import com.azure.resourcemanager.batch.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.batch.models.ListApplicationsResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ListApplicationsResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ListApplicationsResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"zloc\",\"allowUpdates\":false,\"defaultVersion\":\"aierhhb\"},\"etag\":\"glu\",\"id\":\"majtjaod\",\"name\":\"obnbdxkqpxokaj\",\"type\":\"onpimexgstxg\"}],\"nextLink\":\"odgmaajrmvdjwz\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"qfou\",\"allowUpdates\":true,\"defaultVersion\":\"nkzsmodmglou\"},\"etag\":\"b\",\"id\":\"wtmutduq\",\"name\":\"ta\",\"type\":\"spwgcuertumkdosv\"},{\"properties\":{\"displayName\":\"bmdg\",\"allowUpdates\":true,\"defaultVersion\":\"ddgmb\"},\"etag\":\"ex\",\"id\":\"pbhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"},{\"properties\":{\"displayName\":\"erkujys\",\"allowUpdates\":false,\"defaultVersion\":\"uvfqawrlyxwj\"},\"etag\":\"prbnwbxgjvtbv\",\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"}],\"nextLink\":\"a\"}")
                 .toObject(ListApplicationsResult.class);
-        Assertions.assertEquals("zloc", model.value().get(0).displayName());
-        Assertions.assertEquals(false, model.value().get(0).allowUpdates());
-        Assertions.assertEquals("aierhhb", model.value().get(0).defaultVersion());
-        Assertions.assertEquals("odgmaajrmvdjwz", model.nextLink());
+        Assertions.assertEquals("qfou", model.value().get(0).displayName());
+        Assertions.assertEquals(true, model.value().get(0).allowUpdates());
+        Assertions.assertEquals("nkzsmodmglou", model.value().get(0).defaultVersion());
+        Assertions.assertEquals("a", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ListApplicationsResult model =
             new ListApplicationsResult()
                 .withValue(
                     Arrays
                         .asList(
                             new ApplicationInner()
-                                .withDisplayName("zloc")
+                                .withDisplayName("qfou")
+                                .withAllowUpdates(true)
+                                .withDefaultVersion("nkzsmodmglou"),
+                            new ApplicationInner()
+                                .withDisplayName("bmdg")
+                                .withAllowUpdates(true)
+                                .withDefaultVersion("ddgmb"),
+                            new ApplicationInner()
+                                .withDisplayName("erkujys")
                                 .withAllowUpdates(false)
-                                .withDefaultVersion("aierhhb")))
-                .withNextLink("odgmaajrmvdjwz");
+                                .withDefaultVersion("uvfqawrlyxwj")))
+                .withNextLink("a");
         model = BinaryData.fromObject(model).toObject(ListApplicationsResult.class);
-        Assertions.assertEquals("zloc", model.value().get(0).displayName());
-        Assertions.assertEquals(false, model.value().get(0).allowUpdates());
-        Assertions.assertEquals("aierhhb", model.value().get(0).defaultVersion());
-        Assertions.assertEquals("odgmaajrmvdjwz", model.nextLink());
+        Assertions.assertEquals("qfou", model.value().get(0).displayName());
+        Assertions.assertEquals(true, model.value().get(0).allowUpdates());
+        Assertions.assertEquals("nkzsmodmglou", model.value().get(0).defaultVersion());
+        Assertions.assertEquals("a", model.nextLink());
     }
 }

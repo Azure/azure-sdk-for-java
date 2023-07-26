@@ -34,7 +34,7 @@ public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneN
     }
 
     /**
-     * Gets known PhoneNumberCapabilityType values.
+     * Gives a Collection of PhoneNumberCapabilityType
      *
      * @return known PhoneNumberCapabilityType values.
      */

@@ -35,9 +35,9 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
     }
 
     /**
-     * Gets known PhoneNumberOperationType values.
+     * Gives a collection of PhoneNumberOperationType values
      *
-     * @return known PhoneNumberOperationType values.
+     * @return known PhoneNumberOperationType values
      */
     public static Collection<PhoneNumberOperationType> values() {
         return values(PhoneNumberOperationType.class);

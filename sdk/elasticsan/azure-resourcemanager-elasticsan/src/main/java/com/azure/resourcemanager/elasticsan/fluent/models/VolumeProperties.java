@@ -27,8 +27,8 @@ public final class VolumeProperties {
     /*
      * Volume size.
      */
-    @JsonProperty(value = "sizeGiB")
-    private Long sizeGiB;
+    @JsonProperty(value = "sizeGiB", required = true)
+    private long sizeGiB;
 
     /*
      * Storage target information
@@ -74,7 +74,7 @@ public final class VolumeProperties {
      *
      * @return the sizeGiB value.
      */
-    public Long sizeGiB() {
+    public long sizeGiB() {
         return this.sizeGiB;
     }
 
@@ -84,7 +84,7 @@ public final class VolumeProperties {
      * @param sizeGiB the sizeGiB value to set.
      * @return the VolumeProperties object itself.
      */
-    public VolumeProperties withSizeGiB(Long sizeGiB) {
+    public VolumeProperties withSizeGiB(long sizeGiB) {
         this.sizeGiB = sizeGiB;
         return this;
     }

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParameters;
 
 /** Samples for ApplicationPackage Activate. */
 public final class ApplicationPackageActivateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationPackageActivate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationPackageActivate.json
      */
     /**
      * Sample code: ApplicationPackageActivate.
@@ -26,6 +25,6 @@ public final class ApplicationPackageActivateSamples {
                 "app1",
                 "1",
                 new ActivateApplicationPackageParameters().withFormat("zip"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
