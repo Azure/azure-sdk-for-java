@@ -47,7 +47,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(0)).
+            backOffTime(Duration.ofSeconds(0)).
             build());
 
         // 2nd Attempt
@@ -59,7 +59,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(1)).
+            backOffTime(Duration.ofSeconds(1)).
             build());
 
         // 3rd Attempt
@@ -71,7 +71,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(0)).
+            backOffTime(Duration.ofSeconds(0)).
             build());
 
         // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
@@ -112,7 +112,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(0)).
+            backOffTime(Duration.ofSeconds(0)).
             build());
 
         // 2nd Attempt
@@ -124,7 +124,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(1)).
+            backOffTime(Duration.ofSeconds(1)).
             build());
 
         //3rd Attempt
@@ -136,7 +136,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(0)).
+            backOffTime(Duration.ofSeconds(0)).
             build());
 
         // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
@@ -177,7 +177,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(0)).
+            backOffTime(Duration.ofSeconds(0)).
             build());
 
         // 2nd Attempt
@@ -189,7 +189,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(1)).
+            backOffTime(Duration.ofSeconds(1)).
             build());
 
         //3rd Attempt
@@ -201,7 +201,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
-            backOfTime(Duration.ofSeconds(0)).
+            backOffTime(Duration.ofSeconds(0)).
             build());
 
         // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
@@ -283,7 +283,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
-                    .backOfTime(Duration.ofMillis(0))
+                    .backOffTime(Duration.ofMillis(0))
                     .build());
             } else {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()

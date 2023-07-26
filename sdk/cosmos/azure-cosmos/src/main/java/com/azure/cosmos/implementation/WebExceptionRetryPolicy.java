@@ -19,8 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 public class WebExceptionRetryPolicy implements IRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
-    // Address Refresh will be re-tried 3 times, please check the if condition carefully :)
-    private final static int MAX_ADDRESS_REFRESH_RETRY_COUNT = 2;
 
     private StopWatch durationTimer = new StopWatch();
     private RetryContext retryContext;
@@ -29,7 +27,6 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     private HttpTimeoutPolicy timeoutPolicy;
     private boolean isReadRequest;
     private int retryCountTimeout = 0;
-    private int addressRefreshCount;
     private URI locationEndpoint;
 
     public WebExceptionRetryPolicy() {
@@ -49,8 +46,6 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetry());
         }
-
-
 
         // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
         CosmosException webException = Utils.as(e, CosmosException.class);
@@ -103,25 +98,15 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryAddressRefresh() {
-        if (this.addressRefreshCount++ > MAX_ADDRESS_REFRESH_RETRY_COUNT) {
-            logger
-                .warn(
-                    "shouldRetryAddressRefresh() No more retrying on endpoint {}, operationType = {}, count = {}, " +
-                        "isAddressRefresh = {}",
-                    this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount, this.request.isAddressRefresh());
-            return Mono.just(ShouldRetryResult.noRetry());
-        }
-
         logger
             .warn("shouldRetryAddressRefresh() Retrying on endpoint {}, operationType = {}, count = {}, " +
                     "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                     "shouldForceCollectionRoutingMapRefresh = {}",
-                this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount,
+                this.locationEndpoint, this.request.getOperationType(), this.retryCountTimeout,
                 this.request.isAddressRefresh(),
                 this.request.shouldForceAddressRefresh(),
                 this.request.forceCollectionRoutingMapRefresh);
 
-        Duration retryDelay = Duration.ZERO;
-        return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
+        return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
     }
 }

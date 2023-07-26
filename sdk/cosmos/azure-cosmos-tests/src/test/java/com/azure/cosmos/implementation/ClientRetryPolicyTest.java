@@ -48,7 +48,7 @@ public class ClientRetryPolicyTest {
             validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
-                    .backOfTime(Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS))
+                    .backOffTime(Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS))
                     .build());
 
             Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForRead(Mockito.any());
@@ -83,7 +83,7 @@ public class ClientRetryPolicyTest {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
-            .backOfTime(Duration.ofMillis(1000))
+            .backOffTime(Duration.ofMillis(1000))
             .build());
 
         //Metadata Read
@@ -97,7 +97,7 @@ public class ClientRetryPolicyTest {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
-            .backOfTime(Duration.ofMillis(1000))
+            .backOffTime(Duration.ofMillis(1000))
             .build());
 
         //Query Plan
@@ -111,7 +111,7 @@ public class ClientRetryPolicyTest {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
-            .backOfTime(Duration.ofMillis(1000))
+            .backOffTime(Duration.ofMillis(1000))
             .build());
 
         //Data Plane Write - Should not retry
@@ -168,7 +168,7 @@ public class ClientRetryPolicyTest {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
-                    .backOfTime(Duration.ofMillis(0))
+                    .backOffTime(Duration.ofMillis(0))
                     .build());
 
                 Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
@@ -263,7 +263,7 @@ public class ClientRetryPolicyTest {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
-                    .backOfTime(Duration.ofMillis(0))
+                    .backOffTime(Duration.ofMillis(0))
                     .build());
 
                 Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
@@ -438,7 +438,7 @@ public class ClientRetryPolicyTest {
             validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                 .nullException()
                 .shouldRetry(true)
-                .backOfTime(Duration.ofMillis(1000))
+                .backOffTime(Duration.ofMillis(1000))
                 .build());
 
             Mockito.verify(endpointManager, Mockito.times(i+1)).markEndpointUnavailableForRead(Mockito.any());
