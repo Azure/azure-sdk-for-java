@@ -575,9 +575,15 @@ public class DataLakeTestBase extends TestProxyTestBase {
             file.deleteOnExit();
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 if (size > Constants.MB) {
-                    for (int i = 0; i < size / Constants.MB; i++) {
-                        int dataSize = Math.min(Constants.MB, size - i * Constants.MB);
-                        fos.write(getRandomByteArray(dataSize));
+                    byte[] data = getRandomByteArray(Constants.MB);
+                    int mbChunks = size / Constants.MB;
+                    int remaining = size % Constants.MB;
+                    for (int i = 0; i < mbChunks; i++) {
+                        fos.write(data);
+                    }
+
+                    if (remaining > 0) {
+                        fos.write(data, 0, remaining);
                     }
                 } else {
                     fos.write(getRandomByteArray(size));
@@ -810,5 +816,9 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
             sleepIfLiveTesting(delayMillis);
         }
+    }
+
+    public static boolean isLiveMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
     }
 }

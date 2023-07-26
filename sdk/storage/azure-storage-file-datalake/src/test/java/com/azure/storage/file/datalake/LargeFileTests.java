@@ -24,11 +24,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.SequenceInputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
@@ -186,11 +188,17 @@ public class LargeFileTests extends DataLakeTestBase {
             File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
             file.deleteOnExit();
 
-            try (FileOutputStream fos = new FileOutputStream(file)) {
+            try (OutputStream fos = new BufferedOutputStream(new FileOutputStream(file), 8 * Constants.MB)) {
                 if (size > Constants.MB) {
-                    for (int i = 0; i < size / Constants.MB; i++) {
-                        int dataSize = (int) Math.min(Constants.MB, size - (long) i * Constants.MB);
-                        fos.write(getRandomByteArray(dataSize));
+                    byte[] oneMb = getRandomByteArray(Constants.MB);
+                    int oneMbWrites = (int) (size / Constants.MB);
+                    int remaining = (int) (size % Constants.MB);
+                    for (int i = 0; i < oneMbWrites; i++) {
+                        fos.write(oneMb);
+                    }
+
+                    if (remaining > 0) {
+                        fos.write(oneMb, 0, remaining);
                     }
                 } else {
                     fos.write(getRandomByteArray((int) size));

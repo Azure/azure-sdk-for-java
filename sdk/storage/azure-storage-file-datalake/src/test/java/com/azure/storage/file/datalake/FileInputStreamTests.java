@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.datalake;
 
-import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.ConsistentReadControl;
@@ -76,7 +75,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @EnabledIf("isLiveMode")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadDownloadBlockSizeSupplier")
     public void uploadDownloadBlockSize(Integer blockSize, int numChunks, int[] sizes) throws IOException {
@@ -210,9 +209,5 @@ public class FileInputStreamTests extends DataLakeTestBase {
         } catch (Exception ex) {
             assertInstanceOf(IOException.class, ex);
         }
-    }
-
-    private static boolean isLiveMode() {
-        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
     }
 }

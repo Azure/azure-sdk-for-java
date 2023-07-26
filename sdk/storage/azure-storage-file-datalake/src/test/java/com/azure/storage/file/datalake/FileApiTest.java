@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -63,6 +62,7 @@ import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -137,10 +137,17 @@ public class FileApiTest extends DataLakeTestBase {
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
     private DataLakeFileClient fc;
+    private final List<File> createdFiles = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
         fc = dataLakeFileSystemClient.createFile(generatePathName());
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @AfterEach
+    public void cleanup() {
+        createdFiles.forEach(File::delete);
     }
 
     @Test
@@ -1400,6 +1407,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadToFileExists() throws IOException {
         File testFile = new File(prefix + ".txt");
         testFile.deleteOnExit();
+        createdFiles.add(testFile);
+
         if (!testFile.exists()) {
             assertTrue(testFile.createNewFile());
         }
@@ -1416,6 +1425,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadToFileExistsSucceeds() throws IOException {
         File testFile = new File(prefix + ".txt");
         testFile.deleteOnExit();
+        createdFiles.add(testFile);
+
         if (!testFile.exists()) {
             assertTrue(testFile.createNewFile());
         }
@@ -1432,6 +1443,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadToFileDoesNotExist() throws IOException {
         File testFile = new File(prefix + ".txt");
         testFile.deleteOnExit();
+        createdFiles.add(testFile);
+
         if (testFile.exists()) {
             assertTrue(testFile.delete());
         }
@@ -1448,6 +1461,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadFileDoesNotExistOpenOptions() throws IOException {
         File testFile = new File(prefix + ".txt");
         testFile.deleteOnExit();
+        createdFiles.add(testFile);
+
         if (!testFile.exists()) {
             assertTrue(testFile.createNewFile());
         }
@@ -1466,6 +1481,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadFileExistOpenOptions() throws IOException {
         File testFile = new File(prefix + ".txt");
         testFile.deleteOnExit();
+        createdFiles.add(testFile);
+
         if (!testFile.exists()) {
             assertTrue(testFile.createNewFile());
         }
@@ -1480,16 +1497,19 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         fc.uploadFromFile(file.toPath().toString(), true);
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1512,7 +1532,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFileSyncBufferCopy(int fileSize) {
@@ -1527,9 +1547,13 @@ public class FileApiTest extends DataLakeTestBase {
 
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fileClient.uploadFromFile(file.toPath().toString(), true);
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1543,7 +1567,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(fileSize, properties.getFileSize());
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFileAsyncBufferCopy(int fileSize) {
@@ -1560,9 +1584,13 @@ public class FileApiTest extends DataLakeTestBase {
 
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fileAsyncClient.uploadFromFile(file.toPath().toString(), true).block();
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1580,10 +1608,14 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadFileRange(FileRange range) {
         File file = getRandomFile(DATA.getDefaultDataSize());
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(testResourceNamer.randomName("", 60));
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1609,10 +1641,14 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadFileRangeFail() {
         File file = getRandomFile(DATA.getDefaultDataSize());
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1625,10 +1661,14 @@ public class FileApiTest extends DataLakeTestBase {
     public void downloadFileCountNull() {
         File file = getRandomFile(DATA.getDefaultDataSize());
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1644,10 +1684,14 @@ public class FileApiTest extends DataLakeTestBase {
         String leaseID) {
         File file = getRandomFile(DATA.getDefaultDataSize());
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(testResourceNamer.randomName("", 60));
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1669,10 +1713,14 @@ public class FileApiTest extends DataLakeTestBase {
         String leaseID) {
         File file = getRandomFile(DATA.getDefaultDataSize());
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1691,16 +1739,19 @@ public class FileApiTest extends DataLakeTestBase {
         assertTrue(Objects.equals(e.getErrorCode(), "ConditionNotMet") || Objects.equals(e.getErrorCode(), "LeaseIdMismatchWithBlobOperation"));
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
-    public void downloadFileEtagLock() throws IOException, InterruptedException {
+    public void downloadFileEtagLock() throws IOException {
         File file = getRandomFile(Constants.MB);
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
 
         AtomicInteger counter = new AtomicInteger();
 
@@ -1761,16 +1812,20 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressReceiver(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -1808,16 +1863,20 @@ public class FileApiTest extends DataLakeTestBase {
         }
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressListener(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
+        createdFiles.add(file);
+
         fc.uploadFromFile(file.toPath().toString(), true);
 
         File outFile = new File(prefix);
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
@@ -2370,13 +2429,14 @@ public class FileApiTest extends DataLakeTestBase {
 
     // "No overwrite interrupted" tests were not ported over for datalake. This is because the access condition check
     // occurs on the create method, so simple access conditions tests suffice.
-    @EnabledIf("isLiveTest") // Test uploads large amount of data
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("uploadFromFileSupplier")
     public void uploadFromFile(int fileSize, Long blockSize) throws IOException {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         // Block length will be ignored for single shot.
         StepVerifier.create(fac.uploadFromFile(file.getPath(),
@@ -2386,8 +2446,9 @@ public class FileApiTest extends DataLakeTestBase {
         File outFile = new File(file.getPath() + "result");
         assertTrue(outFile.createNewFile());
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
 
-        StepVerifier.create(fac.readToFile(outFile.getPath()))
+        StepVerifier.create(fac.readToFile(outFile.getPath(), true))
             .expectNextCount(1)
             .verifyComplete();
 
@@ -2409,6 +2470,7 @@ public class FileApiTest extends DataLakeTestBase {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         File file = getRandomFile(Constants.KB);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         fc.uploadFromFile(file.getPath(), null, null, metadata, null, null);
 
@@ -2427,6 +2489,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         File file = getRandomFile(50);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         assertThrows(DataLakeStorageException.class, () -> fc.uploadFromFile(file.toPath().toString()));
 
@@ -2441,6 +2504,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         File file = getRandomFile(50);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         assertDoesNotThrow(() -> fc.uploadFromFile(file.toPath().toString(), true));
 
@@ -2481,7 +2545,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadFromFileWithProgressSupplier")
     public void uploadFromFileReporter(int size, long blockSize, int bufferCount) {
@@ -2490,6 +2554,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         File file = getRandomFile(size);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(bufferCount)
@@ -2513,7 +2578,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadFromFileWithProgressSupplier")
     public void uploadFromFileListener(int size, long blockSize, int bufferCount) {
@@ -2522,6 +2587,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         File file = getRandomFile(size);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(bufferCount)
@@ -2539,6 +2605,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void uploadFromFileOptions(int dataSize, long singleUploadSize, Long blockSize) {
         File file = getRandomFile(dataSize);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         fc.uploadFromFile(file.toPath().toString(),
             new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null);
@@ -2559,6 +2626,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void uploadFromFileWithResponse(int dataSize, long singleUploadSize, Long blockSize) {
         File file = getRandomFile(dataSize);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         Response<PathInfo> response = fc.uploadFromFileWithResponse(file.toPath().toString(),
             new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null, null);
@@ -2570,7 +2638,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(dataSize, fc.getProperties().getFileSize());
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void asyncBufferedUploadEmpty() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -2579,7 +2647,7 @@ public class FileApiTest extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadEmptyBuffersSupplier")
     public void asyncBufferedUploadEmptyBuffers(ByteBuffer buffer1, ByteBuffer buffer2, ByteBuffer buffer3,
@@ -2609,7 +2677,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("isLiveTest") // Test uploads large amount of data
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadSupplier")
     public void asyncBufferedUpload(int dataSize, long bufferSize, int numBuffs) {
@@ -2697,7 +2765,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadWithProgressSupplier")
     public void bufferedUploadWithReporter(int size, long blockSize, int bufferCount) {
@@ -2730,7 +2798,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadWithProgressSupplier")
     public void bufferedUploadWithListener(int size, long blockSize, int bufferCount) {
@@ -2752,7 +2820,7 @@ public class FileApiTest extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("isLiveTest") // Test uploads large amount of data
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("bufferedUploadChunkedSourceSupplier")
     public void bufferedUploadChunkedSource(List<Integer> dataSizeList, long bufferSize, int numBuffers) {
@@ -2791,7 +2859,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     // These two tests are to test optimizations in buffered upload for small files.
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
     public void bufferedUploadHandlePathing(List<Integer> dataSizeList) {
@@ -2807,7 +2875,7 @@ public class FileApiTest extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
     public void bufferedUploadHandlePathingHotFlux(List<Integer> dataSizeList) {
@@ -2828,7 +2896,7 @@ public class FileApiTest extends DataLakeTestBase {
             Arrays.asList(4 * Constants.MB, 4 * Constants.MB), Collections.singletonList(4 * Constants.MB));
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingHotFluxWithTransientFailureSupplier")
     public void bufferedUploadHandlePathingHotFluxWithTransientFailure(List<Integer> dataSizeList) {
@@ -2853,7 +2921,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {11110, 2 * Constants.MB + 11})
     public void bufferedUploadSyncHandlePathingWithTransientFailure(int dataSize) {
@@ -2883,7 +2951,7 @@ public class FileApiTest extends DataLakeTestBase {
             .verifyError(NullPointerException.class);
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("bufferedUploadHeadersSupplier")
     public void bufferedUploadHeaders(int dataSize, String cacheControl, String contentDisposition,
@@ -2919,7 +2987,7 @@ public class FileApiTest extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
     public void bufferedIploadMetadata(String key1, String value1, String key2, String value2) {
@@ -2947,7 +3015,7 @@ public class FileApiTest extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadNumberOfAppendsSupplier")
     public void bufferedUploadOptions(int dataSize, Long singleUploadSize, Long blockSize, int numAppends) {
@@ -2990,7 +3058,7 @@ public class FileApiTest extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void bufferedUploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3014,7 +3082,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void bufferedUploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3039,7 +3107,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @CsvSource({"7,2", "5,2"})
     public void uploadBufferPoolLockThreeOrMoreBuffers(long blockSize, int numBuffers) {
@@ -3138,7 +3206,7 @@ public class FileApiTest extends DataLakeTestBase {
 //            })
 //    }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void bufferedUploadDefaultNoOverwrite() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -3148,13 +3216,14 @@ public class FileApiTest extends DataLakeTestBase {
             .verifyError(IllegalArgumentException.class);
     }
 
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void bufferedUploadOverwrite() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         File file = getRandomFile(50);
         file.deleteOnExit();
+        createdFiles.add(file);
 
         assertDoesNotThrow(() -> fc.uploadFromFile(file.toPath().toString(), true));
 
@@ -3166,9 +3235,12 @@ public class FileApiTest extends DataLakeTestBase {
     public void bufferedUploadNonMarkableStream() throws FileNotFoundException {
         File file = getRandomFile(10);
         file.deleteOnExit();
+        createdFiles.add(file);
+
         FileInputStream fileStream = new FileInputStream(file);
         File outFile = getRandomFile(10);
         outFile.deleteOnExit();
+        createdFiles.add(outFile);
 
         fc.upload(fileStream, file.length(), true);
 
@@ -3709,7 +3781,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @DisabledIf("olderThan20191212ServiceVersion")
-    @EnabledIf("isLiveTest") // Large amount of data.
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Large amount of data.
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -4020,7 +4092,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("isLiveTest") /* Flaky in playback. */
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") /* Flaky in playback. */
     @Test
     public void uploadInputStreamLargeData() {
         ByteArrayInputStream input = new ByteArrayInputStream(getRandomByteArray(20 * Constants.MB));
@@ -4041,7 +4113,7 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("isLiveTest") /* Flaky in playback. */
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") /* Flaky in playback. */
     @ParameterizedTest
     @MethodSource("uploadNumberOfAppendsSupplier")
     public void uploadNumAppends(int dataSize, Long singleUploadSize, Long blockSize, int numAppends) {
@@ -4075,7 +4147,7 @@ public class FileApiTest extends DataLakeTestBase {
         return Stream.of(
             // dataSize | singleUploadSize | blockSize | numAppends
             Arguments.of((100 * Constants.MB) - 1, null, null, 1),
-            Arguments.of((100 * Constants.MB) + 1, null, null, Math.ceil(((double) (100 * Constants.MB) + 1) / (double) (4 * Constants.MB))),
+            Arguments.of((100 * Constants.MB) + 1, null, null, (int) Math.ceil(((double) (100 * Constants.MB) + 1) / (double) (4 * Constants.MB))),
             Arguments.of(100, 50L, null, 1),
             Arguments.of(100, 50L, 20L, 5)
         );
@@ -4092,7 +4164,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     // Reading from recordings will not allow for the timing of the test to work correctly.
     @SuppressWarnings("deprecation")
-    @EnabledIf("isLiveTest")
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void uploadTimeout() {
         int size = 1024;
@@ -4118,9 +4190,5 @@ public class FileApiTest extends DataLakeTestBase {
         // dfs endpoint
         assertEquals("2019-02-02", fileClient.getAccessControlWithResponse(false, null, null, null).getHeaders()
             .getValue(X_MS_VERSION));
-    }
-
-    private static boolean isLiveTest() {
-        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
     }
 }
