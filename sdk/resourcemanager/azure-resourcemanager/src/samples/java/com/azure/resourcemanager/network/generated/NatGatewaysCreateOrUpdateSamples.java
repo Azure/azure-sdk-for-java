@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for NatGateways CreateOrUpdate. */
 public final class NatGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NatGatewayCreateOrUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NatGatewayCreateOrUpdate.json
      */
     /**
      * Sample code: Create nat gateway.

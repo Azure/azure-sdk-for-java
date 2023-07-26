@@ -13,6 +13,7 @@ import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CloseJobOptions;
 import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
 import com.azure.communication.jobrouter.models.ListJobsOptions;
@@ -83,6 +84,20 @@ public final class JobRouterClient {
     }
 
     /**
+     * Create a job with classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJob createJobWithClassificationPolicy(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        return this.client.createJobWithClassificationPolicy(createJobWithClassificationPolicyOptions).block();
+    }
+
+    /**
      * Create a job.
      *
      * @param createJobOptions Options to create a RouterJob.
@@ -99,7 +114,24 @@ public final class JobRouterClient {
     }
 
     /**
+     * Create a job with classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob.
+     * @param context The context to associate with this operation.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RouterJob> createJobWithClassificationPolicyWithResponse(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions, Context context) {
+        RouterJobInternal routerJobInternal = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        return this.client.upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJobInternal, context).block();
+    }
+
+    /**
      * Update a job.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateJobOptions Options to update RouterJob.
      * @return a unit of work to be routed.
@@ -114,6 +146,7 @@ public final class JobRouterClient {
 
     /**
      * Update a job.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateJobOptions Options to update RouterJob.
      * @param context The context to associate with this operation.
@@ -522,6 +555,7 @@ public final class JobRouterClient {
 
     /**
      * Update a worker.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateWorkerOptions Container for inputs to update a worker.
      * @return an entity for jobs to be routed to.
@@ -536,6 +570,7 @@ public final class JobRouterClient {
 
     /**
      * Update a worker.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateWorkerOptions Container for inputs to update a worker.
      * @param context The context to associate with this operation.

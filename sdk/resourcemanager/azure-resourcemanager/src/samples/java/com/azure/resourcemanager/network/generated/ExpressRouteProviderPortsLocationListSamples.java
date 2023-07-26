@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ExpressRouteProviderPortsLocation List. */
 public final class ExpressRouteProviderPortsLocationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/expressRouteProviderPortList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/expressRouteProviderPortList.json
      */
     /**
      * Sample code: ExpressRouteProviderPortList.

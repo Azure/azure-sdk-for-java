@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStartPara
 /** Samples for VpnGateways StartPacketCapture. */
 public final class VpnGatewaysStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnGatewayStartPacketCaptureFilterData.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnGatewayStartPacketCaptureFilterData.json
      */
     /**
      * Sample code: Start packet capture on vpn gateway with filter.
@@ -35,7 +35,7 @@ public final class VpnGatewaysStartPacketCaptureSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnGatewayStartPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnGatewayStartPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on vpn gateway without filter.

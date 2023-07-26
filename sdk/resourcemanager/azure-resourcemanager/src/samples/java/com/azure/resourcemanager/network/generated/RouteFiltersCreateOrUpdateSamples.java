@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for RouteFilters CreateOrUpdate. */
 public final class RouteFiltersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/RouteFilterCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RouteFilterCreate.json
      */
     /**
      * Sample code: RouteFilterCreate.
@@ -33,7 +33,7 @@ public final class RouteFiltersCreateOrUpdateSamples {
                 "filterName",
                 new RouteFilterInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withRules(
                         Arrays
                             .asList(
