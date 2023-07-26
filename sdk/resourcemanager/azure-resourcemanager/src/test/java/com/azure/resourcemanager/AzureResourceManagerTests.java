@@ -11,6 +11,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -93,6 +95,13 @@ import reactor.core.scheduler.Schedulers;
 
 public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
+
+    public AzureResourceManagerTests() {
+        addSanitizers(
+            // Search query key
+            new TestProxySanitizer("$.value[*].key", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+        );
+    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(
