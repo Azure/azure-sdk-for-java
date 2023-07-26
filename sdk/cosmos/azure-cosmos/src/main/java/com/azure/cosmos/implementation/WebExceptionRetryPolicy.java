@@ -83,8 +83,9 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         this.isReadRequest = request.isReadOnlyRequest();
         this.timeoutPolicy = HttpTimeoutPolicy.getTimeoutPolicy(request);
 
-        // Fetching the retryCount for Address refresh call
-        if (request.isAddressRefresh() && this.addressRefreshCount <= MAX_ADDRESS_REFRESH_RETRY_COUNT) {
+        // Fetching the retryCount for Address refresh call separately, because the retryContext.getRetryCount() is not
+        // updated for the address refresh calls.
+        if (request.isAddressRefresh() && this.addressRefreshCount < this.timeoutPolicy.totalRetryCount()) {
             ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.addressRefreshCount);
             this.request.setResponseTimeout(current.getResponseTimeout());
             this.retryDelay = current.getDelayForNextRequestInSeconds();
@@ -107,7 +108,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryAddressRefresh() {
-        if (this.addressRefreshCount++ > MAX_ADDRESS_REFRESH_RETRY_COUNT) {
+        if (this.addressRefreshCount++ >= this.timeoutPolicy.totalRetryCount()) {
             logger
                 .warn(
                     "shouldRetryAddressRefresh() No more retrying on endpoint {}, operationType = {}, count = {}, " +
