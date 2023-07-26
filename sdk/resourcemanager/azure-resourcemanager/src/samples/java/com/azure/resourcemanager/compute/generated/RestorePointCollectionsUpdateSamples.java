@@ -29,7 +29,7 @@ public final class RestorePointCollectionsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaa",
                 new RestorePointCollectionUpdate()
-                    .withTags(mapOf("key8536", "aaaaaaaaaaaaaaaaaaa"))
+                    .withTags(mapOf("key8536", "fakeTokenPlaceholder"))
                     .withSource(
                         new RestorePointCollectionSourceProperties()
                             .withId(

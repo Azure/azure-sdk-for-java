@@ -59,8 +59,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     public interface VirtualMachineImagesEdgeZonesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}"
-                + "/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineImageInner>> get(
@@ -78,8 +77,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}"
-                + "/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<List<VirtualMachineImageResourceInner>>> list(
@@ -99,8 +97,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}"
-                + "/publishers/{publisherName}/artifacttypes/vmimage/offers")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<List<VirtualMachineImageResourceInner>>> listOffers(
@@ -115,8 +112,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}"
-                + "/publishers")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishers(
@@ -130,8 +126,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}"
-                + "/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<List<VirtualMachineImageResourceInner>>> listSkus(

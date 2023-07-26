@@ -58,8 +58,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     public interface VirtualMachineExtensionImagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
-                + "/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineExtensionImageInner>> get(
@@ -75,8 +74,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
-                + "/{publisherName}/artifacttypes/vmextension/types")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<List<VirtualMachineExtensionImageInner>>> listTypes(
@@ -90,8 +88,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
-                + "/{publisherName}/artifacttypes/vmextension/types/{type}/versions")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersions(

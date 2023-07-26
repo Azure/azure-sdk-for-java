@@ -118,7 +118,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaa",
                 new VirtualMachineScaleSetUpdate()
-                    .withTags(mapOf("key246", "aaaaaaaaaaaaaaaaaaaaaaaa"))
+                    .withTags(mapOf("key246", "fakeTokenPlaceholder"))
                     .withSku(new Sku().withName("DSv3-Type1").withTier("aaa").withCapacity(7L))
                     .withPlan(
                         new Plan()

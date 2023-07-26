@@ -45,7 +45,9 @@ public final class SshPublicKeysUpdateSamples {
             .updateWithResponse(
                 "rgcompute",
                 "aaaaaaaaaaaa",
-                new SshPublicKeyUpdateResource().withTags(mapOf("key2854", "a")).withPublicKey("fakeTokenPlaceholder"),
+                new SshPublicKeyUpdateResource()
+                    .withTags(mapOf("key2854", "fakeTokenPlaceholder"))
+                    .withPublicKey("fakeTokenPlaceholder"),
                 com.azure.core.util.Context.NONE);
     }
 

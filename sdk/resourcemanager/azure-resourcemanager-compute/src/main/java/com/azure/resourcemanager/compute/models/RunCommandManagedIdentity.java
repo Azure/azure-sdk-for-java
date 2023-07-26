@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * https://aka.ms/RunCommandManaged.
  */
 @Fluent
-public class RunCommandManagedIdentity {
+public final class RunCommandManagedIdentity {
     /*
      * Client Id (GUID value) of the user-assigned managed identity. ObjectId should not be used if this is provided.
      */

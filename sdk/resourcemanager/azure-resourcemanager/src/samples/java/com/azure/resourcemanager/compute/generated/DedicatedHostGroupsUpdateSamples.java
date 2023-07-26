@@ -29,7 +29,7 @@ public final class DedicatedHostGroupsUpdateSamples {
                 "rgcompute",
                 "aaaa",
                 new DedicatedHostGroupUpdate()
-                    .withTags(mapOf("key9921", "aaaaaaaaaa"))
+                    .withTags(mapOf("key9921", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
                     .withPlatformFaultDomainCount(3)
                     .withSupportAutomaticPlacement(true),
