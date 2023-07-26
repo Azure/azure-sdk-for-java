@@ -564,6 +564,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersNatRules() throws Exception {
         new TestLoadBalancer().new InternetWithNatRule(azureResourceManager.virtualMachines().manager())
@@ -575,6 +576,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersNatPools() throws Exception {
         new TestLoadBalancer().new InternetWithNatPool(azureResourceManager.virtualMachines().manager())
@@ -598,6 +600,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersNatOnly() throws Exception {
         new TestLoadBalancer().new InternetNatOnly(azureResourceManager.virtualMachines().manager())
