@@ -304,6 +304,9 @@ class BulkWriter(container: CosmosAsyncContainer,
                       s"attemptNumber=${requestOperationContext.attemptNumber}, exceptionMessage=${e.getMessage},  " +
                       s"Context: {${operationContext.toString}} ${getThreadInfo}")
 
+                  // the task will be re-queued at the beginning of the flow, so mark it complete here
+                  markTaskCompletion()
+
                   this.scheduleRetry(
                       ReadManyOperation.cosmosItemIdentity.getPartitionKey,
                       ReadManyOperation.objectNode,
