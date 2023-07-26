@@ -4,9 +4,12 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +20,7 @@ import org.testng.annotations.Test;
 
 import java.io.StringWriter;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -144,8 +148,16 @@ public class ClientConfigDiagnosticsTest {
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
         diagnosticsClientConfig.withClientMap(new HashMap<>());
+        CosmosContainerProactiveInitConfig containerProactiveInitConfig = new CosmosContainerProactiveInitConfigBuilder(
+            Arrays.asList(
+                new CosmosContainerIdentity("test-db", "test-container-1"),
+                new CosmosContainerIdentity("test-db", "test-container-2")
+            ))
+            .build();
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
+
+        diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
 
         StringWriter jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
@@ -161,6 +173,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: true, cs: true, rv: false)");
+        assertThat(objectNode.get("proactiveInit").asText()).isEqualTo("test-db.test-container-1,test-db.test-container-2(1)");
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
     }
