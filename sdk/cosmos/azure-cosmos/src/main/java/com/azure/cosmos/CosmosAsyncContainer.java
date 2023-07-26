@@ -1238,6 +1238,7 @@ public class CosmosAsyncContainer {
         }
 
         final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
+
         return Flux.deferContextual(context -> {
             final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
 

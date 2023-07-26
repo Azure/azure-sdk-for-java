@@ -7,7 +7,11 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchUtil;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 

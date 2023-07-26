@@ -253,9 +253,9 @@ public class BulkExecutorTest extends BatchTestBase {
             .getCosmosBulkExecutionOptionsAccessor()
             .setPreserveOrdering(cosmosBulkExecutionOptions, true);
 
-        FaultInjectionRule rule = injectFailure("RequestRateTooLarge", this.container,
-            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, 10);
-//        FaultInjectionRule rule2 = injectFailure("PartitionSplit", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING);
+//        FaultInjectionRule rule = injectFailure("RequestRateTooLarge", this.container,
+//            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, 10);
+        FaultInjectionRule rule = injectFailure("PartitionSplit", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 5);
 
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
@@ -342,7 +342,7 @@ public class BulkExecutorTest extends BatchTestBase {
             .setPreserveOrdering(cosmosBulkExecutionOptions, true);
 
         FaultInjectionRule rule = injectFailure("ServiceUnavailable", this.container,
-            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 7);
+            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 10);
 
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
