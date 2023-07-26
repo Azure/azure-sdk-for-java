@@ -224,8 +224,18 @@ public class CosmosAsyncScripts {
 
     /**
      * Query for stored procedures in a container.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryStoredProcedures_with_querySpec_and_options_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryStoredProcedures_with_querySpec_and_options_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryStoredProcedures_spec_option_params -->
+     * <pre>
+     * CosmosAsyncScripts asyncScripts =
+     *     new CosmosAsyncScripts&#40;cosmosAsyncContainer&#41;;
+     * CosmosQueryRequestOptions options =
+     *     new CosmosQueryRequestOptions&#40;&#41;;
+     * SqlQuerySpec spec = new SqlQuerySpec&#40;query&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosStoredProcedureProperties&gt; properties =
+     *     asyncScripts.queryStoredProcedures&#40;spec, options&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryStoredProcedures_spec_option_params -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained stored procedures.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -399,8 +409,18 @@ public class CosmosAsyncScripts {
 
     /**
      * Query for user defined functions in the container.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryUserDefinedFunctions_with_querySpec_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryUserDefinedFunctions_with_querySpec_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncScripts.queryUserDefinedFunctions_spec_option_params -->
+     * <pre>
+     * CosmosAsyncScripts asyncScripts =
+     *     new CosmosAsyncScripts&#40;cosmosAsyncContainer&#41;;
+     * CosmosQueryRequestOptions options =
+     *     new CosmosQueryRequestOptions&#40;&#41;;
+     * SqlQuerySpec spec = new SqlQuerySpec&#40;query&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosUserDefinedFunctionProperties&gt; properties =
+     *     asyncScripts.queryUserDefinedFunctions&#40;spec, options&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncScripts.queryUserDefinedFunctions_spec_option_params -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined
      * functions.

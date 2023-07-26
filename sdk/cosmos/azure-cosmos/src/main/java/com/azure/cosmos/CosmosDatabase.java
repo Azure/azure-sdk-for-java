@@ -129,6 +129,16 @@ public class CosmosDatabase {
     /**
      * Creates a Cosmos container.
      * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_param -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container =
+     *         cosmosDatabase.createContainer&#40;containerProperties&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_param -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
@@ -140,8 +150,20 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container with custom throughput setting.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_throughputProperties_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_throughputProperties_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_prop_throughput_params -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;throughput&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container =
+     *         cosmosDatabase.createContainer&#40;containerProperties, throughputProperties&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_prop_throughput_params -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param throughputProperties the throughput properties.
      * @return the {@link CosmosContainerResponse} with the created container.
@@ -155,8 +177,20 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container while passing additional request options.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_containerProperties_option_params -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * CosmosContainerRequestOptions requestOptions =
+     *     new CosmosContainerRequestOptions&#40;&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container =
+     *         cosmosDatabase.createContainer&#40;containerProperties, requestOptions&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_containerProperties_option_params -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param options the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
@@ -170,8 +204,21 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_throughput_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_throughput_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_prop_throughputId_option_params -->
+     * <pre>
+     * int throughput = 1;
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * CosmosContainerRequestOptions requestOptions =
+     *     new CosmosContainerRequestOptions&#40;&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container =
+     *         cosmosDatabase.createContainer&#40;containerProperties, throughput, requestOptions&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_prop_throughputId_option_params -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param throughput the throughput.
      * @param options the {@link CosmosContainerProperties}.
@@ -189,8 +236,22 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_throughputProperties_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_with_containerProperties_and_throughputProperties_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_prop_throughput_option_params -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * ThroughputProperties properties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;throughput&#41;;
+     * CosmosContainerRequestOptions options =
+     *     new CosmosContainerRequestOptions&#40;&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container =
+     *         cosmosDatabase.createContainer&#40;containerProperties, properties, options&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_prop_throughput_option_params -->
      * @param containerProperties the container properties.
      * @param throughputProperties the throughput properties.
      * @param options the options.
@@ -208,8 +269,18 @@ public class CosmosDatabase {
 
     /**
      * Create a Cosmos container.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_with_id_and_partitionKeyPath_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_with_id_and_partitionKeyPath_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_id_key_params -->
+     * <pre>
+     * String id = &quot;&lt;ID&gt;&quot;;
+     * String partitionKeyPath = &quot;&lt;KEY_PATH&gt;&quot;;
+     * try &#123;
+     *     CosmosContainerResponse container =
+     *         cosmosDatabase.createContainer&#40;id, partitionKeyPath&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_id_key_params -->
      * @param id the container id.
      * @param partitionKeyPath the partition key path.
      * @return the cosmos container response.
@@ -221,8 +292,20 @@ public class CosmosDatabase {
 
     /**
      * Create a Cosmos container.
-     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_with_id_and_partitionKeyPath_and_throughputProperties_params -->
-     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_with_id_and_partitionKeyPath_and_throughputProperties_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer_id_key_throughput_params -->
+     * <pre>
+     * String id = &quot;&lt;ID&gt;&quot;;
+     * String partitionKeyPath = &quot;&lt;KEY_PATH&gt;&quot;;
+     * ThroughputProperties properties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;throughput&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container =
+     *         cosmosDatabase.createContainer&#40;id, partitionKeyPath, properties&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer_id_key_throughput_params -->
      * @param id the id.
      * @param partitionKeyPath the partition key path.
      * @param throughputProperties the throughput properties.

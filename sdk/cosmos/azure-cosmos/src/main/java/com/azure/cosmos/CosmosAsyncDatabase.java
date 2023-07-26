@@ -1043,15 +1043,15 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos client encryption keys in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_query_params -->
      * <pre>
      * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
      * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
-     * CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions&#40;&#41;;
+     *
      * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; clientEncryptionKeys =
-     *     cosmosAsyncDatabase.queryClientEncryptionKeys&#40;query, requestOptions&#41;;
+     *     cosmosAsyncDatabase.queryClientEncryptionKeys&#40;query&#41;;
      * </pre>
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_query_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -1066,15 +1066,16 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos client encryption keys in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_query_option_params -->
      * <pre>
      * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
      * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
      * CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions&#40;&#41;;
+     *
      * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; clientEncryptionKeys =
      *     cosmosAsyncDatabase.queryClientEncryptionKeys&#40;query, requestOptions&#41;;
      * </pre>
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys -->
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_query_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -1094,8 +1095,16 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos client encryption keys in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_with_querySpec_param -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_with_querySpec_param -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_spec_params -->
+     * <pre>
+     * String query = &quot;&lt;YOUR_QUERY&gt;&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * SqlQuerySpec spec = new SqlQuerySpec&#40;query&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; clientEncryptionKeys =
+     *     cosmosAsyncDatabase.queryClientEncryptionKeys&#40;spec&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_spec_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -1110,8 +1119,16 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos client encryption keys in a database.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_with_querySpec_and_options_params -->
-     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_with_querySpec_and_options_params -->
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_spec_option_params -->
+     * <pre>
+     * CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase&#40;id, cosmosAsyncClient&#41;;
+     * SqlQuerySpec spec = new SqlQuerySpec&#40;query&#41;;
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     *
+     * CosmosPagedFlux&lt;CosmosClientEncryptionKeyProperties&gt; clientEncryptionKeys =
+     *     cosmosAsyncDatabase.queryClientEncryptionKeys&#40;spec, options&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryClientEncryptionKeys_spec_option_params -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.
