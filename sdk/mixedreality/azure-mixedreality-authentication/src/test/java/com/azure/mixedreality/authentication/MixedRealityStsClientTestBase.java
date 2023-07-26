@@ -53,13 +53,20 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
             customSanitizers.add(new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN,
                 TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizers);
+        }
+
+        if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
-        } else if (interceptorManager.isPlaybackMode()) {
+        }
+
+        if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
             customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("X-MRC-CV")));
             interceptorManager.addMatchers(customMatchers);
         }
+
+
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
