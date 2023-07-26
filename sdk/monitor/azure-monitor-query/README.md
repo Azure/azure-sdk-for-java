@@ -124,7 +124,7 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
 
 #### Configure clients for non-public Azure clouds
 
-By default, `LogQueryClient` and `MetricQueryClient` are configured to connect to the public Azure Cloud. These can be configured to connect to non-public Azure clouds by passing in the correct `endpoint` argument: For example:
+By default, `LogQueryClient` and `MetricQueryClient` are configured to connect to the public Azure Cloud. These can be configured to connect to non-public Azure clouds by setting the correct `endpoint` in the client builders: For example:
 
 Creating a `LogsQueryClient` for Azure China cloud:
 
