@@ -12,7 +12,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -237,7 +236,6 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals(peName2, privateEndpoints.get(0).name());
     }
 
-    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testPrivateEndpointE2E() {
         final boolean validateOnVirtualMachine = true;

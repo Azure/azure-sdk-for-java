@@ -98,7 +98,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
 
     public AzureResourceManagerTests() {
         addSanitizers(
-            // Search query key
+            // Search key
+            new TestProxySanitizer("$.key", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$.value[*].key", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         );
     }
@@ -585,7 +586,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // FIXME
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer().new InternetMinimal(azureResourceManager.virtualMachines().manager())
@@ -608,7 +609,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // FIXME
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer().new InternalMinimal(azureResourceManager.virtualMachines().manager())
@@ -946,7 +947,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // FIXME
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLocalNetworkGateways() throws Exception {
         new TestLocalNetworkGateway().runTest(azureResourceManager.localNetworkGateways(), azureResourceManager.resourceGroups());
@@ -1050,7 +1051,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void listSubscriptions() throws Exception {
         Assertions.assertTrue(0 < TestUtilities.getSize(azureResourceManager.subscriptions().list()));
@@ -1296,7 +1296,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(), azureResourceManager.resourceGroups());
     }
 
-    @DoNotRecord(skipInPlayback = true) // FIXME
+    @Disabled("Often encounters service does not have enough resource in target region. cosmos module should have similar tests.")
     @Test
     public void testCosmosDB() throws Exception {
         new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());
@@ -1320,6 +1320,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
                 .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
     }
 
+    // secret in URL on API deleteQueryKey
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testSearchServiceAnySku() throws Exception {
         new TestSearchService.SearchServiceAnySku()

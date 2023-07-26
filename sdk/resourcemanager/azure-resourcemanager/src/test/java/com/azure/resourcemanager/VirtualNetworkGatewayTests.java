@@ -151,7 +151,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // FIXME
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testVirtualNetworkGateways() throws Exception {
         new TestVirtualNetworkGateway().new Basic(azureResourceManager.virtualNetworkGateways().manager())
@@ -164,7 +164,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // FIXME
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testVirtualNetworkGatewaySiteToSite() throws Exception {
         new TestVirtualNetworkGateway().new SiteToSite(azureResourceManager.virtualNetworkGateways().manager())
@@ -177,7 +177,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // FIXME
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
         new TestVirtualNetworkGateway().new VNetToVNet(azureResourceManager.virtualNetworkGateways().manager())
