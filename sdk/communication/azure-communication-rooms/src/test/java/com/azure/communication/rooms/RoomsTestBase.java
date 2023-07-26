@@ -13,8 +13,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -93,11 +91,6 @@ public class RoomsTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(
-                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
-        }
-
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
                     new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
@@ -110,11 +103,6 @@ public class RoomsTestBase extends TestProxyTestBase {
     protected void configureTestMode(RoomsClientBuilder builder) {
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(
-                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
 
         if (interceptorManager.isPlaybackMode()) {
