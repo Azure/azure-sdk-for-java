@@ -1,0 +1,97 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/1d3e4a1e0deletefileac757710365a0fb252e5954f8b9?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "92911983-844d-40d8-bfcb-df146136da22",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "ETag": "\u00220x8DB8DE184F32B67\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "92911983-844d-40d8-bfcb-df146136da22",
+        "x-ms-request-id": "90361338-c01e-0053-37ca-bfb2b6000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/1d3e4a1e0deletefileac757710365a0fb252e5954f8b9/1d3e4a1e1deletefileac757988272e1b87e87f5643c89?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "92e68851-5f91-4d73-8a4e-60de07724032",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "ETag": "\u00220x8DB8DE184FC4AAF\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "92e68851-5f91-4d73-8a4e-60de07724032",
+        "x-ms-request-id": "775fc750-801f-0030-78ca-bf2f4d000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/1d3e4a1e0deletefileac757710365a0fb252e5954f8b9/1d3e4a1e1deletefileac757988272e1b87e87f5643c89",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "194b8d57-ce25-4a95-bd27-116e393f960c",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "194b8d57-ce25-4a95-bd27-116e393f960c",
+        "x-ms-delete-type-permanent": "false",
+        "x-ms-deletion-id": "133348539941724035",
+        "x-ms-request-id": "775fc760-801f-0030-08ca-bf2f4d000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "1d3e4a1e0deletefileac757710365a0fb252e5954f8b9",
+    "1": "1d3e4a1e1deletefileac757988272e1b87e87f5643c89"
+  }
+}

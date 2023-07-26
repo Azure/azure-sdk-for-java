@@ -1,0 +1,103 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/e95e13bb02842528ddc9b79d214fa89fd76209?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "fe55054a-cd7b-4306-9c26-abb8e2c93dd9",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:39 GMT",
+        "ETag": "\u00220x8DB8DE188C4E197\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "fe55054a-cd7b-4306-9c26-abb8e2c93dd9",
+        "x-ms-request-id": "1c5b1864-101e-0032-3cca-bf91f5000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e95e13bb02842528ddc9b79d214fa89fd76209/e95e13bb139960462553a46baf4ee4b5aee111?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "7c657d38-4b9d-4cf9-b20a-3f8d23b70e92",
+        "x-ms-permissions": "0777",
+        "x-ms-umask": "0057",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "ETag": "\u00220x8DB8DE188CDBFD2\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "7c657d38-4b9d-4cf9-b20a-3f8d23b70e92",
+        "x-ms-request-id": "1dc19fab-601f-005a-09ca-bff765000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e95e13bb02842528ddc9b79d214fa89fd76209/e95e13bb139960462553a46baf4ee4b5aee111?action=getAccessControl\u0026upn=true",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "52cfc17c-180d-4a5c-87ca-6ab1bc513f3a",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Date": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "ETag": "\u00220x8DB8DE188CDBFD2\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:40 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Vary": "Origin",
+        "x-ms-acl": "user::rwx,group::-w-,other::---",
+        "x-ms-client-request-id": "52cfc17c-180d-4a5c-87ca-6ab1bc513f3a",
+        "x-ms-group": "$superuser",
+        "x-ms-owner": "$superuser",
+        "x-ms-permissions": "rwx-w----",
+        "x-ms-request-id": "1dc19fb3-601f-005a-11ca-bff765000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "e95e13bb02842528ddc9b79d214fa89fd76209",
+    "1": "e95e13bb139960462553a46baf4ee4b5aee111"
+  }
+}

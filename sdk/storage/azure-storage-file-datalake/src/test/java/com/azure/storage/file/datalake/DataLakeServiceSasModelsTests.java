@@ -99,6 +99,7 @@ public class DataLakeServiceSasModelsTests {
         assertThrows(IllegalArgumentException.class, () -> PathSasPermission.parse("rwaq"));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Test
     public void pathSasPermissionNull() {
         assertThrows(NullPointerException.class, () -> PathSasPermission.parse(null));
@@ -147,6 +148,7 @@ public class DataLakeServiceSasModelsTests {
         assertThrows(IllegalArgumentException.class, () -> FileSystemSasPermission.parse("rwaq"));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Test
     public void fileSystemSasPermissionNull() {
         assertThrows(NullPointerException.class, () -> FileSystemSasPermission.parse(null));
@@ -171,8 +173,7 @@ public class DataLakeServiceSasModelsTests {
     @ParameterizedTest
     @MethodSource("ensureStateResourceAndPermissionSupplier")
     public void ensureStateResourceAndPermission(String container, String blob, boolean isDirectory,
-        Object permission, String resource, String permissionString, Integer directoryDepth)
-        throws ReflectiveOperationException {
+        Object permission, String resource, String permissionString, Integer directoryDepth) {
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         DataLakeSasImplUtil implUtil = (permission instanceof PathSasPermission)
             ? new DataLakeSasImplUtil(new DataLakeServiceSasSignatureValues(expiryTime, (PathSasPermission) permission), container, blob, isDirectory)
@@ -180,9 +181,9 @@ public class DataLakeServiceSasModelsTests {
 
         implUtil.ensureState();
 
-        assertEquals(resource, DataLakeSasImplUtil.class.getDeclaredField("resource").get(implUtil));
-        assertEquals(permissionString, DataLakeSasImplUtil.class.getDeclaredField("permissions").get(implUtil));
-        assertEquals(directoryDepth, DataLakeSasImplUtil.class.getDeclaredField("resource").get(directoryDepth));
+        assertEquals(resource, implUtil.getResource());
+        assertEquals(permissionString, implUtil.getPermissions());
+        assertEquals(directoryDepth, implUtil.getDirectoryDepth());
 
     }
 

@@ -1,0 +1,102 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/3aee70d00setmetadataerror072010872d6e2044d9c9464?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "584a2994-ed66-48e0-950d-a6df93cff3c5",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:49 GMT",
+        "ETag": "\u00220x8DB8DE18EB29B17\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "584a2994-ed66-48e0-950d-a6df93cff3c5",
+        "x-ms-request-id": "2324b19e-c01e-006c-36ca-bf7a15000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/3aee70d00setmetadataerror072010872d6e2044d9c9464/3aee70d01setmetadataerror07283397fdb0ceffdb834cd?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8860582e-4267-4609-bcd5-bbf9fba85eb1",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "ETag": "\u00220x8DB8DE18EBC11CC\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "8860582e-4267-4609-bcd5-bbf9fba85eb1",
+        "x-ms-request-id": "1dc1ac28-601f-005a-79ca-bff765000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/3aee70d00setmetadataerror072010872d6e2044d9c9464/3aee70d02setmetadataerror07287994dbb2465b753141d?comp=metadata",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "aebd868a-8794-4552-a41f-733c6e9778c9",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "215",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "aebd868a-8794-4552-a41f-733c6e9778c9",
+        "x-ms-error-code": "BlobNotFound",
+        "x-ms-request-id": "38b02072-301e-001a-48ca-bff05d000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EBlobNotFound\u003C/Code\u003E\u003CMessage\u003EThe specified blob does not exist.\n",
+        "RequestId:38b02072-301e-001a-48ca-bff05d000000\n",
+        "Time:2023-07-26T14:06:50.5281221Z\u003C/Message\u003E\u003C/Error\u003E"
+      ]
+    }
+  ],
+  "Variables": {
+    "0": "3aee70d00setmetadataerror072010872d6e2044d9c9464",
+    "1": "3aee70d01setmetadataerror07283397fdb0ceffdb834cd",
+    "2": "3aee70d02setmetadataerror07287994dbb2465b753141d"
+  }
+}

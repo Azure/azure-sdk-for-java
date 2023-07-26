@@ -16,7 +16,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -44,14 +43,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BuilderHelperTests extends DataLakeTestBase {
+public class BuilderHelperTests {
     private static final StorageSharedKeyCredential CREDENTIALS = new StorageSharedKeyCredential("accountName",
         "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
     private static final RequestRetryOptions REQUEST_RETRY_OPTIONS = new RequestRetryOptions(RetryPolicyType.FIXED, 2,
-        2, 500L, 4000L, null);
+        2, 1000L, 4000L, null);
     private static final RetryOptions CORE_RETRY_OPTIONS = new RetryOptions(new FixedDelayOptions(1,
-        Duration.ofMillis(500)));
+        Duration.ofMillis(1000)));
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-file-datalake.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
@@ -147,13 +146,14 @@ public class BuilderHelperTests extends DataLakeTestBase {
             Arguments.of("log-options-id", null, "log-options-id"),
             Arguments.of(null, "client-options-id", "client-options-id"),
             // Client options preferred over log options
-            Arguments.of("log-options-id", "client-options-id", "log-options-id")
+            Arguments.of("log-options-id", "client-options-id", "client-options-id")
         );
     }
 
     /**
      * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("clientAndLogOptions")
     public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
@@ -170,6 +170,7 @@ public class BuilderHelperTests extends DataLakeTestBase {
     /**
      * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("clientAndLogOptions")
     public void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
@@ -190,6 +191,7 @@ public class BuilderHelperTests extends DataLakeTestBase {
     /**
      * Tests that a user application id will be honored in the UA string when using the file system client builder's default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("clientAndLogOptions")
     public void fileSystemClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
@@ -211,6 +213,7 @@ public class BuilderHelperTests extends DataLakeTestBase {
     /**
      * Tests that a user application id will be honored in the UA string when using the path client builder's default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("clientAndLogOptions")
     public void pathClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
@@ -433,25 +436,25 @@ public class BuilderHelperTests extends DataLakeTestBase {
     }
 
     private static final class FreshDateTestClient implements HttpClient {
-        private DateTimeRfc1123 firstDate;
+        private String firstDate;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (firstDate == null) {
-                firstDate = convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE));
+                firstDate = validateDate(request.getHeaders().getValue(HttpHeaderName.DATE));
                 return Mono.error(new IOException("IOException!"));
             }
 
-            assertNotEquals(firstDate, convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE)));
+            assertNotEquals(firstDate, validateDate(request.getHeaders().getValue(HttpHeaderName.DATE)));
             return Mono.just(new MockHttpResponse(request, 200));
         }
 
-        private static DateTimeRfc1123 convertToDateObject(String dateHeader) {
+        private static String validateDate(String dateHeader) {
             if (CoreUtils.isNullOrEmpty(dateHeader)) {
                 throw new RuntimeException("Failed to set 'Date' header.");
             }
 
-            return new DateTimeRfc1123(dateHeader);
+            return dateHeader;
         }
     }
 

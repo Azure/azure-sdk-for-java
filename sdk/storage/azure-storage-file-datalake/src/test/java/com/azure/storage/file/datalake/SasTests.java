@@ -16,6 +16,7 @@ import com.azure.storage.file.datalake.models.AccessControlType;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -166,6 +167,21 @@ public class SasTests extends DataLakeTestBase {
                 .setExpiresOn(testResourceNamer.now().plusDays(1)));
         dataLakeFileSystemClient.setAccessPolicy(null, Collections.singletonList(identifier));
 
+        // Wait 30 seconds as it may take time for the access policy to take effect.
+        waitUntilPredicate(1000, 30, () -> {
+            FileSystemAccessPolicies accessPolicies = dataLakeFileSystemClient.getAccessPolicy();
+
+            if (accessPolicies == null || accessPolicies.getIdentifiers() == null
+                || accessPolicies.getIdentifiers().size() != 1) {
+                return false;
+            }
+
+            DataLakeSignedIdentifier signedIdentifier = accessPolicies.getIdentifiers().get(0);
+            return signedIdentifier.getId().equals(identifier.getId())
+                && signedIdentifier.getAccessPolicy().getPermissions().equals(identifier.getAccessPolicy().getPermissions())
+                && signedIdentifier.getAccessPolicy().getExpiresOn().equals(identifier.getAccessPolicy().getExpiresOn());
+        });
+
         // Check containerSASPermissions
         FileSystemSasPermission permissions = new FileSystemSasPermission()
             .setReadPermission(true)
@@ -182,12 +198,8 @@ public class SasTests extends DataLakeTestBase {
                 .setManageAccessControlPermission(true);
         }
 
-
         DataLakeServiceSasSignatureValues sasValues = new DataLakeServiceSasSignatureValues(identifier.getId());
         DataLakeFileSystemClient client1 = getFileSystemClient(dataLakeFileSystemClient.generateSas(sasValues), getFileSystemUrl());
-
-        // Wait 30 seconds as it may take time for the access policy to take effect.
-        sleepIfRunningAgainstService(30000);
 
         assertDoesNotThrow(() -> client1.listPaths().iterator().hasNext());
 
@@ -435,9 +447,10 @@ public class SasTests extends DataLakeTestBase {
         DataLakeFileSystemClient client = getFileSystemClient(sasWithPermissions, getFileSystemUrl());
 
         assertThrows(DataLakeStorageException.class, () -> client.listPaths().iterator().hasNext());
-        assertFalse(sasWithPermissions.contains("scid=" + cid));
+        assertTrue(sasWithPermissions.contains("scid=" + cid));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void accountSasFileRead() {
         String pathName = generatePathName();
@@ -508,7 +521,8 @@ public class SasTests extends DataLakeTestBase {
     public void accountSasTokenOnEndpoint() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
         AccountSasResourceType resourceType = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission().setReadPermission(true).setCreatePermission(true);
+        AccountSasPermission permissions = new AccountSasPermission().setReadPermission(true).setCreatePermission(true)
+            .setListPermission(true);
 
         String sas = primaryDataLakeServiceClient.generateAccountSas(
             new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType));
@@ -519,7 +533,7 @@ public class SasTests extends DataLakeTestBase {
             .createFileSystem(fileSystemName);
 
         assertDoesNotThrow(() -> getFileSystemClientBuilder(primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "?" + sas)
-                .buildClient().listPaths().iterator().hasNext());
+            .buildClient().listPaths().iterator().hasNext());
 
         assertDoesNotThrow(() -> getFileClient(getDataLakeCredential(),
             primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + generatePathName() + "?" + sas)

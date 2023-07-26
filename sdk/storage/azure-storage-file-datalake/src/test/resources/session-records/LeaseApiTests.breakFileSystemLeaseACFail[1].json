@@ -1,0 +1,104 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/8d175e2c0breakfilesystemleaseacfailc6624737c747bdeff6?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2252f963-8b32-48f9-a030-4dc35c81faa2",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "ETag": "\u00220x8DB8DE181426022\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "2252f963-8b32-48f9-a030-4dc35c81faa2",
+        "x-ms-request-id": "711c0ab1-901e-0003-36ca-bf70e6000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/8d175e2c0breakfilesystemleaseacfailc6624737c747bdeff6?comp=lease\u0026restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "73d6a4c8-47df-48d3-9a77-f9082f62b808",
+        "x-ms-lease-action": "acquire",
+        "x-ms-lease-duration": "-1",
+        "x-ms-proposed-lease-id": "38ca6b88-cf89-44a3-8c8b-15fb6cbf66af",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "ETag": "\u00220x8DB8DE181426022\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "73d6a4c8-47df-48d3-9a77-f9082f62b808",
+        "x-ms-lease-id": "38ca6b88-cf89-44a3-8c8b-15fb6cbf66af",
+        "x-ms-request-id": "1c5ae92e-101e-0032-67ca-bf91f5000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/8d175e2c0breakfilesystemleaseacfailc6624737c747bdeff6?comp=lease\u0026restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "If-Modified-Since": "Thu, 27 Jul 2023 14:06:08 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "aafff7a6-703a-464b-b980-6d5d6f962a41",
+        "x-ms-lease-action": "break",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 412,
+      "ResponseHeaders": {
+        "Content-Length": "252",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 26 Jul 2023 14:06:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "aafff7a6-703a-464b-b980-6d5d6f962a41",
+        "x-ms-error-code": "ConditionNotMet",
+        "x-ms-request-id": "f0f2b570-501e-009a-0fca-bf0f5b000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EConditionNotMet\u003C/Code\u003E\u003CMessage\u003EThe condition specified using HTTP conditional header(s) is not met.\n",
+        "RequestId:f0f2b570-501e-009a-0fca-bf0f5b000000\n",
+        "Time:2023-07-26T14:06:28.0548113Z\u003C/Message\u003E\u003C/Error\u003E"
+      ]
+    }
+  ],
+  "Variables": {
+    "0": "8d175e2c0breakfilesystemleaseacfailc6624737c747bdeff6"
+  }
+}

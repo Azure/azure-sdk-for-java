@@ -1,0 +1,102 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/e23866700sethttpheadersacfaild8c193090816da5c603e4?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:35 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "422e0d20-ad9b-4e26-b249-25e54f555db1",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "ETag": "\u00220x8DB8DE185D5D95B\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:35 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "422e0d20-ad9b-4e26-b249-25e54f555db1",
+        "x-ms-request-id": "eaf3f609-201e-005b-4bca-bfa8b9000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e23866700sethttpheadersacfaild8c193090816da5c603e4/e23866701sethttpheadersacfaild8c671694d90b4d001df4?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:35 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "054d5324-7393-4cb1-9a92-474fc3278cfa",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "ETag": "\u00220x8DB8DE185E17C87\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:35 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "054d5324-7393-4cb1-9a92-474fc3278cfa",
+        "x-ms-request-id": "61cab2fe-901f-005e-2dca-bf7a62000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e23866700sethttpheadersacfaild8c193090816da5c603e4/e23866701sethttpheadersacfaild8c671694d90b4d001df4?comp=properties",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:35 GMT",
+        "If-Unmodified-Since": "Tue, 25 Jul 2023 14:06:08 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4d9de16a-b3c4-4ea6-b907-401074901ac4",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 412,
+      "ResponseHeaders": {
+        "Content-Length": "252",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 26 Jul 2023 14:06:35 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "4d9de16a-b3c4-4ea6-b907-401074901ac4",
+        "x-ms-error-code": "ConditionNotMet",
+        "x-ms-request-id": "1c5b0704-101e-0032-11ca-bf91f5000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EConditionNotMet\u003C/Code\u003E\u003CMessage\u003EThe condition specified using HTTP conditional header(s) is not met.\n",
+        "RequestId:1c5b0704-101e-0032-11ca-bf91f5000000\n",
+        "Time:2023-07-26T14:06:35.6676986Z\u003C/Message\u003E\u003C/Error\u003E"
+      ]
+    }
+  ],
+  "Variables": {
+    "0": "e23866700sethttpheadersacfaild8c193090816da5c603e4",
+    "1": "e23866701sethttpheadersacfaild8c671694d90b4d001df4"
+  }
+}

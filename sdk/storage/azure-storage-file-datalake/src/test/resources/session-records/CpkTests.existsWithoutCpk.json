@@ -1,0 +1,102 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/a25a930c0existswithoutcpk72424561be607b525ad6420?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:18 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e39f25a3-6804-46ad-b4ec-f57456942ada",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:18 GMT",
+        "ETag": "\u00220x8DB8DE17C0F8BF7\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:19 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "e39f25a3-6804-46ad-b4ec-f57456942ada",
+        "x-ms-request-id": "232406a1-c01e-006c-6bca-bf7a15000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/a25a930c0existswithoutcpk72424561be607b525ad6420/a25a930c2existswithoutcpk7243848323eaab7ec4fc440?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:19 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "10b73731-c0da-493c-aa2b-a9aa7271d78e",
+        "x-ms-encryption-algorithm": "AES256",
+        "x-ms-encryption-key": "QFlOdsLBjJSS/P1AaN2SWsCRwcg739fOxI0UGSidJYU=",
+        "x-ms-encryption-key-sha256": "K8Sm4N/YCsgzxOALC45ObgfmjZh4fZmRa26Ymkk\u002BMHk=",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:18 GMT",
+        "ETag": "\u00220x8DB8DE17C604309\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:19 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "10b73731-c0da-493c-aa2b-a9aa7271d78e",
+        "x-ms-encryption-key-sha256": "K8Sm4N/YCsgzxOALC45ObgfmjZh4fZmRa26Ymkk\u002BMHk=",
+        "x-ms-request-id": "b9150116-801f-0052-41ca-bfed6a000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/a25a930c0existswithoutcpk72424561be607b525ad6420/a25a930c2existswithoutcpk7243848323eaab7ec4fc440",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:20 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b000f23a-2e6c-422c-be76-21fb14abca67",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 409,
+      "ResponseHeaders": {
+        "Date": "Wed, 26 Jul 2023 14:06:19 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "Vary": "Origin",
+        "x-ms-client-request-id": "b000f23a-2e6c-422c-be76-21fb14abca67",
+        "x-ms-error-code": "BlobUsesCustomerSpecifiedEncryption",
+        "x-ms-request-id": "0240d433-301e-000a-28ca-bf3535000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "a25a930c0existswithoutcpk72424561be607b525ad6420",
+    "1": "a25a930c1existswithoutcpk724311020ab87583abd5498",
+    "2": "a25a930c2existswithoutcpk7243848323eaab7ec4fc440"
+  }
+}

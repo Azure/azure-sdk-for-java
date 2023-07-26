@@ -1,0 +1,133 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/3fbc22ac0renewfileleasemin2f9437944dbe197823ea47?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4185978a-96c8-4193-b2e6-f5fc5d7d09cc",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "ETag": "\u00220x8DB8DE18084BF13\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "4185978a-96c8-4193-b2e6-f5fc5d7d09cc",
+        "x-ms-request-id": "38afc0f6-301e-001a-35ca-bff05d000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/3fbc22ac0renewfileleasemin2f9437944dbe197823ea47/3fbc22ac1renewfileleasemin2f972624eacf6022cac149?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c2c378c0-187b-4cff-b970-e80c4afa9467",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "ETag": "\u00220x8DB8DE18092CC97\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "c2c378c0-187b-4cff-b970-e80c4afa9467",
+        "x-ms-request-id": "61caa8d4-901f-005e-11ca-bf7a62000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/3fbc22ac0renewfileleasemin2f9437944dbe197823ea47/3fbc22ac1renewfileleasemin2f972624eacf6022cac149?comp=lease",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e6cc7af1-fbc6-45ff-b9a4-13a3657cbd6f",
+        "x-ms-lease-action": "acquire",
+        "x-ms-lease-duration": "-1",
+        "x-ms-proposed-lease-id": "7c55b393-60da-4a56-976d-cece48e1b8ae",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:25 GMT",
+        "ETag": "\u00220x8DB8DE18092CC97\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "e6cc7af1-fbc6-45ff-b9a4-13a3657cbd6f",
+        "x-ms-lease-id": "7c55b393-60da-4a56-976d-cece48e1b8ae",
+        "x-ms-request-id": "23242fc1-c01e-006c-01ca-bf7a15000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/3fbc22ac0renewfileleasemin2f9437944dbe197823ea47/3fbc22ac1renewfileleasemin2f972624eacf6022cac149?comp=lease",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f43571eb-e74a-4e14-b85c-5880b5ae8592",
+        "x-ms-lease-action": "renew",
+        "x-ms-lease-id": "7c55b393-60da-4a56-976d-cece48e1b8ae",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:25 GMT",
+        "ETag": "\u00220x8DB8DE18092CC97\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:26 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "f43571eb-e74a-4e14-b85c-5880b5ae8592",
+        "x-ms-lease-id": "7c55b393-60da-4a56-976d-cece48e1b8ae",
+        "x-ms-request-id": "23242fe2-c01e-006c-1eca-bf7a15000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "3fbc22ac0renewfileleasemin2f9437944dbe197823ea47",
+    "1": "3fbc22ac1renewfileleasemin2f972624eacf6022cac149"
+  }
+}

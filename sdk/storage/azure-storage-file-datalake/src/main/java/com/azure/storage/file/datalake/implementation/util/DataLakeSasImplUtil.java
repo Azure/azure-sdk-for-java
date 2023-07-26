@@ -426,4 +426,16 @@ public class DataLakeSasImplUtil {
             );
         }
     }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public Integer getDirectoryDepth() {
+        return directoryDepth;
+    }
 }

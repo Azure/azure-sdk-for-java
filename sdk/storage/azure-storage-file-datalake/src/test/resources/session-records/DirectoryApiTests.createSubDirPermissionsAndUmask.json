@@ -1,0 +1,101 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/10eb5d540createsubdirpermissionsandumask9807741006b8efd?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a3dd421e-f43b-4a7f-b122-0ef7905f0f11",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "ETag": "\u00220x8DB8DE1856E21E4\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "a3dd421e-f43b-4a7f-b122-0ef7905f0f11",
+        "x-ms-request-id": "5f514190-b01e-0049-6dca-bfd369000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/10eb5d540createsubdirpermissionsandumask9807741006b8efd/10eb5d541createsubdirpermissionsandumask98002559c299de7?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "3ca41d11-c6d1-4ef7-ae78-5f34904d7a25",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "ETag": "\u00220x8DB8DE185753F88\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "3ca41d11-c6d1-4ef7-ae78-5f34904d7a25",
+        "x-ms-request-id": "daaf0fc8-401f-0010-4cca-bf54ea000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/10eb5d540createsubdirpermissionsandumask9807741006b8efd/10eb5d541createsubdirpermissionsandumask98002559c299de7%2F10eb5d542createsubdirpermissionsandumask980937960be3260?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6822af1e-536a-4c32-8379-0cc6435a23be",
+        "x-ms-permissions": "0777",
+        "x-ms-umask": "0057",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "ETag": "\u00220x8DB8DE1857AD6A8\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "6822af1e-536a-4c32-8379-0cc6435a23be",
+        "x-ms-request-id": "daaf0fd3-401f-0010-57ca-bf54ea000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "10eb5d540createsubdirpermissionsandumask9807741006b8efd",
+    "1": "10eb5d541createsubdirpermissionsandumask98002559c299de7",
+    "2": "10eb5d542createsubdirpermissionsandumask980937960be3260"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/d91d17100createifnotexistsallnull17a3492029e96ecf671?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:38 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c17dec08-5a58-40f1-86df-36d579933db5",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:37 GMT",
+        "ETag": "\u00220x8DB8DE1875E8704\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:38 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "c17dec08-5a58-40f1-86df-36d579933db5",
+        "x-ms-request-id": "4688a099-101e-0050-22ca-bf53d2000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/d91d17101createifnotexistsallnull17a637268b53ab29ad7?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:38 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "63d28109-d869-472f-ba73-08666f90f211",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:37 GMT",
+        "ETag": "\u00220x8DB8DE187669C13\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:38 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "63d28109-d869-472f-ba73-08666f90f211",
+        "x-ms-request-id": "4688a0d4-101e-0050-57ca-bf53d2000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "d91d17100createifnotexistsallnull17a3492029e96ecf671",
+    "1": "d91d17101createifnotexistsallnull17a637268b53ab29ad7"
+  }
+}

@@ -23,6 +23,7 @@ public class DataLakeServiceVersionTests {
         assertEquals(Constants.SAS_SERVICE_VERSION, DataLakeServiceVersion.getLatest().getVersion());
     }
 
+    @SuppressWarnings("deprecation")
     @DisabledIf("doNotRun")
     @Test
     public void headerVersionShouldMatchLastWhenWeRelease() {

@@ -16,14 +16,17 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ServiceVersion;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -33,6 +36,7 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.file.datalake.models.FileSystemItem;
+import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -50,7 +54,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -64,6 +67,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.zip.CRC32;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
@@ -98,6 +102,28 @@ public class DataLakeTestBase extends TestProxyTestBase {
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
     private static final HttpClient OK_HTTP_CLIENT =
         new OkHttpAsyncHttpClientBuilder().connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES)).build();
+
+    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+        HttpHeaderName.fromString(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED);
+    protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
+        HttpHeaderName.fromString(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256);
+    protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    protected static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER = HttpHeaderName.fromString("x-ms-blob-sequence-number");
+    protected static final HttpHeaderName X_MS_COPY_COMPLETION_TIME = HttpHeaderName.fromString("x-ms-copy-completion-time");
+    protected static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION = HttpHeaderName.fromString("x-ms-copy-status-description");
+    protected static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
+    protected static final HttpHeaderName X_MS_COPY_PROGRESS = HttpHeaderName.fromString("x-ms-copy-progress");
+    protected static final HttpHeaderName X_MS_COPY_SOURCE = HttpHeaderName.fromString("x-ms-copy-source");
+    protected static final HttpHeaderName X_MS_COPY_STATUS = HttpHeaderName.fromString("x-ms-copy-status");
+    protected static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+    protected static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
+    protected static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
+    protected static final HttpHeaderName X_MS_BLOB_COMMITTED_BLOCK_COUNT =
+        HttpHeaderName.fromString("x-ms-blob-committed-block-count");
+    protected static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
+    protected static final HttpHeaderName X_MS_BLOB_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-blob-content-md5");
+    protected static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
+    protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
     protected String prefix;
 
@@ -174,12 +200,26 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
+        Configuration configuration = Configuration.getGlobalConfiguration();
         if (!interceptorManager.isPlaybackMode()) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient();
+            // Determine whether to use the environment credential based on the shared configurations or to use the
+            // credential based on resource deployment.
+            if (!CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID))
+                && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
+                && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))) {
+                // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+                return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient();
+            } else {
+                // STORAGE_TENANT_ID, STORAGE_CLIENT_ID, STORAGE_CLIENT_SECRET
+                return builder.credential(new ClientSecretCredentialBuilder()
+                    .tenantId(configuration.get("STORAGE_TENANT_ID"))
+                    .clientId(configuration.get("STORAGE_CLIENT_ID"))
+                    .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
+                    .build()).buildClient();
+            }
         } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getDataLakeAccount().getCredential()).buildClient();
+            // Running in playback, use the mock credential.
+            return builder.credential(new MockTokenCredential()).buildClient();
         }
     }
 
@@ -304,6 +344,12 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return builder.credential(credential).buildFileClient();
     }
 
+    protected DataLakePathClientBuilder getPathClientBuilder(StorageSharedKeyCredential credential, String endpoint) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint);
+
+        return instrument(builder).credential(credential);
+    }
+
     protected DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential,
         String endpoint,
         HttpPipelinePolicy... policies) {
@@ -357,13 +403,18 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .buildDirectoryClient();
     }
 
+    protected DataLakePathClientBuilder getPathClientBuilder(StorageSharedKeyCredential credential, String endpoint,
+        String pathName) {
+        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
+            .credential(credential);
+    }
+
     protected DataLakeDirectoryClient getDirectoryClient(String sasToken, String endpoint, String pathName) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
         return instrument(builder)
             .sasToken(sasToken)
             .buildDirectoryClient();
-
     }
 
     protected DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
@@ -405,10 +456,9 @@ public class DataLakeTestBase extends TestProxyTestBase {
     /**
      * Validates the presence of headers that are present on a large number of responses. These headers are generally
      * random and can really only be checked as not null.
-     * @param headers
-     *      The object (may be headers object or response object) that has properties which expose these common headers.
-     * @return
-     * Whether or not the header values are appropriate.
+     *
+     * @param headers The object (may be headers object or response object) that has properties which expose these
+     * common headers.
      */
     protected void validateBasicHeaders(HttpHeaders headers) {
         assertNotNull(headers.getValue(HttpHeaderName.ETAG));
@@ -416,8 +466,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
         assertFalse(headers.getValue(HttpHeaderName.ETAG).contains("\""));
         assertNotNull(headers.getValue(HttpHeaderName.LAST_MODIFIED));
         assertNotNull(headers.getValue(HttpHeaderName.DATE));
-        assertNotNull(headers.getValue("x-ms-request-id"));
-        assertNotNull(headers.getValue("x-ms-version"));
+        assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+        assertNotNull(headers.getValue(X_MS_VERSION));
     }
 
     protected void validatePathProperties(Response<PathProperties> response,
@@ -632,7 +682,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return new HttpPipelinePolicy() {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                context.getHttpRequest().setHeader("x-ms-version", "2017-11-09");
+                context.getHttpRequest().setHeader(X_MS_VERSION, "2019-02-02");
                 return next.process();
             }
 
@@ -643,7 +693,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         };
     }
 
-    @SuppressWarnings("unchecked")
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
         // Groovy style reflection. All our builders follow this pattern.
         builder.httpClient(getHttpClient());
@@ -653,22 +702,19 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
 
         if (ENVIRONMENT.getServiceVersion() != null) {
-            try {
-                Method serviceVersionMethod = Arrays
-                    .stream(builder.getClass().getDeclaredMethods())
-                    .filter(method -> "serviceVersion".equals(method.getName())
-                                      && method.getParameterCount() == 1
-                                      && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException(
-                        "Unable to find serviceVersion method for builder: " + builder.getClass()));
-                Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
-                ServiceVersion serviceVersion =
-                    (ServiceVersion) Enum.valueOf(serviceVersionClass, ENVIRONMENT.getServiceVersion());
-                serviceVersionMethod.invoke(builder, serviceVersion);
-                builder.addPolicy(new ServiceVersionValidationPolicy(serviceVersion.getVersion()));
-            } catch (ReflectiveOperationException ex) {
-                throw new RuntimeException(ex);
+            String serviceVersion = ENVIRONMENT.getServiceVersion();
+            boolean foundMatchingEnum = false;
+            for (DataLakeServiceVersion version : DataLakeServiceVersion.values()) {
+                if (version.name().equals(serviceVersion)) {
+                    builder.addPolicy(new ServiceVersionValidationPolicy(version.getVersion()));
+                    foundMatchingEnum = true;
+                    break;
+                }
+            }
+
+            if (!foundMatchingEnum) {
+                throw new IllegalArgumentException(
+                    "Unable to find matching DataLakeServiceVersion for service version: " + serviceVersion);
             }
         }
 
@@ -719,5 +765,44 @@ public class DataLakeTestBase extends TestProxyTestBase {
         }
 
         return outputStream.toByteArray();
+    }
+
+    /**
+     * Temporary utility method that waits if running against a live service.
+     * <p>
+     * Remove this once {@code azure-core-test} has a static equivalent of
+     * {@link TestBase#sleepIfRunningAgainstService(long)}.
+     *
+     * @param sleepMillis Milliseconds to sleep.
+     */
+    public static void sleepIfLiveTesting(long sleepMillis) {
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            return;
+        }
+
+        try {
+            Thread.sleep(sleepMillis);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * Utility method that waits until either the "predicate" (in this case it's a {@link Supplier Supplier<Boolean>})
+     * returns true or the number of delays has been reached.
+     *
+     * @param delayMillis Amount of milliseconds for each delay.
+     * @param numberOfDelays Number of delays.
+     * @param predicate Predicate that determines if waiting should complete before the number of delays has been
+     * reached.
+     */
+    public static void waitUntilPredicate(long delayMillis, int numberOfDelays, Supplier<Boolean> predicate) {
+        for (int i = 0; i < numberOfDelays; i++) {
+            if (predicate.get()) {
+                return;
+            }
+
+            sleepIfLiveTesting(delayMillis);
+        }
     }
 }

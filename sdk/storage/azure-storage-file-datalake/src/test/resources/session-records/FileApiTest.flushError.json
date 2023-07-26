@@ -1,0 +1,103 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/acf6af220flusherror44690419d51cbc3ce67e4a209f?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:43 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "999f23bb-70f2-415f-867f-d34175192bd4",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:43 GMT",
+        "ETag": "\u00220x8DB8DE18A64C321\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:43 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "999f23bb-70f2-415f-867f-d34175192bd4",
+        "x-ms-request-id": "3e7b8be5-b01e-0076-55ca-bf1bca000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/acf6af220flusherror44690419d51cbc3ce67e4a209f/acf6af221flusherror44663300d7af6b0c240546388e?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:43 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f6c450b3-45af-4e5b-b331-58539e6cd09e",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:43 GMT",
+        "ETag": "\u00220x8DB8DE18A756B3F\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:43 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "f6c450b3-45af-4e5b-b331-58539e6cd09e",
+        "x-ms-request-id": "1dc1a221-601f-005a-7eca-bff765000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/acf6af220flusherror44690419d51cbc3ce67e4a209f/acf6af222flusherror446005640e96fb8d437640bd95?action=flush\u0026position=1\u0026retainUncommittedData=false\u0026close=false",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:43 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6f345195-0d78-4f3f-946e-778112833a13",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "163",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 26 Jul 2023 14:06:42 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "6f345195-0d78-4f3f-946e-778112833a13",
+        "x-ms-error-code": "PathNotFound",
+        "x-ms-request-id": "daaf173a-401f-0010-38ca-bf54ea000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "PathNotFound",
+          "message": "The specified path does not exist.\nRequestId:daaf173a-401f-0010-38ca-bf54ea000000\nTime:2023-07-26T14:06:43.3515343Z"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "acf6af220flusherror44690419d51cbc3ce67e4a209f",
+    "1": "acf6af221flusherror44663300d7af6b0c240546388e",
+    "2": "acf6af222flusherror446005640e96fb8d437640bd95"
+  }
+}

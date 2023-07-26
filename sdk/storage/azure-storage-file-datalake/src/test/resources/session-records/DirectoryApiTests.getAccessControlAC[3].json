@@ -1,0 +1,102 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/a4bdec220getaccesscontrolac900439907cf39d30a5494a?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "49b8ae51-12dc-473a-a829-896aa89346e0",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:31 GMT",
+        "ETag": "\u00220x8DB8DE183E9A8AE\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "49b8ae51-12dc-473a-a829-896aa89346e0",
+        "x-ms-request-id": "f0f2c94f-501e-009a-7fca-bf0f5b000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/a4bdec220getaccesscontrolac900439907cf39d30a5494a/a4bdec221getaccesscontrolac90007540029229e3653b4b?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1c5f3e33-a4bf-4fd4-93c8-ea72c7cb80ed",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE183F15CAB\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "1c5f3e33-a4bf-4fd4-93c8-ea72c7cb80ed",
+        "x-ms-request-id": "1dc195f5-601f-005a-59ca-bff765000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/a4bdec220getaccesscontrolac900439907cf39d30a5494a/a4bdec221getaccesscontrolac90007540029229e3653b4b?action=getAccessControl\u0026upn=false",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-Unmodified-Since": "Thu, 27 Jul 2023 14:06:08 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d39f25aa-72ea-49fa-9292-2ce09b09ec69",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Date": "Wed, 26 Jul 2023 14:06:31 GMT",
+        "ETag": "\u00220x8DB8DE183F15CAB\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Vary": "Origin",
+        "x-ms-acl": "user::rwx,group::r-x,other::---",
+        "x-ms-client-request-id": "d39f25aa-72ea-49fa-9292-2ce09b09ec69",
+        "x-ms-group": "$superuser",
+        "x-ms-owner": "$superuser",
+        "x-ms-permissions": "rwxr-x---",
+        "x-ms-request-id": "b91518ff-801f-0052-1cca-bfed6a000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "a4bdec220getaccesscontrolac900439907cf39d30a5494a",
+    "1": "a4bdec221getaccesscontrolac90007540029229e3653b4b"
+  }
+}

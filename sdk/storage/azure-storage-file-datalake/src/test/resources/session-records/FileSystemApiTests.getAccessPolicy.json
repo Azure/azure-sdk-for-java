@@ -1,0 +1,101 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/f54439100getaccesspolicy9ea793224ac1b24be7c2439?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "36be0d29-c485-4036-839b-6226d974163d",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "ETag": "\u00220x8DB8DE18548A227\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "36be0d29-c485-4036-839b-6226d974163d",
+        "x-ms-request-id": "eaf3f07e-201e-005b-4cca-bfa8b9000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/f54439100getaccesspolicy9ea793224ac1b24be7c2439?restype=container\u0026comp=acl",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "254",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-blob-public-access": "blob",
+        "x-ms-client-request-id": "62c9adfa-d2cd-42e1-9abf-2c606b5ffe62",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003E0000\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2023-07-26T14:06:34Z\u003C/Start\u003E\u003CExpiry\u003E2023-07-27T14:06:34Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "ETag": "\u00220x8DB8DE185518700\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "62c9adfa-d2cd-42e1-9abf-2c606b5ffe62",
+        "x-ms-request-id": "b92be953-701e-0056-15ca-bf606d000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/f54439100getaccesspolicy9ea793224ac1b24be7c2439?restype=container\u0026comp=acl",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "942028f2-f9ff-49b9-99fb-62aac92ce95f",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml",
+        "Date": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "ETag": "\u00220x8DB8DE185518700\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:34 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "Vary": "Origin",
+        "x-ms-blob-public-access": "blob",
+        "x-ms-client-request-id": "942028f2-f9ff-49b9-99fb-62aac92ce95f",
+        "x-ms-request-id": "5f5140b5-b01e-0049-24ca-bfd369000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003E0000\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2023-07-26T14:06:34.0000000Z\u003C/Start\u003E\u003CExpiry\u003E2023-07-27T14:06:34.0000000Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E"
+    }
+  ],
+  "Variables": {
+    "0": "f54439100getaccesspolicy9ea793224ac1b24be7c2439",
+    "1": "2023-07-26T14:06:34.668585800Z",
+    "2": "2023-07-26T14:06:34.668585800Z"
+  }
+}

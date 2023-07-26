@@ -41,6 +41,7 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
@@ -49,11 +50,11 @@
       --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.models=ALL-UNNAMED
       --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.specialized=ALL-UNNAMED
-      --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.storage.common=ALL-UNNAMED
-      --add-reads com.azure.storage.blob=ALL-UNNAMED
-      --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
+
+      --add-reads com.azure.storage.file.datalake=com.azure.http.netty
+      --add-reads com.azure.storage.file.datalake=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
+    <parallelizeLiveTests>true</parallelizeLiveTests>
   </properties>
 
   <dependencies>
@@ -143,12 +144,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.11.11</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

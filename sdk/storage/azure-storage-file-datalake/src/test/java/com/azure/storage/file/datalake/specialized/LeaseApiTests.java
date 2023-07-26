@@ -138,8 +138,6 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseId = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
         DataLakeLeaseClient leaseClient = createLeaseClient(fc, leaseId);
 
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRunningAgainstService(16000);
         Response<String> renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null, null);
 
         assertEquals(LeaseStateType.LEASED, fc.getProperties().getLeaseState());
@@ -451,8 +449,6 @@ public class LeaseApiTests extends DataLakeTestBase {
         String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemClient, RECEIVED_LEASE_ID);
         DataLakeLeaseClient leaseClient = createLeaseClient(dataLakeFileSystemClient, leaseID);
 
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRunningAgainstService(16000);
         Response<String> renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null, null);
 
         assertEquals(LeaseStateType.LEASED, dataLakeFileSystemClient.getProperties().getLeaseState());
@@ -589,10 +585,8 @@ public class LeaseApiTests extends DataLakeTestBase {
         assertTrue(breakLeaseResponse.getValue() <= remainingTime);
         validateBasicHeaders(breakLeaseResponse.getHeaders());
 
-        if (breakPeriod != null) {
-            // If running in live mode wait for the lease to break so we can delete the file system after the test completes
-            sleepIfRunningAgainstService(breakPeriod * 1000);
-        }
+        // Break the lease for cleanup.
+        leaseClient.breakLeaseWithResponse(0, null, null, null);
     }
 
     @Test

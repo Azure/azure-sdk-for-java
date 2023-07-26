@@ -1,0 +1,67 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/f6f8a82e0setaccesspolicyacbcd295734e07b6dbaa5145?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "cefd1ff7-475b-4b40-871c-ab1a01415d8b",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE1844DCDC9\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "cefd1ff7-475b-4b40-871c-ab1a01415d8b",
+        "x-ms-request-id": "0240ebc2-301e-000a-2dca-bf3535000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/f6f8a82e0setaccesspolicyacbcd295734e07b6dbaa5145?restype=container\u0026comp=acl",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "58",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "If-Unmodified-Since": "Thu, 27 Jul 2023 14:06:08 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c284e89e-e5e0-465b-9ce9-8b53a31a782a",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003CSignedIdentifiers/\u003E",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE184541232\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "c284e89e-e5e0-465b-9ce9-8b53a31a782a",
+        "x-ms-request-id": "3e7b5a53-b01e-0076-22ca-bf1bca000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "f6f8a82e0setaccesspolicyacbcd295734e07b6dbaa5145"
+  }
+}

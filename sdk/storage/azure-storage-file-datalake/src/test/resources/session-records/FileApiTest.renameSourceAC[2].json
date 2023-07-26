@@ -1,0 +1,100 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/76012a350renamesourceac7fd287909cb580a31bf74abd?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "33c36b8c-ad74-4318-b3fd-4a1a936a9c85",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:49 GMT",
+        "ETag": "\u00220x8DB8DE18E92D66C\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "33c36b8c-ad74-4318-b3fd-4a1a936a9c85",
+        "x-ms-request-id": "38b01f63-301e-001a-57ca-bff05d000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/76012a350renamesourceac7fd287909cb580a31bf74abd/76012a351renamesourceac7fd535319c9b1358f80f435a?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e37f466b-e2e4-42b3-ac5e-f0dcf902bd66",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "ETag": "\u00220x8DB8DE18E9AEF09\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "e37f466b-e2e4-42b3-ac5e-f0dcf902bd66",
+        "x-ms-request-id": "e50805eb-c01f-0031-23ca-bf7091000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/76012a350renamesourceac7fd287909cb580a31bf74abd/76012a352renamesourceac7fd1706702f061c3ed8a40d4?mode=legacy",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c63b0452-076f-4fce-a04a-3e9c0cff2634",
+        "x-ms-rename-source": "/76012a350renamesourceac7fd287909cb580a31bf74abd/76012a351renamesourceac7fd535319c9b1358f80f435a",
+        "x-ms-source-if-modified-since": "Tue, 25 Jul 2023 14:06:08 GMT",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "ETag": "\u00220x8DB8DE18E9AEF09\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "c63b0452-076f-4fce-a04a-3e9c0cff2634",
+        "x-ms-request-id": "e50805fe-c01f-0031-36ca-bf7091000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "76012a350renamesourceac7fd287909cb580a31bf74abd",
+    "1": "76012a351renamesourceac7fd535319c9b1358f80f435a",
+    "2": "76012a352renamesourceac7fd1706702f061c3ed8a40d4"
+  }
+}

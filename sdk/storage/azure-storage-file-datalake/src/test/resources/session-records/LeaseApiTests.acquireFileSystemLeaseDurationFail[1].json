@@ -1,0 +1,72 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/beffc7080acquirefilesystemleasedurationfail260129487c80c7?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "edc2ffde-71e7-479b-b138-7fc6a09fc96f",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE184AAD720\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "edc2ffde-71e7-479b-b138-7fc6a09fc96f",
+        "x-ms-request-id": "232451d5-c01e-006c-57ca-bf7a15000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/beffc7080acquirefilesystemleasedurationfail260129487c80c7?comp=lease\u0026restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "46e13627-3741-46f6-9509-97c5c93c9c1f",
+        "x-ms-lease-action": "acquire",
+        "x-ms-lease-duration": "-10",
+        "x-ms-proposed-lease-id": "768eb31f-da22-437c-a100-c3a265791af2",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "328",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "46e13627-3741-46f6-9509-97c5c93c9c1f",
+        "x-ms-error-code": "InvalidHeaderValue",
+        "x-ms-request-id": "2324521b-c01e-006c-10ca-bf7a15000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EInvalidHeaderValue\u003C/Code\u003E\u003CMessage\u003EThe value for one of the HTTP headers is not in the correct format.\n",
+        "RequestId:2324521b-c01e-006c-10ca-bf7a15000000\n",
+        "Time:2023-07-26T14:06:33.6463609Z\u003C/Message\u003E\u003CHeaderName\u003Ex-ms-lease-duration\u003C/HeaderName\u003E\u003CHeaderValue\u003E-10\u003C/HeaderValue\u003E\u003C/Error\u003E"
+      ]
+    }
+  ],
+  "Variables": {
+    "0": "beffc7080acquirefilesystemleasedurationfail260129487c80c7"
+  }
+}

@@ -1,0 +1,290 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "5b8eeffa-2961-4fe1-b783-64db7d127f71",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:31 GMT",
+        "ETag": "\u00220x8DB8DE1840D38F3\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "5b8eeffa-2961-4fe1-b783-64db7d127f71",
+        "x-ms-request-id": "c6518c87-701e-000b-6cca-bf6ae9000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "13e91fb3-7b02-4856-9f08-596ca761ec03",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE18418918B\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "13e91fb3-7b02-4856-9f08-596ca761ec03",
+        "x-ms-request-id": "1dc19658-601f-005a-3cca-bff765000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107%2Fe1d968fe2removeaclrecursiveerrormiddleofbatches1e382125100c?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "cee8c5a1-5593-4751-a1cc-7b5173f120de",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE1841E0B59\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "cee8c5a1-5593-4751-a1cc-7b5173f120de",
+        "x-ms-request-id": "1dc19665-601f-005a-49ca-bff765000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107%2Fe1d968fe2removeaclrecursiveerrormiddleofbatches1e382125100c%2Fe1d968fe3removeaclrecursiveerrormiddleofbatches1e30127489e8?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e58268e2-0f74-43c0-b167-4591ee4ac7c6",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE1842EBC4C\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "e58268e2-0f74-43c0-b167-4591ee4ac7c6",
+        "x-ms-request-id": "61caafc7-901f-005e-77ca-bf7a62000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107%2Fe1d968fe2removeaclrecursiveerrormiddleofbatches1e382125100c%2Fe1d968fe4removeaclrecursiveerrormiddleofbatches1e364003815d?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "64fa278d-2a88-4087-aea7-886228d5ccd1",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE184346D03\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "64fa278d-2a88-4087-aea7-886228d5ccd1",
+        "x-ms-request-id": "61caafd8-901f-005e-08ca-bf7a62000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107%2Fe1d968fe5removeaclrecursiveerrormiddleofbatches1e3639025825?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9078e657-3958-4a29-aa0b-c8b1b51d9723",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE18438DF8E\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "9078e657-3958-4a29-aa0b-c8b1b51d9723",
+        "x-ms-request-id": "61caafe0-901f-005e-10ca-bf7a62000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107%2Fe1d968fe5removeaclrecursiveerrormiddleofbatches1e3639025825%2Fe1d968fe6removeaclrecursiveerrormiddleofbatches1e335711dfaf?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "82c69f0c-dc54-47b3-80bd-ccc1c5cdb935",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE18447207A\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "82c69f0c-dc54-47b3-80bd-ccc1c5cdb935",
+        "x-ms-request-id": "daaf0d65-401f-0010-6aca-bf54ea000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107%2Fe1d968fe7removeaclrecursiveerrormiddleofbatches1e3402748675?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e0e73d4c-4127-4efd-b4a7-7150cfa65b48",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "ETag": "\u00220x8DB8DE18451B9DE\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "e0e73d4c-4127-4efd-b4a7-7150cfa65b48",
+        "x-ms-request-id": "61caaff8-901f-005e-28ca-bf7a62000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280/e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107?action=setAccessControlRecursive\u0026mode=remove\u0026forceFlag=false\u0026maxRecords=2",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:33 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-acl": "mask:,default:user,default:group,user:ec3595d6-2c17-4696-8caa-7e139758d24a,group:ec3595d6-2c17-4696-8caa-7e139758d24a,default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,default:group:ec3595d6-2c17-4696-8caa-7e139758d24a",
+        "x-ms-client-request-id": "e0e0ebf9-a3c8-4652-98c5-93a44bb88a17",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Date": "Wed, 26 Jul 2023 14:06:32 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-client-request-id": "e0e0ebf9-a3c8-4652-98c5-93a44bb88a17",
+        "x-ms-continuation": "VBbVuLubxoLLtE0YqQIYowIvZHRsa3N0b3JhZ2VqdW5pdAEwMUQ5QkYxNzBCOUMxRjdGL2UxZDk2OGZlMHJlbW92ZWFjbHJlY3Vyc2l2ZWVycm9ybWlkZGxlb2ZiYXRjaGVzMWUzMjk1ODE4MjgwATAxRDlCRkNBNjE5NkM0QjAvZTFkOTY4ZmUxcmVtb3ZlYWNscmVjdXJzaXZlZXJyb3JtaWRkbGVvZmJhdGNoZXMxZTM3MTQyMjExMDcvZTFkOTY4ZmUycmVtb3ZlYWNscmVjdXJzaXZlZXJyb3JtaWRkbGVvZmJhdGNoZXMxZTM4MjEyNTEwMGMvZTFkOTY4ZmUzcmVtb3ZlYWNscmVjdXJzaXZlZXJyb3JtaWRkbGVvZmJhdGNoZXMxZTMwMTI3NDg5ZTgWAAAA",
+        "x-ms-namespace-enabled": "true",
+        "x-ms-request-id": "61cab009-901f-005e-39ca-bf7a62000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": "eyJkaXJlY3Rvcmllc1N1Y2Nlc3NmdWwiOjIsImZhaWxlZEVudHJpZXMiOltdLCJmYWlsdXJlQ291bnQiOjAsImZpbGVzU3VjY2Vzc2Z1bCI6MH0K"
+    }
+  ],
+  "Variables": {
+    "0": "e1d968fe0removeaclrecursiveerrormiddleofbatches1e3295818280",
+    "1": "e1d968fe1removeaclrecursiveerrormiddleofbatches1e3714221107",
+    "2": "e1d968fe2removeaclrecursiveerrormiddleofbatches1e382125100c",
+    "3": "e1d968fe3removeaclrecursiveerrormiddleofbatches1e30127489e8",
+    "4": "e1d968fe4removeaclrecursiveerrormiddleofbatches1e364003815d",
+    "5": "e1d968fe5removeaclrecursiveerrormiddleofbatches1e3639025825",
+    "6": "e1d968fe6removeaclrecursiveerrormiddleofbatches1e335711dfaf",
+    "7": "e1d968fe7removeaclrecursiveerrormiddleofbatches1e3402748675"
+  }
+}

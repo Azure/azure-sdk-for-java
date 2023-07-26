@@ -1,0 +1,158 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/991a584f0deleteifexistssubdirdirdoesnotexistanymore0ca7020693?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e55acd58-a9bd-4d79-9ce9-db301606a048",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:49 GMT",
+        "ETag": "\u00220x8DB8DE18ED75608\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "e55acd58-a9bd-4d79-9ce9-db301606a048",
+        "x-ms-request-id": "c651c28a-701e-000b-79ca-bf6ae9000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/991a584f0deleteifexistssubdirdirdoesnotexistanymore0ca7020693/991a584f1deleteifexistssubdirdirdoesnotexistanymore0ca8209615?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "38b85ea1-c837-4421-a987-3012fcd3bfb1",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "ETag": "\u00220x8DB8DE18EDF592F\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "38b85ea1-c837-4421-a987-3012fcd3bfb1",
+        "x-ms-request-id": "66371eb8-501f-0041-32ca-bfc966000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/991a584f0deleteifexistssubdirdirdoesnotexistanymore0ca7020693/991a584f1deleteifexistssubdirdirdoesnotexistanymore0ca8209615%2F991a584f2deleteifexistssubdirdirdoesnotexistanymore0ca2394862?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "55c51a99-f4a0-4ee4-b798-5e85337b75f9",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "ETag": "\u00220x8DB8DE18EE41FD7\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "55c51a99-f4a0-4ee4-b798-5e85337b75f9",
+        "x-ms-request-id": "66371ec0-501f-0041-3aca-bfc966000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/991a584f0deleteifexistssubdirdirdoesnotexistanymore0ca7020693/991a584f1deleteifexistssubdirdirdoesnotexistanymore0ca8209615%2F991a584f2deleteifexistssubdirdirdoesnotexistanymore0ca2394862?recursive=false",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "7923ccee-fc9f-49eb-a9fe-53636fc17cf6",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "7923ccee-fc9f-49eb-a9fe-53636fc17cf6",
+        "x-ms-delete-type-permanent": "false",
+        "x-ms-deletion-id": "133348540108045583",
+        "x-ms-request-id": "66371ec6-501f-0041-40ca-bfc966000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/991a584f0deleteifexistssubdirdirdoesnotexistanymore0ca7020693/991a584f1deleteifexistssubdirdirdoesnotexistanymore0ca8209615%2F991a584f2deleteifexistssubdirdirdoesnotexistanymore0ca2394862",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "eb4f802b-c392-4969-8ec8-dd7b9fea833c",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "Vary": "Origin",
+        "x-ms-client-request-id": "eb4f802b-c392-4969-8ec8-dd7b9fea833c",
+        "x-ms-error-code": "BlobNotFound",
+        "x-ms-request-id": "38b02221-301e-001a-4bca-bff05d000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "991a584f0deleteifexistssubdirdirdoesnotexistanymore0ca7020693",
+    "1": "991a584f1deleteifexistssubdirdirdoesnotexistanymore0ca8209615",
+    "2": "991a584f2deleteifexistssubdirdirdoesnotexistanymore0ca2394862"
+  }
+}

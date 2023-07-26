@@ -1,0 +1,105 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/ccfb64f30renamesourceacfail67a66787b99540d15b1149?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ebd598ff-0ada-41b2-961b-879f46595132",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:49 GMT",
+        "ETag": "\u00220x8DB8DE18E9FB232\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "ebd598ff-0ada-41b2-961b-879f46595132",
+        "x-ms-request-id": "2324b0ef-c01e-006c-14ca-bf7a15000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/ccfb64f30renamesourceacfail67a66787b99540d15b1149/ccfb64f31renamesourceacfail67a096508e77a6a0025644?resource=directory",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "0e468d32-9ccc-4043-bbbc-f0bc3b802c2d",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "ETag": "\u00220x8DB8DE18EA78D02\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "0e468d32-9ccc-4043-bbbc-f0bc3b802c2d",
+        "x-ms-request-id": "66371e4c-501f-0041-48ca-bfc966000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/ccfb64f30renamesourceacfail67a66787b99540d15b1149/ccfb64f32renamesourceacfail67a142278bb312dbaa0f47?mode=legacy",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f661fa7c-039e-4ab7-8ac4-0464c5a25b04",
+        "x-ms-rename-source": "/ccfb64f30renamesourceacfail67a66787b99540d15b1149/ccfb64f31renamesourceacfail67a096508e77a6a0025644",
+        "x-ms-source-if-modified-since": "Thu, 27 Jul 2023 14:06:08 GMT",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 412,
+      "ResponseHeaders": {
+        "Content-Length": "213",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 26 Jul 2023 14:06:50 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "f661fa7c-039e-4ab7-8ac4-0464c5a25b04",
+        "x-ms-error-code": "SourceConditionNotMet",
+        "x-ms-request-id": "66371e5b-501f-0041-57ca-bfc966000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "SourceConditionNotMet",
+          "message": "The source condition specified using HTTP conditional header(s) is not met.\nRequestId:66371e5b-501f-0041-57ca-bfc966000000\nTime:2023-07-26T14:06:50.4166098Z"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "ccfb64f30renamesourceacfail67a66787b99540d15b1149",
+    "1": "ccfb64f31renamesourceacfail67a096508e77a6a0025644",
+    "2": "ccfb64f32renamesourceacfail67a142278bb312dbaa0f47"
+  }
+}

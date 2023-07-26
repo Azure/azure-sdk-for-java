@@ -1,0 +1,103 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/adf6f0950deleteifexistsfileacfaile5f02163df16f6073f0?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4ce3c1d8-c16c-4603-9881-498f26944e65",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "ETag": "\u00220x8DB8DE17F52FBBC\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "4ce3c1d8-c16c-4603-9881-498f26944e65",
+        "x-ms-request-id": "38afba4d-301e-001a-42ca-bff05d000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/adf6f0950deleteifexistsfileacfaile5f02163df16f6073f0/adf6f0951deleteifexistsfileacfaile5f01776cedfd2cb700?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b5eeb199-e5a4-4c19-98fb-36c397d6ff3d",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "ETag": "\u00220x8DB8DE17F5C28C5\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "b5eeb199-e5a4-4c19-98fb-36c397d6ff3d",
+        "x-ms-request-id": "25145859-b01f-0049-03ca-bfd369000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/adf6f0950deleteifexistsfileacfaile5f02163df16f6073f0/adf6f0951deleteifexistsfileacfaile5f01776cedfd2cb700?recursive=false",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "If-Unmodified-Since": "Tue, 25 Jul 2023 14:06:08 GMT",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b64be0df-61cb-4334-b9de-58c65b92c947",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 412,
+      "ResponseHeaders": {
+        "Content-Length": "200",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 26 Jul 2023 14:06:24 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "b64be0df-61cb-4334-b9de-58c65b92c947",
+        "x-ms-error-code": "ConditionNotMet",
+        "x-ms-request-id": "2514586a-b01f-0049-14ca-bfd369000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ConditionNotMet",
+          "message": "The condition specified using HTTP conditional header(s) is not met.\nRequestId:2514586a-b01f-0049-14ca-bfd369000000\nTime:2023-07-26T14:06:24.7670333Z"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "adf6f0950deleteifexistsfileacfaile5f02163df16f6073f0",
+    "1": "adf6f0951deleteifexistsfileacfaile5f01776cedfd2cb700"
+  }
+}

@@ -59,7 +59,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
     }
 
     // can't port zero-size test from blobs; datalake doesn't support empty append calls
-    // Test for github issue #13811
+    // Test for GitHub issue #13811
     @Test
     public void blobInputStreamReadToLargeBuffer() throws IOException {
         byte[] data = getRandomByteArray(6 * Constants.MB);
@@ -118,6 +118,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
         );
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     public void inputStreamETagLockDefault() throws IOException {
         byte[] randomBytes = getRandomByteArray(6 * Constants.MB);
@@ -137,6 +138,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     public void inputStreamConsistentReadControlNone() throws IOException {
         int length = 6 * Constants.MB;
@@ -186,6 +188,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
     }
 
     // Error case
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     public void inputStreamConsistentReadControlETagUserProvidesOldEtag() {
         byte[] randomBytes = getRandomByteArray(Constants.KB);

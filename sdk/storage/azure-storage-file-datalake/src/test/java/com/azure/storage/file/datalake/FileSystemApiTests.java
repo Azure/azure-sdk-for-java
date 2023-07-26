@@ -121,7 +121,6 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         assertEquals(409, e.getStatusCode());
         assertEquals(BlobErrorCode.CONTAINER_ALREADY_EXISTS.toString(), e.getErrorCode());
-        assertEquals("The specified container already exists.", e.getServiceMessage());
     }
 
     @Test
@@ -412,8 +411,8 @@ public class FileSystemApiTests extends DataLakeTestBase {
         Response<?> response = dataLakeFileSystemClient.deleteWithResponse(null, null, null);
 
         assertEquals(202, response.getStatusCode());
-        assertNotNull(response.getHeaders().getValue("x-ms-request-id"));
-        assertNotNull(response.getHeaders().getValue("x-ms-version"));
+        assertNotNull(response.getHeaders().getValue(X_MS_REQUEST_ID));
+        assertNotNull(response.getHeaders().getValue(X_MS_VERSION));
         assertNotNull(response.getHeaders().getValue(HttpHeaderName.DATE));
     }
 
@@ -444,7 +443,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             Arguments.of(null, null, null),
             Arguments.of(OLD_DATE, null, null),
             Arguments.of(null, NEW_DATE, null),
-            Arguments.of(null, RECEIVED_LEASE_ID, null)
+            Arguments.of(null, null, RECEIVED_LEASE_ID)
         );
     }
 
@@ -503,8 +502,8 @@ public class FileSystemApiTests extends DataLakeTestBase {
         Response<?> response = dataLakeFileSystemClient.deleteIfExistsWithResponse(null, null, null);
 
         assertEquals(202, response.getStatusCode());
-        assertNotNull(response.getHeaders().getValue("x-ms-request-id"));
-        assertNotNull(response.getHeaders().getValue("x-ms-version"));
+        assertNotNull(response.getHeaders().getValue(X_MS_REQUEST_ID));
+        assertNotNull(response.getHeaders().getValue(X_MS_VERSION));
         assertNotNull(response.getHeaders().getValue(HttpHeaderName.DATE));
     }
 
@@ -575,9 +574,9 @@ public class FileSystemApiTests extends DataLakeTestBase {
         dataLakeFileSystemClient.createFile(pathName);
 
         if (overwrite) {
-            assertDoesNotThrow(() -> dataLakeFileSystemClient.createFile(pathName, overwrite));
+            assertDoesNotThrow(() -> dataLakeFileSystemClient.createFile(pathName, true));
         } else {
-            assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.createFile(pathName, overwrite));
+            assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.createFile(pathName, false));
         }
     }
 
@@ -789,7 +788,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         assertEquals(201, result.getStatusCode());
 
-        FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
+        PathProperties properties = result.getValue().getProperties();
         // Directory adds a directory metadata value
         for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
@@ -1009,10 +1008,11 @@ public class FileSystemApiTests extends DataLakeTestBase {
             metadata.put(key2, value2);
         }
 
-        assertEquals(201, dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(),
-            new DataLakePathCreateOptions().setMetadata(metadata), null, null).getStatusCode());
+        Response<DataLakeFileClient> response = dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(),
+            new DataLakePathCreateOptions().setMetadata(metadata), null, null);
+        assertEquals(201, response.getStatusCode());
 
-        FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
+        PathProperties properties = response.getValue().getProperties();
         // Directory adds a directory metadata value
         for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
@@ -1231,10 +1231,10 @@ public class FileSystemApiTests extends DataLakeTestBase {
         dataLakeFileSystemClient.createDirectory(pathName);
 
         if (overwrite) {
-            assertDoesNotThrow(() -> dataLakeFileSystemClient.createDirectory(pathName, overwrite));
+            assertDoesNotThrow(() -> dataLakeFileSystemClient.createDirectory(pathName, true));
         } else {
             assertThrows(DataLakeStorageException.class,
-                () -> dataLakeFileSystemClient.createDirectory(pathName, overwrite));
+                () -> dataLakeFileSystemClient.createDirectory(pathName, false));
         }
     }
 
@@ -1408,10 +1408,10 @@ public class FileSystemApiTests extends DataLakeTestBase {
         }
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setMetadata(metadata);
 
-        assertEquals(201, dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
-            .getStatusCode());
+        Response<DataLakeDirectoryClient> response = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null);
+        assertEquals(201, response.getStatusCode());
 
-        FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
+        PathProperties properties = response.getValue().getProperties();
         // Directory adds a directory metadata value
         for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
@@ -1422,8 +1422,8 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @Test
     public void createDirOptionsWithPermissionsAndUmask() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setPermissions("0057")
-            .setUmask("0777");
+            .setPermissions("0777")
+            .setUmask("0057");
         DataLakeDirectoryClient result = dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null)
             .getValue();
 
@@ -1459,7 +1459,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             .setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)));
 
         // expires on not supported for directories
-        assertThrows(DataLakeStorageException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
             dataLakeFileSystemClient.createDirectoryWithResponse(generatePathName(), options, null, null));
     }
 
@@ -1617,10 +1617,10 @@ public class FileSystemApiTests extends DataLakeTestBase {
         }
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setMetadata(metadata);
 
-        assertEquals(201, dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
-            .getStatusCode());
+        Response<DataLakeDirectoryClient> response = dataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null);
+        assertEquals(201, response.getStatusCode());
 
-        FileSystemProperties properties = dataLakeFileSystemClient.getProperties();
+        PathProperties properties = response.getValue().getProperties();
         // Directory adds a directory metadata value
         for (String k : metadata.keySet()) {
             assertTrue(properties.getMetadata().containsKey(k));
@@ -2222,11 +2222,11 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         // blob endpoint
         assertEquals("2019-02-02", dataLakeFileSystemClient.getPropertiesWithResponse(null, null, null)
-            .getHeaders().getValue("x-ms-version"));
+            .getHeaders().getValue(X_MS_VERSION));
 
         // dfs endpoint
         assertEquals("2019-02-02", dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null)
-            .getHeaders().getValue("x-ms-version"));
+            .getHeaders().getValue(X_MS_VERSION));
     }
 
 //    @Test

@@ -1,0 +1,76 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/aef6ad840createifnotexistsfileoptionswithleaseiderror2ca774903?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:36 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.24.0-beta.1 azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4564d958-3a81-4b05-b9d3-b909716b20af",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:35 GMT",
+        "ETag": "\u00220x8DB8DE1868F959A\u0022",
+        "Last-Modified": "Wed, 26 Jul 2023 14:06:36 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "4564d958-3a81-4b05-b9d3-b909716b20af",
+        "x-ms-request-id": "46889a0b-101e-0050-10ca-bf53d2000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/aef6ad840createifnotexistsfileoptionswithleaseiderror2ca774903/aef6ad841createifnotexistsfileoptionswithleaseiderror2ca27287d?resource=file",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 26 Jul 2023 14:06:36 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-file-datalake/12.17.0-beta.1 (17.0.7; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9e7683cb-cd7a-44f4-a35b-e06c71f13036",
+        "x-ms-proposed-lease-id": "503b95a0-d30c-4873-849a-63ba4ef28d48",
+        "x-ms-version": "2023-01-03"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "250",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 26 Jul 2023 14:06:36 GMT",
+        "Server": [
+          "Windows-Azure-HDFS/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "9e7683cb-cd7a-44f4-a35b-e06c71f13036",
+        "x-ms-error-code": "MissingRequiredHeader",
+        "x-ms-request-id": "b9151f38-801f-0052-54ca-bfed6a000000",
+        "x-ms-version": "2023-01-03"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "MissingRequiredHeader",
+          "message": "An HTTP header that\u0027s mandatory for this request is not specified.\nRequestId:b9151f38-801f-0052-54ca-bfed6a000000\nTime:2023-07-26T14:06:36.8205599Z",
+          "detail": {
+            "HeaderName": "x-ms-lease-duration"
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "aef6ad840createifnotexistsfileoptionswithleaseiderror2ca774903",
+    "1": "aef6ad841createifnotexistsfileoptionswithleaseiderror2ca27287d"
+  }
+}

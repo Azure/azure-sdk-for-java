@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ResourceLock("ServiceProperties")
 public class SoftDeleteTests extends DataLakeTestBase {
     private DataLakeServiceClient softDeleteDataLakeServiceClient;
     private DataLakeFileSystemClient fileSystemClient;
@@ -46,11 +48,12 @@ public class SoftDeleteTests extends DataLakeTestBase {
         setupClient.setProperties(new DataLakeServiceProperties()
             .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(true).setDays(2)));
 
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        waitUntilPredicate(1000, 30, () -> {
+            DataLakeServiceProperties properties = setupClient.getProperties();
+            return properties.getDeleteRetentionPolicy() != null
+                && properties.getDeleteRetentionPolicy().isEnabled()
+                && properties.getDeleteRetentionPolicy().getDays() == 2;
+        });
     }
 
     @BeforeEach

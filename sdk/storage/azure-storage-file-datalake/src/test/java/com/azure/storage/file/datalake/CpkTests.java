@@ -3,7 +3,6 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -76,8 +75,8 @@ public class CpkTests extends DataLakeTestBase {
         Response<Void> response = cpkFile.setMetadataWithResponse(metadata, null, null, null);
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(), response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256));
+        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
     @Test
@@ -95,8 +94,8 @@ public class CpkTests extends DataLakeTestBase {
         Response<Void> response = cpkFile.appendWithResponse(DATA.getDefaultInputStream(), 0,
             DATA.getDefaultDataSizeLong(), null, null, null, null);
 
-        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(), response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256));
+        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
     @Test
@@ -119,8 +118,8 @@ public class CpkTests extends DataLakeTestBase {
             null, null, null, null, null, null, null);
 
         assertEquals(key.getKeySha256(), response.getValue().getCustomerProvidedKey().getKeySha256());
-        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(), response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256));
+        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
     @Test

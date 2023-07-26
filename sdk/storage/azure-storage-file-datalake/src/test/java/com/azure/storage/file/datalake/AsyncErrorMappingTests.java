@@ -10,11 +10,12 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 public class AsyncErrorMappingTests extends DataLakeTestBase {
+    private String fileSystemName;
     private DataLakeFileSystemAsyncClient fsac;
 
     @BeforeEach
     public void setup() {
-        String fileSystemName = generateFileSystemName();
+        fileSystemName = generateFileSystemName();
         fsac = getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount()).createFileSystem(fileSystemName).block();
     }
 
@@ -62,7 +63,8 @@ public class AsyncErrorMappingTests extends DataLakeTestBase {
 
     @Test
     public void createFileSystem() {
-        StepVerifier.create(getFileSystemAsyncClient().createWithResponse(null, null))
+        StepVerifier.create(getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount())
+            .getFileSystemAsyncClient(fileSystemName).createWithResponse(null, null))
             .verifyError(DataLakeStorageException.class);
     }
 

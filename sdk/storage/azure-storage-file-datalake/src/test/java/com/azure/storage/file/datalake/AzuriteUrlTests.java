@@ -191,7 +191,7 @@ public class AzuriteUrlTests extends DataLakeTestBase {
             .fileClient(pathClient)
             .buildClient();
 
-        assertEquals("http://127.0.0.1:10000/devstoreaccount1/fileSystem", pathLeaseClient.getResourceUrl());
+        assertEquals("http://127.0.0.1:10000/devstoreaccount1/fileSystem/file", pathLeaseClient.getResourceUrl());
         assertEquals("devstoreaccount1", pathLeaseClient.getAccountName());
     }
 }

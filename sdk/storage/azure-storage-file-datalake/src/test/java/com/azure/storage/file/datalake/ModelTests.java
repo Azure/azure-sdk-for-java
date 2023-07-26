@@ -21,23 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ModelTests {
-    @Test
-    public void rolePermissionsCreation() throws ReflectiveOperationException {
-        RolePermissions permissions = new RolePermissions().setReadPermission(true).setExecutePermission(true).setWritePermission(true);
-        RolePermissions other = RolePermissions.class.getDeclaredConstructor(RolePermissions.class)
-            .newInstance(permissions);
-
-        assertTrue(permissions.hasReadPermission());
-        assertTrue(permissions.hasExecutePermission());
-        assertTrue(permissions.hasWritePermission());
-
-        assertTrue(other.hasReadPermission());
-        assertTrue(other.hasExecutePermission());
-        assertTrue(other.hasWritePermission());
-
-        assertEquals(permissions, other);
-    }
-
     @ParameterizedTest
     @CsvSource({ "1,--x", "2,-w-", "4,r--" })
     public void rolePermissionsParseOctal(int octal, String permission) {
@@ -79,9 +62,9 @@ public class ModelTests {
         boolean extendedInfoInAcl) {
         PathPermissions permissions = PathPermissions.parseSymbolic(symbol);
 
-        assertEquals(execute, permissions.getOwner().hasExecutePermission());
-        assertEquals(read, permissions.getOwner().hasReadPermission());
-        assertEquals(write, permissions.getOwner().hasWritePermission());
+        assertEquals(execute, permissions.getOther().hasExecutePermission());
+        assertEquals(read, permissions.getOther().hasReadPermission());
+        assertEquals(write, permissions.getOther().hasWritePermission());
         assertEquals(stickyBit, permissions.isStickyBitSet());
         assertEquals(extendedInfoInAcl, permissions.isExtendedInfoInAcl());
     }

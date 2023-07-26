@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -148,8 +149,8 @@ public class ServiceApiTests extends DataLakeTestBase {
 
                 DataLakeServiceProperties receivedProperties = primaryDataLakeServiceClient.getProperties();
 
-                assertNotNull(headers.getValue("x-ms-request-id"));
-                assertNotNull(headers.getValue("x-ms-version"));
+                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                assertNotNull(headers.getValue(X_MS_VERSION));
                 validatePropsSet(sentProperties, receivedProperties);
 
                 break;
@@ -310,6 +311,7 @@ public class ServiceApiTests extends DataLakeTestBase {
             .iterator().next().getMetadata());
     }
 
+    @SuppressWarnings("resource")
     @Test
     public void listFileSystemsMaxResults() {
         String fileSystemName = generateFileSystemName();
@@ -389,7 +391,20 @@ public class ServiceApiTests extends DataLakeTestBase {
         // Ensure $logs container exists. These will be reverted in test cleanup
         primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProps, null, null);
 
-        sleepIfRunningAgainstService(30 * 1000); // allow the service properties to take effect
+        // allow the service properties to take effect
+        waitUntilPredicate(1000, 30, () -> {
+            DataLakeServiceProperties properties = primaryDataLakeServiceClient.getProperties();
+
+            if (properties == null || properties.getLogging() == null) {
+                return false;
+            }
+
+            DataLakeAnalyticsLogging analyticsLogging = properties.getLogging();
+            return Objects.equals(analyticsLogging.isRead(), logging.isRead())
+               && Objects.equals(analyticsLogging.getVersion(), logging.getVersion())
+               && Objects.equals(analyticsLogging.getRetentionPolicy().getDays(), logging.getRetentionPolicy().getDays())
+               && Objects.equals(analyticsLogging.getRetentionPolicy().isEnabled(), logging.getRetentionPolicy().isEnabled());
+        });
 
         List<FileSystemItem> fileSystems = primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
             .setDetails(new FileSystemListDetails().setRetrieveSystemFileSystems(true)), null)
@@ -476,13 +491,15 @@ public class ServiceApiTests extends DataLakeTestBase {
     // and auth would fail because we changed a signed header.
     @Test
     public void perCallPolicy() {
-        DataLakeServiceClient serviceClient = getServiceClient(getDataLakeCredential(),
-            primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy());
+        DataLakeServiceClient serviceClient = getServiceClientBuilder(getDataLakeCredential(),
+            primaryDataLakeServiceClient.getAccountUrl())
+            .addPolicy(getPerCallVersionPolicy())
+            .buildClient();
 
         Response<DataLakeFileSystemClient> response = assertDoesNotThrow(() ->
             serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null));
 
-        assertEquals("2019-02-02", response.getHeaders().getValue("x-ms-version"));
+        assertEquals("2019-02-02", response.getHeaders().getValue(X_MS_VERSION));
     }
 
     @DisabledIf("olderThan20191212ServiceVersion")
@@ -498,7 +515,8 @@ public class ServiceApiTests extends DataLakeTestBase {
                 .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)), null)
             .iterator().next();
 
-        sleepIfRunningAgainstService(30000);
+        // Wait until the file system is garbage collected.
+        waitUntilFileSystemIsDeleted(cc1);
 
         assertFalse(cc1.exists());
 
@@ -510,6 +528,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals(blobName, pathItems.get(0).getName());
     }
 
+    @SuppressWarnings("deprecation")
     @EnabledIf("isPlaybackMode")
     @Test
     public void restoreFileSystemIntoOtherFileSystem() {
@@ -524,7 +543,8 @@ public class ServiceApiTests extends DataLakeTestBase {
             .iterator().next();
         String destinationFileSystemName = generateFileSystemName();
 
-        sleepIfRunningAgainstService(30000);
+        // Wait until the file system is garbage collected.
+        waitUntilFileSystemIsDeleted(cc1);
 
         DataLakeFileSystemClient restoredContainerClient = primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
                 new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
@@ -551,7 +571,8 @@ public class ServiceApiTests extends DataLakeTestBase {
                 .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)), null)
             .iterator().next();
 
-        sleepIfRunningAgainstService(30000);
+        // Wait until the file system is garbage collected.
+        waitUntilFileSystemIsDeleted(cc1);
 
         Response<DataLakeFileSystemClient> response = primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
             new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
@@ -625,6 +646,7 @@ public class ServiceApiTests extends DataLakeTestBase {
                 primaryDataLakeServiceClient.undeleteFileSystem(generateFileSystemName(), "01D60F8BB59A4652"));
     }
 
+    @SuppressWarnings("deprecation")
     @DisabledIf("olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemIntoExistingFileSystemError() {
@@ -640,7 +662,8 @@ public class ServiceApiTests extends DataLakeTestBase {
             .findFirst()
             .orElseThrow(() -> new RuntimeException("Expected to find a deleted file system."));
 
-        sleepIfRunningAgainstService(30000);
+        // Wait until the file system is garbage collected.
+        waitUntilFileSystemIsDeleted(cc1);
 
         DataLakeFileSystemClient cc2 = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
 
@@ -770,5 +793,17 @@ public class ServiceApiTests extends DataLakeTestBase {
 
     private static boolean isPlaybackMode() {
         return ENVIRONMENT.getTestMode() == TestMode.PLAYBACK;
+    }
+
+    private static void waitUntilFileSystemIsDeleted(DataLakeFileSystemClient cc) {
+        waitUntilPredicate(1000, 30, () -> {
+            // Wait until 'delete' doesn't return an error that it's already being deleted.
+            try {
+                cc.delete();
+                return false;
+            } catch (DataLakeStorageException ex) {
+                return !Objects.equals(ex.getErrorCode(), BlobErrorCode.CONTAINER_BEING_DELETED.toString());
+            }
+        });
     }
 }

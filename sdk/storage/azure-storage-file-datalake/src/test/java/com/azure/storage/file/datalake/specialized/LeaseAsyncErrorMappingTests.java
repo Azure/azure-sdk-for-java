@@ -17,12 +17,11 @@ public class LeaseAsyncErrorMappingTests extends DataLakeTestBase {
             .block();
     }
 
-    private DataLakeFileAsyncClient fac;
     private DataLakeLeaseAsyncClient leaseAsyncClient;
 
     @BeforeEach
     public void setup() {
-        fac = createPathAsyncClient();
+        DataLakeFileAsyncClient fac = createPathAsyncClient();
         leaseAsyncClient = createLeaseAsyncClient(fac);
     }
 
