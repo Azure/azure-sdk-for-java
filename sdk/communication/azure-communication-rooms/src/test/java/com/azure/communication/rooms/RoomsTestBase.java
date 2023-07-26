@@ -95,7 +95,7 @@ public class RoomsTestBase extends TestProxyTestBase {
 
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(
-                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+                    Arrays.asList(new TestProxySanitizer("$..roomId", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
 
         if (interceptorManager.isPlaybackMode()) {
@@ -114,7 +114,7 @@ public class RoomsTestBase extends TestProxyTestBase {
 
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(
-                    Arrays.asList(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+                    Arrays.asList(new TestProxySanitizer("$..roomId", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
 
         if (interceptorManager.isPlaybackMode()) {
