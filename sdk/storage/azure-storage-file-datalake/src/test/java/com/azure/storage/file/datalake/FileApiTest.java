@@ -1756,7 +1756,7 @@ public class FileApiTest extends DataLakeTestBase {
             });
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
-        Thread.sleep(500);
+        sleepIfRunningAgainstService(500);
         assertFalse(outFile.exists());
     }
 
@@ -3874,11 +3874,7 @@ public class FileApiTest extends DataLakeTestBase {
                 break;
             } catch (Exception ex) {
                 retry++;
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(5000);
             }
         }
     }

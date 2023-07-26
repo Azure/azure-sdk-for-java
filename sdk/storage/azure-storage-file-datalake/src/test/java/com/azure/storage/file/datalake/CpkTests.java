@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,10 +40,8 @@ public class CpkTests extends DataLakeTestBase {
      * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
      * real key this way.
      */
-    private static byte[] getRandomKey() {
-        byte[] key = new byte[32]; // 256 bit key
-        ThreadLocalRandom.current().nextBytes(key);
-        return key;
+    private byte[] getRandomKey() {
+        return getRandomByteArray(32);
     }
 
     @Test

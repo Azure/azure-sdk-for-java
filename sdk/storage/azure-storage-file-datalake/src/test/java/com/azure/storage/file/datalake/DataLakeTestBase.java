@@ -36,7 +36,6 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.file.datalake.models.FileSystemItem;
-import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -141,15 +140,22 @@ public class DataLakeTestBase extends TestProxyTestBase {
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(
-                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+            interceptorManager.addSanitizers(Arrays.asList(
+                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
         // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
-        interceptorManager.addMatchers(Arrays.asList(
-            new CustomMatcher().setQueryOrderingIgnored(true).setIgnoredQueryParameters(Arrays.asList("sv"))));
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+            .setComparingBodies(false)
+            .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
+                "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
+                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
+            .setQueryOrderingIgnored(true)
+            .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
         primaryDataLakeServiceClient = getServiceClient(ENVIRONMENT.getDataLakeAccount());
         primaryDataLakeServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount());
@@ -788,8 +794,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     /**
-     * Utility method that waits until either the "predicate" (in this case it's a {@link Supplier Supplier<Boolean>})
-     * returns true or the number of delays has been reached.
+     * Utility method that waits until either the "predicate" (in this case it's a
+     * {@link Supplier Supplier&lt;Boolean&gt;}) returns true or the number of delays has been reached.
      *
      * @param delayMillis Amount of milliseconds for each delay.
      * @param numberOfDelays Number of delays.
