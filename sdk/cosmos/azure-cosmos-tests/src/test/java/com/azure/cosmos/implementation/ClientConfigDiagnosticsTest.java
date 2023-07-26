@@ -238,15 +238,14 @@ public class ClientConfigDiagnosticsTest {
         int proactiveConnectionRegionCount) {
 
         return String.format(
-            "(containers:%s)(pcrc:%d)(awd:%ds)",
+            "(containers:%s)(pcrc:%d)(awd:%dms)",
             containerIdentities
                 .stream()
                 .map(ci -> String.join(
                     ".",
-                    containerIdentityAccessor.getDatabaseName(ci),
-                    containerIdentityAccessor.getContainerName(ci)))
+                    containerIdentityAccessor.getContainerLink(ci)))
                 .collect(Collectors.joining(";")),
             proactiveConnectionRegionCount,
-            aggressiveWarmupDuration == null ? Duration.ofSeconds(Integer.MAX_VALUE).getSeconds() : aggressiveWarmupDuration.getSeconds());
+            aggressiveWarmupDuration == null ? Duration.ofMillis(Integer.MAX_VALUE).toMillis() : aggressiveWarmupDuration.toMillis());
     }
 }
