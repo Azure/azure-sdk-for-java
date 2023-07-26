@@ -82,21 +82,22 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         this.request = request;
         this.isReadRequest = request.isReadOnlyRequest();
         this.timeoutPolicy = HttpTimeoutPolicy.getTimeoutPolicy(request);
-        if (request.isAddressRefresh()) {
+
+        // Fetching the retryCount for Address refresh call
+        if (request.isAddressRefresh() && this.addressRefreshCount <= MAX_ADDRESS_REFRESH_RETRY_COUNT) {
             ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.addressRefreshCount);
             this.request.setResponseTimeout(current.getResponseTimeout());
             this.retryDelay = current.getDelayForNextRequestInSeconds();
-        }
-
-        // Fetching the retryCount to correctly get the retry values from the timeout policy
-        if (this.retryContext != null) {
-            this.retryCount = this.retryContext.getRetryCount();
-        }
-        // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
-        if (!isOutOfRetries()) {
-            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount);
-            this.request.setResponseTimeout(current.getResponseTimeout());
-            this.retryDelay = current.getDelayForNextRequestInSeconds();
+        } else {
+            if (this.retryContext != null) {
+                this.retryCount = this.retryContext.getRetryCount();
+            }
+            // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
+            if (!isOutOfRetries()) {
+                ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount);
+                this.request.setResponseTimeout(current.getResponseTimeout());
+                this.retryDelay = current.getDelayForNextRequestInSeconds();
+            }
         }
         this.locationEndpoint = request.requestContext.locationEndpointToRoute;
     }
