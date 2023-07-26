@@ -3741,7 +3741,7 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-//    @Ignore("Requires manual OAuth setup and creates 5000+ files")
+    @Ignore("Requires manual OAuth setup and creates 5000+ files")
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2023_08_03")
     def "Delete paginated directory"() {
         setup:
@@ -3749,7 +3749,6 @@ class DirectoryAPITest extends APISpec {
 
         def fsClient = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildClient()
 
         def directoryClient = fsClient.getDirectoryClient(generatePathName())
@@ -3773,11 +3772,7 @@ class DirectoryAPITest extends APISpec {
 
         def oAuthServiceClient = getOAuthServiceClient()
         def oAuthFileSystemClient = oAuthServiceClient.getFileSystemClient(fsClient.getFileSystemName())
-        def oAuthDirectoryClient = oAuthFileSystemClient
-            .getDirectoryClient(directoryClient.getDirectoryPath())
-
-        // test is failing with this exception:
-        // DataLakeStorage Status code 404, "{"error":{"code":"PathNotFound","message":"The specified path does not exist.\nRequestId:70db0a7a-001f-0046-1592-beee45000000\nTime:2023-07-25T00:57:30.1357302Z"}}"
+        def oAuthDirectoryClient = oAuthFileSystemClient.getDirectoryClient(directoryClient.getDirectoryPath())
 
         when:
         def response = oAuthDirectoryClient.deleteWithResponse(true, null, null, Context.NONE)

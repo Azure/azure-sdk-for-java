@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
@@ -36,7 +35,6 @@ import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAc
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
-import com.azure.storage.file.datalake.implementation.models.PathsDeleteHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveHeaders;
 import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
@@ -126,7 +124,7 @@ public class DataLakePathAsyncClient {
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
         BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken, CpkInfo customerProvidedKey,
-       boolean isTokenCredentialAuthenticated) {
+        boolean isTokenCredentialAuthenticated) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
@@ -640,41 +638,21 @@ public class DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         // Pagination only applies to service version 2023-08-03 and later, when using OAuth.
-        Boolean paginated = null;
-        if (getServiceVersion().ordinal() >= DataLakeServiceVersion.V2023_08_03.ordinal()
-            && isTokenCredentialAuthenticated()) {
-            paginated = true;
-        }
+        Boolean paginated = (getServiceVersion().ordinal() >= DataLakeServiceVersion.V2023_08_03.ordinal()
+            && isTokenCredentialAuthenticated()) ? true : null;
 
-        HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+        Context finalContext = context == null ? Context.NONE : context;
 
-        context = context == null ? Context.NONE : context;
-
-        Mono<ResponseBase<PathsDeleteHeaders, Void>> response = this.dataLakeStorage.getPaths()
-            .deleteWithResponseAsync(null, null, recursive, null, paginated, lac, mac, context);
-
-        String continuation = response.flatMap(res -> {
-            if (res.getHeaders().getValue(X_MS_CONTINUATION) != null) {
-                return Mono.just(res.getHeaders().getValue(X_MS_CONTINUATION));
-            } else {
-                return Mono.empty();
-            }
-        }).block();
-
-        while (continuation != null && !continuation.isEmpty()) {
-            response = this.dataLakeStorage.getPaths()
-                .deleteWithResponseAsync(null, null, recursive, continuation, paginated, lac, mac, context);
-
-            continuation = response.flatMap(resp -> {
-                if (resp.getHeaders().getValue(X_MS_CONTINUATION) != null) {
-                    return Mono.just(resp.getHeaders().getValue(X_MS_CONTINUATION));
+        return this.dataLakeStorage.getPaths()
+            .deleteWithResponseAsync(null, null, recursive, null, paginated, lac, mac, context).expand(resp -> {
+                String continuation = resp.getHeaders().getValue(Transforms.X_MS_CONTINUATION);
+                if (continuation != null && !continuation.isEmpty()) {
+                    return this.dataLakeStorage.getPaths()
+                        .deleteWithResponseAsync(null, null, recursive, continuation, paginated, lac, mac, finalContext);
                 } else {
                     return Mono.empty();
                 }
-            }).block();
-        }
-        return response.map(res -> new SimpleResponse<>(res, null));
-
+            }).last().map(res -> new SimpleResponse<>(res, null));
     }
 
     /**

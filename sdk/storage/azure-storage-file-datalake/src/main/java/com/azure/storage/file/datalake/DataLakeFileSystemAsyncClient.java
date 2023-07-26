@@ -181,7 +181,7 @@ public class DataLakeFileSystemAsyncClient {
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getFileSystemName(), fileName, blockBlobAsyncClient, sasToken,
-            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
+            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()), isTokenCredentialAuthenticated);
     }
 
     /**
