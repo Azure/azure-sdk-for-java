@@ -4,17 +4,17 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Get Operation response object. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("documentModelBuild")
-@Immutable
+@Fluent
 public final class DocumentModelBuildOperationDetails extends OperationDetails {
     /*
      * Operation result upon success.
@@ -22,24 +22,8 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
     @JsonProperty(value = "result")
     private DocumentModelDetails result;
 
-    /**
-     * Creates an instance of DocumentModelBuildOperationDetails class.
-     *
-     * @param operationId the operationId value to set.
-     * @param status the status value to set.
-     * @param createdDateTime the createdDateTime value to set.
-     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
-     * @param resourceLocation the resourceLocation value to set.
-     */
-    @JsonCreator
-    private DocumentModelBuildOperationDetails(
-            @JsonProperty(value = "operationId", required = true) String operationId,
-            @JsonProperty(value = "status", required = true) OperationStatus status,
-            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime,
-            @JsonProperty(value = "resourceLocation", required = true) String resourceLocation) {
-        super(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
-    }
+    /** Creates an instance of DocumentModelBuildOperationDetails class. */
+    public DocumentModelBuildOperationDetails() {}
 
     /**
      * Get the result property: Operation result upon success.
@@ -48,5 +32,79 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
      */
     public DocumentModelDetails getResult() {
         return this.result;
+    }
+
+    /**
+     * Set the result property: Operation result upon success.
+     *
+     * @param result the result value to set.
+     * @return the DocumentModelBuildOperationDetails object itself.
+     */
+    public DocumentModelBuildOperationDetails setResult(DocumentModelDetails result) {
+        this.result = result;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setOperationId(String operationId) {
+        super.setOperationId(operationId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setStatus(OperationStatus status) {
+        super.setStatus(status);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setPercentCompleted(Integer percentCompleted) {
+        super.setPercentCompleted(percentCompleted);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setCreatedDateTime(OffsetDateTime createdDateTime) {
+        super.setCreatedDateTime(createdDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
+        super.setLastUpdatedDateTime(lastUpdatedDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setResourceLocation(String resourceLocation) {
+        super.setResourceLocation(resourceLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setApiVersion(String apiVersion) {
+        super.setApiVersion(apiVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setTags(Map<String, String> tags) {
+        super.setTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DocumentModelBuildOperationDetails setError(Error error) {
+        super.setError(error);
+        return this;
     }
 }

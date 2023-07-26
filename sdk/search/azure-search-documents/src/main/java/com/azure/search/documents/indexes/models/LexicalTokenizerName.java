@@ -7,90 +7,50 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the names of all tokenizers supported by Azure Cognitive Search. */
+/** Defines values for LexicalTokenizerName. */
 public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalTokenizerName> {
-    /**
-     * Grammar-based tokenizer that is suitable for processing most European-language documents. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/standard/ClassicTokenizer.html.
-     */
+    /** Static value classic for LexicalTokenizerName. */
     public static final LexicalTokenizerName CLASSIC = fromString("classic");
 
-    /**
-     * Tokenizes the input from an edge into n-grams of the given size(s). See
-     * https://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/ngram/EdgeNGramTokenizer.html.
-     */
+    /** Static value edgeNGram for LexicalTokenizerName. */
     public static final LexicalTokenizerName EDGE_NGRAM = fromString("edgeNGram");
 
-    /**
-     * Emits the entire input as a single token. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/KeywordTokenizer.html.
-     */
+    /** Static value keyword_v2 for LexicalTokenizerName. */
     public static final LexicalTokenizerName KEYWORD = fromString("keyword_v2");
 
-    /**
-     * Divides text at non-letters. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/LetterTokenizer.html.
-     */
+    /** Static value letter for LexicalTokenizerName. */
     public static final LexicalTokenizerName LETTER = fromString("letter");
 
-    /**
-     * Divides text at non-letters and converts them to lower case. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/LowerCaseTokenizer.html.
-     */
+    /** Static value lowercase for LexicalTokenizerName. */
     public static final LexicalTokenizerName LOWERCASE = fromString("lowercase");
 
-    /** Divides text using language-specific rules. */
+    /** Static value microsoft_language_tokenizer for LexicalTokenizerName. */
     public static final LexicalTokenizerName MICROSOFT_LANGUAGE_TOKENIZER = fromString("microsoft_language_tokenizer");
 
-    /** Divides text using language-specific rules and reduces words to their base forms. */
+    /** Static value microsoft_language_stemming_tokenizer for LexicalTokenizerName. */
     public static final LexicalTokenizerName MICROSOFT_LANGUAGE_STEMMING_TOKENIZER =
             fromString("microsoft_language_stemming_tokenizer");
 
-    /**
-     * Tokenizes the input into n-grams of the given size(s). See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/ngram/NGramTokenizer.html.
-     */
+    /** Static value nGram for LexicalTokenizerName. */
     public static final LexicalTokenizerName NGRAM = fromString("nGram");
 
-    /**
-     * Tokenizer for path-like hierarchies. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/path/PathHierarchyTokenizer.html.
-     */
+    /** Static value path_hierarchy_v2 for LexicalTokenizerName. */
     public static final LexicalTokenizerName PATH_HIERARCHY = fromString("path_hierarchy_v2");
 
-    /**
-     * Tokenizer that uses regex pattern matching to construct distinct tokens. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/pattern/PatternTokenizer.html.
-     */
+    /** Static value pattern for LexicalTokenizerName. */
     public static final LexicalTokenizerName PATTERN = fromString("pattern");
 
-    /**
-     * Standard Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/standard/StandardTokenizer.html.
-     */
+    /** Static value standard_v2 for LexicalTokenizerName. */
     public static final LexicalTokenizerName STANDARD = fromString("standard_v2");
 
-    /**
-     * Tokenizes urls and emails as one token. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/standard/UAX29URLEmailTokenizer.html.
-     */
+    /** Static value uax_url_email for LexicalTokenizerName. */
     public static final LexicalTokenizerName UAX_URL_EMAIL = fromString("uax_url_email");
 
-    /**
-     * Divides text at whitespace. See
-     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/WhitespaceTokenizer.html.
-     */
+    /** Static value whitespace for LexicalTokenizerName. */
     public static final LexicalTokenizerName WHITESPACE = fromString("whitespace");
-
-    /**
-     * Creates a new instance of LexicalTokenizerName value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public LexicalTokenizerName() {}
 
     /**
      * Creates or finds a LexicalTokenizerName from its string representation.
@@ -98,6 +58,7 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
      * @param name a name to look for.
      * @return the corresponding LexicalTokenizerName.
      */
+    @JsonCreator
     public static LexicalTokenizerName fromString(String name) {
         return fromString(name, LexicalTokenizerName.class);
     }

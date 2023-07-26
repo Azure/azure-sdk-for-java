@@ -298,7 +298,7 @@ public final class FormTrainingClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated FormTrainingClientBuilder object.
-     * {@link HttpClientOptions}
+     * @see HttpClientOptions
      */
     @Override
     public FormTrainingClientBuilder clientOptions(ClientOptions clientOptions) {

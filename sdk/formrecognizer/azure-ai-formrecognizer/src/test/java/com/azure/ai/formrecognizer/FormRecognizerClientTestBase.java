@@ -20,6 +20,9 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -31,6 +34,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -39,6 +43,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -146,12 +151,9 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getTestProxySanitizers());
-        }
+
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 
@@ -168,17 +170,18 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
             .audience(audience);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential());
+            builder.credential(new TokenCredential() {
+                @Override
+                public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+                    return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+                }
+            });
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getTestProxySanitizers());
-        }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 

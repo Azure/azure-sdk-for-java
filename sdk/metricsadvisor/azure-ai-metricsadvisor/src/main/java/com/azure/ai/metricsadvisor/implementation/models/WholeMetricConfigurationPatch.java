@@ -36,9 +36,6 @@ public final class WholeMetricConfigurationPatch {
     @JsonProperty(value = "changeThresholdCondition")
     private ChangeThresholdConditionPatch changeThresholdCondition;
 
-    /** Creates an instance of WholeMetricConfigurationPatch class. */
-    public WholeMetricConfigurationPatch() {}
-
     /**
      * Get the conditionOperator property: condition operator
      *

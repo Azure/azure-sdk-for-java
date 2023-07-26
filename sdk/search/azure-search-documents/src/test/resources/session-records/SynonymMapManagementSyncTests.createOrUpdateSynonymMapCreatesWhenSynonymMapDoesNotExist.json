@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym18915d6ea296')?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "368b7011-d185-448d-bfe8-182323d397c2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "368b7011-d185-448d-bfe8-182323d397c2",
+      "StatusCode" : "201",
+      "Date" : "Thu, 27 May 2021 21:18:23 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D92154F5D7C19D\"",
+      "client-request-id" : "368b7011-d185-448d-bfe8-182323d397c2",
+      "elapsed-time" : "22",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D92154F5D7C19D\\\"\",\"name\":\"test-synonym18915d6ea296\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "368b7011-d185-448d-bfe8-182323d397c2",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://alzimmer-test.search.windows.net/synonymmaps('test-synonym18915d6ea296')?api-version=2020-06-30"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym18915d6ea296')?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "30313e1c-f4e7-43c8-a4cb-f4415d9ba4c7"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "30313e1c-f4e7-43c8-a4cb-f4415d9ba4c7",
+      "elapsed-time" : "10",
+      "Pragma" : "no-cache",
+      "Expires" : "-1",
+      "retry-after" : "0",
+      "request-id" : "30313e1c-f4e7-43c8-a4cb-f4415d9ba4c7",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "30313e1c-f4e7-43c8-a4cb-f4415d9ba4c7",
+      "Date" : "Thu, 27 May 2021 21:18:22 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test-synonym18915d6ea296" ]
+}

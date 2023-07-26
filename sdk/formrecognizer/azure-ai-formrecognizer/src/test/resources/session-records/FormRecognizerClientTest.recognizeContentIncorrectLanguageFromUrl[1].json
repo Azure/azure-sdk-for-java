@@ -1,0 +1,39 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/layout/analyze?language=language",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:17:39 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e4992870-1f42-479b-ad76-e44c4c14fa5e"
+      },
+      "RequestBody": {
+        "source": "REDACTED"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "ff1530a6-95b9-44d2-9baa-504acb6e036c",
+        "Content-Length": "121",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:17:39 GMT",
+        "ms-azure-ai-errorcode": "NotSupportedLanguage",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "513",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "NotSupportedLanguage",
+          "message": "The requested operation is not supported in the language specified."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

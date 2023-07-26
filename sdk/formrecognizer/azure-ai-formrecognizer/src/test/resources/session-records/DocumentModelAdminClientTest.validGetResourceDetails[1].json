@@ -1,0 +1,35 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/info?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:13:27 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6e64d59e-3fff-4d04-8c06-ba42a379fbbc"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "1d697a3c-d27c-43b6-9ba8-2c0582ad5862",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:13:27 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "452",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "customDocumentModels": {
+          "count": 5491,
+          "limit": 20000
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

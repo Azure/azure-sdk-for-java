@@ -1,0 +1,43 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "24",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:17:52 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "79660e23-96e5-4bc4-90cb-10d5f8acd33b"
+      },
+      "RequestBody": {
+        "urlSource": "REDACTED"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "52fc6f88-fab3-408e-b2b2-ee40dea10191",
+        "Content-Length": "221",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:17:52 GMT",
+        "ms-azure-ai-errorcode": "InvalidRequest",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "123",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Invalid request.",
+          "innererror": {
+            "code": "InvalidContent",
+            "message": "The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

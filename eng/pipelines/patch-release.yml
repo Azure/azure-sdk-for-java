@@ -4,16 +4,124 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-messaging-webpubsub
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azuremessagingwebpubsub
+      ServiceDirectory: webpubsub
+    - name: azure-data-schemaregistry-apacheavro
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azuredataschemaregistryapacheavro
+      ServiceDirectory: schemaregistry
+    - name: azure-messaging-eventhubs
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azuremessagingeventhubs
+      ServiceDirectory: eventhubs
+    - name: azure-data-appconfiguration
+      groupId: com.azure
+      safeName: azuredataappconfiguration
+      ServiceDirectory: appconfiguration
+    - name: azure-security-keyvault-keys
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultkeys
+      ServiceDirectory: keyvault
+    - name: azure-communication-rooms
+      groupId: com.azure
+      safeName: azurecommunicationrooms
+      ServiceDirectory: communication
+    - name: azure-security-keyvault-administration
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultadministration
+      ServiceDirectory: keyvault
+    - name: azure-data-tables
+      groupId: com.azure
+      safeName: azuredatatables
+      ServiceDirectory: tables
+    - name: azure-communication-chat
+      groupId: com.azure
+      safeName: azurecommunicationchatclient
+      ServiceDirectory: communication
+    - name: azure-search-documents
+      groupId: com.azure
+      safeName: azuresearch
+      ServiceDirectory: search
+    - name: azure-mixedreality-remoterendering
+      groupId: com.azure
+      safeName: azuremixedrealityremoterendering
+      ServiceDirectory: remoterendering
+    - name: azure-communication-phonenumbers
+      groupId: com.azure
+      safeName: azurecommunicationphonenumbers
+      ServiceDirectory: communication
+    - name: azure-messaging-eventhubs-checkpointstore-blob
+      groupId: com.azure
+      safeName: azuremessagingeventhubscheckpointstoreblob
+      ServiceDirectory: eventhubs
+    - name: azure-ai-formrecognizer
+      groupId: com.azure
+      safeName: azureaiformrecognizer
+      ServiceDirectory: formrecognizer
+    - name: azure-iot-deviceupdate
+      groupId: com.azure
+      safeName: azureiotdeviceupdate
+      ServiceDirectory: deviceupdate
+    - name: azure-monitor-query
+      groupId: com.azure
+      safeName: azuremonitorquery
+      ServiceDirectory: monitor
+    - name: azure-messaging-eventgrid
+      groupId: com.azure
+      safeName: azuremessagingeventgrid
+      ServiceDirectory: eventgrid
+    - name: azure-communication-email
+      groupId: com.azure
+      safeName: azurecommunicationemail
+      ServiceDirectory: communication
+    - name: azure-data-schemaregistry
+      groupId: com.azure
+      safeName: azuredataschemaregistry
+      ServiceDirectory: schemaregistry
+    - name: azure-ai-textanalytics
+      groupId: com.azure
+      safeName: azureaitextanalytics
+      ServiceDirectory: textanalytics
+    - name: azure-ai-metricsadvisor
+      groupId: com.azure
+      safeName: azureaimetricsadvisor
+      ServiceDirectory: metricsadvisor
+    - name: azure-digitaltwins-core
+      groupId: com.azure
+      safeName: azuredigitaltwinscore
+      ServiceDirectory: digitaltwins
+    - name: azure-security-attestation
+      groupId: com.azure
+      safeName: azuresecurityattestation
+      ServiceDirectory: attestation
+    - name: azure-security-confidentialledger
+      groupId: com.azure
+      safeName: azuresecurityconfidentialledger
+      ServiceDirectory: confidentialledger
+    - name: azure-security-keyvault-secrets
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultsecrets
+      ServiceDirectory: keyvault
+    - name: azure-monitor-ingestion
+      groupId: com.azure
+      safeName: azuremonitoringestion
+      ServiceDirectory: monitor
+    - name: azure-containers-containerregistry
+      groupId: com.azure
+      safeName: azurecontainerscontainerregistry
+      ServiceDirectory: containerregistry
+    - name: azure-mixedreality-authentication
+      groupId: com.azure
+      safeName: azuremixedrealityauthentication
+      ServiceDirectory: mixedreality
+    - name: azure-communication-sms
+      groupId: com.azure
+      safeName: azurecommunicationsms
+      ServiceDirectory: communication
+    - name: azure-security-keyvault-certificates
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultcertificates
+      ServiceDirectory: keyvault
 

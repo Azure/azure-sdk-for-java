@@ -8,8 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 /** The MySqlDataFeedPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -21,9 +19,6 @@ public final class MySqlDataFeedPatch extends DataFeedDetailPatch {
      */
     @JsonProperty(value = "dataSourceParameter")
     private SQLSourceParameterPatch dataSourceParameter;
-
-    /** Creates an instance of MySqlDataFeedPatch class. */
-    public MySqlDataFeedPatch() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -42,153 +37,6 @@ public final class MySqlDataFeedPatch extends DataFeedDetailPatch {
      */
     public MySqlDataFeedPatch setDataSourceParameter(SQLSourceParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setDataFeedName(String dataFeedName) {
-        super.setDataFeedName(dataFeedName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
-        super.setDataFeedDescription(dataFeedDescription);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setTimestampColumn(String timestampColumn) {
-        super.setTimestampColumn(timestampColumn);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
-        super.setDataStartFrom(dataStartFrom);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
-        super.setStartOffsetInSeconds(startOffsetInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
-        super.setMaxConcurrency(maxConcurrency);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
-        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
-        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
-        super.setNeedRollup(needRollup);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
-        super.setRollUpMethod(rollUpMethod);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
-        super.setRollUpColumns(rollUpColumns);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setAllUpIdentification(String allUpIdentification) {
-        super.setAllUpIdentification(allUpIdentification);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
-        super.setFillMissingPointType(fillMissingPointType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
-        super.setFillMissingPointValue(fillMissingPointValue);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setViewMode(ViewMode viewMode) {
-        super.setViewMode(viewMode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setAdmins(List<String> admins) {
-        super.setAdmins(admins);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setViewers(List<String> viewers) {
-        super.setViewers(viewers);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setStatus(EntityStatus status) {
-        super.setStatus(status);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
-        super.setActionLinkTemplate(actionLinkTemplate);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
-        super.setAuthenticationType(authenticationType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MySqlDataFeedPatch setCredentialId(String credentialId) {
-        super.setCredentialId(credentialId);
         return this;
     }
 }

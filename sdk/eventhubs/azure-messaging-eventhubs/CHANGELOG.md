@@ -1,21 +1,14 @@
 # Release History
 
-## 5.16.0-beta.2 (Unreleased)
-
-### Features Added
-
-- Added support for tracing options and configuration. ([#33600](https://github.com/Azure/azure-sdk-for-java/issues/33600))
-- Aligned with OpenTelemetry messaging semantic conventions (when latest azure-core-tracing-opentelemetry package is used). ([#33600](https://github.com/Azure/azure-sdk-for-java/issues/33600))
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed exception when attempting to populate trace context on received `EventData`. ([#33594](https://github.com/Azure/azure-sdk-for-java/issues/33594))
-- Fixed `NullPointerException` when ending span when `AmqpException` is thrown, but its `AmqpErrorCondition` is `null`.
-  ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
+## 5.15.7 (2023-07-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.8.6` to version `2.8.7`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
 
 ## 5.15.6 (2023-06-20)
 
@@ -26,6 +19,7 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-amqp` from `2.8.5` to version `2.8.6`.
 
+
 ## 5.15.5 (2023-05-23)
 
 ### Other Changes
@@ -34,6 +28,7 @@
 
 - Upgraded `azure-core-amqp` from `2.8.4` to version `2.8.5`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 5.15.4 (2023-04-21)
 
@@ -44,6 +39,7 @@
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 - Upgraded `azure-core-amqp` from `2.8.3` to version `2.8.4`.
 
+
 ## 5.15.3 (2023-03-16)
 
 ### Other Changes
@@ -52,6 +48,7 @@
 
 - Upgraded `azure-core-amqp` from `2.8.2` to version `2.8.3`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
 
 ## 5.15.2 (2023-02-13)
 
@@ -67,14 +64,6 @@
 
 - Upgraded `azure-core` to `1.36.0`.
 - Upgraded `azure-core-amqp` to `2.8.2`.
-
-## 5.16.0-beta.1 (2023-01-31)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core-amqp` to `2.9.0-beta.1`.
 
 ## 5.15.1 (2023-01-18)
 

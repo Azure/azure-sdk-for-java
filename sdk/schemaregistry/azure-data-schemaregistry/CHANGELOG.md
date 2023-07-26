@@ -1,14 +1,14 @@
 # Release History
 
-## 1.4.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.3.8 (2023-07-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
 
 ## 1.3.7 (2023-06-20)
 
@@ -19,6 +19,7 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
+
 ## 1.3.6 (2023-05-23)
 
 ### Other Changes
@@ -27,6 +28,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.3.5 (2023-04-21)
 
@@ -37,6 +39,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
+
 ## 1.3.4 (2023-03-16)
 
 ### Other Changes
@@ -45,6 +48,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
 
 ## 1.3.3 (2023-02-16)
 
@@ -55,22 +59,6 @@
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 
-## 1.4.0-beta.2 (2023-02-13)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Update `azure-core` dependency to `1.36.0`.
-- Update `azure-core-http-netty` dependency to `1.13.0`.
-
-## 1.4.0-beta.1 (2023-01-26)
-
-### Features Added
-
-- Added additional `SchemaFormat`s, `SchemaFormat.JSON`, and `SchemaFormat.CUSTOM`.
-- Added new service version, `SchemaRegistryVersion.V2022_10`.
-- Updated the latest service version to `SchemaRegistryVersion.V2022_10`.
 
 ## 1.3.2 (2023-01-18)
 

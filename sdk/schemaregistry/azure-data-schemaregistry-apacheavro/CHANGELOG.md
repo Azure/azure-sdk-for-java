@@ -1,14 +1,14 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.8 (2023-07-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-data-schemaregistry` from `1.3.7` to version `1.4.0-beta.3`.
+
 
 ## 1.1.7 (2023-06-20)
 
@@ -19,6 +19,7 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-data-schemaregistry` from `1.3.6` to version `1.3.7`.
 
+
 ## 1.1.6 (2023-05-23)
 
 ### Other Changes
@@ -26,7 +27,8 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
-- Upgraded `azure-data-schemaregistry` from `1.3.5` to version `1.3.6`.
+- Upgraded `azure-data-schemaregistry` from `1.3.5` to version `1.4.0-beta.3`.
+
 
 ## 1.1.5 (2023-04-21)
 
@@ -36,6 +38,7 @@
 
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 - Upgraded `azure-data-schemaregistry` from `1.3.4` to version `1.3.5`.
+
 
 ## 1.1.4 (2023-03-16)
 
@@ -48,31 +51,16 @@
 - Upgraded `jackson-databind` from `2.13.4.2` to version `2.13.5`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
+
 ## 1.1.3 (2023-02-16)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-data-schemaregistry` from `1.3.2` to version `1.3.3`.
+- Upgraded `azure-data-schemaregistry` from `1.3.2` to version `1.4.0-beta.3`.
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 
-## 1.2.0-beta.2 (2023-02-13)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Update `azure-core` dependency to `1.36.0`.
-- Update `azure-data-schemaregistry` dependency to `1.4.0-beta.2`.
-
-## 1.2.0-beta.1 (2023-01-26)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Update `azure-data-schemaregistry` dependency to `1.4.0-beta.1`.
 
 ## 1.1.2 (2023-01-18)
 

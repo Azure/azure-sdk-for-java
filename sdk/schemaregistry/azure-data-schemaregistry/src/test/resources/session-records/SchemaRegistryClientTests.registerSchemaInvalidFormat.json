@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch979172d92?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9eb549f6-0e4d-4854-85a2-b2cb6e95b084",
+      "Content-Type" : "application/json; serialization=protobuf"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "415",
+      "Body" : "{\"Code\":415,\"Detail\":\"Invalid schema type for PUT request. 'protobuf' is not supported. TrackingId:2825ebdf-332a-4ef1-a1e3-84384da1bbb3_G22, SystemTracker:conniey.servicebus.windows.net:$schemaGroups\\/mygroup\\/schemas\\/sch979172d92, Timestamp:2021-11-11T02:50:18\"}",
+      "Date" : "Thu, 11 Nov 2021 02:50:17 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sch979172d92" ]
+}

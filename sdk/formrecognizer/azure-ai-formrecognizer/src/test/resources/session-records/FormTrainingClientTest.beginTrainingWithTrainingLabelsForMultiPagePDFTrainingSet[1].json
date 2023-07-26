@@ -1,0 +1,413 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "84",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:14:36 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ebfcf2f8-88c0-4e07-9ca8-08a130f5993b"
+      },
+      "RequestBody": {
+        "source": "REDACTED",
+        "sourceFilter": {
+          "includeSubFolders": false
+        },
+        "useLabelFile": true
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "apim-request-id": "d3bd0691-5dee-4140-bd8a-c937a5b9df88",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:14:37 GMT",
+        "Location": "https://REDACTED/formrecognizer/v2.1/custom/models/fcb61620-65a6-4560-8acb-d95e45eb1e85",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "813",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/fcb61620-65a6-4560-8acb-d95e45eb1e85?includeKeys=true",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:14:42 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f6b7224d-d01a-4ba2-8f07-03164184d9d8"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "14add503-ae0b-4561-a5e7-9d4003296d9b",
+        "Content-Length": "170",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:14:42 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "22",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "modelInfo": {
+          "modelId": "fcb61620-65a6-4560-8acb-d95e45eb1e85",
+          "status": "creating",
+          "createdDateTime": "2023-04-20T20:14:37Z",
+          "lastUpdatedDateTime": "2023-04-20T20:14:37Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/fcb61620-65a6-4560-8acb-d95e45eb1e85?includeKeys=true",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:14:48 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "57441c60-fe48-4109-bc9c-3a8792044ed2"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "be26dbd3-e354-4601-8d7b-606389d6d503",
+        "Content-Length": "170",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:14:47 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "22",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "modelInfo": {
+          "modelId": "fcb61620-65a6-4560-8acb-d95e45eb1e85",
+          "status": "creating",
+          "createdDateTime": "2023-04-20T20:14:37Z",
+          "lastUpdatedDateTime": "2023-04-20T20:14:37Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/fcb61620-65a6-4560-8acb-d95e45eb1e85?includeKeys=true",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:14:53 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "622e6e37-d1ad-4bd1-a50a-116e333b41cc"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "666e8810-1d6e-4a48-801b-b2ba1f2b18f3",
+        "Content-Length": "170",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:14:52 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "28",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "modelInfo": {
+          "modelId": "fcb61620-65a6-4560-8acb-d95e45eb1e85",
+          "status": "creating",
+          "createdDateTime": "2023-04-20T20:14:37Z",
+          "lastUpdatedDateTime": "2023-04-20T20:14:37Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/fcb61620-65a6-4560-8acb-d95e45eb1e85?includeKeys=true",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:14:58 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "23186fdf-3993-40df-a0a9-fe94448db18d"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "fab1d51f-306a-417a-9cba-2874151a4bb4",
+        "Content-Length": "1446",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:14:57 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "27",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "modelInfo": {
+          "modelId": "fcb61620-65a6-4560-8acb-d95e45eb1e85",
+          "attributes": {
+            "isComposed": false
+          },
+          "status": "ready",
+          "createdDateTime": "2023-04-20T20:14:37Z",
+          "lastUpdatedDateTime": "2023-04-20T20:14:56Z"
+        },
+        "trainResult": {
+          "averageModelAccuracy": 0.889,
+          "trainingDocuments": [
+            {
+              "documentName": "multipage_invoice1.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice2.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice3.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice4.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice5.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            }
+          ],
+          "fields": [
+            {
+              "fieldName": "Customer2",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "CustomerAddress",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "CustomerName",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "CustomerPhoneNumber",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "FirstItem",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "FirstPrice",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "FirstQuantity",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Merchant",
+              "accuracy": 0.0
+            },
+            {
+              "fieldName": "Merchant2",
+              "accuracy": 0.0
+            },
+            {
+              "fieldName": "MerchantAddress",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "MerchantPhoneNumber",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Signature",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Signature2",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Subtotal",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Tax",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Tip",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Total",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Total2",
+              "accuracy": 0.995
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/fcb61620-65a6-4560-8acb-d95e45eb1e85?includeKeys=true",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:14:58 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8c357d88-b098-49ca-9f49-882f84ee7c73"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "bbee15c0-b7a3-4430-ae5f-5a5eaa539f43",
+        "Content-Length": "1446",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:14:57 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "19",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "modelInfo": {
+          "modelId": "fcb61620-65a6-4560-8acb-d95e45eb1e85",
+          "attributes": {
+            "isComposed": false
+          },
+          "status": "ready",
+          "createdDateTime": "2023-04-20T20:14:37Z",
+          "lastUpdatedDateTime": "2023-04-20T20:14:56Z"
+        },
+        "trainResult": {
+          "averageModelAccuracy": 0.889,
+          "trainingDocuments": [
+            {
+              "documentName": "multipage_invoice1.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice2.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice3.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice4.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "multipage_invoice5.pdf",
+              "pages": 3,
+              "status": "succeeded"
+            }
+          ],
+          "fields": [
+            {
+              "fieldName": "Customer2",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "CustomerAddress",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "CustomerName",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "CustomerPhoneNumber",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "FirstItem",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "FirstPrice",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "FirstQuantity",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Merchant",
+              "accuracy": 0.0
+            },
+            {
+              "fieldName": "Merchant2",
+              "accuracy": 0.0
+            },
+            {
+              "fieldName": "MerchantAddress",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "MerchantPhoneNumber",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Signature",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Signature2",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Subtotal",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Tax",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Tip",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Total",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Total2",
+              "accuracy": 0.995
+            }
+          ],
+          "errors": []
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

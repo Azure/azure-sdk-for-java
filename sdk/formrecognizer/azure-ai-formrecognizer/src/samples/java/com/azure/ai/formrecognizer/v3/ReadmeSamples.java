@@ -11,7 +11,6 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
@@ -19,6 +18,7 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -48,43 +48,21 @@ public class ReadmeSamples {
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
-    public void useAzureKeyCredentialClient() {
-        // BEGIN: readme-sample-createFormRecognizerClient
+    public void useAzureKeyCredentialSyncClient() {
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
-        //END: readme-sample-createFormRecognizerClient
-    }
-
-    public void useAzureKeyCredentialAsyncClient() {
-        // BEGIN: readme-sample-createFormRecognizerAsyncClient
-        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
-            .buildAsyncClient();
-        //END: readme-sample-createFormRecognizerAsyncClient
     }
 
     /**
      * Code snippet for getting sync FormTraining client using the AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialFormTrainingClient() {
-        // BEGIN: readme-sample-createFormTrainingClient
         FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
-        //END: readme-sample-createFormTrainingClient
-    }
-
-    public void useAzureKeyCredentialFormTrainingAsyncClient() {
-        // BEGIN: readme-sample-createFormTrainingAsyncClient
-        FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
-            .buildAsyncClient();
-        //END: readme-sample-createFormTrainingAsyncClient
     }
 
     /**
@@ -103,43 +81,12 @@ public class ReadmeSamples {
     /**
      * Code snippet for getting async client using AAD authentication.
      */
-    public void useAadSyncClient() {
-        // BEGIN: readme-sample-createFormRecognizerClientWithAAD
+    public void useAadAsyncClient() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
             .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(credential)
             .buildClient();
-        // END: readme-sample-createFormRecognizerClientWithAAD
-    }
-
-    public void useAadAsyncClient() {
-        // BEGIN: readme-sample-createFormRecognizerAsyncClientWithAAD
-        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
-            .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAsyncClient();
-        // END: readme-sample-createFormRecognizerAsyncClientWithAAD
-    }
-
-    /**
-     * Code snippet for getting async client using AAD authentication.
-     */
-    public void useAadFormTrainingClient() {
-        // BEGIN: readme-sample-createFormTrainingClientWithAAD
-        FormTrainingClient client = new FormTrainingClientBuilder()
-            .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-        // END: readme-sample-createFormTrainingClientWithAAD
-    }
-
-    public void useAadFormTrainingAsyncClient() {
-        // BEGIN: readme-sample-createFormTrainingAsyncClientWithAAD
-        FormTrainingAsyncClient client = new FormTrainingClientBuilder()
-            .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAsyncClient();
-        // END: readme-sample-createFormTrainingAsyncClientWithAAD
     }
 
     /**
@@ -207,7 +154,6 @@ public class ReadmeSamples {
      * Code snippet for recognizing receipt data using prebuilt receipt models.
      */
     public void recognizeReceiptFromUrl() {
-        // BEGIN: readme-sample-recognize-receipt-url
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
@@ -265,7 +211,6 @@ public class ReadmeSamples {
                 }
             }
         }
-        // END: readme-sample-recognize-receipt-url
     }
 
     /**
@@ -333,7 +278,6 @@ public class ReadmeSamples {
      * Code snippet for creating custom models using training data.
      */
     public void trainModel() {
-        // BEGIN: readme-sample-train-model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
             formTrainingClient.beginTraining(trainingFilesUrl,
@@ -361,14 +305,12 @@ public class ReadmeSamples {
                 System.out.printf("Field: %s Field Label: %s%n",
                     field, customFormModelField.getLabel()));
         });
-        // END: readme-sample-train-model
     }
 
     /**
      * Code snippet for managing models in form recognizer account.
      */
     public void manageModels() {
-        // BEGIN: readme-sample-manage-models
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = formTrainingClient.getAccountProperties();
         System.out.printf("The account has %d custom models, and we can have at most %d custom models",
@@ -398,7 +340,6 @@ public class ReadmeSamples {
 
         // Delete Custom Model
         formTrainingClient.deleteModel("{modelId}");
-        // END: readme-sample-manage-models
     }
 
     /**
@@ -412,41 +353,13 @@ public class ReadmeSamples {
         }
     }
 
-    public void trainAndRecognizeCustomForm() {
-        // BEGIN: readme-sample-train-recognize-custom-forms
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
-        boolean useTrainingLabels = true;
-
-        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-            formTrainingClient.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setModelName("my model trained with labels"),
-                Context.NONE);
-
-        CustomFormModel customFormModel = trainingPoller.getFinalResult();
-
-        // Model Info
-        System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-
-        String customFormUrl = "customFormUrl";
-        String modelId = customFormModel.getModelId();
-        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
-            formRecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, customFormUrl);
-
-        List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
-
-        for (int i = 0; i < recognizedForms.size(); i++) {
-            RecognizedForm form = recognizedForms.get(i);
-            System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
-            System.out.printf("Form type: %s%n", form.getFormType());
-            System.out.printf("Form type confidence: %.2f%n", form.getFormTypeConfidence());
-            form.getFields().forEach((label, formField) ->
-                System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
-                    formField.getValueData().getText(),
-                    formField.getConfidence())
-            );
-        }
-        // END: readme-sample-train-recognize-custom-forms
+    /**
+     * Code snippet for getting async client using the AzureKeyCredential authentication.
+     */
+    public void useAzureKeyCredentialAsyncClient() {
+        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
     }
 }

@@ -4,13 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List Operations response object. */
-@Immutable
+@Fluent
 public final class GetOperationsResponse {
     /*
      * List of operations.
@@ -24,15 +23,8 @@ public final class GetOperationsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of GetOperationsResponse class.
-     *
-     * @param value the value value to set.
-     */
-    @JsonCreator
-    private GetOperationsResponse(@JsonProperty(value = "value", required = true) List<OperationSummary> value) {
-        this.value = value;
-    }
+    /** Creates an instance of GetOperationsResponse class. */
+    public GetOperationsResponse() {}
 
     /**
      * Get the value property: List of operations.
@@ -44,11 +36,33 @@ public final class GetOperationsResponse {
     }
 
     /**
+     * Set the value property: List of operations.
+     *
+     * @param value the value value to set.
+     * @return the GetOperationsResponse object itself.
+     */
+    public GetOperationsResponse setValue(List<OperationSummary> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
      * Get the nextLink property: Link to the next page of operations.
      *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: Link to the next page of operations.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the GetOperationsResponse object itself.
+     */
+    public GetOperationsResponse setNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 }

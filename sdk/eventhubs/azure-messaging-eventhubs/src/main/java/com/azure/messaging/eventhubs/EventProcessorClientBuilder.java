@@ -20,6 +20,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -71,49 +72,32 @@ import java.util.function.Supplier;
  * </li>
  * </ul>
  *
- * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
- * which is appropriate for most scenarios, including local development and production environments. Additionally, we
- * recommend using
- * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
- * for authentication in production environments. You can find more information on different ways of authenticating and
- * their corresponding credential types in the
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
- * </p>
- *
- * <p><strong>Sample: Construct an {@link EventProcessorClient}</strong></p>
- *
- * <p>The following code sample demonstrates the creation of the processor client.  The processor client is recommended
- * for production scenarios because it can load balance between multiple running instances, can perform checkpointing,
- * and reconnects on transient failures such as network outages.  The sample below uses an in-memory
- * {@link com.azure.messaging.eventhubs.CheckpointStore} but
- * <a href="https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob">
- *     azure-messaging-eventhubs-checkpointstore-blob</a> provides a checkpoint store backed by Azure Blob Storage.
- * </p>
- *
- *  <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct -->
+ * <p><strong>Creating an {@link EventProcessorClient}</strong></p>
+ * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation -->
  * <pre>
- * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * public EventProcessorClient createEventProcessor&#40;&#41; &#123;
+ *     String connectionString = &quot;Endpoint=&#123;endpoint&#125;;SharedAccessKeyName=&#123;sharedAccessKeyName&#125;;&quot;
+ *         + &quot;SharedAccessKey=&#123;sharedAccessKey&#125;;EntityPath=&#123;eventHubName&#125;&quot;;
  *
- * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
- * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
- * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
- *     .consumerGroup&#40;&quot;&lt;&lt; CONSUMER GROUP NAME &gt;&gt;&quot;&#41;
- *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
- *         credential&#41;
- *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
- *     .processEvent&#40;eventContext -&gt; &#123;
- *         System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
- *             eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
- *             eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
- *     &#125;&#41;
- *     .processError&#40;errorContext -&gt; &#123;
- *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
- *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
- *             errorContext.getThrowable&#40;&#41;&#41;;
- *     &#125;&#41;
- *     .buildEventProcessorClient&#40;&#41;;
+ *     EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+ *         .consumerGroup&#40;&quot;consumer-group&quot;&#41;
+ *         .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+ *         .processEvent&#40;eventContext -&gt; &#123;
+ *             System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+ *                 eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *                 eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+ *         &#125;&#41;
+ *         .processError&#40;errorContext -&gt; &#123;
+ *             System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+ *                 errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *                 errorContext.getThrowable&#40;&#41;&#41;;
+ *         &#125;&#41;
+ *         .connectionString&#40;connectionString&#41;
+ *         .buildEventProcessorClient&#40;&#41;;
+ *     return eventProcessorClient;
+ * &#125;
  * </pre>
- *  <!-- end com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct -->
+ * <!-- end com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation -->
  *
  * @see EventProcessorClient
  * @see EventHubConsumerClient
@@ -604,12 +588,8 @@ public class EventProcessorClientBuilder implements
      *
      * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive -->
      * <pre>
-     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
-     *
-     * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
-     * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
      * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
-     *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+     *     .consumerGroup&#40;&quot;consumer-group&quot;&#41;
      *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
      *     .processEventBatch&#40;eventBatchContext -&gt; &#123;
      *         eventBatchContext.getEvents&#40;&#41;.forEach&#40;eventData -&gt; &#123;
@@ -623,6 +603,7 @@ public class EventProcessorClientBuilder implements
      *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
      *             errorContext.getThrowable&#40;&#41;&#41;;
      *     &#125;&#41;
+     *     .connectionString&#40;connectionString&#41;
      *     .buildEventProcessorClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive -->
@@ -766,7 +747,7 @@ public class EventProcessorClientBuilder implements
         return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties,
             processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
-            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy, eventHubClientBuilder.createTracer());
+            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy, EventHubsTracer.getDefaultTracer());
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

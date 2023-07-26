@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "60968e10-2f30-4722-8a38-cbe6deba492a",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "MS-CV" : "tE76l/ce+EKSbmqcnvy7oA.0",
+      "x-ms-error-code" : "BadRequest",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "04+WAZAAAAABJsccL/3UWSKsRg4AwVmVxWVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"BadRequest\",\"message\":\"The request could not be understood by the server due to malformed syntax.\",\"details\":[{\"code\":\"BadArgument\",\"message\":\"Value is incorrect or more than 180 days in the future.\",\"target\":\"ValidFrom\"}]}}",
+      "Date" : "Wed, 07 Jun 2023 20:17:38 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7/incidents/88ecf25a0e6bd330ef9e7b49b7c5b92b-18001521c00/rootCause",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "41dd4398-2a67-4624-bd3b-f551e9f7d3cc"
+    },
+    "Response" : {
+      "x-request-id" : "29f81f2c-4d85-4f54-85e3-aff3e73eb814",
+      "content-length" : "210",
+      "x-envoy-upstream-service-time" : "460",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "29f81f2c-4d85-4f54-85e3-aff3e73eb814",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"rootCause\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"path\":[\"Dim1\",\"Dim2\"],\"score\":0.25078896770000203,\"description\":\"Increase on Dim1 = JPN | Dim2 = JP contributes the most to current incident.\"}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

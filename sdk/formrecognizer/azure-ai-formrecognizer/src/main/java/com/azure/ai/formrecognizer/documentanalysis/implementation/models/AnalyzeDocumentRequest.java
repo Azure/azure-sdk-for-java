@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AnalyzeDocumentRequest {
     /*
-     * Document URL to analyze. Either urlSource or base64Source must be specified.
+     * Document URL to analyze
      */
     @JsonProperty(value = "urlSource")
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to analyze. Either urlSource or base64Source must be specified.
+     * Base64 encoding of the document to analyze
      */
     @JsonProperty(value = "base64Source")
     private byte[] base64Source;
@@ -27,7 +27,7 @@ public final class AnalyzeDocumentRequest {
     public AnalyzeDocumentRequest() {}
 
     /**
-     * Get the urlSource property: Document URL to analyze. Either urlSource or base64Source must be specified.
+     * Get the urlSource property: Document URL to analyze.
      *
      * @return the urlSource value.
      */
@@ -36,7 +36,7 @@ public final class AnalyzeDocumentRequest {
     }
 
     /**
-     * Set the urlSource property: Document URL to analyze. Either urlSource or base64Source must be specified.
+     * Set the urlSource property: Document URL to analyze.
      *
      * @param urlSource the urlSource value to set.
      * @return the AnalyzeDocumentRequest object itself.
@@ -47,8 +47,7 @@ public final class AnalyzeDocumentRequest {
     }
 
     /**
-     * Get the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source must
-     * be specified.
+     * Get the base64Source property: Base64 encoding of the document to analyze.
      *
      * @return the base64Source value.
      */
@@ -57,8 +56,7 @@ public final class AnalyzeDocumentRequest {
     }
 
     /**
-     * Set the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source must
-     * be specified.
+     * Set the base64Source property: Base64 encoding of the document to analyze.
      *
      * @param base64Source the base64Source value to set.
      * @return the AnalyzeDocumentRequest object itself.

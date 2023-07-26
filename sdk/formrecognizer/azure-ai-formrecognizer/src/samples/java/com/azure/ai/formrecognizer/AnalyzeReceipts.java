@@ -43,7 +43,7 @@ public class AnalyzeReceipts {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
         Path filePath = sourceFile.toPath();
-        BinaryData receiptData = BinaryData.fromFile(filePath, (int) sourceFile.length());
+        BinaryData receiptData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt", receiptData);

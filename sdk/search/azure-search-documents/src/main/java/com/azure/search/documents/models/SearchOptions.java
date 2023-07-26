@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ public final class SearchOptions {
      * Default is false. Setting this value to true may have a performance
      * impact. Note that the count returned is an approximation.
      */
+    @JsonProperty(value = "$count")
     private Boolean includeTotalCount;
 
     /*
@@ -25,29 +27,34 @@ public final class SearchOptions {
      * expression contains a field name, optionally followed by a
      * comma-separated list of name:value pairs.
      */
+    @JsonProperty(value = "facet")
     private List<String> facets;
 
     /*
      * The OData $filter expression to apply to the search query.
      */
+    @JsonProperty(value = "$filter")
     private String filter;
 
     /*
      * The list of field names to use for hit highlights. Only searchable
      * fields can be used for hit highlighting.
      */
+    @JsonProperty(value = "highlight")
     private List<String> highlightFields;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with
      * highlightPreTag. Default is &lt;/em&gt;.
      */
+    @JsonProperty(value = "highlightPostTag")
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with
      * highlightPostTag. Default is &lt;em&gt;.
      */
+    @JsonProperty(value = "highlightPreTag")
     private String highlightPreTag;
 
     /*
@@ -57,6 +64,7 @@ public final class SearchOptions {
      * availability even for services with only one replica. The default is
      * 100.
      */
+    @JsonProperty(value = "minimumCoverage")
     private Double minimumCoverage;
 
     /*
@@ -69,12 +77,14 @@ public final class SearchOptions {
      * descending by document match score. There can be at most 32 $orderby
      * clauses.
      */
+    @JsonProperty(value = "$orderby")
     private List<String> orderBy;
 
     /*
      * A value that specifies the syntax of the search query. The default is
      * 'simple'. Use 'full' if your query uses the Lucene query syntax.
      */
+    @JsonProperty(value = "queryType")
     private QueryType queryType;
 
     /*
@@ -84,35 +94,15 @@ public final class SearchOptions {
      * called 'mylocation' the parameter string would be
      * "mylocation--122.2,44.8" (without the quotes).
      */
+    @JsonProperty(value = "ScoringParameters")
     private List<ScoringParameter> scoringParameters;
 
     /*
      * The name of a scoring profile to evaluate match scores for matching
      * documents in order to sort the results.
      */
+    @JsonProperty(value = "scoringProfile")
     private String scoringProfile;
-
-    /*
-     * The name of the semantic configuration that lists which fields should be
-     * used for semantic ranking, captions, highlights, and answers
-     */
-    private String semanticConfigurationName;
-
-    /*
-     * Allows the user to choose whether a semantic call should fail completely, or to return partial results.
-     */
-    private SemanticErrorHandling semanticErrorHandling;
-
-    /*
-     * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
-     * processing before the request fails.
-     */
-    private Integer semanticMaxWaitInMilliseconds;
-
-    /*
-     * Enables a debugging tool that can be used to further explore your search results.
-     */
-    private QueryDebugMode debug;
 
     /*
      * The list of field names to which to scope the full-text search. When
@@ -120,54 +110,14 @@ public final class SearchOptions {
      * query, the field names of each fielded search expression take precedence
      * over any field names listed in this parameter.
      */
+    @JsonProperty(value = "searchFields")
     private List<String> searchFields;
-
-    /*
-     * The language of the query.
-     */
-    private QueryLanguage queryLanguage;
-
-    /*
-     * Improve search recall by spell-correcting individual search query terms.
-     */
-    private QuerySpellerType speller;
-
-    /*
-     * This parameter is only valid if the query type is 'semantic'. If set,
-     * the query returns answers extracted from key passages in the highest
-     * ranked documents. The number of answers returned can be configured by
-     * appending the pipe character '|' followed by the 'count-<number of
-     * answers>' option after the answers parameter value, such as
-     * 'extractive|count-3'. Default count is 1. The confidence threshold can
-     * be configured by appending the pipe character '|' followed by the
-     * 'threshold-<confidence threshold>' option after the answers parameter
-     * value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
-     */
-    private QueryAnswerType answers;
-
-    /*
-     * This parameter is only valid if the query type is 'semantic'. If set,
-     * the query returns answers extracted from key passages in the highest
-     * ranked documents. The number of answers returned can be configured by
-     * appending the pipe character '|' followed by the 'count-<number of
-     * answers>' option after the answers parameter value, such as
-     * 'extractive|count-3'. Default count is 1.
-     */
-    private Integer answersCount;
-
-    /*
-     * This parameter is only valid if the query type is 'semantic'.
-     * The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-<confidence threshold>'
-     * option after the answers parameter value, such as
-     * 'extractive|threshold-0.9'. Default threshold is 0.7.
-     */
-    private Double answerThreshold;
 
     /*
      * A value that specifies whether any or all of the search terms must be
      * matched in order to count the document as a match.
      */
+    @JsonProperty(value = "searchMode")
     private SearchMode searchMode;
 
     /*
@@ -175,6 +125,7 @@ public final class SearchOptions {
      * (such as document frequency) globally for more consistent scoring, or
      * locally, for lower latency.
      */
+    @JsonProperty(value = "scoringStatistics")
     private ScoringStatistics scoringStatistics;
 
     /*
@@ -186,12 +137,14 @@ public final class SearchOptions {
      * performance of the search service. The value used as sessionId cannot
      * start with a '_' character.
      */
+    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * The list of fields to retrieve. If unspecified, all fields marked as
      * retrievable in the schema are included.
      */
+    @JsonProperty(value = "$select")
     private List<String> select;
 
     /*
@@ -200,6 +153,7 @@ public final class SearchOptions {
      * due to this limitation, consider using $orderby on a totally-ordered key
      * and $filter with a range query instead.
      */
+    @JsonProperty(value = "$skip")
     private Integer skip;
 
     /*
@@ -209,43 +163,8 @@ public final class SearchOptions {
      * response will include a continuation token that can be used to issue
      * another Search request for the next page of results.
      */
+    @JsonProperty(value = "$top")
     private Integer top;
-
-    /*
-     * This parameter is only valid if the query type is 'semantic'. If set,
-     * the query returns captions extracted from key passages in the highest
-     * ranked documents. When Captions is set to 'extractive', highlighting is
-     * enabled by default, and can be configured by appending the pipe
-     * character '|' followed by the 'highlight-<true/false>' option, such as
-     * 'extractive|highlight-true'. Defaults to 'None'.
-     */
-    private QueryCaptionType queryCaption;
-
-    /*
-     * This parameter is only valid if the query type is 'semantic'. If set,
-     * the query returns captions extracted from key passages in the highest
-     * ranked documents. When Captions is set to 'extractive', highlighting is
-     * enabled by default, and can be configured by appending the pipe
-     * character '|' followed by the 'highlight-<true/false>' option, such as
-     * 'extractive|highlight-true'. Defaults to 'None'.
-     */
-    private Boolean queryCaptionHighlightEnabled;
-
-    /*
-     * The list of field names used for semantic search.
-     */
-    private List<String> semanticFields;
-
-    /**
-     * The query parameters for vector and hybrid search queries.
-     */
-    private SearchQueryVector vector;
-
-    /**
-     * Creates an instance of {@link SearchOptions}.
-     */
-    public SearchOptions() {
-    }
 
     /**
      * Get the includeTotalCount property: A value that specifies whether to fetch the total count of results. Default
@@ -502,92 +421,6 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the semanticConfigurationName property: The name of the semantic configuration that lists which fields should
-     * be used for semantic ranking, captions, highlights, and answers.
-     *
-     * @return the semanticConfigurationName value.
-     */
-    public String getSemanticConfigurationName() {
-        return this.semanticConfigurationName;
-    }
-
-    /**
-     * Set the semanticConfigurationName property: The name of the semantic configuration that lists which fields should
-     * be used for semantic ranking, captions, highlights, and answers.
-     *
-     * @param semanticConfigurationName the semanticConfigurationName value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticConfigurationName(String semanticConfigurationName) {
-        this.semanticConfigurationName = semanticConfigurationName;
-        return this;
-    }
-
-    /**
-     * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
-     * or to return partial results.
-     *
-     * @return the semanticErrorHandling value.
-     */
-    public SemanticErrorHandling getSemanticErrorHandling() {
-        return this.semanticErrorHandling;
-    }
-
-    /**
-     * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
-     * or to return partial results.
-     *
-     * @param semanticErrorHandling the semanticErrorHandling value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticErrorHandling(SemanticErrorHandling semanticErrorHandling) {
-        this.semanticErrorHandling = semanticErrorHandling;
-        return this;
-    }
-
-    /**
-     * Get the semanticMaxWaitInMilliseconds property: Allows the user to set an upper bound on the amount of time it
-     * takes for semantic enrichment to finish processing before the request fails.
-     *
-     * @return the semanticMaxWaitInMilliseconds value.
-     */
-    public Integer getSemanticMaxWaitInMilliseconds() {
-        return this.semanticMaxWaitInMilliseconds;
-    }
-
-    /**
-     * Set the semanticMaxWaitInMilliseconds property: Allows the user to set an upper bound on the amount of time it
-     * takes for semantic enrichment to finish processing before the request fails.
-     *
-     * @param semanticMaxWaitInMilliseconds the semanticMaxWaitInMilliseconds value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticMaxWaitInMilliseconds(Integer semanticMaxWaitInMilliseconds) {
-        this.semanticMaxWaitInMilliseconds = semanticMaxWaitInMilliseconds;
-        return this;
-    }
-
-    /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @return the debug value.
-     */
-    public QueryDebugMode getDebug() {
-        return this.debug;
-    }
-
-    /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @param debug the debug value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setDebug(QueryDebugMode debug) {
-        this.debug = debug;
-        return this;
-    }
-
-    /**
      * Get the searchFields property: The list of field names to which to scope the full-text search. When using fielded
      * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
      * take precedence over any field names listed in this parameter.
@@ -608,129 +441,6 @@ public final class SearchOptions {
      */
     public SearchOptions setSearchFields(String... searchFields) {
         this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
-        return this;
-    }
-
-    /**
-     * Get the queryLanguage property: The language of the query.
-     *
-     * @return the queryLanguage value.
-     */
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: The language of the query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @return the speller value.
-     */
-    public QuerySpellerType getSpeller() {
-        return this.speller;
-    }
-
-    /**
-     * Set the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @param speller the speller value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSpeller(QuerySpellerType speller) {
-        this.speller = speller;
-        return this;
-    }
-
-    /**
-     * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
-     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
-     *
-     * @return the answers value.
-     */
-    public QueryAnswerType getQueryAnswer() {
-        return this.answers;
-    }
-
-    /**
-     * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
-     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
-     *
-     * @param answers the answers value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setQueryAnswer(QueryAnswerType answers) {
-        this.answers = answers;
-        return this;
-    }
-
-    /**
-     * Get the answers count property: This parameter is only valid if the query type is 'semantic'. If set, the query
-     * returns answers extracted from key passages in the highest ranked documents. The number of answers returned can
-     * be configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after
-     * the answers parameter value, such as 'extractive|count-3'. Default count is 1.
-     *
-     * @return the answers count value.
-     */
-    public Integer getAnswersCount() {
-        return this.answersCount;
-    }
-
-    /**
-     * Set the answers count property: This parameter is only valid if the query type is 'semantic'. If set, the query
-     * returns answers extracted from key passages in the highest ranked documents. The number of answers returned can
-     * be configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after
-     * the answers parameter value, such as 'extractive|count-3'. Default count is 1.
-     *
-     * @param answersCount the answers count value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setAnswersCount(Integer answersCount) {
-        this.answersCount = answersCount;
-        return this;
-    }
-
-    /**
-     * Get the answer threshold property: This parameter is only valid if the query type is 'semantic'.
-     * The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-&lt;confidence threshold&gt;'
-     * option after the answers parameter value, such as
-     * 'extractive|threshold-0.9'. Default threshold is 0.7.
-     *
-     * @return the answer threshold value.
-     */
-    public Double getAnswerThreshold() {
-        return this.answerThreshold;
-    }
-
-    /**
-     * Set the answer threshold property: This parameter is only valid if the query type is 'semantic'.
-     * The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-&lt;confidence threshold&gt;'
-     * option after the answers parameter value, such as
-     * 'extractive|threshold-0.9'. Default threshold is 0.7.
-     * @param answerThreshold the answer threshold value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setAnswerThreshold(Double answerThreshold) {
-        this.answerThreshold = answerThreshold;
         return this;
     }
 
@@ -873,98 +583,6 @@ public final class SearchOptions {
      */
     public SearchOptions setTop(Integer top) {
         this.top = top;
-        return this;
-    }
-
-    /**
-     * Get the query caption property: This parameter is only valid if the query type is 'semantic'. If set, the query
-     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
-     *
-     * @return the query caption value.
-     */
-    public QueryCaptionType getQueryCaption() {
-        return this.queryCaption;
-    }
-
-    /**
-     * Set the query caption property: This parameter is only valid if the query type is 'semantic'. If set, the query
-     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
-     *
-     * @param queryCaption the query caption value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setQueryCaption(QueryCaptionType queryCaption) {
-        this.queryCaption = queryCaption;
-        return this;
-    }
-
-    /**
-     * Get the query caption highlight property: This parameter is only valid if the query type is 'semantic'. If set,
-     * the query returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
-     *
-     * @return the query caption highlight value.
-     */
-    public Boolean getQueryCaptionHighlightEnabled() {
-        return this.queryCaptionHighlightEnabled;
-    }
-
-    /**
-     * Set the query caption highlight property: This parameter is only valid if the query type is 'semantic'. If set,
-     * the query returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
-     *
-     * @param queryCaptionHighlightEnabled the query caption highlight value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setQueryCaptionHighlightEnabled(Boolean queryCaptionHighlightEnabled) {
-        this.queryCaptionHighlightEnabled = queryCaptionHighlightEnabled;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The list of field names used for semantic search.
-     *
-     * @return the semanticFields value.
-     */
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The list of field names used for semantic search.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
-        return this;
-    }
-
-    /**
-     * Get the vector property: The query parameters for vector and hybrid search queries.
-     *
-     * @return the vector value.
-     */
-    public SearchQueryVector getVector() {
-        return this.vector;
-    }
-
-    /**
-     * Set the vector property: The query parameters for vector and hybrid search queries.
-     *
-     * @param vector the vector value to set.
-     * @return the SearchRequest object itself.
-     */
-    public SearchOptions setVector(SearchQueryVector vector) {
-        this.vector = vector;
         return this;
     }
 }

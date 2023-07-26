@@ -1,0 +1,42 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/invoice/analyze?includeTextDetails=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:12:56 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a8da5c22-daf3-4af6-8238-136938cf957a"
+      },
+      "RequestBody": {
+        "source": "REDACTED"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "aba13187-705a-4e3d-b90c-0e4802ccef40",
+        "Content-Length": "170",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:12:56 GMT",
+        "ms-azure-ai-errorcode": "InvalidImage",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "92",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "innerError": {
+            "requestId": "aba13187-705a-4e3d-b90c-0e4802ccef40"
+          },
+          "code": "InvalidImage",
+          "message": "The input data is not a valid image or password protected."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

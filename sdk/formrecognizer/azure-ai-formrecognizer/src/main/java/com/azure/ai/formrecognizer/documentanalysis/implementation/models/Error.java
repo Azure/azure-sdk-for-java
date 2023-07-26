@@ -4,13 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Error info. */
-@Immutable
+@Fluent
 public final class Error {
     /*
      * Error code.
@@ -42,19 +41,8 @@ public final class Error {
     @JsonProperty(value = "innererror")
     private InnerError innererror;
 
-    /**
-     * Creates an instance of Error class.
-     *
-     * @param code the code value to set.
-     * @param message the message value to set.
-     */
-    @JsonCreator
-    private Error(
-            @JsonProperty(value = "code", required = true) String code,
-            @JsonProperty(value = "message", required = true) String message) {
-        this.code = code;
-        this.message = message;
-    }
+    /** Creates an instance of Error class. */
+    public Error() {}
 
     /**
      * Get the code property: Error code.
@@ -63,6 +51,17 @@ public final class Error {
      */
     public String getCode() {
         return this.code;
+    }
+
+    /**
+     * Set the code property: Error code.
+     *
+     * @param code the code value to set.
+     * @return the Error object itself.
+     */
+    public Error setCode(String code) {
+        this.code = code;
+        return this;
     }
 
     /**
@@ -75,12 +74,34 @@ public final class Error {
     }
 
     /**
+     * Set the message property: Error message.
+     *
+     * @param message the message value to set.
+     * @return the Error object itself.
+     */
+    public Error setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
      * Get the target property: Target of the error.
      *
      * @return the target value.
      */
     public String getTarget() {
         return this.target;
+    }
+
+    /**
+     * Set the target property: Target of the error.
+     *
+     * @param target the target value to set.
+     * @return the Error object itself.
+     */
+    public Error setTarget(String target) {
+        this.target = target;
+        return this;
     }
 
     /**
@@ -93,11 +114,33 @@ public final class Error {
     }
 
     /**
+     * Set the details property: List of detailed errors.
+     *
+     * @param details the details value to set.
+     * @return the Error object itself.
+     */
+    public Error setDetails(List<Error> details) {
+        this.details = details;
+        return this;
+    }
+
+    /**
      * Get the innererror property: Detailed error.
      *
      * @return the innererror value.
      */
     public InnerError getInnererror() {
         return this.innererror;
+    }
+
+    /**
+     * Set the innererror property: Detailed error.
+     *
+     * @param innererror the innererror value to set.
+     * @return the Error object itself.
+     */
+    public Error setInnererror(InnerError innererror) {
+        this.innererror = innererror;
+        return this;
     }
 }

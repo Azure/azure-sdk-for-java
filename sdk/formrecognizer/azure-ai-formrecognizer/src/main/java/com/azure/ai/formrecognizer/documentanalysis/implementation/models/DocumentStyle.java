@@ -4,52 +4,18 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
-import com.azure.ai.formrecognizer.documentanalysis.models.FontWeight;
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object representing observed text styles. */
-@Immutable
+@Fluent
 public final class DocumentStyle {
     /*
      * Is content handwritten?
      */
     @JsonProperty(value = "isHandwritten")
     private Boolean isHandwritten;
-
-    /*
-     * Visually most similar font from among the set of supported font families, with fallback fonts following CSS
-     * convention (ex. 'Arial, sans-serif').
-     */
-    @JsonProperty(value = "similarFontFamily")
-    private String similarFontFamily;
-
-    /*
-     * Font style.
-     */
-    @JsonProperty(value = "fontStyle")
-    private FontStyle fontStyle;
-
-    /*
-     * Font weight.
-     */
-    @JsonProperty(value = "fontWeight")
-    private FontWeight fontWeight;
-
-    /*
-     * Foreground color in #rrggbb hexadecimal format.
-     */
-    @JsonProperty(value = "color")
-    private String color;
-
-    /*
-     * Background color in #rrggbb hexadecimal format..
-     */
-    @JsonProperty(value = "backgroundColor")
-    private String backgroundColor;
 
     /*
      * Location of the text elements in the concatenated content the style applies to.
@@ -63,19 +29,8 @@ public final class DocumentStyle {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /**
-     * Creates an instance of DocumentStyle class.
-     *
-     * @param spans the spans value to set.
-     * @param confidence the confidence value to set.
-     */
-    @JsonCreator
-    private DocumentStyle(
-            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
-        this.spans = spans;
-        this.confidence = confidence;
-    }
+    /** Creates an instance of DocumentStyle class. */
+    public DocumentStyle() {}
 
     /**
      * Get the isHandwritten property: Is content handwritten?.
@@ -87,49 +42,14 @@ public final class DocumentStyle {
     }
 
     /**
-     * Get the similarFontFamily property: Visually most similar font from among the set of supported font families,
-     * with fallback fonts following CSS convention (ex. 'Arial, sans-serif').
+     * Set the isHandwritten property: Is content handwritten?.
      *
-     * @return the similarFontFamily value.
+     * @param isHandwritten the isHandwritten value to set.
+     * @return the DocumentStyle object itself.
      */
-    public String getSimilarFontFamily() {
-        return this.similarFontFamily;
-    }
-
-    /**
-     * Get the fontStyle property: Font style.
-     *
-     * @return the fontStyle value.
-     */
-    public FontStyle getFontStyle() {
-        return this.fontStyle;
-    }
-
-    /**
-     * Get the fontWeight property: Font weight.
-     *
-     * @return the fontWeight value.
-     */
-    public FontWeight getFontWeight() {
-        return this.fontWeight;
-    }
-
-    /**
-     * Get the color property: Foreground color in #rrggbb hexadecimal format.
-     *
-     * @return the color value.
-     */
-    public String getColor() {
-        return this.color;
-    }
-
-    /**
-     * Get the backgroundColor property: Background color in #rrggbb hexadecimal format..
-     *
-     * @return the backgroundColor value.
-     */
-    public String getBackgroundColor() {
-        return this.backgroundColor;
+    public DocumentStyle setIsHandwritten(Boolean isHandwritten) {
+        this.isHandwritten = isHandwritten;
+        return this;
     }
 
     /**
@@ -142,11 +62,33 @@ public final class DocumentStyle {
     }
 
     /**
+     * Set the spans property: Location of the text elements in the concatenated content the style applies to.
+     *
+     * @param spans the spans value to set.
+     * @return the DocumentStyle object itself.
+     */
+    public DocumentStyle setSpans(List<DocumentSpan> spans) {
+        this.spans = spans;
+        return this;
+    }
+
+    /**
      * Get the confidence property: Confidence of correctly identifying the style.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * Set the confidence property: Confidence of correctly identifying the style.
+     *
+     * @param confidence the confidence value to set.
+     * @return the DocumentStyle object itself.
+     */
+    public DocumentStyle setConfidence(float confidence) {
+        this.confidence = confidence;
+        return this;
     }
 }

@@ -8,13 +8,12 @@ import com.azure.core.annotation.Fluent;
 import java.util.List;
 
 /**
- * The configurable options to be passed when using analyze document API on Document Analysis client.
+ * Options that may be passed when using analyze document API on Document Analysis client.
  */
 @Fluent
 public final class AnalyzeDocumentOptions {
     private List<String> pages;
     private String locale;
-    private List<DocumentAnalysisFeature> documentAnalysisFeatures;
 
     /**
      * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
@@ -35,7 +34,7 @@ public final class AnalyzeDocumentOptions {
      * range with a comma, ex - ["1-3", 4].</p>
      *
      * @param pages the custom page numbers value to set.
-     * @return the updated {@code AnalyzeDocumentOptions} value.
+     * @return the updated {@code RecognizeContentOptions} value.
      */
     public AnalyzeDocumentOptions setPages(List<String> pages) {
         this.pages = pages;
@@ -57,28 +56,10 @@ public final class AnalyzeDocumentOptions {
      * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
      *
      * @param locale the locale value to set.
-     * @return the updated {@code AnalyzeDocumentOptions} value.
+     * @return the locale value.
      */
     public AnalyzeDocumentOptions setLocale(String locale) {
         this.locale = locale;
-        return this;
-    }
-
-    /**
-     * Get the list of optional analysis features.
-     * @return List of optional analysis features.
-     */
-    public List<DocumentAnalysisFeature> getDocumentAnalysisFeatures() {
-        return documentAnalysisFeatures;
-    }
-
-    /**
-     * Set the list of optional analysis features.
-     * @param documentAnalysisFeatures List of optional analysis features.
-     * @return the updated {@code AnalyzeDocumentOptions} value.
-     */
-    public AnalyzeDocumentOptions setDocumentAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
-        this.documentAnalysisFeatures = documentAnalysisFeatures;
         return this;
     }
 }

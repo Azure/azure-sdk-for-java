@@ -4,13 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List document models response object. */
-@Immutable
+@Fluent
 public final class GetDocumentModelsResponse {
     /*
      * List of document models.
@@ -24,16 +23,8 @@ public final class GetDocumentModelsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of GetDocumentModelsResponse class.
-     *
-     * @param value the value value to set.
-     */
-    @JsonCreator
-    private GetDocumentModelsResponse(
-            @JsonProperty(value = "value", required = true) List<DocumentModelSummary> value) {
-        this.value = value;
-    }
+    /** Creates an instance of GetDocumentModelsResponse class. */
+    public GetDocumentModelsResponse() {}
 
     /**
      * Get the value property: List of document models.
@@ -45,11 +36,33 @@ public final class GetDocumentModelsResponse {
     }
 
     /**
+     * Set the value property: List of document models.
+     *
+     * @param value the value value to set.
+     * @return the GetDocumentModelsResponse object itself.
+     */
+    public GetDocumentModelsResponse setValue(List<DocumentModelSummary> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
      * Get the nextLink property: Link to the next page of document models.
      *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: Link to the next page of document models.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the GetDocumentModelsResponse object itself.
+     */
+    public GetDocumentModelsResponse setNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 }

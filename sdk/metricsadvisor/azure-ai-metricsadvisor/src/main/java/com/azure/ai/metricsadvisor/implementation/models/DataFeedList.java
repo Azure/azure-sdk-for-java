@@ -23,9 +23,6 @@ public final class DataFeedList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataFeedDetail> value;
 
-    /** Creates an instance of DataFeedList class. */
-    public DataFeedList() {}
-
     /**
      * Get the nextLink property: The @nextLink property.
      *

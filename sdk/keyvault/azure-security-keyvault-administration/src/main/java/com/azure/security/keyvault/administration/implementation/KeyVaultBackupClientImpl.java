@@ -24,22 +24,21 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.security.keyvault.administration.implementation.models.FullBackupHeaders;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
-import com.azure.security.keyvault.administration.implementation.models.FullRestoreOperationHeaders;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupResponse;
+import com.azure.security.keyvault.administration.implementation.models.FullRestoreOperationResponse;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
-import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationHeaders;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationResponse;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the KeyVaultBackupClient type. */
@@ -88,7 +87,7 @@ public final class KeyVaultBackupClientImpl {
      *
      * @param apiVersion Api Version.
      */
-    public KeyVaultBackupClientImpl(String apiVersion) {
+    KeyVaultBackupClientImpl(String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -103,7 +102,7 @@ public final class KeyVaultBackupClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
-    public KeyVaultBackupClientImpl(HttpPipeline httpPipeline, String apiVersion) {
+    KeyVaultBackupClientImpl(HttpPipeline httpPipeline, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
@@ -114,7 +113,7 @@ public final class KeyVaultBackupClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
      */
-    public KeyVaultBackupClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
+    KeyVaultBackupClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.apiVersion = apiVersion;
@@ -132,7 +131,7 @@ public final class KeyVaultBackupClientImpl {
         @Post("/backup")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<ResponseBase<FullBackupHeaders, FullBackupOperation>> fullBackup(
+        Mono<FullBackupResponse> fullBackup(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SASTokenParameter azureStorageBlobContainerUri,
@@ -142,7 +141,7 @@ public final class KeyVaultBackupClientImpl {
         @Post("/backup")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        ResponseBase<FullBackupHeaders, FullBackupOperation> fullBackupSync(
+        FullBackupResponse fullBackupSync(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SASTokenParameter azureStorageBlobContainerUri,
@@ -172,7 +171,7 @@ public final class KeyVaultBackupClientImpl {
         @Put("/restore")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<ResponseBase<FullRestoreOperationHeaders, RestoreOperation>> fullRestoreOperation(
+        Mono<FullRestoreOperationResponse> fullRestoreOperation(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RestoreOperationParameters restoreBlobDetails,
@@ -182,7 +181,7 @@ public final class KeyVaultBackupClientImpl {
         @Put("/restore")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        ResponseBase<FullRestoreOperationHeaders, RestoreOperation> fullRestoreOperationSync(
+        FullRestoreOperationResponse fullRestoreOperationSync(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RestoreOperationParameters restoreBlobDetails,
@@ -212,26 +211,24 @@ public final class KeyVaultBackupClientImpl {
         @Put("/keys/{keyName}/restore")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation>>
-                selectiveKeyRestoreOperation(
-                        @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                        @PathParam("keyName") String keyName,
-                        @QueryParam("api-version") String apiVersion,
-                        @BodyParam("application/json") SelectiveKeyRestoreOperationParameters restoreBlobDetails,
-                        @HeaderParam("Accept") String accept,
-                        Context context);
+        Mono<SelectiveKeyRestoreOperationResponse> selectiveKeyRestoreOperation(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam("keyName") String keyName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") SelectiveKeyRestoreOperationParameters restoreBlobDetails,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/keys/{keyName}/restore")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation>
-                selectiveKeyRestoreOperationSync(
-                        @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                        @PathParam("keyName") String keyName,
-                        @QueryParam("api-version") String apiVersion,
-                        @BodyParam("application/json") SelectiveKeyRestoreOperationParameters restoreBlobDetails,
-                        @HeaderParam("Accept") String accept,
-                        Context context);
+        SelectiveKeyRestoreOperationResponse selectiveKeyRestoreOperationSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam("keyName") String keyName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") SelectiveKeyRestoreOperationParameters restoreBlobDetails,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -244,10 +241,10 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full backup operation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return full backup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FullBackupHeaders, FullBackupOperation>> fullBackupWithResponseAsync(
+    public Mono<FullBackupResponse> fullBackupWithResponseAsync(
             String vaultBaseUrl, SASTokenParameter azureStorageBlobContainerUri) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -267,10 +264,10 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full backup operation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return full backup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FullBackupHeaders, FullBackupOperation>> fullBackupWithResponseAsync(
+    public Mono<FullBackupResponse> fullBackupWithResponseAsync(
             String vaultBaseUrl, SASTokenParameter azureStorageBlobContainerUri, Context context) {
         final String accept = "application/json";
         return service.fullBackup(vaultBaseUrl, this.getApiVersion(), azureStorageBlobContainerUri, accept, context);
@@ -326,10 +323,10 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full backup operation along with {@link ResponseBase}.
+     * @return full backup operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<FullBackupHeaders, FullBackupOperation> fullBackupWithResponse(
+    public FullBackupResponse fullBackupWithResponse(
             String vaultBaseUrl, SASTokenParameter azureStorageBlobContainerUri, Context context) {
         final String accept = "application/json";
         return service.fullBackupSync(
@@ -462,10 +459,10 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore operation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return restore operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FullRestoreOperationHeaders, RestoreOperation>> fullRestoreOperationWithResponseAsync(
+    public Mono<FullRestoreOperationResponse> fullRestoreOperationWithResponseAsync(
             String vaultBaseUrl, RestoreOperationParameters restoreBlobDetails) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -484,10 +481,10 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore operation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return restore operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FullRestoreOperationHeaders, RestoreOperation>> fullRestoreOperationWithResponseAsync(
+    public Mono<FullRestoreOperationResponse> fullRestoreOperationWithResponseAsync(
             String vaultBaseUrl, RestoreOperationParameters restoreBlobDetails, Context context) {
         final String accept = "application/json";
         return service.fullRestoreOperation(vaultBaseUrl, this.getApiVersion(), restoreBlobDetails, accept, context);
@@ -540,10 +537,10 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore operation along with {@link ResponseBase}.
+     * @return restore operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<FullRestoreOperationHeaders, RestoreOperation> fullRestoreOperationWithResponse(
+    public FullRestoreOperationResponse fullRestoreOperationWithResponse(
             String vaultBaseUrl, RestoreOperationParameters restoreBlobDetails, Context context) {
         final String accept = "application/json";
         return service.fullRestoreOperationSync(
@@ -676,12 +673,11 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return selective Key Restore operation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return selective Key Restore operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation>>
-            selectiveKeyRestoreOperationWithResponseAsync(
-                    String vaultBaseUrl, String keyName, SelectiveKeyRestoreOperationParameters restoreBlobDetails) {
+    public Mono<SelectiveKeyRestoreOperationResponse> selectiveKeyRestoreOperationWithResponseAsync(
+            String vaultBaseUrl, String keyName, SelectiveKeyRestoreOperationParameters restoreBlobDetails) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -701,15 +697,14 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return selective Key Restore operation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return selective Key Restore operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation>>
-            selectiveKeyRestoreOperationWithResponseAsync(
-                    String vaultBaseUrl,
-                    String keyName,
-                    SelectiveKeyRestoreOperationParameters restoreBlobDetails,
-                    Context context) {
+    public Mono<SelectiveKeyRestoreOperationResponse> selectiveKeyRestoreOperationWithResponseAsync(
+            String vaultBaseUrl,
+            String keyName,
+            SelectiveKeyRestoreOperationParameters restoreBlobDetails,
+            Context context) {
         final String accept = "application/json";
         return service.selectiveKeyRestoreOperation(
                 vaultBaseUrl, keyName, this.getApiVersion(), restoreBlobDetails, accept, context);
@@ -771,15 +766,14 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return selective Key Restore operation along with {@link ResponseBase}.
+     * @return selective Key Restore operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation>
-            selectiveKeyRestoreOperationWithResponse(
-                    String vaultBaseUrl,
-                    String keyName,
-                    SelectiveKeyRestoreOperationParameters restoreBlobDetails,
-                    Context context) {
+    public SelectiveKeyRestoreOperationResponse selectiveKeyRestoreOperationWithResponse(
+            String vaultBaseUrl,
+            String keyName,
+            SelectiveKeyRestoreOperationParameters restoreBlobDetails,
+            Context context) {
         final String accept = "application/json";
         return service.selectiveKeyRestoreOperationSync(
                 vaultBaseUrl, keyName, this.getApiVersion(), restoreBlobDetails, accept, context);
