@@ -300,6 +300,11 @@
           "code": "java.method.added",
           "new": "method int com.azure.storage.blob.specialized.AppendBlobAsyncClient::getMaxBlocks()",
           "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
+        },
+        {
+          "code": "java.method.added",
+          "new": "method java.lang.String com.azure.json.JsonReader::getRawText() throws java.io.IOException",
+          "justification": "We do not need to do a minor version bump for libraries that use Azure JSON for this change"
         }
       ]
     }
