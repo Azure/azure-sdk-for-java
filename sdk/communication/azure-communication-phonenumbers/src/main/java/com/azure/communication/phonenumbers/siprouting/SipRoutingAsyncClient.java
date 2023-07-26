@@ -112,9 +112,9 @@ public final class SipRoutingAsyncClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks -->
      * <pre>
-     * sipRoutingAsyncClient.listTrunks&#40;&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
-            resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.println&#40;value.getFqdn&#40;&#41;&#41;&#41;
-     * &#125;&#41;;
+     * sipRoutingAsyncClient.listTrunks&#40;&#41;
+     *     .subscribe&#40;trunk -&gt;
+     *         System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks -->
      *
@@ -144,8 +144,11 @@ public final class SipRoutingAsyncClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.asyncclient.listRoutes -->
      * <pre>
-     * sipRoutingAsyncClient.listRoutes&#40;&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
-            resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.println&#40;value.getName&#40;&#41;&#41;&#41;
+     * sipRoutingAsyncClient.listRoutes&#40;&#41;.subscribe&#40;route -&gt; &#123;
+     *     System.out.println&#40;&quot;Route name: &quot; + route.getName&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Route description: &quot; + route.getDescription&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Route number pattern: &quot; + route.getNumberPattern&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Route trunks: &quot; + String.join&#40;&quot;,&quot;, route.getTrunks&#40;&#41;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.asyncclient.listRoutes -->
