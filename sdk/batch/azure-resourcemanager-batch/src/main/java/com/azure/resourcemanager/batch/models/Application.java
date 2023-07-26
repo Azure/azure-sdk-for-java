@@ -78,11 +78,13 @@ public interface Application {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Application definition stages. */
     interface DefinitionStages {
         /** The first stage of the Application definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Application definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -94,6 +96,7 @@ public interface Application {
              */
             WithCreate withExistingBatchAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the Application definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -117,6 +120,7 @@ public interface Application {
              */
             Application create(Context context);
         }
+
         /** The stage of the Application definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -127,6 +131,7 @@ public interface Application {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the Application definition allowing to specify allowUpdates. */
         interface WithAllowUpdates {
             /**
@@ -139,6 +144,7 @@ public interface Application {
              */
             WithCreate withAllowUpdates(Boolean allowUpdates);
         }
+
         /** The stage of the Application definition allowing to specify defaultVersion. */
         interface WithDefaultVersion {
             /**
@@ -152,6 +158,7 @@ public interface Application {
             WithCreate withDefaultVersion(String defaultVersion);
         }
     }
+
     /**
      * Begins update for the Application resource.
      *
@@ -177,6 +184,7 @@ public interface Application {
          */
         Application apply(Context context);
     }
+
     /** The Application update stages. */
     interface UpdateStages {
         /** The stage of the Application update allowing to specify displayName. */
@@ -189,6 +197,7 @@ public interface Application {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the Application update allowing to specify allowUpdates. */
         interface WithAllowUpdates {
             /**
@@ -201,6 +210,7 @@ public interface Application {
              */
             Update withAllowUpdates(Boolean allowUpdates);
         }
+
         /** The stage of the Application update allowing to specify defaultVersion. */
         interface WithDefaultVersion {
             /**
@@ -214,6 +224,7 @@ public interface Application {
             Update withDefaultVersion(String defaultVersion);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

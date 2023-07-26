@@ -407,12 +407,12 @@ public class ClientSideRequestStatistics {
     }
 
     private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics){
-        StoreResponseDiagnostics storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics();
-        if(storeResponseDiagnostics == null) {
+        if (storeResultDiagnostics == null
+            || storeResultDiagnostics.getStoreResponseDiagnostics() == null) {
             return null;
         }
 
-        RequestTimeline requestTimeline = storeResponseDiagnostics.getRequestTimeline();
+        RequestTimeline requestTimeline = storeResultDiagnostics.getStoreResponseDiagnostics().getRequestTimeline();
 
         return requestTimeline != null ? requestTimeline.getRequestStartTimeUTC() : null;
     }
