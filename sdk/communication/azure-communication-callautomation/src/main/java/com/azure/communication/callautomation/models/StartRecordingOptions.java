@@ -31,8 +31,6 @@ public final class StartRecordingOptions {
 
     private List<ChannelAffinity> channelAffinity;
 
-    private ExternalStorage externalStorage;
-
     /**
      * Constructor
      *
@@ -157,26 +155,6 @@ public final class StartRecordingOptions {
      */
     public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
-        return this;
-    }
-
-    /**
-     * Get the externalStorage property: Used to specify external storage for call recording
-     *
-     * @return the externalStorage value.
-     */
-    public ExternalStorage getExternalStorage() {
-        return this.externalStorage;
-    }
-
-    /**
-     * Set the externalStorage property: Used to specify external storage for call recording
-     *
-     * @param externalStorage the external storage for call recording
-     * @return the StartRecordingOptions object itself.
-     */
-    public StartRecordingOptions setExternalStorage(ExternalStorage externalStorage) {
-        this.externalStorage = externalStorage;
         return this;
     }
 

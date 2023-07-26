@@ -37,7 +37,7 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 
 `CallRecording` provides the functionality of recording the call.
 
-`EventHandler` provides the functionality to handle events from the ACS resource.
+`CallAutomationEventParser` provides the functionality to handle events from the ACS resource.
 
 ## Examples
 
