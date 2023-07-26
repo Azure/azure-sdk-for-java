@@ -124,4 +124,12 @@ extends:
       groupId: com.azure
       safeName: azuresecuritykeyvaultcertificates
       ServiceDirectory: keyvault
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
+    - name: azure-developer-loadtesting
+      groupId: com.azure
+      safeName: azuredeveloperloadtesting
+      ServiceDirectory: loadtesting
 
