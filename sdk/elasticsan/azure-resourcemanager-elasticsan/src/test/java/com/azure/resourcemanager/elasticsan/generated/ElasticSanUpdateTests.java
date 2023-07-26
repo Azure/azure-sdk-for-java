@@ -9,32 +9,40 @@ import com.azure.resourcemanager.elasticsan.models.ElasticSanUpdate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticSanUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticSanUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"baseSizeTiB\":1046762399333359388,\"extendedCapacitySizeTiB\":6432231641159211987},\"tags\":{\"bexppb\":\"ddgmb\"}}")
+                    "{\"properties\":{\"baseSizeTiB\":4267767116121181039,\"extendedCapacitySizeTiB\":5437486908155623563},\"tags\":{\"kqsleyyvxy\":\"zrkgqhcjrefovg\",\"cr\":\"jpkcattpng\",\"ajvnysounqe\":\"czsqpjhvm\",\"oaeupfhyhltrpmo\":\"a\"}}")
                 .toObject(ElasticSanUpdate.class);
-        Assertions.assertEquals("ddgmb", model.tags().get("bexppb"));
-        Assertions.assertEquals(1046762399333359388L, model.baseSizeTiB());
-        Assertions.assertEquals(6432231641159211987L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.tags().get("kqsleyyvxy"));
+        Assertions.assertEquals(4267767116121181039L, model.baseSizeTiB());
+        Assertions.assertEquals(5437486908155623563L, model.extendedCapacitySizeTiB());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticSanUpdate model =
             new ElasticSanUpdate()
-                .withTags(mapOf("bexppb", "ddgmb"))
-                .withBaseSizeTiB(1046762399333359388L)
-                .withExtendedCapacitySizeTiB(6432231641159211987L);
+                .withTags(
+                    mapOf(
+                        "kqsleyyvxy",
+                        "zrkgqhcjrefovg",
+                        "cr",
+                        "jpkcattpng",
+                        "ajvnysounqe",
+                        "czsqpjhvm",
+                        "oaeupfhyhltrpmo",
+                        "a"))
+                .withBaseSizeTiB(4267767116121181039L)
+                .withExtendedCapacitySizeTiB(5437486908155623563L);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdate.class);
-        Assertions.assertEquals("ddgmb", model.tags().get("bexppb"));
-        Assertions.assertEquals(1046762399333359388L, model.baseSizeTiB());
-        Assertions.assertEquals(6432231641159211987L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.tags().get("kqsleyyvxy"));
+        Assertions.assertEquals(4267767116121181039L, model.baseSizeTiB());
+        Assertions.assertEquals(5437486908155623563L, model.extendedCapacitySizeTiB());
     }
 
     @SuppressWarnings("unchecked")

@@ -3,11 +3,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.annotation.Fluent;
 
 /** Azure Blob Storage content. */
 @Fluent
-public final class AzureBlobContentSource {
+public final class AzureBlobContentSource extends TrainingDataContentSource {
     /*
      * Azure Blob Storage container URL.
      */

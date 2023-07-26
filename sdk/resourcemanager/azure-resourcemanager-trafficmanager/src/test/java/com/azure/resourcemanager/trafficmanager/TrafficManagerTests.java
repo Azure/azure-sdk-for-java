@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
@@ -26,7 +26,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TrafficManagerTests extends ResourceManagerTestBase {
+public class TrafficManagerTests extends ResourceManagerTestProxyTestBase {
     private String rgName = null;
 
     protected ResourceManager resourceManager;

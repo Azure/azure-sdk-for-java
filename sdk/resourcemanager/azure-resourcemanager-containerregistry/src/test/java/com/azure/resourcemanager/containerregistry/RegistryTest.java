@@ -27,8 +27,8 @@ public abstract class RegistryTest extends ResourceManagerTestProxyTestBase {
 
     public RegistryTest() {
         addSanitizers(
-            new TestProxySanitizer(String.format("$..%s", "uploadUrl"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "logLink"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$..uploadUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..logLink", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         );
     }
 

@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ApplicationSecurityGroups UpdateTags. */
 public final class ApplicationSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationSecurityGroupUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ApplicationSecurityGroupUpdateTags.json
      */
     /**
      * Sample code: Update application security group tags.

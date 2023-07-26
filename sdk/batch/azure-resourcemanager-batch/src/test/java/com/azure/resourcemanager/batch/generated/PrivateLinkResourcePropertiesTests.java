@@ -6,20 +6,19 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceProperties;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
-                    "{\"groupId\":\"kx\",\"requiredMembers\":[\"k\",\"bhenbtkcxywnyt\",\"rsyn\",\"qidybyx\"],\"requiredZoneNames\":[\"clha\",\"xdbabphlwr\",\"lfktsths\",\"cocmnyyaztt\"]}")
+                    "{\"groupId\":\"tcxsenhwlrs\",\"requiredMembers\":[\"zpwv\",\"qdqgbi\",\"ylihkaetckt\",\"fcivfsnkym\"],\"requiredZoneNames\":[\"qhjfbebr\",\"cxerf\",\"wutttxfvjrbi\"]}")
                 .toObject(PrivateLinkResourceProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceProperties model = new PrivateLinkResourceProperties();
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceProperties.class);
     }
