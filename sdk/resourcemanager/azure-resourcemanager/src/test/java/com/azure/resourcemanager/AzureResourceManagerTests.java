@@ -1056,7 +1056,9 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertTrue(0 < TestUtilities.getSize(azureResourceManager.subscriptions().list()));
         Subscription subscription = azureResourceManager.getCurrentSubscription();
         Assertions.assertNotNull(subscription);
-        Assertions.assertTrue(azureResourceManager.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
+        if (!isPlaybackMode()) {
+            Assertions.assertTrue(azureResourceManager.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
+        }
     }
 
     /**
