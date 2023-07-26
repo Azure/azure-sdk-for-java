@@ -406,19 +406,104 @@ public class ReadmeSamples {
             System.out.println("Failed to create container: " + ce);
         }
         // END: com.azure.cosmos.CosmosDatabase.createContainerPartitionKey
+    }
 
-    public void createDatabaseSample() {
-        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase
+    public void cosmosCreateDatabaseSample() {
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
             .endpoint("<YOUR ENDPOINT HERE>")
             .key("<YOUR KEY HERE>")
             .buildAsyncClient();
-        String databaseId = "<YOUR DATABASE NAME>";
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase
+        String databaseId = "<YOUR DATABASE ID>";
         CosmosDatabaseProperties databaseProperties =
             new CosmosDatabaseProperties(databaseId);
 
-        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse = cosmosAsyncClient.createDatabase(databaseProperties);
+        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse =
+            cosmosAsyncClient.createDatabase(databaseProperties);
         // END: com.azure.cosmos.CosmosAsyncClient.createDatabase
+    }
+
+    public void cosmosCreateDatabaseSecondSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint("<YOUR ENDPOINT HERE>")
+            .key("<YOUR KEY HERE>")
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase_stringId_params
+        String databaseId = "<YOUR DATABASE ID>";
+
+        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse =
+            cosmosAsyncClient.createDatabase(databaseId);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabase_stringId_params
+    }
+
+    public void cosmosCreateDatabaseThirdSample() {
+        int throughput = 1;
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint("<YOUR ENDPOINT HERE>")
+            .key("<YOUR KEY HERE>")
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase_stringId_throughput_params
+        String databaseId = "<YOUR DATABASE ID>";
+        ThroughputProperties properties = ThroughputProperties.createAutoscaledThroughput(throughput);
+
+        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse =
+            cosmosAsyncClient.createDatabase(databaseId, properties);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabase_stringId_throughput_params
+    }
+
+    public void cosmosCreateDatabaseFourthSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint("<YOUR ENDPOINT HERE>")
+            .key("<YOUR KEY HERE>")
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase_properties_option_params
+        String databaseId = "<YOUR DATABASE ID>";
+        CosmosDatabaseProperties databaseProperties =
+            new CosmosDatabaseProperties(databaseId);
+        CosmosDatabaseRequestOptions options =
+            new CosmosDatabaseRequestOptions();
+
+        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse =
+            cosmosAsyncClient.createDatabase(databaseProperties, options);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabase_properties_option_params
+    }
+
+    public void cosmosCreateDatabaseFifthSample() {
+        int throughput = 1;
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint("<YOUR ENDPOINT HERE>")
+            .key("<YOUR KEY HERE>")
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase_dbProp_requestProp_throughput_params
+        String databaseId = "<YOUR DATABASE ID>";
+        CosmosDatabaseProperties databaseProperties =
+            new CosmosDatabaseProperties(databaseId);
+        ThroughputProperties properties =
+            ThroughputProperties.createAutoscaledThroughput(throughput);
+        CosmosDatabaseRequestOptions options =
+            new CosmosDatabaseRequestOptions();
+
+        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse =
+            cosmosAsyncClient.createDatabase(databaseProperties, properties, options);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabase_dbProp_requestProp_throughput_params
+    }
+
+    public void cosmosCreateDatabaseSixthSample() {
+        int throughput = 1;
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint("<YOUR ENDPOINT HERE>")
+            .key("<YOUR KEY HERE>")
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase_dbProp_throughput_params
+        String databaseId = "<YOUR DATABASE ID>";
+        CosmosDatabaseProperties databaseProperties =
+            new CosmosDatabaseProperties(databaseId);
+        ThroughputProperties properties =
+            ThroughputProperties.createAutoscaledThroughput(throughput);
+
+        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse =
+            cosmosAsyncClient.createDatabase(databaseProperties, properties);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabase_dbProp_throughput_params
     }
 
     public void createDatabaseIfNotExistsSample() {
@@ -429,6 +514,32 @@ public class ReadmeSamples {
 
         Mono<CosmosDatabaseResponse> response = cosmosAsyncClient.createDatabaseIfNotExists(databaseId);
         // END: com.azure.cosmos.CosmosAsyncClient.createDatabaseIfNotExists
+    }
+
+    public void createDatabaseIfNotExistsSecondSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabaseIfNotExists_properties_params
+        String databaseId = "<YOUR DATABASE NAME>";
+        CosmosDatabaseProperties properties = new CosmosDatabaseProperties(databaseId);
+
+        Mono<CosmosDatabaseResponse> response =
+            cosmosAsyncClient.createDatabaseIfNotExists(properties);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabaseIfNotExists_properties_params
+    }
+
+    public void createDatabaseIfNotExistsThirdSample() {
+        int throughput = 1;
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabaseIfNotExists_id_throughput_params
+        String databaseId = "<YOUR DATABASE NAME>";
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(throughput);
+
+        Mono<CosmosDatabaseResponse> response =
+            cosmosAsyncClient.createDatabaseIfNotExists(databaseId, throughputProperties);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabaseIfNotExists_id_throughput_params
     }
 
     public void readAllDatabasesSample() {
@@ -444,7 +555,6 @@ public class ReadmeSamples {
     public void queryDatabasesSample() {
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
             .buildAsyncClient();
-
         // BEGIN: com.azure.cosmos.CosmosAsyncClient.queryDatabases
         String queryText = "<YOUR QUERY>";
         SqlQuerySpec querySpec = new SqlQuerySpec(queryText);
@@ -454,6 +564,19 @@ public class ReadmeSamples {
         CosmosPagedFlux<CosmosDatabaseProperties> dbProperties =
             cosmosAsyncClient.queryDatabases(querySpec, requestOptions);
         // END: com.azure.cosmos.CosmosAsyncClient.queryDatabases
+    }
+
+    public void queryDatabasesSecondSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.queryDatabases_query_option_params
+        String queryText = "<YOUR QUERY>";
+        CosmosQueryRequestOptions requestOptions =
+            new CosmosQueryRequestOptions();
+
+        CosmosPagedFlux<CosmosDatabaseProperties> dbProperties =
+            cosmosAsyncClient.queryDatabases(queryText, requestOptions);
+        // END: com.azure.cosmos.CosmosAsyncClient.queryDatabases_query_option_params
     }
 
     public void getDatabaseSample() {
