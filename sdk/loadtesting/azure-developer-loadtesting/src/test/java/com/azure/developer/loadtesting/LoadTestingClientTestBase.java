@@ -10,8 +10,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,6 +69,12 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
             sanitizers.add(new TestProxySanitizer("Location", "https://[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}", "https://REDACTED", TestProxySanitizerType.HEADER));
             interceptorManager.addSanitizers(sanitizers);
+        }
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            List<TestProxyRequestMatcher> matchers = new ArrayList<>();
+            matchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(matchers);
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
