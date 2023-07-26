@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.channel.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,7 +32,7 @@ public class RntbdConnectionStateListener {
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
     private final RntbdEndpoint endpoint;
     private final RntbdConnectionStateListenerMetrics metrics;
-    private final Set<Uri> addressUris;
+    private final ConcurrentHashMap<String, Uri> addressUriMap;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final AddressSelector addressSelector;
     private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
@@ -49,7 +47,7 @@ public class RntbdConnectionStateListener {
         final AddressSelector addressSelector) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.metrics = new RntbdConnectionStateListenerMetrics();
-        this.addressUris = ConcurrentHashMap.newKeySet();
+        this.addressUriMap = new ConcurrentHashMap<>();
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         this.addressSelector = addressSelector;
     }
@@ -60,7 +58,8 @@ public class RntbdConnectionStateListener {
 
     public void onBeforeSendRequest(Uri addressUri) {
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
-        this.addressUris.add(addressUri);
+        //Important: always track the latest value
+        this.addressUriMap.compute(addressUri.getURIAsString(), (key, existingValue) -> addressUri);
     }
 
     public void onException(Throwable exception) {
@@ -101,7 +100,7 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        Optional<Uri> addressUriOptional = this.addressUris.stream().findFirst();
+        Optional<Uri> addressUriOptional = this.addressUriMap.values().stream().findFirst();
         Uri addressUri;
 
         if (addressUriOptional.isPresent()) {
@@ -154,11 +153,11 @@ public class RntbdConnectionStateListener {
             // When idleEndpointTimeout reached, SDK will close all existing channels,
             // which will translate into ClosedChannelException which does not mean server is in unhealthy status.
             // But it makes sense to make the server as unhealthy as it is safer to validate the server health again for future requests
-            for (Uri addressUri : this.addressUris) {
+            for (Uri addressUri : this.addressUriMap.values()) {
                 addressUri.setUnhealthy();
             }
 
-            return addressUris.size();
+            return addressUriMap.size();
         }
 
         return 0;

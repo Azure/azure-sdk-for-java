@@ -15,6 +15,7 @@ public class TokenRequestContext {
     private final List<String> scopes;
     private String claims;
     private String tenantId;
+    private boolean enableCae;
 
     /**
      * Creates a token request instance.
@@ -97,5 +98,33 @@ public class TokenRequestContext {
      */
     public String getTenantId() {
         return this.tenantId;
+    }
+
+
+    /**
+     * Indicates whether to enable Continuous Access Evaluation (CAE) for the requested token.
+     *
+     * <p> If a resource API implements CAE and your application declares it can handle CAE, your app receives
+     * CAE tokens for that resource. For this reason, if you declare your app CAE ready, your application must handle
+     * the CAE claim challenge for all resource APIs that accept Microsoft Identity access tokens. If you don't handle
+     * CAE responses in these API calls, your app could end up in a loop retrying an API call with a token that is
+     * still in the returned lifespan of the token but has been revoked due to CAE.</p>
+     *
+     * @param enableCae the flag indicating whether to enable Continuous Access Evaluation (CAE) for
+     * the requested token.
+     * @return the updated TokenRequestContext.
+     */
+    public TokenRequestContext setEnableCae(boolean enableCae) {
+        this.enableCae = enableCae;
+        return this;
+    }
+
+    /**
+     * Get the status indicating whether Continuous Access Evaluation (CAE) is enabled for the requested token.
+     *
+     * @return the flag indicating whether CAE authentication should be used or not.
+     */
+    public boolean isCaeEnabled() {
+        return this.enableCae;
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for WebApplicationFirewallPolicies Delete. */
 public final class WebApplicationFirewallPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/WafPolicyDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafPolicyDelete.json
      */
     /**
      * Sample code: Deletes a WAF policy within a resource group.

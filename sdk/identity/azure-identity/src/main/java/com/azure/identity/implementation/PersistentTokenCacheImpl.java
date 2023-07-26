@@ -17,6 +17,8 @@ import java.nio.file.Paths;
 
 public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
+    private static final String CAE_ENABLED_CACHE_SUFFIX = ".cae";
+    private static final String CAE_DISABLED_CACHE_SUFFIX = ".nocae";
     private static final String DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME = "msal.confidential.cache";
     static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
         ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
@@ -36,8 +38,11 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     private String name;
     private PersistenceTokenCacheAccessAspect cacheAccessAspect;
 
-    public PersistentTokenCacheImpl() {
+    private boolean caeEnabled;
+
+    public PersistentTokenCacheImpl(boolean caeEnabled) {
         super();
+        this.caeEnabled = caeEnabled;
     }
 
     public PersistentTokenCacheImpl setAllowUnencryptedStorage(boolean allowUnencryptedStorage) {
@@ -71,16 +76,16 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
 
     private PersistenceSettings getPersistenceSettings() {
         PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
-            name != null ? name : DEFAULT_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH);
+            getCacheName(name != null ? name : DEFAULT_CACHE_FILE_NAME), DEFAULT_CACHE_FILE_PATH);
         if (Platform.isMac()) {
             persistenceSettingsBuilder.setMacKeychain(
-                DEFAULT_KEYCHAIN_SERVICE, name != null ? name : DEFAULT_KEYCHAIN_ACCOUNT);
+                DEFAULT_KEYCHAIN_SERVICE, getCacheName(name != null ? name : DEFAULT_KEYCHAIN_ACCOUNT));
             return persistenceSettingsBuilder.build();
         } else if (Platform.isLinux()) {
             try {
                 persistenceSettingsBuilder
                     .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
-                        name != null ? name : DEFAULT_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME,
+                        getCacheName(name != null ? name : DEFAULT_KEYRING_ITEM_NAME), DEFAULT_KEYRING_ATTR_NAME,
                         DEFAULT_KEYRING_ATTR_VALUE, null, null);
                 return persistenceSettingsBuilder.build();
             } catch (KeyRingAccessException e) {
@@ -92,5 +97,13 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
             }
         }
         return persistenceSettingsBuilder.build();
+    }
+
+    private String getCacheName(String name) {
+        if (caeEnabled) {
+            return name + CAE_ENABLED_CACHE_SUFFIX;
+        } else {
+            return name + CAE_DISABLED_CACHE_SUFFIX;
+        }
     }
 }

@@ -18,13 +18,11 @@ public class PartitionScopeThresholdsTest {
     @Test(groups = { "unit" })
     public void neverThrottledShouldResultInMaxBatchSize() {
         String pkRangeId = UUID.randomUUID().toString();
-        int maxBatchSize = 1_000;
+        int maxBatchSize = 100;
         PartitionScopeThresholds thresholds =
             new PartitionScopeThresholds(
                 pkRangeId,
-                ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                    .getCosmosBulkExecutionOptionsAccessor()
-                    .setMaxMicroBatchSize(new CosmosBulkExecutionOptions(), maxBatchSize));
+                new CosmosBulkExecutionOptions());
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(maxBatchSize);
