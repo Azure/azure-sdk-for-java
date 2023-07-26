@@ -16,19 +16,69 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClientConfigDiagnosticsTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @DataProvider(name = "proactiveContainerInitConfigProvider")
+    public Object[][] proactiveContainerInitConfigProvider() {
+
+        Duration aggressiveWarmUpDuration1 = Duration.ofSeconds(1);
+        int proactiveConnectionRegionCount1 = 1;
+
+        Duration aggressiveWarmUpDuration2 = Duration.ofMillis(1000);
+        int proactiveConnectionRegionCount2 = 1;
+
+        Duration aggressiveWarmUpDuration3 = null;
+        int proactiveConnectionRegionCount3 = 2;
+
+        List<CosmosContainerIdentity> cosmosContainerIdentities = Arrays.asList(
+            new CosmosContainerIdentity("test-db", "test-container-1"),
+            new CosmosContainerIdentity("test-db", "test-container-2")
+        );
+
+        return new Object[][] {
+            {
+                new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setAggressiveWarmupDuration(aggressiveWarmUpDuration1)
+                    .setProactiveConnectionRegionsCount(proactiveConnectionRegionCount1)
+                    .build(),
+                aggressiveWarmUpDuration1,
+                proactiveConnectionRegionCount1,
+                cosmosContainerIdentities
+            },
+            {
+                new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setAggressiveWarmupDuration(aggressiveWarmUpDuration2)
+                    .setProactiveConnectionRegionsCount(proactiveConnectionRegionCount2)
+                    .build(),
+                aggressiveWarmUpDuration2,
+                proactiveConnectionRegionCount2,
+                cosmosContainerIdentities
+            },
+            {
+                new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setProactiveConnectionRegionsCount(proactiveConnectionRegionCount3)
+                    .build(),
+                null,
+                proactiveConnectionRegionCount3,
+                cosmosContainerIdentities
+            }
+        };
+    }
 
     @Test(groups = { "unit" })
     public void bareMinimum() throws Exception {
@@ -61,7 +111,7 @@ public class ClientConfigDiagnosticsTest {
 
     }
 
-    @Test(groups = { "unit" })
+    @Test(groups = { "unit" }, dataProvider = "")
     public void rntbd() throws Exception {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
 
@@ -128,8 +178,13 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
     }
 
-    @Test(groups = { "unit" })
-    public void full() throws Exception {
+    @Test(groups = { "unit" }, dataProvider = "proactiveContainerInitConfigProvider")
+    public void full(
+        CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+        Duration aggressiveWarmupDuration,
+        int proactiveConnectionRegionCount,
+        List<CosmosContainerIdentity> cosmosContainerIdentities) throws Exception {
+
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "false");
 
@@ -148,16 +203,9 @@ public class ClientConfigDiagnosticsTest {
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
         diagnosticsClientConfig.withClientMap(new HashMap<>());
-        CosmosContainerProactiveInitConfig containerProactiveInitConfig = new CosmosContainerProactiveInitConfigBuilder(
-            Arrays.asList(
-                new CosmosContainerIdentity("test-db", "test-container-1"),
-                new CosmosContainerIdentity("test-db", "test-container-2")
-            ))
-            .build();
+        diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
-
-        diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
 
         StringWriter jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
@@ -173,8 +221,33 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: true, cs: true, rv: false)");
-        assertThat(objectNode.get("proactiveInit").asText()).isEqualTo("test-db.test-container-1,test-db.test-container-2(pcrc:1)(awd:2147483647s)");
+
+        String expectedProactiveInitConfigString = reconstructProactiveInitConfigString(cosmosContainerIdentities, aggressiveWarmupDuration, proactiveConnectionRegionCount);
+
+        assertThat(objectNode.get("proactiveInit").asText()).isEqualTo(expectedProactiveInitConfigString);
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
+    }
+
+    private static String reconstructProactiveInitConfigString(
+        List<CosmosContainerIdentity> containerIdentities,
+        Duration aggressiveWarmupDuration,
+        int proactiveConnectionRegionCount) {
+
+        ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor = ImplementationBridgeHelpers
+            .CosmosContainerIdentityHelper
+            .getCosmosContainerIdentityAccessor();
+
+        return String.format(
+            "(containers:%s)(pcrc:%d)(awd:%ds)",
+            containerIdentities
+                .stream()
+                .map(ci -> String.join(
+                    ".",
+                    containerIdentityAccessor.getDatabaseName(ci),
+                    containerIdentityAccessor.getContainerName(ci)))
+                .collect(Collectors.joining(";")),
+            proactiveConnectionRegionCount,
+            aggressiveWarmupDuration == null ? Duration.ofSeconds(Integer.MAX_VALUE).getSeconds() : aggressiveWarmupDuration.getSeconds());
     }
 }

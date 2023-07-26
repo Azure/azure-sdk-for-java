@@ -96,16 +96,19 @@ public final class CosmosContainerProactiveInitConfig {
             return "";
         }
 
+        // containers -> the containers part of the connection warm up
+        // pcrc -> the first k regions from the preferredRegions to which connections are warmed up
+        // aws -> duration within which aggressive connection warm up happens
         return
             String.format(
-                "%s(pcrc:%d)(awd:%ds)",
+                "(containers:%s)(pcrc:%d)(awd:%ds)",
                 cosmosContainerIdentities
                     .stream()
                     .map(ci -> String.join(
                         ".",
                         containerIdAccessor.getDatabaseName(ci),
                         containerIdAccessor.getContainerName(ci)))
-                    .collect(Collectors.joining(",")),
+                    .collect(Collectors.joining(";")),
                 numProactiveConnectionRegions,
                 aggressiveWarmupDuration == null ? Duration.ofSeconds(Integer.MAX_VALUE).getSeconds() : aggressiveWarmupDuration.getSeconds());
     }
