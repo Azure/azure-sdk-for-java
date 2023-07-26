@@ -22,8 +22,11 @@
   </properties>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-monitor-spring-native</artifactId>
+  <artifactId>spring-cloud-azure-starter-monitor</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-monitor-spring-native;current} -->
+
+  <name>Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application</name>
+  <description>Spring Boot starter providing telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.</description>
 
   <distributionManagement>
     <site>
@@ -59,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
