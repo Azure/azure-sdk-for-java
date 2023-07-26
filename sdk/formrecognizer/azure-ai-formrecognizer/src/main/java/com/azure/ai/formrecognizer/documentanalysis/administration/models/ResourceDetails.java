@@ -55,7 +55,7 @@ public final class ResourceDetails {
      *
      * @return the customNeuralDocumentModelBuilds value.
      */
-    public QuotaDetails getCustomNeuralDocumentModelBuilds() {
+    public QuotaDetails getCustomNeuralDocumentModelQuotaDetails() {
         return customNeuralDocumentModelBuilds;
     }
 

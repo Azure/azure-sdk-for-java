@@ -35,7 +35,7 @@ public final class DocumentClassifierDetails {
     /*
      * API version used to create this document classifier.
      */
-    private String apiVersion;
+    private String serviceVersion;
 
     /*
      * List of document types to classify against.
@@ -122,17 +122,17 @@ public final class DocumentClassifierDetails {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public String getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
      * Set the apiVersion property: API version used to create this document classifier.
      *
-     * @param apiVersion the apiVersion value to set.
+     * @param serviceVersion the apiVersion value to set.
      */
-    void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -140,7 +140,7 @@ public final class DocumentClassifierDetails {
      *
      * @return the docTypes value.
      */
-    public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
+    public Map<String, ClassifierDocumentTypeDetails> getDocumentTypeDetails() {
         return this.docTypes;
     }
 
@@ -162,7 +162,7 @@ public final class DocumentClassifierDetails {
 
             @Override
             public void setApiVersion(DocumentClassifierDetails documentClassifierDetails, String description) {
-                documentClassifierDetails.setApiVersion(description);
+                documentClassifierDetails.setServiceVersion(description);
             }
 
             @Override

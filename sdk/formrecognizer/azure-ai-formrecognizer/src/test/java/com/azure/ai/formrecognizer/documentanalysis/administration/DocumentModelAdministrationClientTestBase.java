@@ -133,7 +133,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     void validateClassifierModelData(DocumentClassifierDetails documentClassifierDetails) {
         assertNotNull(documentClassifierDetails.getCreatedOn());
         assertNotNull(documentClassifierDetails.getClassifierId());
-        assertNotNull(documentClassifierDetails.getApiVersion());
+        assertNotNull(documentClassifierDetails.getServiceVersion());
     }
 
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
