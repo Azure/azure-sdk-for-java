@@ -274,27 +274,47 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         dsr.setAddressRefresh(true, false);
         dsr.requestContext = new DocumentServiceRequestContext();
 
+        // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        Mono<ShouldRetryResult> shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        for (int i = 0; i < 10; i++) {
-            Mono<ShouldRetryResult> shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .backOffTime(Duration.ofSeconds(0))
+            .build());
 
-            if (i < 3) {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                    .nullException()
-                    .shouldRetry(true)
-                    .backOffTime(Duration.ofMillis(0))
-                    .build());
-            } else {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                    .nullException()
-                    .shouldRetry(false)
-                    .build());
-            }
+        // 2nd Attempt
+        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
-        }
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .backOffTime(Duration.ofSeconds(1))
+            .build());
+
+
+        // 3rd Attempt
+        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .backOffTime(Duration.ofSeconds(0))
+            .build());
+
+        // 4th Attempt
+        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(false)
+            .build());
     }
 
     public static void validateSuccess(Mono<ShouldRetryResult> single,

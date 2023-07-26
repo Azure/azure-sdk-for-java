@@ -19,14 +19,16 @@ import java.util.concurrent.TimeUnit;
 
 public class WebExceptionRetryPolicy implements IRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
-
+    // Address Refresh will be re-tried 3 times, please check the if condition carefully :)
+    private final static int MAX_ADDRESS_REFRESH_RETRY_COUNT = 2;
     private StopWatch durationTimer = new StopWatch();
     private RetryContext retryContext;
     private int retryDelay;
     private RxDocumentServiceRequest request;
     private HttpTimeoutPolicy timeoutPolicy;
     private boolean isReadRequest;
-    private int retryCountTimeout = 0;
+    private int retryCount = 0;
+    private int addressRefreshCount = 0;
     private URI locationEndpoint;
 
     public WebExceptionRetryPolicy() {
@@ -80,13 +82,19 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         this.request = request;
         this.isReadRequest = request.isReadOnlyRequest();
         this.timeoutPolicy = HttpTimeoutPolicy.getTimeoutPolicy(request);
+        if (request.isAddressRefresh()) {
+            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.addressRefreshCount);
+            this.request.setResponseTimeout(current.getResponseTimeout());
+            this.retryDelay = current.getDelayForNextRequestInSeconds();
+        }
+
         // Fetching the retryCount to correctly get the retry values from the timeout policy
         if (this.retryContext != null) {
-            this.retryCountTimeout = this.retryContext.getRetryCount();
+            this.retryCount = this.retryContext.getRetryCount();
         }
         // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
         if (!isOutOfRetries()) {
-            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCountTimeout);
+            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount);
             this.request.setResponseTimeout(current.getResponseTimeout());
             this.retryDelay = current.getDelayForNextRequestInSeconds();
         }
@@ -94,19 +102,27 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     }
 
     private Boolean isOutOfRetries() {
-        return this.retryCountTimeout >= this.timeoutPolicy.totalRetryCount();
+        return this.retryCount >= this.timeoutPolicy.totalRetryCount();
     }
 
     private Mono<ShouldRetryResult> shouldRetryAddressRefresh() {
+        if (this.addressRefreshCount++ > MAX_ADDRESS_REFRESH_RETRY_COUNT) {
+            logger
+                .warn(
+                    "shouldRetryAddressRefresh() No more retrying on endpoint {}, operationType = {}, count = {}, " +
+                        "isAddressRefresh = {}",
+                    this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount, this.request.isAddressRefresh());
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
         logger
             .warn("shouldRetryAddressRefresh() Retrying on endpoint {}, operationType = {}, count = {}, " +
                     "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                     "shouldForceCollectionRoutingMapRefresh = {}",
-                this.locationEndpoint, this.request.getOperationType(), this.retryCountTimeout,
+                this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount,
                 this.request.isAddressRefresh(),
                 this.request.shouldForceAddressRefresh(),
                 this.request.forceCollectionRoutingMapRefresh);
-
         return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
     }
 }
