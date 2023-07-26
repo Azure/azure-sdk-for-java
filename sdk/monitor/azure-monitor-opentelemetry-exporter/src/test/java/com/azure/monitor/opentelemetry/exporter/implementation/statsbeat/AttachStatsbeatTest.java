@@ -50,7 +50,7 @@ public class AttachStatsbeatTest {
         source.close();
         CustomDimensions customDimensions = new CustomDimensions();
         AzureMetadataService azureMetadataService =
-            new AzureMetadataService(attachStatsbeat, customDimensions);
+            new AzureMetadataService(attachStatsbeat, customDimensions, (response) -> {});
         azureMetadataService.updateMetadata(result);
         assertThat("2a1216c3-a2a0-4fc5-a941-b1f5acde7051/65b2f83e-7bf1-4be3-bafc-3a4163265a52")
             .isEqualTo(attachStatsbeat.getResourceProviderId());
