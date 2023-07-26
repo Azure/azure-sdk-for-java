@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -29,6 +30,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -408,6 +411,32 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                     assertNotNull(offering);
                 })
                 .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformation(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                        .searchOperatorInformation(phoneNumbers))
+                .assertNext((OperatorInformationResult result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationOnlyAcceptsOnePhoneNumber(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformationOnlyAcceptsOnePhoneNumber")
+                        .searchOperatorInformation(phoneNumbers))
+                .verifyError();
     }
 
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(

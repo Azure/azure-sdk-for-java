@@ -4,55 +4,182 @@
 
 package com.azure.communication.phonenumbers.implementation;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the PhoneNumberAdminClient type. */
 @ServiceClientBuilder(serviceClients = {PhoneNumberAdminClientImpl.class})
-public final class PhoneNumberAdminClientImplBuilder {
-    /*
-     * The communication resource, for example
-     * https://resourcename.communication.azure.com
-     */
-    private String endpoint;
+public final class PhoneNumberAdminClientImplBuilder
+        implements HttpTrait<PhoneNumberAdminClientImplBuilder>,
+                ConfigurationTrait<PhoneNumberAdminClientImplBuilder>,
+                EndpointTrait<PhoneNumberAdminClientImplBuilder> {
+    @Generated private static final String SDK_NAME = "name";
 
-    /**
-     * Sets The communication resource, for example https://resourcename.communication.azure.com.
-     *
-     * @param endpoint the endpoint value.
-     * @return the PhoneNumberAdminClientImplBuilder.
-     */
-    public PhoneNumberAdminClientImplBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
+    @Generated private static final String SDK_VERSION = "version";
+
+    @Generated private final Map<String, String> properties = new HashMap<>();
+
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    /** Create an instance of the PhoneNumberAdminClientImplBuilder. */
+    @Generated
+    public PhoneNumberAdminClientImplBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
     }
 
     /*
-     * The HTTP pipeline to send requests through
+     * The HTTP pipeline to send requests through.
      */
-    private HttpPipeline pipeline;
+    @Generated private HttpPipeline pipeline;
 
-    /**
-     * Sets The HTTP pipeline to send requests through.
-     *
-     * @param pipeline the pipeline value.
-     * @return the PhoneNumberAdminClientImplBuilder.
-     */
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
     public PhoneNumberAdminClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
     /*
+     * The HTTP client used to send the request.
+     */
+    @Generated private HttpClient httpClient;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public PhoneNumberAdminClientImplBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The logging configuration for HTTP requests and responses.
+     */
+    @Generated private HttpLogOptions httpLogOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public PhoneNumberAdminClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
+     */
+    @Generated private ClientOptions clientOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public PhoneNumberAdminClientImplBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /*
+     * The retry options to configure retry policy for failed requests.
+     */
+    @Generated private RetryOptions retryOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public PhoneNumberAdminClientImplBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public PhoneNumberAdminClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        pipelinePolicies.add(customPolicy);
+        return this;
+    }
+
+    /*
+     * The configuration store that is used during construction of the service
+     * client.
+     */
+    @Generated private Configuration configuration;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public PhoneNumberAdminClientImplBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The service endpoint
+     */
+    @Generated private String endpoint;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public PhoneNumberAdminClientImplBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * Api Version
+     */
+    @Generated private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the PhoneNumberAdminClientImplBuilder.
+     */
+    @Generated
+    public PhoneNumberAdminClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The serializer to serialize an object into a string
      */
-    private SerializerAdapter serializerAdapter;
+    @Generated private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -60,8 +187,27 @@ public final class PhoneNumberAdminClientImplBuilder {
      * @param serializerAdapter the serializerAdapter value.
      * @return the PhoneNumberAdminClientImplBuilder.
      */
+    @Generated
     public PhoneNumberAdminClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
+    /*
+     * The retry policy that will attempt to retry failed requests, if
+     * applicable.
+     */
+    @Generated private RetryPolicy retryPolicy;
+
+    /**
+     * Sets The retry policy that will attempt to retry failed requests, if applicable.
+     *
+     * @param retryPolicy the retryPolicy value.
+     * @return the PhoneNumberAdminClientImplBuilder.
+     */
+    @Generated
+    public PhoneNumberAdminClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -70,17 +216,64 @@ public final class PhoneNumberAdminClientImplBuilder {
      *
      * @return an instance of PhoneNumberAdminClientImpl.
      */
+    @Generated
     public PhoneNumberAdminClientImpl buildClient() {
         if (pipeline == null) {
-            this.pipeline =
-                    new HttpPipelineBuilder()
-                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                            .build();
+            this.pipeline = createHttpPipeline();
+        }
+        if (apiVersion == null) {
+            this.apiVersion = "2023-05-01-preview";
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        PhoneNumberAdminClientImpl client = new PhoneNumberAdminClientImpl(pipeline, serializerAdapter, endpoint);
+        PhoneNumberAdminClientImpl client =
+                new PhoneNumberAdminClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
+    }
+
+    @Generated
+    private HttpPipeline createHttpPipeline() {
+        Configuration buildConfiguration =
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        if (httpLogOptions == null) {
+            httpLogOptions = new HttpLogOptions();
+        }
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
+        policies.add(new CookiePolicy());
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .clientOptions(clientOptions)
+                        .build();
+        return httpPipeline;
     }
 }

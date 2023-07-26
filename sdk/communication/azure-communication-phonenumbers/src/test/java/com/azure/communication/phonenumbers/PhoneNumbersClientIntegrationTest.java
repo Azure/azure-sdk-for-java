@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -30,6 +31,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -306,6 +309,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformation(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        OperatorInformationResult result = this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                .searchOperatorInformation(phoneNumbers);
+        assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
     }
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(

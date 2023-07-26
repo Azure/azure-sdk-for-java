@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PhoneNumberLocalities model. */
+/** Represents a wrapper around a list of cities or towns. */
 @Immutable
 @Generated
 public final class PhoneNumberLocalities {
