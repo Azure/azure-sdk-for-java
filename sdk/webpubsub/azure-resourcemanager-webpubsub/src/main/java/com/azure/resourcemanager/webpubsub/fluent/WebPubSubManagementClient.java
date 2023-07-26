@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for WebPubSubManagementClient class. */
 public interface WebPubSubManagementClient {
     /**
-     * Gets Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -100,6 +99,13 @@ public interface WebPubSubManagementClient {
      * @return the WebPubSubPrivateLinkResourcesClient object.
      */
     WebPubSubPrivateLinkResourcesClient getWebPubSubPrivateLinkResources();
+
+    /**
+     * Gets the WebPubSubReplicasClient object to access its operations.
+     *
+     * @return the WebPubSubReplicasClient object.
+     */
+    WebPubSubReplicasClient getWebPubSubReplicas();
 
     /**
      * Gets the WebPubSubSharedPrivateLinkResourcesClient object to access its operations.

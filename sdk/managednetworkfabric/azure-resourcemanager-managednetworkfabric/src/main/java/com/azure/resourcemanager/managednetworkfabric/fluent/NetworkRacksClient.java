@@ -12,7 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackInner;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.TagsUpdate;
 
 /** An instance of this class provides access to all the operations defined in NetworkRacksClient. */
 public interface NetworkRacksClient {
@@ -27,7 +27,7 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
@@ -45,7 +45,7 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
@@ -62,7 +62,7 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkRackInner create(String resourceGroupName, String networkRackName, NetworkRackInner body);
@@ -79,7 +79,7 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkRackInner create(String resourceGroupName, String networkRackName, NetworkRackInner body, Context context);
@@ -127,11 +127,11 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body);
+        String resourceGroupName, String networkRackName, TagsUpdate body);
 
     /**
      * Updates a Network Rack.
@@ -145,11 +145,11 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkRack resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, NetworkRackPatch body, Context context);
+        String resourceGroupName, String networkRackName, TagsUpdate body, Context context);
 
     /**
      * Updates a Network Rack.
@@ -162,10 +162,10 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkRackInner update(String resourceGroupName, String networkRackName, NetworkRackPatch body);
+    NetworkRackInner update(String resourceGroupName, String networkRackName, TagsUpdate body);
 
     /**
      * Updates a Network Rack.
@@ -179,10 +179,10 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkRack resource definition.
+     * @return the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkRackInner update(String resourceGroupName, String networkRackName, NetworkRackPatch body, Context context);
+    NetworkRackInner update(String resourceGroupName, String networkRackName, TagsUpdate body, Context context);
 
     /**
      * Deletes a Network Rack.
@@ -245,7 +245,7 @@ public interface NetworkRacksClient {
     void delete(String resourceGroupName, String networkRackName, Context context);
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -253,13 +253,13 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkRackInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -268,25 +268,25 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkRackInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkRackInner> list();
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
@@ -294,7 +294,7 @@ public interface NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkRackInner> list(Context context);

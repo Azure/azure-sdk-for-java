@@ -88,6 +88,9 @@ public class DeviceCodeCredential implements TokenCredential {
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final String authorityHost;
     private final boolean automaticAuthentication;
+    private boolean isCaeEnabledRequestCached;
+    private boolean isCaeDisabledRequestCached;
+    private boolean isCachePopulated;
 
 
     /**
@@ -119,8 +122,9 @@ public class DeviceCodeCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
+        isCachePopulated = isCachePopulated(request);
         return Mono.defer(() -> {
-            if (cachedToken.get() != null) {
+            if (isCachePopulated) {
                 return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
@@ -135,7 +139,17 @@ public class DeviceCodeCredential implements TokenCredential {
                 }
                 return identityClient.authenticateWithDeviceCode(request, challengeConsumer);
             }))
-            .map(this::updateCache)
+            .map(msalToken -> {
+                AccessToken accessToken = updateCache(msalToken);
+                if (request.isCaeEnabled()) {
+                    isCaeEnabledRequestCached = true;
+                    isCaeDisabledRequestCached = false;
+                } else {
+                    isCaeDisabledRequestCached = true;
+                    isCaeEnabledRequestCached = false;
+                }
+                return accessToken;
+            })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
                 request, error));
@@ -215,5 +229,10 @@ public class DeviceCodeCredential implements TokenCredential {
                                 identityClient.getTenantId(), identityClient.getClientId()),
                     msalToken.getAccount().getTenantProfiles()));
         return msalToken;
+    }
+
+    private boolean isCachePopulated(TokenRequestContext request) {
+        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+            || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

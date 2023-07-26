@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("cancel")
 @Fluent
 public final class CancelExceptionAction extends ExceptionAction {
+    /** Creates an instance of CancelExceptionAction class. */
+    public CancelExceptionAction() {}
+
     /*
      * (Optional) A note that will be appended to the jobs' Notes collection
      * with th current timestamp.

@@ -61,8 +61,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     public interface ConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/configurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterConfigurationsInner>> list(
@@ -76,8 +75,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/configurations/{configurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations/{configurationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -93,8 +91,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/configurations/{configurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations/{configurationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Map<String, String>>> get(
@@ -442,7 +439,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(
         String resourceGroupName, String clusterName, String configurationName, Map<String, String> parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, configurationName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, configurationName, parameters).getSyncPoller();
     }
 
     /**
@@ -466,7 +463,9 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         String configurationName,
         Map<String, String> parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, configurationName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, clusterName, configurationName, parameters, context)
+            .getSyncPoller();
     }
 
     /**

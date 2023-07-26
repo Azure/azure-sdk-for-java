@@ -32,7 +32,9 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -81,12 +83,6 @@ public class ConnectionStateListenerTest {
         boolean markUnhealthy,
         boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException {
 
-        // using a random generated server port
-        int serverPort = port + randomPort.getAndIncrement();
-        TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
-        // Inject fake response
-        server.injectServerResponse(responseType);
-
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setTcpConnectionEndpointRediscoveryEnabled(isTcpConnectionEndpointRediscoveryEnabled);
 
@@ -111,26 +107,40 @@ public class ConnectionStateListenerTest {
                 getDocumentDefinition(), new HashMap<>());
         req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId","fakePartitionKeyRangeId"));
 
-        Uri targetUri = new Uri(serverAddressPrefix + serverPort);
-        try {
-            client.invokeResourceOperationAsync(targetUri, req).block();
-        } catch (Exception e) {
-            //  no op here
-        }
+        // Validate connectionStateListener will always track the latest Uri
+        List<Uri> targetUris = new ArrayList<>();
+        int serverPort = port + randomPort.getAndIncrement();
+        String serverAddress = serverAddressPrefix + serverPort;
 
-        if (markUnhealthy) {
-            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
-            TcpServerFactory.shutdownRntbdServer(server);
-            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+        targetUris.add(new Uri(serverAddress));
+        targetUris.add(new Uri(serverAddress));
 
-        } else {
-            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+        for (Uri uri : targetUris) {
+            // using a random generated server port
+            TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
+            // Inject fake response
+            server.injectServerResponse(responseType);
 
-            TcpServerFactory.shutdownRntbdServer(server);
-            if (markUnhealthyWhenServerShutdown) {
-                assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+            try {
+                client.invokeResourceOperationAsync(uri, req).block();
+            } catch (Exception e) {
+                //  no op here
+            }
+
+            if (markUnhealthy) {
+                assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+                TcpServerFactory.shutdownRntbdServer(server);
+                assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+
             } else {
-                assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+                assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+
+                TcpServerFactory.shutdownRntbdServer(server);
+                if (markUnhealthyWhenServerShutdown) {
+                    assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+                } else {
+                    assertThat(uri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+                }
             }
         }
     }
@@ -139,10 +149,11 @@ public class ConnectionStateListenerTest {
     public void connectionStateListenerOnException(Exception exception, boolean canHandle) {
         RntbdEndpoint endpointMock = Mockito.mock(RntbdEndpoint.class);
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        AddressSelector addressSelectorMock = Mockito.mock(AddressSelector.class);
 
         Uri testRequestUri = new Uri("http://127.0.0.1:1");
         testRequestUri.setConnected();
-        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock);
+        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock, addressSelectorMock);
 
         connectionStateListener.onBeforeSendRequest(testRequestUri);
         connectionStateListener.onException(exception);

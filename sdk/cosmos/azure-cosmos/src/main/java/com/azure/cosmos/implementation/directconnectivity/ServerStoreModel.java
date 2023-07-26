@@ -8,6 +8,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -65,7 +66,7 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs) {
         this.storeClient.configureFaultInjectorProvider(injectorProvider);
     }
 

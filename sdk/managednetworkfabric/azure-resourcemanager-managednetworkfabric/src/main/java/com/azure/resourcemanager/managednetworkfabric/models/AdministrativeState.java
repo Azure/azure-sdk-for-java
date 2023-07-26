@@ -8,13 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Administrative state. */
+/** State defined to represent administrative actions or post actions on a particular resource. */
 public final class AdministrativeState extends ExpandableStringEnum<AdministrativeState> {
-    /** Static value Enable for AdministrativeState. */
-    public static final AdministrativeState ENABLE = fromString("Enable");
+    /** Static value Enabled for AdministrativeState. */
+    public static final AdministrativeState ENABLED = fromString("Enabled");
 
-    /** Static value Disable for AdministrativeState. */
-    public static final AdministrativeState DISABLE = fromString("Disable");
+    /** Static value Disabled for AdministrativeState. */
+    public static final AdministrativeState DISABLED = fromString("Disabled");
+
+    /** Static value MAT for AdministrativeState. */
+    public static final AdministrativeState MAT = fromString("MAT");
+
+    /** Static value RMA for AdministrativeState. */
+    public static final AdministrativeState RMA = fromString("RMA");
 
     /**
      * Creates a new instance of AdministrativeState value.

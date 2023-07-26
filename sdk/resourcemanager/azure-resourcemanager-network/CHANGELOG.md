@@ -2,13 +2,11 @@
 
 ## 2.29.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-02-01`.
 
 ## 2.28.0 (2023-06-25)
 

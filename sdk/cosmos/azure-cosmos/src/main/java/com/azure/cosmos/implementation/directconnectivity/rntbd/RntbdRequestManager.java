@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
@@ -24,6 +23,7 @@ import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -965,6 +965,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
+        final RxDocumentServiceRequest serviceRequest = requestRecord.args().serviceRequest();
+
         requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
 
         // When decode completed, it means sdk has received the full response from server
@@ -1044,12 +1046,18 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     switch (subStatusCode) {
                         case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
                             cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
                             cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
@@ -1060,6 +1068,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                                     SubStatusCodes.SERVER_GENERATED_410);
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
                             cause = goneExceptionFromService;
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                     }
                     break;
@@ -1131,6 +1141,27 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         }
     }
 
+    private void handleGoneException(RxDocumentServiceRequest request, Exception exception) {
+
+        if (request.requestContext == null) {
+            return;
+        }
+
+        if (exception instanceof PartitionIsMigratingException) {
+            request.forceCollectionRoutingMapRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
+        } else if (exception instanceof InvalidPartitionException) {
+            request.forceNameCacheRefresh = true;
+            request.requestContext.resolvedPartitionKeyRange = null;
+        } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
+            request.requestContext.resolvedPartitionKeyRange = null;
+            request.forcePartitionKeyRangeRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
+        } else if (exception instanceof GoneException) {
+            request.requestContext.forceRefreshAddressCache = true;
+        }
+    }
+
     private void removeContextNegotiatorAndFlushPendingWrites(final ChannelHandlerContext context) {
 
         final RntbdContextNegotiator negotiator = context.pipeline().get(RntbdContextNegotiator.class);
@@ -1140,6 +1171,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.pendingWrites.isEmpty()) {
             this.pendingWrites.writeAndRemoveAll(context);
             context.flush();
+        }
+    }
+
+    private void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, CosmosException cause) {
+        if (rntbdConnectionStateListener != null) {
+            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(request, cause);
         }
     }
 

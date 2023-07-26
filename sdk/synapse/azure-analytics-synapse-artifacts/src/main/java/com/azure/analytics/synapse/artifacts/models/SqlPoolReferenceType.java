@@ -14,6 +14,14 @@ public final class SqlPoolReferenceType extends ExpandableStringEnum<SqlPoolRefe
     public static final SqlPoolReferenceType SQL_POOL_REFERENCE = fromString("SqlPoolReference");
 
     /**
+     * Creates a new instance of SqlPoolReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlPoolReferenceType() {}
+
+    /**
      * Creates or finds a SqlPoolReferenceType from its string representation.
      *
      * @param name a name to look for.

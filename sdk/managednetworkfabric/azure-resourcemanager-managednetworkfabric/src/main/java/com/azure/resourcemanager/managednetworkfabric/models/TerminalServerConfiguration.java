@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network and credentials configuration currently applied to terminal server. */
 @Fluent
-public final class TerminalServerConfiguration extends Layer3IpPrefixProperties {
+public final class TerminalServerConfiguration extends TerminalServerPatchableProperties {
     /*
      * ARM Resource ID used for the NetworkDevice.
      */
@@ -17,22 +17,28 @@ public final class TerminalServerConfiguration extends Layer3IpPrefixProperties 
     private String networkDeviceId;
 
     /*
-     * Username for the terminal server connection.
+     * IPv4 Address Prefix.
      */
-    @JsonProperty(value = "username")
-    private String username;
+    @JsonProperty(value = "primaryIpv4Prefix")
+    private String primaryIpv4Prefix;
 
     /*
-     * Password for the terminal server connection.
+     * IPv6 Address Prefix.
      */
-    @JsonProperty(value = "password")
-    private String password;
+    @JsonProperty(value = "primaryIpv6Prefix")
+    private String primaryIpv6Prefix;
 
     /*
-     * Serial Number of Terminal server.
+     * Secondary IPv4 Address Prefix.
      */
-    @JsonProperty(value = "serialNumber")
-    private String serialNumber;
+    @JsonProperty(value = "secondaryIpv4Prefix")
+    private String secondaryIpv4Prefix;
+
+    /*
+     * Secondary IPv6 Address Prefix.
+     */
+    @JsonProperty(value = "secondaryIpv6Prefix")
+    private String secondaryIpv6Prefix;
 
     /** Creates an instance of TerminalServerConfiguration class. */
     public TerminalServerConfiguration() {
@@ -48,90 +54,103 @@ public final class TerminalServerConfiguration extends Layer3IpPrefixProperties 
     }
 
     /**
-     * Get the username property: Username for the terminal server connection.
+     * Get the primaryIpv4Prefix property: IPv4 Address Prefix.
      *
-     * @return the username value.
+     * @return the primaryIpv4Prefix value.
      */
-    public String username() {
-        return this.username;
+    public String primaryIpv4Prefix() {
+        return this.primaryIpv4Prefix;
     }
 
     /**
-     * Set the username property: Username for the terminal server connection.
+     * Set the primaryIpv4Prefix property: IPv4 Address Prefix.
      *
-     * @param username the username value to set.
+     * @param primaryIpv4Prefix the primaryIpv4Prefix value to set.
      * @return the TerminalServerConfiguration object itself.
      */
-    public TerminalServerConfiguration withUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password for the terminal server connection.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password for the terminal server connection.
-     *
-     * @param password the password value to set.
-     * @return the TerminalServerConfiguration object itself.
-     */
-    public TerminalServerConfiguration withPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the serialNumber property: Serial Number of Terminal server.
-     *
-     * @return the serialNumber value.
-     */
-    public String serialNumber() {
-        return this.serialNumber;
-    }
-
-    /**
-     * Set the serialNumber property: Serial Number of Terminal server.
-     *
-     * @param serialNumber the serialNumber value to set.
-     * @return the TerminalServerConfiguration object itself.
-     */
-    public TerminalServerConfiguration withSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public TerminalServerConfiguration withPrimaryIpv4Prefix(String primaryIpv4Prefix) {
-        super.withPrimaryIpv4Prefix(primaryIpv4Prefix);
+        this.primaryIpv4Prefix = primaryIpv4Prefix;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the primaryIpv6Prefix property: IPv6 Address Prefix.
+     *
+     * @return the primaryIpv6Prefix value.
+     */
+    public String primaryIpv6Prefix() {
+        return this.primaryIpv6Prefix;
+    }
+
+    /**
+     * Set the primaryIpv6Prefix property: IPv6 Address Prefix.
+     *
+     * @param primaryIpv6Prefix the primaryIpv6Prefix value to set.
+     * @return the TerminalServerConfiguration object itself.
+     */
     public TerminalServerConfiguration withPrimaryIpv6Prefix(String primaryIpv6Prefix) {
-        super.withPrimaryIpv6Prefix(primaryIpv6Prefix);
+        this.primaryIpv6Prefix = primaryIpv6Prefix;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
+     *
+     * @return the secondaryIpv4Prefix value.
+     */
+    public String secondaryIpv4Prefix() {
+        return this.secondaryIpv4Prefix;
+    }
+
+    /**
+     * Set the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
+     *
+     * @param secondaryIpv4Prefix the secondaryIpv4Prefix value to set.
+     * @return the TerminalServerConfiguration object itself.
+     */
     public TerminalServerConfiguration withSecondaryIpv4Prefix(String secondaryIpv4Prefix) {
-        super.withSecondaryIpv4Prefix(secondaryIpv4Prefix);
+        this.secondaryIpv4Prefix = secondaryIpv4Prefix;
+        return this;
+    }
+
+    /**
+     * Get the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
+     *
+     * @return the secondaryIpv6Prefix value.
+     */
+    public String secondaryIpv6Prefix() {
+        return this.secondaryIpv6Prefix;
+    }
+
+    /**
+     * Set the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
+     *
+     * @param secondaryIpv6Prefix the secondaryIpv6Prefix value to set.
+     * @return the TerminalServerConfiguration object itself.
+     */
+    public TerminalServerConfiguration withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
+        this.secondaryIpv6Prefix = secondaryIpv6Prefix;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public TerminalServerConfiguration withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
-        super.withSecondaryIpv6Prefix(secondaryIpv6Prefix);
+    public TerminalServerConfiguration withUsername(String username) {
+        super.withUsername(username);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TerminalServerConfiguration withPassword(String password) {
+        super.withPassword(password);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TerminalServerConfiguration withSerialNumber(String serialNumber) {
+        super.withSerialNumber(serialNumber);
         return this;
     }
 
