@@ -1156,7 +1156,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
         new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI()
-            .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
+            .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups());
     }
 
     @Test
