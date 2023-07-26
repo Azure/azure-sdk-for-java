@@ -7,27 +7,26 @@ package com.azure.resourcemanager.elasticsan.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanUpdateProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticSanUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticSanUpdateProperties model =
             BinaryData
-                .fromString("{\"baseSizeTiB\":907638754546671193,\"extendedCapacitySizeTiB\":1576812091412764436}")
+                .fromString("{\"baseSizeTiB\":6845758831924711808,\"extendedCapacitySizeTiB\":2937936941611488852}")
                 .toObject(ElasticSanUpdateProperties.class);
-        Assertions.assertEquals(907638754546671193L, model.baseSizeTiB());
-        Assertions.assertEquals(1576812091412764436L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(6845758831924711808L, model.baseSizeTiB());
+        Assertions.assertEquals(2937936941611488852L, model.extendedCapacitySizeTiB());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticSanUpdateProperties model =
             new ElasticSanUpdateProperties()
-                .withBaseSizeTiB(907638754546671193L)
-                .withExtendedCapacitySizeTiB(1576812091412764436L);
+                .withBaseSizeTiB(6845758831924711808L)
+                .withExtendedCapacitySizeTiB(2937936941611488852L);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdateProperties.class);
-        Assertions.assertEquals(907638754546671193L, model.baseSizeTiB());
-        Assertions.assertEquals(1576812091412764436L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(6845758831924711808L, model.baseSizeTiB());
+        Assertions.assertEquals(2937936941611488852L, model.extendedCapacitySizeTiB());
     }
 }

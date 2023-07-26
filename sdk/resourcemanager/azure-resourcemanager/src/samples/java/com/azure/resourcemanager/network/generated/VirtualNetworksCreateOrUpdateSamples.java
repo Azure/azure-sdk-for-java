@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for VirtualNetworks CreateOrUpdate. */
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreateSubnet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreateSubnet.json
      */
     /**
      * Sample code: Create virtual network with subnet.
@@ -42,7 +42,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreateWithBgpCommunities.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreateWithBgpCommunities.json
      */
     /**
      * Sample code: Create virtual network with Bgp Communities.
@@ -67,7 +67,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreateSubnetWithAddressPrefixes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreateSubnetWithAddressPrefixes.json
      */
     /**
      * Sample code: Create virtual network with subnet containing address prefixes.
@@ -97,7 +97,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreateSubnetWithDelegation.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreateSubnetWithDelegation.json
      */
     /**
      * Sample code: Create virtual network with delegated subnets.
@@ -132,7 +132,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreateWithEncryption.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreateWithEncryption.json
      */
     /**
      * Sample code: Create virtual network with encryption.
@@ -160,7 +160,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreate.json
      */
     /**
      * Sample code: Create virtual network.
@@ -184,7 +184,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreateServiceEndpointPolicy.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreateServiceEndpointPolicy.json
      */
     /**
      * Sample code: Create virtual network with service endpoints and service endpoint policy.
@@ -224,7 +224,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkCreateServiceEndpoints.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkCreateServiceEndpoints.json
      */
     /**
      * Sample code: Create virtual network with service endpoints.

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public final class ContainerConfiguration {
      * The container technology to be used.
      */
     @JsonProperty(value = "type", required = true)
-    private String type = "DockerCompatible";
+    private ContainerType type;
 
     /*
      * The collection of container image names.
@@ -37,7 +38,6 @@ public final class ContainerConfiguration {
 
     /** Creates an instance of ContainerConfiguration class. */
     public ContainerConfiguration() {
-        type = "DockerCompatible";
     }
 
     /**
@@ -45,7 +45,7 @@ public final class ContainerConfiguration {
      *
      * @return the type value.
      */
-    public String type() {
+    public ContainerType type() {
         return this.type;
     }
 
@@ -55,7 +55,7 @@ public final class ContainerConfiguration {
      * @param type the type value to set.
      * @return the ContainerConfiguration object itself.
      */
-    public ContainerConfiguration withType(String type) {
+    public ContainerConfiguration withType(ContainerType type) {
         this.type = type;
         return this;
     }
@@ -118,8 +118,15 @@ public final class ContainerConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model ContainerConfiguration"));
+        }
         if (containerRegistries() != null) {
             containerRegistries().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerConfiguration.class);
 }
