@@ -238,7 +238,7 @@ public class ClientConfigDiagnosticsTest {
         int proactiveConnectionRegionCount) {
 
         return String.format(
-            "(containers:%s)(pcrc:%d)(awd:%dms)",
+            "(containers:%s)(pcrc:%d)(awd:%s)",
             containerIdentities
                 .stream()
                 .map(ci -> String.join(
@@ -246,6 +246,6 @@ public class ClientConfigDiagnosticsTest {
                     containerIdentityAccessor.getContainerLink(ci)))
                 .collect(Collectors.joining(";")),
             proactiveConnectionRegionCount,
-            aggressiveWarmupDuration == null ? Duration.ofMillis(Integer.MAX_VALUE).toMillis() : aggressiveWarmupDuration.toMillis());
+            aggressiveWarmupDuration);
     }
 }
