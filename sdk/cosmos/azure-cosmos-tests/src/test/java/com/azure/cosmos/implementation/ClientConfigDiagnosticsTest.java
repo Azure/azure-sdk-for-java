@@ -173,7 +173,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: true, cs: true, rv: false)");
-        assertThat(objectNode.get("proactiveInit").asText()).isEqualTo("test-db.test-container-1,test-db.test-container-2(1)");
+        assertThat(objectNode.get("proactiveInit").asText()).isEqualTo("test-db.test-container-1,test-db.test-container-2(pcrc:1)(awd:2147483647s)");
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
     }

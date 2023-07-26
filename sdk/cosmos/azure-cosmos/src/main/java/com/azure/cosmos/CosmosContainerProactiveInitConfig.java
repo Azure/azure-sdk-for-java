@@ -98,7 +98,7 @@ public final class CosmosContainerProactiveInitConfig {
 
         return
             String.format(
-                "%s(%d)",
+                "%s(pcrc:%d)(awd:%ds)",
                 cosmosContainerIdentities
                     .stream()
                     .map(ci -> String.join(
@@ -106,7 +106,8 @@ public final class CosmosContainerProactiveInitConfig {
                         containerIdAccessor.getDatabaseName(ci),
                         containerIdAccessor.getContainerName(ci)))
                     .collect(Collectors.joining(",")),
-                numProactiveConnectionRegions);
+                numProactiveConnectionRegions,
+                aggressiveWarmupDuration == null ? Duration.ofSeconds(Integer.MAX_VALUE).getSeconds() : aggressiveWarmupDuration.getSeconds());
     }
 
     static void initialize() {
