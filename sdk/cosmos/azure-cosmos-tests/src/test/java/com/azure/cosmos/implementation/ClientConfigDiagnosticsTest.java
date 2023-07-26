@@ -32,6 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClientConfigDiagnosticsTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor = ImplementationBridgeHelpers
+        .CosmosContainerIdentityHelper
+        .getCosmosContainerIdentityAccessor();
 
     @DataProvider(name = "proactiveContainerInitConfigProvider")
     public Object[][] proactiveContainerInitConfigProvider() {
@@ -111,7 +114,7 @@ public class ClientConfigDiagnosticsTest {
 
     }
 
-    @Test(groups = { "unit" }, dataProvider = "")
+    @Test(groups = { "unit" })
     public void rntbd() throws Exception {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
 
@@ -233,10 +236,6 @@ public class ClientConfigDiagnosticsTest {
         List<CosmosContainerIdentity> containerIdentities,
         Duration aggressiveWarmupDuration,
         int proactiveConnectionRegionCount) {
-
-        ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor = ImplementationBridgeHelpers
-            .CosmosContainerIdentityHelper
-            .getCosmosContainerIdentityAccessor();
 
         return String.format(
             "(containers:%s)(pcrc:%d)(awd:%ds)",

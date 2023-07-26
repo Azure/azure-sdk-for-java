@@ -98,7 +98,7 @@ public final class CosmosContainerProactiveInitConfig {
 
         // containers -> the containers part of the connection warm up
         // pcrc -> the first k regions from the preferredRegions to which connections are warmed up
-        // aws -> duration within which aggressive connection warm up happens
+        // awd -> duration within which aggressive connection warm up happens
         return
             String.format(
                 "(containers:%s)(pcrc:%d)(awd:%ds)",
