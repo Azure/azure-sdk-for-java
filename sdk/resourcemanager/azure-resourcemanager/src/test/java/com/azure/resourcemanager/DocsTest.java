@@ -59,7 +59,7 @@ public class DocsTest extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testDesignPreviewSamples() throws InterruptedException {
         if (skipInPlayback()) {
             return;
