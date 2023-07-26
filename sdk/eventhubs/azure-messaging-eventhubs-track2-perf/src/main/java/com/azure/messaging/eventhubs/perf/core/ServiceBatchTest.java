@@ -57,12 +57,12 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
         return Mono.empty();
     }
 
-    @Override
-    public Mono<Void> cleanupAsync() {
-        return Mono.defer(() -> {
-            eventHubProducerAsyncClient.close();
-            eventHubProducerClient.close();
-            return Mono.empty();
-        }).take(Duration.ofSeconds(30)).then(super.cleanupAsync()).take(Duration.ofSeconds(30)).then();
-    }
+//    @Override
+//    public Mono<Void> cleanupAsync() {
+//        return Mono.defer(() -> {
+//            eventHubProducerAsyncClient.close();
+//            eventHubProducerClient.close();
+//            return Mono.empty();
+//        }).take(Duration.ofSeconds(30)).then(super.cleanupAsync()).take(Duration.ofSeconds(30)).then();
+//    }
 }
