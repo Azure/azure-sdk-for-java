@@ -7,7 +7,21 @@ package com.azure.resourcemanager.kusto.generated;
 /** Samples for Databases Get. */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDatabasesGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoSuspendedDatabasesGet.json
+     */
+    /**
+     * Sample code: KustoSuspendedDatabasesGet.
+     *
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoSuspendedDatabasesGet(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager
+            .databases()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase9", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoDatabasesGet.json
      */
     /**
      * Sample code: KustoDatabasesGet.

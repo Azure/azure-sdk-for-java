@@ -23,7 +23,7 @@ import java.util.List;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * ElevationClient client = new ElevationClientBuilder&#40;&#41; 
+ * ElevationClient client = new ElevationClientBuilder&#40;&#41;
  *     .credential&#40;keyCredential&#41;
  *     .elevationClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;
@@ -52,7 +52,7 @@ public final class ElevationClient {
      *     new GeoPosition&#40;-121.68853362143818, 46.856464798637127&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_points -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
@@ -60,8 +60,7 @@ public final class ElevationClient {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -79,7 +78,7 @@ public final class ElevationClient {
     public ElevationResult getDataForPoints(List<GeoPosition> points) {
         return this.asyncClient.getDataForPoints(points).block();
     }
- 
+
     /**
      * Get Data For Points
      * <!-- src_embed com.azure.maps.elevation.sync.get_data_for_points -->
@@ -89,7 +88,7 @@ public final class ElevationClient {
      *     new GeoPosition&#40;-121.68853362143818, 46.856464798637127&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_points -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
@@ -97,8 +96,7 @@ public final class ElevationClient {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -127,7 +125,7 @@ public final class ElevationClient {
      *     new GeoPosition&#40;-121.65853362143818, 46.85646479863713&#41;&#41;, 5&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_polyline -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Polyline API provides elevation data along a polyline.
@@ -170,7 +168,7 @@ public final class ElevationClient {
      *     new GeoPosition&#40;-121.65853362143818, 46.85646479863713&#41;&#41;, 5&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_polyline -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Polyline API provides elevation data along a polyline.
@@ -213,7 +211,7 @@ public final class ElevationClient {
      *     -121.658533621438, 46.8564647986371&#41;, 3, 3&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_bounding_box -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
@@ -251,7 +249,7 @@ public final class ElevationClient {
      *     -121.658533621438, 46.8564647986371&#41;, 3, 3&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_bounding_box -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A

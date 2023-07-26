@@ -11,19 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CancelJobRequest {
     /*
-     * (Optional) A note that will be appended to the jobs' Notes collection
-     * with the current timestamp.
+     * (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
 
     /*
-     * Indicates the outcome of the job, populate this field with your own
-     * custom values.
+     * Indicates the outcome of the job, populate this field with your own custom values.
      * If not provided, default value of "Cancelled" is set.
      */
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
+
+    /** Creates an instance of CancelJobRequest class. */
+    public CancelJobRequest() {}
 
     /**
      * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current

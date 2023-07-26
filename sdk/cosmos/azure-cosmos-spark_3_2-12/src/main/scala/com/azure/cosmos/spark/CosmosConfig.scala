@@ -82,6 +82,7 @@ private[spark] object CosmosConfigNames {
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
   val WriteBulkPayloadSizeInBytes = "spark.cosmos.write.bulk.targetedPayloadSizeInBytes"
+  val WriteBulkInitialBatchSize = "spark.cosmos.write.bulk.initialBatchSize"
   val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
   val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
   val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
@@ -166,6 +167,7 @@ private[spark] object CosmosConfigNames {
     WriteBulkMaxPendingOperations,
     WriteBulkMaxConcurrentPartitions,
     WriteBulkPayloadSizeInBytes,
+    WriteBulkInitialBatchSize,
     WritePointMaxConcurrency,
     WritePatchDefaultOperationType,
     WritePatchColumnConfigs,
@@ -818,7 +820,8 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxConcurrentCosmosPartitions: Option[Int] = None,
                                      patchConfigs: Option[CosmosPatchConfigs] = None,
                                      throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
-                                     maxMicroBatchPayloadSizeInBytes: Option[Int] = None)
+                                     maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
+                                     initialMicroBatchSize: Option[Int] = None)
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -838,6 +841,16 @@ private object CosmosWriteConfig {
       "when its payload size exceeds this value. For best efficiency its value should be low enough to leave enough " +
       "room for one document - to avoid that the request size exceeds the Cosmos DB maximum of 2 MB too often " +
       "which would result in retries and having to transmit large network payloads multiple times.")
+
+  private val initialMicroBatchSize = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkInitialBatchSize,
+    defaultValue = Option.apply(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST),
+    mandatory = false,
+    parseFromStringFunction = initialBatchSizeString => initialBatchSizeString.toInt,
+    helpMessage = "Cosmos DB initial bulk micro batch size - a micro batch will be flushed to the backend " +
+      "when the number of documents enqueued exceeds this size - or the target payload size is met. The micro batch " +
+      "size is getting automatically tuned based on the throttling rate. By default the " +
+      "initial micro batch size is 100. Reduce this when you want to avoid that the first few requests consume " +
+      "too many RUs.")
 
   private val bulkMaxPendingOperations = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMaxPendingOperations,
     mandatory = false,
@@ -979,6 +992,7 @@ private object CosmosWriteConfig {
     var patchConfigsOpt = Option.empty[CosmosPatchConfigs]
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
     val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
+    val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
 
     assert(bulkEnabledOpt.isDefined)
 
@@ -1004,7 +1018,8 @@ private object CosmosWriteConfig {
       maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions),
       patchConfigs = patchConfigsOpt,
       throughputControlConfig = throughputControlConfigOpt,
-      maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt)
+      maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt,
+      initialMicroBatchSize = initialBatchSizeOpt)
   }
 
   def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {

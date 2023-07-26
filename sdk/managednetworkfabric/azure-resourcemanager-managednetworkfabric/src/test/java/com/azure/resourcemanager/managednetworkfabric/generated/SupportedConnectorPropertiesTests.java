@@ -13,18 +13,18 @@ public final class SupportedConnectorPropertiesTests {
     public void testDeserialize() throws Exception {
         SupportedConnectorProperties model =
             BinaryData
-                .fromString("{\"connectorType\":\"dfdlwggyts\",\"maxSpeedInMbps\":676587800}")
+                .fromString("{\"connectorType\":\"uw\",\"maxSpeedInMbps\":792068826}")
                 .toObject(SupportedConnectorProperties.class);
-        Assertions.assertEquals("dfdlwggyts", model.connectorType());
-        Assertions.assertEquals(676587800, model.maxSpeedInMbps());
+        Assertions.assertEquals("uw", model.connectorType());
+        Assertions.assertEquals(792068826, model.maxSpeedInMbps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SupportedConnectorProperties model =
-            new SupportedConnectorProperties().withConnectorType("dfdlwggyts").withMaxSpeedInMbps(676587800);
+            new SupportedConnectorProperties().withConnectorType("uw").withMaxSpeedInMbps(792068826);
         model = BinaryData.fromObject(model).toObject(SupportedConnectorProperties.class);
-        Assertions.assertEquals("dfdlwggyts", model.connectorType());
-        Assertions.assertEquals(676587800, model.maxSpeedInMbps());
+        Assertions.assertEquals("uw", model.connectorType());
+        Assertions.assertEquals(792068826, model.maxSpeedInMbps());
     }
 }

@@ -16,10 +16,10 @@ public final class BackupPatchTests {
         BackupPatch model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"hykojoxafnndlpic\":\"kuwhh\",\"h\":\"koymkcd\",\"reqnovvqfov\":\"pkkpw\",\"rsndsytgadgvra\":\"jxywsuws\"},\"properties\":{\"backupId\":\"neqn\",\"creationDate\":\"2021-12-02T13:04:58Z\",\"provisioningState\":\"wlquuijfqkace\",\"size\":9040428680411345053,\"label\":\"pubjibw\",\"backupType\":\"Manual\",\"failureReason\":\"ohqkvpuvksgpls\",\"volumeName\":\"nynfsynljphuo\",\"useExistingSnapshot\":true}}")
+                    "{\"tags\":{\"infwjlfltkacjve\":\"ujhemmsbvdkcrodt\"},\"properties\":{\"backupId\":\"lfoakg\",\"creationDate\":\"2021-02-17T13:48:46Z\",\"provisioningState\":\"agaowpulpqblylsy\",\"size\":2544016623268930785,\"label\":\"sjervti\",\"backupType\":\"Scheduled\",\"failureReason\":\"dszue\",\"volumeName\":\"sbzkf\",\"useExistingSnapshot\":true}}")
                 .toObject(BackupPatch.class);
-        Assertions.assertEquals("kuwhh", model.tags().get("hykojoxafnndlpic"));
-        Assertions.assertEquals("pubjibw", model.label());
+        Assertions.assertEquals("ujhemmsbvdkcrodt", model.tags().get("infwjlfltkacjve"));
+        Assertions.assertEquals("sjervti", model.label());
         Assertions.assertEquals(true, model.useExistingSnapshot());
     }
 
@@ -27,21 +27,12 @@ public final class BackupPatchTests {
     public void testSerialize() throws Exception {
         BackupPatch model =
             new BackupPatch()
-                .withTags(
-                    mapOf(
-                        "hykojoxafnndlpic",
-                        "kuwhh",
-                        "h",
-                        "koymkcd",
-                        "reqnovvqfov",
-                        "pkkpw",
-                        "rsndsytgadgvra",
-                        "jxywsuws"))
-                .withLabel("pubjibw")
+                .withTags(mapOf("infwjlfltkacjve", "ujhemmsbvdkcrodt"))
+                .withLabel("sjervti")
                 .withUseExistingSnapshot(true);
         model = BinaryData.fromObject(model).toObject(BackupPatch.class);
-        Assertions.assertEquals("kuwhh", model.tags().get("hykojoxafnndlpic"));
-        Assertions.assertEquals("pubjibw", model.label());
+        Assertions.assertEquals("ujhemmsbvdkcrodt", model.tags().get("infwjlfltkacjve"));
+        Assertions.assertEquals("sjervti", model.label());
         Assertions.assertEquals(true, model.useExistingSnapshot());
     }
 

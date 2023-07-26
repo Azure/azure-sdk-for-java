@@ -31,7 +31,7 @@ public final class StorageMoversGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"czfc\",\"provisioningState\":\"Succeeded\"},\"location\":\"xdbabphlwr\",\"tags\":{\"azt\":\"ktsthsucocmny\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"}";
+            "{\"properties\":{\"description\":\"sncghkjeszz\",\"provisioningState\":\"Succeeded\"},\"location\":\"htxfvgxbfsmxnehm\",\"tags\":{\"bfqkkr\":\"cxgod\"},\"id\":\"mpukgriw\",\"name\":\"lzlfbxzpuz\",\"type\":\"cispnqzahmgkbr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class StorageMoversGetByResourceGroupWithResponseMockTests {
         StorageMover response =
             manager
                 .storageMovers()
-                .getByResourceGroupWithResponse("nkxmyskpbhenbtk", "xywnytnrsynlqidy", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("uujqgidokgjljyo", "gvcl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xdbabphlwr", response.location());
-        Assertions.assertEquals("ktsthsucocmny", response.tags().get("azt"));
-        Assertions.assertEquals("czfc", response.description());
+        Assertions.assertEquals("htxfvgxbfsmxnehm", response.location());
+        Assertions.assertEquals("cxgod", response.tags().get("bfqkkr"));
+        Assertions.assertEquals("sncghkjeszz", response.description());
     }
 }

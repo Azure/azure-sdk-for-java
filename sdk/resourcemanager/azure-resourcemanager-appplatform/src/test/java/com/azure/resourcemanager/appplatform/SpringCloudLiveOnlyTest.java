@@ -140,7 +140,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         allowAllSSL();
         String cerPassword = password();
-        String resourcePath = Paths.get(this.getClass().getResource("/session-records").toURI()).getParent().toString();
+        String resourcePath = Paths.get(this.getClass().getResource("/junit-platform.properties").toURI()).getParent().toString();
         String cerPath = resourcePath + domainName + ".cer";
         String pfxPath = resourcePath + domainName + ".pfx";
         createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);

@@ -6,15 +6,18 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRoute;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for L3IsolationDomains Create. */
 public final class L3IsolationDomainsCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: L3IsolationDomains_Create_MaximumSet_Gen.
@@ -27,20 +30,38 @@ public final class L3IsolationDomainsCreateSamples {
             .l3IsolationDomains()
             .define("example-l3domain")
             .withRegion("eastus")
-            .withExistingResourceGroup("resourceGroupName")
+            .withExistingResourceGroup("example-rg")
             .withNetworkFabricId(
-                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName")
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
             .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
             .withAggregateRouteConfiguration(
                 new AggregateRouteConfiguration()
                     .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("10.0.0.0/24")))
-                    .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("10.0.0.1"))))
-            .withDescription("creating L3 isolation domain")
+                    .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("3FFE:FFFF:0:CD30::a0/29"))))
             .withConnectedSubnetRoutePolicy(
-                new L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy()
+                new ConnectedSubnetRoutePolicy()
                     .withExportRoutePolicyId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName2"))
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
+                    .withExportRoutePolicy(
+                        new L3ExportRoutePolicy()
+                            .withExportIpv4RoutePolicyId(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
+                            .withExportIpv6RoutePolicyId(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")))
+            .withAnnotation("annotation")
             .create();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

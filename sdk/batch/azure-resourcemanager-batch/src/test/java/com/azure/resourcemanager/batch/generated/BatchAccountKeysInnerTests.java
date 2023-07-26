@@ -6,19 +6,18 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountKeysInner;
-import org.junit.jupiter.api.Test;
 
 public final class BatchAccountKeysInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BatchAccountKeysInner model =
             BinaryData
-                .fromString("{\"accountName\":\"htymw\",\"primary\":\"dkfthwxmnt\",\"secondary\":\"waopvkmijcmmxd\"}")
+                .fromString("{\"accountName\":\"nzl\",\"primary\":\"fmppe\",\"secondary\":\"vmgxsab\"}")
                 .toObject(BatchAccountKeysInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BatchAccountKeysInner model = new BatchAccountKeysInner();
         model = BinaryData.fromObject(model).toObject(BatchAccountKeysInner.class);
     }

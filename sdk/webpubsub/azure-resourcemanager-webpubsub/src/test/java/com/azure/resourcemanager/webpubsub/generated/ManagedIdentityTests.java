@@ -18,28 +18,19 @@ public final class ManagedIdentityTests {
         ManagedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"ofmxagkvtmelmqkr\":{\"principalId\":\"hseyvju\",\"clientId\":\"tslhspkdeem\"},\"aex\":{\"principalId\":\"hvljuahaquh\",\"clientId\":\"hmdua\"},\"vxpvgomz\":{\"principalId\":\"vfadmws\",\"clientId\":\"r\"},\"auhashsfwx\":{\"principalId\":\"misgwbnb\",\"clientId\":\"ldawkzbaliourqha\"}},\"principalId\":\"owzxcu\",\"tenantId\":\"cjooxdjebwpucwwf\"}")
+                    "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"akufgmjz\":{\"principalId\":\"ewpusdsttwvogvb\",\"clientId\":\"jdcngqqm\"}},\"principalId\":\"rdgrtw\",\"tenantId\":\"nuuzkopbm\"}")
                 .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedIdentity model =
             new ManagedIdentity()
-                .withType(ManagedIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "ofmxagkvtmelmqkr",
-                        new UserAssignedIdentityProperty(),
-                        "aex",
-                        new UserAssignedIdentityProperty(),
-                        "vxpvgomz",
-                        new UserAssignedIdentityProperty(),
-                        "auhashsfwx",
-                        new UserAssignedIdentityProperty()));
+                .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("akufgmjz", new UserAssignedIdentityProperty()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @SuppressWarnings("unchecked")

@@ -17,10 +17,10 @@ public final class NeighborAddress {
     private String address;
 
     /*
-     * OperationalState of the NeighborAddress.
+     * Configuration state of the resource.
      */
-    @JsonProperty(value = "operationalState", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationalState;
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
 
     /** Creates an instance of NeighborAddress class. */
     public NeighborAddress() {
@@ -47,12 +47,12 @@ public final class NeighborAddress {
     }
 
     /**
-     * Get the operationalState property: OperationalState of the NeighborAddress.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the operationalState value.
+     * @return the configurationState value.
      */
-    public String operationalState() {
-        return this.operationalState;
+    public ConfigurationState configurationState() {
+        return this.configurationState;
     }
 
     /**

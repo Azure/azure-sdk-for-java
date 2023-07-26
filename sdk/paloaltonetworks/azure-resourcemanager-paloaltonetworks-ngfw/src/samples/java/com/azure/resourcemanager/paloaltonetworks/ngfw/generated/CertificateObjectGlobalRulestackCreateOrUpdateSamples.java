@@ -10,7 +10,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 /** Samples for CertificateObjectGlobalRulestack CreateOrUpdate. */
 public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
@@ -29,7 +29,7 @@ public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.

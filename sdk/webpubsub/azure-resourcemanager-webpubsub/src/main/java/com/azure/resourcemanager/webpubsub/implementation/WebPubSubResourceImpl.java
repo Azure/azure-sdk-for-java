@@ -18,6 +18,7 @@ import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.ServiceKind;
 import com.azure.resourcemanager.webpubsub.models.SharedPrivateLinkResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubKeys;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
@@ -61,6 +62,10 @@ public final class WebPubSubResourceImpl
 
     public ResourceSku sku() {
         return this.innerModel().sku();
+    }
+
+    public ServiceKind kind() {
+        return this.innerModel().kind();
     }
 
     public ManagedIdentity identity() {
@@ -299,6 +304,11 @@ public final class WebPubSubResourceImpl
 
     public WebPubSubResourceImpl withSku(ResourceSku sku) {
         this.innerModel().withSku(sku);
+        return this;
+    }
+
+    public WebPubSubResourceImpl withKind(ServiceKind kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 

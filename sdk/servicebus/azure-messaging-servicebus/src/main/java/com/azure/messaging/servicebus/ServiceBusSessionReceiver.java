@@ -29,7 +29,6 @@ import java.util.function.Function;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
@@ -47,8 +46,8 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     // also, the lock is removed after the completion of the message disposition.
     private final LockContainer<OffsetDateTime> lockContainer;
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
-    private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
+    private final String sessionId;
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusMessageContext> receivedMessages;
@@ -61,6 +60,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      * Creates a receiver for the first available session.
      *
      * @param receiveLink Service Bus receive link for available session.
+     * @param sessionId Identifier of the Service Bus Session that the receiver is associated with.
      * @param messageSerializer Serializes and deserializes messages from Service Bus.
      * @param retryOptions Retry options for the receiver.
      * @param prefetch Number of messages to prefetch from session.
@@ -71,10 +71,11 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      * @param sessionIdleTimeout Timeout after which session receiver will be disposed if there are no more messages
      *                           and the receiver is idle. Set it to {@code null} to not dispose receiver.
      */
-    ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
+    ServiceBusSessionReceiver(String sessionId, ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, Scheduler scheduler,
         Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration, Duration sessionIdleTimeout) {
 
+        this.sessionId = sessionId;
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
         this.retryOptions = retryOptions;
@@ -157,14 +158,6 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 }));
         }
 
-        this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> {
-            if (!sessionId.compareAndSet(null, id)) {
-                LOGGER.atWarning()
-                    .addKeyValue("existingSessionId", sessionId.get())
-                    .addKeyValue("returnedSessionId", id)
-                    .log("Another method set sessionId.");
-            }
-        }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
                 withReceiveLinkInformation(LOGGER.atInfo())
@@ -174,7 +167,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
 
                 return;
             }
-            this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
+            this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId,
                 maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
         }));
     }
@@ -204,7 +197,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     }
 
     String getSessionId() {
-        return sessionId.get();
+        return sessionId;
     }
 
     /**
@@ -254,9 +247,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     }
 
     private LoggingEventBuilder withReceiveLinkInformation(LoggingEventBuilder builder) {
-        final String current = sessionId.get();
-
-        return builder.addKeyValue(SESSION_ID_KEY, current != null ? current : NOT_APPLICABLE)
+        return builder.addKeyValue(SESSION_ID_KEY, sessionId)
             .addKeyValue(ENTITY_PATH_KEY, receiveLink.getEntityPath())
             .addKeyValue(LINK_NAME_KEY, receiveLink.getLinkName());
     }

@@ -73,6 +73,13 @@ public final class DeletedBackupInstance extends BackupInstance {
 
     /** {@inheritDoc} */
     @Override
+    public DeletedBackupInstance withIdentityDetails(IdentityDetails identityDetails) {
+        super.withIdentityDetails(identityDetails);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public DeletedBackupInstance withObjectType(String objectType) {
         super.withObjectType(objectType);
         return this;

@@ -11,12 +11,12 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkResourceListResult;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesListByClusterWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"fprnjl\",\"name\":\"tlxs\",\"type\":\"rpddouifamo\"},{\"id\":\"iynknlq\",\"name\":\"zdvpiw\",\"type\":\"xqszdtmaajquh\"},{\"id\":\"lrjvmtyg\",\"name\":\"bmzyospsps\",\"type\":\"c\"},{\"id\":\"yjpmspbpssdfppyo\",\"name\":\"tieyujtvczkcny\",\"type\":\"rxmunjdxvgln\"}]}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"bcccgzpra\",\"requiredMembers\":[\"yuffatsgf\",\"ipwcxbyu\"],\"requiredZoneNames\":[\"qdx\",\"urnpnuhzafccnuh\",\"i\"]},\"id\":\"yl\",\"name\":\"ui\",\"type\":\"vxva\"},{\"properties\":{\"groupId\":\"rkdlb\",\"requiredMembers\":[\"xvhcs\",\"hzlwxaea\",\"vurex\",\"ndsbdw\"],\"requiredZoneNames\":[\"e\",\"zmwntopagt\",\"mvmmagoaqylkjz\"]},\"id\":\"iua\",\"name\":\"jcg\",\"type\":\"xitp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,11 @@ public final class PrivateLinkResourcesListByClusterWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResourceListResult response =
-            manager.privateLinkResources().listByClusterWithResponse("ytqj", "w", Context.NONE).getValue();
+            manager
+                .privateLinkResources()
+                .listByClusterWithResponse("lpjfelqerpptcbgq", "zmnhiilialwc", com.azure.core.util.Context.NONE)
+                .getValue();
+
+        Assertions.assertEquals("qdx", response.value().get(0).requiredZoneNames().get(0));
     }
 }

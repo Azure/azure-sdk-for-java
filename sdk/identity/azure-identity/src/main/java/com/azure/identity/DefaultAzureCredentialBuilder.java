@@ -76,6 +76,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder() {
         this.identityClientOptions.setIdentityLogOptionsImpl(new IdentityLogOptionsImpl(true));
+        this.identityClientOptions.setChained(true);
     }
 
     /**
@@ -295,7 +296,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
             identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return new WorkloadIdentityCredential(null, clientId, null,
+        return new WorkloadIdentityCredential(tenantId, clientId, null,
                 identityClientOptions.clone());
     }
 }

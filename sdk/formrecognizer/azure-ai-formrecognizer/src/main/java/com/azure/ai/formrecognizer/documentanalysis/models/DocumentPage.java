@@ -61,13 +61,6 @@ public final class DocumentPage {
      */
     private List<DocumentLine> lines;
 
-    private DocumentPageKind kind;
-
-    /*
-     * Extracted annotations from the page.
-     */
-    private List<DocumentAnnotation> annotations;
-
     /*
      * Extracted barcodes from the page.
      */
@@ -77,11 +70,6 @@ public final class DocumentPage {
      * Extracted formulas from the page.
      */
     private List<DocumentFormula> formulas;
-
-    /*
-     * Extracted images from the page.
-     */
-    private List<DocumentImage> images;
 
     /**
      * Get the 1-based page number in the input document.
@@ -259,43 +247,6 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of document page.
-     *
-     * @param kind the kind value to set.
-     */
-    void setKind(DocumentPageKind kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Get the extracted annotations from the page.
-     *
-     * @return the annotations value.
-     */
-    public List<DocumentAnnotation> getAnnotations() {
-        return this.annotations;
-    }
-
-    /**
-     * Set the annotations property: Extracted annotations from the page.
-     *
-     * @param annotations the annotations value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setAnnotations(List<DocumentAnnotation> annotations) {
-        this.annotations = annotations;
-    }
-
-    /**
      * Get the extracted barcodes from the page.
      *
      * @return the barcodes value.
@@ -331,25 +282,6 @@ public final class DocumentPage {
      */
     void setFormulas(List<DocumentFormula> formulas) {
         this.formulas = formulas;
-    }
-
-    /**
-     * Get the extracted images from the page.
-     *
-     * @return the images value.
-     */
-    public List<DocumentImage> getImages() {
-        return this.images;
-    }
-
-    /**
-     * Set the images property: Extracted images from the page.
-     *
-     * @param images the images value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setImages(List<DocumentImage> images) {
-        this.images = images;
     }
 
     static {
@@ -400,16 +332,6 @@ public final class DocumentPage {
             }
 
             @Override
-            public void setKind(DocumentPage documentPage, DocumentPageKind pageKind) {
-                documentPage.setKind(pageKind);
-            }
-
-            @Override
-            public void setImages(DocumentPage documentPage, List<DocumentImage> images) {
-                documentPage.setImages(images);
-            }
-
-            @Override
             public void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas) {
                 documentPage.setFormulas(formulas);
             }
@@ -417,11 +339,6 @@ public final class DocumentPage {
             @Override
             public void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
                 documentPage.setBarcodes(barcodes);
-            }
-
-            @Override
-            public void setAnnotations(DocumentPage documentPage, List<DocumentAnnotation> annotations) {
-                documentPage.setAnnotations(annotations);
             }
         });
     }

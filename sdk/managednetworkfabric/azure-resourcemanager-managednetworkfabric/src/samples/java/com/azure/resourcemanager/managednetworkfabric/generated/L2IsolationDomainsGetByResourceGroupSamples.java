@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for L2IsolationDomains GetByResourceGroup. */
 public final class L2IsolationDomainsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: L2IsolationDomains_Get_MaximumSet_Gen.
@@ -18,7 +18,6 @@ public final class L2IsolationDomainsGetByResourceGroupSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .l2IsolationDomains()
-            .getByResourceGroupWithResponse(
-                "resourceGroupName", "l2IsolationDomainName", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("example-rg", "example-l2Domain", com.azure.core.util.Context.NONE);
     }
 }

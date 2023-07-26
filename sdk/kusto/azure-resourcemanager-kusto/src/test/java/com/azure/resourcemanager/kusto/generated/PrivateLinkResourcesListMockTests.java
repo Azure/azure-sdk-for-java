@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"tqyryuzcbmqqv\",\"requiredMembers\":[\"wfgtayxonsup\"],\"requiredZoneNames\":[\"lzqnhcvs\",\"ltnzoibgsxg\"]},\"id\":\"fyq\",\"name\":\"nmpqoxwdofdb\",\"type\":\"iqxeiiqbimht\"}]}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"svoujkxi\",\"requiredMembers\":[\"fhrkmdyom\",\"xfbvfb\",\"dy\"],\"requiredZoneNames\":[\"pwpgddei\",\"awzovgkk\",\"muikjcjcaztbws\",\"sqowxwc\"]},\"id\":\"likytwvczcswka\",\"name\":\"ve\",\"type\":\"yfdvlvhbwrnfxtgd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class PrivateLinkResourcesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateLinkResource> response =
-            manager.privateLinkResources().list("wakoihkn", "mjblmljhlny", com.azure.core.util.Context.NONE);
+            manager.privateLinkResources().list("rseqwjksghudgz", "xog", com.azure.core.util.Context.NONE);
     }
 }

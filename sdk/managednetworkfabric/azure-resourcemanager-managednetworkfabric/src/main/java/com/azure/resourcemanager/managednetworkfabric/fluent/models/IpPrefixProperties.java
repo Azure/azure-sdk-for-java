@@ -5,59 +5,90 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixPropertiesIpPrefixRulesItem;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** IpPrefixProperties define the resource properties. */
+/** IP Prefix Properties defines the properties of the resource. */
 @Fluent
 public final class IpPrefixProperties extends AnnotationResource {
     /*
-     * IpPrefix contains the list of IP PrefixRules objects.
+     * Configuration state of the resource.
      */
-    @JsonProperty(value = "ipPrefixRules", required = true)
-    private List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules;
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
 
     /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
+
+    /*
+     * The list of IP Prefix Rules.
+     */
+    @JsonProperty(value = "ipPrefixRules")
+    private List<IpPrefixRule> ipPrefixRules;
 
     /** Creates an instance of IpPrefixProperties class. */
     public IpPrefixProperties() {
     }
 
     /**
-     * Get the ipPrefixRules property: IpPrefix contains the list of IP PrefixRules objects.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the ipPrefixRules value.
+     * @return the configurationState value.
      */
-    public List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules() {
-        return this.ipPrefixRules;
+    public ConfigurationState configurationState() {
+        return this.configurationState;
     }
 
     /**
-     * Set the ipPrefixRules property: IpPrefix contains the list of IP PrefixRules objects.
-     *
-     * @param ipPrefixRules the ipPrefixRules value to set.
-     * @return the IpPrefixProperties object itself.
-     */
-    public IpPrefixProperties withIpPrefixRules(List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules) {
-        this.ipPrefixRules = ipPrefixRules;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
+     * Get the ipPrefixRules property: The list of IP Prefix Rules.
+     *
+     * @return the ipPrefixRules value.
+     */
+    public List<IpPrefixRule> ipPrefixRules() {
+        return this.ipPrefixRules;
+    }
+
+    /**
+     * Set the ipPrefixRules property: The list of IP Prefix Rules.
+     *
+     * @param ipPrefixRules the ipPrefixRules value to set.
+     * @return the IpPrefixProperties object itself.
+     */
+    public IpPrefixProperties withIpPrefixRules(List<IpPrefixRule> ipPrefixRules) {
+        this.ipPrefixRules = ipPrefixRules;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -75,15 +106,8 @@ public final class IpPrefixProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (ipPrefixRules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipPrefixRules in model IpPrefixProperties"));
-        } else {
+        if (ipPrefixRules() != null) {
             ipPrefixRules().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(IpPrefixProperties.class);
 }

@@ -58,6 +58,6 @@ public final class ScriptsDeleteMockTests {
 
         manager
             .scripts()
-            .delete("hohsd", "mcdzsufcohdxbz", "mcmuapc", "hdbevwqqxeyskon", com.azure.core.util.Context.NONE);
+            .delete("lhsrrry", "jylmbkzudnigr", "ihotjewlpxuzzjg", "refqy", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,20 +8,19 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.RegionsCapability;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RegionsCapabilityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RegionsCapability model =
-            BinaryData.fromString("{\"available\":[\"jhfjxwm\"]}").toObject(RegionsCapability.class);
-        Assertions.assertEquals("jhfjxwm", model.available().get(0));
+            BinaryData.fromString("{\"available\":[\"gdknnqv\",\"aznqntoru\"]}").toObject(RegionsCapability.class);
+        Assertions.assertEquals("gdknnqv", model.available().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        RegionsCapability model = new RegionsCapability().withAvailable(Arrays.asList("jhfjxwm"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RegionsCapability model = new RegionsCapability().withAvailable(Arrays.asList("gdknnqv", "aznqntoru"));
         model = BinaryData.fromObject(model).toObject(RegionsCapability.class);
-        Assertions.assertEquals("jhfjxwm", model.available().get(0));
+        Assertions.assertEquals("gdknnqv", model.available().get(0));
     }
 }

@@ -143,7 +143,7 @@
 /sdk/anomalydetector/                                @conhua @mengaims @juaduan @moreOver0
 
 # PRLabel: %Azure.Identity
-/sdk/identity/                                       @g2vinay @schaabs @joshfree @billwert
+/sdk/identity/                                       @g2vinay @billwert @joshfree @Azure/azsdk-identity
 # PRLabel: %azure-spring
 /sdk/identity/azure-identity-extensions/             @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
@@ -188,7 +188,7 @@
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @jaschrep-msft @alzimmermsft
+/sdk/storage/                                        @ibrahimrabab @alzimmermsft @seanmcc-msft
 
 # PRLabel: %Tables
 /sdk/tables/                                         @jairmyree @vcolin7
@@ -732,7 +732,7 @@
 # ServiceLabel: %SecurityInsights %Service Attention
 #/<NotInRepo>/          @amirkeren
 
-# ServiceLabel: %IoT/CLI %Service Attention
+# ServiceLabel: %IoT - CLI %Service Attention
 #/<NotInRepo>/          @Azure/azure-iot-cli-triage
 
 # ServiceLabel: %Communication %Service Attention

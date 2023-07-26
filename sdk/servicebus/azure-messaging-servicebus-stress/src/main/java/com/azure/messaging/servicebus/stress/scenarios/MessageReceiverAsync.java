@@ -4,12 +4,12 @@
 package com.azure.messaging.servicebus.stress.scenarios;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.azure.messaging.servicebus.stress.util.EntityType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getReceiverBuilder;
 
 /**
  * Test ServiceBusReceiverAsyncClient
@@ -17,50 +17,30 @@ import reactor.core.publisher.Mono;
 @Component("MessageReceiverAsync")
 public class MessageReceiverAsync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiverAsync.class);
+    @Value("${DURATION_IN_MINUTES:15}")
+    private int durationInMinutes;
 
     @Override
     public void run() {
-        final String connectionString = options.getServicebusConnectionString();
-        final EntityType entityType = options.getServicebusEntityType();
-        String queueName = null;
-        String topicName = null;
-        String subscriptionName = null;
-        if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusQueueName();
-        } else if (entityType == EntityType.TOPIC) {
-            topicName = options.getServicebusTopicName();
-            subscriptionName = options.getServicebusSubscriptionName();
-        }
-
-        final String receiveCounterKey = "Number of received messages - "
-            + (queueName != null ? queueName : topicName + "/" + subscriptionName);
-
-        ServiceBusReceiverAsyncClient client = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .receiver()
-            .queueName(queueName)
-            .topicName(topicName)
-            .subscriptionName(subscriptionName)
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .disableAutoComplete()
-            .buildAsyncClient();
+        ServiceBusReceiverAsyncClient client = getReceiverBuilder(options, false).buildAsyncClient();
 
         client.receiveMessages()
             .flatMap(message -> {
                 LOGGER.verbose("message received: {}", message.getMessageId());
-                rateMeter.add(receiveCounterKey, 1);
                 return client.complete(message)
-                    .onErrorResume(error -> {
-                        LOGGER.error("error happened: {}", error.getMessage());
+                    .onErrorResume(ex -> {
+                        LOGGER.error("Completion error. messageId: {}, lockToken: {}",
+                            message.getMessageId(),
+                            message.getLockToken(),
+                            ex);
                         return Mono.empty();
                     });
             })
-            .subscribe(
-                data -> {
-                },
-                error -> {
-                    LOGGER.error("error happened: {}", error.getMessage());
-                    telemetryClient.trackException((Exception) error);
-                });
+            .take(durationInMinutes)
+            .onErrorResume(error -> {
+                LOGGER.error("error receiving", error);
+                return Mono.empty();
+            })
+            .blockLast();
     }
 }

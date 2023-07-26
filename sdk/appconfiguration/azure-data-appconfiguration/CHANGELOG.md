@@ -1,6 +1,16 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.5.0-beta.1 (2023-07-11)
 
 ### Features Added
 
@@ -9,11 +19,13 @@
 - Added new APIs to support listing configuration settings by given snapshot name and setting 
   fields.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Added a new dependency `azure-json`, version `1.0.1`.
+- Upgraded `azure-core` from `1.40.0` to version `1.40.1`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 
 ## 1.4.6 (2023-06-20)
 
