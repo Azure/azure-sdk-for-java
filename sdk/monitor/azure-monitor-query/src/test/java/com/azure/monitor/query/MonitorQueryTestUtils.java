@@ -7,7 +7,11 @@ import com.azure.core.util.Configuration;
 
 import java.util.HashMap;
 
-public abstract class MonitorQueryTestUtils {
+public final class MonitorQueryTestUtils {
+
+    private MonitorQueryTestUtils() {
+
+    }
     private static final String LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
 
@@ -24,7 +28,7 @@ public abstract class MonitorQueryTestUtils {
         + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
         + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
-    public static final HashMap<String, String> ENDPOINTS = new HashMap<String, String>() {
+    public static final HashMap<String, String> ENDPOINTS = new HashMap<>() {
         {
             put("AzureCloud", "https://api.loganalytics.io/v1");
             put("AzureChinaCloud", "https://api.loganalytics.azure.cn/v1");
