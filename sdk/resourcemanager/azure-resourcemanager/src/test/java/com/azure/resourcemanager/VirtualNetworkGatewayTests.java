@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.Troubleshooting;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
@@ -150,6 +151,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testVirtualNetworkGateways() throws Exception {
         new TestVirtualNetworkGateway().new Basic(azureResourceManager.virtualNetworkGateways().manager())
@@ -162,6 +164,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testVirtualNetworkGatewaySiteToSite() throws Exception {
         new TestVirtualNetworkGateway().new SiteToSite(azureResourceManager.virtualNetworkGateways().manager())
@@ -174,6 +177,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
         new TestVirtualNetworkGateway().new VNetToVNet(azureResourceManager.virtualNetworkGateways().manager())

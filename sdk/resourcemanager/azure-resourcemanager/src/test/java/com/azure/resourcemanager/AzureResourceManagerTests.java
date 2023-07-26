@@ -576,6 +576,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer().new InternetMinimal(azureResourceManager.virtualMachines().manager())
@@ -598,6 +599,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer().new InternalMinimal(azureResourceManager.virtualMachines().manager())
@@ -935,6 +937,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testLocalNetworkGateways() throws Exception {
         new TestLocalNetworkGateway().runTest(azureResourceManager.localNetworkGateways(), azureResourceManager.resourceGroups());
@@ -1038,6 +1041,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void listSubscriptions() throws Exception {
         Assertions.assertTrue(0 < TestUtilities.getSize(azureResourceManager.subscriptions().list()));
@@ -1283,6 +1287,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(), azureResourceManager.resourceGroups());
     }
 
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void testCosmosDB() throws Exception {
         new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());

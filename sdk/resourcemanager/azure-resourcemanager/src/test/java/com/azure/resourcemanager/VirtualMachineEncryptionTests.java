@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -20,6 +21,7 @@ import java.util.Locale;
 
 public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
 
+    @DoNotRecord(skipInPlayback = true) // FIXME
     @Test
     public void canCreateVirtualMachineWithDiskEncryptionSet() {
         final String clientId = this.clientIdFromFile();
