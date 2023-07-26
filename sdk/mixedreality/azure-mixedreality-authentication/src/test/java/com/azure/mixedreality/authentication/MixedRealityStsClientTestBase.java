@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class MixedRealityStsClientTestBase extends TestProxyTestBase {
+    public static final String INVALID_DUMMY_TOKEN = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6IkJvYkBjb250b"
+        + "3NvLmNvbSIsImdpdmVuX25hbWUiOiJCb2IiLCJpc3MiOiJodHRwOi8vRGVmYXVsdC5Jc3N1ZXIuY29tIiwiYXVkIjoiaHR0cDovL0RlZm"
+        + "F1bHQuQXVkaWVuY2UuY29tIiwiaWF0IjoiMTYwNzk3ODY4MyIsIm5iZiI6IjE2MDc5Nzg2ODMiLCJleHAiOiIxNjA3OTc4OTgzIn0.";
     private final String accountDomain = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_DOMAIN");
     private final String accountId = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_ID");
     private final String accountKey = Configuration.getGlobalConfiguration().get("MIXEDREALITY_ACCOUNT_KEY");
@@ -45,9 +48,10 @@ public class MixedRealityStsClientTestBase extends TestProxyTestBase {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new BearerTokenAuthenticationPolicy(credential, authenticationScope));
 
-        if (interceptorManager.isRecordMode()) {
+        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("$..AccessToken", null, "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6IkJvYkBjb250b3NvLmNvbSIsImdpdmVuX25hbWUiOiJCb2IiLCJpc3MiOiJodHRwOi8vRGVmYXVsdC5Jc3N1ZXIuY29tIiwiYXVkIjoiaHR0cDovL0RlZmF1bHQuQXVkaWVuY2UuY29tIiwiaWF0IjoiMTYwNzk3ODY4MyIsIm5iZiI6IjE2MDc5Nzg2ODMiLCJleHAiOiIxNjA3OTc4OTgzIn0.", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN,
+                TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizers);
             policies.add(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
