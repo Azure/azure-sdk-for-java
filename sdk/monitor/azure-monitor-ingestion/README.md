@@ -33,14 +33,17 @@ An authenticated client is required to upload logs to Azure Monitor. The library
 the following examples use `DefaultAzureCredentialBuilder` from the [com.azure:azure-identity](https://search.maven.org/artifact/com.azure/azure-identity) package.
 
 #### Authenticating using Azure Active Directory
+
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
+
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
+
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.0</version>
+    <version>1.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
