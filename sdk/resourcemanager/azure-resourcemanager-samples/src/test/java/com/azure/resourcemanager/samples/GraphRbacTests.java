@@ -15,7 +15,7 @@ import com.azure.resourcemanager.authorization.samples.ManageServicePrincipalCre
 import com.azure.resourcemanager.authorization.samples.ManageUsersGroupsAndRoles;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class GraphRbacTests extends ResourceManagerTestProxyTestBase {
+public class GraphRbacTests extends ResourceManagerTestBase {
     private AzureResourceManager azureResourceManager;
     private AzureProfile profile;
 
