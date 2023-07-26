@@ -5,14 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The definition of a caller-specified function that chat completions may
- * invoke in response to matching user input.
- *
- * @see FunctionProperties
- * @see FunctionParameters
+ * The definition of a caller-specified function that chat completions may invoke in response to matching user input.
  */
 @Fluent
 public final class FunctionDefinition {
@@ -22,33 +19,32 @@ public final class FunctionDefinition {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
-     * A description of what the function does. The model will use this description
-     * when selecting the function and
+     * A description of what the function does. The model will use this description when selecting the function and
      * interpreting its parameters.
      */
     @Generated
     @JsonProperty(value = "description")
-    private final String description;
+    private String description;
 
     /*
      * The parameters the functions accepts, described as a JSON Schema object.
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private final FunctionParameters parameters;
+    private Object parameters;
 
     /**
-     * Creates an instance of FunctionDefinition class from builder instance.
+     * Creates an instance of FunctionDefinition class.
      *
-     * @param builder the FunctionDefinitionBuilder instance.
+     * @param name the name value to set.
      */
-    private FunctionDefinition(FunctionDefinitionBuilder builder) {
-        this.name = builder.name;
-        this.description = builder.description;
-        this.parameters = builder.parameters;
+    @Generated
+    @JsonCreator
+    public FunctionDefinition(@JsonProperty(value = "name") String name) {
+        this.name = name;
     }
 
     /**
@@ -62,8 +58,7 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Get the description property: A description of what the function does. The
-     * model will use this description when
+     * Get the description property: A description of what the function does. The model will use this description when
      * selecting the function and interpreting its parameters.
      *
      * @return the description value.
@@ -74,65 +69,37 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Get the parameters property: The parameters the functions accepts, described
-     * as a JSON Schema object.
+     * Set the description property: A description of what the function does. The model will use this description when
+     * selecting the function and interpreting its parameters.
+     *
+     * @param description the description value to set.
+     * @return the FunctionDefinition object itself.
+     */
+    @Generated
+    public FunctionDefinition setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the parameters property: The parameters the functions accepts, described as a JSON Schema object.
      *
      * @return the parameters value.
      */
     @Generated
-    public FunctionParameters getParameters() {
+    public Object getParameters() {
         return this.parameters;
     }
 
     /**
-     * Builder class for FunctionDefinition.
+     * Set the parameters property: The parameters the functions accepts, described as a JSON Schema object.
      *
+     * @param parameters the parameters value to set.
+     * @return the FunctionDefinition object itself.
      */
-    public static class FunctionDefinitionBuilder {
-        private String name;
-        private String description;
-        private FunctionParameters parameters;
-
-        /**
-         * Set the name of the function
-         *
-         * @param name the name value to set.
-         * @return FunctionDefinitionBuilder
-         */
-        public FunctionDefinitionBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        /**
-         * Set the description of the function
-         *
-         * @param description the description value to set.
-         * @return FunctionDefinitionBuilder
-         */
-        public FunctionDefinitionBuilder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        /**
-         * Set the parameters of the function
-         *
-         * @param parameters the parameters value to set.
-         * @return FunctionDefinitionBuilder
-         */
-        public FunctionDefinitionBuilder parameters(FunctionParameters parameters) {
-            this.parameters = parameters;
-            return this;
-        }
-
-        /**
-         * Builds an instance of FunctionDefinition.
-         *
-         * @return FunctionDefinition
-         */
-        public FunctionDefinition build() {
-            return new FunctionDefinition(this);
-        }
+    @Generated
+    public FunctionDefinition setParameters(Object parameters) {
+        this.parameters = parameters;
+        return this;
     }
 }

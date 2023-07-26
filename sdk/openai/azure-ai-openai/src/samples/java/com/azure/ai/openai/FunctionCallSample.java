@@ -14,7 +14,6 @@ import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.FunctionParameters;
 import com.azure.ai.openai.models.FunctionParameters.FunctionParametersBuilder;
-import com.azure.ai.openai.models.FunctionDefinition.FunctionDefinitionBuilder;
 import com.azure.ai.openai.models.FunctionProperties;
 import com.azure.ai.openai.models.FunctionProperties.FunctionPropertiesBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -85,11 +84,10 @@ public class FunctionCallSample {
                 .properties(properties)
                 .required(Arrays.asList("location", "unit"))
                 .build();
-        FunctionDefinition functionDefinition = new FunctionDefinitionBuilder()
-                .name("getCurrentWeather")
-                .description("Get the current weather")
-                .parameters(functionParameters)
-                .build();
+        
+        FunctionDefinition functionDefinition = new FunctionDefinition("getCurrentWeather")
+                .setDescription("Get the current weather")
+                .setParameters(functionParameters);
         return functionDefinition;
     }
 

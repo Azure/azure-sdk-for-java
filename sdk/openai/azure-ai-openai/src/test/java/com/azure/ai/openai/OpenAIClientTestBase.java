@@ -5,7 +5,6 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.FunctionDefinition;
-import com.azure.ai.openai.models.FunctionDefinition.FunctionDefinitionBuilder;
 import com.azure.ai.openai.models.FunctionParameters;
 import com.azure.ai.openai.models.FunctionProperties;
 import com.azure.ai.openai.models.FunctionParameters.FunctionParametersBuilder;
@@ -194,11 +193,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 .properties(properties)
                 .required(Arrays.asList("location", "unit"))
                 .build();
-        FunctionDefinition functionDefinition = new FunctionDefinitionBuilder()
-                .name("MyFunction")
-                .description("Get the current weather")
-                .parameters(functionParameters)
-                .build();
+        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction")
+                .setDescription("Get the current weather")
+                .setParameters(functionParameters);
 
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
