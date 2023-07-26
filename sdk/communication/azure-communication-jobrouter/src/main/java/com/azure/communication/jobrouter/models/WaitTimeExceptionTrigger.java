@@ -14,11 +14,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("wait-time")
 @Fluent
 public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
+    /**
+     * Creates an instance of WaitTimeExceptionTrigger class.
+     *
+     * @param thresholdSeconds Threshold for wait time for this trigger.
+     */
+    public WaitTimeExceptionTrigger(double thresholdSeconds) {
+        this.thresholdSeconds = thresholdSeconds;
+    }
+
     /*
      * Threshold for wait time for this trigger.
      */
     @JsonProperty(value = "thresholdSeconds", required = true)
-    private double thresholdSeconds;
+    private final double thresholdSeconds;
 
     /**
      * Get the thresholdSeconds property: Threshold for wait time for this trigger.
@@ -27,16 +36,5 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
      */
     public double getThresholdSeconds() {
         return this.thresholdSeconds;
-    }
-
-    /**
-     * Set the thresholdSeconds property: Threshold for wait time for this trigger.
-     *
-     * @param thresholdSeconds the thresholdSeconds value to set.
-     * @return the WaitTimeExceptionTrigger object itself.
-     */
-    public WaitTimeExceptionTrigger setThresholdSeconds(double thresholdSeconds) {
-        this.thresholdSeconds = thresholdSeconds;
-        return this;
     }
 }

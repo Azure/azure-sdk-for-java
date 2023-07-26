@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for HubRouteTables Get. */
 public final class HubRouteTablesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/HubRouteTableGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/HubRouteTableGet.json
      */
     /**
      * Sample code: RouteTableGet.

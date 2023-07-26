@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for PublicIpAddresses UpdateTags. */
 public final class PublicIpAddressesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/PublicIpAddressUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/PublicIpAddressUpdateTags.json
      */
     /**
      * Sample code: Update public IP address tags.

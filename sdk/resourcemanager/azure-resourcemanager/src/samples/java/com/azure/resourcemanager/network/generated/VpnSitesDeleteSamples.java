@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VpnSites Delete. */
 public final class VpnSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnSiteDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnSiteDelete.json
      */
     /**
      * Sample code: VpnSiteDelete.

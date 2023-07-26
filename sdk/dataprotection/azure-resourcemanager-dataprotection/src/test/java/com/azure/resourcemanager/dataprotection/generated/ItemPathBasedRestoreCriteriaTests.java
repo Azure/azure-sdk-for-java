@@ -15,23 +15,23 @@ public final class ItemPathBasedRestoreCriteriaTests {
         ItemPathBasedRestoreCriteria model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"ItemPathBasedRestoreCriteria\",\"itemPath\":\"whbotzingamv\",\"isPathRelativeToBackupItem\":false,\"subItemPathPrefix\":[\"szqzudphqamv\"]}")
+                    "{\"objectType\":\"ItemPathBasedRestoreCriteria\",\"itemPath\":\"xwmygdxpgpqc\",\"isPathRelativeToBackupItem\":false,\"subItemPathPrefix\":[\"epn\"]}")
                 .toObject(ItemPathBasedRestoreCriteria.class);
-        Assertions.assertEquals("whbotzingamv", model.itemPath());
+        Assertions.assertEquals("xwmygdxpgpqc", model.itemPath());
         Assertions.assertEquals(false, model.isPathRelativeToBackupItem());
-        Assertions.assertEquals("szqzudphqamv", model.subItemPathPrefix().get(0));
+        Assertions.assertEquals("epn", model.subItemPathPrefix().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ItemPathBasedRestoreCriteria model =
             new ItemPathBasedRestoreCriteria()
-                .withItemPath("whbotzingamv")
+                .withItemPath("xwmygdxpgpqc")
                 .withIsPathRelativeToBackupItem(false)
-                .withSubItemPathPrefix(Arrays.asList("szqzudphqamv"));
+                .withSubItemPathPrefix(Arrays.asList("epn"));
         model = BinaryData.fromObject(model).toObject(ItemPathBasedRestoreCriteria.class);
-        Assertions.assertEquals("whbotzingamv", model.itemPath());
+        Assertions.assertEquals("xwmygdxpgpqc", model.itemPath());
         Assertions.assertEquals(false, model.isPathRelativeToBackupItem());
-        Assertions.assertEquals("szqzudphqamv", model.subItemPathPrefix().get(0));
+        Assertions.assertEquals("epn", model.subItemPathPrefix().get(0));
     }
 }

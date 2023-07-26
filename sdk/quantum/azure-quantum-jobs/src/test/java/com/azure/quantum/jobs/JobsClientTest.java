@@ -47,8 +47,8 @@ public class JobsClientTest extends QuantumClientTestBase {
         String jobName = String.format("javaSdkTest-%s", testResourceNamer.randomUuid());
         String inputDataFormat = "microsoft.qio.v2";
         String outputDataFormat = "microsoft.qio-results.v2";
-        String providerId = "microsoft";
-        String target = "microsoft.paralleltempering-parameterfree.cpu";
+        String providerId = "ionq";
+        String target = "ionq.simulator";
 
         //if in record mode, setup the storage account
         if (!interceptorManager.isPlaybackMode()) {

@@ -81,6 +81,10 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
             addTestProxySanitizer();
         }
 
+        if (interceptorManager.isLiveMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
             addTestProxyMatchers();
