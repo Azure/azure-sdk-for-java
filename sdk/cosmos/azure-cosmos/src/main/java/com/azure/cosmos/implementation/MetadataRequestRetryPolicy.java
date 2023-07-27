@@ -26,7 +26,6 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.request = request;
         this.webExceptionRetryPolicy = new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics));
-        this.webExceptionRetryPolicy.onBeforeSendRequest(request);
     }
 
     private boolean shouldMarkRegionAsUnavailable(CosmosException exception) {
@@ -45,7 +44,7 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-
+        webExceptionRetryPolicy.onBeforeSendRequest(request);
         return webExceptionRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
 
             if (!shouldRetryResult.shouldRetry) {

@@ -19,8 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class WebExceptionRetryPolicy implements IRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
-    // Address Refresh will be re-tried 3 times, please check the if condition carefully :)
-    private final static int MAX_ADDRESS_REFRESH_RETRY_COUNT = 2;
+
     private StopWatch durationTimer = new StopWatch();
     private RetryContext retryContext;
     private int retryDelay;
@@ -28,8 +27,8 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     private HttpTimeoutPolicy timeoutPolicy;
     private boolean isReadRequest;
     private int retryCount = 0;
-    private int addressRefreshCount = 0;
     private URI locationEndpoint;
+    private boolean isOutOfRetries;
 
     public WebExceptionRetryPolicy() {
         durationTimer.start();
@@ -43,7 +42,6 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-        boolean isOutOfRetries = isOutOfRetries();
         if (isOutOfRetries) {
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetry());
@@ -82,24 +80,16 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         this.request = request;
         this.isReadRequest = request.isReadOnlyRequest();
         this.timeoutPolicy = HttpTimeoutPolicy.getTimeoutPolicy(request);
+        this.isOutOfRetries = isOutOfRetries();
 
-        // Fetching the retryCount for Address refresh call separately, because the retryContext.getRetryCount() is not
-        // updated for the address refresh calls.
-        if (request.isAddressRefresh() && this.addressRefreshCount < this.timeoutPolicy.totalRetryCount()) {
-            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.addressRefreshCount);
+        // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
+        // and then increasing the counter for retries.
+        if (!isOutOfRetries) {
+            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount);
             this.request.setResponseTimeout(current.getResponseTimeout());
             this.retryDelay = current.getDelayForNextRequestInSeconds();
-        } else {
-            if (this.retryContext != null) {
-                this.retryCount = this.retryContext.getRetryCount();
-            }
-            // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
-            if (!isOutOfRetries()) {
-                ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount);
-                this.request.setResponseTimeout(current.getResponseTimeout());
-                this.retryDelay = current.getDelayForNextRequestInSeconds();
-            }
         }
+        this.retryCount++;
         this.locationEndpoint = request.requestContext.locationEndpointToRoute;
     }
 
@@ -108,12 +98,12 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryAddressRefresh() {
-        if (this.addressRefreshCount++ >= this.timeoutPolicy.totalRetryCount()) {
+        if (isOutOfRetries) {
             logger
                 .warn(
                     "shouldRetryAddressRefresh() No more retrying on endpoint {}, operationType = {}, count = {}, " +
                         "isAddressRefresh = {}",
-                    this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount, this.request.isAddressRefresh());
+                    this.locationEndpoint, this.request.getOperationType(), this.retryCount, this.request.isAddressRefresh());
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
@@ -121,7 +111,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             .warn("shouldRetryAddressRefresh() Retrying on endpoint {}, operationType = {}, count = {}, " +
                     "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                     "shouldForceCollectionRoutingMapRefresh = {}",
-                this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount,
+                this.locationEndpoint, this.request.getOperationType(), this.retryCount,
                 this.request.isAddressRefresh(),
                 this.request.shouldForceAddressRefresh(),
                 this.request.forceCollectionRoutingMapRefresh);
