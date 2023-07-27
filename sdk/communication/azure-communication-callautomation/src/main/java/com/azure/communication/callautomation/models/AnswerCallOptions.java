@@ -24,7 +24,7 @@ public final class AnswerCallOptions {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String azureCognitiveServicesEndpointUrl;
+    private String cognitiveServicesEndpoint;
 
     /**
      * The operational context
@@ -66,8 +66,8 @@ public final class AnswerCallOptions {
      *
      * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getCognitiveServicesEndpoint() {
+        return this.cognitiveServicesEndpoint;
     }
 
     /**
@@ -84,11 +84,11 @@ public final class AnswerCallOptions {
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param cognitiveServicesEndpoint the azureCognitiveServicesEndpointUrl value to set.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public AnswerCallOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
+        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
 
