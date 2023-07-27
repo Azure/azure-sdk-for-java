@@ -9,19 +9,29 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class SamplesTestBase extends ResourceManagerTestBase {
+public class SamplesTestBase extends ResourceManagerTestProxyTestBase {
     protected AzureResourceManager azureResourceManager;
+
+    public SamplesTestBase() {
+        addSanitizers(
+            // Search key
+            new TestProxySanitizer("$.key", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.value[*].key", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+        );
+    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(
