@@ -67,7 +67,7 @@ public class AadResourceServerConfigurationTests {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).doesNotHaveBean(WebSecurityConfigurerAdapter.class);
                 assertThat(context).doesNotHaveBean(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter.class);
-                assertThat(context).hasSingleBean(TestSecurityFilterChain.class);
+                assertThat(context).hasBean("testSecurityFilterChain");
 
             });
     }
@@ -86,7 +86,7 @@ public class AadResourceServerConfigurationTests {
     static class TestSecurityFilterChain {
 
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
             return http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt).build();
         }
     }

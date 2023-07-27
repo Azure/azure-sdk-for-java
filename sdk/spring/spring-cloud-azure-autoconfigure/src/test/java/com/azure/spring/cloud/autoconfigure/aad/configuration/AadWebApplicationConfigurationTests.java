@@ -67,7 +67,7 @@ public class AadWebApplicationConfigurationTests {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).doesNotHaveBean(WebSecurityConfigurerAdapter.class);
                 assertThat(context).doesNotHaveBean(AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter.class);
-                assertThat(context).hasSingleBean(AadResourceServerConfigurationTests.TestSecurityFilterChain.class);
+                assertThat(context).hasBean("testSecurityFilterChain");
             });
     }
 
@@ -85,7 +85,7 @@ public class AadWebApplicationConfigurationTests {
     static class TestSecurityFilterChain {
 
         @Bean
-        public SecurityFilterChain htmlFilterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
             return http.oauth2Login(Customizer.withDefaults()).authorizeRequests(request -> request.anyRequest().authenticated()).build();
         }
     }
