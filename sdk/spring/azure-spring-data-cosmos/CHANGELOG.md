@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fix circular references error when using Cosmos Auditing - See [PR 36123](https://github.com/Azure/azure-sdk-for-java/pull/36123).
 
 #### Other Changes
 
