@@ -69,7 +69,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-spring-native/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/azure-monitor-query_1.2.2/sdk/monitor/azure-monitor-spring-native/src
 [package_mvn]: https://mvnrepository.com/artifact/com.azure/applicationinsights-spring-native
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
