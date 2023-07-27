@@ -22,7 +22,6 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 
 /**
  * This sample shows examples of configuring Activity Log Alerts for potential security breach or risk notifications.
