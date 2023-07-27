@@ -105,9 +105,9 @@ stages:
           artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
           condition: always()
       EnvVars:
-        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        AZURE_TENANT_ID: $(STORAGE_TENANT_ID)
+        AZURE_CLIENT_ID: $(STORAGE_CLIENT_ID)
+        AZURE_CLIENT_SECRET: $(STORAGE_CLIENT_SECRET)
         VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
         VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
       UseHttpFaultInjector: true
