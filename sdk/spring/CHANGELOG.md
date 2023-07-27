@@ -7,6 +7,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix the issue that `AzureMessagingListenerAutoConfiguration` not included in spring.factories [#34690](https://github.com/Azure/azure-sdk-for-java/issues/34690), [#35717](https://github.com/Azure/azure-sdk-for-java/pull/35717).
+- Fix AAD default configuration condition is not perfect [#36126](https://github.com/Azure/azure-sdk-for-java/pull/36126).
 
 ## 5.3.0 (2023-06-28)
 - This release is compatible with Spring Boot 3.0.0-3.1.0. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
