@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed bug that disabled sovereign cloud support.
+
 ### Other Changes
 
 ## 1.2.2 (2023-07-25)
