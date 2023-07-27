@@ -129,7 +129,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
 
     /**
      * Enables additional support logging for public and confidential client applications. This enables
-     * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/en-us/azure/active-directory/develop/msal-logging-java#personal-and-organization-information">here.</a>
+     * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/azure/active-directory/develop/msal-logging-java#personal-and-organization-information">here.</a>
      * @return An updated instance of this builder with additional support logging enabled.
      */
     @SuppressWarnings("unchecked")
