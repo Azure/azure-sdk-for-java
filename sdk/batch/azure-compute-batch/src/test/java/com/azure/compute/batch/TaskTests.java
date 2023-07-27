@@ -21,7 +21,7 @@ import java.util.List;
 public class TaskTests extends BatchServiceClientTestBase {
 	private static String livePoolId;
     private static String liveIaasPoolId;
-	 
+
 	@Override
     protected void beforeTest() {
 	   	super.beforeTest();
@@ -37,7 +37,46 @@ public class TaskTests extends BatchServiceClientTestBase {
             }
        }
    }
-	
+
+    /*
+     * Test TypeSpec Shared model among GET-PUT Roundtrip operation
+     * */
+   @Test
+    public void testTaskUnifiedModel() throws Exception {
+       String taskId = "task-canPut";
+       String jobId = getStringIdWithUserNamePrefix("-SampleJob");
+       try {
+        //CREATE JOB
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(livePoolId);
+        JobClient jobClient = batchClientBuilder.buildJobClient();
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+        jobClient.create(jobCreateParameters);
+
+        //CREATE TASK
+        BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "echo hello world");
+        taskClient.create(jobId, taskCreateParameters);
+
+        // GET
+        BatchTask task = taskClient.get(jobId, taskId);
+
+        //UPDATE
+        Integer maxRetrycount = 5;
+        Duration retentionPeriod = Duration.ofDays(5);
+        task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
+        taskClient.update(jobId, taskId, task);
+
+        //GET After UPDATE
+        task = taskClient.get(jobId, taskId);
+        Assertions.assertEquals(maxRetrycount, task.getConstraints().getMaxTaskRetryCount());
+        Assertions.assertEquals(retentionPeriod, task.getConstraints().getRetentionTime());
+        }
+        finally {
+            taskClient.delete(jobId, taskId);
+            jobClient.delete(jobId);
+        }
+    }
+
 	@Test
     public void testJobUser() throws Exception {
         String jobId = getStringIdWithUserNamePrefix("-testJobUser");
@@ -45,20 +84,19 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(livePoolId);
-        BatchJob jobToAdd = new BatchJob().setId(jobId).setPoolInfo(poolInfo);
-        
-        jobClient.add(jobToAdd);
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+
+        jobClient.create(jobCreateParameters);
 
         try {
             // CREATE
             List<ApplicationPackageReference> apps = new ArrayList<>();
             apps.add(new ApplicationPackageReference("MSMPI"));
-            BatchTask taskToAdd = new BatchTask();
-            taskToAdd.setId(taskId).setCommandLine("cmd /c echo hello")
-            		 .setUserIdentity(new UserIdentity().setUsername("test-user"))
+            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "cmd /c echo hello\"")
+                     .setUserIdentity(new UserIdentity().setUsername("test-user"))
             		 .setApplicationPackageReferences(apps);
 
-            taskClient.add(jobId, taskToAdd);
+            taskClient.create(jobId, taskCreateParameters);
 
             // GET
             BatchTask task = taskClient.get(jobId, taskId);
@@ -80,7 +118,7 @@ public class TaskTests extends BatchServiceClientTestBase {
             }
         }
     }
-	
+
 	@Test
     public void canCRUDTest() throws Exception {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
@@ -96,7 +134,7 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(liveIaasPoolId);
-        jobClient.add(new BatchJob().setId(jobId).setPoolInfo(poolInfo));
+        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
 
         String storageAccountName = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_KEY");
@@ -124,9 +162,8 @@ public class TaskTests extends BatchServiceClientTestBase {
             files.add(file);
 
             // CREATE
-            BatchTask taskToAdd = new BatchTask().setId(taskId).setCommandLine(String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).setResourceFiles(files);
-
-            taskClient.add(jobId, taskToAdd);
+            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).setResourceFiles(files);
+            taskClient.create(jobId, taskCreateParameters);
 
             // GET
             BatchTask task = taskClient.get(jobId, taskId);
@@ -137,12 +174,11 @@ public class TaskTests extends BatchServiceClientTestBase {
             Assertions.assertEquals(Duration.ofDays(7), task.getConstraints().getRetentionTime());
 
             // TODO UPDATE - modifying taskToAdd vs creating new BatchTask instance
-//            BatchTask taskToUpdate = new BatchTask().setId(taskId).setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
-//            //taskToAdd.setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
-//            taskClient.update(jobId, taskId, taskToUpdate);
-//
-//            task = taskClient.get(jobId, taskId);
-//            Assertions.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
+            task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
+            taskClient.update(jobId, taskId, task);
+
+            task = taskClient.get(jobId, taskId);
+            Assertions.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
 
             // LIST
             PagedIterable<BatchTask> tasks = taskClient.list(jobId);
@@ -180,7 +216,7 @@ public class TaskTests extends BatchServiceClientTestBase {
                 }
                 // UPLOAD LOG
                 UploadBatchServiceLogsConfiguration logsConfiguration = new UploadBatchServiceLogsConfiguration(outputSas, OffsetDateTime.now().minusMinutes(-10));
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClientBuilder.buildComputeNodesClient().uploadBatchServiceLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsConfiguration);
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClientBuilder.buildBatchNodesClient().uploadBatchServiceLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsConfiguration);
 
                 Assertions.assertNotNull(uploadBatchServiceLogsResult);
                 Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
