@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration;
@@ -24,31 +27,27 @@ public class AadWebApplicationConfigurationTests {
     @Test
     void useDefaultWebSecurityConfigurerAdapter() {
         webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true",
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
-                    assertThat(context).hasSingleBean(AadWebSecurityConfigurerAdapter.class);
-                    assertThat(context).hasSingleBean(AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter.class);
-                }
-            );
+                assertThat(context).hasSingleBean(AadWebSecurityConfigurerAdapter.class);
+                assertThat(context).hasSingleBean(AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter.class);
+            });
     }
 
     @Test
     void useCustomWebSecurityConfigurerAdapter() {
         webApplicationContextRunner()
             .withUserConfiguration(TestAadWebSecurityConfigurerAdapter.class)
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true",
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
-                    assertThat(context).hasSingleBean(WebSecurityConfigurerAdapter.class);
-                    assertThat(context).doesNotHaveBean(AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter.class);
-                    assertThat(context).hasSingleBean(TestAadWebSecurityConfigurerAdapter.class);
-                }
-            );
+                assertThat(context).hasSingleBean(WebSecurityConfigurerAdapter.class);
+                assertThat(context).doesNotHaveBean(AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter.class);
+                assertThat(context).hasSingleBean(TestAadWebSecurityConfigurerAdapter.class);
+            });
     }
 
     @Test
@@ -61,29 +60,21 @@ public class AadWebApplicationConfigurationTests {
                 AadResourceServerConfigurationTests.TestSecurityFilterChain.class,
                 AadAutoConfiguration.class)
             .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO))
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true",
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
-                    assertThat(context).hasSingleBean(SecurityFilterChain.class);
-                    assertThat(context).doesNotHaveBean(WebSecurityConfigurerAdapter.class);
-                    assertThat(context).doesNotHaveBean(AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter.class);
-                    assertThat(context).hasSingleBean(AadResourceServerConfigurationTests.TestSecurityFilterChain.class);
-                }
-            );
+                assertThat(context).hasSingleBean(SecurityFilterChain.class);
+                assertThat(context).doesNotHaveBean(WebSecurityConfigurerAdapter.class);
+                assertThat(context).doesNotHaveBean(AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter.class);
+                assertThat(context).hasSingleBean(AadResourceServerConfigurationTests.TestSecurityFilterChain.class);
+            });
     }
 
     @EnableWebSecurity
     static class TestAadWebSecurityConfigurerAdapter extends
         AadWebSecurityConfigurerAdapter {
 
-        /**
-         * Configure the default Resource Server for Azure AD.
-         *
-         * @param http the {@link HttpSecurity} to use
-         * @throws Exception Configuration failed
-         */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
