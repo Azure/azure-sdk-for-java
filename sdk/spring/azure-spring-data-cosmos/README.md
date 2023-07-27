@@ -157,6 +157,18 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
+    @Value("${azure.cosmos.diagnosticsThresholds.pointOperationLatencyThresholdInMS}")
+    private int pointOperationLatencyThresholdInMS;
+    
+    @Value("${azure.cosmos.diagnosticsThresholds.nonPointOperationLatencyThresholdInMS}")
+    private int nonPointOperationLatencyThresholdInMS;
+    
+    @Value("${azure.cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
+    private int requestChargeThresholdInRU;
+    
+    @Value("${azure.cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
+    private int payloadSizeThresholdInBytes;
+
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
@@ -167,7 +179,17 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
         return new CosmosClientBuilder()
             .endpoint(uri)
             .credential(azureKeyCredential)
-            .directMode(directConnectionConfig, gatewayConnectionConfig);
+            .directMode(directConnectionConfig, gatewayConnectionConfig)
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                            .setRequestChargeThreshold(requestChargeThresholdInRU)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Override
@@ -202,32 +224,51 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 ```
 ### Customizing Configuration
 You can customize `DirectConnectionConfig` or `GatewayConnectionConfig` or both and provide them to `CosmosClientBuilder` bean to customize `CosmosAsyncClient`
+You can customize `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS`, `requestChargeThresholdInRU` and `payloadSizeThresholdInBytes` to customize the thresholds for diagnostic logging when combined with `CosmosDiagnosticsHandler` which enables diagnostic logging with the default thresholds when added to the `CosmosClientBuilder`.
 
 ```java readme-sample-AppConfigurationCodeSnippet
 @Bean
-    public CosmosClientBuilder getCosmosClientBuilder() {
+public CosmosClientBuilder getCosmosClientBuilder() {
 
-        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
-        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        return new CosmosClientBuilder()
-            .endpoint(uri)
-            .directMode(directConnectionConfig, gatewayConnectionConfig);
-    }
+    DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+    GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+    return new CosmosClientBuilder()
+        .endpoint(uri)
+        .directMode(directConnectionConfig, gatewayConnectionConfig)
+        .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                            .setRequestChargeThreshold(requestChargeThresholdInRU)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
+}
 
-    @Override
-    public CosmosConfig cosmosConfig() {
-        return CosmosConfig.builder()
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
-                           .maxBufferedItemCount(maxBufferedItemCount)
-                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
-                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .build();
-    }
+@Override
+public CosmosConfig cosmosConfig() {
+    return CosmosConfig.builder()
+                       .enableQueryMetrics(queryMetricsEnabled)
+                       .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                       .maxBufferedItemCount(maxBufferedItemCount)
+                       .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
+                       .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                       .build();
+}
 ```
 
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
 Use it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects.
+
+#### Enabling logging diagnostics to Azure Application Insights with JavaAgent
+
+Diagnostics can be enabled by passing the JavaAgent with your application like below. This will enable logging with the default thresholds. The '-javaagent' must be passed before the '-jar'.
+
+```commandline
+java -javaagent:"<path-to-applicationinsights-agent-jar>" -jar <myapp.jar>
+```
 
 #### Using database provisioned throughput
 
