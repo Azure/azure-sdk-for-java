@@ -2,19 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch;
 
+import com.azure.compute.batch.models.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.azure.compute.batch.models.AutoPoolSpecification;
-import com.azure.compute.batch.models.BatchJob;
-import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.ImageReference;
-import com.azure.compute.batch.models.NodeCommunicationMode;
-import com.azure.compute.batch.models.PoolInformation;
-import com.azure.compute.batch.models.PoolLifetimeOption;
-import com.azure.compute.batch.models.PoolSpecification;
-import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
 
@@ -41,32 +33,40 @@ public class JobTests extends BatchServiceClientTestBase {
     }
 
     /*
-    * This test is POC for testing TypeSpec Shared model among CRUD operations
+    * Test TypeSpec Shared model among GET-PUT Roundtrip operation
     * */
-    @Disabled
     @Test
-    public void testJobPut() throws Exception {
+    public void testJobUnifiedModel() throws Exception {
     	String jobId = getStringIdWithUserNamePrefix("-Job-canPut");
     	PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(poolId);
         JobClient jobClient = batchClientBuilder.buildJobClient();
-        BatchJob jobToAdd = new BatchJob();
-        jobToAdd.setId(jobId);
-        jobToAdd.setPoolInfo(poolInfo);
-        
-        jobClient.add(jobToAdd);
-        
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+
+        jobClient.create(jobCreateParameters);
+
         try {
-        	BatchJob getJob = jobClient.get(jobId);
-        	getJob.setPriority(500);
-        	jobClient.update(jobId, getJob);
+            //GET
+        	BatchJob job = jobClient.get(jobId);
+
+            //UPDATE
+            Integer updatedPriority = 500;
+            OnAllTasksComplete updatedTasksComplete = OnAllTasksComplete.TERMINATE_JOB;
+        	job.setPriority(updatedPriority);
+        	job.setOnAllTasksComplete(updatedTasksComplete);
+        	job.setPoolInfo(new PoolInformation().setPoolId(poolId));
+            jobClient.update(jobId, job);
+
+            //GET After UPDATE
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(updatedPriority, job.getPriority());
+            Assertions.assertEquals(updatedTasksComplete, job.getOnAllTasksComplete());
         }
         finally {
         	jobClient.delete(jobId);
         }
-        
     }
-    
+
     @Test
     public void canCrudJob() throws Exception {
     	 // CREATE
@@ -75,11 +75,9 @@ public class JobTests extends BatchServiceClientTestBase {
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(poolId);
         JobClient jobClient = batchClientBuilder.buildJobClient();
-        BatchJob jobToAdd = new BatchJob();
-        jobToAdd.setId(jobId);
-        jobToAdd.setPoolInfo(poolInfo);
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
 
-        jobClient.add(jobToAdd);
+        jobClient.create(jobCreateParameters);
 
         try {
             // GET
@@ -107,7 +105,7 @@ public class JobTests extends BatchServiceClientTestBase {
 
 
             // UPDATE
-            BatchJob updatedJob = jobToAdd;
+            BatchJob updatedJob = job;
             updatedJob.setPriority(1);
             jobClient.update(jobId, updatedJob);
 
@@ -136,7 +134,7 @@ public class JobTests extends BatchServiceClientTestBase {
             }
         }
     }
-    
+
 //    @Test
 //    public void canUpdateJobState() throws Exception {
 //        // CREATE
@@ -202,7 +200,7 @@ public class JobTests extends BatchServiceClientTestBase {
 //            }
 //        }
 //    }
-    
+
     @Test
     public void canCRUDJobWithPoolNodeCommunicationMode() throws Exception {
         // CREATE
@@ -221,11 +219,8 @@ public class JobTests extends BatchServiceClientTestBase {
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setAutoPoolSpecification(new AutoPoolSpecification(PoolLifetimeOption.JOB).setPool(poolSpec));
 
-        BatchJob jobToAdd = new BatchJob();
-        jobToAdd.setId(jobId);
-        jobToAdd.setPoolInfo(poolInfo);
-
-        jobClient.add(jobToAdd);
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+        jobClient.create(jobCreateParameters);
 
         try {
             // GET
@@ -258,5 +253,5 @@ public class JobTests extends BatchServiceClientTestBase {
         }
     }
 
-    
+
 }

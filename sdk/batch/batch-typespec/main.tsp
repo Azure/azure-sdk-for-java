@@ -6,7 +6,7 @@ using TypeSpec.Http;
 using TypeSpec.Versioning;
 
 @service({
-  title: "BatchServiceClient",
+  title: "BatchClient",
 })
 
 

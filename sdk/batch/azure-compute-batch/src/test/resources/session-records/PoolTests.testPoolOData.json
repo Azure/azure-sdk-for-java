@@ -7,18 +7,18 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 13 Jun 2023 20:48:57 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (14; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e19b16d7-05ab-4bd2-9513-1a7125470aa8"
+        "Date": "Wed, 19 Jul 2023 17:03:20 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.19; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2df5dbc5-6312-4930-9db8-e96948a773d7"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 13 Jun 2023 20:48:57 GMT",
-        "ETag": "0x8DB3F73C018A6ED",
-        "Last-Modified": "Mon, 17 Apr 2023 18:44:17 GMT",
-        "request-id": "62fade33-9a3b-4bc0-b9cb-2b1ff0372a55",
+        "Date": "Wed, 19 Jul 2023 17:03:21 GMT",
+        "ETag": "0x8DB8818F745B375",
+        "Last-Modified": "Wed, 19 Jul 2023 05:28:21 GMT",
+        "request-id": "6b62feed-14c4-4f50-8f2f-cf949e8b6ed4",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -33,19 +33,19 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 13 Jun 2023 20:48:59 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (14; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e406e262-fcb5-4ca9-97d9-cd8be6e02a3a"
+        "Date": "Wed, 19 Jul 2023 17:03:21 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.19; Windows 11; 10.0)",
+        "x-ms-client-request-id": "5a0587af-6acd-4b6b-961c-e3b3c6ca922a"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 13 Jun 2023 20:48:57 GMT",
-        "ETag": "0x8DB3F73C018A6ED",
-        "Last-Modified": "Mon, 17 Apr 2023 18:44:17 GMT",
-        "request-id": "3cc73668-eb47-4c9a-bd0e-df682ded0318",
+        "Date": "Wed, 19 Jul 2023 17:03:21 GMT",
+        "ETag": "0x8DB8818F745B375",
+        "Last-Modified": "Wed, 19 Jul 2023 05:28:21 GMT",
+        "request-id": "61cb5792-ff17-4dcb-be78-f898af034efe",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -55,13 +55,13 @@
         "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testpool",
         "url": "REDACTED",
-        "eTag": "0x8DB3F73C018A6ED",
-        "lastModified": "2023-04-17T18:44:17.9687149Z",
-        "creationTime": "2023-04-17T18:44:17.9687149Z",
+        "eTag": "0x8DB8818F745B375",
+        "lastModified": "2023-07-19T05:28:21.2190069Z",
+        "creationTime": "2023-07-19T05:28:21.2190069Z",
         "state": "active",
-        "stateTransitionTime": "2023-04-17T18:44:17.9687149Z",
+        "stateTransitionTime": "2023-07-19T05:28:21.2190069Z",
         "allocationState": "steady",
-        "allocationStateTransitionTime": "2023-04-17T18:45:19.9722567Z",
+        "allocationStateTransitionTime": "2023-07-19T05:29:18.6896944Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 1,
@@ -93,6 +93,10 @@
           },
           "nodeAgentSKUId": "batch.node.ubuntu 18.04"
         },
+        "networkConfiguration": {
+          "subnetId": "/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet",
+          "dynamicVNetAssignmentScope": "none"
+        },
         "currentNodeCommunicationMode": "classic"
       }
     },
@@ -103,17 +107,17 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 13 Jun 2023 20:49:00 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (14; Windows 10; 10.0)",
-        "x-ms-client-request-id": "95736860-b65b-4cd9-8355-3c78dd854a42"
+        "Date": "Wed, 19 Jul 2023 17:03:23 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.19; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b1a873c6-3298-4277-9685-ef23a37ee225"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 13 Jun 2023 20:48:59 GMT",
-        "request-id": "33b8b3c4-0276-4762-ac51-a6b4963cc1e7",
+        "Date": "Wed, 19 Jul 2023 17:03:23 GMT",
+        "request-id": "0b53b54f-e22a-4913-ad90-9e90fcd79392",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -123,7 +127,15 @@
         "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#pools",
         "value": [
           {
+            "id": "3DA0649C-C960-4B53-9AE9-6EECD3C1EAAA",
+            "state": "active"
+          },
+          {
             "id": "513FFF99-D705-492F-B9DD-B75577627C86",
+            "state": "active"
+          },
+          {
+            "id": "54C7B3D9-E9C6-4A2D-B7CD-19803436C515",
             "state": "active"
           },
           {
@@ -131,7 +143,15 @@
             "state": "active"
           },
           {
+            "id": "8CF2BC76-D3D0-4749-9C8E-2A261492794F",
+            "state": "active"
+          },
+          {
             "id": "BatchUser-testpool",
+            "state": "active"
+          },
+          {
+            "id": "DD0DE6A1-595D-4733-84E5-8FA23DC61825",
             "state": "active"
           },
           {
@@ -140,6 +160,10 @@
           },
           {
             "id": "PersistOutputsSamplePool",
+            "state": "active"
+          },
+          {
+            "id": "testpooldeployment",
             "state": "active"
           },
           {

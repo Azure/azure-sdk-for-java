@@ -35,6 +35,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +53,7 @@ import java.util.Objects;
             FileClient.class,
             JobScheduleClient.class,
             TaskClient.class,
-            ComputeNodesClient.class,
-            ComputeNodeExtensionsClient.class,
+            BatchNodesClient.class,
             ApplicationsAsyncClient.class,
             PoolAsyncClient.class,
             AccountAsyncClient.class,
@@ -62,8 +62,7 @@ import java.util.Objects;
             FileAsyncClient.class,
             JobScheduleAsyncClient.class,
             TaskAsyncClient.class,
-            ComputeNodesAsyncClient.class,
-            ComputeNodeExtensionsAsyncClient.class
+            BatchNodesAsyncClient.class
         })
 public final class BatchServiceClientBuilder
         implements HttpTrait<BatchServiceClientBuilder>,
@@ -97,6 +96,9 @@ public final class BatchServiceClientBuilder
     @Generated
     @Override
     public BatchServiceClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -285,8 +287,7 @@ public final class BatchServiceClientBuilder
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
-        else if (batchSharedKeyCred != null) {
+        } else if (batchSharedKeyCred != null) {
             policies.add(new BatchSharedKeyCredentialsPolicy(batchSharedKeyCred));
         }
         this.pipelinePolicies.stream()
@@ -384,23 +385,13 @@ public final class BatchServiceClientBuilder
     }
 
     /**
-     * Builds an instance of ComputeNodesAsyncClient class.
+     * Builds an instance of BatchNodesAsyncClient class.
      *
-     * @return an instance of ComputeNodesAsyncClient.
+     * @return an instance of BatchNodesAsyncClient.
      */
     @Generated
-    public ComputeNodesAsyncClient buildComputeNodesAsyncClient() {
-        return new ComputeNodesAsyncClient(buildInnerClient().getComputeNodes());
-    }
-
-    /**
-     * Builds an instance of ComputeNodeExtensionsAsyncClient class.
-     *
-     * @return an instance of ComputeNodeExtensionsAsyncClient.
-     */
-    @Generated
-    public ComputeNodeExtensionsAsyncClient buildComputeNodeExtensionsAsyncClient() {
-        return new ComputeNodeExtensionsAsyncClient(buildInnerClient().getComputeNodeExtensions());
+    public BatchNodesAsyncClient buildBatchNodesAsyncClient() {
+        return new BatchNodesAsyncClient(buildInnerClient().getBatchNodes());
     }
 
     /**
@@ -410,7 +401,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public ApplicationsClient buildApplicationsClient() {
-        return new ApplicationsClient(new ApplicationsAsyncClient(buildInnerClient().getApplications()));
+        return new ApplicationsClient(buildInnerClient().getApplications());
     }
 
     /**
@@ -420,7 +411,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public PoolClient buildPoolClient() {
-        return new PoolClient(new PoolAsyncClient(buildInnerClient().getPools()));
+        return new PoolClient(buildInnerClient().getPools());
     }
 
     /**
@@ -430,7 +421,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public AccountClient buildAccountClient() {
-        return new AccountClient(new AccountAsyncClient(buildInnerClient().getAccounts()));
+        return new AccountClient(buildInnerClient().getAccounts());
     }
 
     /**
@@ -440,7 +431,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public JobClient buildJobClient() {
-        return new JobClient(new JobAsyncClient(buildInnerClient().getJobs()));
+        return new JobClient(buildInnerClient().getJobs());
     }
 
     /**
@@ -450,7 +441,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public CertificatesClient buildCertificatesClient() {
-        return new CertificatesClient(new CertificatesAsyncClient(buildInnerClient().getCertificates()));
+        return new CertificatesClient(buildInnerClient().getCertificates());
     }
 
     /**
@@ -460,7 +451,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public FileClient buildFileClient() {
-        return new FileClient(new FileAsyncClient(buildInnerClient().getFiles()));
+        return new FileClient(buildInnerClient().getFiles());
     }
 
     /**
@@ -470,7 +461,7 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public JobScheduleClient buildJobScheduleClient() {
-        return new JobScheduleClient(new JobScheduleAsyncClient(buildInnerClient().getJobSchedules()));
+        return new JobScheduleClient(buildInnerClient().getJobSchedules());
     }
 
     /**
@@ -480,27 +471,18 @@ public final class BatchServiceClientBuilder
      */
     @Generated
     public TaskClient buildTaskClient() {
-        return new TaskClient(new TaskAsyncClient(buildInnerClient().getTasks()));
+        return new TaskClient(buildInnerClient().getTasks());
     }
 
     /**
-     * Builds an instance of ComputeNodesClient class.
+     * Builds an instance of BatchNodesClient class.
      *
-     * @return an instance of ComputeNodesClient.
+     * @return an instance of BatchNodesClient.
      */
     @Generated
-    public ComputeNodesClient buildComputeNodesClient() {
-        return new ComputeNodesClient(new ComputeNodesAsyncClient(buildInnerClient().getComputeNodes()));
+    public BatchNodesClient buildBatchNodesClient() {
+        return new BatchNodesClient(buildInnerClient().getBatchNodes());
     }
 
-    /**
-     * Builds an instance of ComputeNodeExtensionsClient class.
-     *
-     * @return an instance of ComputeNodeExtensionsClient.
-     */
-    @Generated
-    public ComputeNodeExtensionsClient buildComputeNodeExtensionsClient() {
-        return new ComputeNodeExtensionsClient(
-                new ComputeNodeExtensionsAsyncClient(buildInnerClient().getComputeNodeExtensions()));
-    }
+    private static final ClientLogger LOGGER = new ClientLogger(BatchServiceClientBuilder.class);
 }

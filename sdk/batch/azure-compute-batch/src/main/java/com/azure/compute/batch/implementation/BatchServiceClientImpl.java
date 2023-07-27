@@ -7,7 +7,6 @@ package com.azure.compute.batch.implementation;
 import com.azure.compute.batch.BatchServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -159,28 +158,16 @@ public final class BatchServiceClientImpl {
         return this.tasks;
     }
 
-    /** The ComputeNodesImpl object to access its operations. */
-    private final ComputeNodesImpl computeNodes;
+    /** The BatchNodesImpl object to access its operations. */
+    private final BatchNodesImpl batchNodes;
 
     /**
-     * Gets the ComputeNodesImpl object to access its operations.
+     * Gets the BatchNodesImpl object to access its operations.
      *
-     * @return the ComputeNodesImpl object.
+     * @return the BatchNodesImpl object.
      */
-    public ComputeNodesImpl getComputeNodes() {
-        return this.computeNodes;
-    }
-
-    /** The ComputeNodeExtensionsImpl object to access its operations. */
-    private final ComputeNodeExtensionsImpl computeNodeExtensions;
-
-    /**
-     * Gets the ComputeNodeExtensionsImpl object to access its operations.
-     *
-     * @return the ComputeNodeExtensionsImpl object.
-     */
-    public ComputeNodeExtensionsImpl getComputeNodeExtensions() {
-        return this.computeNodeExtensions;
+    public BatchNodesImpl getBatchNodes() {
+        return this.batchNodes;
     }
 
     /**
@@ -191,9 +178,7 @@ public final class BatchServiceClientImpl {
      */
     public BatchServiceClientImpl(String endpoint, BatchServiceVersion serviceVersion) {
         this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
+                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
                 serviceVersion);
@@ -235,7 +220,6 @@ public final class BatchServiceClientImpl {
         this.files = new FilesImpl(this);
         this.jobSchedules = new JobSchedulesImpl(this);
         this.tasks = new TasksImpl(this);
-        this.computeNodes = new ComputeNodesImpl(this);
-        this.computeNodeExtensions = new ComputeNodeExtensionsImpl(this);
+        this.batchNodes = new BatchNodesImpl(this);
     }
 }
