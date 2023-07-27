@@ -48,12 +48,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         setupClient.setProperties(new DataLakeServiceProperties()
             .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(true).setDays(2)));
 
-        waitUntilPredicate(1000, 30, () -> {
-            DataLakeServiceProperties properties = setupClient.getProperties();
-            return properties.getDeleteRetentionPolicy() != null
-                && properties.getDeleteRetentionPolicy().isEnabled()
-                && properties.getDeleteRetentionPolicy().getDays() == 2;
-        });
+        sleepIfLiveTesting(30000);
     }
 
     @BeforeEach
@@ -70,7 +65,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
 
     @DisabledIf("olderThan20200804ServiceVersion")
     @Test
-    public void restorPath() {
+    public void restorePath() {
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient(generatePathName());
         dir.create();
         dir.delete();
