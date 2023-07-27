@@ -54,18 +54,17 @@ public class SqlSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageSqlVirtualNetworkRules.runSample(azureResourceManager));
     }
 
-    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
+    // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testManageSqlImportExportDatabase() {
-        // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
-        if (!isPlaybackMode()) {
-            Assertions.assertTrue(ManageSqlImportExportDatabase.runSample(azureResourceManager));
-        }
+        Assertions.assertTrue(ManageSqlImportExportDatabase.runSample(azureResourceManager));
     }
 
+    // This test can take significant time to run since it depends on the availability of certain resources on the service side.
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testManageSqlWithRecoveredOrRestoredDatabase() {
-        // This test can take significant time to run since it depends on the availability of certain resources on the service side.
         Assertions.assertTrue(ManageSqlWithRecoveredOrRestoredDatabase.runSample(azureResourceManager));
     }
 
