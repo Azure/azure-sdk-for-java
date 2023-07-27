@@ -1,6 +1,8 @@
-# Azure Monitor Spring native library for Java
+# Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application
 
-This project allows providing telemetry data to Azure Monitor for Spring Boot applications packaged as GraalVM native images.
+This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.
+
+_For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
 [Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
@@ -18,14 +20,14 @@ For more information, please read [introduction to Application Insights][applica
 [//]: # ({x-version-update-start;com.azure:azure-monitor-azure-monitor-spring-native;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-monitor-spring-native</artifactId>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-monitor</artifactId>
   <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-This dependency is a Spring Boot starter that will provide telemetry data for HTTP requests.
+This dependency is a Spring Boot starter that provides telemetry data for HTTP requests.
 
 ### Authentication
 
@@ -69,13 +71,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-spring-native/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
 [package_mvn]: https://mvnrepository.com/artifact/com.azure/applicationinsights-spring-native
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/
 [application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
 [application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
+[application_insights_java_agent_spring_boot]: https://learn.microsoft.com/azure/azure-monitor/app/java-spring-boot
 [azure_portal]: https://portal.azure.com
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
