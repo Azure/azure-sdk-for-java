@@ -153,6 +153,7 @@ org.springframework:spring-beans;6.0.7
 org.springframework:spring-context-support;6.0.7
 org.springframework:spring-context;6.0.7
 org.springframework:spring-core;6.0.7
+org.springframework:spring-core-test;6.0.7
 org.springframework:spring-expression;6.0.7
 org.springframework:spring-jdbc;6.0.7
 org.springframework:spring-jms;6.0.7
