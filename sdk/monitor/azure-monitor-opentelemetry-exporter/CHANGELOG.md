@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.11 (2023-07-26)
+## 1.0.0-beta.11 (2023-07-27)
 
 ### Other Changes
 - [Fix RP Attach Type](https://github.com/Azure/azure-sdk-for-java/pull/36121)
