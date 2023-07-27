@@ -78,7 +78,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_subscription]: https://azure.microsoft.com/free/
 [application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
 [application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
-[application_insights_java_agent_spring_boot]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/java-spring-boot 
 [application_insights_java_agent_spring_boot]: https://learn.microsoft.com/azure/azure-monitor/app/java-spring-boot
 [azure_portal]: https://portal.azure.com
 [cla]: https://cla.microsoft.com
