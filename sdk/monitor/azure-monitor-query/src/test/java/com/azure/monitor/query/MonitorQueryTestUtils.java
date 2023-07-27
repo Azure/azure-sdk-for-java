@@ -28,7 +28,7 @@ public final class MonitorQueryTestUtils {
         + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
         + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
-    public static final HashMap<String, String> ENDPOINTS = new HashMap<>() {
+    public static final HashMap<String, String> ENDPOINTS = new HashMap<String, String>() {
         {
             put("AzureCloud", "https://api.loganalytics.io/v1");
             put("AzureChinaCloud", "https://api.loganalytics.azure.cn/v1");
