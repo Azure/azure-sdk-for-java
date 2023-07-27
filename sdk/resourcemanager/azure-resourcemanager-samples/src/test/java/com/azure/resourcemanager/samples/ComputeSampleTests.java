@@ -197,6 +197,7 @@ public class ComputeSampleTests extends SamplesTestBase {
         Assertions.assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
     }
 
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testCloneVirtualMachineToNewRegion() {
         Assertions.assertTrue(CloneVirtualMachineToNewRegion.runSample(azureResourceManager));
