@@ -83,7 +83,9 @@ public class ComputeSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ListVirtualMachineExtensionImages.runSample(azureResourceManager));
     }
 
+    // record too large, playback takes 30+ seconds
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testListVirtualMachineImages() {
         Assertions.assertTrue(ListVirtualMachineImages.runSample(azureResourceManager));
     }
