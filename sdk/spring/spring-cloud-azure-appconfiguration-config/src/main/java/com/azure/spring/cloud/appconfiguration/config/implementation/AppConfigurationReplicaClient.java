@@ -3,18 +3,17 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.util.StringUtils;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
-
-import reactor.core.publisher.Mono;
 
 /**
  * Client for connecting to App Configuration when multiple replicas are in use.
@@ -23,7 +22,7 @@ class AppConfigurationReplicaClient {
 
     private final String endpoint;
 
-    private final ConfigurationAsyncClient client;
+    private final ConfigurationClient client;
 
     private Instant backoffEndTime;
 
@@ -36,7 +35,7 @@ class AppConfigurationReplicaClient {
      * @param endpoint client endpoint
      * @param client Configuration Client to App Configuration store
      */
-    AppConfigurationReplicaClient(String endpoint, ConfigurationAsyncClient client, TracingInfo tracingInfo) {
+    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client, TracingInfo tracingInfo) {
         this.endpoint = endpoint;
         this.client = client;
         this.backoffEndTime = Instant.now().minusMillis(1);
@@ -80,17 +79,15 @@ class AppConfigurationReplicaClient {
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.
-     * @return 
      * @return The first returned configuration.
      */
-    Mono<ConfigurationSetting> getWatchKey(String key, String label)
+    ConfigurationSetting getWatchKey(String key, String label)
         throws HttpResponseException {
         try {
-            return client.getConfigurationSetting(key, label);
-            /*ConfigurationSetting watchKey = NormalizeNull
+            ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(client.getConfigurationSetting(key, label));
             this.failedAttempts = 0;
-            return watchKey;*/
+            return watchKey;
         } catch (HttpResponseException e) {
             if (e.getResponse() != null) {
                 int statusCode = e.getResponse().getStatusCode();
@@ -117,18 +114,16 @@ class AppConfigurationReplicaClient {
      * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
-     * @return 
      * @return List of Configuration Settings.
      */
-    PagedFlux<ConfigurationSetting> listSettings(SettingSelector settingSelector)
+    List<ConfigurationSetting> listSettings(SettingSelector settingSelector)
         throws HttpResponseException {
-        //List<ConfigurationSetting> configurationSettings = new ArrayList<>();
+        List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
-            //return client.listConfigurationSettings(settingSelector);
-           return client.listConfigurationSettings(settingSelector);
-            /*this.failedAttempts = 0;
+            PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
+            this.failedAttempts = 0;
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
-            return configurationSettings;*/
+            return configurationSettings;
         } catch (HttpResponseException e) {
             if (e.getResponse() != null) {
                 int statusCode = e.getResponse().getStatusCode();

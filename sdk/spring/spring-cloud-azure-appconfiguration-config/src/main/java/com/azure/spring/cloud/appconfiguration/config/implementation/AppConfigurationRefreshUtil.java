@@ -10,13 +10,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -24,9 +22,6 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 class AppConfigurationRefreshUtil {
 
@@ -123,7 +118,7 @@ class AppConfigurationRefreshUtil {
 
     static boolean checkStoreAfterRefreshFailed(AppConfigurationReplicaClient client,
         AppConfigurationReplicaClientFactory clientFactory, FeatureFlagStore featureStore, List<String> profiles) {
-        return refreshStoreCheck(client, clientFactory.findOriginForEndpoint(client.getEndpoint())).block()
+        return refreshStoreCheck(client, clientFactory.findOriginForEndpoint(client.getEndpoint()))
             || refreshStoreFeatureFlagCheck(featureStore, client, profiles);
     }
 
@@ -134,12 +129,12 @@ class AppConfigurationRefreshUtil {
      * @param originEndpoint config store origin endpoint
      * @return A refresh should be triggered.
      */
-    private static Mono<Boolean> refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
+    private static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
         RefreshEventData eventData = new RefreshEventData();
         if (StateHolder.getLoadState(originEndpoint)) {
-            return refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData);
+            refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData);
         }
-        return Mono.just(false);
+        return eventData.getDoRefresh();
     }
 
     /**
@@ -191,21 +186,20 @@ class AppConfigurationRefreshUtil {
      * @param watchKeys Watch keys for the store.
      * @param eventData Refresh event info
      */
-    private static Mono<Boolean> refreshWithoutTime(AppConfigurationReplicaClient client,
+    private static void refreshWithoutTime(AppConfigurationReplicaClient client,
         List<ConfigurationSetting> watchKeys, RefreshEventData eventData) throws AppConfigurationStatusException {
-        return Flux.fromIterable(watchKeys).flatMap(watchKey -> {
-            return client.getWatchKey(watchKey.getKey(), watchKey.getLabel()).map(configurationSetting -> {
-                // If there is no result, etag will be considered empty.
-                // A refresh will trigger once the selector returns a value.
-                if (configurationSetting != null) {
-                    checkETag(watchKey, configurationSetting, client.getEndpoint(), eventData);
-                    if (eventData.getDoRefresh()) {
-                        return true;
-                    }
+        for (ConfigurationSetting watchKey : watchKeys) {
+            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel());
+
+            // If there is no result, etag will be considered empty.
+            // A refresh will trigger once the selector returns a value.
+            if (watchedKey != null) {
+                checkETag(watchKey, watchedKey, client.getEndpoint(), eventData);
+                if (eventData.getDoRefresh()) {
+                    break;
                 }
-                return false;
-            });
-        }).filter(Boolean::booleanValue).next().defaultIfEmpty(true);
+            }
+        }
     }
 
     private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client,
@@ -225,11 +219,9 @@ class AppConfigurationRefreshUtil {
 
                 SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
+                List<ConfigurationSetting> currentKeys = client.listSettings(selector);
 
-                PagedFlux<ConfigurationSetting> settings = client.listSettings(selector);
-                settings.map(setting -> NormalizeNull.normalizeNullLabel(setting));
-
-                watchedKeySize += checkFeatureFlags(settings.collectList().block(), state, client, eventData);
+                watchedKeySize += checkFeatureFlags(currentKeys, state, client, eventData);
             }
 
             if (!eventData.getDoRefresh() && watchedKeySize != state.getWatchKeys().size()) {
@@ -271,7 +263,8 @@ class AppConfigurationRefreshUtil {
         return watchedKeySize;
     }
 
-    private static Mono<Boolean> refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client,
+
+    private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client,
         FeatureFlagStore featureStore, List<ConfigurationSetting> watchKeys, RefreshEventData eventData,
         List<String> profiles) throws AppConfigurationStatusException {
         for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
@@ -282,27 +275,27 @@ class AppConfigurationRefreshUtil {
             }
 
             SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
-                .setLabelFilter(watchKey.getLabelFilterText(profiles));
-            PagedFlux<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
+                .setLabelFilter(watchKey.getLabelFilterText(profiles));            
+            List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
 
-            // TODO (mametcal): This is the issue. First we need to compare the feature flags known to the client and
-            // feature flags in the store. Any difference in etag causes a refresh.
-            // TODO (mametcal): Then we also need to know if any feature flags were added or removed. A single loop
-            // would not work with this.
-            Stream<Boolean> changedFeatureFlags = currentTriggerConfigurations.toStream()
-                .map(currentTriggerConfiguration -> {
-                    watchKeys.stream().map(watchFlag -> {
-                        // If there is no result, etag will be considered empty.
-                        // A refresh will trigger once the selector returns a value.
-                        if (compairKeys(watchFlag, currentTriggerConfiguration, client.getEndpoint(), eventData)) {
-                            return eventData.getDoRefresh();
+            int watchedKeySize = 0;
+
+            for (ConfigurationSetting currentTriggerConfiguration : currentTriggerConfigurations) {
+                watchedKeySize += 1;
+                for (ConfigurationSetting watchFlag : watchKeys) {
+
+                    // If there is no result, etag will be considered empty.
+                    // A refresh will trigger once the selector returns a value.
+                    if (compairKeys(watchFlag, currentTriggerConfiguration, client.getEndpoint(), eventData)) {
+                        if (eventData.getDoRefresh()) {
+                            return;
                         }
-                        return false;
-                    });
-                    return false;
-                });
+                    } else {
+                        break;
+                    }
 
-            long watchedKeySize = currentTriggerConfigurations.toStream().count();
+                }
+            }
 
             if (watchedKeySize != watchKeys.size()) {
                 String eventDataInfo = ".appconfig.featureflag/*";
@@ -313,28 +306,25 @@ class AppConfigurationRefreshUtil {
 
                 eventData.setMessage(eventDataInfo);
             }
-
-            // TODO (mametcal): At this point we would need to look at the results of both the diff of etags and size and return true if any are different.
-            // TODO (mametcal): We need to do this without requesting the results again
-            return Flux.fromStream(changedFeatureFlags).filter(Boolean::booleanValue)
-                .next()
-                .defaultIfEmpty(false);
         }
-        return Mono.just(false);
     }
 
-    private static boolean compairKeys(ConfigurationSetting key1, ConfigurationSetting key2,
+    private static Boolean compairKeys(ConfigurationSetting key1, ConfigurationSetting key2,
         String endpoint, RefreshEventData eventData) {
         if (key1 != null && key1.getKey().equals(key2.getKey()) && key1.getLabel().equals(key2.getLabel())) {
-            return checkETag(key1, key2, endpoint, eventData);
+            checkETag(key1, key2, endpoint, eventData);
+            return true;
         }
         return false;
 
     }
 
-    private static boolean checkETag(ConfigurationSetting watchSetting,
-        ConfigurationSetting currentTriggerConfiguration,
+    private static void checkETag(ConfigurationSetting watchSetting, ConfigurationSetting currentTriggerConfiguration,
         String endpoint, RefreshEventData eventData) {
+        if (currentTriggerConfiguration == null) {
+            return;
+        }
+
         LOGGER.debug(watchSetting.getETag(), " - ", currentTriggerConfiguration.getETag());
         if (watchSetting.getETag() != null && !watchSetting.getETag().equals(currentTriggerConfiguration.getETag())) {
             LOGGER.trace(
@@ -348,9 +338,7 @@ class AppConfigurationRefreshUtil {
             // stores, not one for each.
             LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
             eventData.setMessage(eventDataInfo);
-            return true;
         }
-        return false;
     }
 
     /**

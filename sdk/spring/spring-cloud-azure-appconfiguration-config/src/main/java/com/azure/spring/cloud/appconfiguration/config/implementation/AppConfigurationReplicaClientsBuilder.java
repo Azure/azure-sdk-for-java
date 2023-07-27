@@ -189,7 +189,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         if (clientProvider != null) {
             clientProvider.customize(builder, endpoint);
         }
-        return new AppConfigurationReplicaClient(endpoint, builder.buildAsyncClient(), tracingInfo);
+        return new AppConfigurationReplicaClient(endpoint, builder.buildClient(), tracingInfo);
     }
 
     @Override
