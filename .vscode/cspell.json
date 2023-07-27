@@ -1004,6 +1004,7 @@
         "OIDC",
         "otel",
         "Otel",
+        "otlp",
         "qpid",
         "reqoest",
         "signin",
