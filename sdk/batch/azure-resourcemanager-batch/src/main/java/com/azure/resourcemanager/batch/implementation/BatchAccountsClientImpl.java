@@ -76,8 +76,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     public interface BatchAccountsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -92,8 +91,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BatchAccountInner>> update(
@@ -108,8 +106,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -123,8 +120,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BatchAccountInner>> getByResourceGroup(
@@ -149,8 +145,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch"
-                + "/batchAccounts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BatchAccountListResult>> listByResourceGroup(
@@ -163,8 +158,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/syncAutoStorageKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/syncAutoStorageKeys")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> synchronizeAutoStorageKeys(
@@ -178,8 +172,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/regenerateKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/regenerateKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BatchAccountKeysInner>> regenerateKey(
@@ -194,8 +187,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BatchAccountKeysInner>> getKeys(
@@ -209,8 +201,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/detectors")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/detectors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DetectorListResult>> listDetectors(
@@ -224,8 +215,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/detectors/{detectorId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/detectors/{detectorId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DetectorResponseInner>> getDetector(
@@ -240,8 +230,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/outboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpoints(
@@ -487,7 +476,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchAccountInner>, BatchAccountInner> beginCreate(
         String resourceGroupName, String accountName, BatchAccountCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
     }
 
     /**
@@ -509,7 +498,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchAccountInner>, BatchAccountInner> beginCreate(
         String resourceGroupName, String accountName, BatchAccountCreateParameters parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -910,7 +899,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
@@ -927,7 +916,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**

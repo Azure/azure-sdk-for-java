@@ -59,11 +59,11 @@ directive:
 ```
 
 
-## Form Recognizer Service 2023-02-28-preview
+## Form Recognizer Service 2023-07-31
 ### To run, use `autorest --tag:formrecognizer-documentanalysis README.md`
 ``` yaml $(tag) == 'formrecognizer-documentanalysis'
 use: '@autorest/java@4.1.13'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/preview/2023-02-28-preview/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/stable/2023-07-31/FormRecognizer.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -78,7 +78,7 @@ service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
-custom-types: DocumentFormulaKind,DocumentAnnotationKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,ParagraphRole,DocumentAnalysisFeature
+custom-types: DocumentFormulaKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,ParagraphRole,DocumentAnalysisFeature
 required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}

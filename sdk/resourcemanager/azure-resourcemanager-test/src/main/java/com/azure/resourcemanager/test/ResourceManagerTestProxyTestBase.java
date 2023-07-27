@@ -24,7 +24,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
-import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -62,12 +61,10 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -99,10 +96,16 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         }
     };
 
+    /**
+     * Redacted value.
+     */
+    protected static final String REDACTED_VALUE = "REDACTED";
+
     private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestProxyTestBase.class);
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
+    private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
     /**
      * Sets upper bound execution timeout for each @Test method.
@@ -252,7 +255,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
+                interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
                 addSanitizers();
             }
         } else {
@@ -456,13 +459,51 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected abstract void cleanUpResources();
 
     private void addSanitizers() {
-        interceptorManager.addSanitizers(Arrays.asList(
+        List<TestProxySanitizer> sanitizers = new ArrayList<>(Arrays.asList(
             // subscription id
             new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             // Retry-After
-            new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER)
+            new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
+            // Microsoft Graph secret
+            new TestProxySanitizer("$..secretText", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // Storage secret
+            new TestProxySanitizer("$..keys[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // Compute password and SAS
+            new TestProxySanitizer("$..adminPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..Password", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..accessSAS", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.osProfile.customData", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY), // likely a false positive
+            // SQL password
+            new TestProxySanitizer("$..administratorLoginPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..hubDatabasePassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // EH/SB key and connection string
+            new TestProxySanitizer("$..aliasPrimaryConnectionString", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..aliasSecondaryConnectionString", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..primaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secondaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..primaryMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secondaryMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..primaryReadonlyMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secondaryReadonlyMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // ContainerRegistry
+            new TestProxySanitizer("$..passwords[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // ContainerService
+            new TestProxySanitizer("$..secret", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         ));
+        sanitizers.addAll(this.sanitizers);
+        interceptorManager.addSanitizers(sanitizers);
+    }
+
+    /**
+     * Adds test proxy sanitizers.
+     * <p>
+     * Recommend to call this API in subclass constructor.
+     *
+     * @param sanitizers the test proxy sanitizers.
+     */
+    protected void addSanitizers(TestProxySanitizer... sanitizers) {
+        this.sanitizers.addAll(Arrays.asList(sanitizers));
     }
 
     private final class PlaybackTimeoutInterceptor implements InvocationInterceptor {

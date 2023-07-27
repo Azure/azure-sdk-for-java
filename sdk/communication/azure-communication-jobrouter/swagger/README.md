@@ -45,7 +45,12 @@ models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
+customization-class: JobRouterCustomizations
 directive:
+# Ensure that empty json passed for cancelJobRequest
+- where-operation: JobRouter_CancelJobAction
+  transform: $.parameters[2].required = true
+
 - rename-model:
     from: AcceptJobOfferResult
     to: AcceptJobOfferResultInternal
@@ -301,4 +306,21 @@ directive:
   transform: >
     $.type = "object";
     $.additionalProperties["$ref"] = "#/definitions/ExceptionActionInternal";
+```
+
+### Customization
+```java
+import org.slf4j.Logger;
+
+public class JobRouterCustomizations extends Customization {
+
+    @Override
+    public void customize(LibraryCustomization customization, Logger logger) {
+
+        // Implementation models customizations
+        PackageCustomization implementationModels = customization.getPackage("com.azure.communication.jobrouter.implementation.models");
+        ClassCustomization matchingModeInternal = implementationModels.getClass("JobMatchingModeInternal");
+        matchingModeInternal.addAnnotation("JsonInclude(Include.ALWAYS)");
+    }
+}
 ```

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for NetworkInterfaces GetVirtualMachineScaleSetNetworkInterface. */
 public final class NetworkInterfacesGetVirtualMachineScaleSetNetworkInterfaceSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VmssNetworkInterfaceGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VmssNetworkInterfaceGet.json
      */
     /**
      * Sample code: Get virtual machine scale set network interface.

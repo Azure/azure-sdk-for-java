@@ -49,12 +49,13 @@ If you don’t want to use the `spring-boot-starter-parent`, you can still keep 
 
 Mapping from **Spring Boot** / **Spring Cloud** version to **Azure Spring Data Cosmos** versions
 
-| Spring Boot version   | Spring Cloud version   | Azure Spring Data Cosmos versions |
-|-----------------------|------------------------|---------------------------------|
-| 2.7.x                 | 2021.0.x               |  3.23.0 and above |
-| 2.6.x                 | 2021.0.x               |  3.15.0 - 3.22.0 |
-| 2.5.x                 | 2020.0.x               |  3.8.0 - 3.14.0 |
-| 2.4.x                 | 2020.0.x               |  3.5.0 - 3.7.0 |
+| Spring Boot version   | Spring Cloud version | Azure Spring Data Cosmos versions |
+|-----------------------|----------------------|-----------------------------------|
+| 3.0.x                 | 2022.0.x             | 5.3.0 and above                   |
+| 2.7.x                 | 2021.0.x             | 3.23.0 and above                  |
+| 2.6.x                 | 2021.0.x             | 3.15.0 - 3.22.0                   |
+| 2.5.x                 | 2020.0.x             | 3.8.0 - 3.14.0                    |
+| 2.4.x                 | 2020.0.x             | 3.5.0 - 3.7.0                     |
 
 ### I'm Using Spring Boot Version X
 If you are using **Spring Boot** in your project, you can find related **Azure Spring Data Cosmos** versions from above table. For example: if you are using **Spring Boot** 2.7.x, you should use **Azure Spring Data Cosmos** versions 3.23.0 and above.
@@ -159,15 +160,16 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.diagnosticsThresholds.pointOperationLatencyThresholdInMS}")
     private int pointOperationLatencyThresholdInMS;
-    
+
     @Value("${azure.cosmos.diagnosticsThresholds.nonPointOperationLatencyThresholdInMS}")
     private int nonPointOperationLatencyThresholdInMS;
-    
+
     @Value("${azure.cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
     private int requestChargeThresholdInRU;
-    
+
     @Value("${azure.cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
     private int payloadSizeThresholdInBytes;
+
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -236,15 +238,15 @@ public CosmosClientBuilder getCosmosClientBuilder() {
         .endpoint(uri)
         .directMode(directConnectionConfig, gatewayConnectionConfig)
         .clientTelemetryConfig(
-                new CosmosClientTelemetryConfig()
-                    .diagnosticsThresholds(
-                        new CosmosDiagnosticsThresholds()
-                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
-                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
-                            .setRequestChargeThreshold(requestChargeThresholdInRU)
-                    )
-                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
+            new CosmosClientTelemetryConfig()
+                .diagnosticsThresholds(
+                    new CosmosDiagnosticsThresholds()
+                        .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                        .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                        .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                        .setRequestChargeThreshold(requestChargeThresholdInRU)
+                )
+                .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
 }
 
 @Override

@@ -50,6 +50,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -421,9 +422,9 @@ public class ImplementationBridgeHelpers {
                 double minRetryRate,
                 double maxRetryRate);
 
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
+            int getInitialMicroBatchSize(CosmosBulkExecutionOptions options);
 
-            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+            CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize);
 
             int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
 
@@ -891,6 +892,12 @@ public class ImplementationBridgeHelpers {
             IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 Callable<IFaultInjectorProvider> injectorProviderCallable);
+
+            <T> Mono<FeedResponse<T>> readMany(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                List<CosmosItemIdentity> itemIdentityList,
+                CosmosQueryRequestOptions requestOptions,
+                Class<T> classType);
         }
     }
 
