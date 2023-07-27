@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.sql.samples.ManageSqlDatabase;
 import com.azure.resourcemanager.sql.samples.ManageSqlDatabaseInElasticPool;
 import com.azure.resourcemanager.sql.samples.ManageSqlDatabasesAcrossDifferentDataCenters;
@@ -53,6 +54,7 @@ public class SqlSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageSqlVirtualNetworkRules.runSample(azureResourceManager));
     }
 
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testManageSqlImportExportDatabase() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
