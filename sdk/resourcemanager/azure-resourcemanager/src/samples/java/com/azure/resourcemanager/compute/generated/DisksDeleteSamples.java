@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for Disks Delete. */
 public final class DisksDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskExamples/Disk_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskExamples/Disk_Delete.json
      */
     /**
      * Sample code: Delete a managed disk.
