@@ -10,7 +10,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -18,6 +17,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -43,11 +43,8 @@ import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperti
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -206,6 +203,81 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertEquals(0, runtimeProperties.getTotalMessageCount());
         assertEquals(0, runtimeProperties.getSizeInBytes());
         assertNotNull(runtimeProperties.getCreatedAt());
+    }
+
+    @Test
+    void createQueueWithForwarding() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String queueName = testResourceNamer.randomName("test", 10);
+        final String forwardToEntityName = getEntityName(TestUtils.getQueueBaseName(), 5);
+        final CreateQueueOptions expected = new CreateQueueOptions()
+            .setForwardTo(forwardToEntityName)
+            .setForwardDeadLetteredMessagesTo(forwardToEntityName);
+
+        // Act
+        final Response<QueueProperties> response = client.createQueueWithResponse(queueName, expected, Context.NONE);
+        final QueueProperties actual = response.getValue();
+
+        // Assert
+        assertEquals(queueName, actual.getName());
+
+        // The URLs will be fake in playback mode.
+        if (!interceptorManager.isPlaybackMode()) {
+            assertEquals(expected.getForwardTo(), actual.getForwardTo());
+            assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+        }
+
+        final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
+        assertNotNull(runtimeProperties.getCreatedAt());
+    }
+
+    @Test
+    void createQueueAuthorizationRules() {
+        // Arrange
+        final String keyName = "test-rule";
+        final List<AccessRights> accessRights = Collections.singletonList(AccessRights.SEND);
+        final ServiceBusAdministrationClient client = getClient();
+        final String queueName = testResourceNamer.randomName("test", 10);
+        final SharedAccessAuthorizationRule rule = interceptorManager.isPlaybackMode()
+            ? new SharedAccessAuthorizationRule(keyName, "REDACTED",
+            "REDACTED", accessRights)
+            : new SharedAccessAuthorizationRule(keyName, accessRights);
+
+        final CreateQueueOptions expected = new CreateQueueOptions()
+            .setMaxSizeInMegabytes(1024)
+            .setMaxDeliveryCount(7)
+            .setLockDuration(Duration.ofSeconds(45))
+            .setSessionRequired(true)
+            .setDuplicateDetectionRequired(true)
+            .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
+            .setUserMetadata("some-metadata-for-testing");
+
+        expected.getAuthorizationRules().add(rule);
+
+        // Act
+        final Response<QueueProperties> response = client.createQueueWithResponse(queueName, expected, Context.NONE);
+        final QueueProperties actual = response.getValue();
+
+        // Assert
+        assertEquals(queueName, actual.getName());
+
+        assertEquals(expected.getLockDuration(), actual.getLockDuration());
+        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
+        assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+
+        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
+        assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
+        assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
+
+        final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
+        assertEquals(0, runtimeProperties.getTotalMessageCount());
+        assertEquals(0, runtimeProperties.getSizeInBytes());
+        assertNotNull(runtimeProperties.getCreatedAt());
+
+        assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
     }
 
     @Test
