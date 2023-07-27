@@ -11,7 +11,6 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
@@ -252,7 +251,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void muteParticipants() {
+    public void muteParticipant() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(serializeObject(new MuteParticipantsResponseInternal()), 202)
@@ -260,30 +259,9 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         MuteParticipantsResult muteParticipantsResult =
-            callConnection.muteParticipants(new CommunicationUserIdentifier(CALL_TARGET_ID));
+            callConnection.muteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         assertNotNull(muteParticipantsResult);
         assertNull(muteParticipantsResult.getOperationContext());
-    }
-
-    @Test
-    public void muteParticipantsWithResponse() {
-        CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
-            Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new MuteParticipantsResponseInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
-            )))
-            .getCallConnection(CALL_CONNECTION_ID);
-
-        MuteParticipantsOptions muteParticipantsOptions = new MuteParticipantsOptions(
-            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))
-            .setOperationContext(CALL_OPERATION_CONTEXT);
-
-        Response<MuteParticipantsResult> muteParticipantsResultResponse =
-            callConnection.muteParticipantsWithResponse(muteParticipantsOptions, Context.NONE);
-
-        assertNotNull(muteParticipantsResultResponse);
-        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
-        assertNotNull(muteParticipantsResultResponse.getValue());
     }
 }

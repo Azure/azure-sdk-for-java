@@ -16,7 +16,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     /*
      * List of recognize choice.
      */
-    private final List<RecognizeChoice> recognizeChoices;
+    private final List<RecognitionChoice> choices;
 
     /*
      * Speech language to be recognized, If not set default is en-US
@@ -35,8 +35,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      *
      * @return the list of recognize choice.
      */
-    public List<RecognizeChoice> getRecognizeChoices() {
-        return this.recognizeChoices;
+    public List<RecognitionChoice> getRecognizeChoices() {
+        return this.choices;
     }
 
     /**
@@ -169,10 +169,10 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Initializes a CallMediaRecognizeDtmfOptions object.
      *
      * @param targetParticipant Target participant of DTFM tone recognition.
-     * @param recognizeChoices Maximum number of DTMF tones to be collected.
+     * @param choices Maximum number of DTMF tones to be collected.
      */
-    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognizeChoice> recognizeChoices) {
+    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognitionChoice> choices) {
         super(RecognizeInputType.CHOICES, targetParticipant);
-        this.recognizeChoices = recognizeChoices;
+        this.choices = choices;
     }
 }

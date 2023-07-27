@@ -33,7 +33,7 @@ import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SendDtmfResult;
@@ -345,22 +345,22 @@ public final class CallMediaAsync {
         return playSourceInternal;
     }
 
-    private List<RecognizeChoiceInternal> convertListRecognizeChoiceInternal(List<RecognizeChoice> recognizeChoices) {
-        return recognizeChoices.stream()
+    private List<RecognizeChoiceInternal> convertListRecognizeChoiceInternal(List<RecognitionChoice> recognitionChoices) {
+        return recognitionChoices.stream()
             .map(this::convertRecognizeChoiceInternal)
             .collect(Collectors.toList());
     }
 
-    private RecognizeChoiceInternal convertRecognizeChoiceInternal(RecognizeChoice recognizeChoice) {
+    private RecognizeChoiceInternal convertRecognizeChoiceInternal(RecognitionChoice recognitionChoice) {
         RecognizeChoiceInternal internalRecognizeChoice = new RecognizeChoiceInternal();
-        if (recognizeChoice.getLabel() != null) {
-            internalRecognizeChoice.setLabel(recognizeChoice.getLabel());
+        if (recognitionChoice.getLabel() != null) {
+            internalRecognizeChoice.setLabel(recognitionChoice.getLabel());
         }
-        if (recognizeChoice.getPhrases() != null) {
-            internalRecognizeChoice.setPhrases(recognizeChoice.getPhrases());
+        if (recognitionChoice.getPhrases() != null) {
+            internalRecognizeChoice.setPhrases(recognitionChoice.getPhrases());
         }
-        if (recognizeChoice.getTone() != null) {
-            internalRecognizeChoice.setTone(convertDtmfToneInternal(recognizeChoice.getTone()));
+        if (recognitionChoice.getTone() != null) {
+            internalRecognizeChoice.setTone(convertDtmfToneInternal(recognitionChoice.getTone()));
         }
         return internalRecognizeChoice;
     }
@@ -429,7 +429,7 @@ public final class CallMediaAsync {
     private RecognizeRequest getRecognizeRequestFromSpeechConfiguration(CallMediaRecognizeOptions recognizeOptions) {
         CallMediaRecognizeSpeechOptions speechRecognizeOptions = (CallMediaRecognizeSpeechOptions) recognizeOptions;
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeout().toMillis());
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setSpeechOptions(speechOptionsInternal)
@@ -468,7 +468,7 @@ public final class CallMediaAsync {
             speechOrDtmfRecognizeOptions.getStopTones()
         );
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeout().toMillis());
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setSpeechOptions(speechOptionsInternal)
