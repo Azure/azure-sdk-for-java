@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -28,6 +29,7 @@ import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOp
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
@@ -41,6 +43,7 @@ import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -54,9 +57,12 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
+import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -65,6 +71,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
@@ -84,7 +91,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     static final List<TestProxySanitizer> TEST_PROXY_SANITIZERS;
 
     static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
-
 
     static {
         AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey", TestProxySanitizerType.HEADER);
@@ -163,6 +169,40 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(expectedName, properties.getName());
             })
             .verifyComplete();
+    }
+
+    /**
+     * Test to connect to the service bus with an azure sas credential.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    @Test
+    void azureSasCredentialsTest() {
+        // Arrrange
+        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+
+        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+        String connectionString = getConnectionString(true);
+        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = sasPattern.matcher(connectionString);
+        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
+
+        ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
+            .endpoint("https://" + fullyQualifiedDomainName)
+            .credential(new AzureSasCredential(matcher.group(1)))
+            .buildAsyncClient();
+
+        // Act & Assert
+        StepVerifier.create(client.getNamespacePropertiesWithResponse())
+            .assertNext(response -> {
+                final NamespaceProperties np = response.getValue();
+                assertNotNull(np.getName());
+            })
+            .expectComplete()
+            .verify();
     }
 
     @ParameterizedTest

@@ -3,7 +3,10 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -15,6 +18,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -41,6 +45,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Clock;
@@ -67,6 +73,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -74,6 +82,55 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @Tag("integration")
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
+
+    /**
+     * Test to connect to the service bus with an azure identity TokenCredential.
+     * com.azure.identity.ClientSecretCredential is used in this test.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    @Test
+    void azureIdentityCredentials() {
+        // Arrange
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final TokenCredential tokenCredential;
+        if (interceptorManager.isPlaybackMode()) {
+            tokenCredential = mock(TokenCredential.class);
+            Mockito.when(tokenCredential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.fromCallable(() -> {
+                return new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5)));
+            }));
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+        }
+
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        final ServiceBusAdministrationClient client = builder
+            .credential(fullyQualifiedDomainName, tokenCredential)
+            .buildClient();
+
+        // Act
+        NamespaceProperties properties = client.getNamespaceProperties();
+
+        // Assert
+        assertNotNull(properties);
+
+        final String expectedName;
+        if (interceptorManager.isPlaybackMode()) {
+            expectedName = TestUtils.TEST_NAMESPACE;
+        } else {
+            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+            expectedName = split[0];
+        }
+
+        assertEquals(expectedName, properties.getName());
+    }
 
     /**
      * Test to connect to the service bus with an azure sas credential.
