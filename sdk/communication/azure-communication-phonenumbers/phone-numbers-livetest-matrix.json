@@ -21,6 +21,7 @@
         },
         "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
         "SKIP_SIP_ROUTING_LIVE_TESTS": "false",
+        "ALLOW_EMPTY_LIST_OF_AREA_CODES": "false",
         "TestFromSource": false,
         "RunAggregateReports": false,
         "TestGoals": "surefire:test",
@@ -42,6 +43,7 @@
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
             "SKIP_SIP_ROUTING_LIVE_TESTS": "false",
+            "ALLOW_EMPTY_LIST_OF_AREA_CODES": "false",
             "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA11"
         },
         {
@@ -59,6 +61,7 @@
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
             "SKIP_SIP_ROUTING_LIVE_TESTS": "false",
+            "ALLOW_EMPTY_LIST_OF_AREA_CODES": "false",
             "AZURE_TEST_AGENT": "WINDOWS_2019_JAVA11"
         }
     ]

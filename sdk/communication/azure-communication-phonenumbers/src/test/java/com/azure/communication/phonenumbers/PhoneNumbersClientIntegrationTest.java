@@ -21,6 +21,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -33,6 +34,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
@@ -181,8 +183,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
+        }
     }
 
     @ParameterizedTest
@@ -194,8 +204,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                         locality.getAdministrativeDivision().getAbbreviatedName());
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+        
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of geographic area codes was returned.");
+        }
     }
 
     @ParameterizedTest
@@ -220,14 +238,14 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesWithAdministrativeDivision(HttpClient httpClient) {
-        String localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+        String localityAdministrativeDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).iterator().next().getAdministrativeDivision().getAbbreviatedName();
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", localityAdministraiveDivision);
+                .listAvailableLocalities("US", localityAdministrativeDivision);
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
-        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityAdministraiveDivision);
+        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityAdministrativeDivision);
     }
 
     @ParameterizedTest
@@ -246,8 +264,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+                
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of Toll-Free area codes was returned.");
+        }
     }
 
     @ParameterizedTest
@@ -259,8 +285,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                         locality.getAdministrativeDivision().getAbbreviatedName());
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+        
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of Geographic area codes was returned.");
+        }
     }
 
     @ParameterizedTest
