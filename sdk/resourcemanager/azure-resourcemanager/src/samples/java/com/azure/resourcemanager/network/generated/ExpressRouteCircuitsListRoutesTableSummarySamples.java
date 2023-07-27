@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ExpressRouteCircuits ListRoutesTableSummary. */
 public final class ExpressRouteCircuitsListRoutesTableSummarySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCircuitRouteTableSummaryList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ExpressRouteCircuitRouteTableSummaryList.json
      */
     /**
      * Sample code: List Route Table Summary.

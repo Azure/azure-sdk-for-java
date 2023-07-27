@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBTableWithVirtualNetworkRule;
 import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBWithEventualConsistency;
 import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBWithIPRange;
@@ -12,6 +13,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class CosmosDBTests extends SamplesTestBase {
+
+    // Most this error in runtime
+    // Sorry, we are currently experiencing high demand in Central US region, and cannot fulfill your request at this time ###.
 
     @Test
     public void testCreateCosmosDBWithEventualConsistency() {
@@ -39,6 +43,8 @@ public class CosmosDBTests extends SamplesTestBase {
         }
     }
 
+    // it uses lots of read replication regions
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testManageHACosmosDB() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time

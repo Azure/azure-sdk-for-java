@@ -12,7 +12,7 @@ public final class ResourceGuardOperationTests {
     public void testDeserialize() throws Exception {
         ResourceGuardOperation model =
             BinaryData
-                .fromString("{\"vaultCriticalOperation\":\"lpichk\",\"requestResourceType\":\"mkcdyhbpkkpwdre\"}")
+                .fromString("{\"vaultCriticalOperation\":\"p\",\"requestResourceType\":\"oamciodh\"}")
                 .toObject(ResourceGuardOperation.class);
     }
 

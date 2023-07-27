@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
@@ -19,6 +20,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -147,10 +149,8 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040D)));
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040A)));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new AzureBlobContentSource(blobContainerUrl1040D)));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new AzureBlobContentSource(blobContainerUrl1040A)));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes)
             // if polling operation completed, retrieve the final result.
@@ -161,8 +161,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
                 System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
                 classifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
-                    System.out.printf("Blob Source container Url: %s", documentTypeDetails
-                        .getAzureBlobSource().getContainerUrl());
+                    if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
+                        System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
+                            .getTrainingDataContentSource()).getContainerUrl());
+                    }
                 });
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentClassifier#Map
@@ -177,10 +179,8 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040D)));
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040A)));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new AzureBlobContentSource(blobContainerUrl1040D)));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new AzureBlobContentSource(blobContainerUrl1040A)));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes,
                 new BuildDocumentClassifierOptions()
@@ -194,23 +194,25 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
                 System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
                 classifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
-                    System.out.printf("Blob Source container Url: %s", documentTypeDetails
-                        .getAzureBlobSource().getContainerUrl());
+                    if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
+                        System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
+                            .getTrainingDataContentSource()).getContainerUrl());
+                    }
                 });
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentClassifier#Map-Options
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(String, DocumentModelBuildMode, String)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(TrainingDataContentSource, DocumentModelBuildMode)}
      */
     public void beginBuildModelWithFileList() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode-String
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#TrainingDataContentSource-BuildMode
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String fileList = "";
-        documentModelAdministrationAsyncClient.beginBuildDocumentModel(blobContainerUrl,
-                DocumentModelBuildMode.TEMPLATE, fileList
-            )
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(
+            new AzureBlobFileListContentSource(blobContainerUrl, fileList),
+                DocumentModelBuildMode.TEMPLATE)
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(documentModel -> {
@@ -224,7 +226,46 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode-String
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#TrainingDataContentSource-BuildMode
+    }
+
+    /**
+     * Code snippet for
+     *
+     * {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(TrainingDataContentSource, DocumentModelBuildMode, BuildDocumentModelOptions)}
+     */
+    public void beginBuildModelWithFileListWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#TrainingDataContentSource-BuildMode-BuildDocumentModelOptions
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String fileList = "";
+        String modelId = "model-id";
+        Map<String, String> attrs = new HashMap<String, String>();
+        attrs.put("createdBy", "sample");
+        String prefix = "Invoice";
+
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(
+                new AzureBlobFileListContentSource(blobContainerUrl, fileList),
+                DocumentModelBuildMode.TEMPLATE,
+            new BuildDocumentModelOptions()
+                .setModelId(modelId)
+                .setDescription("model desc")
+                .setTags(attrs))
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(documentModel -> {
+                System.out.printf("Model ID: %s%n", documentModel.getModelId());
+                System.out.printf("Model Description: %s%n", documentModel.getDescription());
+                System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
+                System.out.printf("Model assigned tags: %s%n", documentModel.getTags());
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                        System.out.printf("Field: %s", field);
+                        System.out.printf("Field type: %s", documentFieldSchema.getType());
+                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+                    });
+                });
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#TrainingDataContentSource-BuildMode-BuildDocumentModelOptions
     }
 
     /**
@@ -578,10 +619,15 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             System.out.printf("Classifier Description: %s%n", documentClassifier.getDescription());
             System.out.printf("Classifier Created on: %s%n", documentClassifier.getCreatedOn());
             documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
-                System.out.printf("Blob Source container Url: %s", documentTypeDetails.getAzureBlobSource()
-                    .getContainerUrl());
-                System.out.printf("Blob File list Source container Url: %s", documentTypeDetails.
-                    getAzureBlobFileListSource().getContainerUrl());
+                if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
+                    System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
+                        .getTrainingDataContentSource()).getContainerUrl());
+                }
+                if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobFileListContentSource) {
+                    System.out.printf("Blob File List Source container Url: %s",
+                        ((AzureBlobFileListContentSource) documentTypeDetails
+                        .getTrainingDataContentSource()).getContainerUrl());
+                }
             });
         });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifier#string
@@ -600,10 +646,15 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
             System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
             documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
-                System.out.printf("Blob Source container Url: %s", documentTypeDetails.
-                    getAzureBlobSource().getContainerUrl());
-                System.out.printf("Blob File list Source container Url: %s", documentTypeDetails.
-                    getAzureBlobFileListSource().getContainerUrl());
+                if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
+                    System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
+                        .getTrainingDataContentSource()).getContainerUrl());
+                }
+                if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobFileListContentSource) {
+                    System.out.printf("Blob File List Source container Url: %s",
+                        ((AzureBlobFileListContentSource) documentTypeDetails
+                            .getTrainingDataContentSource()).getContainerUrl());
+                }
             });
         });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string

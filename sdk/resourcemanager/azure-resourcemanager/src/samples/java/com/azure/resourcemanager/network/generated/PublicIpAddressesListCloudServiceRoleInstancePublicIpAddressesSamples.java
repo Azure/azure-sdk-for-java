@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PublicIpAddresses ListCloudServiceRoleInstancePublicIpAddresses. */
 public final class PublicIpAddressesListCloudServiceRoleInstancePublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/CloudServiceRoleInstancePublicIpList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/CloudServiceRoleInstancePublicIpList.json
      */
     /**
      * Sample code: ListVMSSVMPublicIP.

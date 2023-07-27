@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("best-worker")
 @Fluent
 public final class BestWorkerMode extends DistributionMode {
+    /** Creates an instance of BestWorkerMode class. */
+    public BestWorkerMode() {}
+
     /*
      * A rule of one of the following types:
      *
@@ -85,6 +88,27 @@ public final class BestWorkerMode extends DistributionMode {
      */
     public BestWorkerMode setScoringRuleOptions(ScoringRuleOptions scoringRuleOptions) {
         this.scoringRuleOptions = scoringRuleOptions;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BestWorkerMode setMinConcurrentOffers(Integer minConcurrentOffers) {
+        super.setMinConcurrentOffers(minConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BestWorkerMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
+        super.setMaxConcurrentOffers(maxConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BestWorkerMode setBypassSelectors(Boolean bypassSelectors) {
+        super.setBypassSelectors(bypassSelectors);
         return this;
     }
 }

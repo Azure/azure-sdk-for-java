@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.InterfaceStatusInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfacePatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -24,8 +24,8 @@ public interface NetworkInterfacesClient {
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,8 +42,8 @@ public interface NetworkInterfacesClient {
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,8 +65,8 @@ public interface NetworkInterfacesClient {
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -83,8 +83,8 @@ public interface NetworkInterfacesClient {
      * <p>Create a Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,8 +106,8 @@ public interface NetworkInterfacesClient {
      * <p>Get the Network Interface resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,8 +124,8 @@ public interface NetworkInterfacesClient {
      * <p>Get the Network Interface resource details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -140,8 +140,8 @@ public interface NetworkInterfacesClient {
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,8 +158,8 @@ public interface NetworkInterfacesClient {
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,8 +181,8 @@ public interface NetworkInterfacesClient {
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -199,8 +199,8 @@ public interface NetworkInterfacesClient {
      * <p>Update certain properties of the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body NetworkInterface properties to update. Only tags are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,8 +222,8 @@ public interface NetworkInterfacesClient {
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,8 +239,8 @@ public interface NetworkInterfacesClient {
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -257,8 +257,8 @@ public interface NetworkInterfacesClient {
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -272,8 +272,8 @@ public interface NetworkInterfacesClient {
      * <p>Delete the Network Interface resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterfaceName.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -288,14 +288,14 @@ public interface NetworkInterfacesClient {
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkInterfaces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> list(String resourceGroupName, String networkDeviceName);
+    PagedIterable<NetworkInterfaceInner> listByNetworkDevice(String resourceGroupName, String networkDeviceName);
 
     /**
      * List all Network Interfaces that are available using an Network Device.
@@ -303,7 +303,7 @@ public interface NetworkInterfacesClient {
      * <p>List all the Network Interface resources in a given resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
+     * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -311,76 +311,8 @@ public interface NetworkInterfacesClient {
      * @return list of NetworkInterfaces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> list(String resourceGroupName, String networkDeviceName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InterfaceStatusInner>, InterfaceStatusInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InterfaceStatusInner>, InterfaceStatusInner> beginGetStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InterfaceStatusInner getStatus(String resourceGroupName, String networkDeviceName, String networkInterfaceName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Get the running status of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the running status of the Network Interface.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InterfaceStatusInner getStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context);
+    PagedIterable<NetworkInterfaceInner> listByNetworkDevice(
+        String resourceGroupName, String networkDeviceName, Context context);
 
     /**
      * Updates the admin state of the network interface.
@@ -388,16 +320,62 @@ public interface NetworkInterfacesClient {
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkDeviceName,
+            String networkInterfaceName,
+            UpdateAdministrativeState body);
+
+    /**
+     * Updates the admin state of the network interface.
+     *
+     * <p>Update the admin state of the Network Interface.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkDeviceName,
+            String networkInterfaceName,
+            UpdateAdministrativeState body,
+            Context context);
+
+    /**
+     * Updates the admin state of the network interface.
+     *
+     * <p>Update the admin state of the Network Interface.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,
@@ -409,59 +387,17 @@ public interface NetworkInterfacesClient {
      * <p>Update the admin state of the Network Interface.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
+     * @param networkDeviceName Name of the Network Device.
+     * @param networkInterfaceName Name of the Network Interface.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAdministrativeState(
-        String resourceGroupName,
-        String networkDeviceName,
-        String networkInterfaceName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the NetworkDevice.
-     * @param networkInterfaceName Name of the NetworkInterface.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAdministrativeState(
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,

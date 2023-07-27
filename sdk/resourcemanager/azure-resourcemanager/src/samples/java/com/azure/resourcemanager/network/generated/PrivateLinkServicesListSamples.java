@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PrivateLinkServices List. */
 public final class PrivateLinkServicesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/PrivateLinkServiceListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/PrivateLinkServiceListAll.json
      */
     /**
      * Sample code: List all private list service.

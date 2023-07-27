@@ -21,7 +21,7 @@ public class AzureBlobFSLinkedService extends LinkedService {
     /*
      * Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
+    @JsonProperty(value = "typeProperties.url")
     private Object url;
 
     /*
@@ -80,6 +80,24 @@ public class AzureBlobFSLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /*
+     * SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "typeProperties.sasUri")
+    private Object sasUri;
+
+    /*
+     * The Azure key vault secret reference of sasToken in sas uri.
+     */
+    @JsonProperty(value = "typeProperties.sasToken")
+    private SecretBase sasToken;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
 
     /** Creates an instance of AzureBlobFSLinkedService class. */
     public AzureBlobFSLinkedService() {}
@@ -287,6 +305,68 @@ public class AzureBlobFSLinkedService extends LinkedService {
      */
     public AzureBlobFSLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value.
+     */
+    public Object getSasUri() {
+        return this.sasUri;
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService setSasUri(Object sasUri) {
+        this.sasUri = sasUri;
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value.
+     */
+    public SecretBase getSasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService setSasToken(SecretBase sasToken) {
+        this.sasToken = sasToken;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

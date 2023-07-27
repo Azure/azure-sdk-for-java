@@ -16,13 +16,13 @@ public final class ReplicationStatusInnerTests {
         ReplicationStatusInner model =
             BinaryData
                 .fromString(
-                    "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"jusrtslhspk\",\"errorMessage\":\"emaofmxagkvt\"}")
+                    "{\"healthy\":false,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"wobdagxtibqdx\",\"errorMessage\":\"wakbogqxndl\"}")
                 .toObject(ReplicationStatusInner.class);
         Assertions.assertEquals(false, model.healthy());
-        Assertions.assertEquals(RelationshipStatus.IDLE, model.relationshipStatus());
+        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, model.relationshipStatus());
         Assertions.assertEquals(MirrorState.MIRRORED, model.mirrorState());
-        Assertions.assertEquals("jusrtslhspk", model.totalProgress());
-        Assertions.assertEquals("emaofmxagkvt", model.errorMessage());
+        Assertions.assertEquals("wobdagxtibqdx", model.totalProgress());
+        Assertions.assertEquals("wakbogqxndl", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,15 +30,15 @@ public final class ReplicationStatusInnerTests {
         ReplicationStatusInner model =
             new ReplicationStatusInner()
                 .withHealthy(false)
-                .withRelationshipStatus(RelationshipStatus.IDLE)
+                .withRelationshipStatus(RelationshipStatus.TRANSFERRING)
                 .withMirrorState(MirrorState.MIRRORED)
-                .withTotalProgress("jusrtslhspk")
-                .withErrorMessage("emaofmxagkvt");
+                .withTotalProgress("wobdagxtibqdx")
+                .withErrorMessage("wakbogqxndl");
         model = BinaryData.fromObject(model).toObject(ReplicationStatusInner.class);
         Assertions.assertEquals(false, model.healthy());
-        Assertions.assertEquals(RelationshipStatus.IDLE, model.relationshipStatus());
+        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, model.relationshipStatus());
         Assertions.assertEquals(MirrorState.MIRRORED, model.mirrorState());
-        Assertions.assertEquals("jusrtslhspk", model.totalProgress());
-        Assertions.assertEquals("emaofmxagkvt", model.errorMessage());
+        Assertions.assertEquals("wobdagxtibqdx", model.totalProgress());
+        Assertions.assertEquals("wakbogqxndl", model.errorMessage());
     }
 }

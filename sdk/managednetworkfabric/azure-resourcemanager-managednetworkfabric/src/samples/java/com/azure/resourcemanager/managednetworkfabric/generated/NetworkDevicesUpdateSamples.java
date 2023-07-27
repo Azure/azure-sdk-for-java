@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for NetworkDevices Update. */
 public final class NetworkDevicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkDevices_Update_MaximumSet_Gen.
@@ -23,15 +23,14 @@ public final class NetworkDevicesUpdateSamples {
         NetworkDevice resource =
             manager
                 .networkDevices()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "networkDeviceName", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("example-rg", "example-device", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("keyID", "keyValue"))
-            .withHostname("networkDeviceName")
-            .withSerialNumber("Arista;DCS-7280PR3-24;12.05;JPE21330382")
-            .withAnnotation("null")
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withHostname("NFA-Device")
+            .withSerialNumber("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX")
+            .withAnnotation("annotation")
             .apply();
     }
 

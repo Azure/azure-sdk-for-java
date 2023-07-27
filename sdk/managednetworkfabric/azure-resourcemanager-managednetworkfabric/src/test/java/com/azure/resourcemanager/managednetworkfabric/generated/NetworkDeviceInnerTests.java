@@ -6,7 +6,6 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceInner;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleTypes;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,36 +16,33 @@ public final class NetworkDeviceInnerTests {
         NetworkDeviceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"version\":\"onasxifto\",\"networkDeviceSku\":\"qyzhf\",\"networkDeviceRole\":\"ToR\",\"provisioningState\":\"Updating\",\"networkRackId\":\"ogczhonnxkrlg\",\"hostName\":\"hmossxkkgth\",\"serialNumber\":\"gh\",\"annotation\":\"bdhqxvcxgf\"},\"location\":\"dsofbshrns\",\"tags\":{\"jsrtk\":\"swdvzyybycnun\",\"uxzejntpsew\":\"awnopqgikyzirtxd\"},\"id\":\"ioilqukrydxtq\",\"name\":\"ieoxorggufhyaomt\",\"type\":\"ghhavgrvkffo\"}")
+                    "{\"properties\":{\"version\":\"kbnbmxlxmwtyg\",\"networkDeviceSku\":\"zusitoqcahfs\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"lreesrfwsszvlcwl\",\"managementIpv4Address\":\"olntfx\",\"managementIpv6Address\":\"rqmipfjwf\",\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"xxbaizabuln\",\"serialNumber\":\"skjto\",\"annotation\":\"dzjs\"},\"location\":\"nvhxqqmqip\",\"tags\":{\"tfshksnyzm\":\"hfnzocx\",\"bnl\":\"pamwbw\",\"kvi\":\"lcefiqdktw\",\"uuzhw\":\"lpfliwoyn\"},\"id\":\"ladpcmhjha\",\"name\":\"sybkekymffzt\",\"type\":\"ilscv\"}")
                 .toObject(NetworkDeviceInner.class);
-        Assertions.assertEquals("dsofbshrns", model.location());
-        Assertions.assertEquals("swdvzyybycnun", model.tags().get("jsrtk"));
-        Assertions.assertEquals("qyzhf", model.networkDeviceSku());
-        Assertions.assertEquals(NetworkDeviceRoleTypes.TOR, model.networkDeviceRole());
-        Assertions.assertEquals("hmossxkkgth", model.hostname());
-        Assertions.assertEquals("gh", model.serialNumber());
-        Assertions.assertEquals("bdhqxvcxgf", model.annotation());
+        Assertions.assertEquals("nvhxqqmqip", model.location());
+        Assertions.assertEquals("hfnzocx", model.tags().get("tfshksnyzm"));
+        Assertions.assertEquals("zusitoqcahfs", model.networkDeviceSku());
+        Assertions.assertEquals("xxbaizabuln", model.hostname());
+        Assertions.assertEquals("skjto", model.serialNumber());
+        Assertions.assertEquals("dzjs", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkDeviceInner model =
             new NetworkDeviceInner()
-                .withLocation("dsofbshrns")
-                .withTags(mapOf("jsrtk", "swdvzyybycnun", "uxzejntpsew", "awnopqgikyzirtxd"))
-                .withNetworkDeviceSku("qyzhf")
-                .withNetworkDeviceRole(NetworkDeviceRoleTypes.TOR)
-                .withHostname("hmossxkkgth")
-                .withSerialNumber("gh")
-                .withAnnotation("bdhqxvcxgf");
+                .withLocation("nvhxqqmqip")
+                .withTags(mapOf("tfshksnyzm", "hfnzocx", "bnl", "pamwbw", "kvi", "lcefiqdktw", "uuzhw", "lpfliwoyn"))
+                .withNetworkDeviceSku("zusitoqcahfs")
+                .withHostname("xxbaizabuln")
+                .withSerialNumber("skjto")
+                .withAnnotation("dzjs");
         model = BinaryData.fromObject(model).toObject(NetworkDeviceInner.class);
-        Assertions.assertEquals("dsofbshrns", model.location());
-        Assertions.assertEquals("swdvzyybycnun", model.tags().get("jsrtk"));
-        Assertions.assertEquals("qyzhf", model.networkDeviceSku());
-        Assertions.assertEquals(NetworkDeviceRoleTypes.TOR, model.networkDeviceRole());
-        Assertions.assertEquals("hmossxkkgth", model.hostname());
-        Assertions.assertEquals("gh", model.serialNumber());
-        Assertions.assertEquals("bdhqxvcxgf", model.annotation());
+        Assertions.assertEquals("nvhxqqmqip", model.location());
+        Assertions.assertEquals("hfnzocx", model.tags().get("tfshksnyzm"));
+        Assertions.assertEquals("zusitoqcahfs", model.networkDeviceSku());
+        Assertions.assertEquals("xxbaizabuln", model.hostname());
+        Assertions.assertEquals("skjto", model.serialNumber());
+        Assertions.assertEquals("dzjs", model.annotation());
     }
 
     @SuppressWarnings("unchecked")

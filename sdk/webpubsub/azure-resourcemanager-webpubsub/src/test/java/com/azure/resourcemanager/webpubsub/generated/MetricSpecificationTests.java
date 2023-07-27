@@ -16,18 +16,18 @@ public final class MetricSpecificationTests {
         MetricSpecification model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"fpdvhpfxxypi\",\"displayName\":\"nmayhuybb\",\"displayDescription\":\"odepoogin\",\"unit\":\"amiheognarxz\",\"aggregationType\":\"heotusiv\",\"fillGapWithZero\":\"v\",\"category\":\"iqihn\",\"dimensions\":[{\"name\":\"bwjzr\",\"displayName\":\"ygxgispemvtz\",\"internalName\":\"ufubl\",\"toBeExportedForShoebox\":false},{\"name\":\"qeof\",\"displayName\":\"e\",\"internalName\":\"hqjbasvmsmj\",\"toBeExportedForShoebox\":true}]}")
+                    "{\"name\":\"cgyncocpecf\",\"displayName\":\"mcoo\",\"displayDescription\":\"xlzevgbmqjqabcy\",\"unit\":\"ivkwlzuvccfwnfnb\",\"aggregationType\":\"fionl\",\"fillGapWithZero\":\"x\",\"category\":\"qgtz\",\"dimensions\":[{\"name\":\"qbqqwxr\",\"displayName\":\"eallnwsubisnj\",\"internalName\":\"pmng\",\"toBeExportedForShoebox\":false},{\"name\":\"xaqwoochcbonqv\",\"displayName\":\"vlrxnjeaseiph\",\"internalName\":\"f\",\"toBeExportedForShoebox\":false},{\"name\":\"yyien\",\"displayName\":\"dlwtgrhpdj\",\"internalName\":\"umasxazjpq\",\"toBeExportedForShoebox\":false}]}")
                 .toObject(MetricSpecification.class);
-        Assertions.assertEquals("fpdvhpfxxypi", model.name());
-        Assertions.assertEquals("nmayhuybb", model.displayName());
-        Assertions.assertEquals("odepoogin", model.displayDescription());
-        Assertions.assertEquals("amiheognarxz", model.unit());
-        Assertions.assertEquals("heotusiv", model.aggregationType());
-        Assertions.assertEquals("v", model.fillGapWithZero());
-        Assertions.assertEquals("iqihn", model.category());
-        Assertions.assertEquals("bwjzr", model.dimensions().get(0).name());
-        Assertions.assertEquals("ygxgispemvtz", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("ufubl", model.dimensions().get(0).internalName());
+        Assertions.assertEquals("cgyncocpecf", model.name());
+        Assertions.assertEquals("mcoo", model.displayName());
+        Assertions.assertEquals("xlzevgbmqjqabcy", model.displayDescription());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.unit());
+        Assertions.assertEquals("fionl", model.aggregationType());
+        Assertions.assertEquals("x", model.fillGapWithZero());
+        Assertions.assertEquals("qgtz", model.category());
+        Assertions.assertEquals("qbqqwxr", model.dimensions().get(0).name());
+        Assertions.assertEquals("eallnwsubisnj", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("pmng", model.dimensions().get(0).internalName());
         Assertions.assertEquals(false, model.dimensions().get(0).toBeExportedForShoebox());
     }
 
@@ -35,37 +35,42 @@ public final class MetricSpecificationTests {
     public void testSerialize() throws Exception {
         MetricSpecification model =
             new MetricSpecification()
-                .withName("fpdvhpfxxypi")
-                .withDisplayName("nmayhuybb")
-                .withDisplayDescription("odepoogin")
-                .withUnit("amiheognarxz")
-                .withAggregationType("heotusiv")
-                .withFillGapWithZero("v")
-                .withCategory("iqihn")
+                .withName("cgyncocpecf")
+                .withDisplayName("mcoo")
+                .withDisplayDescription("xlzevgbmqjqabcy")
+                .withUnit("ivkwlzuvccfwnfnb")
+                .withAggregationType("fionl")
+                .withFillGapWithZero("x")
+                .withCategory("qgtz")
                 .withDimensions(
                     Arrays
                         .asList(
                             new Dimension()
-                                .withName("bwjzr")
-                                .withDisplayName("ygxgispemvtz")
-                                .withInternalName("ufubl")
+                                .withName("qbqqwxr")
+                                .withDisplayName("eallnwsubisnj")
+                                .withInternalName("pmng")
                                 .withToBeExportedForShoebox(false),
                             new Dimension()
-                                .withName("qeof")
-                                .withDisplayName("e")
-                                .withInternalName("hqjbasvmsmj")
-                                .withToBeExportedForShoebox(true)));
+                                .withName("xaqwoochcbonqv")
+                                .withDisplayName("vlrxnjeaseiph")
+                                .withInternalName("f")
+                                .withToBeExportedForShoebox(false),
+                            new Dimension()
+                                .withName("yyien")
+                                .withDisplayName("dlwtgrhpdj")
+                                .withInternalName("umasxazjpq")
+                                .withToBeExportedForShoebox(false)));
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
-        Assertions.assertEquals("fpdvhpfxxypi", model.name());
-        Assertions.assertEquals("nmayhuybb", model.displayName());
-        Assertions.assertEquals("odepoogin", model.displayDescription());
-        Assertions.assertEquals("amiheognarxz", model.unit());
-        Assertions.assertEquals("heotusiv", model.aggregationType());
-        Assertions.assertEquals("v", model.fillGapWithZero());
-        Assertions.assertEquals("iqihn", model.category());
-        Assertions.assertEquals("bwjzr", model.dimensions().get(0).name());
-        Assertions.assertEquals("ygxgispemvtz", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("ufubl", model.dimensions().get(0).internalName());
+        Assertions.assertEquals("cgyncocpecf", model.name());
+        Assertions.assertEquals("mcoo", model.displayName());
+        Assertions.assertEquals("xlzevgbmqjqabcy", model.displayDescription());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.unit());
+        Assertions.assertEquals("fionl", model.aggregationType());
+        Assertions.assertEquals("x", model.fillGapWithZero());
+        Assertions.assertEquals("qgtz", model.category());
+        Assertions.assertEquals("qbqqwxr", model.dimensions().get(0).name());
+        Assertions.assertEquals("eallnwsubisnj", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("pmng", model.dimensions().get(0).internalName());
         Assertions.assertEquals(false, model.dimensions().get(0).toBeExportedForShoebox());
     }
 }

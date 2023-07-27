@@ -5,59 +5,58 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.BgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnet;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.Extension;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesBgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesStaticRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Internal Network Properties. */
+/** Internal Network Properties defines the properties of the resource. */
 @Fluent
 public final class InternalNetworkProperties extends AnnotationResource {
-    /*
-     * List of resources the InternalNetwork is disabled on. Can be either entire NetworkFabric or NetworkRack.
-     */
-    @JsonProperty(value = "disabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> disabledOnResources;
-
-    /*
-     * Administrative state of the InternalNetwork. Example: Enabled | Disabled.
-     */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
-    private EnabledDisabledState administrativeState;
-
-    /*
-     * List of resources the BGP is disabled on. Can be either entire NetworkFabric or NetworkRack.
-     */
-    @JsonProperty(value = "bgpDisabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> bgpDisabledOnResources;
-
-    /*
-     * List of resources the BFD for BGP is disabled on. Can be either entire NetworkFabric or NetworkRack.
-     */
-    @JsonProperty(value = "bfdDisabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> bfdDisabledOnResources;
-
-    /*
-     * List of resources the BFD of StaticRoutes is disabled on. Can be either entire NetworkFabric or NetworkRack.
-     */
-    @JsonProperty(value = "bfdForStaticRoutesDisabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> bfdForStaticRoutesDisabledOnResources;
-
-    /*
-     * Gets the provisioning state of the resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
     /*
      * Vlan identifier. Example: 1001.
      */
     @JsonProperty(value = "vlanId", required = true)
     private int vlanId;
+
+    /*
+     * BGP configuration properties.
+     */
+    @JsonProperty(value = "bgpConfiguration")
+    private InternalNetworkPropertiesBgpConfiguration bgpConfiguration;
+
+    /*
+     * Static Route Configuration properties.
+     */
+    @JsonProperty(value = "staticRouteConfiguration")
+    private InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration;
+
+    /*
+     * Configuration state of the resource.
+     */
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
 
     /*
      * Maximum transmission unit. Default value is 1500.
@@ -66,101 +65,67 @@ public final class InternalNetworkProperties extends AnnotationResource {
     private Integer mtu;
 
     /*
-     * List with object connected IPv4 Subnets.
+     * List of Connected IPv4 Subnets.
      */
     @JsonProperty(value = "connectedIPv4Subnets")
     private List<ConnectedSubnet> connectedIPv4Subnets;
 
     /*
-     * List with object connected IPv6 Subnets.
+     * List of connected IPv6 Subnets.
      */
     @JsonProperty(value = "connectedIPv6Subnets")
     private List<ConnectedSubnet> connectedIPv6Subnets;
 
     /*
-     * Static Route Configuration properties.
-     */
-    @JsonProperty(value = "staticRouteConfiguration")
-    private StaticRouteConfiguration staticRouteConfiguration;
-
-    /*
-     * BGP configuration properties
-     */
-    @JsonProperty(value = "bgpConfiguration")
-    private BgpConfiguration bgpConfiguration;
-
-    /*
-     * ARM resource ID of importRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
-     * ARM resource ID of importRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
 
+    /*
+     * Import Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "importRoutePolicy")
+    private ImportRoutePolicy importRoutePolicy;
+
+    /*
+     * Export Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "exportRoutePolicy")
+    private ExportRoutePolicy exportRoutePolicy;
+
+    /*
+     * Ingress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "ingressAclId")
+    private String ingressAclId;
+
+    /*
+     * Egress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "egressAclId")
+    private String egressAclId;
+
+    /*
+     * To check whether monitoring of internal network is enabled or not.
+     */
+    @JsonProperty(value = "isMonitoringEnabled")
+    private IsMonitoringEnabled isMonitoringEnabled;
+
+    /*
+     * Extension. Example: NoExtension | NPB.
+     */
+    @JsonProperty(value = "extension")
+    private Extension extension;
+
     /** Creates an instance of InternalNetworkProperties class. */
     public InternalNetworkProperties() {
-    }
-
-    /**
-     * Get the disabledOnResources property: List of resources the InternalNetwork is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the disabledOnResources value.
-     */
-    public List<String> disabledOnResources() {
-        return this.disabledOnResources;
-    }
-
-    /**
-     * Get the administrativeState property: Administrative state of the InternalNetwork. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.administrativeState;
-    }
-
-    /**
-     * Get the bgpDisabledOnResources property: List of resources the BGP is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the bgpDisabledOnResources value.
-     */
-    public List<String> bgpDisabledOnResources() {
-        return this.bgpDisabledOnResources;
-    }
-
-    /**
-     * Get the bfdDisabledOnResources property: List of resources the BFD for BGP is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the bfdDisabledOnResources value.
-     */
-    public List<String> bfdDisabledOnResources() {
-        return this.bfdDisabledOnResources;
-    }
-
-    /**
-     * Get the bfdForStaticRoutesDisabledOnResources property: List of resources the BFD of StaticRoutes is disabled on.
-     * Can be either entire NetworkFabric or NetworkRack.
-     *
-     * @return the bfdForStaticRoutesDisabledOnResources value.
-     */
-    public List<String> bfdForStaticRoutesDisabledOnResources() {
-        return this.bfdForStaticRoutesDisabledOnResources;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -184,6 +149,74 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
+     * Get the bgpConfiguration property: BGP configuration properties.
+     *
+     * @return the bgpConfiguration value.
+     */
+    public InternalNetworkPropertiesBgpConfiguration bgpConfiguration() {
+        return this.bgpConfiguration;
+    }
+
+    /**
+     * Set the bgpConfiguration property: BGP configuration properties.
+     *
+     * @param bgpConfiguration the bgpConfiguration value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withBgpConfiguration(InternalNetworkPropertiesBgpConfiguration bgpConfiguration) {
+        this.bgpConfiguration = bgpConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the staticRouteConfiguration property: Static Route Configuration properties.
+     *
+     * @return the staticRouteConfiguration value.
+     */
+    public InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration() {
+        return this.staticRouteConfiguration;
+    }
+
+    /**
+     * Set the staticRouteConfiguration property: Static Route Configuration properties.
+     *
+     * @param staticRouteConfiguration the staticRouteConfiguration value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withStaticRouteConfiguration(
+        InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
+        this.staticRouteConfiguration = staticRouteConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.configurationState;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
      * Get the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @return the mtu value.
@@ -204,7 +237,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Get the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
+     * Get the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
      *
      * @return the connectedIPv4Subnets value.
      */
@@ -213,7 +246,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Set the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
+     * Set the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
      *
      * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
      * @return the InternalNetworkProperties object itself.
@@ -224,7 +257,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Get the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
+     * Get the connectedIPv6Subnets property: List of connected IPv6 Subnets.
      *
      * @return the connectedIPv6Subnets value.
      */
@@ -233,7 +266,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Set the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
+     * Set the connectedIPv6Subnets property: List of connected IPv6 Subnets.
      *
      * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
      * @return the InternalNetworkProperties object itself.
@@ -244,47 +277,8 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Get the staticRouteConfiguration property: Static Route Configuration properties.
-     *
-     * @return the staticRouteConfiguration value.
-     */
-    public StaticRouteConfiguration staticRouteConfiguration() {
-        return this.staticRouteConfiguration;
-    }
-
-    /**
-     * Set the staticRouteConfiguration property: Static Route Configuration properties.
-     *
-     * @param staticRouteConfiguration the staticRouteConfiguration value to set.
-     * @return the InternalNetworkProperties object itself.
-     */
-    public InternalNetworkProperties withStaticRouteConfiguration(StaticRouteConfiguration staticRouteConfiguration) {
-        this.staticRouteConfiguration = staticRouteConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the bgpConfiguration property: BGP configuration properties.
-     *
-     * @return the bgpConfiguration value.
-     */
-    public BgpConfiguration bgpConfiguration() {
-        return this.bgpConfiguration;
-    }
-
-    /**
-     * Set the bgpConfiguration property: BGP configuration properties.
-     *
-     * @param bgpConfiguration the bgpConfiguration value to set.
-     * @return the InternalNetworkProperties object itself.
-     */
-    public InternalNetworkProperties withBgpConfiguration(BgpConfiguration bgpConfiguration) {
-        this.bgpConfiguration = bgpConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -293,7 +287,8 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the InternalNetworkProperties object itself.
@@ -304,7 +299,8 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -313,13 +309,134 @@ public final class InternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the InternalNetworkProperties object itself.
      */
     public InternalNetworkProperties withExportRoutePolicyId(String exportRoutePolicyId) {
         this.exportRoutePolicyId = exportRoutePolicyId;
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.importRoutePolicy;
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        this.importRoutePolicy = importRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.exportRoutePolicy;
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        this.exportRoutePolicy = exportRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.ingressAclId;
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withIngressAclId(String ingressAclId) {
+        this.ingressAclId = ingressAclId;
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.egressAclId;
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withEgressAclId(String egressAclId) {
+        this.egressAclId = egressAclId;
+        return this;
+    }
+
+    /**
+     * Get the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @return the isMonitoringEnabled value.
+     */
+    public IsMonitoringEnabled isMonitoringEnabled() {
+        return this.isMonitoringEnabled;
+    }
+
+    /**
+     * Set the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @param isMonitoringEnabled the isMonitoringEnabled value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled) {
+        this.isMonitoringEnabled = isMonitoringEnabled;
+        return this;
+    }
+
+    /**
+     * Get the extension property: Extension. Example: NoExtension | NPB.
+     *
+     * @return the extension value.
+     */
+    public Extension extension() {
+        return this.extension;
+    }
+
+    /**
+     * Set the extension property: Extension. Example: NoExtension | NPB.
+     *
+     * @param extension the extension value to set.
+     * @return the InternalNetworkProperties object itself.
+     */
+    public InternalNetworkProperties withExtension(Extension extension) {
+        this.extension = extension;
         return this;
     }
 
@@ -338,17 +455,23 @@ public final class InternalNetworkProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
+        if (bgpConfiguration() != null) {
+            bgpConfiguration().validate();
+        }
+        if (staticRouteConfiguration() != null) {
+            staticRouteConfiguration().validate();
+        }
         if (connectedIPv4Subnets() != null) {
             connectedIPv4Subnets().forEach(e -> e.validate());
         }
         if (connectedIPv6Subnets() != null) {
             connectedIPv6Subnets().forEach(e -> e.validate());
         }
-        if (staticRouteConfiguration() != null) {
-            staticRouteConfiguration().validate();
+        if (importRoutePolicy() != null) {
+            importRoutePolicy().validate();
         }
-        if (bgpConfiguration() != null) {
-            bgpConfiguration().validate();
+        if (exportRoutePolicy() != null) {
+            exportRoutePolicy().validate();
         }
     }
 }

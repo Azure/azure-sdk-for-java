@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.42.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.29</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -94,12 +94,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-jre8-standalone</artifactId>
-      <version>2.35.0</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-jre8-standalone;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
@@ -115,6 +109,17 @@
       <artifactId>commons-compress</artifactId>
       <version>1.22</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
     </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.51.v20230217</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.51.v20230217</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -123,7 +128,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>test-jar</id>
@@ -143,13 +148,15 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-test:[3.4.29]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>io.projectreactor:reactor-test:[3.4.30]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty-http:[1.0.33]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
                 <include>org.junit.jupiter:junit-jupiter-api:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-params:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
                 <include>org.apache.commons:commons-compress:[1.22]</include> <!-- {x-include-update;org.apache.commons:commons-compress;external_dependency} -->
+                <include>org.eclipse.jetty:jetty-server:[9.4.51.v20230217]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+                <include>org.eclipse.jetty:jetty-servlet:[9.4.51.v20230217]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

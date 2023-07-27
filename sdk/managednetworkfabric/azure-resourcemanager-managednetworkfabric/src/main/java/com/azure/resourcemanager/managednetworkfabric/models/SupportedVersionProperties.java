@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network device supported version properties. */
+/** Supported version details of the network device. */
 @Fluent
 public final class SupportedVersionProperties {
     /*
@@ -29,16 +29,11 @@ public final class SupportedVersionProperties {
     private String vendorFirmwareVersion;
 
     /*
-     * If the current version is in use.
+     * If true newly provisioned Fabric will use this device version by default to bootstrap the network devices for
+     * the first time.
      */
-    @JsonProperty(value = "isCurrent")
-    private IsCurrentVersion isCurrent;
-
-    /*
-     * If the current version is a test version.
-     */
-    @JsonProperty(value = "isTest")
-    private IsTestVersion isTest;
+    @JsonProperty(value = "isDefault")
+    private BooleanEnumProperty isDefault;
 
     /** Creates an instance of SupportedVersionProperties class. */
     public SupportedVersionProperties() {
@@ -105,42 +100,24 @@ public final class SupportedVersionProperties {
     }
 
     /**
-     * Get the isCurrent property: If the current version is in use.
+     * Get the isDefault property: If true newly provisioned Fabric will use this device version by default to bootstrap
+     * the network devices for the first time.
      *
-     * @return the isCurrent value.
+     * @return the isDefault value.
      */
-    public IsCurrentVersion isCurrent() {
-        return this.isCurrent;
+    public BooleanEnumProperty isDefault() {
+        return this.isDefault;
     }
 
     /**
-     * Set the isCurrent property: If the current version is in use.
+     * Set the isDefault property: If true newly provisioned Fabric will use this device version by default to bootstrap
+     * the network devices for the first time.
      *
-     * @param isCurrent the isCurrent value to set.
+     * @param isDefault the isDefault value to set.
      * @return the SupportedVersionProperties object itself.
      */
-    public SupportedVersionProperties withIsCurrent(IsCurrentVersion isCurrent) {
-        this.isCurrent = isCurrent;
-        return this;
-    }
-
-    /**
-     * Get the isTest property: If the current version is a test version.
-     *
-     * @return the isTest value.
-     */
-    public IsTestVersion isTest() {
-        return this.isTest;
-    }
-
-    /**
-     * Set the isTest property: If the current version is a test version.
-     *
-     * @param isTest the isTest value to set.
-     * @return the SupportedVersionProperties object itself.
-     */
-    public SupportedVersionProperties withIsTest(IsTestVersion isTest) {
-        this.isTest = isTest;
+    public SupportedVersionProperties withIsDefault(BooleanEnumProperty isDefault) {
+        this.isDefault = isDefault;
         return this;
     }
 
