@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AadWebApplicationConfigurationTests {
+class AadWebApplicationConfigurationTests {
     @Test
     void useDefaultWebSecurityConfigurerAdapter() {
         webApplicationContextRunner()
