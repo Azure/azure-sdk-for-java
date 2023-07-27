@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,6 +25,7 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
+@DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
 public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationTestBase {
 
     // get trunk
