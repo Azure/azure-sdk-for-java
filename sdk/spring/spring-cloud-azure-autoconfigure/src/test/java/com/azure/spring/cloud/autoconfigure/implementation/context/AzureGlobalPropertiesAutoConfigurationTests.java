@@ -7,11 +7,20 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
+import org.springframework.aot.test.generate.TestGenerationContext;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.aot.ApplicationContextAotGenerator;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.test.tools.CompileWithForkedClassLoader;
+import org.springframework.core.test.tools.TestCompiler;
+import org.springframework.javapoet.ClassName;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
@@ -156,6 +165,32 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint")
                                            .isEqualTo(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint());
             });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeDoesNotRegisterAzureGlobalProperties() {
+        GenericApplicationContext context = new AnnotationConfigApplicationContext();
+        context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
+        compile(context, (freshContext) -> {
+            freshContext.refresh();
+            assertThat(freshContext.getBeansOfType(AzureGlobalProperties.class)).isEmpty();
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    private void compile(GenericApplicationContext context, Consumer<GenericApplicationContext> freshContext) {
+        TestGenerationContext generationContext = new TestGenerationContext(
+            ClassName.get(getClass().getPackageName(), "TestTarget"));
+        ClassName className = new ApplicationContextAotGenerator().processAheadOfTime(context, generationContext);
+        generationContext.writeGeneratedContent();
+        TestCompiler.forSystem().with(generationContext).compile((compiled) -> {
+            GenericApplicationContext freshApplicationContext = new GenericApplicationContext();
+            ApplicationContextInitializer<GenericApplicationContext> initializer = compiled
+                .getInstance(ApplicationContextInitializer.class, className.toString());
+            initializer.initialize(freshApplicationContext);
+            freshContext.accept(freshApplicationContext);
+        });
     }
 
 }
