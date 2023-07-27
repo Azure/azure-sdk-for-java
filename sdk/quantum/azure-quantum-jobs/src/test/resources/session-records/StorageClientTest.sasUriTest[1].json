@@ -1,25 +1,41 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.quantum.azure.com/v1.0/subscriptions/677fc922-91d0-4bf6-9b06-4274d319a0fa/resourceGroups/sdk-review-rg/providers/Microsoft.Quantum/workspaces/workspace-ms/storage/sasUri",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=2592000",
-      "Server" : "Microsoft-IIS/10.0",
-      "Set-Cookie" : "ARRAffinitySameSite=a80c7c3a42bc29f88c9055a7e2789984b224746994993027ab866c65455cca24;Path=/;HttpOnly;SameSite=None;Secure;Domain=westus.quantum.azure.com",
-      "retry-after" : "0",
-      "Content-Length" : "181",
-      "StatusCode" : "200",
-      "Body" : "{\"sasUri\":\"https://REDACTED.blob.core.windows.net/testcontainer?sv=Sanitized\"}",
-      "Date" : "Mon, 01 Feb 2021 19:39:05 GMT",
-      "Request-Context" : "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
-      "X-Powered-By" : "ASP.NET",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "677fc922-91d0-4bf6-9b06-4274d319a0fa", "sdk-review-rg", "workspace-ms" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1.0/subscriptions/916dfd6d-030c-4bd9-b579-7bb6d1926e97/resourceGroups/azure-sdk-test-rg/providers/Microsoft.Quantum/workspaces/azure-sdk-test-aqw/storage/sasUri",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "33",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-UnknownName/UnknownVersion (17.0.8; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "containerName": "testcontainer"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "187",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 18:57:57 GMT",
+        "mise-correlation-id": "38d103c4-5bdc-478a-8369-29671db1c4ad",
+        "Request-Context": "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
+        "Server": "Microsoft-IIS/10.0",
+        "Set-Cookie": [
+          "ApplicationGatewayAffinityCORS=f41f4d84e6de1cfe7357bf648ccde6bc; Path=/; SameSite=None; Secure",
+          "ApplicationGatewayAffinity=f41f4d84e6de1cfe7357bf648ccde6bc; Path=/",
+          "ARRAffinity=9d716053ef092553e7bdd2639d89f002241b80715630c2dbb839c205a5e8d5f8;Path=/;HttpOnly;Secure;Domain=app-jobscheduler-westus-003.ase-jobscheduler-westus-003.appserviceenvironment.net",
+          "ARRAffinitySameSite=9d716053ef092553e7bdd2639d89f002241b80715630c2dbb839c205a5e8d5f8;Path=/;HttpOnly;SameSite=None;Secure;Domain=app-jobscheduler-westus-003.ase-jobscheduler-westus-003.appserviceenvironment.net"
+        ],
+        "Strict-Transport-Security": "max-age=2592000; includeSubDomains",
+        "x-ms-request-id": "27f11415249845f9",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "sasUri": "https://azuresdkteststo.blob.core.windows.net/testcontainer?sv=2019-07-07\u0026sig=1PmwX2cJQeyK1fzndej8HnKkHy%2FyS1cxzvpML1x1Hao%3D\u0026se=2023-07-31T18%3A57%3A57Z\u0026srt=co\u0026ss=b\u0026sp=racw"
+      }
+    }
+  ],
+  "Variables": {}
 }

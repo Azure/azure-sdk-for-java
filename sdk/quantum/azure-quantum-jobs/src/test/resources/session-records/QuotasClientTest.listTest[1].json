@@ -1,24 +1,58 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.quantum.azure.com/v1.0/subscriptions/677fc922-91d0-4bf6-9b06-4274d319a0fa/resourceGroups/sdk-review-rg/providers/Microsoft.Quantum/workspaces/workspace-ms/quotas",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=2592000",
-      "Server" : "Microsoft-IIS/10.0",
-      "Set-Cookie" : "ARRAffinitySameSite=a80c7c3a42bc29f88c9055a7e2789984b224746994993027ab866c65455cca24;Path=/;HttpOnly;SameSite=None;Secure;Domain=westus.quantum.azure.com",
-      "retry-after" : "0",
-      "Content-Length" : "945",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"dimension\":\"combined_job_hours\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":-0.0009132211666666723,\"holds\":0.08333333333333333,\"limit\":10000.0,\"period\":\"Monthly\"},{\"dimension\":\"combined_job_hours\",\"scope\":\"Subscription\",\"providerId\":\"Microsoft\",\"utilization\":0.40956412244444446,\"holds\":0.04999999999999999,\"limit\":10000.0,\"period\":\"Monthly\"},{\"dimension\":\"concurrent_cpu_jobs\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":5.0,\"period\":\"None\"},{\"dimension\":\"fpga_job_hours\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":20.0,\"period\":\"Monthly\"},{\"dimension\":\"fpga_job_hours\",\"scope\":\"Subscription\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":40.0,\"period\":\"Monthly\"},{\"dimension\":\"concurrent_fpga_jobs\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":5.0,\"period\":\"None\"}],\"nextLink\":null}",
-      "Date" : "Mon, 01 Feb 2021 19:38:41 GMT",
-      "Request-Context" : "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
-      "X-Powered-By" : "ASP.NET",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "677fc922-91d0-4bf6-9b06-4274d319a0fa", "sdk-review-rg", "workspace-ms" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1.0/subscriptions/916dfd6d-030c-4bd9-b579-7bb6d1926e97/resourceGroups/azure-sdk-test-rg/providers/Microsoft.Quantum/workspaces/azure-sdk-test-aqw/quotas",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-UnknownName/UnknownVersion (17.0.8; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "324",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 27 Jul 2023 18:57:55 GMT",
+        "mise-correlation-id": "3264f4d8-5bb1-4849-8c3f-2fc24489f4ab",
+        "Request-Context": "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
+        "Server": "Microsoft-IIS/10.0",
+        "Set-Cookie": [
+          "ApplicationGatewayAffinityCORS=f41f4d84e6de1cfe7357bf648ccde6bc; Path=/; SameSite=None; Secure",
+          "ApplicationGatewayAffinity=f41f4d84e6de1cfe7357bf648ccde6bc; Path=/",
+          "ARRAffinity=9d716053ef092553e7bdd2639d89f002241b80715630c2dbb839c205a5e8d5f8;Path=/;HttpOnly;Secure;Domain=app-jobscheduler-westus-003.ase-jobscheduler-westus-003.appserviceenvironment.net",
+          "ARRAffinitySameSite=9d716053ef092553e7bdd2639d89f002241b80715630c2dbb839c205a5e8d5f8;Path=/;HttpOnly;SameSite=None;Secure;Domain=app-jobscheduler-westus-003.ase-jobscheduler-westus-003.appserviceenvironment.net"
+        ],
+        "Strict-Transport-Security": "max-age=2592000; includeSubDomains",
+        "x-ms-request-id": "08d09563befa09d0",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "dimension": "qgs",
+            "scope": "Subscription",
+            "providerId": "ionq",
+            "utilization": 10083340.0,
+            "holds": 0.0,
+            "limit": 16666667.0,
+            "period": "Infinite"
+          },
+          {
+            "dimension": "concurrent_resource_estimator_jobs",
+            "scope": "Workspace",
+            "providerId": "microsoft-qc",
+            "utilization": 0.0,
+            "holds": 0.0,
+            "limit": 10.0,
+            "period": "None"
+          }
+        ],
+        "nextLink": null
+      }
+    }
+  ],
+  "Variables": {}
 }
