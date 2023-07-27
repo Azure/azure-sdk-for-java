@@ -466,19 +466,25 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             // Retry-After
             new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
             // Microsoft Graph secret
-            new TestProxySanitizer(String.format("$..%s", "secretText"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secretText", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Storage secret
             new TestProxySanitizer("$..keys[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Compute password and SAS
-            new TestProxySanitizer(String.format("$..%s", "adminPassword"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "accessSAS"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..adminPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..accessSAS", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.osProfile.customData", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY), // likely a false positive
             // SQL password
-            new TestProxySanitizer(String.format("$..%s", "administratorLoginPassword"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..administratorLoginPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..hubDatabasePassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // EH/SB key and connection string
-            new TestProxySanitizer(String.format("$..%s", "aliasPrimaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "aliasSecondaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "primaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "secondaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$..aliasPrimaryConnectionString", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..aliasSecondaryConnectionString", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..primaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secondaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // ContainerRegistry
+            new TestProxySanitizer("$..passwords[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // ContainerService
+            new TestProxySanitizer("$..secret", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         ));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);

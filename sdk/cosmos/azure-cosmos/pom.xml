@@ -207,6 +207,18 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E_3-4</id>
+      <activation>
+        <property>
+          <name>spark-e2e_3-4</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
       <id>springE2E</id>
       <activation>
         <property>

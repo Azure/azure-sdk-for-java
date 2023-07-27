@@ -28,7 +28,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
     private AzureProfile profile;
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageUsersGroupsAndRoles() {
         if (skipInPlayback()) {
             return;
@@ -43,7 +43,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 //    }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageServicePrincipalCredentials() throws IOException {
         if (skipInPlayback()) {
             return;

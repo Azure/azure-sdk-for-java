@@ -18,9 +18,13 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpCon
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendServerHealth;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOperationalState;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRule;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -34,14 +38,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class ApplicationGatewayTests extends ResourceManagerTestBase {
+public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
 
     @Override
@@ -92,18 +96,20 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @Disabled("FIXME Priority is required in UrlPathMap")
     @Test
     public void testAppGatewaysPublicUrlPathBased() throws Exception {
         new TestApplicationGateway().new UrlPathBased(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
+    @Disabled("WAF_V2 currently does not support private endpoint, and we do not want to have accessible public IP on VM. Enable it after WAF_V2 supports private endpoint.")
     @Test
     public void testAppGatewayBackendHealthCheck() throws Exception {
         String testId = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
-        String password = ResourceManagerTestBase.password();
+        String password = ResourceManagerTestProxyTestBase.password();
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
 
@@ -170,6 +176,8 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
                     .toBackend("nicBackend")
                     .attach()
                     .withExistingSubnet(network.subnets().get("subnet1")) // Backend for connecting the VMs via NICs
+                    .withTier(ApplicationGatewayTier.WAF_V2)
+                    .withSize(ApplicationGatewaySkuName.WAF_V2)
                     .create();
 
             // Connect the 1st VM via NIC IP config
@@ -284,21 +292,25 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
         String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
         String name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ag", 15);
+        azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        PublicIpAddress pip = createPublicIpAddress(rgName);
         ApplicationGateway appGateway =
             azureResourceManager
                 .applicationGateways()
                 .define(name)
                 .withRegion(region)
-                .withNewResourceGroup(rgName)
-
+                .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
-                .fromPrivateFrontend()
+                .fromPublicFrontend()
                 .fromFrontendHttpPort(80)
                 .toBackendHttpPort(8080)
                 .toBackendIPAddress("11.1.1.1")
                 .toBackendIPAddress("11.1.1.2")
                 .attach()
+                .withExistingPublicIpAddress(pip)
+                .withTier(ApplicationGatewayTier.STANDARD_V2)
+                .withSize(ApplicationGatewaySkuName.STANDARD_V2)
                 .create();
 
         // Test stop/start
@@ -314,7 +326,9 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
     public void testApplicationGatewaysInParallel() throws Exception {
         String rgName = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> resourceGroup = azureResourceManager.resourceGroups().define(rgName).withRegion(region);
+        ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        PublicIpAddress pip1 = createPublicIpAddress(rgName);
+        PublicIpAddress pip2 = createPublicIpAddress(rgName);
         List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
 
         agCreatables
@@ -323,14 +337,17 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
                     .applicationGateways()
                     .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(resourceGroup)
+                    .withExistingResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
-                    .fromPrivateFrontend()
+                    .fromPublicFrontend()
                     .fromFrontendHttpPort(80)
                     .toBackendHttpPort(8080)
                     .toBackendIPAddress("10.0.0.1")
                     .toBackendIPAddress("10.0.0.2")
-                    .attach());
+                    .attach()
+                    .withExistingPublicIpAddress(pip1)
+                    .withTier(ApplicationGatewayTier.STANDARD_V2)
+                    .withSize(ApplicationGatewaySkuName.STANDARD_V2));
 
         agCreatables
             .add(
@@ -338,14 +355,17 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
                     .applicationGateways()
                     .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(resourceGroup)
+                    .withExistingResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
-                    .fromPrivateFrontend()
+                    .fromPublicFrontend()
                     .fromFrontendHttpPort(80)
                     .toBackendHttpPort(8080)
                     .toBackendIPAddress("10.0.0.3")
                     .toBackendIPAddress("10.0.0.4")
-                    .attach());
+                    .attach()
+                    .withExistingPublicIpAddress(pip2)
+                    .withTier(ApplicationGatewayTier.STANDARD_V2)
+                    .withSize(ApplicationGatewaySkuName.STANDARD_V2));
 
         CreatedResources<ApplicationGateway> created = azureResourceManager.applicationGateways().create(agCreatables);
         List<ApplicationGateway> ags = new ArrayList<>();
@@ -404,5 +424,19 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
     public void testAppGatewaysInternetFacingComplex() throws Exception {
         new TestApplicationGateway().new PublicComplex(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
+    }
+
+    private PublicIpAddress createPublicIpAddress(String rgName) {
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        PublicIpAddress pip =
+            azureResourceManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+        return pip;
     }
 }

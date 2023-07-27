@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus
 /** Samples for PrivateEndpointConnection Update. */
 public final class PrivateEndpointConnectionUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: UpdatePrivateEndpointConnection.
@@ -32,6 +31,6 @@ public final class PrivateEndpointConnectionUpdateSamples {
                             .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
                             .withDescription("Approved by xyz.abc@company.com")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
