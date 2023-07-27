@@ -9,7 +9,9 @@ import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplicationContextRunnerUtils.resourceServerContextRunner;
+import static com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplicationContextRunnerUtils.resourceServerRunner;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplicationContextRunnerUtils.withResourceServerPropertyValues;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -142,6 +145,38 @@ class AadResourceServerConfigurationTests {
                     (Converter<Jwt, Collection<GrantedAuthority>>) ReflectionTestUtils.getField(resourceServerConfigurer, "jwtGrantedAuthoritiesConverter");
                 assertThat(jwtGrantedAuthorityConverter).isNotNull();
                 assertThat(jwtGrantedAuthorityConverter).isEqualTo(authoritiesConverter);
+            });
+    }
+
+    @Test
+    void useDefaultWebSecurityConfigurerAdapter() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(SecurityFilterChain.class);
+                assertThat(context).hasBean("defaultAadResourceServerFilterChain");
+            });
+    }
+
+    @Test
+    void useCustomSecurityFilterChain() {
+        new WebApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(
+                HttpMessageConvertersAutoConfiguration.class,
+                RestTemplateAutoConfiguration.class))
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
+                TestAadResourceServerConfiguration.class,
+                AadAutoConfiguration.class)
+            .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(SecurityFilterChain.class);
+                assertThat(context).hasBean("testAadResourceServerFilterChain");
             });
     }
 
