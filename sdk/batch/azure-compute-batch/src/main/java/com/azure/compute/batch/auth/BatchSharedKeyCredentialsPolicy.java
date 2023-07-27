@@ -69,10 +69,11 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
 
         // Set Headers
         String dateHeaderToSign = headerValue(request, HttpHeaderName.DATE);
-        if (request.getHeaders().get("ocp-date") == null) {
+        HttpHeaderName ocpDateHeader = HttpHeaderName.fromString("ocp-date");
+        if (request.getHeaders().get(ocpDateHeader) == null) {
             if (dateHeaderToSign == null) {
                 DateTimeRfc1123 rfcDate = new DateTimeRfc1123(now());
-                request.setHeader("ocp-date", rfcDate.toString());
+                request.setHeader(ocpDateHeader, rfcDate.toString());
                 dateHeaderToSign = "";      //Cannot append both ocp-date and date header values
             }
         }
@@ -111,7 +112,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
 
         Collections.sort(customHeaders);
         for (String canonicalHeader : customHeaders) {
-            String value = request.getHeaders().getValue(canonicalHeader);
+            String value = request.getHeaders().getValue(HttpHeaderName.fromString(canonicalHeader));
             value = value.replace('\n', ' ').replace('\r', ' ')
                     .replaceAll("^[ ]+", "");
             signature.append(canonicalHeader).append(":").append(value).append("\n");
@@ -151,7 +152,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
             String authorizationValue = this.signHeader(context.getHttpRequest());
-            context.getHttpRequest().setHeader("Authorization", authorizationValue);
+            context.getHttpRequest().setHeader(HttpHeaderName.fromString("Authorization"), authorizationValue);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

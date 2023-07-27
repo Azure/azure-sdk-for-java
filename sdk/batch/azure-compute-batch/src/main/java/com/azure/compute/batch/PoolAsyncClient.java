@@ -6,9 +6,12 @@ package com.azure.compute.batch;
 import com.azure.compute.batch.implementation.PoolsImpl;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
+import com.azure.compute.batch.models.BatchPoolPatchParameters;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
+import com.azure.compute.batch.models.BatchPoolUpdateParameters;
 import com.azure.compute.batch.models.NodeRemoveParameters;
 import com.azure.compute.batch.models.PoolStatistics;
 import com.azure.compute.batch.models.PoolUsageMetrics;
@@ -20,12 +23,15 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
@@ -82,12 +88,9 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -140,10 +143,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -195,7 +195,7 @@ public final class PoolAsyncClient {
     }
 
     /**
-     * Adds a Pool to the specified Account.
+     * Creates a Pool to the specified Account.
      *
      * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
      * information may appear in telemetry logs accessible to Microsoft Support engineers.
@@ -216,10 +216,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -230,17 +227,9 @@ public final class PoolAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     cloudServiceConfiguration (Optional): {
      *         osFamily: String (Required)
      *         osVersion: String (Optional)
@@ -298,8 +287,12 @@ public final class PoolAsyncClient {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Optional)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Optional)
+     *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -312,36 +305,11 @@ public final class PoolAsyncClient {
      *         }
      *     }
      *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
      *     enableInterNodeCommunication: Boolean (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Optional)
@@ -454,31 +422,6 @@ public final class PoolAsyncClient {
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
      *     mountConfiguration (Optional): [
      *          (Optional){
      *             azureBlobFileSystemConfiguration (Optional): {
@@ -511,22 +454,11 @@ public final class PoolAsyncClient {
      *             }
      *         }
      *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
-     * @param pool The Pool to be added.
+     * @param parameters The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -536,8 +468,8 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponse(BinaryData pool, RequestOptions requestOptions) {
-        return this.serviceClient.addWithResponseAsync(pool, requestOptions);
+    public Mono<Response<Void>> createWithResponse(BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponseAsync(parameters, requestOptions);
     }
 
     /**
@@ -565,12 +497,9 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -647,8 +576,12 @@ public final class PoolAsyncClient {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Optional)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Optional)
+     *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -916,10 +849,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -928,10 +858,10 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -971,10 +901,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -983,27 +910,32 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * boolean
+     * }</pre>
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return basic properties of a Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> existsWithResponse(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> existsWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.existsWithResponseAsync(poolId, requestOptions);
     }
 
@@ -1028,10 +960,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1040,10 +969,10 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1122,8 +1051,12 @@ public final class PoolAsyncClient {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Optional)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Optional)
+     *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -1388,10 +1321,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1400,10 +1330,10 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1414,156 +1344,19 @@ public final class PoolAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
-     *     cloudServiceConfiguration (Optional): {
-     *         osFamily: String (Required)
-     *         osVersion: String (Optional)
-     *     }
-     *     virtualMachineConfiguration (Optional): {
-     *         imageReference (Required): {
-     *             publisher: String (Optional)
-     *             offer: String (Optional)
-     *             sku: String (Optional)
-     *             version: String (Optional)
-     *             virtualMachineImageId: String (Optional)
-     *             exactVersion: String (Optional)
-     *         }
-     *         nodeAgentSKUId: String (Required)
-     *         windowsConfiguration (Optional): {
-     *             enableAutomaticUpdates: Boolean (Optional)
-     *         }
-     *         dataDisks (Optional): [
-     *              (Optional){
-     *                 lun: int (Required)
-     *                 caching: String(none/readonly/readwrite) (Optional)
-     *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs) (Optional)
-     *             }
-     *         ]
-     *         licenseType: String (Optional)
-     *         containerConfiguration (Optional): {
-     *             type: String(dockerCompatible) (Required)
-     *             containerImageNames (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             containerRegistries (Optional): [
-     *                  (Optional){
-     *                     username: String (Optional)
-     *                     password: String (Optional)
-     *                     registryServer: String (Optional)
-     *                     identityReference (Optional): {
-     *                         resourceId: String (Optional)
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         diskEncryptionConfiguration (Optional): {
-     *             targets (Optional): [
-     *                 String(osdisk/temporarydisk) (Optional)
-     *             ]
-     *         }
-     *         nodePlacementConfiguration (Optional): {
-     *             policy: String(regional/zonal) (Optional)
-     *         }
-     *         extensions (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 publisher: String (Required)
-     *                 type: String (Required)
-     *                 typeHandlerVersion: String (Optional)
-     *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
-     *                 provisionAfterExtensions (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         osDisk (Optional): {
-     *             ephemeralOSDiskSettings (Optional): {
-     *                 placement: String(cachedisk) (Optional)
-     *             }
-     *         }
-     *     }
-     *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
-     *     targetDedicatedNodes: Integer (Optional)
-     *     targetLowPriorityNodes: Integer (Optional)
-     *     enableAutoScale: Boolean (Optional)
-     *     autoScaleFormula: String (Optional)
-     *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     *     enableInterNodeCommunication: Boolean (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Optional)
-     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
-     *         endpointConfiguration (Optional): {
-     *             inboundNATPools (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     protocol: String(tcp/udp) (Required)
-     *                     backendPort: int (Required)
-     *                     frontendPortRangeStart: int (Required)
-     *                     frontendPortRangeEnd: int (Required)
-     *                     networkSecurityGroupRules (Optional): [
-     *                          (Optional){
-     *                             priority: int (Required)
-     *                             access: String(allow/deny) (Required)
-     *                             sourceAddressPrefix: String (Required)
-     *                             sourcePortRanges (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             ]
-     *         }
-     *         publicIPAddressConfiguration (Optional): {
-     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
-     *             ipAddressIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     }
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
      *             containerRunOptions: String (Optional)
      *             imageName: String (Required)
-     *             registry (Optional): (recursive schema, see registry above)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
      *         }
      *         resourceFiles (Optional): [
@@ -1610,108 +1403,18 @@ public final class PoolAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     applicationLicenses (Optional): [
-     *         String (Optional)
-     *     ]
-     *     taskSlotsPerNode: Integer (Optional)
-     *     taskSchedulingPolicy (Optional): {
-     *         nodeFillType: String(spread/pack) (Required)
-     *     }
-     *     userAccounts (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             password: String (Required)
-     *             elevationLevel: String(nonadmin/admin) (Optional)
-     *             linuxUserConfiguration (Optional): {
-     *                 uid: Integer (Optional)
-     *                 gid: Integer (Optional)
-     *                 sshPrivateKey: String (Optional)
-     *             }
-     *             windowsUserConfiguration (Optional): {
-     *                 loginMode: String(batch/interactive) (Optional)
-     *             }
-     *         }
-     *     ]
      *     metadata (Optional): [
      *          (Optional){
      *             name: String (Required)
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
-     *     mountConfiguration (Optional): [
-     *          (Optional){
-     *             azureBlobFileSystemConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 containerName: String (Required)
-     *                 accountKey: String (Optional)
-     *                 sasKey: String (Optional)
-     *                 blobfuseOptions: String (Optional)
-     *                 relativeMountPath: String (Required)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *             nfsMountConfiguration (Optional): {
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *             cifsMountConfiguration (Optional): {
-     *                 username: String (Required)
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *                 password: String (Required)
-     *             }
-     *             azureFileShareConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
-     *                 accountKey: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *         }
-     *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolPatchParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1721,9 +1424,8 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> patchWithResponse(
-            String poolId, BinaryData poolPatchParameter, RequestOptions requestOptions) {
-        return this.serviceClient.patchWithResponseAsync(poolId, poolPatchParameter, requestOptions);
+    public Mono<Response<Void>> patchWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.patchWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -1745,10 +1447,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -1793,10 +1492,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1805,10 +1501,10 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1825,7 +1521,7 @@ public final class PoolAsyncClient {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1836,9 +1532,8 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableAutoScaleWithResponse(
-            String poolId, BinaryData poolEnableAutoScaleParameter, RequestOptions requestOptions) {
-        return this.serviceClient.enableAutoScaleWithResponseAsync(
-                poolId, poolEnableAutoScaleParameter, requestOptions);
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.enableAutoScaleWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -1863,10 +1558,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -1901,7 +1593,7 @@ public final class PoolAsyncClient {
      * }</pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param poolEvaluateAutoScaleParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1913,9 +1605,8 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> evaluateAutoScaleWithResponse(
-            String poolId, BinaryData poolEvaluateAutoScaleParameter, RequestOptions requestOptions) {
-        return this.serviceClient.evaluateAutoScaleWithResponseAsync(
-                poolId, poolEvaluateAutoScaleParameter, requestOptions);
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.evaluateAutoScaleWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -1943,10 +1634,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1955,10 +1643,10 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1977,7 +1665,7 @@ public final class PoolAsyncClient {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolResizeParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1988,8 +1676,8 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resizeWithResponse(
-            String poolId, BinaryData poolResizeParameter, RequestOptions requestOptions) {
-        return this.serviceClient.resizeWithResponseAsync(poolId, poolResizeParameter, requestOptions);
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.resizeWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2017,10 +1705,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2029,10 +1714,10 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2076,10 +1761,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -2090,156 +1772,19 @@ public final class PoolAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
-     *     cloudServiceConfiguration (Optional): {
-     *         osFamily: String (Required)
-     *         osVersion: String (Optional)
-     *     }
-     *     virtualMachineConfiguration (Optional): {
-     *         imageReference (Required): {
-     *             publisher: String (Optional)
-     *             offer: String (Optional)
-     *             sku: String (Optional)
-     *             version: String (Optional)
-     *             virtualMachineImageId: String (Optional)
-     *             exactVersion: String (Optional)
-     *         }
-     *         nodeAgentSKUId: String (Required)
-     *         windowsConfiguration (Optional): {
-     *             enableAutomaticUpdates: Boolean (Optional)
-     *         }
-     *         dataDisks (Optional): [
-     *              (Optional){
-     *                 lun: int (Required)
-     *                 caching: String(none/readonly/readwrite) (Optional)
-     *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs) (Optional)
-     *             }
-     *         ]
-     *         licenseType: String (Optional)
-     *         containerConfiguration (Optional): {
-     *             type: String(dockerCompatible) (Required)
-     *             containerImageNames (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             containerRegistries (Optional): [
-     *                  (Optional){
-     *                     username: String (Optional)
-     *                     password: String (Optional)
-     *                     registryServer: String (Optional)
-     *                     identityReference (Optional): {
-     *                         resourceId: String (Optional)
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         diskEncryptionConfiguration (Optional): {
-     *             targets (Optional): [
-     *                 String(osdisk/temporarydisk) (Optional)
-     *             ]
-     *         }
-     *         nodePlacementConfiguration (Optional): {
-     *             policy: String(regional/zonal) (Optional)
-     *         }
-     *         extensions (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 publisher: String (Required)
-     *                 type: String (Required)
-     *                 typeHandlerVersion: String (Optional)
-     *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
-     *                 provisionAfterExtensions (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         osDisk (Optional): {
-     *             ephemeralOSDiskSettings (Optional): {
-     *                 placement: String(cachedisk) (Optional)
-     *             }
-     *         }
-     *     }
-     *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
-     *     targetDedicatedNodes: Integer (Optional)
-     *     targetLowPriorityNodes: Integer (Optional)
-     *     enableAutoScale: Boolean (Optional)
-     *     autoScaleFormula: String (Optional)
-     *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     *     enableInterNodeCommunication: Boolean (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Optional)
-     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
-     *         endpointConfiguration (Optional): {
-     *             inboundNATPools (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     protocol: String(tcp/udp) (Required)
-     *                     backendPort: int (Required)
-     *                     frontendPortRangeStart: int (Required)
-     *                     frontendPortRangeEnd: int (Required)
-     *                     networkSecurityGroupRules (Optional): [
-     *                          (Optional){
-     *                             priority: int (Required)
-     *                             access: String(allow/deny) (Required)
-     *                             sourceAddressPrefix: String (Required)
-     *                             sourcePortRanges (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             ]
-     *         }
-     *         publicIPAddressConfiguration (Optional): {
-     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
-     *             ipAddressIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     }
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
      *             containerRunOptions: String (Optional)
      *             imageName: String (Required)
-     *             registry (Optional): (recursive schema, see registry above)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
      *         }
      *         resourceFiles (Optional): [
@@ -2269,8 +1814,8 @@ public final class PoolAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -2280,114 +1825,24 @@ public final class PoolAsyncClient {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
      *     ]
-     *     applicationLicenses (Optional): [
-     *         String (Optional)
-     *     ]
-     *     taskSlotsPerNode: Integer (Optional)
-     *     taskSchedulingPolicy (Optional): {
-     *         nodeFillType: String(spread/pack) (Required)
-     *     }
-     *     userAccounts (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             password: String (Required)
-     *             elevationLevel: String(nonadmin/admin) (Optional)
-     *             linuxUserConfiguration (Optional): {
-     *                 uid: Integer (Optional)
-     *                 gid: Integer (Optional)
-     *                 sshPrivateKey: String (Optional)
-     *             }
-     *             windowsUserConfiguration (Optional): {
-     *                 loginMode: String(batch/interactive) (Optional)
-     *             }
-     *         }
-     *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
-     *     mountConfiguration (Optional): [
-     *          (Optional){
-     *             azureBlobFileSystemConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 containerName: String (Required)
-     *                 accountKey: String (Optional)
-     *                 sasKey: String (Optional)
-     *                 blobfuseOptions: String (Optional)
-     *                 relativeMountPath: String (Required)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *             nfsMountConfiguration (Optional): {
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *             cifsMountConfiguration (Optional): {
-     *                 username: String (Required)
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *                 password: String (Required)
-     *             }
-     *             azureFileShareConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
-     *                 accountKey: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *         }
-     *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
      * @param poolId The ID of the Pool to update.
-     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2398,9 +1853,8 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updatePropertiesWithResponse(
-            String poolId, BinaryData poolUpdatePropertiesParameter, RequestOptions requestOptions) {
-        return this.serviceClient.updatePropertiesWithResponseAsync(
-                poolId, poolUpdatePropertiesParameter, requestOptions);
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.updatePropertiesWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2425,10 +1879,7 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2437,10 +1888,10 @@ public final class PoolAsyncClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2460,7 +1911,7 @@ public final class PoolAsyncClient {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param nodeRemoveParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2471,8 +1922,8 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeNodesWithResponse(
-            String poolId, BinaryData nodeRemoveParameter, RequestOptions requestOptions) {
-        return this.serviceClient.removeNodesWithResponseAsync(poolId, nodeRemoveParameter, requestOptions);
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.removeNodesWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2527,52 +1978,6 @@ public final class PoolAsyncClient {
      * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
      * periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains utilization and resource usage statistics for the lifetime of a Pool on successful completion of
-     *     {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PoolStatistics> getAllLifetimeStatistics(
-            Integer timeOut, String clientRequestId, Boolean returnClientRequestId, String ocpDate) {
-        // Generated convenience method for getAllLifetimeStatisticsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        return getAllLifetimeStatisticsWithResponse(requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PoolStatistics.class));
-    }
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     *
-     * <p>Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the
-     * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
-     * periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2592,19 +1997,12 @@ public final class PoolAsyncClient {
     }
 
     /**
-     * Adds a Pool to the specified Account.
+     * Creates a Pool to the specified Account.
      *
      * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
      * information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
-     * @param pool The Pool to be added.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
+     * @param parameters The Pool to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2615,132 +2013,10 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> add(
-            BatchPool pool, Integer timeOut, String clientRequestId, Boolean returnClientRequestId, String ocpDate) {
-        // Generated convenience method for addWithResponse
+    public Mono<Void> create(BatchPoolCreateParameters parameters) {
+        // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        return addWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Adds a Pool to the specified Account.
-     *
-     * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
-     * information may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param pool The Pool to be added.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> add(BatchPool pool) {
-        // Generated convenience method for addWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return addWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the Pools in the specified Account.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchPool> list(
-            Integer maxresults,
-            String ocpDate,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String filter,
-            String select,
-            String expand) {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchPool>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    BatchPool.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return createWithResponse(BinaryData.fromObject(parameters), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2796,86 +2072,6 @@ public final class PoolAsyncClient {
      * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(
-            String poolId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        return deleteWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Pool from the specified Account.
-     *
-     * <p>When you request that a Pool be deleted, the following actions occur: the Pool state is set to deleting; any
-     * ongoing resize operation on the Pool are stopped; the Batch service starts resizing the Pool to zero Compute
-     * Nodes; any Tasks running on existing Compute Nodes are terminated and requeued (as if a resize Pool operation had
-     * been requested with the default requeue option); finally, the Pool is removed from the system. Because running
-     * Tasks are requeued, the user can rerun these Tasks by updating their Job to target a different Pool. The Tasks
-     * can then run on the new Pool. If you want to override the requeue behavior, then you should call resize Pool
-     * explicitly to shrink the Pool to zero size before deleting the Pool. If you call an Update, Patch or Delete API
-     * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
-     *
-     * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2896,174 +2092,19 @@ public final class PoolAsyncClient {
      * Gets basic properties of a Pool.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> exists(
-            String poolId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for existsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        return existsWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets basic properties of a Pool.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return basic properties of a Pool on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> exists(String poolId) {
+    public Mono<Boolean> exists(String poolId) {
         // Generated convenience method for existsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return existsWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets information about the specified Pool.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Pool on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchPool> get(
-            String poolId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince,
-            String select,
-            String expand) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
-        return getWithResponse(poolId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchPool.class));
     }
 
     /**
@@ -3086,150 +2127,6 @@ public final class PoolAsyncClient {
         return getWithResponse(poolId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(BatchPool.class));
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
-     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
-     * StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param poolPatchParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> patch(
-            String poolId,
-            BatchPool poolPatchParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for patchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        return patchWithResponse(poolId, BinaryData.fromObject(poolPatchParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
-     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
-     * StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param poolPatchParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> patch(String poolId, BatchPool poolPatchParameter) {
-        // Generated convenience method for patchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return patchWithResponse(poolId, BinaryData.fromObject(poolPatchParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Disables automatic scaling for a Pool.
-     *
-     * @param poolId The ID of the Pool on which to disable automatic scaling.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableAutoScale(
-            String poolId, Integer timeOut, String clientRequestId, Boolean returnClientRequestId, String ocpDate) {
-        // Generated convenience method for disableAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        return disableAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3261,25 +2158,7 @@ public final class PoolAsyncClient {
      * interval. You cannot call this API for the same Pool more than once every 30 seconds.
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolEnableAutoScaleParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
+     * @param parameters The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3290,71 +2169,10 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableAutoScale(
-            String poolId,
-            BatchPoolEnableAutoScaleParameters poolEnableAutoScaleParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+    public Mono<Void> enableAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters) {
         // Generated convenience method for enableAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        return enableAutoScaleWithResponse(poolId, BinaryData.fromObject(poolEnableAutoScaleParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables automatic scaling for a Pool.
-     *
-     * <p>You cannot enable automatic scaling on a Pool if a resize operation is in progress on the Pool. If automatic
-     * scaling of the Pool is currently disabled, you must specify a valid autoscale formula as part of the request. If
-     * automatic scaling of the Pool is already enabled, you may specify a new autoscale formula and/or a new evaluation
-     * interval. You cannot call this API for the same Pool more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param poolEnableAutoScaleParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableAutoScale(String poolId, BatchPoolEnableAutoScaleParameters poolEnableAutoScaleParameter) {
-        // Generated convenience method for enableAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return enableAutoScaleWithResponse(poolId, BinaryData.fromObject(poolEnableAutoScaleParameter), requestOptions)
+        return enableAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
                 .flatMap(FluxUtil::toMono);
     }
 
@@ -3365,14 +2183,7 @@ public final class PoolAsyncClient {
      * the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param poolEvaluateAutoScaleParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
+     * @param parameters The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3384,58 +2195,10 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutoScaleRun> evaluateAutoScale(
-            String poolId,
-            BatchPoolEvaluateAutoScaleParameters poolEvaluateAutoScaleParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate) {
+    public Mono<AutoScaleRun> evaluateAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters) {
         // Generated convenience method for evaluateAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        return evaluateAutoScaleWithResponse(
-                        poolId, BinaryData.fromObject(poolEvaluateAutoScaleParameter), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * <p>This API is primarily for validating an autoscale formula, as it simply returns the result without applying
-     * the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
-     *
-     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param poolEvaluateAutoScaleParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results and errors from an execution of a Pool autoscale formula on successful completion of {@link
-     *     Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutoScaleRun> evaluateAutoScale(
-            String poolId, BatchPoolEvaluateAutoScaleParameters poolEvaluateAutoScaleParameter) {
-        // Generated convenience method for evaluateAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return evaluateAutoScaleWithResponse(
-                        poolId, BinaryData.fromObject(poolEvaluateAutoScaleParameter), requestOptions)
+        return evaluateAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
     }
@@ -3450,25 +2213,7 @@ public final class PoolAsyncClient {
      * remove specific Compute Nodes, use the Pool remove Compute Nodes API instead.
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolResizeParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
+     * @param parameters The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3479,150 +2224,10 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resize(
-            String poolId,
-            BatchPoolResizeParameters poolResizeParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+    public Mono<Void> resize(String poolId, BatchPoolResizeParameters parameters) {
         // Generated convenience method for resizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        return resizeWithResponse(poolId, BinaryData.fromObject(poolResizeParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Changes the number of Compute Nodes that are assigned to a Pool.
-     *
-     * <p>You can only resize a Pool when its allocation state is steady. If the Pool is already resizing, the request
-     * fails with status code 409. When you resize a Pool, the Pool's allocation state changes from steady to resizing.
-     * You cannot resize Pools which are configured for automatic scaling. If you try to do this, the Batch service
-     * returns an error 409. If you resize a Pool downwards, the Batch service chooses which Compute Nodes to remove. To
-     * remove specific Compute Nodes, use the Pool remove Compute Nodes API instead.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param poolResizeParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resize(String poolId, BatchPoolResizeParameters poolResizeParameter) {
-        // Generated convenience method for resizeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return resizeWithResponse(poolId, BinaryData.fromObject(poolResizeParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Stops an ongoing resize operation on the Pool.
-     *
-     * <p>This does not restore the Pool to its previous state before the resize operation: it only stops any further
-     * changes being made, and the Pool maintains its current state. After stopping, the Pool stabilizes at the number
-     * of Compute Nodes it was at when the stop operation was done. During the stop operation, the Pool allocation state
-     * changes first to stopping and then to steady. A resize operation need not be an explicit resize Pool request;
-     * this API can also be used to halt the initial sizing of the Pool when it is created.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopResize(
-            String poolId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for stopResizeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        return stopResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+        return resizeWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3652,6 +2257,56 @@ public final class PoolAsyncClient {
     }
 
     /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * <p>This operation can only run when the allocation state of the Pool is steady. When this operation runs, the
+     * allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeNodes(String poolId, NodeRemoveParameters parameters) {
+        // Generated convenience method for removeNodesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
+     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
+     * StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> patch(String poolId, BatchPoolPatchParameters parameters) {
+        // Generated convenience method for patchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return patchWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Updates the properties of the specified Pool.
      *
      * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
@@ -3659,14 +2314,7 @@ public final class PoolAsyncClient {
      * existing StartTask.
      *
      * @param poolId The ID of the Pool to update.
-     * @param poolUpdatePropertiesParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
+     * @param parameters The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3677,158 +2325,10 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateProperties(
-            String poolId,
-            BatchPool poolUpdatePropertiesParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate) {
+    public Mono<Void> updateProperties(String poolId, BatchPoolUpdateParameters parameters) {
         // Generated convenience method for updatePropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        return updatePropertiesWithResponse(
-                        poolId, BinaryData.fromObject(poolUpdatePropertiesParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
-     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
-     * existing StartTask.
-     *
-     * @param poolId The ID of the Pool to update.
-     * @param poolUpdatePropertiesParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateProperties(String poolId, BatchPool poolUpdatePropertiesParameter) {
-        // Generated convenience method for updatePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return updatePropertiesWithResponse(
-                        poolId, BinaryData.fromObject(poolUpdatePropertiesParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Removes Compute Nodes from the specified Pool.
-     *
-     * <p>This operation can only run when the allocation state of the Pool is steady. When this operation runs, the
-     * allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param nodeRemoveParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeNodes(
-            String poolId,
-            NodeRemoveParameters nodeRemoveParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for removeNodesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        return removeNodesWithResponse(poolId, BinaryData.fromObject(nodeRemoveParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Removes Compute Nodes from the specified Pool.
-     *
-     * <p>This operation can only run when the allocation state of the Pool is steady. When this operation runs, the
-     * allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param nodeRemoveParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeNodes(String poolId, NodeRemoveParameters nodeRemoveParameter) {
-        // Generated convenience method for removeNodesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return removeNodesWithResponse(poolId, BinaryData.fromObject(nodeRemoveParameter), requestOptions)
+        return updatePropertiesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
                 .flatMap(FluxUtil::toMono);
     }
 
@@ -3846,9 +2346,6 @@ public final class PoolAsyncClient {
      *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
      * @param starttime The earliest time from which to include metrics. This must be at least two and a half hours
      *     before the current time. If not specified this defaults to the start time of the last aggregation interval
      *     currently available.
@@ -3868,10 +2365,8 @@ public final class PoolAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PoolUsageMetrics> listUsageMetrics(
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
             OffsetDateTime starttime,
             OffsetDateTime endtime,
             String filter) {
@@ -3881,16 +2376,11 @@ public final class PoolAsyncClient {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (starttime != null) {
             requestOptions.addQueryParam("starttime", String.valueOf(starttime), false);
@@ -3924,5 +2414,732 @@ public final class PoolAsyncClient {
                                                     pagedResponse.getContinuationToken(),
                                                     null));
                         });
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the Pools in the specified Account.
+     *
+     * <p>Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the
+     * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
+     * periodic roll-up of statistics. The typical delay is about 30 minutes.
+     *
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains utilization and resource usage statistics for the lifetime of a Pool on successful completion of
+     *     {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PoolStatistics> getAllLifetimeStatistics(Integer timeOut, OffsetDateTime ocpDate) {
+        // Generated convenience method for getAllLifetimeStatisticsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        return getAllLifetimeStatisticsWithResponse(requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(PoolStatistics.class));
+    }
+
+    /**
+     * Creates a Pool to the specified Account.
+     *
+     * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
+     * information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param parameters The Pool to be created.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> create(BatchPoolCreateParameters parameters, Integer timeOut, OffsetDateTime ocpDate) {
+        // Generated convenience method for createWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        return createWithResponse(BinaryData.fromObject(parameters), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Pools in the specified Account.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchPool> list(
+            Integer maxresults, OffsetDateTime ocpDate, Integer timeOut, String filter, String select, String expand) {
+        // Generated convenience method for list
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchPool>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    BatchPool.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Deletes a Pool from the specified Account.
+     *
+     * <p>When you request that a Pool be deleted, the following actions occur: the Pool state is set to deleting; any
+     * ongoing resize operation on the Pool are stopped; the Batch service starts resizing the Pool to zero Compute
+     * Nodes; any Tasks running on existing Compute Nodes are terminated and requeued (as if a resize Pool operation had
+     * been requested with the default requeue option); finally, the Pool is removed from the system. Because running
+     * Tasks are requeued, the user can rerun these Tasks by updating their Job to target a different Pool. The Tasks
+     * can then run on the new Pool. If you want to override the requeue behavior, then you should call resize Pool
+     * explicitly to shrink the Pool to zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> delete(
+            String poolId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+        // Generated convenience method for deleteWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return deleteWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets basic properties of a Pool.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return basic properties of a Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> exists(
+            String poolId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+        // Generated convenience method for existsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return existsWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Pool.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchPool> get(
+            String poolId,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            String select,
+            String expand,
+            RequestConditions requestConditions) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand, false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getWithResponse(poolId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchPool.class));
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
+     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
+     * StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> patch(
+            String poolId,
+            BatchPoolPatchParameters parameters,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for patchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return patchWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables automatic scaling for a Pool.
+     *
+     * @param poolId The ID of the Pool on which to disable automatic scaling.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableAutoScale(String poolId, Integer timeOut, OffsetDateTime ocpDate) {
+        // Generated convenience method for disableAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        return disableAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * <p>You cannot enable automatic scaling on a Pool if a resize operation is in progress on the Pool. If automatic
+     * scaling of the Pool is currently disabled, you must specify a valid autoscale formula as part of the request. If
+     * automatic scaling of the Pool is already enabled, you may specify a new autoscale formula and/or a new evaluation
+     * interval. You cannot call this API for the same Pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableAutoScale(
+            String poolId,
+            BatchPoolEnableAutoScaleParameters parameters,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for enableAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return enableAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * <p>This API is primarily for validating an autoscale formula, as it simply returns the result without applying
+     * the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the results and errors from an execution of a Pool autoscale formula on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutoScaleRun> evaluateAutoScale(
+            String poolId, BatchPoolEvaluateAutoScaleParameters parameters, Integer timeOut, OffsetDateTime ocpDate) {
+        // Generated convenience method for evaluateAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        return evaluateAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * <p>You can only resize a Pool when its allocation state is steady. If the Pool is already resizing, the request
+     * fails with status code 409. When you resize a Pool, the Pool's allocation state changes from steady to resizing.
+     * You cannot resize Pools which are configured for automatic scaling. If you try to do this, the Batch service
+     * returns an error 409. If you resize a Pool downwards, the Batch service chooses which Compute Nodes to remove. To
+     * remove specific Compute Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resize(
+            String poolId,
+            BatchPoolResizeParameters parameters,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for resizeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return resizeWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * <p>This does not restore the Pool to its previous state before the resize operation: it only stops any further
+     * changes being made, and the Pool maintains its current state. After stopping, the Pool stabilizes at the number
+     * of Compute Nodes it was at when the stop operation was done. During the stop operation, the Pool allocation state
+     * changes first to stopping and then to steady. A resize operation need not be an explicit resize Pool request;
+     * this API can also be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopResize(
+            String poolId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+        // Generated convenience method for stopResizeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return stopResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
+     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
+     * existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateProperties(
+            String poolId, BatchPoolUpdateParameters parameters, Integer timeOut, OffsetDateTime ocpDate) {
+        // Generated convenience method for updatePropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        return updatePropertiesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * <p>This operation can only run when the allocation state of the Pool is steady. When this operation runs, the
+     * allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeNodes(
+            String poolId,
+            NodeRemoveParameters parameters,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for removeNodesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+                .flatMap(FluxUtil::toMono);
     }
 }
