@@ -82,7 +82,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         this.timeoutPolicy = HttpTimeoutPolicy.getTimeoutPolicy(request);
         this.isOutOfRetries = isOutOfRetries();
 
-        // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
+        // Setting the current responseTimeout and retryDelay using the timeout policy being used
         // and then increasing the counter for retries.
         if (!isOutOfRetries) {
             ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount);
