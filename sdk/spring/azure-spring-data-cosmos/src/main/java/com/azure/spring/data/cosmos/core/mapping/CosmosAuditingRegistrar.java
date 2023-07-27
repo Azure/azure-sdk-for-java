@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.core.mapping;
 
 import com.azure.spring.data.cosmos.Constants;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.Ordered;
@@ -41,7 +42,10 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport imp
 
     @Override
     protected void postProcess(BeanDefinitionBuilder builder, AuditingConfiguration configuration, BeanDefinitionRegistry registry) {
-        builder.setFactoryMethod("from").addConstructorArgReference("cosmosMappingContext");
+        final BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContext.class);
+        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+
+        builder.setFactoryMethod("from").addConstructorArgValue(definition.getBeanDefinition());
     }
 
     /*
