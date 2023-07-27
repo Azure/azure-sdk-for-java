@@ -53,33 +53,128 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZ
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
 /**
- * An abstraction to pump messages from multiple sessions.
- * <p/>
- * The pump will be connected to at most {@code maxConcurrentSessions} sessions, and streams messages from each of those
- * sessions. Within a session, {@code concurrencyPerSession} messages are pumped in parallel.
- * <p/>
- * If a session gets disconnected for some reason, system will acquire link to the next available session, and will roll
- * to that new session to continue streaming messages.
- * <p/>
- * The inner abstraction SessionsMessagePump#RollingSessionReceiver is responsible for managing a session, concurrently
- * pumping messages from its current session and rolling to the next session when current session terminates.
- * <p/>
- * The {@link SessionsMessagePump} manages {@code maxConcurrentSessions} SessionsMessagePump#RollingSessionReceiver instances.
- * <p/>
- * The pumping starts upon subscribing to the Mono that {@link SessionsMessagePump#begin} returns. The pumping can be stopped
+ * <p>An abstraction to pump messages from multiple sessions.</p>
+ * <p>The pump will be connected to at most {@code maxConcurrentSessions} sessions, and streams messages from each of those
+ * sessions. Within a session, {@code concurrencyPerSession} messages are pumped in parallel.</p>
+ *
+ * <p>If a session gets disconnected for some reason, system will acquire link to the next available session, and will roll
+ * to that new session to continue streaming messages.</p>
+ *
+ * <p/>The inner abstraction SessionsMessagePump#RollingSessionReceiver is responsible for managing a session, concurrently
+ * pumping messages from its current session and rolling to the next session when current session terminates.</p>
+ *
+ * <p>The {@link SessionsMessagePump} manages {@code maxConcurrentSessions} SessionsMessagePump#RollingSessionReceiver instances.</p>
+ *
+ * <p>The pumping starts upon subscribing to the Mono that {@link SessionsMessagePump#begin} returns. The pumping can be stopped
  * by subscribing to {@link SessionsMessagePump#closeAsync} or cancelling the subscription that {@link SessionsMessagePump#begin}
- * returned.
- * <p/>
- * If a SessionsMessagePump#RollingSessionReceiver instance encounters an error when it attempts to acquire a new link,
+ * returned.</p>
+ *
+ * <p>If a SessionsMessagePump#RollingSessionReceiver instance encounters an error when it attempts to acquire a new link,
  * all other SessionsMessagePump#RollingSessionReceiver instance will be canceled, thereby stopping the pumping.
  * The termination signal will be notified through the Mono returned by {@link SessionsMessagePump#begin} that originally
- * started the pumping.
- * <p/>
- * Once the Mono from {@link SessionsMessagePump#begin} terminates, to restart the pumping a new {@link SessionsMessagePump}
- * instance should be obtained.
- * <p/>
- * The abstraction SessionAwareProcessor takes care of managing a {@link SessionsMessagePump} and obtaining the next
- * SessionsMessagePump when current one terminates.
+ * started the pumping.</p>
+ *
+ * <p>Once the Mono from {@link SessionsMessagePump#begin} terminates, to restart the pumping a new {@link SessionsMessagePump}
+ * instance should be obtained.</p>
+ *
+ * <p>The abstraction SessionAwareProcessor takes care of managing a {@link SessionsMessagePump} and obtaining the next
+ * SessionsMessagePump when current one terminates.</p>
+ *
+ * <p>The SessionsMessagePump termination flow – there are 3 cases leading to SessionsMessagePump termination</p>
+ * <ul>
+ *     <li>Cancelling Mono returned by begin().</li>
+ *     <li>Calling closeAsync()</li>
+ *     <li>A RollingSessionReceiver failing to acquire a new session link</li>
+ * </ul>
+ *
+ * <strong>Cancelling Mono returned by begin()</strong>
+ * <p>
+ * The when-operator in begin() synchronously iterates through the list of Mono instances returned by
+ * RollingSessionReceiver.receive() calls and cancels each Mono. Cancelling a Mono runs cancel() method on it's backing
+ * RollingSessionReceiver.MessageFlux instance. Let’s say the Thread T1 calls cancel(), upon the execution of cancel():</p>
+ * <ul>
+ * <li>Case1: If the MessageFlux drain-loop is not running, then the Thread T1 running cancel() runs "cancellation operation".</li>
+ * <li>Case2: If the MessageFlux drain-loop is currently being executed by a Thread T2, then "cancellation operation"
+ * is delegated to T2 and the cancel() call by Thread T1 returns. </li>
+ * </ul>
+ *
+ * <p>Running "cancellation operation" executes currentReceiver.closeAsync().subscribe(), where currenReceiver is the
+ * ServiceBusSessionReactorReceiver instance that the RollingSessionReceiver.MessageFlux currently holding.
+ * The Thread calling this subscribe() will schedule the amqp-link closure to the Qpid Thread. The subscribe() call here
+ * does’t block as the call returns after scheduling.</p>
+ *
+ * <p>In Case1, the cancel() call by T1 returns after this ServiceBusSessionReactorReceiver.closeAsync().subscribe() call.
+ * In Case2, by the time the cancel() call by T1 returns, T2 may or may not have called
+ * ServiceBusSessionReactorReceiver.closeAsync().subscribe() or call may in progress.</p>
+ *
+ * <p>In either way when Thread T1’s cancel() call returns, The onCancel hook of usingWhen operator in
+ * RollingSessionReceiver.receive() subscribe to RollingSessionReceiver.closeAsync(TerminationReason.CANCELED) which
+ * in turn subscribe to ServiceBusSessionReactorReceiver.closeAsync(). There are two cases here -
+ * <ul>
+ * <li>A: The earlier "cancellation operation" may made closeAsync().subscribe() call on the same ServiceBusSessionReactorReceiver
+ * already. If so, the subscribe() call by usingWhen (in Thread T1) adds NOP handlers for that already initiated operation
+ * and returns.</li>
+ * <li>B: If it happens that the subscription to RollingSessionReceiver.closeAsync() by usingWhen (in Thread T1) happens
+ *  first before T2 get to run "cancellation operation" (possible in Case2), then T1 schedules the link-closure to Qpid
+ *  Thread and returns. (the later subscribe() call by T2 adds NOP handlers for this already initiated operation.)</li>
+ * </ul>
+ *
+ * <p>Now that RollingSessionReceiver.closeAsync(TerminationReason.CANCELED) returned control to T1, the When operator
+ * moves to the next Mono in the list to perform similar cancellation.</p>
+ *
+ *<p>Note: In SessionsMessagePump termination by cancellation case, subscription made to any *.closeAsync() is fire-n-forget.</p>
+ *
+ * <strong>Calling closeAsync()</strong>
+ * <p>
+ * The whenDelayError operator in SessionsMessagePump.closeAsync() synchronously iterate through the list of Mono instances
+ * returned by RollingSessionReceiver.closeAsync() and call subscribe() to each Mono.</p>
+ * <p>Let’s say Thread T1 is doing this iteration, each iteration calling subscribe() triggers following events</p>
+ * <ul>
+ * <li>1. Thread T1’s subscription to RollingSessionReceiver.closeAsync() gets translated to a subscription to the closeAsync()
+ * of current ServiceBusSessionReactorReceiver that RollingSessionReceiver holds. </li>
+ * <li>2. Thread T1’s subscription to ServiceBusSessionReactorReceiver.closeAsync() will schedule the amqp-link closure
+ * work to the Qpid Thread.</li>
+ * <li>3. After this scheduling, the RollingSessionReceiver.closeAsync() call by Thread T1 returns.</li>
+ * </ul>
+ *
+ * <p>At this point, iteration moves to the next RollingSessionReceiver.closeAsync()’s Mono, repeating the same events.</p>
+ *
+ * <p>Each iteration in whenDelayError operator adds one listener which runs when the scheduled amqp-link closure work
+ * finishes. Once all the listeners are ran, the SessionsMessagePump’s closeAsync() signal termination.</p>
+ *
+ * <p>Execution of amqp-link closure work by Qpid Thread (scheduled in 2) notifies the closure to
+ * RollingSessionReceiver.MessageFlux. Upon receiving this closure (completion) event of current Receiver on
+ * ReceiversPumpingScheduler Thread, the MessageFlux requests a new Receiver from upstream which will emit TerminatedException,
+ * the MessageFlux will propagate this error. </p>
+ *
+ * <p>Next, the usingWhen operator in RollingSessionReceiver.receive(), that gets the TerminatedException signal from
+ * MessageFlux, will subscribe to RollingSessionReceiver.closeAsync(TerminationReason.ERRORED). This in turn subscribes
+ * to ServiceBusSessionReactorReceiver.closeAsync(), but the subscription completes as the amqp-link closure work backing
+ * that closeAsync() was already completed. The Scheduler associated with RollingSessionReceiver is disposed.</p>
+ *
+ * <p>Next, the TerminationException will propagate from usingWhen in RollingSessionReceiver.receive() to the When operator
+ * in SessionsMessageReceiver.receive(). The When operator will iterate through list of its Mono instances (from the receive()
+ * api of remaining RollingSessionReceiver instances) and calls RollingSessionReceiver.MessageFlux.cancel() in each
+ * RollingSessionReceiver. See the previous section "Cancelling Mono returned by begin()" for this cancel() flow.</p>
+ *
+ * <p>This means, the call triggering work of ServiceBusSessionReactorReceiver.closeAsync() for the remaining RollingSessionReceiver
+ * will be originate either -</p>
+ * <ul>
+ * <li>1. through the RollingSessionReceiver.MessageFlux.cancel()  (Also lead to RollingSessionReceiver.closeAsync Fire-N-Forget call)</li>
+ * <li>2. Or through the iteration in whenDelayError calling RollingSessionReceiver.closeAsync().</li>
+ * </ul>
+ *
+ * <p>Regardless of the route that cause ServiceBusSessionReactorReceiver.closeAsync() to trigger amqp-link closure scheduling,
+ * the whenDelayError operator await for closure of the amqp-link to all sessions.</p>
+ *
+ *  <strong>A RollingSessionReceiver failing to acquire a new session link</strong>
+ *
+ *  <p>
+ *  Read the termination by 'Cancelling Mono returned by begin()' and 'Calling closeAsync()' sections. Flow in this case
+ *  is similar to a RollingSessionReceiver.MessageFlux receiving TerminatedException from upstream, i.e., upstream fails
+ *  to acquire link and emit TerminatedException (with inner error describing cause). The termination of remaining
+ *  RollingSessionReceiver happens through RollingSessionReceiver.MessageFlux.cancel() when the When operator in
+ *  SessionsMessageReceiver sees the TerminatedException from one RollingSessionReceiver. </p>
  */
 final class SessionsMessagePump implements AsyncCloseable {
     private static final ArrayList<RollingSessionReceiver> EMPTY = new ArrayList<>(0);
@@ -144,9 +239,9 @@ final class SessionsMessagePump implements AsyncCloseable {
      * Obtain a Mono that when subscribed, start pumping messages from {@code maxConcurrentSessions} sessions.
      * The Mono emits terminal signal once the {@link SessionsMessagePump#closeAsync()} is called or if there is a failure
      * in obtaining a new session.
-     * <p/>
-     * The Mono emits {@link UnsupportedOperationException} if it is subscribed more than once. If the Mono is subscribed
-     * after the termination of SessionsMessagePump it emits {@link TerminatedException}.
+     *
+     * <p>The Mono emits {@link UnsupportedOperationException} if it is subscribed more than once. If the Mono is subscribed
+     * after the termination of SessionsMessagePump it emits {@link TerminatedException}.</p>
      *
      * @return the Mono to begin and cancel message pumping.
      */
@@ -230,16 +325,16 @@ final class SessionsMessagePump implements AsyncCloseable {
     /**
      * The type which provides a Mono {@link NewSessionLink#mono()} that when subscribed acquires a new unnamed session.
      * All the {@link RollingSessionReceiver} in the {@link SessionsMessagePump} shares this Mono to obtain unique sessions.
-     * <p/>
-     * The event the Mono fails to acquire a session, the type marks itself as terminated and notifies the subscription
-     * about the failure as {@link TerminatedException}. Any later subscriptions will be notified with TerminatedException.
-     * <p/>
-     * If a RollingSessionReceiver encounters acquire session failure, it stops pumping and emit terminal signal.
+     *
+     * <p>The event the Mono fails to acquire a session, the type marks itself as terminated and notifies the subscription
+     * about the failure as {@link TerminatedException}. Any later subscriptions will be notified with TerminatedException.</p>
+     *
+     * <p>If a RollingSessionReceiver encounters acquire session failure, it stops pumping and emit terminal signal.
      * At this point, the SessionMessagePump will cancel all other RollingSessionReceiver instances. The design of
      * the SessionMessagePump is to stop pumping from all sessions once any of the RollingSessionReceiver emits terminal
      * signal. The self-terminating nature of the shared {@link NewSessionLink#mono()} will reduce the chances of one or
      * more of the RollingSessionReceiver attempting session acquire when SessionMessagePump is about to or in progress
-     * of canceling those.
+     * of canceling those.</p>
      */
     private static final class NewSessionLink
         implements Supplier<Mono<ServiceBusReceiveLink>> {
@@ -461,9 +556,9 @@ final class SessionsMessagePump implements AsyncCloseable {
          * A type which provide a Flux {@link SessionLinkStream#flux()} that streams next available sessions.
          * Each {@link RollingSessionReceiver} has a {@link SessionLinkStream} instance associated,
          * when the {@link RollingSessionReceiver} wants to roll to a new session, it requests a session from the Flux.
-         * <p/>
-         * Underneath, all the {@link SessionLinkStream} instances (across all {@link RollingSessionReceiver}) shares
-         * the common Mono {@link NewSessionLink#mono()} to acquire unique sessions.
+         *
+         * <p>Underneath, all the {@link SessionLinkStream} instances (across all {@link RollingSessionReceiver}) shares
+         * the common Mono {@link NewSessionLink#mono()} to acquire unique sessions.</p>
          */
         private static final class SessionLinkStream extends AtomicBoolean {
             private final Mono<ServiceBusReceiveLink> nextSessionLink;
@@ -574,15 +669,15 @@ final class SessionsMessagePump implements AsyncCloseable {
      * Tracks the running {@link ServiceBusSessionReactorReceiver} instances, each backing a RollingSessionReceiver instance.
      * Each time a RollingSessionReceiver rolls to a new ServiceBusSessionReactorReceiver Rn, it will track Rn by invoking
      * tack(Rn) and un-tracks the last (closed) ServiceBusSessionReactorReceiver Rm by invoking untrack(Rm).
-     * <p/>
-     * The type holds sessionId to ServiceBusSessionReactorReceiver mapping. A session message can be disposition only on
+     *
+     * <p>The type holds sessionId to ServiceBusSessionReactorReceiver mapping. A session message can be disposition only on
      * the ServiceBusSessionReactorReceiver delivered it. The mapping tracked by this type enables looking up
-     * the ServiceBusSessionReactorReceiver when a message needs to be disposition.
-     * <p/>
-     * It is possible that, a session say session-1 gets acquired by RollingSessionReceiver Ru,
+     * the ServiceBusSessionReactorReceiver when a message needs to be disposition.</p>
+     *
+     * <p>It is possible that, a session say session-1 gets acquired by RollingSessionReceiver Ru,
      * while a RollingSessionReceiver Rv that was previously connected to session-1 rolls to session-2. Measures are
      * taken to ensure the Rv is not removing (un-track) session-1 added by Ru from the view in such concurrent case,
-     * the underlying {@link ConcurrentHashMap#remove(Object, Object)} api avoid such undesired un-track.
+     * the underlying {@link ConcurrentHashMap#remove(Object, Object)} api avoid such undesired un-track.</p>
      */
     static final class SessionReceiversTracker {
         private final ClientLogger logger;
