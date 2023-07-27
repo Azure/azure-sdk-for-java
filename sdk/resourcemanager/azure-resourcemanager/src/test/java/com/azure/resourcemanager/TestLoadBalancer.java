@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import org.junit.jupiter.api.Assertions;
 
 /** Test of load balancer management. */
@@ -1068,7 +1068,7 @@ public class TestLoadBalancer {
                     .withoutPrimaryPublicIPAddress()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(ResourceManagerTestBase.password())
+                    .withRootPassword(ResourceManagerTestProxyTestBase.password())
                     .withNewAvailabilitySet(availabilitySetDefinition)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
