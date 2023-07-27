@@ -14,7 +14,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevice;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleTypes;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -33,7 +32,7 @@ public final class NetworkDevicesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"version\":\"tp\",\"networkDeviceSku\":\"pz\",\"networkDeviceRole\":\"TS\",\"provisioningState\":\"Canceled\",\"networkRackId\":\"x\",\"hostName\":\"oqraswugyxpqi\",\"serialNumber\":\"eialwvskb\",\"annotation\":\"z\"},\"location\":\"aq\",\"tags\":{\"cujp\":\"tco\",\"bizt\":\"sxzakuejkm\"},\"id\":\"ofqcvovjufycsjm\",\"name\":\"bemyeji\",\"type\":\"iuxegth\"}]}";
+            "{\"value\":[{\"properties\":{\"version\":\"fjcvmkkbpgdiwd\",\"networkDeviceSku\":\"hdtiemb\",\"networkDeviceRole\":\"ToR\",\"networkRackId\":\"vcwcehzrtrgpdlbt\",\"managementIpv4Address\":\"hyfwjfqktuzr\",\"managementIpv6Address\":\"pecsdk\",\"configurationState\":\"Succeeded\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"hostName\":\"qjntvhnjpbhjlugc\",\"serialNumber\":\"cyfrho\",\"annotation\":\"v\"},\"location\":\"uxyeeafdxsuwly\",\"tags\":{\"pdxbhjquxk\":\"hgb\",\"dzwnkbjqp\":\"xqomzdfaupqve\",\"sochtuxap\":\"modwhqu\",\"q\":\"wz\"},\"id\":\"bx\",\"name\":\"ynslcvynavwtttsm\",\"type\":\"z\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +62,11 @@ public final class NetworkDevicesListMockTests {
 
         PagedIterable<NetworkDevice> response = manager.networkDevices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aq", response.iterator().next().location());
-        Assertions.assertEquals("tco", response.iterator().next().tags().get("cujp"));
-        Assertions.assertEquals("pz", response.iterator().next().networkDeviceSku());
-        Assertions.assertEquals(NetworkDeviceRoleTypes.TS, response.iterator().next().networkDeviceRole());
-        Assertions.assertEquals("oqraswugyxpqi", response.iterator().next().hostname());
-        Assertions.assertEquals("eialwvskb", response.iterator().next().serialNumber());
-        Assertions.assertEquals("z", response.iterator().next().annotation());
+        Assertions.assertEquals("uxyeeafdxsuwly", response.iterator().next().location());
+        Assertions.assertEquals("hgb", response.iterator().next().tags().get("pdxbhjquxk"));
+        Assertions.assertEquals("hdtiemb", response.iterator().next().networkDeviceSku());
+        Assertions.assertEquals("qjntvhnjpbhjlugc", response.iterator().next().hostname());
+        Assertions.assertEquals("cyfrho", response.iterator().next().serialNumber());
+        Assertions.assertEquals("v", response.iterator().next().annotation());
     }
 }

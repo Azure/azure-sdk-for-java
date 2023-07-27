@@ -14,7 +14,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
-import com.azure.resourcemanager.managednetworkfabric.models.AddressFamily;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
+import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -33,7 +34,7 @@ public final class AccessControlListsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"addressFamily\":\"ipv6\",\"conditions\":[],\"provisioningState\":\"Succeeded\",\"annotation\":\"bgkc\"},\"location\":\"hpzvuqdflvoniyp\",\"tags\":{\"knidib\":\"bcpzgpxtivh\",\"kqmhhaowjr\":\"qjxgpnrhgovfgp\",\"kfvxcnq\":\"zvuporqzdfuydz\"},\"id\":\"xqpswok\",\"name\":\"vkhlggdhbemz\",\"type\":\"kzsz\"}]}";
+            "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-07-17T20:34:59Z\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\",\"configurationType\":\"Inline\",\"aclsUrl\":\"olngsfmhwdxqupy\",\"matchConfigurations\":[{\"matchConfigurationName\":\"lmnjqzm\",\"sequenceNumber\":6179342709153587202,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"q\",\"sequenceNumber\":6471796079746395246,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{},{}]},{\"matchConfigurationName\":\"jo\",\"sequenceNumber\":3660511499393161300,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"qeiaddp\",\"sequenceNumber\":6395873061735067904,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{},{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{}]}],\"annotation\":\"nzbqvioynctfq\"},\"location\":\"vvwzprjaaaiaib\",\"tags\":{\"wmefzvzuz\":\"vlyaqtloc\",\"zgyhen\":\"crlkorv\",\"nozf\":\"sfyqncowm\",\"agwaakktbjort\":\"ywjiaaosla\"},\"id\":\"tkajqhsnsej\",\"name\":\"lislxyljzbkd\",\"type\":\"lfjwxgvtkjctv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +64,17 @@ public final class AccessControlListsListMockTests {
 
         PagedIterable<AccessControlList> response = manager.accessControlLists().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hpzvuqdflvoniyp", response.iterator().next().location());
-        Assertions.assertEquals("bcpzgpxtivh", response.iterator().next().tags().get("knidib"));
-        Assertions.assertEquals(AddressFamily.IPV6, response.iterator().next().addressFamily());
-        Assertions.assertEquals("bgkc", response.iterator().next().annotation());
+        Assertions.assertEquals("vvwzprjaaaiaib", response.iterator().next().location());
+        Assertions.assertEquals("vlyaqtloc", response.iterator().next().tags().get("wmefzvzuz"));
+        Assertions.assertEquals(ConfigurationType.INLINE, response.iterator().next().configurationType());
+        Assertions.assertEquals("olngsfmhwdxqupy", response.iterator().next().aclsUrl());
+        Assertions
+            .assertEquals("lmnjqzm", response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
+        Assertions
+            .assertEquals(
+                6179342709153587202L, response.iterator().next().matchConfigurations().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(IpAddressType.IPV6, response.iterator().next().matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("nzbqvioynctfq", response.iterator().next().annotation());
     }
 }

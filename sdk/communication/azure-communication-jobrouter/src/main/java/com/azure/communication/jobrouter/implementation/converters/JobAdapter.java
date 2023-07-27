@@ -12,6 +12,7 @@ import com.azure.communication.jobrouter.implementation.models.RouterJobItemInte
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.ScheduleAndSuspendModeInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAndMatchMode;
 import com.azure.communication.jobrouter.models.RouterJob;
@@ -62,7 +63,7 @@ public class JobAdapter {
             .collect(Collectors.toList()) : null;
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
-            .collect(Collectors.toMap(note -> note.getTime().toString(), note -> note.getMessage())) : null;
+            .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;
 
         return new RouterJobInternal()
             .setChannelId(createJobOptions.getChannelId())
@@ -71,12 +72,44 @@ public class JobAdapter {
             .setLabels(labels)
             .setNotes(notes)
             .setPriority(createJobOptions.getPriority())
-            .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setDispositionCode(createJobOptions.getDispositionCode())
-            .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setRequestedWorkerSelectors(workerSelectorsInternal)
             .setTags(tags)
             .setMatchingMode(convertMatchingModeToInternal(createJobOptions.getMatchingMode()));
+    }
+
+    /**
+     * Converts {@link CreateJobWithClassificationPolicyOptions} to {@link RouterJobInternal}.
+     * @param createJobWithClassificationPolicyOptions Container with options to create {@link RouterJobInternal}
+     * @return RouterJob
+     */
+    public static RouterJobInternal convertCreateJobWithClassificationPolicyOptionsToRouterJob(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        Map<String, LabelValue> labelValueMap = createJobWithClassificationPolicyOptions.getLabels();
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
+        Map<String, LabelValue> tagValueMap = createJobWithClassificationPolicyOptions.getLabels();
+        Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
+        List<RouterWorkerSelector> workerSelectors = createJobWithClassificationPolicyOptions.getRequestedWorkerSelectors();
+        List<RouterWorkerSelectorInternal> workerSelectorsInternal = workerSelectors != null ? workerSelectors.stream()
+            .map(ws -> convertWorkerSelectorToInternal(ws))
+            .collect(Collectors.toList()) : null;
+        List<RouterJobNote> jobNotes = createJobWithClassificationPolicyOptions.getNotes();
+        Map<String, String> notes = jobNotes != null ? jobNotes.stream()
+            .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;
+
+        return new RouterJobInternal()
+            .setChannelId(createJobWithClassificationPolicyOptions.getChannelId())
+            .setChannelReference(createJobWithClassificationPolicyOptions.getChannelReference())
+            .setQueueId(createJobWithClassificationPolicyOptions.getQueueId())
+            .setLabels(labels)
+            .setNotes(notes)
+            .setPriority(createJobWithClassificationPolicyOptions.getPriority())
+            .setClassificationPolicyId(createJobWithClassificationPolicyOptions.getClassificationPolicyId())
+            .setDispositionCode(createJobWithClassificationPolicyOptions.getDispositionCode())
+            .setRequestedWorkerSelectors(workerSelectorsInternal)
+            .setTags(tags)
+            .setMatchingMode(convertMatchingModeToInternal(createJobWithClassificationPolicyOptions.getMatchingMode()));
     }
 
     /**
@@ -97,7 +130,7 @@ public class JobAdapter {
             .collect(Collectors.toList()) : new ArrayList<>();
         List<RouterJobNote> jobNotes = updateJobOptions.getNotes();
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
-            .collect(Collectors.toMap(note -> note.getTime().toString(), note -> note.getMessage())) : new HashMap<>();
+            .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : new HashMap<>();
 
         return new RouterJobInternal()
             .setChannelId(updateJobOptions.getChannelId())
@@ -145,19 +178,15 @@ public class JobAdapter {
     }
 
     public static RouterJobMatchingMode convertMatchingModeToPublic(JobMatchingModeInternal internal) {
-        RouterJobMatchingMode matchingMode = new RouterJobMatchingMode()
-            .setModeType(RouterJobMatchModeType.fromString(internal != null
-                ? internal.getModeType().toString() : JobMatchModeTypeInternal.QUEUE_AND_MATCH_MODE.toString()));
-        if (internal == null || internal.getModeType() == JobMatchModeTypeInternal.QUEUE_AND_MATCH_MODE) {
-            matchingMode.setQueueAndMatchMode(new QueueAndMatchMode());
-        } else if (internal.getModeType() == JobMatchModeTypeInternal.SUSPEND_MODE) {
-            matchingMode.setSuspendMode(new SuspendMode());
-        } else if (internal.getModeType() == JobMatchModeTypeInternal.SCHEDULE_AND_SUSPEND_MODE) {
-            matchingMode.setScheduleAndSuspendMode(new ScheduleAndSuspendMode()
-                .setScheduleAt(internal.getScheduleAndSuspendMode().getScheduleAt()));
+        if (internal != null) {
+            if (internal.getModeType() == JobMatchModeTypeInternal.SUSPEND_MODE) {
+                return new RouterJobMatchingMode(new SuspendMode());
+            } else if (internal.getModeType() == JobMatchModeTypeInternal.SCHEDULE_AND_SUSPEND_MODE) {
+                return new RouterJobMatchingMode(new ScheduleAndSuspendMode(internal.getScheduleAndSuspendMode().getScheduleAt()));
+            }
         }
 
-        return matchingMode;
+        return new RouterJobMatchingMode(new QueueAndMatchMode());
     }
 
     public static JobMatchingModeInternal convertMatchingModeToInternal(RouterJobMatchingMode matchingMode) {

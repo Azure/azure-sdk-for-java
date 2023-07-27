@@ -10,11 +10,16 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.L3IsolationDomainsClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainInner;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomain;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomains;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 
 public final class L3IsolationDomainsImpl implements L3IsolationDomains {
     private static final ClientLogger LOGGER = new ClientLogger(L3IsolationDomainsImpl.class);
@@ -84,43 +89,69 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
         return Utils.mapPage(inner, inner1 -> new L3IsolationDomainImpl(inner1, this.manager()));
     }
 
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
-        this.serviceClient().updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body);
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        this.serviceClient().updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context);
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
-        this.serviceClient().updateOptionBAdministrativeState(resourceGroupName, l3IsolationDomainName, body);
+    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, l3IsolationDomainName);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        this.serviceClient().updateOptionBAdministrativeState(resourceGroupName, l3IsolationDomainName, body, context);
+    public ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, l3IsolationDomainName, context);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void clearArpTable(String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        this.serviceClient().clearArpTable(resourceGroupName, l3IsolationDomainName, body);
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String l3IsolationDomainName) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, l3IsolationDomainName);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void clearArpTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        this.serviceClient().clearArpTable(resourceGroupName, l3IsolationDomainName, body, context);
-    }
-
-    public void clearNeighborTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        this.serviceClient().clearNeighborTable(resourceGroupName, l3IsolationDomainName, body);
-    }
-
-    public void clearNeighborTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        this.serviceClient().clearNeighborTable(resourceGroupName, l3IsolationDomainName, body, context);
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, l3IsolationDomainName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public L3IsolationDomain getById(String id) {

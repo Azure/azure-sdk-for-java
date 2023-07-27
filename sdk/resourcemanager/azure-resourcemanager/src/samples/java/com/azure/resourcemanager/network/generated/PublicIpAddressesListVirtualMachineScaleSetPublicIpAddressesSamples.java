@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PublicIpAddresses ListVirtualMachineScaleSetPublicIpAddresses. */
 public final class PublicIpAddressesListVirtualMachineScaleSetPublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VmssPublicIpListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VmssPublicIpListAll.json
      */
     /**
      * Sample code: ListVMSSPublicIP.

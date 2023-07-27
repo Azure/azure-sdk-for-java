@@ -121,11 +121,13 @@ public interface VolumeQuotaRule {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The VolumeQuotaRule definition stages. */
     interface DefinitionStages {
         /** The first stage of the VolumeQuotaRule definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the VolumeQuotaRule definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -144,6 +146,7 @@ public interface VolumeQuotaRule {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the VolumeQuotaRule definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -158,6 +161,7 @@ public interface VolumeQuotaRule {
             WithCreate withExistingVolume(
                 String resourceGroupName, String accountName, String poolName, String volumeName);
         }
+
         /**
          * The stage of the VolumeQuotaRule definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -182,6 +186,7 @@ public interface VolumeQuotaRule {
              */
             VolumeQuotaRule create(Context context);
         }
+
         /** The stage of the VolumeQuotaRule definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -192,6 +197,7 @@ public interface VolumeQuotaRule {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the VolumeQuotaRule definition allowing to specify quotaSizeInKiBs. */
         interface WithQuotaSizeInKiBs {
             /**
@@ -202,6 +208,7 @@ public interface VolumeQuotaRule {
              */
             WithCreate withQuotaSizeInKiBs(Long quotaSizeInKiBs);
         }
+
         /** The stage of the VolumeQuotaRule definition allowing to specify quotaType. */
         interface WithQuotaType {
             /**
@@ -215,6 +222,7 @@ public interface VolumeQuotaRule {
              */
             WithCreate withQuotaType(Type quotaType);
         }
+
         /** The stage of the VolumeQuotaRule definition allowing to specify quotaTarget. */
         interface WithQuotaTarget {
             /**
@@ -230,6 +238,7 @@ public interface VolumeQuotaRule {
             WithCreate withQuotaTarget(String quotaTarget);
         }
     }
+
     /**
      * Begins update for the VolumeQuotaRule resource.
      *
@@ -254,6 +263,7 @@ public interface VolumeQuotaRule {
          */
         VolumeQuotaRule apply(Context context);
     }
+
     /** The VolumeQuotaRule update stages. */
     interface UpdateStages {
         /** The stage of the VolumeQuotaRule update allowing to specify tags. */
@@ -266,6 +276,7 @@ public interface VolumeQuotaRule {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the VolumeQuotaRule update allowing to specify quotaSizeInKiBs. */
         interface WithQuotaSizeInKiBs {
             /**
@@ -277,6 +288,7 @@ public interface VolumeQuotaRule {
             Update withQuotaSizeInKiBs(Long quotaSizeInKiBs);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

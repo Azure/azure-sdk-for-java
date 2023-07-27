@@ -26,11 +26,23 @@ public class QuantumClientTestBase extends TestProxyTestBase {
 
         QuantumClientBuilder builder = new QuantumClientBuilder();
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
+            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+            customSanitizers.add(new TestProxySanitizer("$..containerUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..inputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..outputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(customSanitizers);
+        }
+
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (interceptorManager.isPlaybackMode()) {
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.httpClient(httpClient)

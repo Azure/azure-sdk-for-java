@@ -13,43 +13,42 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticSanInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticSanInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"dhugjzzdatqxhocd\",\"eablg\",\"huticndvkao\",\"wyiftyhxhur\"],\"provisioningState\":\"Pending\",\"baseSizeTiB\":2402259301927489199,\"extendedCapacitySizeTiB\":5881942076944182815,\"totalVolumeSizeGiB\":921409398987301775,\"volumeGroupCount\":6179231024758193483,\"totalIops\":4659788042682990061,\"totalMBps\":8901004615962760230,\"totalSizeTiB\":8355721007467412768},\"location\":\"xklrypl\",\"tags\":{\"nddhsgcbacph\":\"basyy\",\"nqgoulzndli\":\"jkot\"},\"id\":\"wyqkgfgibm\",\"name\":\"dgak\",\"type\":\"qsrxybzqqed\"}")
+                    "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"wbxgjvt\",\"vpys\",\"zdn\",\"uj\"],\"provisioningState\":\"Deleting\",\"baseSizeTiB\":6415098811593450314,\"extendedCapacitySizeTiB\":4001606914042880577,\"totalVolumeSizeGiB\":364540657930641108,\"volumeGroupCount\":7961685994099072162,\"totalIops\":2510679492644856616,\"totalMBps\":41329089410242621,\"totalSizeTiB\":4520848990140400139,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"zxufiz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fihrfi\",\"actionsRequired\":\"vzwdzuhtymwis\"},\"groupIds\":[\"thwxmnteiwaopvkm\",\"jcmmxdcufufsrp\",\"mzidnsezcxtb\"]},\"id\":\"gfycc\",\"name\":\"newmdwzjeiachbo\",\"type\":\"sflnrosfqp\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{\"id\":\"zvypyqrimzinp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"dkirsoodqxhcr\",\"actionsRequired\":\"ohjtckw\"},\"groupIds\":[\"oifiyipjxsqwpgr\",\"bznorcjxvsnby\",\"qabnmoc\",\"cyshurzafbljjgp\"]},\"id\":\"oq\",\"name\":\"jmkljavbqidtqajz\",\"type\":\"ulpkudjkrl\"}]},\"location\":\"bzhfepgzgqexz\",\"tags\":{\"glu\":\"xscpaierhhbc\"},\"id\":\"majtjaod\",\"name\":\"obnbdxkqpxokaj\",\"type\":\"onpimexgstxg\"}")
                 .toObject(ElasticSanInner.class);
-        Assertions.assertEquals("xklrypl", model.location());
-        Assertions.assertEquals("basyy", model.tags().get("nddhsgcbacph"));
+        Assertions.assertEquals("bzhfepgzgqexz", model.location());
+        Assertions.assertEquals("xscpaierhhbc", model.tags().get("glu"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("dhugjzzdatqxhocd", model.availabilityZones().get(0));
-        Assertions.assertEquals(2402259301927489199L, model.baseSizeTiB());
-        Assertions.assertEquals(5881942076944182815L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("wbxgjvt", model.availabilityZones().get(0));
+        Assertions.assertEquals(6415098811593450314L, model.baseSizeTiB());
+        Assertions.assertEquals(4001606914042880577L, model.extendedCapacitySizeTiB());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticSanInner model =
             new ElasticSanInner()
-                .withLocation("xklrypl")
-                .withTags(mapOf("nddhsgcbacph", "basyy", "nqgoulzndli", "jkot"))
+                .withLocation("bzhfepgzgqexz")
+                .withTags(mapOf("glu", "xscpaierhhbc"))
                 .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withAvailabilityZones(Arrays.asList("dhugjzzdatqxhocd", "eablg", "huticndvkao", "wyiftyhxhur"))
-                .withBaseSizeTiB(2402259301927489199L)
-                .withExtendedCapacitySizeTiB(5881942076944182815L);
+                .withAvailabilityZones(Arrays.asList("wbxgjvt", "vpys", "zdn", "uj"))
+                .withBaseSizeTiB(6415098811593450314L)
+                .withExtendedCapacitySizeTiB(4001606914042880577L);
         model = BinaryData.fromObject(model).toObject(ElasticSanInner.class);
-        Assertions.assertEquals("xklrypl", model.location());
-        Assertions.assertEquals("basyy", model.tags().get("nddhsgcbacph"));
+        Assertions.assertEquals("bzhfepgzgqexz", model.location());
+        Assertions.assertEquals("xscpaierhhbc", model.tags().get("glu"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("dhugjzzdatqxhocd", model.availabilityZones().get(0));
-        Assertions.assertEquals(2402259301927489199L, model.baseSizeTiB());
-        Assertions.assertEquals(5881942076944182815L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("wbxgjvt", model.availabilityZones().get(0));
+        Assertions.assertEquals(6415098811593450314L, model.baseSizeTiB());
+        Assertions.assertEquals(4001606914042880577L, model.extendedCapacitySizeTiB());
     }
 
     @SuppressWarnings("unchecked")

@@ -11,59 +11,58 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VersionsCapabilityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VersionsCapability model =
             BinaryData
                 .fromString(
-                    "{\"available\":[{\"friendlyName\":\"ntorzihleosjswsr\",\"displayName\":\"lyzrpzbchckqqzqi\",\"isDefault\":false,\"componentVersions\":{\"yatrwy\":\"uiizynke\",\"ibzyhwitsmyp\":\"q\",\"biknsorgjhxbld\":\"ynpcdpumnzgmwznm\",\"dmtnc\":\"lwwrl\"}},{\"friendlyName\":\"kotl\",\"displayName\":\"d\",\"isDefault\":false,\"componentVersions\":{\"tdtbnnhadooc\":\"ocogj\"}},{\"friendlyName\":\"vcikhnvpamqgx\",\"displayName\":\"u\",\"isDefault\":false,\"componentVersions\":{\"elwuipi\":\"wggxkallat\",\"rhyrnxxmueed\":\"cjzkzivgvvcna\"}}]}")
+                    "{\"available\":[{\"friendlyName\":\"oruzfgsquyfxrxx\",\"displayName\":\"ptramxj\",\"isDefault\":true,\"componentVersions\":{\"tdooaoj\":\"nwxuqlcvydyp\",\"nuj\":\"niodkooeb\",\"odtji\":\"emmsbvdkc\"}},{\"friendlyName\":\"wj\",\"displayName\":\"lt\",\"isDefault\":true,\"componentVersions\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"}},{\"friendlyName\":\"kzclewyh\",\"displayName\":\"wp\",\"isDefault\":true,\"componentVersions\":{\"yq\":\"ofncckwyfzqwhxxb\",\"ztppriolxorjalto\":\"xzfe\"}}]}")
                 .toObject(VersionsCapability.class);
-        Assertions.assertEquals("ntorzihleosjswsr", model.available().get(0).friendlyName());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.available().get(0).displayName());
-        Assertions.assertEquals(false, model.available().get(0).isDefault());
-        Assertions.assertEquals("uiizynke", model.available().get(0).componentVersions().get("yatrwy"));
+        Assertions.assertEquals("oruzfgsquyfxrxx", model.available().get(0).friendlyName());
+        Assertions.assertEquals("ptramxj", model.available().get(0).displayName());
+        Assertions.assertEquals(true, model.available().get(0).isDefault());
+        Assertions.assertEquals("nwxuqlcvydyp", model.available().get(0).componentVersions().get("tdooaoj"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VersionsCapability model =
             new VersionsCapability()
                 .withAvailable(
                     Arrays
                         .asList(
                             new VersionSpec()
-                                .withFriendlyName("ntorzihleosjswsr")
-                                .withDisplayName("lyzrpzbchckqqzqi")
-                                .withIsDefault(false)
+                                .withFriendlyName("oruzfgsquyfxrxx")
+                                .withDisplayName("ptramxj")
+                                .withIsDefault(true)
+                                .withComponentVersions(
+                                    mapOf("tdooaoj", "nwxuqlcvydyp", "nuj", "niodkooeb", "odtji", "emmsbvdkc")),
+                            new VersionSpec()
+                                .withFriendlyName("wj")
+                                .withDisplayName("lt")
+                                .withIsDefault(true)
                                 .withComponentVersions(
                                     mapOf(
-                                        "yatrwy",
-                                        "uiizynke",
-                                        "ibzyhwitsmyp",
-                                        "q",
-                                        "biknsorgjhxbld",
-                                        "ynpcdpumnzgmwznm",
-                                        "dmtnc",
-                                        "lwwrl")),
+                                        "akggkfpag",
+                                        "efkdlf",
+                                        "lyls",
+                                        "owpulpq",
+                                        "agxsdszuemps",
+                                        "xkqjnsjervt",
+                                        "nqicvinvkjjxdxrb",
+                                        "zkfzbeyv")),
                             new VersionSpec()
-                                .withFriendlyName("kotl")
-                                .withDisplayName("d")
-                                .withIsDefault(false)
-                                .withComponentVersions(mapOf("tdtbnnhadooc", "ocogj")),
-                            new VersionSpec()
-                                .withFriendlyName("vcikhnvpamqgx")
-                                .withDisplayName("u")
-                                .withIsDefault(false)
-                                .withComponentVersions(
-                                    mapOf("elwuipi", "wggxkallat", "rhyrnxxmueed", "cjzkzivgvvcna"))));
+                                .withFriendlyName("kzclewyh")
+                                .withDisplayName("wp")
+                                .withIsDefault(true)
+                                .withComponentVersions(mapOf("yq", "ofncckwyfzqwhxxb", "ztppriolxorjalto", "xzfe"))));
         model = BinaryData.fromObject(model).toObject(VersionsCapability.class);
-        Assertions.assertEquals("ntorzihleosjswsr", model.available().get(0).friendlyName());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.available().get(0).displayName());
-        Assertions.assertEquals(false, model.available().get(0).isDefault());
-        Assertions.assertEquals("uiizynke", model.available().get(0).componentVersions().get("yatrwy"));
+        Assertions.assertEquals("oruzfgsquyfxrxx", model.available().get(0).friendlyName());
+        Assertions.assertEquals("ptramxj", model.available().get(0).displayName());
+        Assertions.assertEquals(true, model.available().get(0).isDefault());
+        Assertions.assertEquals("nwxuqlcvydyp", model.available().get(0).componentVersions().get("tdooaoj"));
     }
 
     @SuppressWarnings("unchecked")

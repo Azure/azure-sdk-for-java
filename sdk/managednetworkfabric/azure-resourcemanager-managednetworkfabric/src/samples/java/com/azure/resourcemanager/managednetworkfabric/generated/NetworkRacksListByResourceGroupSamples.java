@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkRacks ListByResourceGroup. */
 public final class NetworkRacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkRacks_ListByResourceGroup_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class NetworkRacksListByResourceGroupSamples {
      */
     public static void networkRacksListByResourceGroupMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkRacks().listByResourceGroup("resourceGroupName", com.azure.core.util.Context.NONE);
+        manager.networkRacks().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
     }
 }

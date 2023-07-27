@@ -6,6 +6,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackInner;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRacksListResult;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,14 +19,14 @@ public final class NetworkRacksListResultTests {
         NetworkRacksListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"networkRackSku\":\"rkywuhpsvfuu\",\"networkFabricId\":\"utlwexxwla\",\"networkDevices\":[],\"provisioningState\":\"Deleting\",\"annotation\":\"zsrzpgepq\"},\"location\":\"bb\",\"tags\":{\"vl\":\"gdakchz\",\"ibn\":\"xqnrkcxk\",\"swqrntvlwijp\":\"mysu\"},\"id\":\"ttexoqqpwcyyufmh\",\"name\":\"uncuw\",\"type\":\"qspkcdqzhlctd\"},{\"properties\":{\"networkRackSku\":\"unqndyfpchrqb\",\"networkFabricId\":\"jjrcgegydc\",\"networkDevices\":[],\"provisioningState\":\"Failed\",\"annotation\":\"umvq\"},\"location\":\"lihrraiouaubr\",\"tags\":{\"fuojrngif\":\"oq\",\"dfqwmkyoq\":\"rzpasccbiuimzdly\",\"lzo\":\"fdvruz\",\"fnmdxotn\":\"hpc\"},\"id\":\"fdgugeyzi\",\"name\":\"grkyuizabsnmfpph\",\"type\":\"jee\"},{\"properties\":{\"networkRackSku\":\"yhyhsgzfczb\",\"networkFabricId\":\"omfgbeglqgleohib\",\"networkDevices\":[],\"provisioningState\":\"Deleting\",\"annotation\":\"ankrrfxee\"},\"location\":\"tijv\",\"tags\":{\"cevehjkuyxoafg\":\"bmqzbqqxlajrnwx\",\"linmfgv\":\"oqltfae\"},\"id\":\"irpghriypoqeyh\",\"name\":\"qhykprlpyzn\",\"type\":\"ciqdsme\"}],\"nextLink\":\"itdfuxtyasiib\"}")
+                    "{\"value\":[{\"properties\":{\"networkRackType\":\"Combined\",\"networkFabricId\":\"gapvdgtfpeerscdx\",\"networkDevices\":[\"njrcuf\"],\"provisioningState\":\"Canceled\",\"annotation\":\"cnrgfdtnc\"},\"location\":\"psa\",\"tags\":{\"qiqmlfvhlq\":\"meub\"},\"id\":\"skkqjmxptuei\",\"name\":\"uugkw\",\"type\":\"rq\"}],\"nextLink\":\"pahu\"}")
                 .toObject(NetworkRacksListResult.class);
-        Assertions.assertEquals("bb", model.value().get(0).location());
-        Assertions.assertEquals("gdakchz", model.value().get(0).tags().get("vl"));
-        Assertions.assertEquals("rkywuhpsvfuu", model.value().get(0).networkRackSku());
-        Assertions.assertEquals("utlwexxwla", model.value().get(0).networkFabricId());
-        Assertions.assertEquals("zsrzpgepq", model.value().get(0).annotation());
-        Assertions.assertEquals("itdfuxtyasiib", model.nextLink());
+        Assertions.assertEquals("psa", model.value().get(0).location());
+        Assertions.assertEquals("meub", model.value().get(0).tags().get("qiqmlfvhlq"));
+        Assertions.assertEquals(NetworkRackType.COMBINED, model.value().get(0).networkRackType());
+        Assertions.assertEquals("gapvdgtfpeerscdx", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("cnrgfdtnc", model.value().get(0).annotation());
+        Assertions.assertEquals("pahu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,40 +37,19 @@ public final class NetworkRacksListResultTests {
                     Arrays
                         .asList(
                             new NetworkRackInner()
-                                .withLocation("bb")
-                                .withTags(mapOf("vl", "gdakchz", "ibn", "xqnrkcxk", "swqrntvlwijp", "mysu"))
-                                .withNetworkRackSku("rkywuhpsvfuu")
-                                .withNetworkFabricId("utlwexxwla")
-                                .withAnnotation("zsrzpgepq"),
-                            new NetworkRackInner()
-                                .withLocation("lihrraiouaubr")
-                                .withTags(
-                                    mapOf(
-                                        "fuojrngif",
-                                        "oq",
-                                        "dfqwmkyoq",
-                                        "rzpasccbiuimzdly",
-                                        "lzo",
-                                        "fdvruz",
-                                        "fnmdxotn",
-                                        "hpc"))
-                                .withNetworkRackSku("unqndyfpchrqb")
-                                .withNetworkFabricId("jjrcgegydc")
-                                .withAnnotation("umvq"),
-                            new NetworkRackInner()
-                                .withLocation("tijv")
-                                .withTags(mapOf("cevehjkuyxoafg", "bmqzbqqxlajrnwx", "linmfgv", "oqltfae"))
-                                .withNetworkRackSku("yhyhsgzfczb")
-                                .withNetworkFabricId("omfgbeglqgleohib")
-                                .withAnnotation("ankrrfxee")))
-                .withNextLink("itdfuxtyasiib");
+                                .withLocation("psa")
+                                .withTags(mapOf("qiqmlfvhlq", "meub"))
+                                .withNetworkRackType(NetworkRackType.COMBINED)
+                                .withNetworkFabricId("gapvdgtfpeerscdx")
+                                .withAnnotation("cnrgfdtnc")))
+                .withNextLink("pahu");
         model = BinaryData.fromObject(model).toObject(NetworkRacksListResult.class);
-        Assertions.assertEquals("bb", model.value().get(0).location());
-        Assertions.assertEquals("gdakchz", model.value().get(0).tags().get("vl"));
-        Assertions.assertEquals("rkywuhpsvfuu", model.value().get(0).networkRackSku());
-        Assertions.assertEquals("utlwexxwla", model.value().get(0).networkFabricId());
-        Assertions.assertEquals("zsrzpgepq", model.value().get(0).annotation());
-        Assertions.assertEquals("itdfuxtyasiib", model.nextLink());
+        Assertions.assertEquals("psa", model.value().get(0).location());
+        Assertions.assertEquals("meub", model.value().get(0).tags().get("qiqmlfvhlq"));
+        Assertions.assertEquals(NetworkRackType.COMBINED, model.value().get(0).networkRackType());
+        Assertions.assertEquals("gapvdgtfpeerscdx", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("cnrgfdtnc", model.value().get(0).annotation());
+        Assertions.assertEquals("pahu", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

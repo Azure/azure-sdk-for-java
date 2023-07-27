@@ -16,24 +16,33 @@ public final class DppBaseTrackedResourceTests {
         DppBaseTrackedResource model =
             BinaryData
                 .fromString(
-                    "{\"eTag\":\"ndv\",\"location\":\"ozwyiftyhxhuro\",\"tags\":{\"cukjf\":\"yxolniwp\",\"lryplwckbasyy\":\"giawx\",\"jkot\":\"nddhsgcbacph\"},\"id\":\"nqgoulzndli\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"}")
+                    "{\"eTag\":\"dkirsoodqxhcr\",\"location\":\"ohjtckw\",\"tags\":{\"bznorcjxvsnby\":\"oifiyipjxsqwpgr\",\"cyshurzafbljjgp\":\"qabnmoc\",\"bqidtqaj\":\"toqcjmklja\",\"khbzhfepgzg\":\"yulpkudjkr\"},\"id\":\"e\",\"name\":\"zloc\",\"type\":\"scpai\"}")
                 .toObject(DppBaseTrackedResource.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.location());
-        Assertions.assertEquals("yxolniwp", model.tags().get("cukjf"));
-        Assertions.assertEquals("ndv", model.etag());
+        Assertions.assertEquals("ohjtckw", model.location());
+        Assertions.assertEquals("oifiyipjxsqwpgr", model.tags().get("bznorcjxvsnby"));
+        Assertions.assertEquals("dkirsoodqxhcr", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DppBaseTrackedResource model =
             new DppBaseTrackedResource()
-                .withLocation("ozwyiftyhxhuro")
-                .withTags(mapOf("cukjf", "yxolniwp", "lryplwckbasyy", "giawx", "jkot", "nddhsgcbacph"))
-                .withEtag("ndv");
+                .withLocation("ohjtckw")
+                .withTags(
+                    mapOf(
+                        "bznorcjxvsnby",
+                        "oifiyipjxsqwpgr",
+                        "cyshurzafbljjgp",
+                        "qabnmoc",
+                        "bqidtqaj",
+                        "toqcjmklja",
+                        "khbzhfepgzg",
+                        "yulpkudjkr"))
+                .withEtag("dkirsoodqxhcr");
         model = BinaryData.fromObject(model).toObject(DppBaseTrackedResource.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.location());
-        Assertions.assertEquals("yxolniwp", model.tags().get("cukjf"));
-        Assertions.assertEquals("ndv", model.etag());
+        Assertions.assertEquals("ohjtckw", model.location());
+        Assertions.assertEquals("oifiyipjxsqwpgr", model.tags().get("bznorcjxvsnby"));
+        Assertions.assertEquals("dkirsoodqxhcr", model.etag());
     }
 
     @SuppressWarnings("unchecked")

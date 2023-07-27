@@ -18,7 +18,7 @@ import java.util.Map;
 /** Samples for P2SVpnGateways CreateOrUpdate. */
 public final class P2SVpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/P2SVpnGatewayPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/P2SVpnGatewayPut.json
      */
     /**
      * Sample code: P2SVpnGatewayPut.
@@ -36,7 +36,7 @@ public final class P2SVpnGatewaysCreateOrUpdateSamples {
                 "p2sVpnGateway1",
                 new P2SVpnGatewayInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withVirtualHub(
                         new SubResource()
                             .withId(

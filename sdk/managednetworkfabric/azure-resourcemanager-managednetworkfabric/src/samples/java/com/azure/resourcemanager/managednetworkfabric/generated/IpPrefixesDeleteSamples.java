@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for IpPrefixes Delete. */
 public final class IpPrefixesDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpPrefixes_Delete_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class IpPrefixesDeleteSamples {
      */
     public static void ipPrefixesDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.ipPrefixes().delete("rgIpPrefixLists", "example-ipPrefix", com.azure.core.util.Context.NONE);
+        manager.ipPrefixes().delete("example-rg", "example-ipPrefix", com.azure.core.util.Context.NONE);
     }
 }

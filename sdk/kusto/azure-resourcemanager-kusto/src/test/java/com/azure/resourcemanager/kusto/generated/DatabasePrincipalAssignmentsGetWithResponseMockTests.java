@@ -33,7 +33,7 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalId\":\"bb\",\"role\":\"Monitor\",\"tenantId\":\"gdakchz\",\"principalType\":\"Group\",\"tenantName\":\"ixqnrkcxkjibnxm\",\"principalName\":\"uxswqrntvl\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"sttex\"},\"id\":\"qqpwcyyuf\",\"name\":\"hruncuwmq\",\"type\":\"pkcdqzhlct\"}";
+            "{\"properties\":{\"principalId\":\"aqdtvqecrqctmxxd\",\"role\":\"Ingestor\",\"tenantId\":\"mflhuytxzvtznapx\",\"principalType\":\"App\",\"tenantName\":\"novv\",\"principalName\":\"czytprwn\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"ev\"},\"id\":\"tlyo\",\"name\":\"rrrouuxvnsa\",\"type\":\"bcrymodizrx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
         DatabasePrincipalAssignment response =
             manager
                 .databasePrincipalAssignments()
-                .getWithResponse("omd", "kywuhpsvfuu", "utlwexxwla", "niexzsrzpgepq", com.azure.core.util.Context.NONE)
+                .getWithResponse("p", "kkhminqcymczngn", "dxxewuninv", "db", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bb", response.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, response.role());
-        Assertions.assertEquals("gdakchz", response.tenantId());
-        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
+        Assertions.assertEquals("aqdtvqecrqctmxxd", response.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.role());
+        Assertions.assertEquals("mflhuytxzvtznapx", response.tenantId());
+        Assertions.assertEquals(PrincipalType.APP, response.principalType());
     }
 }

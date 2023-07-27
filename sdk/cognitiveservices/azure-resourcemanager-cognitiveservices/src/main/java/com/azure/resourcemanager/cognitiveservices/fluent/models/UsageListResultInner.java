@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,13 +12,39 @@ import java.util.List;
 @Fluent
 public final class UsageListResultInner {
     /*
+     * The link used to get the next page of Usages.
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
+    /*
      * The list of usages for Cognitive Service account.
      */
     @JsonProperty(value = "value")
-    private List<Usage> value;
+    private List<UsageInner> value;
 
     /** Creates an instance of UsageListResultInner class. */
     public UsageListResultInner() {
+    }
+
+    /**
+     * Get the nextLink property: The link used to get the next page of Usages.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link used to get the next page of Usages.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the UsageListResultInner object itself.
+     */
+    public UsageListResultInner withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**
@@ -27,7 +52,7 @@ public final class UsageListResultInner {
      *
      * @return the value value.
      */
-    public List<Usage> value() {
+    public List<UsageInner> value() {
         return this.value;
     }
 
@@ -37,7 +62,7 @@ public final class UsageListResultInner {
      * @param value the value value to set.
      * @return the UsageListResultInner object itself.
      */
-    public UsageListResultInner withValue(List<Usage> value) {
+    public UsageListResultInner withValue(List<UsageInner> value) {
         this.value = value;
         return this;
     }

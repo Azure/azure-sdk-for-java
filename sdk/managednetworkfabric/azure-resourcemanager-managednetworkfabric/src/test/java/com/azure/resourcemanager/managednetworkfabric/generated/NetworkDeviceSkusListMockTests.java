@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleName;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceSku;
 import java.nio.ByteBuffer;
@@ -33,7 +34,7 @@ public final class NetworkDeviceSkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"model\":\"wrso\",\"manufacturer\":\"ltdb\",\"supportedVersions\":[],\"limits\":{\"physicalInterfaceCount\":230207599,\"maxSubInterfaces\":1425884711,\"maxTunnelInterfaces\":1212551870,\"maxVirtualRouterFunctions\":956599834,\"maxBorderGatewayProtocolPeers\":1669403612,\"maxBidirectionalForwardingDetectionPeers\":1226325830},\"supportedRoleTypes\":[\"NPB\",\"TS\"],\"interfaces\":[],\"provisioningState\":\"Updating\"},\"id\":\"uhd\",\"name\":\"wsigrbjbxsj\",\"type\":\"bvitvqkjya\"}]}";
+            "{\"value\":[{\"properties\":{\"model\":\"xb\",\"manufacturer\":\"beyqohvi\",\"supportedVersions\":[{\"version\":\"fkrarer\",\"vendorOsVersion\":\"gbvtpxo\",\"vendorFirmwareVersion\":\"o\",\"isDefault\":\"False\"},{\"version\":\"cjasua\",\"vendorOsVersion\":\"gjkfiszhexumfavw\",\"vendorFirmwareVersion\":\"loblitxrrsjsc\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"ToR\"],\"interfaces\":[{\"identifier\":\"rztog\",\"interfaceType\":\"gbncl\",\"supportedConnectorTypes\":[{},{},{}]},{\"identifier\":\"zfggsuzkvdantpz\",\"interfaceType\":\"wazoabthutctc\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"abzfihsz\",\"name\":\"kpoidfzwegvu\",\"type\":\"juwgw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +64,15 @@ public final class NetworkDeviceSkusListMockTests {
 
         PagedIterable<NetworkDeviceSku> response = manager.networkDeviceSkus().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wrso", response.iterator().next().model());
-        Assertions.assertEquals("ltdb", response.iterator().next().manufacturer());
-        Assertions.assertEquals(230207599, response.iterator().next().limits().physicalInterfaceCount());
-        Assertions.assertEquals(1425884711, response.iterator().next().limits().maxSubInterfaces());
-        Assertions.assertEquals(1212551870, response.iterator().next().limits().maxTunnelInterfaces());
-        Assertions.assertEquals(956599834, response.iterator().next().limits().maxVirtualRouterFunctions());
-        Assertions.assertEquals(1669403612, response.iterator().next().limits().maxBorderGatewayProtocolPeers());
+        Assertions.assertEquals("xb", response.iterator().next().model());
+        Assertions.assertEquals("beyqohvi", response.iterator().next().manufacturer());
+        Assertions.assertEquals("fkrarer", response.iterator().next().supportedVersions().get(0).version());
+        Assertions.assertEquals("gbvtpxo", response.iterator().next().supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("o", response.iterator().next().supportedVersions().get(0).vendorFirmwareVersion());
         Assertions
-            .assertEquals(1226325830, response.iterator().next().limits().maxBidirectionalForwardingDetectionPeers());
-        Assertions.assertEquals(NetworkDeviceRoleName.NPB, response.iterator().next().supportedRoleTypes().get(0));
+            .assertEquals(BooleanEnumProperty.FALSE, response.iterator().next().supportedVersions().get(0).isDefault());
+        Assertions.assertEquals(NetworkDeviceRoleName.TOR, response.iterator().next().supportedRoleTypes().get(0));
+        Assertions.assertEquals("rztog", response.iterator().next().interfaces().get(0).identifier());
+        Assertions.assertEquals("gbncl", response.iterator().next().interfaces().get(0).interfaceType());
     }
 }

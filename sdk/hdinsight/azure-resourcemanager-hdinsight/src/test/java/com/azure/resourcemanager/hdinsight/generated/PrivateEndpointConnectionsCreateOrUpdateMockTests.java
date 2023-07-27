@@ -33,7 +33,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"gozxw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Removed\",\"description\":\"bydpizqaclnapxb\",\"actionsRequired\":\"gn\"},\"linkIdentifier\":\"j\",\"provisioningState\":\"Succeeded\"},\"id\":\"mfcttux\",\"name\":\"uyilflqoiquvrehm\",\"type\":\"njhvsujztc\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"qtyltcoqcujp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"zakuejk\",\"actionsRequired\":\"bizt\"},\"linkIdentifier\":\"fqcvovj\",\"provisioningState\":\"Succeeded\"},\"id\":\"sj\",\"name\":\"lbemyej\",\"type\":\"riuxegthortuda\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,19 +64,19 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .define("qmp")
-                .withExistingCluster("gqoweyirdhlisn", "wfl")
+                .define("ujcngo")
+                .withExistingCluster("ngpszngafpg", "lkvec")
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
-                        .withDescription("asi")
-                        .withActionsRequired("tmkzjvkviirhgfgr"))
+                        .withStatus(PrivateLinkServiceConnectionStatus.REMOVED)
+                        .withDescription("tp")
+                        .withActionsRequired("ztrgdgxvcoq"))
                 .create();
 
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.REMOVED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bydpizqaclnapxb", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("gn", response.privateLinkServiceConnectionState().actionsRequired());
+                PrivateLinkServiceConnectionStatus.PENDING, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("zakuejk", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("bizt", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

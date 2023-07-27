@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ConnectivityConfigurations Delete. */
 public final class ConnectivityConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerConnectivityConfigurationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerConnectivityConfigurationDelete.json
      */
     /**
      * Sample code: ConnectivityConfigurationsDelete.

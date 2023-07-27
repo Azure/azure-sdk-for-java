@@ -49,12 +49,13 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.66</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.phonenumbers/com.azure.communication.phonenumbers=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -134,7 +135,15 @@
         <configuration>
           <includes>
             <include>com/azure/communication/phonenumbers/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/converters/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/models/*.class</include>
+            <include>com/azure/communication/phonenumbers/models/*.class</include>
             <include>com/azure/communication/phonenumbers/siprouting/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/implementation/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/implementation/converters/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/implementation/models/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/models/*.class</include>
           </includes>
         </configuration>
         <executions>

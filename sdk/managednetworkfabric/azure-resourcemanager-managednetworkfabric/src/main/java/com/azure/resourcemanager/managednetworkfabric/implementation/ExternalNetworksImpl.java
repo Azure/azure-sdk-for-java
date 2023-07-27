@@ -10,8 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.ExternalNetworksClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetworkInner;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetwork;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworks;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -66,118 +67,87 @@ public final class ExternalNetworksImpl implements ExternalNetworks {
         this.serviceClient().delete(resourceGroupName, l3IsolationDomainName, externalNetworkName, context);
     }
 
-    public PagedIterable<ExternalNetwork> list(String resourceGroupName, String l3IsolationDomainName) {
-        PagedIterable<ExternalNetworkInner> inner = this.serviceClient().list(resourceGroupName, l3IsolationDomainName);
+    public PagedIterable<ExternalNetwork> listByL3IsolationDomain(
+        String resourceGroupName, String l3IsolationDomainName) {
+        PagedIterable<ExternalNetworkInner> inner =
+            this.serviceClient().listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName);
         return Utils.mapPage(inner, inner1 -> new ExternalNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ExternalNetwork> list(
+    public PagedIterable<ExternalNetwork> listByL3IsolationDomain(
         String resourceGroupName, String l3IsolationDomainName, Context context) {
         PagedIterable<ExternalNetworkInner> inner =
-            this.serviceClient().list(resourceGroupName, l3IsolationDomainName, context);
+            this.serviceClient().listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName, context);
         return Utils.mapPage(inner, inner1 -> new ExternalNetworkImpl(inner1, this.manager()));
     }
 
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body) {
-        this
-            .serviceClient()
-            .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body,
         Context context) {
-        this
-            .serviceClient()
-            .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateAdministrativeState(
+                    resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateBgpAdministrativeState(
+    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body) {
-        this
-            .serviceClient()
-            .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateStaticRouteBfdAdministrativeState(
+                    resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateBgpAdministrativeState(
+    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body,
         Context context) {
-        this
-            .serviceClient()
-            .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-    }
-
-    public void updateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body) {
-        this
-            .serviceClient()
-            .updateBfdForBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-    }
-
-    public void updateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context) {
-        this
-            .serviceClient()
-            .updateBfdForBgpAdministrativeState(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-    }
-
-    public void clearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body) {
-        this.serviceClient().clearIpv6Neighbors(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-    }
-
-    public void clearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
-        Context context) {
-        this
-            .serviceClient()
-            .clearIpv6Neighbors(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-    }
-
-    public void clearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body) {
-        this.serviceClient().clearArpEntries(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-    }
-
-    public void clearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
-        Context context) {
-        this
-            .serviceClient()
-            .clearArpEntries(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateStaticRouteBfdAdministrativeState(
+                    resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ExternalNetwork getById(String id) {

@@ -1,14 +1,15 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.11 (2023-07-27)
 
 ### Other Changes
+- [Fix RP Attach Type](https://github.com/Azure/azure-sdk-for-java/pull/36121)
+
+## 1.0.0-beta.10 (2023-07-26)
+
+### Other Changes
+- [Update vm prefix](https://github.com/Azure/azure-sdk-for-java/pull/36059)
+- [Better log messages](https://github.com/Azure/azure-sdk-for-java/pull/36064)
 
 ## 1.0.0-beta.9 (2023-07-14)
 

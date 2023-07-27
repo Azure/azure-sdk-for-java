@@ -575,4 +575,10 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="MissingJavadocType" files="com.azure.core.test.http.HttpClientTests"/>
   <suppress checks="JavadocThrowsChecks" files="com.azure.core.test.http.HttpClientTests"/>
 
+  <!-- The build tool plugin checkstyle exceptions -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.sdk.build.tool.*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.sdk.build.tool.*\.java"/>
 </suppressions>

@@ -6,9 +6,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.Architecture;
+import com.azure.resourcemanager.compute.models.CommunityGalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
-import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
@@ -126,21 +126,21 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
     }
 
     /**
-     * Get the identifier property: This is the gallery image definition identifier.
+     * Get the identifier property: This is the community gallery image definition identifier.
      *
      * @return the identifier value.
      */
-    public GalleryImageIdentifier identifier() {
+    public CommunityGalleryImageIdentifier identifier() {
         return this.innerProperties() == null ? null : this.innerProperties().identifier();
     }
 
     /**
-     * Set the identifier property: This is the gallery image definition identifier.
+     * Set the identifier property: This is the community gallery image definition identifier.
      *
      * @param identifier the identifier value to set.
      * @return the CommunityGalleryImageInner object itself.
      */
-    public CommunityGalleryImageInner withIdentifier(GalleryImageIdentifier identifier) {
+    public CommunityGalleryImageInner withIdentifier(CommunityGalleryImageIdentifier identifier) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CommunityGalleryImageProperties();
         }

@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * DppIdentityDetails
@@ -28,10 +30,17 @@ public final class DppIdentityDetails {
     private String tenantId;
 
     /*
-     * The identityType which can be either SystemAssigned or None
+     * The identityType which can be either SystemAssigned, UserAssigned, 'SystemAssigned,UserAssigned' or None
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /*
+     * Gets or sets the user assigned identities.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /** Creates an instance of DppIdentityDetails class. */
     public DppIdentityDetails() {
@@ -58,7 +67,8 @@ public final class DppIdentityDetails {
     }
 
     /**
-     * Get the type property: The identityType which can be either SystemAssigned or None.
+     * Get the type property: The identityType which can be either SystemAssigned, UserAssigned,
+     * 'SystemAssigned,UserAssigned' or None.
      *
      * @return the type value.
      */
@@ -67,7 +77,8 @@ public final class DppIdentityDetails {
     }
 
     /**
-     * Set the type property: The identityType which can be either SystemAssigned or None.
+     * Set the type property: The identityType which can be either SystemAssigned, UserAssigned,
+     * 'SystemAssigned,UserAssigned' or None.
      *
      * @param type the type value to set.
      * @return the DppIdentityDetails object itself.
@@ -78,10 +89,40 @@ public final class DppIdentityDetails {
     }
 
     /**
+     * Get the userAssignedIdentities property: Gets or sets the user assigned identities.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: Gets or sets the user assigned identities.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the DppIdentityDetails object itself.
+     */
+    public DppIdentityDetails withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

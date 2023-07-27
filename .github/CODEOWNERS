@@ -143,7 +143,7 @@
 /sdk/anomalydetector/                                @conhua @mengaims @juaduan @moreOver0
 
 # PRLabel: %Azure.Identity
-/sdk/identity/                                       @g2vinay @schaabs @joshfree @billwert
+/sdk/identity/                                       @g2vinay @billwert @joshfree @Azure/azsdk-identity
 # PRLabel: %azure-spring
 /sdk/identity/azure-identity-extensions/             @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
@@ -156,9 +156,6 @@
 
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
-
-# PRLabel:  %Monitor - Spring native
-/sdk/monitor/azure-monitor-spring-native/            @jeanbisutti @trask @ramthi @heyams
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @jairmyree
@@ -206,6 +203,10 @@
 /sdk/spring/                                         @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                            @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+
+# PRLabel:  %Monitor - Spring native
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
 
 # PRLabel: %DevCenter
 /sdk/devcenter/                                      @sebrenna @mharlan
@@ -732,7 +733,7 @@
 # ServiceLabel: %SecurityInsights %Service Attention
 #/<NotInRepo>/          @amirkeren
 
-# ServiceLabel: %IoT/CLI %Service Attention
+# ServiceLabel: %IoT - CLI %Service Attention
 #/<NotInRepo>/          @Azure/azure-iot-cli-triage
 
 # ServiceLabel: %Communication %Service Attention
