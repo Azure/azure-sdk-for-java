@@ -116,7 +116,7 @@ A few methods to compile or generate a quantum program into QIR:
 
 In this sample, we assume you already have a file with the QIR bitcode and you know the method name that you want to execute (entry point).
 
-We will use the [QIR bitcode sample](./src/samples/java/com/azure/quantum/jobs/BellState.bc), compiled from [Q# code](./src/samples/java/com/azure/quantum/jobs/BellState.qs) targeting the `quantinuum.sim.h1-1e` target, with `AdaptiveExecution` target capability.
+We will use the QIR bitcode sample (`BellState.bc` in the samples folde), compiled a Q# code (`BellState.qs` in the samples folder) targeting the `quantinuum.sim.h1-1e` target, with `AdaptiveExecution` target capability.
 
 ### Upload Input Data
 
