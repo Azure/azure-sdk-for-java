@@ -3,41 +3,38 @@
 
 package com.azure.quantum.jobs;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzureCliCredentialBuilder;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class QuantumClientTestBase extends TestProxyTestBase {
-    private final String endpoint = Configuration.getGlobalConfiguration().get("QUANTUM_ENDPOINT");
+    private final String location = Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_LOCATION");
     private final String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
     private final String resourceGroup = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP);
-    private final String workspaceName = Configuration.getGlobalConfiguration().get("QUANTUM_WORKSPACE");
+    private final String workspaceName = Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_NAME");
 
     QuantumClientBuilder getClientBuilder(HttpClient httpClient) {
 
+        System.out.println(String.format("Subscription id: %s", getSubscriptionId()));
+        System.out.println(String.format("Resource group: %s", getResourceGroup()));
+        System.out.println(String.format("Workspace: %s", getWorkspaceName()));
+        System.out.println(String.format("Location: %s", location));
+        System.out.println(String.format("Endpoint: %s", getEndpoint()));
+        System.out.println(String.format("Test mode: %s", getTestMode()));
+
         QuantumClientBuilder builder = new QuantumClientBuilder();
-
-        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
-            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("$..containerUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-            customSanitizers.add(new TestProxySanitizer("$..inputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-            customSanitizers.add(new TestProxySanitizer("$..outputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-            interceptorManager.addSanitizers(customSanitizers);
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
 
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
@@ -47,10 +44,26 @@ public class QuantumClientTestBase extends TestProxyTestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.httpClient(httpClient)
-                .credential(new AzureCliCredentialBuilder().build());
+                .credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        return builder.subscriptionId(getSubscriptionId())
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
+            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+
+            customSanitizers.add(new TestProxySanitizer("(?:\\?(sv|sig|se|srt|ss|sp)=)(?<secret>.*)", "REDACTED", TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
+            customSanitizers.add(new TestProxySanitizer("$..sasUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..containerUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..inputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..outputDataUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(customSanitizers);
+        }
+
+        return builder
+            .subscriptionId(getSubscriptionId())
             .resourceGroupName(getResourceGroup())
             .workspaceName(getWorkspaceName())
             .host(getEndpoint());
@@ -59,19 +72,25 @@ public class QuantumClientTestBase extends TestProxyTestBase {
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
-            : endpoint;
+            : String.format("https://%s.quantum.azure.com", location);
     }
 
     String getSubscriptionId() {
-        return testResourceNamer.recordValueFromConfig(subscriptionId);
+        return interceptorManager.isPlaybackMode()
+            ? testResourceNamer.recordValueFromConfig(subscriptionId)
+            : subscriptionId;
     }
 
     String getResourceGroup() {
-        return testResourceNamer.recordValueFromConfig(resourceGroup);
+        return interceptorManager.isPlaybackMode()
+            ? testResourceNamer.recordValueFromConfig(resourceGroup)
+            : resourceGroup;
     }
 
     String getWorkspaceName() {
-        return testResourceNamer.recordValueFromConfig(workspaceName);
+        return interceptorManager.isPlaybackMode()
+            ? testResourceNamer.recordValueFromConfig(workspaceName)
+            : workspaceName;
     }
 
 }
