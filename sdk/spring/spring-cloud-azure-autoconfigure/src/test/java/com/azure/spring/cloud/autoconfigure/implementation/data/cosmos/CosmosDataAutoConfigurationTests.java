@@ -10,6 +10,7 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
+import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -120,5 +121,32 @@ class CosmosDataAutoConfigurationTests {
                     assertThat(bean.getResponseDiagnosticsProcessor()).isEqualTo(responseDiagnosticsProcessor);
                 });
         }
+    }
+
+    @Test
+    void testWithEnableAuditing() {
+        try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
+            AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
+            azureCosmosProperties.setEndpoint(ENDPOINT);
+            azureCosmosProperties.setDatabase("test");
+
+            this.contextRunner
+                .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+                .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withUserConfiguration(UserAuditingConfiguration.class)
+                .withPropertyValues(
+                    "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
+                    "spring.cloud.azure.cosmos.database=test"
+                )
+                .run(context -> {
+                    assertThat(context).hasSingleBean(CosmosConfig.class);
+                    assertThat(context).hasSingleBean(CosmosTemplate.class);
+                });
+        }
+    }
+
+    @EnableCosmosAuditing
+    static class UserAuditingConfiguration {
+
     }
 }
