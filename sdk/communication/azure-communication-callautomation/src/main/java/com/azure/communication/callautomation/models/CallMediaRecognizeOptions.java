@@ -30,13 +30,6 @@ public abstract class CallMediaRecognizeOptions {
     private Boolean interruptCallMediaOperation;
 
     /*
-     * If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
-     */
-    @JsonProperty(value = "stopCurrentOperations")
-    private Boolean stopCurrentOperations;
-
-    /*
      * The value to identify context of the operation.
      */
     @JsonProperty(value = "operationContext")
@@ -136,28 +129,6 @@ public abstract class CallMediaRecognizeOptions {
      */
     public CallMediaRecognizeOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
         this.interruptCallMediaOperation = interruptCallMediaOperation;
-        return this;
-    }
-
-    /**
-     * Get the stopCurrentOperations property: If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @return the stopCurrentOperations value.
-     */
-    public Boolean isStopCurrentOperations() {
-        return this.stopCurrentOperations;
-    }
-
-    /**
-     * Set the stopCurrentOperations property: If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @param stopCurrentOperations the stopCurrentOperations value to set.
-     * @return the RecognizeRequest object itself.
-     */
-    public CallMediaRecognizeOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
-        this.stopCurrentOperations = stopCurrentOperations;
         return this;
     }
 

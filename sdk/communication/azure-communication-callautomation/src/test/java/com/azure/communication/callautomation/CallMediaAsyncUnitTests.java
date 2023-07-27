@@ -162,7 +162,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
         recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
@@ -229,7 +228,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setStopTones(stopDtmfTones);
         recognizeOptions.setPlayPrompt(new TextSource().setText("Test dmtf option with text source."));
         recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
@@ -257,7 +255,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
@@ -285,7 +282,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize choice with text source."));
         recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
@@ -305,7 +301,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
         recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize speech or dtmf with text source."));
         recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
@@ -325,7 +320,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH_OR_DTMF);
         recognizeOptions.setPlayPrompt(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
         recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));

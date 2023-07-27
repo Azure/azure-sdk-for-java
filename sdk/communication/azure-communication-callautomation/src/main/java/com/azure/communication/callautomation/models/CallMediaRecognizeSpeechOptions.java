@@ -65,19 +65,6 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     /**
-     * Set the stopCurrentOperations property: If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @param stopCurrentOperations the stopCurrentOperations value to set.
-     * @return the CallMediaRecognizeSpeechOptions object itself.
-     */
-    @Override
-    public CallMediaRecognizeSpeechOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
-        super.setStopCurrentOperations(stopCurrentOperations);
-        return this;
-    }
-
-    /**
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.

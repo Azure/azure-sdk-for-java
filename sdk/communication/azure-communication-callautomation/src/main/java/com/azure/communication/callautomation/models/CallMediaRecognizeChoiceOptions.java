@@ -88,19 +88,6 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Set the stopCurrentOperations property: If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @param stopCurrentOperations the stopCurrentOperations value to set.
-     * @return the CallMediaRecognizeChoiceOptions object itself.
-     */
-    @Override
-    public CallMediaRecognizeChoiceOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
-        super.setStopCurrentOperations(stopCurrentOperations);
-        return this;
-    }
-
-    /**
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
