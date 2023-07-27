@@ -13,14 +13,14 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class SamplesTestBase extends ResourceManagerTestBase {
+public class SamplesTestBase extends ResourceManagerTestProxyTestBase {
     protected AzureResourceManager azureResourceManager;
 
     @Override
