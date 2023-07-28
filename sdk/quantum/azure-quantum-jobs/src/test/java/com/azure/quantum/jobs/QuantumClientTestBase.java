@@ -94,6 +94,6 @@ public class QuantumClientTestBase extends TestProxyTestBase {
     }
 
     String getWorkspaceName() {
-        return Configuration.getGlobalConfiguration().get("QUANTUM_WORKSPACE", WORKSPACE);
+        return Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_NAME", WORKSPACE);
     }
 }
