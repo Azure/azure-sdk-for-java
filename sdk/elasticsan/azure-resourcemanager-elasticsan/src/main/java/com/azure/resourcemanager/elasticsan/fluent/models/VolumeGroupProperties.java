@@ -10,6 +10,7 @@ import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** VolumeGroup response properties. */
 @Fluent
@@ -37,6 +38,12 @@ public final class VolumeGroupProperties {
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
+
+    /*
+     * The list of Private Endpoint Connections.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /** Creates an instance of VolumeGroupProperties class. */
     public VolumeGroupProperties() {
@@ -112,6 +119,15 @@ public final class VolumeGroupProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -119,6 +135,9 @@ public final class VolumeGroupProperties {
     public void validate() {
         if (networkAcls() != null) {
             networkAcls().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

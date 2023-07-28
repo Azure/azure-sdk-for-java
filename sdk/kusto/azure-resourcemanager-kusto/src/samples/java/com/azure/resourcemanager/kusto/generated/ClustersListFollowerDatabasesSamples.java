@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kusto.generated;
 /** Samples for Clusters ListFollowerDatabases. */
 public final class ClustersListFollowerDatabasesSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoClusterListFollowerDatabases.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterListFollowerDatabases.json
      */
     /**
      * Sample code: KustoClusterListFollowerDatabases.

@@ -30,7 +30,7 @@ public final class NetAppResourceQuotaLimitsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"current\":584179057,\"default\":2032190732},\"id\":\"r\",\"name\":\"jlpijnkrx\",\"type\":\"rddh\"}";
+            "{\"properties\":{\"current\":184833184,\"default\":1581877796},\"id\":\"voqyt\",\"name\":\"byowbblgyavutp\",\"type\":\"hjoxo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class NetAppResourceQuotaLimitsGetWithResponseMockTests {
         SubscriptionQuotaItem response =
             manager
                 .netAppResourceQuotaLimits()
-                .getWithResponse("irgne", "ttwqmsni", com.azure.core.util.Context.NONE)
+                .getWithResponse("rrilbywdxsmic", "wrwfscjfnyns", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

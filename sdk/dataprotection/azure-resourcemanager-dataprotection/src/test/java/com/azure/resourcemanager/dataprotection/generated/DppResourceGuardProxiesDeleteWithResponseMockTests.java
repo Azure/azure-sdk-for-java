@@ -58,6 +58,6 @@ public final class DppResourceGuardProxiesDeleteWithResponseMockTests {
 
         manager
             .dppResourceGuardProxies()
-            .deleteWithResponse("enx", "ulkpakd", "ifmjnn", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("bmoichd", "pnfpubntnbat", "viqsowsaaelcattc", com.azure.core.util.Context.NONE);
     }
 }

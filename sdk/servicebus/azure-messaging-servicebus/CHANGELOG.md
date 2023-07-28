@@ -1,5 +1,28 @@
 # Release History
 
+## 7.15.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.15.0-beta.2 (2023-07-18)
+
+### Features Added
+
+- Using ReceiversPumpingScheduler in azure-core-amqp:2.9.0-beta.4 for internal message pumping by the ServiceBusReactorReceiver.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+- Upgraded `azure-core-amqp` from `2.9.0-beta.2` to `2.9.0-beta.4`.
+- Upgraded `azure-identity` from `1.9.1` to `1.9.2`.
+
 ## 7.14.2 (2023-07-17)
 
 ### Bugs Fixed

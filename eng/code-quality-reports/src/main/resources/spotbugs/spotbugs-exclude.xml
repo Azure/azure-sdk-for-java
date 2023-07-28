@@ -1731,7 +1731,7 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache"/>
-    <Method name="getServerAddressesViaGatewayAsync"/>
+    <Method name="getServerAddressesViaGatewayInternalAsync"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
@@ -2655,4 +2655,25 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Build tool suppressions -->
+  <Match>
+    <Class name="com.azure.sdk.build.tool.ReportGenerator"/>
+    <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.sdk.build.tool.mojo.AzureSdkMojo"/>
+    <Field name="mojo"/>
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.sdk.build.tool.util.logging.ConsoleLogger"/>
+    <Field name="instance"/>
+    <Bug pattern="LI_LAZY_INIT_STATIC"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.sdk.build.tool.util.logging.MojoLogger"/>
+    <Field name="instance"/>
+    <Bug pattern="LI_LAZY_INIT_STATIC"/>
+  </Match>
 </FindBugsFilter>

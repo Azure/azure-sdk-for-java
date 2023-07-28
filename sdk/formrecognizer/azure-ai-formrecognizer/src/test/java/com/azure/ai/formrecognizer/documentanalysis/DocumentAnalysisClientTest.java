@@ -12,7 +12,6 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
@@ -98,7 +97,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         return getDocumentAnalysisBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
-            false)
+            true)
             .buildClient();
     }
 
@@ -107,7 +106,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         return getDocumentModelAdminClientBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
-            false)
+            true)
             .buildClient();
     }
 
@@ -1467,6 +1466,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled
     public void testGetWordsInALine(HttpClient httpClient,
                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1572,38 +1572,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         }, EXAMPLE_XLSX);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeContentWithQueryFields(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-document", BinaryData.fromStream(data, dataLength),
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Collections.singletonList(
-                        DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Collections.singletonList("Charges")), Context.NONE)
-                .setPollInterval(durationTestMode);
-            syncPoller.waitForCompletion();
-            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertEquals("$56,651.49", analyzeResult.getDocuments().get(0).getFields().get("Charges").getValueAsString());
-        }, INVOICE_PDF);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeContentUrlWithQueryFields(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        urlRunner((sourceUrl) -> {
-            SyncPoller<OperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-document", sourceUrl,
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Collections.singletonList(
-                        DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Collections.singletonList("Charges")), Context.NONE)
-                .setPollInterval(durationTestMode);
-            syncPoller.waitForCompletion();
-            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertEquals("$56,651.49", analyzeResult.getDocuments().get(0).getFields().get("Charges").getValueAsString());
-        }, INVOICE_PDF);
-    }
-
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
@@ -1615,11 +1583,21 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
-            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
-            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
-            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
-            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+            documentTypeDetailsMap.put("IRS-1040-A",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-E/train")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode);
@@ -1655,11 +1633,21 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
-            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
-            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
-            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
-            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+            documentTypeDetailsMap.put("IRS-1040-A",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E",
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-E/train")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode);

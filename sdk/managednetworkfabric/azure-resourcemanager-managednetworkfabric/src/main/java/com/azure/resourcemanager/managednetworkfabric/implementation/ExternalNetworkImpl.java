@@ -4,21 +4,21 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetworkInner;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetwork;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPatchPropertiesOptionAProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPropertiesOptionAProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.Layer3OptionAProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.OptionBProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3OptionBProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import java.util.Collections;
-import java.util.List;
 
 public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwork.Definition, ExternalNetwork.Update {
     private ExternalNetworkInner innerObject;
@@ -37,41 +37,32 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String networkToNetworkInterconnectId() {
         return this.innerModel().networkToNetworkInterconnectId();
-    }
-
-    public List<String> disabledOnResources() {
-        List<String> inner = this.innerModel().disabledOnResources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public EnabledDisabledState administrativeState() {
-        return this.innerModel().administrativeState();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public PeeringOption peeringOption() {
         return this.innerModel().peeringOption();
     }
 
-    public OptionBProperties optionBProperties() {
+    public L3OptionBProperties optionBProperties() {
         return this.innerModel().optionBProperties();
     }
 
     public ExternalNetworkPropertiesOptionAProperties optionAProperties() {
         return this.innerModel().optionAProperties();
+    }
+
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
     }
 
     public String importRoutePolicyId() {
@@ -80,6 +71,14 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
 
     public String exportRoutePolicyId() {
         return this.innerModel().exportRoutePolicyId();
+    }
+
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.innerModel().importRoutePolicy();
+    }
+
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.innerModel().exportRoutePolicy();
     }
 
     public String annotation() {
@@ -190,65 +189,33 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         return this;
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager
             .externalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
     }
 
-    public void updateAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
             .externalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
     }
 
-    public void updateBgpAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
+        UpdateAdministrativeState body) {
+        return serviceManager
             .externalNetworks()
-            .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+            .updateStaticRouteBfdAdministrativeState(
+                resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
     }
 
-    public void updateBgpAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
+    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
             .externalNetworks()
-            .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-    }
-
-    public void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body) {
-        serviceManager
-            .externalNetworks()
-            .updateBfdForBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-    }
-
-    public void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body, Context context) {
-        serviceManager
-            .externalNetworks()
-            .updateBfdForBgpAdministrativeState(
+            .updateStaticRouteBfdAdministrativeState(
                 resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-    }
-
-    public void clearIpv6Neighbors(EnableDisableOnResources body) {
-        serviceManager
-            .externalNetworks()
-            .clearIpv6Neighbors(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-    }
-
-    public void clearIpv6Neighbors(EnableDisableOnResources body, Context context) {
-        serviceManager
-            .externalNetworks()
-            .clearIpv6Neighbors(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
-    }
-
-    public void clearArpEntries(EnableDisableOnResources body) {
-        serviceManager
-            .externalNetworks()
-            .clearArpEntries(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
-    }
-
-    public void clearArpEntries(EnableDisableOnResources body, Context context) {
-        serviceManager
-            .externalNetworks()
-            .clearArpEntries(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
     }
 
     public ExternalNetworkImpl withPeeringOption(PeeringOption peeringOption) {
@@ -261,7 +228,7 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         }
     }
 
-    public ExternalNetworkImpl withOptionBProperties(OptionBProperties optionBProperties) {
+    public ExternalNetworkImpl withOptionBProperties(L3OptionBProperties optionBProperties) {
         if (isInCreateMode()) {
             this.innerModel().withOptionBProperties(optionBProperties);
             return this;
@@ -296,6 +263,26 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         }
     }
 
+    public ExternalNetworkImpl withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withImportRoutePolicy(importRoutePolicy);
+            return this;
+        } else {
+            this.updateBody.withImportRoutePolicy(importRoutePolicy);
+            return this;
+        }
+    }
+
+    public ExternalNetworkImpl withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withExportRoutePolicy(exportRoutePolicy);
+            return this;
+        } else {
+            this.updateBody.withExportRoutePolicy(exportRoutePolicy);
+            return this;
+        }
+    }
+
     public ExternalNetworkImpl withAnnotation(String annotation) {
         if (isInCreateMode()) {
             this.innerModel().withAnnotation(annotation);
@@ -306,7 +293,8 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         }
     }
 
-    public ExternalNetworkImpl withOptionAProperties(Layer3OptionAProperties optionAProperties) {
+    public ExternalNetworkImpl withOptionAProperties(
+        ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
         this.updateBody.withOptionAProperties(optionAProperties);
         return this;
     }

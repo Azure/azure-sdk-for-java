@@ -14,12 +14,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("queue-length")
 @Fluent
 public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
+    /**
+     * Creates an instance of PassThroughQueueSelectorAttachment class.
+     *
+     * @param threshold The threshold of number of jobs ahead in the queue to for this trigger to fire
+     */
+    public QueueLengthExceptionTrigger(int threshold) {
+        this.threshold = threshold;
+    }
     /*
-     * Threshold of number of jobs ahead in the queue to for this trigger to
-     * fire.
+     * Threshold of number of jobs ahead in the queue to for this trigger to fire.
      */
     @JsonProperty(value = "threshold", required = true)
-    private int threshold;
+    private final int threshold;
 
     /**
      * Get the threshold property: Threshold of number of jobs ahead in the queue to for this trigger to fire.
@@ -28,16 +35,5 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
      */
     public int getThreshold() {
         return this.threshold;
-    }
-
-    /**
-     * Set the threshold property: Threshold of number of jobs ahead in the queue to for this trigger to fire.
-     *
-     * @param threshold the threshold value to set.
-     * @return the QueueLengthExceptionTrigger object itself.
-     */
-    public QueueLengthExceptionTrigger setThreshold(int threshold) {
-        this.threshold = threshold;
-        return this;
     }
 }

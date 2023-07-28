@@ -6,24 +6,63 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The installation state of the packet core. */
 @Fluent
 public final class Installation {
     /*
+     * The desired installation state
+     */
+    @JsonProperty(value = "desiredState")
+    private DesiredInstallationState desiredState;
+
+    /*
      * Installation state
      */
-    @JsonProperty(value = "state")
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private InstallationState state;
+
+    /*
+     * Whether a reinstall of the packet core is required to pick up the latest configuration changes.
+     */
+    @JsonProperty(value = "reinstallRequired", access = JsonProperty.Access.WRITE_ONLY)
+    private ReinstallRequired reinstallRequired;
+
+    /*
+     * Reason(s) for the current installation state of the packet core.
+     */
+    @JsonProperty(value = "reasons", access = JsonProperty.Access.WRITE_ONLY)
+    private List<InstallationReason> reasons;
 
     /*
      * A reference to an in-progress installation operation
      */
-    @JsonProperty(value = "operation")
+    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private AsyncOperationId operation;
 
     /** Creates an instance of Installation class. */
     public Installation() {
+    }
+
+    /**
+     * Get the desiredState property: The desired installation state.
+     *
+     * @return the desiredState value.
+     */
+    public DesiredInstallationState desiredState() {
+        return this.desiredState;
+    }
+
+    /**
+     * Set the desiredState property: The desired installation state.
+     *
+     * @param desiredState the desiredState value to set.
+     * @return the Installation object itself.
+     */
+    public Installation withDesiredState(DesiredInstallationState desiredState) {
+        this.desiredState = desiredState;
+        return this;
     }
 
     /**
@@ -36,14 +75,22 @@ public final class Installation {
     }
 
     /**
-     * Set the state property: Installation state.
+     * Get the reinstallRequired property: Whether a reinstall of the packet core is required to pick up the latest
+     * configuration changes.
      *
-     * @param state the state value to set.
-     * @return the Installation object itself.
+     * @return the reinstallRequired value.
      */
-    public Installation withState(InstallationState state) {
-        this.state = state;
-        return this;
+    public ReinstallRequired reinstallRequired() {
+        return this.reinstallRequired;
+    }
+
+    /**
+     * Get the reasons property: Reason(s) for the current installation state of the packet core.
+     *
+     * @return the reasons value.
+     */
+    public List<InstallationReason> reasons() {
+        return this.reasons;
     }
 
     /**
@@ -53,17 +100,6 @@ public final class Installation {
      */
     public AsyncOperationId operation() {
         return this.operation;
-    }
-
-    /**
-     * Set the operation property: A reference to an in-progress installation operation.
-     *
-     * @param operation the operation value to set.
-     * @return the Installation object itself.
-     */
-    public Installation withOperation(AsyncOperationId operation) {
-        this.operation = operation;
-        return this;
     }
 
     /**

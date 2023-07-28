@@ -12,7 +12,9 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -32,8 +34,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkToNetworkInterconnectsClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNetworkInterconnectInner;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectsList;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -100,9 +105,25 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName,
+            @PathParam("networkToNetworkInterconnectName") String networkToNetworkInterconnectName,
+            @BodyParam("application/json") NetworkToNetworkInterconnectPatch body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -119,7 +140,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkToNetworkInterconnectsList>> list(
+        Mono<Response<NetworkToNetworkInterconnectsList>> listByNetworkFabric(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -129,10 +150,42 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateNpbStaticRouteBfdAdministrativeState")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateNpbStaticRouteBfdAdministrativeState(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName,
+            @PathParam("networkToNetworkInterconnectName") String networkToNetworkInterconnectName,
+            @BodyParam("application/json") UpdateAdministrativeState body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}/updateAdministrativeState")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName,
+            @PathParam("networkToNetworkInterconnectName") String networkToNetworkInterconnectName,
+            @BodyParam("application/json") UpdateAdministrativeState body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkToNetworkInterconnectsList>> listNext(
+        Mono<Response<NetworkToNetworkInterconnectsList>> listByNetworkFabricNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -145,14 +198,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -215,15 +268,15 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -284,13 +337,13 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkToNetworkInterconnect resource definition.
+     * @return the {@link PollerFlux} for polling of the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner>
@@ -317,14 +370,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkToNetworkInterconnect resource definition.
+     * @return the {@link PollerFlux} for polling of the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner>
@@ -354,13 +407,13 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkToNetworkInterconnect resource definition.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
@@ -379,14 +432,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkToNetworkInterconnect resource definition.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
@@ -406,13 +459,13 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition on successful completion of {@link Mono}.
+     * @return the Network To Network Interconnect resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkToNetworkInterconnectInner> createAsync(
@@ -431,14 +484,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition on successful completion of {@link Mono}.
+     * @return the Network To Network Interconnect resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkToNetworkInterconnectInner> createAsync(
@@ -458,13 +511,13 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition.
+     * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner create(
@@ -481,14 +534,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition.
+     * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner create(
@@ -507,13 +560,13 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnect.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkToNetworkInterconnectInner>> getWithResponseAsync(
@@ -567,14 +620,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnect.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkToNetworkInterconnectInner>> getWithResponseAsync(
@@ -625,12 +678,12 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnect.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition on successful completion of {@link Mono}.
+     * @return the Network To Network Interconnect resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkToNetworkInterconnectInner> getAsync(
@@ -645,13 +698,13 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnect.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition along with {@link Response}.
+     * @return the Network To Network Interconnect resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkToNetworkInterconnectInner> getWithResponse(
@@ -666,12 +719,12 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnect.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition.
+     * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkToNetworkInterconnectInner get(
@@ -681,13 +734,375 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
     }
 
     /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFabricName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFabricName is required and cannot be null."));
+        }
+        if (networkToNetworkInterconnectName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter networkToNetworkInterconnectName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            networkFabricName,
+                            networkToNetworkInterconnectName,
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFabricName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFabricName is required and cannot be null."));
+        }
+        if (networkToNetworkInterconnectName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter networkToNetworkInterconnectName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                networkFabricName,
+                networkToNetworkInterconnectName,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner>
+        beginUpdateAsync(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            NetworkToNetworkInterconnectPatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
+        return this
+            .client
+            .<NetworkToNetworkInterconnectInner, NetworkToNetworkInterconnectInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkToNetworkInterconnectInner.class,
+                NetworkToNetworkInterconnectInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner>
+        beginUpdateAsync(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            NetworkToNetworkInterconnectPatch body,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context);
+        return this
+            .client
+            .<NetworkToNetworkInterconnectInner, NetworkToNetworkInterconnectInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkToNetworkInterconnectInner.class,
+                NetworkToNetworkInterconnectInner.class,
+                context);
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body) {
+        return this
+            .beginUpdateAsync(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body,
+        Context context) {
+        return this
+            .beginUpdateAsync(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NetworkToNetworkInterconnectInner> updateAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body) {
+        return beginUpdateAsync(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NetworkToNetworkInterconnectInner> updateAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkToNetworkInterconnectInner update(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body) {
+        return updateAsync(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body).block();
+    }
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkToNetworkInterconnectInner update(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body,
+        Context context) {
+        return updateAsync(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .block();
+    }
+
+    /**
      * Deletes a NetworkToNetworkInterconnects.
      *
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -745,8 +1160,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -802,8 +1217,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -826,8 +1241,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -851,8 +1266,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -872,8 +1287,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -894,8 +1309,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -915,8 +1330,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -937,8 +1352,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -954,8 +1369,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -973,15 +1388,15 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listSinglePageAsync(
+    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listByNetworkFabricSinglePageAsync(
         String resourceGroupName, String networkFabricName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1008,7 +1423,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
             .withContext(
                 context ->
                     service
-                        .list(
+                        .listByNetworkFabric(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -1034,16 +1449,16 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listSinglePageAsync(
+    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listByNetworkFabricSinglePageAsync(
         String resourceGroupName, String networkFabricName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1068,7 +1483,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
+            .listByNetworkFabric(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -1093,17 +1508,18 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects as paginated response with {@link PagedFlux}.
+     * @return list of Network To Network Interconnects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkToNetworkInterconnectInner> listAsync(String resourceGroupName, String networkFabricName) {
+    private PagedFlux<NetworkToNetworkInterconnectInner> listByNetworkFabricAsync(
+        String resourceGroupName, String networkFabricName) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkFabricName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listByNetworkFabricSinglePageAsync(resourceGroupName, networkFabricName),
+            nextLink -> listByNetworkFabricNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1112,19 +1528,19 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects as paginated response with {@link PagedFlux}.
+     * @return list of Network To Network Interconnects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkToNetworkInterconnectInner> listAsync(
+    private PagedFlux<NetworkToNetworkInterconnectInner> listByNetworkFabricAsync(
         String resourceGroupName, String networkFabricName, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkFabricName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listByNetworkFabricSinglePageAsync(resourceGroupName, networkFabricName, context),
+            nextLink -> listByNetworkFabricNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1133,15 +1549,16 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects as paginated response with {@link PagedIterable}.
+     * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkToNetworkInterconnectInner> list(String resourceGroupName, String networkFabricName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, networkFabricName));
+    public PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(
+        String resourceGroupName, String networkFabricName) {
+        return new PagedIterable<>(listByNetworkFabricAsync(resourceGroupName, networkFabricName));
     }
 
     /**
@@ -1150,17 +1567,769 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects as paginated response with {@link PagedIterable}.
+     * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkToNetworkInterconnectInner> list(
+    public PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(
         String resourceGroupName, String networkFabricName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, networkFabricName, context));
+        return new PagedIterable<>(listByNetworkFabricAsync(resourceGroupName, networkFabricName, context));
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateNpbStaticRouteBfdAdministrativeStateWithResponseAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFabricName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFabricName is required and cannot be null."));
+        }
+        if (networkToNetworkInterconnectName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter networkToNetworkInterconnectName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateNpbStaticRouteBfdAdministrativeState(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            networkFabricName,
+                            networkToNetworkInterconnectName,
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateNpbStaticRouteBfdAdministrativeStateWithResponseAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFabricName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFabricName is required and cannot be null."));
+        }
+        if (networkToNetworkInterconnectName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter networkToNetworkInterconnectName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateNpbStaticRouteBfdAdministrativeState(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                networkFabricName,
+                networkToNetworkInterconnectName,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateNpbStaticRouteBfdAdministrativeStateAsync(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateNpbStaticRouteBfdAdministrativeStateWithResponseAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateNpbStaticRouteBfdAdministrativeStateAsync(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateNpbStaticRouteBfdAdministrativeStateWithResponseAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateNpbStaticRouteBfdAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body) {
+        return this
+            .beginUpdateNpbStaticRouteBfdAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateNpbStaticRouteBfdAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body,
+            Context context) {
+        return this
+            .beginUpdateNpbStaticRouteBfdAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateNpbStaticRouteBfdAdministrativeStateAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        return beginUpdateNpbStaticRouteBfdAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateNpbStaticRouteBfdAdministrativeStateAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        return beginUpdateNpbStaticRouteBfdAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        return updateNpbStaticRouteBfdAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .block();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        return updateNpbStaticRouteBfdAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .block();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFabricName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFabricName is required and cannot be null."));
+        }
+        if (networkToNetworkInterconnectName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter networkToNetworkInterconnectName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateAdministrativeState(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            networkFabricName,
+                            networkToNetworkInterconnectName,
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFabricName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFabricName is required and cannot be null."));
+        }
+        if (networkToNetworkInterconnectName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter networkToNetworkInterconnectName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateAdministrativeState(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                networkFabricName,
+                networkToNetworkInterconnectName,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAdministrativeStateWithResponseAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAdministrativeStateWithResponseAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body) {
+        return this
+            .beginUpdateAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body,
+            Context context) {
+        return this
+            .beginUpdateAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        return beginUpdateAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        return beginUpdateAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        return updateAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body)
+            .block();
+    }
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        return updateAdministrativeStateAsync(
+                resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context)
+            .block();
     }
 
     /**
@@ -1171,11 +2340,12 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listByNetworkFabricNextSinglePageAsync(
+        String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1187,7 +2357,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(
+                context -> service.listByNetworkFabricNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NetworkToNetworkInterconnectInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1209,11 +2380,11 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listNextSinglePageAsync(
+    private Mono<PagedResponse<NetworkToNetworkInterconnectInner>> listByNetworkFabricNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1227,7 +2398,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByNetworkFabricNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -12,18 +12,16 @@ public final class MetricNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricName model =
-            BinaryData
-                .fromString("{\"value\":\"hltrpmopjmcmatuo\",\"localizedValue\":\"hfuiuaodsfc\"}")
-                .toObject(MetricName.class);
-        Assertions.assertEquals("hltrpmopjmcmatuo", model.value());
-        Assertions.assertEquals("hfuiuaodsfc", model.localizedValue());
+            BinaryData.fromString("{\"value\":\"ys\",\"localizedValue\":\"i\"}").toObject(MetricName.class);
+        Assertions.assertEquals("ys", model.value());
+        Assertions.assertEquals("i", model.localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricName model = new MetricName().withValue("hltrpmopjmcmatuo").withLocalizedValue("hfuiuaodsfc");
+        MetricName model = new MetricName().withValue("ys").withLocalizedValue("i");
         model = BinaryData.fromObject(model).toObject(MetricName.class);
-        Assertions.assertEquals("hltrpmopjmcmatuo", model.value());
-        Assertions.assertEquals("hfuiuaodsfc", model.localizedValue());
+        Assertions.assertEquals("ys", model.value());
+        Assertions.assertEquals("i", model.localizedValue());
     }
 }

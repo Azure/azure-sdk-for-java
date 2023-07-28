@@ -17,22 +17,27 @@ public final class BaseBackupPolicyResourceListTests {
         BaseBackupPolicyResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[]},\"id\":\"glmjth\",\"name\":\"qkwpyeicxmqc\",\"type\":\"wqvhkhixuigdt\"}],\"nextLink\":\"bob\"}")
+                    "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"yokacspkw\",\"hzdobpxjmflbvvnc\",\"rkcciwwzjuqk\"]},\"id\":\"sa\",\"name\":\"iwkuofos\",\"type\":\"ghsauuimjmvxied\"}],\"nextLink\":\"gidyjrrf\"}")
                 .toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("bob", model.nextLink());
+        Assertions.assertEquals("gidyjrrf", model.nextLink());
+        Assertions.assertEquals("yokacspkw", model.value().get(0).properties().datasourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BaseBackupPolicyResourceList model =
             new BaseBackupPolicyResourceList()
-                .withNextLink("bob")
+                .withNextLink("gidyjrrf")
                 .withValue(
                     Arrays
                         .asList(
                             new BaseBackupPolicyResourceInner()
-                                .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList()))));
+                                .withProperties(
+                                    new BaseBackupPolicy()
+                                        .withDatasourceTypes(
+                                            Arrays.asList("yokacspkw", "hzdobpxjmflbvvnc", "rkcciwwzjuqk")))));
         model = BinaryData.fromObject(model).toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("bob", model.nextLink());
+        Assertions.assertEquals("gidyjrrf", model.nextLink());
+        Assertions.assertEquals("yokacspkw", model.value().get(0).properties().datasourceTypes().get(0));
     }
 }

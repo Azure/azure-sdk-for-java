@@ -7,7 +7,7 @@ package com.azure.resourcemanager.netapp.generated;
 /** Samples for AccountBackups Delete. */
 public final class AccountBackupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Account_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Account_Delete.json
      */
     /**
      * Sample code: AccountBackups_Delete.
