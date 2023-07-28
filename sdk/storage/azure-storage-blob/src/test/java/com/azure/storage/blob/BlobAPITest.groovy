@@ -3512,7 +3512,7 @@ class BlobAPITest extends APISpec {
         when:
         // sas token's st and se are usually in the following format: st=2021-06-21T00:00:00Z&se=2021-06-22T00:00:00Z
         // using a hardcoded url to test the start time and end time parsing without time added
-        def testUrl = "https://<accountName>/<containerName>?sp=racwdl&st=2023-06-21&se=2023-06-22&spr=https&sv=2022-11-02&sr=c&sig=<signatureToken>"
+        def testUrl = "https://accountName/containerName?sp=racwdl&st=2023-06-21&se=2023-06-22&spr=https&sv=2022-11-02&sr=c&sig=<signatureToken>"
         def parts = BlobUrlParts.parse(testUrl)
 
         then:
