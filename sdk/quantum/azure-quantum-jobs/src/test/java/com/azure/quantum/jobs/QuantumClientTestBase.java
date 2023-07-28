@@ -82,30 +82,18 @@ public class QuantumClientTestBase extends TestProxyTestBase {
     }
 
     String getLocation() {
-        return
-            interceptorManager.isPlaybackMode()
-            ? LOCATION
-            : Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_LOCATION", LOCATION);
+        return Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_LOCATION", LOCATION);
     }
 
     String getSubscriptionId() {
-        return
-            interceptorManager.isPlaybackMode()
-            ? SUBSCRIPTION_ID
-            : Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID, SUBSCRIPTION_ID);
+        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID, SUBSCRIPTION_ID);
     }
 
     String getResourceGroup() {
-        return
-            interceptorManager.isPlaybackMode()
-            ? RESOURCE_GROUP
-            : Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP, RESOURCE_GROUP);
+        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP, RESOURCE_GROUP);
     }
 
     String getWorkspaceName() {
-        return
-            interceptorManager.isPlaybackMode()
-            ? WORKSPACE
-            : Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_NAME", WORKSPACE);
+        return Configuration.getGlobalConfiguration().get("QUANTUM_WORKSPACE", WORKSPACE);
     }
 }
