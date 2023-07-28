@@ -1,16 +1,10 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.2.3 (2023-07-28)
 
 ### Bugs Fixed
 
 - Fixed bug that disabled sovereign cloud support.
-
-### Other Changes
 
 ## 1.2.2 (2023-07-25)
 
