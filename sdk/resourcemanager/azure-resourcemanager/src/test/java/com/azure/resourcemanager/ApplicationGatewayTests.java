@@ -96,7 +96,6 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
      *
      * @throws Exception
      */
-    @Disabled("FIXME Priority is required in UrlPathMap")
     @Test
     public void testAppGatewaysPublicUrlPathBased() throws Exception {
         new TestApplicationGateway().new UrlPathBased(azureResourceManager.resourceGroups().manager().internalContext())

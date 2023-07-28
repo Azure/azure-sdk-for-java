@@ -2,6 +2,10 @@
 
 ## 2.29.0 (2023-07-28)
 
+### Bugs Fixed
+
+- Fixed a bug that `priority` wasn't set for path-based request routing rules when creating V2 Application Gateways.
+
 ### Other Changes
 
 #### Dependency Updates
