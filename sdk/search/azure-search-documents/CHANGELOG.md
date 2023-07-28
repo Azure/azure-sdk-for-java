@@ -6,6 +6,11 @@
 
 ### Breaking Changes
 
+- Removed `azure-core-serializer-json-jackson` dependency. If a custom `JsonSerializer` is required while interact with
+  `SearchClient` or `SearchAsyncClient` please include a dependency on a library that implements `JsonSerializer`, such
+  as `azure-core-serializer-json-jackson` or `azure-core-serializer-json-gson` provided by the Azure SDKs or an external
+  implementation.
+
 ### Bugs Fixed
 
 ### Other Changes
