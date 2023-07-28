@@ -239,7 +239,7 @@ public final class SearchOptions {
     /**
      * The query parameters for vector and hybrid search queries.
      */
-    private SearchQueryVector vector;
+    private List<SearchQueryVector> vectors;
 
     /**
      * Creates an instance of {@link SearchOptions}.
@@ -949,22 +949,34 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the vector property: The query parameters for vector and hybrid search queries.
-     *
-     * @return the vector value.
-     */
-    public SearchQueryVector getVector() {
-        return this.vector;
-    }
-
-    /**
-     * Set the vector property: The query parameters for vector and hybrid search queries.
+     * Set the vectors property using a single vector: The query parameters for vector and hybrid search
+     * queries.
      *
      * @param vector the vector value to set.
      * @return the SearchRequest object itself.
      */
     public SearchOptions setVector(SearchQueryVector vector) {
-        this.vector = vector;
+        setVectors(vector);
+        return this;
+    }
+
+    /**
+     * Get the vectors property: The query parameters for vector and hybrid search queries.
+     *
+     * @return the vector value.
+     */
+    public List<SearchQueryVector> getVectors() {
+        return this.vectors;
+    }
+
+    /**
+     * Set the vectors property: The query parameters for vector and hybrid search queries.
+     *
+     * @param vectors the vectors value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchOptions setVectors(SearchQueryVector... vectors) {
+        this.vectors = (vectors == null) ? null : Arrays.asList(vectors);
         return this;
     }
 }

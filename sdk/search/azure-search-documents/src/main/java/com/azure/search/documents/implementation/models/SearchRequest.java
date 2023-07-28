@@ -208,6 +208,11 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      */
     private SearchQueryVector vector;
 
+    /*
+     * The query parameters for multi-vector search queries.
+     */
+    private List<SearchQueryVector> vectors;
+
     /** Creates an instance of SearchRequest class. */
     public SearchRequest() {}
 
@@ -881,6 +886,26 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         return this;
     }
 
+    /**
+     * Get the vectors property: The query parameters for multi-vector search queries.
+     *
+     * @return the vectors value.
+     */
+    public List<SearchQueryVector> getVectors() {
+        return this.vectors;
+    }
+
+    /**
+     * Set the vectors property: The query parameters for multi-vector search queries.
+     *
+     * @param vectors the vectors value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setVectors(List<SearchQueryVector> vectors) {
+        this.vectors = vectors;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -914,6 +939,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeStringField("captions", this.captions);
         jsonWriter.writeStringField("semanticFields", this.semanticFields);
         jsonWriter.writeJsonField("vector", this.vector);
+        jsonWriter.writeArrayField("vectors", this.vectors, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -997,6 +1023,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.semanticFields = reader.getString();
                         } else if ("vector".equals(fieldName)) {
                             deserializedSearchRequest.vector = SearchQueryVector.fromJson(reader);
+                        } else if ("vectors".equals(fieldName)) {
+                            List<SearchQueryVector> vectors =
+                                    reader.readArray(reader1 -> SearchQueryVector.fromJson(reader1));
+                            deserializedSearchRequest.vectors = vectors;
                         } else {
                             reader.skipChildren();
                         }
