@@ -57,7 +57,7 @@
             "TestFromSource": false,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
-            "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
+            "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "fals",
             "SKIP_SIP_ROUTING_LIVE_TESTS": "false",
             "AZURE_TEST_AGENT": "WINDOWS_2019_JAVA11"
         }
