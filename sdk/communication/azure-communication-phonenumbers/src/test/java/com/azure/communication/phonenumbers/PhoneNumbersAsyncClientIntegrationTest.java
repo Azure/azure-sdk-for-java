@@ -18,9 +18,7 @@ import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -34,7 +32,6 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
@@ -258,20 +255,9 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTollFreeAreaCodesWithAAD(HttpClient httpClient) {
-        PagedFlux<PhoneNumberAreaCode> areaCodesPagedFlux = this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
-            .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION);
-
-        PhoneNumberAreaCode areaCode = areaCodesPagedFlux.blockFirst();
-
-        if (areaCode == null) {
-            boolean allowEmptyListOfAreaCodes =Configuration.getGlobalConfiguration()
-                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
-            assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
-            return;
-        }
-
         StepVerifier.create(
-                areaCodesPagedFlux.next())
+                this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes.getAreaCode());
                 })
@@ -281,24 +267,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
-        PhoneNumberLocality locality = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
-            .listAvailableLocalities("US", null).blockFirst();
-
-        PagedFlux<PhoneNumberAreaCode> areaCodesPagedFlux = this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
-            .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
-                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName());
-
-        PhoneNumberAreaCode areaCode = areaCodesPagedFlux.blockFirst();
-
-        if (areaCode == null) {
-            boolean allowEmptyListOfAreaCodes =Configuration.getGlobalConfiguration()
-                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
-            assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
-            return;
-        }
-
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst();
         StepVerifier.create(
-                areaCodesPagedFlux.next())
+                this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
+                        .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
                 })
@@ -358,20 +333,9 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTollFreeAreaCodes(HttpClient httpClient) {
-        PagedFlux<PhoneNumberAreaCode> areaCodesPagedFlux = this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
-            .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION);
-
-        PhoneNumberAreaCode areaCode = areaCodesPagedFlux.blockFirst();
-
-        if (areaCode == null) {
-            boolean allowEmptyListOfAreaCodes =Configuration.getGlobalConfiguration()
-                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
-            assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
-            return;
-        }
-
         StepVerifier.create(
-                areaCodesPagedFlux.next())
+                this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes.getAreaCode());
                 })
@@ -382,23 +346,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodes(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-            .listAvailableLocalities("US", null).blockFirst();
-
-        PagedFlux<PhoneNumberAreaCode> areaCodesPagedFlux = this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
-            .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
-                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName());
-
-        PhoneNumberAreaCode areaCode = areaCodesPagedFlux.blockFirst();
-
-        if (areaCode == null) {
-            boolean allowEmptyListOfAreaCodes =Configuration.getGlobalConfiguration()
-                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
-            assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
-            return;
-        }
-
+                .listAvailableLocalities("US", null).blockFirst();
         StepVerifier.create(
-                areaCodesPagedFlux.next())
+                this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
+                        .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
                 })

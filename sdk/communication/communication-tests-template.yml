@@ -42,8 +42,6 @@ parameters:
       MatrixReplace:
         - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
         - SKIP_SIP_ROUTING_LIVE_TESTS=false/true
-        - ALLOW_EMPTY_LIST_OF_AREA_CODES=false/true,
-        
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
