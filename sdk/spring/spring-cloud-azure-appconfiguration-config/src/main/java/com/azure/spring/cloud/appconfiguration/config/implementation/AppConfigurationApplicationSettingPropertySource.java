@@ -45,11 +45,11 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
     private final int maxRetryTime;
 
-    protected final String keyFilter;
+    private final String keyFilter;
 
-    protected final String[] labelFilter;
+    private final String[] labelFilter;
 
-    protected final String snapshotName;
+    private final String snapshotName;
 
     AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
@@ -81,8 +81,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
      * 
-     * @throws
-     * 
+     * @param trim prefix to trim
      * @throws JsonProcessingException thrown if fails to parse Json content type
      */
     public void initProperties(List<String> trim) throws JsonProcessingException {
@@ -107,7 +106,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
         List<String> trimStrings, boolean snapshot) throws JsonProcessingException {
         TracingInfo tracing = replicaClient.getTracingInfo();
         for (ConfigurationSetting setting : settings) {
-            if (trimStrings == null & StringUtils.hasText(keyFilter)) {
+            if (trimStrings == null && StringUtils.hasText(keyFilter)) {
                 trimStrings = new ArrayList<>();
                 trimStrings.add(keyFilter.substring(0, keyFilter.length() - 1));
             }

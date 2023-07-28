@@ -134,7 +134,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
                 if (t.getKey().startsWith(".appconfig.featureflag/")) {
                     return t.getKey().replace(".appconfig.featureflag/", "feature-management.");
                 }
-                return t.getKey().replaceFirst("^"+KEY_FILTER, "").replace("/", ".");
+                return t.getKey().replaceFirst("^" + KEY_FILTER, "").replace("/", ".");
             
             }).toArray(String[]::new);
 

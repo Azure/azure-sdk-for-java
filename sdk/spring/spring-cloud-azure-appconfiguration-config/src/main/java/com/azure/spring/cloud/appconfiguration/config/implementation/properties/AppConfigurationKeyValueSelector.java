@@ -63,7 +63,7 @@ public final class AppConfigurationKeyValueSelector {
             Collections.reverse(profiles);
             return profiles.toArray(new String[profiles.size()]);
         } else if (StringUtils.hasText(snapshotName)) {
-            return null;
+            return new String[0];
         } else if (!StringUtils.hasText(labelFilter)) {
             return EMPTY_LABEL_ARRAY;
         }

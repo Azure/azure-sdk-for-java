@@ -27,9 +27,9 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy
  */
 final class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
 
-    protected final String keyFilter;
+    private final String keyFilter;
 
-    protected final String[] labelFilter;
+    private final String[] labelFilter;
 
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         String keyFilter, String[] labelFilter) {
