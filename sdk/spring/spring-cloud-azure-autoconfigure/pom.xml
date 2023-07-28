@@ -33,6 +33,10 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
+  <properties>
+    <spotbugs.skip>true</spotbugs.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -392,9 +396,6 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
