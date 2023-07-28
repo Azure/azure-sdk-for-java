@@ -18,11 +18,6 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class QuantumClientTestBase extends TestProxyTestBase {
-    private final String location = Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_LOCATION");
-    private final String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-    private final String resourceGroup = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP);
-    private final String workspaceName = Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_NAME");
-
     QuantumClientBuilder getClientBuilder(HttpClient httpClient) {
 
         System.out.println(String.format("Subscription id: %s", getSubscriptionId()));
@@ -72,19 +67,19 @@ public class QuantumClientTestBase extends TestProxyTestBase {
     }
 
     String getLocation() {
-        return testResourceNamer.recordValueFromConfig(location);
+        return Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_LOCATION", "eastus");
     }
 
     String getSubscriptionId() {
-        return testResourceNamer.recordValueFromConfig(subscriptionId);
+        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID, "916dfd6d-030c-4bd9-b579-7bb6d1926e97");
     }
 
     String getResourceGroup() {
-        return testResourceNamer.recordValueFromConfig(resourceGroup);
+        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP, "azure-sdk-test-rg");
     }
 
     String getWorkspaceName() {
-        return testResourceNamer.recordValueFromConfig(workspaceName);
+        return Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_NAME", "azure-sdk-test-aqw");
     }
 
 }

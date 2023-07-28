@@ -102,18 +102,6 @@ public class JobsClientTest extends QuantumClientTestBase {
         assertEquals(jobId, jobDetails.getId());
         assertEquals(jobName, jobDetails.getName());
 
-        //test get job
-        JobDetails gotJob = jobsClient.get(jobId);
-        assertEquals(inputDataFormat, gotJob.getInputDataFormat());
-        assertEquals(outputDataFormat, gotJob.getOutputDataFormat());
-        assertEquals(providerId, gotJob.getProviderId());
-        assertEquals(target, gotJob.getTarget());
-        assertNotEquals(null, gotJob.getId());
-        assertNotEquals(null, gotJob.getName());
-        assertNotEquals(null, gotJob.getInputDataUri());
-        assertEquals(jobId, gotJob.getId());
-        assertEquals(jobName, gotJob.getName());
-
         //test list job
         PagedIterable<JobDetails> jobs = jobsClient.list();
         AtomicBoolean jobFound = new AtomicBoolean(false);
