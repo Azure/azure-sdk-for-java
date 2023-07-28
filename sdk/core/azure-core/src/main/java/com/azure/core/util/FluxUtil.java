@@ -300,6 +300,7 @@ public final class FluxUtil {
 
                     if (channelPosition == channelSize) {
                         // End of File has been reached, signal completion.
+                        channel.close();
                         sink.complete();
                     } else {
                         // Determine the size of the next MappedByteBuffer, either the remaining File contents or the
