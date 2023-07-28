@@ -28,7 +28,7 @@ public class QuantumClientTestBase extends TestProxyTestBase {
         System.out.println(String.format("Subscription id: %s", getSubscriptionId()));
         System.out.println(String.format("Resource group: %s", getResourceGroup()));
         System.out.println(String.format("Workspace: %s", getWorkspaceName()));
-        System.out.println(String.format("Location: %s", location));
+        System.out.println(String.format("Location: %s", getLocation()));
         System.out.println(String.format("Endpoint: %s", getEndpoint()));
         System.out.println(String.format("Test mode: %s", getTestMode()));
 
@@ -68,27 +68,23 @@ public class QuantumClientTestBase extends TestProxyTestBase {
     }
 
     String getEndpoint() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : String.format("https://%s.quantum.azure.com", location);
+        return String.format("https://%s.quantum.azure.com", getLocation());
+    }
+
+    String getLocation() {
+        return testResourceNamer.recordValueFromConfig(location);
     }
 
     String getSubscriptionId() {
-        return interceptorManager.isPlaybackMode()
-            ? testResourceNamer.recordValueFromConfig(subscriptionId)
-            : subscriptionId;
+        return testResourceNamer.recordValueFromConfig(subscriptionId);
     }
 
     String getResourceGroup() {
-        return interceptorManager.isPlaybackMode()
-            ? testResourceNamer.recordValueFromConfig(resourceGroup)
-            : resourceGroup;
+        return testResourceNamer.recordValueFromConfig(resourceGroup);
     }
 
     String getWorkspaceName() {
-        return interceptorManager.isPlaybackMode()
-            ? testResourceNamer.recordValueFromConfig(workspaceName)
-            : workspaceName;
+        return testResourceNamer.recordValueFromConfig(workspaceName);
     }
 
 }
