@@ -102,10 +102,8 @@ public class AuthorizationCodeCredential implements TokenCredential {
                                         identityClient.getTenantId(), identityClient.getClientId())));
                    if (request.isCaeEnabled()) {
                        isCaeEnabledRequestCached = true;
-                       isCaeDisabledRequestCached = false;
                    } else {
                        isCaeDisabledRequestCached = true;
-                       isCaeEnabledRequestCached = false;
                    }
                    return (AccessToken) msalToken;
                })

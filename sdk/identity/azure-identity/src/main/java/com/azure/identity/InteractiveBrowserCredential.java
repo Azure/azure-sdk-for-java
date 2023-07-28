@@ -148,10 +148,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
             AccessToken accessToken = updateCache(msalToken);
             if (request.isCaeEnabled()) {
                 isCaeEnabledRequestCached = true;
-                isCaeDisabledRequestCached = false;
             } else {
                 isCaeDisabledRequestCached = true;
-                isCaeEnabledRequestCached = false;
             }
             return accessToken;
         })
