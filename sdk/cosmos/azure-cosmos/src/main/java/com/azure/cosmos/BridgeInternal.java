@@ -492,14 +492,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createCosmosException(int statusCode,
-                                                        String message,
-                                                        Map<String, String> responseHeaders,
-                                                        Exception exception) {
-        return new CosmosException(statusCode, message, responseHeaders, exception);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Configs extractConfigs(CosmosClientBuilder cosmosClientBuilder) {
         return cosmosClientBuilder.configs();
     }

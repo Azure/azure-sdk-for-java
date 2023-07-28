@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -29,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
+import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
 /**
  * This class defines a custom exception type for all operations on
@@ -614,6 +616,15 @@ public class CosmosException extends AzureException {
                     public CosmosException createCosmosException(int statusCode, Exception innerException) {
                         return new CosmosException(statusCode, innerException);
                     }
+
+                    @Override
+                    public CosmosException createCosmosException(int statusCode,
+                                                                        String message,
+                                                                        Map<String, String> responseHeaders,
+                                                                        Exception exception) {
+                        return new CosmosException(statusCode, message, responseHeaders, exception);
+                    }
+
 
                     @Override
                     public List<String> getReplicaStatusList(CosmosException cosmosException) {

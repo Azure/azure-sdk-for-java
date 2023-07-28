@@ -12,6 +12,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class PartitionKeyRangeServerBatchRequest extends ServerBatchRequest {
 
     private final String partitionKeyRangeId;
+    private PartitionSplitNotifier partitionSplitNotifier;
 
     /**
      * Initializes a new instance of the {@link PartitionKeyRangeServerBatchRequest} class.
@@ -30,6 +31,19 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         checkNotNull(partitionKeyRangeId, "expected non-null partitionKeyRangeId");
         this.partitionKeyRangeId = partitionKeyRangeId;
     }
+
+    private PartitionKeyRangeServerBatchRequest(
+        final String partitionKeyRangeId,
+        int maxBodyLength,
+        int maxOperationCount, PartitionSplitNotifier partitionSplitNotifier) {
+
+        super(maxBodyLength, maxOperationCount);
+
+        checkNotNull(partitionKeyRangeId, "expected non-null partitionKeyRangeId");
+        this.partitionKeyRangeId = partitionKeyRangeId;
+        this.partitionSplitNotifier = partitionSplitNotifier;
+    }
+
 
     /**
      * Creates an instance of {@link ServerOperationBatchRequest}. In case of direct mode requests, all the
@@ -64,6 +78,25 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         return new ServerOperationBatchRequest(request, pendingOperations);
     }
 
+    static ServerOperationBatchRequest createBatchRequest(
+        final String partitionKeyRangeId,
+        final List<CosmosItemOperation> operations,
+        final int maxBodyLength,
+        final int maxOperationCount, PartitionSplitNotifier partitionSplitNotifier) {
+
+        final PartitionKeyRangeServerBatchRequest request = new PartitionKeyRangeServerBatchRequest(
+            partitionKeyRangeId,
+            maxBodyLength,
+            maxOperationCount, partitionSplitNotifier);
+
+        request.setAtomicBatch(false);
+        request.setShouldContinueOnError(true);
+
+        List<CosmosItemOperation> pendingOperations = request.createBodyOfBatchRequest(operations);
+
+        return new ServerOperationBatchRequest(request, pendingOperations);
+    }
+
     /**
      * Gets the PartitionKeyRangeId that applies to all operations in this request.
      *
@@ -71,5 +104,9 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
      */
     public String getPartitionKeyRangeId() {
         return this.partitionKeyRangeId;
+    }
+
+    public PartitionSplitNotifier getPartitionSplitNotifier() {
+        return partitionSplitNotifier;
     }
 }
