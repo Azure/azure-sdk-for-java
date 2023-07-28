@@ -92,7 +92,7 @@ public class JacksonJsonSerializerTests {
     @Test
     public void serializeWithDefaultSerializer() {
         Person person = new Person().setAge(50);
-        byte[] expected = "{\"name\":null,\"age\":50}".getBytes(StandardCharsets.UTF_8);
+        byte[] expected = "{\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
