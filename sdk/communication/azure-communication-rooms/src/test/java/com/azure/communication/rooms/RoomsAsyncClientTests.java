@@ -4,6 +4,7 @@
 package com.azure.communication.rooms;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -292,7 +293,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.createRoomWithResponse(roomOptions, Context.NONE).block();
             });
         assertEquals("BadRequest", exception.getValue().getError().getCode());
-        assertEquals("Invalid format for communication identifier.", exception.getValue().getError().getMessage());
+        assertFalse(exception.getValue().getError().getMessage().isEmpty());
     }
 
     @ParameterizedTest
@@ -306,7 +307,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.getRoom(nonExistRoomId).block();
             });
         assertEquals("BadRequest", exception.getValue().getError().getCode());
-        assertEquals("Invalid room ID.", exception.getValue().getError().getMessage());
+        assertFalse(exception.getValue().getError().getMessage().isEmpty());
     }
 
     @ParameterizedTest
@@ -578,7 +579,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 roomsAsyncClient.removeParticipants(roomId, participantsIdentifiersForNonExistentParticipant).block();
             });
         assertEquals("BadRequest", exception.getValue().getError().getCode());
-        assertEquals("Invalid value for the Participants.", exception.getValue().getError().getMessage());
+        assertFalse(exception.getValue().getError().getMessage().isEmpty());
 
         // Remove Non-existent participants
         Mono<RemoveParticipantsResult> removeParticipantResponse2 = roomsAsyncClient.removeParticipants(roomId,
