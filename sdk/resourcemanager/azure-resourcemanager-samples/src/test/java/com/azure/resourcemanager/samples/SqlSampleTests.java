@@ -34,6 +34,8 @@ public class SqlSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageSqlDatabaseInElasticPool.runSample(azureResourceManager));
     }
 
+    // It may be unstable during playback. "java.util.NoSuchElementException at InterceptorManager.getProxyVariableSupplier"
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testManageSqlDatabasesAcrossDifferentDataCenters() {
         Assertions.assertTrue(ManageSqlDatabasesAcrossDifferentDataCenters.runSample(azureResourceManager));
