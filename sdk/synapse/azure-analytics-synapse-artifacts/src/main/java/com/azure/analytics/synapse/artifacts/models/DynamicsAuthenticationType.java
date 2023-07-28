@@ -20,6 +20,14 @@ public final class DynamicsAuthenticationType extends ExpandableStringEnum<Dynam
     public static final DynamicsAuthenticationType AADSERVICE_PRINCIPAL = fromString("AADServicePrincipal");
 
     /**
+     * Creates a new instance of DynamicsAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DynamicsAuthenticationType() {}
+
+    /**
      * Creates or finds a DynamicsAuthenticationType from its string representation.
      *
      * @param name a name to look for.

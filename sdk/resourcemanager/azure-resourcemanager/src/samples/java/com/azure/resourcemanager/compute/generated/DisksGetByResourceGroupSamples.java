@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for Disks GetByResourceGroup. */
 public final class DisksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskExamples/Disk_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskExamples/Disk_Get.json
      */
     /**
      * Sample code: Get information about a managed disk.

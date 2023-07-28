@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ClassifyDocumentRequest {
     /*
-     * Document URL to classify
+     * Document URL to classify. Either urlSource or base64Source must be specified.
      */
     @JsonProperty(value = "urlSource")
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to classify
+     * Base64 encoding of the document to classify. Either urlSource or base64Source must be specified.
      */
     @JsonProperty(value = "base64Source")
     private byte[] base64Source;
@@ -27,7 +27,7 @@ public final class ClassifyDocumentRequest {
     public ClassifyDocumentRequest() {}
 
     /**
-     * Get the urlSource property: Document URL to classify.
+     * Get the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
      *
      * @return the urlSource value.
      */
@@ -36,7 +36,7 @@ public final class ClassifyDocumentRequest {
     }
 
     /**
-     * Set the urlSource property: Document URL to classify.
+     * Set the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
      *
      * @param urlSource the urlSource value to set.
      * @return the ClassifyDocumentRequest object itself.
@@ -47,7 +47,8 @@ public final class ClassifyDocumentRequest {
     }
 
     /**
-     * Get the base64Source property: Base64 encoding of the document to classify.
+     * Get the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source must
+     * be specified.
      *
      * @return the base64Source value.
      */
@@ -56,7 +57,8 @@ public final class ClassifyDocumentRequest {
     }
 
     /**
-     * Set the base64Source property: Base64 encoding of the document to classify.
+     * Set the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source must
+     * be specified.
      *
      * @param base64Source the base64Source value to set.
      * @return the ClassifyDocumentRequest object itself.

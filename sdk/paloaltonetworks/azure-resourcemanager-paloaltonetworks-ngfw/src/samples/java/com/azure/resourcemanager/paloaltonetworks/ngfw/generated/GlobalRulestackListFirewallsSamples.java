@@ -7,7 +7,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 /** Samples for GlobalRulestack ListFirewalls. */
 public final class GlobalRulestackListFirewallsSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listFirewalls_MaximumSet_Gen.
@@ -20,7 +20,7 @@ public final class GlobalRulestackListFirewallsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listFirewalls_MinimumSet_Gen.

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.Condition;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefix;
+import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for IpPrefixes Update. */
 public final class IpPrefixesUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpPrefixes_Update_MaximumSet_Gen.
@@ -23,10 +27,22 @@ public final class IpPrefixesUpdateSamples {
         IpPrefix resource =
             manager
                 .ipPrefixes()
-                .getByResourceGroupWithResponse(
-                    "resourcegroupname", "example-ipPrefix", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("example-rg", "example-ipPrefix", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key3127", "key")).apply();
+        resource
+            .update()
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withIpPrefixRules(
+                Arrays
+                    .asList(
+                        new IpPrefixRule()
+                            .withAction(CommunityActionTypes.PERMIT)
+                            .withSequenceNumber(4155123341L)
+                            .withNetworkPrefix("10.10.10.10/30")
+                            .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
+                            .withSubnetMaskLength("10")))
+            .withAnnotation("annotation")
+            .apply();
     }
 
     @SuppressWarnings("unchecked")

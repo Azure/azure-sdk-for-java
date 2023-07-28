@@ -62,7 +62,7 @@ public final class DataProtectionsCheckFeatureSupportWithResponseMockTests {
             manager
                 .dataProtections()
                 .checkFeatureSupportWithResponse(
-                    "mmqtgqqqxhr", new FeatureValidationRequestBase(), com.azure.core.util.Context.NONE)
+                    "knfnwmbtmvpdv", new FeatureValidationRequestBase(), com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 /** Samples for PostRules List. */
 public final class PostRulesListSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PostRules_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_List_MinimumSet_Gen.
@@ -20,7 +20,7 @@ public final class PostRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PostRules_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PostRules_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_List_MaximumSet_Gen.

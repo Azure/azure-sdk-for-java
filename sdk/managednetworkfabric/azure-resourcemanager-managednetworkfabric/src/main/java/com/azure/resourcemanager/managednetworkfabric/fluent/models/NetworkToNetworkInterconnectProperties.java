@@ -6,11 +6,16 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.IsManagementType;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer2Configuration;
-import com.azure.resourcemanager.managednetworkfabric.models.Layer3Configuration;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration;
 import com.azure.resourcemanager.managednetworkfabric.models.NniType;
+import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,25 +29,19 @@ public final class NetworkToNetworkInterconnectProperties {
     private NniType nniType;
 
     /*
-     * Gets the administrativeState of the resource. Example -Enabled/Disabled
-     */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
-    private EnabledDisabledState administrativeState;
-
-    /*
      * Configuration to use NNI for Infrastructure Management. Example: True/False.
      */
-    @JsonProperty(value = "isManagementType", required = true)
-    private BooleanEnumProperty isManagementType;
+    @JsonProperty(value = "isManagementType")
+    private IsManagementType isManagementType;
 
     /*
-     * Based on this parameter the layer2/layer3 is made as mandatory. Example: True/False
+     * Based on this option layer3 parameters are mandatory. Example: True/False
      */
     @JsonProperty(value = "useOptionB", required = true)
     private BooleanEnumProperty useOptionB;
 
     /*
-     * Common properties for Layer2Configuration.
+     * Common properties for Layer2 Configuration.
      */
     @JsonProperty(value = "layer2Configuration")
     private Layer2Configuration layer2Configuration;
@@ -50,14 +49,56 @@ public final class NetworkToNetworkInterconnectProperties {
     /*
      * Common properties for Layer3Configuration.
      */
-    @JsonProperty(value = "layer3Configuration")
-    private Layer3Configuration layer3Configuration;
+    @JsonProperty(value = "optionBLayer3Configuration")
+    private NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration;
 
     /*
-     * Gets the provisioning state of the resource.
+     * NPB Static Route Configuration properties.
+     */
+    @JsonProperty(value = "npbStaticRouteConfiguration")
+    private NpbStaticRouteConfiguration npbStaticRouteConfiguration;
+
+    /*
+     * Import Route Policy configuration.
+     */
+    @JsonProperty(value = "importRoutePolicy")
+    private ImportRoutePolicyInformation importRoutePolicy;
+
+    /*
+     * Export Route Policy configuration.
+     */
+    @JsonProperty(value = "exportRoutePolicy")
+    private ExportRoutePolicyInformation exportRoutePolicy;
+
+    /*
+     * Egress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "egressAclId")
+    private String egressAclId;
+
+    /*
+     * Ingress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "ingressAclId")
+    private String ingressAclId;
+
+    /*
+     * Configuration state of the resource.
+     */
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
+
+    /*
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
 
     /** Creates an instance of NetworkToNetworkInterconnectProperties class. */
     public NetworkToNetworkInterconnectProperties() {
@@ -84,20 +125,11 @@ public final class NetworkToNetworkInterconnectProperties {
     }
 
     /**
-     * Get the administrativeState property: Gets the administrativeState of the resource. Example -Enabled/Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.administrativeState;
-    }
-
-    /**
      * Get the isManagementType property: Configuration to use NNI for Infrastructure Management. Example: True/False.
      *
      * @return the isManagementType value.
      */
-    public BooleanEnumProperty isManagementType() {
+    public IsManagementType isManagementType() {
         return this.isManagementType;
     }
 
@@ -107,13 +139,13 @@ public final class NetworkToNetworkInterconnectProperties {
      * @param isManagementType the isManagementType value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withIsManagementType(BooleanEnumProperty isManagementType) {
+    public NetworkToNetworkInterconnectProperties withIsManagementType(IsManagementType isManagementType) {
         this.isManagementType = isManagementType;
         return this;
     }
 
     /**
-     * Get the useOptionB property: Based on this parameter the layer2/layer3 is made as mandatory. Example: True/False.
+     * Get the useOptionB property: Based on this option layer3 parameters are mandatory. Example: True/False.
      *
      * @return the useOptionB value.
      */
@@ -122,7 +154,7 @@ public final class NetworkToNetworkInterconnectProperties {
     }
 
     /**
-     * Set the useOptionB property: Based on this parameter the layer2/layer3 is made as mandatory. Example: True/False.
+     * Set the useOptionB property: Based on this option layer3 parameters are mandatory. Example: True/False.
      *
      * @param useOptionB the useOptionB value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
@@ -133,7 +165,7 @@ public final class NetworkToNetworkInterconnectProperties {
     }
 
     /**
-     * Get the layer2Configuration property: Common properties for Layer2Configuration.
+     * Get the layer2Configuration property: Common properties for Layer2 Configuration.
      *
      * @return the layer2Configuration value.
      */
@@ -142,7 +174,7 @@ public final class NetworkToNetworkInterconnectProperties {
     }
 
     /**
-     * Set the layer2Configuration property: Common properties for Layer2Configuration.
+     * Set the layer2Configuration property: Common properties for Layer2 Configuration.
      *
      * @param layer2Configuration the layer2Configuration value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
@@ -153,27 +185,140 @@ public final class NetworkToNetworkInterconnectProperties {
     }
 
     /**
-     * Get the layer3Configuration property: Common properties for Layer3Configuration.
+     * Get the optionBLayer3Configuration property: Common properties for Layer3Configuration.
      *
-     * @return the layer3Configuration value.
+     * @return the optionBLayer3Configuration value.
      */
-    public Layer3Configuration layer3Configuration() {
-        return this.layer3Configuration;
+    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration() {
+        return this.optionBLayer3Configuration;
     }
 
     /**
-     * Set the layer3Configuration property: Common properties for Layer3Configuration.
+     * Set the optionBLayer3Configuration property: Common properties for Layer3Configuration.
      *
-     * @param layer3Configuration the layer3Configuration value to set.
+     * @param optionBLayer3Configuration the optionBLayer3Configuration value to set.
      * @return the NetworkToNetworkInterconnectProperties object itself.
      */
-    public NetworkToNetworkInterconnectProperties withLayer3Configuration(Layer3Configuration layer3Configuration) {
-        this.layer3Configuration = layer3Configuration;
+    public NetworkToNetworkInterconnectProperties withOptionBLayer3Configuration(
+        NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration) {
+        this.optionBLayer3Configuration = optionBLayer3Configuration;
         return this;
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
+     *
+     * @return the npbStaticRouteConfiguration value.
+     */
+    public NpbStaticRouteConfiguration npbStaticRouteConfiguration() {
+        return this.npbStaticRouteConfiguration;
+    }
+
+    /**
+     * Set the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
+     *
+     * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
+     * @return the NetworkToNetworkInterconnectProperties object itself.
+     */
+    public NetworkToNetworkInterconnectProperties withNpbStaticRouteConfiguration(
+        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+        this.npbStaticRouteConfiguration = npbStaticRouteConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy configuration.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicyInformation importRoutePolicy() {
+        return this.importRoutePolicy;
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy configuration.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the NetworkToNetworkInterconnectProperties object itself.
+     */
+    public NetworkToNetworkInterconnectProperties withImportRoutePolicy(
+        ImportRoutePolicyInformation importRoutePolicy) {
+        this.importRoutePolicy = importRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy configuration.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicyInformation exportRoutePolicy() {
+        return this.exportRoutePolicy;
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy configuration.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the NetworkToNetworkInterconnectProperties object itself.
+     */
+    public NetworkToNetworkInterconnectProperties withExportRoutePolicy(
+        ExportRoutePolicyInformation exportRoutePolicy) {
+        this.exportRoutePolicy = exportRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.egressAclId;
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the NetworkToNetworkInterconnectProperties object itself.
+     */
+    public NetworkToNetworkInterconnectProperties withEgressAclId(String egressAclId) {
+        this.egressAclId = egressAclId;
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.ingressAclId;
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the NetworkToNetworkInterconnectProperties object itself.
+     */
+    public NetworkToNetworkInterconnectProperties withIngressAclId(String ingressAclId) {
+        this.ingressAclId = ingressAclId;
+        return this;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.configurationState;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -182,17 +327,20 @@ public final class NetworkToNetworkInterconnectProperties {
     }
 
     /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (isManagementType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property isManagementType in model NetworkToNetworkInterconnectProperties"));
-        }
         if (useOptionB() == null) {
             throw LOGGER
                 .logExceptionAsError(
@@ -202,8 +350,17 @@ public final class NetworkToNetworkInterconnectProperties {
         if (layer2Configuration() != null) {
             layer2Configuration().validate();
         }
-        if (layer3Configuration() != null) {
-            layer3Configuration().validate();
+        if (optionBLayer3Configuration() != null) {
+            optionBLayer3Configuration().validate();
+        }
+        if (npbStaticRouteConfiguration() != null) {
+            npbStaticRouteConfiguration().validate();
+        }
+        if (importRoutePolicy() != null) {
+            importRoutePolicy().validate();
+        }
+        if (exportRoutePolicy() != null) {
+            exportRoutePolicy().validate();
         }
     }
 

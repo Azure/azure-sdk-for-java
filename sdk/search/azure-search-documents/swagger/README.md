@@ -88,9 +88,9 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 namespace: com.azure.search.documents
 input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0cfd102a6ecb172f04ec915732bd8ca6f6b2a7af/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchindex.json
-models-subpackage: implementation.models
-custom-types-subpackage: models
-custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,IndexDocumentsResult,IndexingResult,QueryAnswerType,QueryCaptionType,QueryLanguage,QuerySpellerType,QueryType,ScoringStatistics,SearchMode,SuggestOptions,DocumentDebugInfo,SemanticDebugInfo,QueryResultDocumentSemanticField,QueryResultDocumentRerankerInput,SemanticPartialResponseReason,SemanticPartialResponseType,SemanticErrorHandling,QueryDebugMode
+models-subpackage: models
+custom-types-subpackage: implementation.models
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
@@ -214,7 +214,7 @@ directive:
 
 ### Remove required from properties that are optional
 
-``` yaml $(java)
+``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -228,7 +228,7 @@ directive:
 ```
 
 ### Renames 
-``` yaml $(java)
+``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -290,7 +290,7 @@ directive:
 ```
 
 ### Rename Answers to QueryAnswerType, Captions to QueryCaptionType, and Speller to QuerySpellerType
-``` yaml $(java)
+``` yaml $(tag) == 'searchindex'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -317,7 +317,7 @@ directive:
       delete param["x-ms-enum"];
 ```
 
-``` yaml $(java)
+``` yaml $(tag) == 'searchindex'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -370,7 +370,7 @@ directive:
 ```
 
 ### Rename client parameter names
-``` yaml $(java)
+``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -388,4 +388,59 @@ directive:
       $.SynonymTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
       $.WordDelimiterTokenFilter.properties.catenateWords["x-ms-client-name"] = "wordsCatenated";
       $.WordDelimiterTokenFilter.properties.catenateNumbers["x-ms-client-name"] = "numbersCatenated";
+```
+
+### Rename Dimensions
+
+To ensure alignment with `VectorSearchConfiguration`, rename the `Dimensions` to `VectorSearchDimensions`.
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.SearchField.properties.dimensions
+  transform: $["x-ms-client-name"] = "vectorSearchDimensions";
+```
+
+### Add `arm-id` format for `AuthResourceId`
+
+Add `"format": "arm-id"` for `AuthResourceId` to generate as [Azure.Core.ResourceIdentifier](https://learn.microsoft.com/dotnet/api/azure.core.resourceidentifier?view=azure-dotnet).
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.WebApiSkill.properties.authResourceId
+  transform: $["x-ms-format"] = "arm-id";
+```
+
+### Rename Vector property `K`
+
+Rename Vector property `K` to `KNearestNeighborsCount`
+
+```yaml $(tag) == 'searchindex'
+directive:
+- from: swagger-document
+  where: $.definitions.Vector.properties.k
+  transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
+```
+
+### Rename Vector property `Vector`
+
+Rename Vector property `Vector` to `SearchQueryVector`
+
+```yaml $(tag) == 'searchindex'
+directive:
+- from: swagger-document
+  where: $.definitions.Vector
+  transform: $["x-ms-client-name"] = "SearchQueryVector";
+```
+
+### Rename QueryResultDocumentSemanticFieldState
+
+Simplify `QueryResultDocumentSemanticFieldState` name by renaming it to `SemanticFieldState`
+
+```yaml $(tag) == 'searchindex'
+directive:
+- from: swagger-document
+  where: $.definitions.QueryResultDocumentSemanticFieldState
+  transform: $["x-ms-enum"].name = "SemanticFieldState";
 ```

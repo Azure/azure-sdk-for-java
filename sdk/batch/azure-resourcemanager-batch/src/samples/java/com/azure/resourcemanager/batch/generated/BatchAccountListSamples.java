@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount List. */
 public final class BatchAccountListSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/BatchAccountList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountList.json
      */
     /**
      * Sample code: BatchAccountList.
@@ -17,6 +15,6 @@ public final class BatchAccountListSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void batchAccountList(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().list(Context.NONE);
+        manager.batchAccounts().list(com.azure.core.util.Context.NONE);
     }
 }

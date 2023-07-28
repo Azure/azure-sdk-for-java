@@ -1,6 +1,6 @@
 # Release History
 
-## 11.6.0-beta.7 (Unreleased)
+## 11.6.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,33 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.5.9 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.1` to version `1.4.2`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
+
+## 11.6.0-beta.7 (2023-07-11)
+
+### Features Added
+
+- Added support for [Vector Search](https://learn.microsoft.com/azure/search/vector-search-overview) ([Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java)).
+
+### Breaking Changes
+
+- Deprecated `EntityRecognitionSkillVersion.V1` and `SentimentSkillVersion.V1`, and corresponding constructors in
+  `EntityRecognitionSkill` and `SentimentSkill`, use `EntityRecognitionSkillVersion.V3` and `SentimentSkillVersion.V3`
+  instead. See [Cognitive Search skill deprecated](https://learn.microsoft.com/azure/search/cognitive-search-skill-deprecated) 
+  for more details.
+
+### Other Changes
+
 - Migrate test recordings to assets repo.
 
 ## 11.5.8 (2023-06-09)

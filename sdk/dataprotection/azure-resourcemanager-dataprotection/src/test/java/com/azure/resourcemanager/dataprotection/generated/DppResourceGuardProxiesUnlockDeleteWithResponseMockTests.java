@@ -32,7 +32,7 @@ public final class DppResourceGuardProxiesUnlockDeleteWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"unlockDeleteExpiryTime\":\"xtmkzjvkviir\"}";
+        String responseStr = "{\"unlockDeleteExpiryTime\":\"dqlvhukoveof\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class DppResourceGuardProxiesUnlockDeleteWithResponseMockTests {
             manager
                 .dppResourceGuardProxies()
                 .unlockDeleteWithResponse(
-                    "wtqabpxuckp",
-                    "gqoweyirdhlisn",
-                    "wfl",
+                    "uhplrvkmjcwmjv",
+                    "gfggcvkyylizrzbj",
+                    "sfxsf",
                     new UnlockDeleteRequest()
-                        .withResourceGuardOperationRequests(Arrays.asList("pizruwnpqxpxiw", "cng"))
-                        .withResourceToBeDeleted("aas"),
+                        .withResourceGuardOperationRequests(Arrays.asList("lvt"))
+                        .withResourceToBeDeleted("agb"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xtmkzjvkviir", response.unlockDeleteExpiryTime());
+        Assertions.assertEquals("dqlvhukoveof", response.unlockDeleteExpiryTime());
     }
 }

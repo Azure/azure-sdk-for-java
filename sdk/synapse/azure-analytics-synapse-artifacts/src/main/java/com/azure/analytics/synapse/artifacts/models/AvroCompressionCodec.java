@@ -26,6 +26,14 @@ public final class AvroCompressionCodec extends ExpandableStringEnum<AvroCompres
     public static final AvroCompressionCodec BZIP2 = fromString("bzip2");
 
     /**
+     * Creates a new instance of AvroCompressionCodec value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvroCompressionCodec() {}
+
+    /**
      * Creates or finds a AvroCompressionCodec from its string representation.
      *
      * @param name a name to look for.

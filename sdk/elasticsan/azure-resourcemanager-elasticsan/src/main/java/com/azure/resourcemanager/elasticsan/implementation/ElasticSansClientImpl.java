@@ -65,7 +65,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ElasticSanManagement")
-    private interface ElasticSansService {
+    public interface ElasticSansService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/elasticSans")
         @ExpectedResponses({200})
@@ -79,8 +79,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticSanList>> listByResourceGroup(
@@ -93,9 +92,8 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}")
-        @ExpectedResponses({200, 202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
@@ -109,8 +107,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -125,8 +122,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -140,8 +136,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticSanInner>> getByResourceGroup(
@@ -653,7 +648,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginCreate(
         String resourceGroupName, String elasticSanName, ElasticSanInner parameters) {
-        return beginCreateAsync(resourceGroupName, elasticSanName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, elasticSanName, parameters).getSyncPoller();
     }
 
     /**
@@ -671,7 +666,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginCreate(
         String resourceGroupName, String elasticSanName, ElasticSanInner parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, elasticSanName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, elasticSanName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -918,7 +913,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginUpdate(
         String resourceGroupName, String elasticSanName, ElasticSanUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, elasticSanName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, elasticSanName, parameters).getSyncPoller();
     }
 
     /**
@@ -936,7 +931,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginUpdate(
         String resourceGroupName, String elasticSanName, ElasticSanUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, elasticSanName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, elasticSanName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1157,7 +1152,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName) {
-        return beginDeleteAsync(resourceGroupName, elasticSanName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, elasticSanName).getSyncPoller();
     }
 
     /**
@@ -1174,7 +1169,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String elasticSanName, Context context) {
-        return beginDeleteAsync(resourceGroupName, elasticSanName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, elasticSanName, context).getSyncPoller();
     }
 
     /**

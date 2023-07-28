@@ -71,6 +71,12 @@
                 "sdk/storage/microsoft-azure-storage-blob/src/test/java/com/microsoft/azure/storage/FakeCredentialInTest.groovy"
             ],
             "_justification": "File contains fake key used by test code."
+        },
+        {
+            "file": [
+              "sdk/core/azure-core-test/src/main/resources/keystore.jks"
+            ],
+            "_justification": "Dummy keystore to enable HTTPS testing with LocalTestServer. Contains no real secrets."
         }
     ]
 }

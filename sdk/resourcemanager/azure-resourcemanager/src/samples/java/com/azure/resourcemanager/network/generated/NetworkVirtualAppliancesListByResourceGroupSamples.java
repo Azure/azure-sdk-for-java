@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for NetworkVirtualAppliances ListByResourceGroup. */
 public final class NetworkVirtualAppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkVirtualApplianceListByResourceGroup.json
      */
     /**
      * Sample code: List all Network Virtual Appliance for a given resource group.

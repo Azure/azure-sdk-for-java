@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.managednetworkfabric.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNetworkInterconnectInner;
 
@@ -32,13 +31,6 @@ public interface NetworkToNetworkInterconnect {
     String type();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the nniType property: Type of NNI used. Example: CE | NPB.
      *
      * @return the nniType value.
@@ -46,47 +38,95 @@ public interface NetworkToNetworkInterconnect {
     NniType nniType();
 
     /**
-     * Gets the administrativeState property: Gets the administrativeState of the resource. Example -Enabled/Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    EnabledDisabledState administrativeState();
-
-    /**
      * Gets the isManagementType property: Configuration to use NNI for Infrastructure Management. Example: True/False.
      *
      * @return the isManagementType value.
      */
-    BooleanEnumProperty isManagementType();
+    IsManagementType isManagementType();
 
     /**
-     * Gets the useOptionB property: Based on this parameter the layer2/layer3 is made as mandatory. Example:
-     * True/False.
+     * Gets the useOptionB property: Based on this option layer3 parameters are mandatory. Example: True/False.
      *
      * @return the useOptionB value.
      */
     BooleanEnumProperty useOptionB();
 
     /**
-     * Gets the layer2Configuration property: Common properties for Layer2Configuration.
+     * Gets the layer2Configuration property: Common properties for Layer2 Configuration.
      *
      * @return the layer2Configuration value.
      */
     Layer2Configuration layer2Configuration();
 
     /**
-     * Gets the layer3Configuration property: Common properties for Layer3Configuration.
+     * Gets the optionBLayer3Configuration property: Common properties for Layer3Configuration.
      *
-     * @return the layer3Configuration value.
+     * @return the optionBLayer3Configuration value.
      */
-    Layer3Configuration layer3Configuration();
+    NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration();
 
     /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
+     *
+     * @return the npbStaticRouteConfiguration value.
+     */
+    NpbStaticRouteConfiguration npbStaticRouteConfiguration();
+
+    /**
+     * Gets the importRoutePolicy property: Import Route Policy configuration.
+     *
+     * @return the importRoutePolicy value.
+     */
+    ImportRoutePolicyInformation importRoutePolicy();
+
+    /**
+     * Gets the exportRoutePolicy property: Export Route Policy configuration.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    ExportRoutePolicyInformation exportRoutePolicy();
+
+    /**
+     * Gets the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    String egressAclId();
+
+    /**
+     * Gets the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    String ingressAclId();
+
+    /**
+     * Gets the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    ConfigurationState configurationState();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNetworkInterconnectInner
@@ -98,24 +138,42 @@ public interface NetworkToNetworkInterconnect {
 
     /** The entirety of the NetworkToNetworkInterconnect definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithParentResource,
+            DefinitionStages.WithUseOptionB,
+            DefinitionStages.WithCreate {
     }
+
     /** The NetworkToNetworkInterconnect definition stages. */
     interface DefinitionStages {
         /** The first stage of the NetworkToNetworkInterconnect definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the NetworkToNetworkInterconnect definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, networkFabricName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param networkFabricName Name of the NetworkFabric.
+             * @param networkFabricName Name of the Network Fabric.
              * @return the next definition stage.
              */
-            WithCreate withExistingNetworkFabric(String resourceGroupName, String networkFabricName);
+            WithUseOptionB withExistingNetworkFabric(String resourceGroupName, String networkFabricName);
         }
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify useOptionB. */
+        interface WithUseOptionB {
+            /**
+             * Specifies the useOptionB property: Based on this option layer3 parameters are mandatory. Example:
+             * True/False.
+             *
+             * @param useOptionB Based on this option layer3 parameters are mandatory. Example: True/False.
+             * @return the next definition stage.
+             */
+            WithCreate withUseOptionB(BooleanEnumProperty useOptionB);
+        }
+
         /**
          * The stage of the NetworkToNetworkInterconnect definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -123,9 +181,13 @@ public interface NetworkToNetworkInterconnect {
         interface WithCreate
             extends DefinitionStages.WithNniType,
                 DefinitionStages.WithIsManagementType,
-                DefinitionStages.WithUseOptionB,
                 DefinitionStages.WithLayer2Configuration,
-                DefinitionStages.WithLayer3Configuration {
+                DefinitionStages.WithOptionBLayer3Configuration,
+                DefinitionStages.WithNpbStaticRouteConfiguration,
+                DefinitionStages.WithImportRoutePolicy,
+                DefinitionStages.WithExportRoutePolicy,
+                DefinitionStages.WithEgressAclId,
+                DefinitionStages.WithIngressAclId {
             /**
              * Executes the create request.
              *
@@ -141,6 +203,7 @@ public interface NetworkToNetworkInterconnect {
              */
             NetworkToNetworkInterconnect create(Context context);
         }
+
         /** The stage of the NetworkToNetworkInterconnect definition allowing to specify nniType. */
         interface WithNniType {
             /**
@@ -151,6 +214,7 @@ public interface NetworkToNetworkInterconnect {
              */
             WithCreate withNniType(NniType nniType);
         }
+
         /** The stage of the NetworkToNetworkInterconnect definition allowing to specify isManagementType. */
         interface WithIsManagementType {
             /**
@@ -160,20 +224,123 @@ public interface NetworkToNetworkInterconnect {
              * @param isManagementType Configuration to use NNI for Infrastructure Management. Example: True/False.
              * @return the next definition stage.
              */
-            WithCreate withIsManagementType(BooleanEnumProperty isManagementType);
+            WithCreate withIsManagementType(IsManagementType isManagementType);
         }
-        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify useOptionB. */
-        interface WithUseOptionB {
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify layer2Configuration. */
+        interface WithLayer2Configuration {
             /**
-             * Specifies the useOptionB property: Based on this parameter the layer2/layer3 is made as mandatory.
-             * Example: True/False.
+             * Specifies the layer2Configuration property: Common properties for Layer2 Configuration..
              *
-             * @param useOptionB Based on this parameter the layer2/layer3 is made as mandatory. Example: True/False.
+             * @param layer2Configuration Common properties for Layer2 Configuration.
              * @return the next definition stage.
              */
-            WithCreate withUseOptionB(BooleanEnumProperty useOptionB);
+            WithCreate withLayer2Configuration(Layer2Configuration layer2Configuration);
         }
-        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify layer2Configuration. */
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify optionBLayer3Configuration. */
+        interface WithOptionBLayer3Configuration {
+            /**
+             * Specifies the optionBLayer3Configuration property: Common properties for Layer3Configuration..
+             *
+             * @param optionBLayer3Configuration Common properties for Layer3Configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withOptionBLayer3Configuration(
+                NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify npbStaticRouteConfiguration. */
+        interface WithNpbStaticRouteConfiguration {
+            /**
+             * Specifies the npbStaticRouteConfiguration property: NPB Static Route Configuration properties..
+             *
+             * @param npbStaticRouteConfiguration NPB Static Route Configuration properties.
+             * @return the next definition stage.
+             */
+            WithCreate withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify importRoutePolicy. */
+        interface WithImportRoutePolicy {
+            /**
+             * Specifies the importRoutePolicy property: Import Route Policy configuration..
+             *
+             * @param importRoutePolicy Import Route Policy configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withImportRoutePolicy(ImportRoutePolicyInformation importRoutePolicy);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify exportRoutePolicy. */
+        interface WithExportRoutePolicy {
+            /**
+             * Specifies the exportRoutePolicy property: Export Route Policy configuration..
+             *
+             * @param exportRoutePolicy Export Route Policy configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withExportRoutePolicy(ExportRoutePolicyInformation exportRoutePolicy);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify egressAclId. */
+        interface WithEgressAclId {
+            /**
+             * Specifies the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param egressAclId Egress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            WithCreate withEgressAclId(String egressAclId);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify ingressAclId. */
+        interface WithIngressAclId {
+            /**
+             * Specifies the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param ingressAclId Ingress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            WithCreate withIngressAclId(String ingressAclId);
+        }
+    }
+
+    /**
+     * Begins update for the NetworkToNetworkInterconnect resource.
+     *
+     * @return the stage of resource update.
+     */
+    NetworkToNetworkInterconnect.Update update();
+
+    /** The template for NetworkToNetworkInterconnect update. */
+    interface Update
+        extends UpdateStages.WithLayer2Configuration,
+            UpdateStages.WithOptionBLayer3Configuration,
+            UpdateStages.WithNpbStaticRouteConfiguration,
+            UpdateStages.WithImportRoutePolicy,
+            UpdateStages.WithExportRoutePolicy,
+            UpdateStages.WithEgressAclId,
+            UpdateStages.WithIngressAclId {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        NetworkToNetworkInterconnect apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        NetworkToNetworkInterconnect apply(Context context);
+    }
+
+    /** The NetworkToNetworkInterconnect update stages. */
+    interface UpdateStages {
+        /** The stage of the NetworkToNetworkInterconnect update allowing to specify layer2Configuration. */
         interface WithLayer2Configuration {
             /**
              * Specifies the layer2Configuration property: Common properties for Layer2Configuration..
@@ -181,19 +348,76 @@ public interface NetworkToNetworkInterconnect {
              * @param layer2Configuration Common properties for Layer2Configuration.
              * @return the next definition stage.
              */
-            WithCreate withLayer2Configuration(Layer2Configuration layer2Configuration);
+            Update withLayer2Configuration(Layer2Configuration layer2Configuration);
         }
-        /** The stage of the NetworkToNetworkInterconnect definition allowing to specify layer3Configuration. */
-        interface WithLayer3Configuration {
+
+        /** The stage of the NetworkToNetworkInterconnect update allowing to specify optionBLayer3Configuration. */
+        interface WithOptionBLayer3Configuration {
             /**
-             * Specifies the layer3Configuration property: Common properties for Layer3Configuration..
+             * Specifies the optionBLayer3Configuration property: Common properties for Layer3Configuration..
              *
-             * @param layer3Configuration Common properties for Layer3Configuration.
+             * @param optionBLayer3Configuration Common properties for Layer3Configuration.
              * @return the next definition stage.
              */
-            WithCreate withLayer3Configuration(Layer3Configuration layer3Configuration);
+            Update withOptionBLayer3Configuration(OptionBLayer3Configuration optionBLayer3Configuration);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect update allowing to specify npbStaticRouteConfiguration. */
+        interface WithNpbStaticRouteConfiguration {
+            /**
+             * Specifies the npbStaticRouteConfiguration property: NPB Static Route Configuration properties..
+             *
+             * @param npbStaticRouteConfiguration NPB Static Route Configuration properties.
+             * @return the next definition stage.
+             */
+            Update withNpbStaticRouteConfiguration(NpbStaticRouteConfiguration npbStaticRouteConfiguration);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect update allowing to specify importRoutePolicy. */
+        interface WithImportRoutePolicy {
+            /**
+             * Specifies the importRoutePolicy property: Import Route Policy information..
+             *
+             * @param importRoutePolicy Import Route Policy information.
+             * @return the next definition stage.
+             */
+            Update withImportRoutePolicy(ImportRoutePolicyInformation importRoutePolicy);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect update allowing to specify exportRoutePolicy. */
+        interface WithExportRoutePolicy {
+            /**
+             * Specifies the exportRoutePolicy property: Export Route Policy information.
+             *
+             * @param exportRoutePolicy Export Route Policy information.
+             * @return the next definition stage.
+             */
+            Update withExportRoutePolicy(ExportRoutePolicyInformation exportRoutePolicy);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect update allowing to specify egressAclId. */
+        interface WithEgressAclId {
+            /**
+             * Specifies the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param egressAclId Egress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            Update withEgressAclId(String egressAclId);
+        }
+
+        /** The stage of the NetworkToNetworkInterconnect update allowing to specify ingressAclId. */
+        interface WithIngressAclId {
+            /**
+             * Specifies the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param ingressAclId Ingress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            Update withIngressAclId(String ingressAclId);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -208,4 +432,59 @@ public interface NetworkToNetworkInterconnect {
      * @return the refreshed resource.
      */
     NetworkToNetworkInterconnect refresh(Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
+        UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body, Context context);
 }

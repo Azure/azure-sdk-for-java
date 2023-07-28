@@ -1,4 +1,7 @@
 matrix:
+  image:
+    - Dockerfile
   scenarios:
-    longrunning:
+    send-process:
       chaos: "true"
+      imageBuildDir: ..\..\..\

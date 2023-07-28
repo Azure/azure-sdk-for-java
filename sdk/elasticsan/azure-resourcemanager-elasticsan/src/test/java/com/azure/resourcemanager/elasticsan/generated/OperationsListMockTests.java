@@ -12,13 +12,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
-import com.azure.resourcemanager.elasticsan.models.ElasticSanRPOperation;
+import com.azure.resourcemanager.elasticsan.models.Operation;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -33,7 +31,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"ksymd\",\"isDataAction\":true,\"display\":{\"provider\":\"kiiuxhqyudxor\",\"resource\":\"qn\",\"operation\":\"poczvyifqrvkdvjs\",\"description\":\"lrmv\"}}]}";
+            "{\"value\":[{\"name\":\"qbhsfxobl\",\"isDataAction\":false,\"display\":{\"provider\":\"mpew\",\"resource\":\"fbkrvrnsvs\",\"operation\":\"johxcrsb\",\"description\":\"vasrruvwb\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +59,6 @@ public final class OperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ElasticSanRPOperation> response = manager.operations().list(Context.NONE);
-
-        Assertions.assertEquals("ksymd", response.iterator().next().name());
+        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

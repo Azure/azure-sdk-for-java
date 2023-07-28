@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
@@ -52,7 +53,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
-    private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
     private UserAssertion userAssertion;
     private boolean multiTenantAuthDisabled;
@@ -71,6 +71,8 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean instanceDiscovery;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
+
+    private boolean isChained;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -343,15 +345,6 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Check whether CP1 client capability should be disabled.
-     *
-     * @return the status indicating if CP1 client capability should be disabled.
-     */
-    public boolean isCp1Disabled() {
-        return this.cp1Disabled;
-    }
-
-    /**
      * Gets the regional authority, or null if regional authority should not be used.
      * @return the regional authority value if specified
      */
@@ -602,11 +595,6 @@ public final class IdentityClientOptions implements Cloneable {
         return this.perCallPolicies;
     }
 
-    IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
-        this.cp1Disabled = cp1Disabled;
-        return this;
-    }
-
     IdentityClientOptions setMultiTenantAuthDisabled(boolean multiTenantAuthDisabled) {
         this.multiTenantAuthDisabled = multiTenantAuthDisabled;
         return this;
@@ -687,7 +675,6 @@ public final class IdentityClientOptions implements Cloneable {
         imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
             IdentityConstants.DEFAULT_IMDS_ENDPOINT);
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
-        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
@@ -708,6 +695,24 @@ public final class IdentityClientOptions implements Cloneable {
         this.credentialProcessTimeout = credentialProcessTimeout;
     }
 
+    /**
+     * Indicates whether this options instance is part of a {@link ChainedTokenCredential}.
+     * @return true if this options instance is part of a {@link ChainedTokenCredential}, false otherwise.
+     */
+    public boolean isChained() {
+        return this.isChained;
+    }
+
+    /**
+     * Sets whether this options instance is part of a {@link ChainedTokenCredential}.
+     * @param isChained
+     * @return the updated client options
+     */
+    public IdentityClientOptions setChained(boolean isChained) {
+        this.isChained = isChained;
+        return this;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -726,7 +731,6 @@ public final class IdentityClientOptions implements Cloneable {
             .setIntelliJKeePassDatabasePath(this.keePassDatabasePath)
             .setAuthorityHost(this.authorityHost)
             .setImdsAuthorityHost(this.imdsAuthorityHost)
-            .setCp1Disabled(this.cp1Disabled)
             .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
             .setUserAssertion(this.userAssertion)
             .setConfigurationStore(this.configuration)
@@ -736,7 +740,8 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryOptions(this.retryOptions)
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
-            .setPerRetryPolicies(this.perRetryPolicies);
+            .setPerRetryPolicies(this.perRetryPolicies)
+            .setChained(this.isChained);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }

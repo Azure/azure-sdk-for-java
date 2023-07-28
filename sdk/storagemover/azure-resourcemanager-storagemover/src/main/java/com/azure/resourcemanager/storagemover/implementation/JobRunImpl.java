@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagemover.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunInner;
 import com.azure.resourcemanager.storagemover.models.JobRun;
 import com.azure.resourcemanager.storagemover.models.JobRunError;
@@ -33,10 +32,6 @@ public final class JobRunImpl implements JobRun {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public JobRunStatus status() {
