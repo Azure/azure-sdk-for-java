@@ -71,15 +71,14 @@ public class QuantumClientTestBase extends TestProxyTestBase {
     }
 
     String getSubscriptionId() {
-        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID, "916dfd6d-030c-4bd9-b579-7bb6d1926e97");
+        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID, "faa080af-c1d8-40ad-9cce-e1a450ca5b57");
     }
 
     String getResourceGroup() {
-        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP, "azure-sdk-test-rg");
+        return Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP, "vigera-group");
     }
 
     String getWorkspaceName() {
-        return Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_NAME", "azure-sdk-test-aqw");
+        return Configuration.getGlobalConfiguration().get("AZURE_QUANTUM_WORKSPACE_NAME", "vigeraQuantumWorkspace");
     }
-
 }
