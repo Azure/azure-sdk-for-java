@@ -33,7 +33,6 @@
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
-    <spotbugs.skip>true</spotbugs.skip>
   </properties>
 
   <licenses>
