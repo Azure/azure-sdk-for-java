@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.query.models;
 
 import java.util.List;
@@ -5,8 +8,8 @@ import java.util.List;
 /**
  * The result of a metrics query batch. It contains the results of individual queries.
  */
-public class MetricsBatchResult {
-    private List<MetricsQueryResult> metricsQueryResults;
+public final class MetricsBatchResult {
+    private final List<MetricsQueryResult> metricsQueryResults;
 
     /**
      * Creates an instance of MetricsBatchResult.

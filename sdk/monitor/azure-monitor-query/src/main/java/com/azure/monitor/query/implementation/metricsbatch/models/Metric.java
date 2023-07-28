@@ -27,7 +27,7 @@ public final class Metric {
     /*
      * Description of this metric
      */
-    @JsonProperty(value = "displayDescription", required = true)
+    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
@@ -74,7 +74,7 @@ public final class Metric {
     public Metric(
             @JsonProperty(value = "id", required = true) String id,
             @JsonProperty(value = "name", required = true) LocalizableString name,
-            @JsonProperty(value = "displayDescription", required = true) String displayDescription,
+            @JsonProperty(value = "displayDescription") String displayDescription,
             @JsonProperty(value = "type", required = true) String type,
             @JsonProperty(value = "unit", required = true) MetricUnit unit,
             @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {

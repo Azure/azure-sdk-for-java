@@ -217,7 +217,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     public MetricsQueryClient buildClient() {
         return new MetricsQueryClient(innerMetricsBuilder.buildClient(),
-            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient(), innerMetricsBatchBuilder.buildClient());
+            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
     }
 
     /**
@@ -227,7 +227,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
     public MetricsQueryAsyncClient buildAsyncClient() {
         logger.info("Using service version " + this.serviceVersion);
         return new MetricsQueryAsyncClient(innerMetricsBuilder.buildClient(),
-                innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient(), innerMetricsBatchBuilder.buildClient());
+                innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
     }
 
 }
