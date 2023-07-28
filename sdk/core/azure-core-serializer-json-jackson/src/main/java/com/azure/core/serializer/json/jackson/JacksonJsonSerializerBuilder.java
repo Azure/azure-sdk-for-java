@@ -4,8 +4,6 @@
 package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -13,15 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public final class JacksonJsonSerializerBuilder {
     /*
-     * The ObjectMapper used by JacksonAdapter uses inclusion scopes and null handling that differs from the default
-     * Jackson uses. This configuration is reset here by mutating the inclusion scope and null handling to use the
-     * default Jackson values so that JacksonJsonSerializer has less friction when this default is used.
+     * This is identical to JacksonAdapter to keep the serialization behaviour similar to what is used in Azure Core.
      */
     private static final ObjectMapperShim DEFAULT_MAPPER = ObjectMapperShim
-        .createJsonMapper(ObjectMapperShim.createSimpleMapper(),
-                  (mapper, innerMapper) -> mapper
-                    .setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS)
-                    .setDefaultVisibility(JsonAutoDetect.Value.defaultVisibility()));
+        .createJsonMapper(ObjectMapperShim.createSimpleMapper());
 
     private ObjectMapperShim objectMapper;
 
