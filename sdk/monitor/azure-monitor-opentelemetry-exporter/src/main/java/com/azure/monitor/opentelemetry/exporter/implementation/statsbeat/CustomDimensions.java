@@ -21,22 +21,22 @@ public class CustomDimensions {
     CustomDimensions() {
         String qualifiedSdkVersion = PropertyHelper.getQualifiedSdkVersionString();
 
-        if (qualifiedSdkVersion.startsWith("awr")) {
+        if (qualifiedSdkVersion.startsWith("aw")) {
             resourceProvider = ResourceProvider.RP_APPSVC;
             operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("alr")) {
+        } else if (qualifiedSdkVersion.startsWith("al")) {
             resourceProvider = ResourceProvider.RP_APPSVC;
             operatingSystem = OperatingSystem.OS_LINUX;
-        } else if (qualifiedSdkVersion.startsWith("kwr")) {
+        } else if (qualifiedSdkVersion.startsWith("kw")) {
             resourceProvider = ResourceProvider.RP_AKS;
             operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("klr")) {
+        } else if (qualifiedSdkVersion.startsWith("kl")) {
             resourceProvider = ResourceProvider.RP_AKS;
             operatingSystem = OperatingSystem.OS_LINUX;
-        } else if (qualifiedSdkVersion.startsWith("fwr")) {
+        } else if (qualifiedSdkVersion.startsWith("fw")) {
             resourceProvider = ResourceProvider.RP_FUNCTIONS;
             operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("flr")) {
+        } else if (qualifiedSdkVersion.startsWith("fl")) {
             resourceProvider = ResourceProvider.RP_FUNCTIONS;
             operatingSystem = OperatingSystem.OS_LINUX;
         } else {
@@ -47,7 +47,7 @@ public class CustomDimensions {
         sdkVersion = qualifiedSdkVersion.substring(qualifiedSdkVersion.lastIndexOf(':') + 1);
         runtimeVersion = System.getProperty("java.version");
 
-        attachType = "codeless";
+        attachType = RpAttachType.getRpAttachType();
         language = "java";
     }
 

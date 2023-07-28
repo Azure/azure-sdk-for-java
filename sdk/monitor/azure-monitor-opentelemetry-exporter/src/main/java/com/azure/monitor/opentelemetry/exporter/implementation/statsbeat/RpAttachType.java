@@ -3,11 +3,13 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
+import javax.annotation.Nullable;
+
 // Manual, StandaloneAuto, IntegratedAuto
 public enum RpAttachType {
-    MANUAL, // Manually writing code to start collecting telemetry, e.g. via azure-monitor-opentelemetry-exporter
-    STANDALONE_AUTO, // RP attach is enabled via a custom JAVA_OPTS
-    INTEGRATED_AUTO; // RP attach is on by default
+    Manual, // Manually writing code to start collecting telemetry, e.g. via azure-monitor-opentelemetry-exporter
+    StandaloneAuto, // RP attach is enabled via a custom JAVA_OPTS
+    IntegratedAuto; // RP attach is on by default
 
     private static volatile RpAttachType attachType;
 
@@ -15,7 +17,7 @@ public enum RpAttachType {
         attachType = type;
     }
 
-    public static RpAttachType getRpAttachType() {
-        return attachType;
+    static String getRpAttachType() {
+        return attachType.name();
     }
 }
