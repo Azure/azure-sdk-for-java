@@ -2728,10 +2728,9 @@
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$SessionLinkStream"/>
+        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$NextSessionStream"/>
     <Or>
-      <Field name="nextSessionLink"/>
-      <Field name="sessionReceiver"/>
+      <Field name="newSession"/>
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
@@ -2743,7 +2742,7 @@
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
-  <!-- The RollingSessionReceiver, SessionLinkStream, $SessionReceiverStream doesn't need to be serializable -->
+  <!-- The RollingSessionReceiver, NextSessionStream, $SessionReceiverStream doesn't need to be serializable -->
   <Match>
     <Class
         name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver"/>
@@ -2751,7 +2750,7 @@
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$SessionLinkStream"/>
+        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$NextSessionStream"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>
