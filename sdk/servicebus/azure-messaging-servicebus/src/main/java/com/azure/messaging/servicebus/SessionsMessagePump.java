@@ -115,8 +115,8 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  * already. If so, the subscribe() call by usingWhen (in Thread T1) adds NOP handlers for that already initiated operation
  * and returns.</li>
  * <li>B: If it happens that the subscription to RollingSessionReceiver.closeAsync() by usingWhen (in Thread T1) happens
- *  first before T2 get to run "cancellation operation" (possible in Case2), then T1 schedules the link-closure to Qpid
- *  Thread and returns. (the later subscribe() call by T2 adds NOP handlers for this already initiated operation.)</li>
+ *  before T2 get to run "cancellation operation" (possible in Case2), then T1 schedules the link-closure to Qpid Thread
+ *  and returns. (the later subscribe() call by T2 adds NOP handlers for this already initiated operation.)</li>
  * </ul>
  *
  * <p>Now that RollingSessionReceiver.closeAsync(TerminationReason.CANCELED) returned control to T1, the When operator
@@ -197,11 +197,11 @@ final class SessionsMessagePump implements AsyncCloseable {
     private final Consumer<ServiceBusErrorContext> processError;
     private final AtomicReference<List<RollingSessionReceiver>> rollingReceiversRef = new AtomicReference<>(EMPTY);
     private final SessionReceiversTracker receiversTracker;
-    private final Mono<ServiceBusReceiveLink> newSessionLink;
+    private final Mono<ServiceBusSessionAcquirer.Session> newSession;
     private final Sinks.Empty<Void> terminationAwaitingMono = Sinks.empty();
 
     SessionsMessagePump(String identifier, String fqdn, String entityPath, ServiceBusReceiveMode receiveMode,
-        ServiceBusReceiverInstrumentation instrumentation, ServiceBusSessionLinkAcquirer linkAcquirer,
+        ServiceBusReceiverInstrumentation instrumentation, ServiceBusSessionAcquirer sessionAcquirer,
         Duration maxSessionLockRenew, Duration sessionIdleTimeout, int maxConcurrentSessions, int concurrencyPerSession,
         int prefetch, boolean enableAutoDisposition, Mono<ServiceBusManagementNode> managementNode,
         MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
@@ -215,7 +215,7 @@ final class SessionsMessagePump implements AsyncCloseable {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null");
-        Objects.requireNonNull(linkAcquirer, "'linkAcquirer' cannot be null");
+        Objects.requireNonNull(sessionAcquirer, "'sessionAcquirer' cannot be null");
         this.maxSessionLockRenew = Objects.requireNonNull(maxSessionLockRenew, "'maxSessionLockRenew' cannot be null.");
         this.sessionIdleTimeout = sessionIdleTimeout;
         this.maxConcurrentSessions = maxConcurrentSessions;
@@ -228,7 +228,7 @@ final class SessionsMessagePump implements AsyncCloseable {
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null.");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null.");
         this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fqdn, entityPath, receiveMode);
-        this.newSessionLink = new NewSessionLink(linkAcquirer).mono();
+        this.newSession = new NewSession(sessionAcquirer).mono();
     }
 
     public String getIdentifier() {
@@ -302,9 +302,9 @@ final class SessionsMessagePump implements AsyncCloseable {
 
     private List<RollingSessionReceiver> createRollingSessionReceivers() {
         final ArrayList<RollingSessionReceiver> rollingReceivers = new ArrayList<>(maxConcurrentSessions);
-        for (int rolllerId = 0; rolllerId < maxConcurrentSessions; rolllerId++) {
-            final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(rolllerId, instrumentation,
-                fqdn, entityPath, newSessionLink, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession,
+        for (int rollerId = 1; rollerId <= maxConcurrentSessions; rollerId++) {
+            final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(rollerId, instrumentation,
+                fqdn, entityPath, newSession, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession,
                 prefetch, enableAutoDisposition, managementNode, serializer, retryPolicy, processMessage, processError,
                 receiversTracker);
             rollingReceivers.add(rollingReceiver);
@@ -323,7 +323,7 @@ final class SessionsMessagePump implements AsyncCloseable {
     }
 
     /**
-     * The type which provides a Mono {@link NewSessionLink#mono()} that when subscribed acquires a new unnamed session.
+     * The type which provides a Mono {@link NewSession#mono()} that when subscribed acquires a new unnamed session.
      * All the {@link RollingSessionReceiver} in the {@link SessionsMessagePump} shares this Mono to obtain unique sessions.
      *
      * <p>The event the Mono fails to acquire a session, the type marks itself as terminated and notifies the subscription
@@ -332,30 +332,30 @@ final class SessionsMessagePump implements AsyncCloseable {
      * <p>If a RollingSessionReceiver encounters acquire session failure, it stops pumping and emit terminal signal.
      * At this point, the SessionMessagePump will cancel all other RollingSessionReceiver instances. The design of
      * the SessionMessagePump is to stop pumping from all sessions once any of the RollingSessionReceiver emits terminal
-     * signal. The self-terminating nature of the shared {@link NewSessionLink#mono()} will reduce the chances of one or
+     * signal. The self-terminating nature of the shared {@link NewSession#mono()} will reduce the chances of one or
      * more of the RollingSessionReceiver attempting session acquire when SessionMessagePump is about to or in progress
      * of canceling those.</p>
      */
-    private static final class NewSessionLink
-        implements Supplier<Mono<ServiceBusReceiveLink>> {
+    private static final class NewSession
+        implements Supplier<Mono<ServiceBusSessionAcquirer.Session>> {
         private final AtomicReference<Boolean> isTerminated = new AtomicReference<>(false);
-        private final ServiceBusSessionLinkAcquirer linkAcquirer;
+        private final ServiceBusSessionAcquirer sessionAcquirer;
 
-        NewSessionLink(ServiceBusSessionLinkAcquirer linkAcquirer) {
-            this.linkAcquirer = linkAcquirer;
+        NewSession(ServiceBusSessionAcquirer sessionAcquirer) {
+            this.sessionAcquirer = sessionAcquirer;
         }
 
-        Mono<ServiceBusReceiveLink> mono() {
-            final Supplier<Mono<ServiceBusReceiveLink>> supplier = this;
+        Mono<ServiceBusSessionAcquirer.Session> mono() {
+            final Supplier<Mono<ServiceBusSessionAcquirer.Session>> supplier = this;
             return Mono.defer(supplier);
         }
 
         @Override
-        public Mono<ServiceBusReceiveLink> get() {
+        public Mono<ServiceBusSessionAcquirer.Session> get() {
             if (isTerminated.get()) {
                 return Mono.error(new TerminatedException("acquire-link"));
             }
-            return linkAcquirer.acquire()
+            return sessionAcquirer.acquire()
                 .onErrorMap(e -> {
                     isTerminated.set(true);
                     return new TerminatedException("acquire-link", e);
@@ -371,6 +371,7 @@ final class SessionsMessagePump implements AsyncCloseable {
         extends AtomicReference<State<ServiceBusSessionReactorReceiver>>
         implements AsyncCloseable {
         private static final String ROLLER_ID_KEY = "roller-id";
+        private static final State<ServiceBusSessionReactorReceiver> INIT = State.init();
         private static final State<ServiceBusSessionReactorReceiver> TERMINATED = State.terminated();
         private final ClientLogger logger;
         private final String fqdn;
@@ -386,17 +387,17 @@ final class SessionsMessagePump implements AsyncCloseable {
         private final ServiceBusReceiverInstrumentation instrumentation;
         private final ServiceBusTracer tracer;
         private final SessionReceiversTracker receiversTracker;
-        private final SessionLinkStream sessionLinkStream;
+        private final NextSessionStream nextSessionStream;
         private final  MessageFlux messageFlux;
         private final Scheduler workerScheduler;
 
         RollingSessionReceiver(int rollerId, ServiceBusReceiverInstrumentation instrumentation, String fqdn, String entityPath,
-            Mono<ServiceBusReceiveLink> newSessionLink, Duration maxSessionLockRenew, Duration sessionIdleTimeout,
+            Mono<ServiceBusSessionAcquirer.Session> nextSession, Duration maxSessionLockRenew, Duration sessionIdleTimeout,
             int concurrency, int prefetch, boolean enableAutoDisposition, Mono<ServiceBusManagementNode> managementNode,
             MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
             SessionReceiversTracker receiversTracker) {
-            super(null);
+            super(INIT);
             final Map<String, Object> loggingContext = new HashMap<>(3);
             loggingContext.put(ROLLER_ID_KEY, rollerId);
             loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn);
@@ -415,8 +416,8 @@ final class SessionsMessagePump implements AsyncCloseable {
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
             this.receiversTracker = receiversTracker;
-            this.sessionLinkStream = new SessionLinkStream(newSessionLink);
-            final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream = sessionLinkStream.flux()
+            this.nextSessionStream = new NextSessionStream(nextSession);
+            final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream = nextSessionStream.flux()
                 .map(this::nextSessionReceiver);
             this.messageFlux = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven, retryPolicy);
             if (concurrency > 1) {
@@ -447,7 +448,7 @@ final class SessionsMessagePump implements AsyncCloseable {
 
         private Mono<Void> closeAsync(TerminationReason reason) {
             logger.atInfo().log("Roller terminated. Reason:" + reason);
-            sessionLinkStream.close();
+            nextSessionStream.close();
             final Mono<Void> closesState = Mono.defer(() -> {
                 final State<ServiceBusSessionReactorReceiver> state = super.getAndSet(TERMINATED);
                 return state.closeAsync();
@@ -458,14 +459,14 @@ final class SessionsMessagePump implements AsyncCloseable {
                 }).then();
         }
 
-        private ServiceBusSessionReactorReceiver nextSessionReceiver(SessionLinkStream.Next nextLink) {
+        private ServiceBusSessionReactorReceiver nextSessionReceiver(ServiceBusSessionAcquirer.Session nextSession) {
             final State<ServiceBusSessionReactorReceiver> lastState = super.get();
             if (lastState == TERMINATED) {
-                nextLink.closeAsync().subscribe();
+                nextSession.closeAsync().subscribe();
                 throw new TerminatedException("rolling-session-receiver");
             }
-            final String sessionId = nextLink.sessionId;
-            final ServiceBusReceiveLink sessionLink = nextLink.sessionLink;
+            final String sessionId = nextSession.id;
+            final ServiceBusReceiveLink sessionLink = nextSession.link;
             final ServiceBusSessionReactorReceiver nextReceiver = new ServiceBusSessionReactorReceiver(
                 logger, tracer, managementNode, sessionId, sessionLink, maxSessionLockRenew, sessionIdleTimeout);
             if (!super.compareAndSet(lastState, new State<>(nextReceiver))) {
@@ -481,7 +482,7 @@ final class SessionsMessagePump implements AsyncCloseable {
                 nextReceiver.closeAsync().subscribe();
                 throw new TerminatedException("rolling-session-receiver");
             }
-            if (lastState != null) {
+            if (lastState != INIT) {
                 final ServiceBusSessionReactorReceiver lastReceiver = lastState.receiver;
                 // The lastReceiver ^ is already closed; otherwise MessageFlux wouldn't have requested for nextReceiver.
                 receiversTracker.untrack(lastReceiver);
@@ -553,40 +554,33 @@ final class SessionsMessagePump implements AsyncCloseable {
         }
 
         /**
-         * A type which provide a Flux {@link SessionLinkStream#flux()} that streams next available sessions.
-         * Each {@link RollingSessionReceiver} has a {@link SessionLinkStream} instance associated,
-         * when the {@link RollingSessionReceiver} wants to roll to a new session, it requests a session from the Flux.
+         * A type which provide a Flux {@link NextSessionStream#flux()} that streams next available sessions.
+         * Each {@link RollingSessionReceiver} has a {@link NextSessionStream} instance associated,
+         * when the {@link RollingSessionReceiver} wants to roll to a new session, it requests next session from the Flux.
          *
-         * <p>Underneath, all the {@link SessionLinkStream} instances (across all {@link RollingSessionReceiver}) shares
-         * the common Mono {@link NewSessionLink#mono()} to acquire unique sessions.</p>
+         * <p>Underneath, all the {@link NextSessionStream} instances (across all {@link RollingSessionReceiver}) shares
+         * the common Mono {@link NewSession#mono()} to acquire unique sessions.</p>
          */
-        private static final class SessionLinkStream extends AtomicBoolean {
-            private final Mono<ServiceBusReceiveLink> nextSessionLink;
+        private static final class NextSessionStream extends AtomicBoolean {
+            private final Mono<ServiceBusSessionAcquirer.Session> newSession;
 
-            SessionLinkStream(Mono<ServiceBusReceiveLink> newSessionLink) {
+            NextSessionStream(Mono<ServiceBusSessionAcquirer.Session> nextSession) {
                 super(false);
-                this.nextSessionLink = Mono.defer(() -> {
+                this.newSession = Mono.defer(() -> {
                     final boolean isTerminated = super.get();
-                    return isTerminated ? Mono.error(new TerminatedException("session-link-stream")) : newSessionLink;
-                }).map(nextLink -> {
+                    return isTerminated ? Mono.error(new TerminatedException("session-link-stream")) : nextSession;
+                }).map(session -> {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
-                        nextLink.closeAsync().subscribe();
+                        session.closeAsync().subscribe();
                         throw new TerminatedException("session-link-stream");
                     }
-                    return nextLink;
+                    return session;
                 });
             }
 
-            Flux<Next> flux() {
-                return nonEagerRepeat(nextSessionLink)
-                    .flatMap(nextLink -> {
-                        final Mono<String> nextLinkSessionId = nextLink.getSessionId();
-                        return nextLinkSessionId
-                            .flatMap(sessionId -> {
-                                return Mono.just(new Next(sessionId, nextLink));
-                            });
-                    });
+            Flux<ServiceBusSessionAcquirer.Session> flux() {
+                return nonEagerRepeat(newSession);
             }
 
             void close() {
@@ -594,7 +588,7 @@ final class SessionsMessagePump implements AsyncCloseable {
                 super.set(true);
             }
 
-            private static Flux<ServiceBusReceiveLink> nonEagerRepeat(Mono<ServiceBusReceiveLink> source) {
+            private static Flux<ServiceBusSessionAcquirer.Session> nonEagerRepeat(Mono<ServiceBusSessionAcquirer.Session> source) {
                 // We want to transform Mono<ServiceBusReceiveLink> source to Flux<ServiceBusReceiveLink>.
                 // Simply using source.repeat() to produce the Flux has a problem due to 'repeat' operator nature.
                 //
@@ -604,9 +598,9 @@ final class SessionsMessagePump implements AsyncCloseable {
                 // between 'cacheInvalidateIf' and 'filter'.
                 //
                 return source
-                    .cacheInvalidateIf(link -> link.isDisposed())
+                    .cacheInvalidateIf(cachedSession -> cachedSession.isDisposed())
                     .repeat()
-                    .filter(link -> !link.isDisposed());
+                    .filter(session -> !session.isDisposed());
                 //
                 // With the sandwiching, the undesired re-subscription from the 'repeat' will be served by the 'cacheInvalidateIf'
                 // by "re-emitting" the last emitted link. The 'repeat' operator internally stores this "re-emitted" link.
@@ -616,23 +610,6 @@ final class SessionsMessagePump implements AsyncCloseable {
                 // 'cacheInvalidateIf', this time cache is invalidated due to the cached link's disposal,
                 // and a re-subscription to 'newSessionLink' for the new link happens, resulting new link flow through
                 // 'repeat' to 'filter' to MessageFlux.
-            }
-
-            /**
-             * A tuple type to hold id and AmqpLink to the next session, that {@link SessionLinkStream#flux()} emits.
-             */
-            private static final class Next {
-                final String sessionId;
-                final ServiceBusReceiveLink sessionLink;
-
-                Next(String sessionId, ServiceBusReceiveLink sessionLink) {
-                    this.sessionId = sessionId;
-                    this.sessionLink = sessionLink;
-                }
-
-                Mono<Void> closeAsync() {
-                    return sessionLink.closeAsync();
-                }
             }
         }
 
@@ -814,6 +791,10 @@ final class SessionsMessagePump implements AsyncCloseable {
             this.receiver = Objects.requireNonNull(receiver);
         }
 
+        static <T extends AsyncCloseable> State<T> init() {
+            return new State<>();
+        }
+
         static <T extends AsyncCloseable> State<T> terminated() {
             return new State<>();
         }
@@ -823,7 +804,7 @@ final class SessionsMessagePump implements AsyncCloseable {
         }
 
         private State() {
-            // Private ctr only used by terminated().
+            // Private ctr only used by init(), terminated().
             this.receiver = null;
         }
     }
@@ -838,7 +819,7 @@ final class SessionsMessagePump implements AsyncCloseable {
         CLOSED,
     }
 
-    private static final class TerminatedException extends RuntimeException {
+    static final class TerminatedException extends RuntimeException {
         TerminatedException(String callSite) {
             super("Cannot pump messages after termination. (Detected at " + callSite + ").");
         }
