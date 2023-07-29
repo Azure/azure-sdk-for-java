@@ -589,7 +589,7 @@ final class SessionsMessagePump implements AsyncCloseable {
             }
 
             private static Flux<ServiceBusSessionAcquirer.Session> nonEagerRepeat(Mono<ServiceBusSessionAcquirer.Session> source) {
-                // We want to transform Mono<ServiceBusReceiveLink> source to Flux<ServiceBusReceiveLink>.
+                // We want to transform Mono<ServiceBusSessionAcquirer.Session> source to Flux<ServiceBusSessionAcquirer.Session>.
                 // Simply using source.repeat() to produce the Flux has a problem due to 'repeat' operator nature.
                 //
                 // The 'repeat' operator resubscribes to the source immediately after propagating the last emitted link
