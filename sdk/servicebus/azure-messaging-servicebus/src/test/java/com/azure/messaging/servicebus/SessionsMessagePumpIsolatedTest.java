@@ -27,7 +27,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
@@ -47,6 +46,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -86,7 +86,7 @@ public class SessionsMessagePumpIsolatedTest {
         final HashMap<Message, ServiceBusReceivedMessage> session1Messages = new HashMap<>(0);
         final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE);
-        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates.flux());
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
         final MessageSerializer serializer = mock(MessageSerializer.class);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
 
@@ -116,7 +116,7 @@ public class SessionsMessagePumpIsolatedTest {
         final HashMap<Message, ServiceBusReceivedMessage> session1Messages = createMockMessages(session1Id, session1MessagesCount);
         final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE); // endpoint state does not end (hence session).
-        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates.flux());
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
 
@@ -157,10 +157,10 @@ public class SessionsMessagePumpIsolatedTest {
         final TestPublisher<AmqpEndpointState> session2EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE);
         session2EpStates.next(AmqpEndpointState.ACTIVE);
-        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates.flux());
-        final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates.flux());
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
+        final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages, session2Messages);
-        final ServiceBusSessionAcquirer linkAcquirer = createMockSessionAcquirer(session1, session2);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1, session2);
 
         final int maxSessions = 2;
         final int concurrency = 1;
@@ -170,7 +170,7 @@ public class SessionsMessagePumpIsolatedTest {
             unseenMessages.remove(context.getMessage());
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
-        final SessionsMessagePump pump = createSessionsMessagePump(linkAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
+        final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
             autoDispositionEnabled, serializer, processMessage, processError);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -229,11 +229,11 @@ public class SessionsMessagePumpIsolatedTest {
         session1EpStates.next(AmqpEndpointState.ACTIVE);
         session2EpStates.next(AmqpEndpointState.ACTIVE);
         session3EpStates.next(AmqpEndpointState.ACTIVE);
-        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates.flux());
-        final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates.flux());
-        final Session session3 = createMockSession(session3Id, session3Messages, session3EpStates.flux());
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
+        final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates);
+        final Session session3 = createMockSession(session3Id, session3Messages, session3EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages, session2Messages, session3Messages);
-        final ServiceBusSessionAcquirer linkAcquirer = createMockSessionAcquirer(session1, session2, session3);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1, session2, session3);
 
         final int maxSessions = 2; // Initially pump only from Session1 and Session2.
         final int concurrency = 1;
@@ -243,7 +243,7 @@ public class SessionsMessagePumpIsolatedTest {
             unseenMessages.remove(context.getMessage());
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
-        final SessionsMessagePump pump = createSessionsMessagePump(linkAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
+        final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
             autoDispositionEnabled, serializer, processMessage, processError);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -279,11 +279,11 @@ public class SessionsMessagePumpIsolatedTest {
         session1EpStates.next(AmqpEndpointState.ACTIVE);
         session2EpStates.next(AmqpEndpointState.ACTIVE);
         session3EpStates.next(AmqpEndpointState.ACTIVE);
-        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates.flux());
-        final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates.flux());
-        final Session session3 = createMockSession(session3Id, session3Messages, session3EpStates.flux());
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
+        final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates);
+        final Session session3 = createMockSession(session3Id, session3Messages, session3EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages, session2Messages, session3Messages);
-        final ServiceBusSessionAcquirer linkAcquirer = createMockSessionAcquirer(session1, session2, session3);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1, session2, session3);
 
         final int maxSessions = 2; // Initially pump only from Session1 and Session2.
         final int concurrency = 1;
@@ -293,7 +293,7 @@ public class SessionsMessagePumpIsolatedTest {
             unseenMessages.remove(context.getMessage());
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
-        final SessionsMessagePump pump = createSessionsMessagePump(linkAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
+        final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
             autoDispositionEnabled, serializer, processMessage, processError);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -321,7 +321,7 @@ public class SessionsMessagePumpIsolatedTest {
         final HashMap<Message, ServiceBusReceivedMessage> session1Messages = createMockMessages(session1Id, session1MessagesCount);
         final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE);
-        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates.flux());
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
         when(session1.link.updateDisposition(any(), any())).thenReturn(Mono.empty());
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
@@ -364,7 +364,7 @@ public class SessionsMessagePumpIsolatedTest {
         final HashMap<Message, ServiceBusReceivedMessage> session1Messages = createMockMessages(session1Id, session1MessagesCount);
         final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE);
-        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates.flux());
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
         when(session1.link.updateDisposition(any(), any())).thenReturn(Mono.empty());
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
@@ -403,7 +403,30 @@ public class SessionsMessagePumpIsolatedTest {
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldCloseBackingSessionReceiverOnCloseAsync() {
-        // TODO: (anu)
+        final String session1Id = "1";
+
+        final HashMap<Message, ServiceBusReceivedMessage> session1Messages = new HashMap<>(0);
+        final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
+        session1EpStates.next(AmqpEndpointState.ACTIVE);
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
+        final MessageSerializer serializer = mock(MessageSerializer.class);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+
+        final int maxSessions = 1;
+        final int concurrency = 1;
+        final boolean autoDispositionEnabled = false;
+        final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> { };
+        final Consumer<ServiceBusErrorContext> processError = e -> { };
+        final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
+            autoDispositionEnabled, serializer, processMessage, processError);
+
+        pump.begin().subscribe(__ -> { }, e -> { }, () -> { });
+
+        StepVerifier.create(pump.closeAsync())
+            .thenAwait()
+            .verifyComplete();
+
+        verify(session1.link, atLeast(1)).closeAsync();
     }
 
     private static HashMap<Message, ServiceBusReceivedMessage> createMockMessages(String sessionId, int count) {
@@ -439,7 +462,7 @@ public class SessionsMessagePumpIsolatedTest {
     }
 
     private static Session createMockSession(String sessionId,
-        HashMap<Message, ServiceBusReceivedMessage> messagesMap, Flux<AmqpEndpointState> endpointStates) {
+        HashMap<Message, ServiceBusReceivedMessage> messagesMap, TestPublisher<AmqpEndpointState> endpointStates) {
         final ArrayList<Message> messages = new ArrayList<>(messagesMap.keySet());
 
         final ServiceBusReceiveLink sessionLink = mock(ServiceBusReceiveLink.class);
@@ -448,6 +471,7 @@ public class SessionsMessagePumpIsolatedTest {
         final AtomicBoolean isClosed = new AtomicBoolean(false);
         when(sessionLink.closeAsync()).thenAnswer(__ -> {
             isClosed.set(true);
+            endpointStates.complete();
             return Mono.empty();
         });
         when(sessionLink.isDisposed()).then(__ -> {
@@ -461,7 +485,7 @@ public class SessionsMessagePumpIsolatedTest {
             messagesPublisher.next(messages.get(0), messages.subList(1, size).toArray(new Message[0]));
         }
         when(sessionLink.receive()).thenReturn(messagesPublisher.flux());
-        when(sessionLink.getEndpointStates()).thenReturn(endpointStates);
+        when(sessionLink.getEndpointStates()).thenReturn(endpointStates.flux());
 
         return new Session(sessionId, sessionLink);
     }
@@ -471,15 +495,15 @@ public class SessionsMessagePumpIsolatedTest {
         for (int i = 0; i < sessionsArray.length; i++) {
             sessions.addLast(sessionsArray[i]);
         }
-        final ServiceBusSessionAcquirer linkAcquirer = mock(ServiceBusSessionAcquirer.class);
-        when(linkAcquirer.acquire()).thenReturn(Mono.<Session>fromCallable(() -> {
+        final ServiceBusSessionAcquirer sessionAcquirer = mock(ServiceBusSessionAcquirer.class);
+        when(sessionAcquirer.acquire()).thenReturn(Mono.<Session>fromCallable(() -> {
             final Session session = sessions.pollFirst();
             if (session == null) {
                 throw new IllegalArgumentException("Unexpected acquire() call when there are no more sessions.");
             }
             return session;
         }));
-        return linkAcquirer;
+        return sessionAcquirer;
     }
 
     @SafeVarargs
@@ -494,13 +518,13 @@ public class SessionsMessagePumpIsolatedTest {
         return values;
     }
 
-    private SessionsMessagePump createSessionsMessagePump(ServiceBusSessionAcquirer linkAcquirer, Duration sessionIdleTimeout,
+    private SessionsMessagePump createSessionsMessagePump(ServiceBusSessionAcquirer sessionAcquirer, Duration sessionIdleTimeout,
         int maxConcurrentSessions, int concurrencyPerSession, boolean enableAutoDisposition, MessageSerializer serializer,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError) {
         final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
         when(instrumentation.getTracer()).thenReturn(mock(ServiceBusTracer.class));
         return new SessionsMessagePump("identifier-1", "FQDN", "Orders", ServiceBusReceiveMode.PEEK_LOCK,
-            instrumentation, linkAcquirer, Duration.ZERO, sessionIdleTimeout, maxConcurrentSessions, concurrencyPerSession,
+            instrumentation, sessionAcquirer, Duration.ZERO, sessionIdleTimeout, maxConcurrentSessions, concurrencyPerSession,
             0, enableAutoDisposition, Mono.empty(), serializer, retryPolicy, processMessage, processError);
     }
 
