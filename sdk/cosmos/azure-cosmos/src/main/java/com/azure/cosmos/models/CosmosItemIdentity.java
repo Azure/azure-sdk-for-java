@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.batch.BulkExecutor;
-
 import java.util.Objects;
 
 /**

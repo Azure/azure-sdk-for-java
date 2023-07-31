@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added CAE Authentication support for Service principal authentication.
+- Added the ability to log PII from MSAL using new `enableSupportLogging` API.
 
 ### Other Changes
 

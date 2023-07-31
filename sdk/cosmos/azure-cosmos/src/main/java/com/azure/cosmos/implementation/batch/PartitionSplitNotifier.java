@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.models.CosmosItemIdentity;
 
 /**
- * Used in bulk preserve ordering to notify when a partition split happens
+ * Notifies when a partition split happens
  */
 public class PartitionSplitNotifier {
     Notifiable<CosmosItemIdentity> notify;

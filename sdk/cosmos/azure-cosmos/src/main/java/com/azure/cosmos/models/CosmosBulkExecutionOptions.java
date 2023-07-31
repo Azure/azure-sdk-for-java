@@ -275,10 +275,18 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    /**
+     * Sets the preserve ordering flag.
+     * @param preserveOrdering the preserve ordering flag.
+     */
     void setPreserveOrdering(boolean preserveOrdering) {
         this.preserveOrdering = preserveOrdering;
     }
 
+    /**
+     * Gets the preserve ordering flag.
+     * @return the preserve ordering flag.
+     */
     boolean getPreserveOrdering() {
         return this.preserveOrdering;
     }

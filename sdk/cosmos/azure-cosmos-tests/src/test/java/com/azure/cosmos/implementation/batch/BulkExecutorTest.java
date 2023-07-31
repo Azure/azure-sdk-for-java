@@ -59,7 +59,7 @@ public class BulkExecutorTest extends BatchTestBase {
     private CosmosAsyncDatabase database;
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect") //simpleClientBuildersWithJustDirectTcp simpleClientBuildersWithDirect
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BulkExecutorTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -272,7 +272,7 @@ public class BulkExecutorTest extends BatchTestBase {
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
+        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
             container,
             inputFlux,
             cosmosBulkExecutionOptions);
@@ -345,7 +345,7 @@ public class BulkExecutorTest extends BatchTestBase {
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
+        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
             this.container,
             inputFlux,
             cosmosBulkExecutionOptions);
@@ -424,7 +424,7 @@ public class BulkExecutorTest extends BatchTestBase {
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
+        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
             this.container,
             inputFlux,
             cosmosBulkExecutionOptions);
@@ -467,18 +467,11 @@ public class BulkExecutorTest extends BatchTestBase {
     }
 
     // Tests No Retry Exception flow
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 25)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_preserveOrdering_OnServiceUnAvailable() throws InterruptedException {
         int totalRequest = 100;
         this.container = createContainer(database);
 
-        if (!ImplementationBridgeHelpers
-            .CosmosAsyncClientHelper
-            .getCosmosAsyncClientAccessor()
-            .getConnectionMode(this.client)
-            .equals(ConnectionMode.DIRECT.toString())) {
-            throw new SkipException("Skip Gateway");
-        }
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         String duplicatePK = UUID.randomUUID().toString();
         String duplicateId = UUID.randomUUID().toString();
@@ -505,12 +498,12 @@ public class BulkExecutorTest extends BatchTestBase {
             .setPreserveOrdering(cosmosBulkExecutionOptions, true);
 
         FaultInjectionRule rule = injectFailure("ServiceUnavailable",
-            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 10);
+            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 1);
 
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
+        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
             this.container,
             inputFlux,
             cosmosBulkExecutionOptions);

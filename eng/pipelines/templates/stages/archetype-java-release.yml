@@ -483,3 +483,5 @@ stages:
                   DocRepoLocation: $(DocRepoLocation)
                   TargetDocRepoName: ${{parameters.TargetDocRepoName}}
                   TargetDocRepoOwner: "azure-sdk"
+
+          - template: /eng/common/pipelines/templates/steps/docsms-ensure-validation.yml

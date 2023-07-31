@@ -18,8 +18,6 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.batch.BulkExecutor;
-import com.azure.cosmos.implementation.batch.PartitionSplitNotifier;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
@@ -29,9 +27,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.IntBinaryOperator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
