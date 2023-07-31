@@ -8,7 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.batching.SearchIndexingSyncPublisher;
+import com.azure.search.documents.implementation.batching.SearchIndexingPublisher;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
@@ -26,7 +26,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -45,12 +46,16 @@ public final class SearchIndexingBufferedSender<T> {
     private final boolean autoFlush;
     private final long flushWindowMillis;
 
-    final SearchIndexingSyncPublisher<T> publisher;
+    final SearchIndexingPublisher<T> publisher;
 
     private Timer autoFlushTimer;
-    private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
 
-    private volatile boolean isClosed = false;
+    @SuppressWarnings("rawtypes")
+    private static final AtomicReferenceFieldUpdater<SearchIndexingBufferedSender, TimerTask> FLUSH_TASK
+        = AtomicReferenceFieldUpdater.newUpdater(SearchIndexingBufferedSender.class, TimerTask.class, "flushTask");
+    private volatile TimerTask flushTask;
+
+    private final AtomicBoolean closed = new AtomicBoolean();
 
     SearchIndexingBufferedSender(SearchIndexClientImpl restClient, JsonSerializer serializer,
         Function<T, String> documentKeyRetriever, boolean autoFlush, Duration autoFlushInterval,
@@ -59,14 +64,13 @@ public final class SearchIndexingBufferedSender<T> {
         Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
         Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
         Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
-        this.publisher = new SearchIndexingSyncPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
+        this.publisher = new SearchIndexingPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
             initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay, onActionAddedConsumer,
             onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
 
         this.autoFlush = autoFlush;
         this.flushWindowMillis = Math.max(0, autoFlushInterval.toMillis());
         this.autoFlushTimer = (this.autoFlush && this.flushWindowMillis > 0) ? new Timer() : null;
-
     }
 
     /**
@@ -267,7 +271,7 @@ public final class SearchIndexingBufferedSender<T> {
         };
 
         // If the previous flush task exists cancel it. If it has already executed cancel does nothing.
-        TimerTask previousTask = this.flushTask.getAndSet(newTask);
+        TimerTask previousTask = FLUSH_TASK.getAndSet(this, newTask);
         if (previousTask != null) {
             previousTask.cancel();
         }
@@ -286,7 +290,7 @@ public final class SearchIndexingBufferedSender<T> {
     }
 
     /**
-     * Closes the buffered, any documents remaining in the batch sill be sent to the Search index for indexing.
+     * Closes the buffered, any documents remaining in the batch yet to be sent to the Search index for indexing.
      * <p>
      * Once the buffered sender has been closed any attempts to add documents or flush it will cause an {@link
      * IllegalStateException} to be thrown.
@@ -299,12 +303,11 @@ public final class SearchIndexingBufferedSender<T> {
     }
 
     void close(Context context) {
-        if (!isClosed) {
+        if (!closed.get()) {
             synchronized (this) {
-                if (!isClosed) {
-                    isClosed = true;
+                if (closed.compareAndSet(false, true)) {
                     if (this.autoFlush) {
-                        TimerTask currentTask = flushTask.getAndSet(null);
+                        TimerTask currentTask = FLUSH_TASK.getAndSet(this, null);
                         if (currentTask != null) {
                             currentTask.cancel();
                         }
@@ -321,7 +324,7 @@ public final class SearchIndexingBufferedSender<T> {
     }
 
     private synchronized void ensureOpen() {
-        if (isClosed) {
+        if (closed.get()) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Buffered sender has been closed."));
         }
     }

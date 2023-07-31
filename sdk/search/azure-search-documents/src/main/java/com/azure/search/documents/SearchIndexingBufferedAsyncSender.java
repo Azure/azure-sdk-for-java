@@ -8,7 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.batching.SearchIndexingPublisher;
+import com.azure.search.documents.implementation.batching.SearchIndexingAsyncPublisher;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.options.OnActionAddedOptions;
@@ -25,7 +25,6 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -42,7 +41,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private final boolean autoFlush;
     private final long flushWindowMillis;
 
-    final SearchIndexingPublisher<T> publisher;
+    final SearchIndexingAsyncPublisher<T> publisher;
 
     private Timer autoFlushTimer;
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
@@ -56,7 +55,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
         Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
         Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
-        this.publisher = new SearchIndexingPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
+        this.publisher = new SearchIndexingAsyncPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
             initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay, onActionAddedConsumer,
             onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
 

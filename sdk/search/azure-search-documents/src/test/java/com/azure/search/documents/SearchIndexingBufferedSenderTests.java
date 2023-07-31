@@ -1081,6 +1081,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                         createMockResponseData(0, 200)));
                 }
             }).bufferedSender(HOTEL_DOCUMENT_TYPE)
+            .autoFlush(false)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .buildAsyncSender();
 
@@ -1609,7 +1610,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicLong secondFlushCompletionTime = new AtomicLong();
         ForkJoinPool.commonPool().execute(() -> {
             try {
-                batchingClient.flush();
+                batchingClient.close();
             } finally {
                 secondFlushCompletionTime.set(System.nanoTime());
                 countDownLatch.countDown();
