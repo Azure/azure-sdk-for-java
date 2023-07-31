@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 
 /** Azure Blob Storage content. */
 @Fluent
-public final class AzureBlobContentSource extends TrainingDataContentSource {
+public final class BlobContentSource extends TrainingDataContentSource {
     /*
      * Azure Blob Storage container URL.
      */
@@ -20,11 +20,11 @@ public final class AzureBlobContentSource extends TrainingDataContentSource {
     private String prefix;
 
     /**
-     * Creates an instance of AzureBlobContentSource class.
+     * Creates an instance of BlobContentSource class.
      *
      * @param containerUrl the containerUrl value to set.
      */
-    public AzureBlobContentSource(String containerUrl) {
+    public BlobContentSource(String containerUrl) {
         this.containerUrl = containerUrl;
     }
 
@@ -50,9 +50,9 @@ public final class AzureBlobContentSource extends TrainingDataContentSource {
      * Set the prefix property: Blob name prefix.
      *
      * @param prefix the prefix value to set.
-     * @return the AzureBlobContentSource object itself.
+     * @return the BlobContentSource object itself.
      */
-    public AzureBlobContentSource setPrefix(String prefix) {
+    public BlobContentSource setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 
 /** File list in Azure Blob Storage. */
 @Immutable
-public final class AzureBlobFileListContentSource extends TrainingDataContentSource {
+public final class BlobFileListContentSource extends TrainingDataContentSource {
     /*
      * Azure Blob Storage container URL.
      */
@@ -20,12 +20,12 @@ public final class AzureBlobFileListContentSource extends TrainingDataContentSou
     private final String fileList;
 
     /**
-     * Creates an instance of AzureBlobFileListContentSource class.
+     * Creates an instance of BlobFileListContentSource class.
      *
      * @param containerUrl the containerUrl value to set.
      * @param fileList the fileList value to set.
      */
-    public AzureBlobFileListContentSource(String containerUrl, String fileList) {
+    public BlobFileListContentSource(String containerUrl, String fileList) {
         this.containerUrl = containerUrl;
         this.fileList = fileList;
     }

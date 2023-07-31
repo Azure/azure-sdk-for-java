@@ -78,7 +78,7 @@ service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
-custom-types: DocumentFormulaKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,ParagraphRole,DocumentAnalysisFeature
+custom-types: DocumentFormulaKind,DocumentPageKind,FontStyle,FontWeight,ParagraphRole,DocumentAnalysisFeature
 required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}

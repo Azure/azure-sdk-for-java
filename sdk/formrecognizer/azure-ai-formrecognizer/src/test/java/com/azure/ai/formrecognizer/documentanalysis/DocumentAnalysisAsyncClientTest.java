@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
@@ -1367,15 +1367,15 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode)
@@ -1413,15 +1413,15 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode)
@@ -1485,7 +1485,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             Assertions.assertNotNull(analyzeResult.getPages());
             DocumentBarcode barcode =
                 analyzeResult.getPages().get(0).getBarcodes().get(0);
-            Assertions.assertEquals(DocumentBarcodeKind.CODE39, barcode.getKind());
+            Assertions.assertEquals(DocumentBarcodeKind.CODE_39, barcode.getKind());
         }, BARCODE_TIF);
     }
 }

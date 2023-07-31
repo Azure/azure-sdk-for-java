@@ -23,7 +23,7 @@ public final class ClassifierDocumentTypeDetails {
 
     /**
      * Get the trainingDataContentSource property: The source of the training data.
-     * It can be a {@link AzureBlobContentSource} or a {@link AzureBlobFileListContentSource}.
+     * It can be a {@link BlobContentSource} or a {@link BlobFileListContentSource}.
      * @return the trainingDataContentSource value.
      */
     public TrainingDataContentSource getTrainingDataContentSource() {

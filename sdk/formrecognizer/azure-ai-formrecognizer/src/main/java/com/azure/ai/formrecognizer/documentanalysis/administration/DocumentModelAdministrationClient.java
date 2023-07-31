@@ -5,8 +5,8 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobFileListContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
@@ -308,7 +308,7 @@ public final class DocumentModelAdministrationClient {
         String prefix, BuildDocumentModelOptions buildDocumentModelOptions,
         Context context) {
         Objects.requireNonNull(blobContainerUrl, "'blobContainerUrl' cannot be null.");
-        return beginBuildDocumentModelSync(new AzureBlobContentSource(blobContainerUrl).setPrefix(prefix), buildMode, buildDocumentModelOptions, context);
+        return beginBuildDocumentModelSync(new BlobContentSource(blobContainerUrl).setPrefix(prefix), buildMode, buildDocumentModelOptions, context);
     }
 
     /**
@@ -328,7 +328,7 @@ public final class DocumentModelAdministrationClient {
      *
      * DocumentModelDetails documentModelDetails
      *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;
-     *         new AzureBlobFileListContentSource&#40;blobContainerUrl, fileList&#41;,
+     *         new BlobFileListContentSource&#40;blobContainerUrl, fileList&#41;,
      *         DocumentModelBuildMode.TEMPLATE&#41;
      *     .getFinalResult&#40;&#41;;
      *
@@ -383,7 +383,7 @@ public final class DocumentModelAdministrationClient {
      *
      * DocumentModelDetails documentModelDetails
      *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;
-     *         new AzureBlobFileListContentSource&#40;blobContainerUrl, fileList&#41;,
+     *         new BlobFileListContentSource&#40;blobContainerUrl, fileList&#41;,
      *         DocumentModelBuildMode.TEMPLATE,
      *         new BuildDocumentModelOptions&#40;&#41;
      *             .setModelId&#40;modelId&#41;
@@ -441,16 +441,16 @@ public final class DocumentModelAdministrationClient {
         String finalModelId = modelId;
         context = enableSyncRestProxy(getTracingContext(context));
         Context finalContext = context;
-        if (trainingDataContentSource instanceof AzureBlobFileListContentSource) {
-            AzureBlobFileListContentSource azureBlobFileListContentSource = (AzureBlobFileListContentSource) trainingDataContentSource;
-            Objects.requireNonNull(azureBlobFileListContentSource.getContainerUrl(),
+        if (trainingDataContentSource instanceof BlobFileListContentSource) {
+            BlobFileListContentSource blobFileListContentSource = (BlobFileListContentSource) trainingDataContentSource;
+            Objects.requireNonNull(blobFileListContentSource.getContainerUrl(),
                 "'blobContainerUrl' is required.");
-            Objects.requireNonNull(azureBlobFileListContentSource.getFileList(),
+            Objects.requireNonNull(blobFileListContentSource.getFileList(),
                 "'fileList' is required.");
         }
-        if (trainingDataContentSource instanceof AzureBlobContentSource) {
-            AzureBlobContentSource azureBlobContentSource = (AzureBlobContentSource) trainingDataContentSource;
-            Objects.requireNonNull(azureBlobContentSource.getContainerUrl(),
+        if (trainingDataContentSource instanceof BlobContentSource) {
+            BlobContentSource blobContentSource = (BlobContentSource) trainingDataContentSource;
+            Objects.requireNonNull(blobContentSource.getContainerUrl(),
                 "'blobContainerUrl' is required.");
         }
         return SyncPoller.createPoller(
@@ -1253,8 +1253,8 @@ public final class DocumentModelAdministrationClient {
      * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new AzureBlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new AzureBlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
      *
      * DocumentClassifierDetails classifierDetails
      *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes&#41;
@@ -1264,9 +1264,9 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Classifier description: %s%n&quot;, classifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier created on: %s%n&quot;, classifierDetails.getCreatedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier expires on: %s%n&quot;, classifierDetails.getExpiresOn&#40;&#41;&#41;;
-     * classifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
-     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof AzureBlobContentSource&#41; &#123;
-     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;AzureBlobContentSource&#41; documentTypeDetails
+     * classifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
+     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getTrainingDataContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
@@ -1299,8 +1299,8 @@ public final class DocumentModelAdministrationClient {
      * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new AzureBlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new AzureBlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
      *
      * DocumentClassifierDetails classifierDetails
      *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes,
@@ -1314,9 +1314,9 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Classifier description: %s%n&quot;, classifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier created on: %s%n&quot;, classifierDetails.getCreatedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier expires on: %s%n&quot;, classifierDetails.getExpiresOn&#40;&#41;&#41;;
-     * classifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
-     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof AzureBlobContentSource&#41; &#123;
-     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;AzureBlobContentSource&#41; documentTypeDetails
+     * classifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
+     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getTrainingDataContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
@@ -1466,14 +1466,14 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, documentClassifierDetails.getClassifierId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Description: %s%n&quot;, documentClassifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Created on: %s%n&quot;, documentClassifierDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentClassifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
-     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof AzureBlobContentSource&#41; &#123;
-     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;AzureBlobContentSource&#41; documentTypeDetails
+     * documentClassifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
+     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getTrainingDataContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
      *     &#125;
-     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof AzureBlobFileListContentSource&#41; &#123;
+     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof BlobFileListContentSource&#41; &#123;
      *         System.out.printf&#40;&quot;Blob File List Source container Url: %s&quot;,
-     *             &#40;&#40;AzureBlobFileListContentSource&#41; documentTypeDetails
+     *             &#40;&#40;BlobFileListContentSource&#41; documentTypeDetails
      *                 .getTrainingDataContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
@@ -1504,14 +1504,14 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, documentClassifierDetails.getClassifierId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Description: %s%n&quot;, documentClassifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Created on: %s%n&quot;, documentClassifierDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentClassifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
-     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof AzureBlobContentSource&#41; &#123;
-     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;AzureBlobContentSource&#41; documentTypeDetails
+     * documentClassifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
+     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getTrainingDataContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
      *     &#125;
-     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof AzureBlobFileListContentSource&#41; &#123;
+     *     if &#40;documentTypeDetails.getTrainingDataContentSource&#40;&#41; instanceof BlobFileListContentSource&#41; &#123;
      *         System.out.printf&#40;&quot;Blob File List Source container Url: %s&quot;,
-     *             &#40;&#40;AzureBlobFileListContentSource&#41; documentTypeDetails
+     *             &#40;&#40;BlobFileListContentSource&#41; documentTypeDetails
      *                 .getTrainingDataContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
