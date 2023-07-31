@@ -687,7 +687,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("permissionAndKeySupplier")
+    @MethodSource("listFilesAndDirectoriesSupplier")
     public void listFilesAndDirectories(String[] expectedFiles, String[] expectedDirectories) {
         primaryDirectoryClient.create();
 
