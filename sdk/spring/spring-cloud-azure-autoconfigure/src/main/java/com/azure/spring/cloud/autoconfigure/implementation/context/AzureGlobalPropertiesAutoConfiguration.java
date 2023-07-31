@@ -4,7 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.implementation.context;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
@@ -43,6 +45,15 @@ public class AzureGlobalPropertiesAutoConfiguration {
                                                                                                 AzureGlobalProperties.class))
                                                     .getBeanDefinition());
             }
+        }
+
+    }
+
+    static class AzureGlobalPropertiesBeanRegistrationExcludeFilter implements BeanRegistrationExcludeFilter {
+
+        @Override
+        public boolean isExcludedFromAotProcessing(RegisteredBean registeredBean) {
+            return AZURE_GLOBAL_PROPERTY_BEAN_NAME.equals(registeredBean.getBeanName());
         }
 
     }
