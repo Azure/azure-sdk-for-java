@@ -109,7 +109,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final Sinks.Many<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final ScheduledThreadPoolExecutor executorService;
-    private final CosmosAsyncClient cosmosClient;
+    private final CosmosAsyncClient cosmosClient;-
     private final String bulkSpanName;
     private ScheduledFuture<?> scheduledFutureForFlush;
     private final String identifier = "BulkExecutor-" + instanceCount.incrementAndGet();
@@ -289,151 +289,151 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         return
             maxConcurrentCosmosPartitionsMono
-                .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                .flatMapMany(maxConcurrentCosmosPartitions -> {
+            .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+            .flatMapMany(maxConcurrentCosmosPartitions -> {
 
-                    logger.debug("BulkExecutor.execute with MaxConcurrentPartitions: {}, Context: {}",
-                        maxConcurrentCosmosPartitions,
-                        this.operationContextText);
+                logger.debug("BulkExecutor.execute with MaxConcurrentPartitions: {}, Context: {}",
+                    maxConcurrentCosmosPartitions,
+                    this.operationContextText);
 
-                    return this.inputOperations
-                        .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                        .onErrorContinue((throwable, o) ->
-                            logger.error("Skipping an error operation while processing {}. Cause: {}, Context: {}",
-                                o,
-                                throwable.getMessage(),
-                                this.operationContextText))
-                        .doOnNext((CosmosItemOperation cosmosItemOperation) -> {
+                return this.inputOperations
+                    .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .onErrorContinue((throwable, o) ->
+                        logger.error("Skipping an error operation while processing {}. Cause: {}, Context: {}",
+                            o,
+                            throwable.getMessage(),
+                            this.operationContextText))
+                    .doOnNext((CosmosItemOperation cosmosItemOperation) -> {
 
-                            // Set the retry policy before starting execution. Should only happens once.
-                            BulkExecutorUtil.setRetryPolicyForBulk(
-                                docClientWrapper,
-                                this.container,
-                                cosmosItemOperation,
-                                this.throttlingRetryOptions);
+                        // Set the retry policy before starting execution. Should only happens once.
+                        BulkExecutorUtil.setRetryPolicyForBulk(
+                            docClientWrapper,
+                            this.container,
+                            cosmosItemOperation,
+                            this.throttlingRetryOptions);
 
-                            if (cosmosItemOperation != FlushBuffersItemOperation.singleton()) {
-                                totalCount.incrementAndGet();
-                            }
+                        if (cosmosItemOperation != FlushBuffersItemOperation.singleton()) {
+                            totalCount.incrementAndGet();
+                        }
 
-                            logger.trace(
-                                "SetupRetryPolicy, {}, TotalCount: {}, Context: {}, {}",
-                                getItemOperationDiagnostics(cosmosItemOperation),
-                                totalCount.get(),
+                        logger.trace(
+                            "SetupRetryPolicy, {}, TotalCount: {}, Context: {}, {}",
+                            getItemOperationDiagnostics(cosmosItemOperation),
+                            totalCount.get(),
+                            this.operationContextText,
+                            getThreadInfo()
+                        );
+                    })
+                    .doOnComplete(() -> {
+                        mainSourceCompleted.set(true);
+
+                        long totalCountSnapshot = totalCount.get();
+                        logger.debug("Main source completed - # left items {}, Context: {}",
+                            totalCountSnapshot,
+                            this.operationContextText);
+                        if (totalCountSnapshot == 0) {
+                            // This is needed as there can be case that onComplete was called after last element was processed
+                            // So complete the sink here also if count is 0, if source has completed and count isn't zero,
+                            // then the last element in the doOnNext will close it. Sink doesn't mind in case of a double close.
+
+                            completeAllSinks();
+                        } else {
+                            this.cancelFlushTask();
+
+                            this.onFlush();
+
+                            long flushIntervalAfterDrainingIncomingFlux = Math.min(
+                                this.maxMicroBatchIntervalInMs,
+                                BatchRequestResponseConstants
+                                    .DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS);
+
+                            this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
+                                this::onFlush,
+                                flushIntervalAfterDrainingIncomingFlux,
+                                flushIntervalAfterDrainingIncomingFlux,
+                                TimeUnit.MILLISECONDS);
+
+                            logger.debug("Scheduled new flush operation {}, Context: {}", getThreadInfo(), this.operationContextText);
+                        }
+                    })
+                    .mergeWith(mainSink.asFlux())
+                    .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .flatMap(
+                        operation -> {
+                            logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
+                                getItemOperationDiagnostics(operation),
                                 this.operationContextText,
-                                getThreadInfo()
-                            );
+                                getThreadInfo());
+
+                            // resolve partition key range id again for operations which comes in main sink due to gone retry.
+                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
+                                                   .map((String pkRangeId) -> {
+                                                       PartitionScopeThresholds partitionScopeThresholds =
+                                                           this.partitionScopeThresholds.computeIfAbsent(
+                                                               pkRangeId,
+                                                               (newPkRangeId) -> new PartitionScopeThresholds(newPkRangeId, this.cosmosBulkExecutionOptions));
+
+                                                       logger.trace("Resolved PkRangeId, {}, PKRangeId: {} Context: {} {}",
+                                                           getItemOperationDiagnostics(operation),
+                                                           pkRangeId,
+                                                           this.operationContextText,
+                                                           getThreadInfo());
+
+                                                       return Pair.of(partitionScopeThresholds, operation);
+                                                   });
                         })
-                        .doOnComplete(() -> {
-                            mainSourceCompleted.set(true);
+                    .groupBy(Pair::getKey, Pair::getValue)
+                    .flatMap(
+                        this::executePartitionedGroup,
+                        maxConcurrentCosmosPartitions)
+                    .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
+                    .doOnNext(requestAndResponse -> {
 
-                            long totalCountSnapshot = totalCount.get();
-                            logger.debug("Main source completed - # left items {}, Context: {}",
-                                totalCountSnapshot,
-                                this.operationContextText);
-                            if (totalCountSnapshot == 0) {
-                                // This is needed as there can be case that onComplete was called after last element was processed
-                                // So complete the sink here also if count is 0, if source has completed and count isn't zero,
-                                // then the last element in the doOnNext will close it. Sink doesn't mind in case of a double close.
-
-                                completeAllSinks();
-                            } else {
-                                this.cancelFlushTask();
-
-                                this.onFlush();
-
-                                long flushIntervalAfterDrainingIncomingFlux = Math.min(
-                                    this.maxMicroBatchIntervalInMs,
-                                    BatchRequestResponseConstants
-                                        .DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS);
-
-                                this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
-                                    this::onFlush,
-                                    flushIntervalAfterDrainingIncomingFlux,
-                                    flushIntervalAfterDrainingIncomingFlux,
-                                    TimeUnit.MILLISECONDS);
-
-                                logger.debug("Scheduled new flush operation {}, Context: {}", getThreadInfo(), this.operationContextText);
-                            }
-                        })
-                        .mergeWith(mainSink.asFlux())
-                        .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                        .flatMap(
-                            operation -> {
-                                logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
-                                    getItemOperationDiagnostics(operation),
-                                    this.operationContextText,
-                                    getThreadInfo());
-
-                                // resolve partition key range id again for operations which comes in main sink due to gone retry.
-                                return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
-                                    .map((String pkRangeId) -> {
-                                        PartitionScopeThresholds partitionScopeThresholds =
-                                            this.partitionScopeThresholds.computeIfAbsent(
-                                                pkRangeId,
-                                                (newPkRangeId) -> new PartitionScopeThresholds(newPkRangeId, this.cosmosBulkExecutionOptions));
-
-                                        logger.trace("Resolved PkRangeId, {}, PKRangeId: {} Context: {} {}",
-                                            getItemOperationDiagnostics(operation),
-                                            pkRangeId,
-                                            this.operationContextText,
-                                            getThreadInfo());
-
-                                        return Pair.of(partitionScopeThresholds, operation);
-                                    });
-                            })
-                        .groupBy(Pair::getKey, Pair::getValue)
-                        .flatMap(
-                            this::executePartitionedGroup,
-                            maxConcurrentCosmosPartitions)
-                        .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
-                        .doOnNext(requestAndResponse -> {
-
-                            int totalCountAfterDecrement = totalCount.decrementAndGet();
-                            boolean mainSourceCompletedSnapshot = mainSourceCompleted.get();
-                            if (totalCountAfterDecrement == 0 && mainSourceCompletedSnapshot) {
-                                // It is possible that count is zero but there are more elements in the source.
-                                // Count 0 also signifies that there are no pending elements in any sink.
-                                logger.debug("All work completed, {}, TotalCount: {}, Context: {} {}",
-                                    getItemOperationDiagnostics(requestAndResponse.getOperation()),
-                                    totalCountAfterDecrement,
-                                    this.operationContextText,
-                                    getThreadInfo());
-                                completeAllSinks();
-                            } else {
-                                if (totalCountAfterDecrement == 0) {
-                                    logger.debug(
-                                        "No Work left - but mainSource not yet completed, Context: {} {}",
-                                        this.operationContextText,
-                                        getThreadInfo());
-                                }
-                                logger.trace(
-                                    "Work left - TotalCount after decrement: {}, main sink completed {}, {}, Context: {} {}",
-                                    totalCountAfterDecrement,
-                                    mainSourceCompletedSnapshot,
-                                    getItemOperationDiagnostics(requestAndResponse.getOperation()),
-                                    this.operationContextText,
-                                    getThreadInfo());
-                            }
-                        })
-                        .doOnComplete(() -> {
-                            int totalCountSnapshot = totalCount.get();
-                            boolean mainSourceCompletedSnapshot = mainSourceCompleted.get();
-                            if (totalCountSnapshot == 0 && mainSourceCompletedSnapshot) {
-                                // It is possible that count is zero but there are more elements in the source.
-                                // Count 0 also signifies that there are no pending elements in any sink.
-                                logger.debug("DoOnComplete: All work completed, Context: {}", this.operationContextText);
-                                completeAllSinks();
-                            } else {
+                        int totalCountAfterDecrement = totalCount.decrementAndGet();
+                        boolean mainSourceCompletedSnapshot = mainSourceCompleted.get();
+                        if (totalCountAfterDecrement == 0 && mainSourceCompletedSnapshot) {
+                            // It is possible that count is zero but there are more elements in the source.
+                            // Count 0 also signifies that there are no pending elements in any sink.
+                            logger.debug("All work completed, {}, TotalCount: {}, Context: {} {}",
+                                getItemOperationDiagnostics(requestAndResponse.getOperation()),
+                                totalCountAfterDecrement,
+                                this.operationContextText,
+                                getThreadInfo());
+                            completeAllSinks();
+                        } else {
+                            if (totalCountAfterDecrement == 0) {
                                 logger.debug(
-                                    "DoOnComplete: Work left - TotalCount after decrement: {}, main sink completed {}, Context: {} {}",
-                                    totalCountSnapshot,
-                                    mainSourceCompletedSnapshot,
+                                    "No Work left - but mainSource not yet completed, Context: {} {}",
                                     this.operationContextText,
                                     getThreadInfo());
                             }
-                        });
-                });
+                            logger.trace(
+                                "Work left - TotalCount after decrement: {}, main sink completed {}, {}, Context: {} {}",
+                                totalCountAfterDecrement,
+                                mainSourceCompletedSnapshot,
+                                getItemOperationDiagnostics(requestAndResponse.getOperation()),
+                                this.operationContextText,
+                                getThreadInfo());
+                        }
+                    })
+                    .doOnComplete(() -> {
+                        int totalCountSnapshot = totalCount.get();
+                        boolean mainSourceCompletedSnapshot = mainSourceCompleted.get();
+                        if (totalCountSnapshot == 0 && mainSourceCompletedSnapshot) {
+                            // It is possible that count is zero but there are more elements in the source.
+                            // Count 0 also signifies that there are no pending elements in any sink.
+                            logger.debug("DoOnComplete: All work completed, Context: {}", this.operationContextText);
+                            completeAllSinks();
+                        } else {
+                            logger.debug(
+                                "DoOnComplete: Work left - TotalCount after decrement: {}, main sink completed {}, Context: {} {}",
+                                totalCountSnapshot,
+                                mainSourceCompletedSnapshot,
+                                this.operationContextText,
+                                getThreadInfo());
+                        }
+                    });
+            });
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executePartitionedGroup(
@@ -586,7 +586,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     .fromIterable(response.getResults())
                     .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
                     .flatMap((CosmosBatchOperationResult result) ->
-                        handleTransactionalBatchOperationResult(response, result, groupSink, thresholds)))
+                    handleTransactionalBatchOperationResult(response, result, groupSink, thresholds)))
             .onErrorResume((Throwable throwable) -> {
 
                 if (!(throwable instanceof Exception)) {
