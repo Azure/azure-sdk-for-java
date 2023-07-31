@@ -193,7 +193,7 @@ class AdministrationModelConverter {
 
         if (ruleOptions != null) {
             if (ruleOptions.getFilter() == null) {
-                throw new IllegalArgumentException("'RuleFilter' cannot be null.");
+                throw logger.logExceptionAsError(new IllegalArgumentException("'RuleFilter' cannot be null."));
             }
 
             final RuleDescriptionImpl rule = new RuleDescriptionImpl()
