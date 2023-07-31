@@ -13,6 +13,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink.SessionProperties;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
@@ -41,19 +42,20 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
     private final MessageFlux messageFlux;
 
     ServiceBusSingleSessionManager(ClientLogger logger, ServiceBusTracer tracer, String identifier,
-        String sessionId, ServiceBusReceiveLink sessionLink, Duration maxSessionLockRenew, int prefetch,
+        SessionProperties sessionProperties, ServiceBusReceiveLink sessionLink, Duration maxSessionLockRenew, int prefetch,
         Mono<ServiceBusManagementNode> managementNode, MessageSerializer serializer, AmqpRetryOptions retryOptions) {
         this.logger = Objects.requireNonNull(logger, "logger cannot be null.");
         Objects.requireNonNull(tracer,  "tracer cannot be null.");
         this.identifier = identifier;
-        this.sessionId = Objects.requireNonNull(sessionId, "sessionId cannot be null.");
+        Objects.requireNonNull(sessionProperties, "sessionProperties cannot be null.");
+        this.sessionId = sessionProperties.getSessionId();
         Objects.requireNonNull(sessionLink, "sessionLink cannot be null.");
         Objects.requireNonNull(maxSessionLockRenew, "maxSessionLockRenew cannot be null.");
         Objects.requireNonNull(managementNode, "managementNode cannot be null.");
         this.serializer = Objects.requireNonNull(serializer, "serializer cannot be null.");
         Objects.requireNonNull(retryOptions, "retryOptions cannot be null.");
         this.operationTimeout = retryOptions.getTryTimeout();
-        this.sessionReceiver = new ServiceBusSessionReactorReceiver(logger, tracer, managementNode, sessionId, sessionLink, maxSessionLockRenew, null);
+        this.sessionReceiver = new ServiceBusSessionReactorReceiver(logger, tracer, managementNode, sessionProperties, sessionLink, maxSessionLockRenew, null);
         final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream = new SessionReceiverStream(sessionReceiver).flux();
         this.messageFlux = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven, NULL_RETRY_POLICY);
     }
