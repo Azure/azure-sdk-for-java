@@ -466,8 +466,7 @@ public class SessionsMessagePumpIsolatedTest {
         final ArrayList<Message> messages = new ArrayList<>(messagesMap.keySet());
 
         final ServiceBusReceiveLink sessionLink = mock(ServiceBusReceiveLink.class);
-        when(sessionLink.getSessionId()).thenReturn(Mono.just(sessionId));
-        when(sessionLink.getSessionLockedUntil()).thenReturn(Mono.empty());
+        when(sessionLink.getSessionProperties()).thenReturn(Mono.just(new ServiceBusReceiveLink.SessionProperties(sessionId, null)));
         final AtomicBoolean isClosed = new AtomicBoolean(false);
         when(sessionLink.closeAsync()).thenAnswer(__ -> {
             isClosed.set(true);
@@ -487,7 +486,7 @@ public class SessionsMessagePumpIsolatedTest {
         when(sessionLink.receive()).thenReturn(messagesPublisher.flux());
         when(sessionLink.getEndpointStates()).thenReturn(endpointStates.flux());
 
-        return new Session(sessionId, sessionLink);
+        return new Session(sessionLink, new ServiceBusReceiveLink.SessionProperties(sessionId, null));
     }
 
     private static ServiceBusSessionAcquirer createMockSessionAcquirer(Session... sessionsArray) {
