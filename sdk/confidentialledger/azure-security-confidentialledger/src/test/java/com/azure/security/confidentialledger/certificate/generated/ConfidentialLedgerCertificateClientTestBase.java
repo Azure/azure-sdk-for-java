@@ -8,8 +8,9 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerEnvironment;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
@@ -19,7 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
-class ConfidentialLedgerCertificateClientTestBase extends TestBase {
+class ConfidentialLedgerCertificateClientTestBase extends TestProxyTestBase {
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     protected ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient;

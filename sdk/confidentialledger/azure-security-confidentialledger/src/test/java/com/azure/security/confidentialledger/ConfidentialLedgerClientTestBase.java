@@ -12,8 +12,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.ProxyOptionsTransport;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
@@ -27,14 +28,21 @@ import reactor.core.publisher.Mono;
 
 import javax.net.ssl.SSLException;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.PublicKey;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class ConfidentialLedgerClientTestBase extends TestBase {
+class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
+
     protected static final String TRANSACTION_ID = "transactionId";
     protected static final String COLLECTION_ID = "collectionId";
     protected static final BinaryData BINARY_DATA =
@@ -79,6 +87,17 @@ class ConfidentialLedgerClientTestBase extends TestBase {
         }
 
         String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+        CertificateFactory fact = null;
+        try {
+            fact = CertificateFactory.getInstance("X.509");
+            // FileInputStream is = new FileInputStream(Arrays.toString(ledgerTlsCertificate.toCharArray()));
+            X509Certificate cer = (X509Certificate) fact.generateCertificate(identityResponse.toStream());
+            PublicKey key = cer.getPublicKey();
+            // is.close();
+            interceptorManager.setProxyRecordingOptions(new ProxyOptionsTransport().setTLSValidationCertPath(key.toString()));
+        } catch (CertificateException e) {
+            throw new RuntimeException(e);
+        }
 
         reactor.netty.http.client.HttpClient reactorClient = null;
 
