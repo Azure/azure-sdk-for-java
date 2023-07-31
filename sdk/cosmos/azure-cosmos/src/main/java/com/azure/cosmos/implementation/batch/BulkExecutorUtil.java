@@ -151,25 +151,25 @@ final class BulkExecutorUtil {
                     itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
                     return docClientWrapper.getPartitionKeyRangeCache()
-                         .tryLookupAsync(null, collection.getResourceId(), null, null)
-                         .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
+                        .tryLookupAsync(null, collection.getResourceId(), null, null)
+                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
-                             if (routingMap.v == null) {
-                                 collectionBeforeRecreation.set(collection);
-                                 throw new CollectionRoutingMapNotFoundException(
+                            if (routingMap.v == null) {
+                                collectionBeforeRecreation.set(collection);
+                                throw new CollectionRoutingMapNotFoundException(
                                     String.format(
-                                          "No collection routing map found for container %s(%s) in database %s.",
+                                        "No collection routing map found for container %s(%s) in database %s.",
                                         container.getId(),
                                         collection.getResourceId(),
                                         container.getDatabase().getId())
                                         );
-                             }
+                            }
 
-                             return routingMap.v.getRangeByEffectivePartitionKey(
-                                 getEffectivePartitionKeyString(
-                                 partitionKeyInternal,
-                                 definition)).getId();
-                         });
+                            return routingMap.v.getRangeByEffectivePartitionKey(
+                                getEffectivePartitionKeyString(
+                                    partitionKeyInternal,
+                                    definition)).getId();
+                        });
                 }))
                 .retryWhen(Retry
                     .fixedDelay(
