@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -79,6 +80,18 @@ public final class AnalyzeDocumentOptions {
      */
     public AnalyzeDocumentOptions setDocumentAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
         this.documentAnalysisFeatures = documentAnalysisFeatures;
+        return this;
+    }
+
+    /**
+     * Set optional analysis features.
+     * @param documentAnalysisFeatures List of optional analysis features.
+     * @return the updated {@code AnalyzeDocumentOptions} value.
+     */
+    public AnalyzeDocumentOptions setDocumentAnalysisFeatures(DocumentAnalysisFeature... documentAnalysisFeatures) {
+        if (documentAnalysisFeatures != null) {
+            this.documentAnalysisFeatures = Arrays.asList(documentAnalysisFeatures);
+        }
         return this;
     }
 }
