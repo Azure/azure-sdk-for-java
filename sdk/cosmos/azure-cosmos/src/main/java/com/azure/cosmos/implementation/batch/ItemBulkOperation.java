@@ -13,6 +13,8 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 
+import java.util.Objects;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -170,5 +172,18 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
             return this.index - bulkOperation.index;
         }
         return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemBulkOperation<?, ?> that = (ItemBulkOperation<?, ?>) o;
+        return index == that.index && Objects.equals(item, that.item) && Objects.equals(context, that.context) && Objects.equals(id, that.id) && Objects.equals(partitionKey, that.partitionKey) && operationType == that.operationType && Objects.equals(requestOptions, that.requestOptions) && Objects.equals(partitionKeyJson, that.partitionKeyJson) && Objects.equals(bulkOperationRetryPolicy, that.bulkOperationRetryPolicy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(item, context, id, partitionKey, operationType, requestOptions, partitionKeyJson, bulkOperationRetryPolicy, index);
     }
 }

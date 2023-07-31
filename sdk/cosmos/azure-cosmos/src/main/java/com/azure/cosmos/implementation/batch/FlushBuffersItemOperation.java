@@ -53,4 +53,14 @@ public class FlushBuffersItemOperation extends CosmosItemOperationBase implement
     public int compareTo(CosmosItemOperation operation) {
         return 0;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

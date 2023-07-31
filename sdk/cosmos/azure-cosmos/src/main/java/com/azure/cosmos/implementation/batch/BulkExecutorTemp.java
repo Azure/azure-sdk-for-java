@@ -119,9 +119,9 @@ public final class BulkExecutorTemp<TContext> implements Disposable {
     private final boolean preserveOrdering;
     private final Map<CosmosItemIdentity, StatusQueue<TContext>> failedItems;
     private final AtomicInteger preserveOrderingIndex;
-    private final String preserveOrderingExceptionMessage = "Failed due to a previous operation failing with an exception that should not be retried with the same id and partition key. This is unique to the preserve ordering flag.";
+    private static final String preserveOrderingExceptionMessage = "Failed due to a previous operation failing with an exception that should not be retried with the same id and partition key. This is unique to the preserve ordering flag.";
     // Would this be an option in cosmosBulkExecutionOptions. If not how much memory should we give this.
-    private final int preserveOrderingWindowSize = 50;
+    private static final int preserveOrderingWindowSize = 50;
 
     public BulkExecutorTemp(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
