@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink.SessionProperties;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
@@ -39,10 +40,11 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     private final FluxSink<Boolean> idleTimerSink = idleTimerProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Disposable.Composite disposables = Disposables.composite();
 
-    ServiceBusSessionReactorReceiver(ClientLogger logger, ServiceBusTracer tracer, Mono<ServiceBusManagementNode> managementNode,
-        String sessionId, ServiceBusReceiveLink sessionLink, Duration maxSessionLockRenew, Duration sessionIdleTimeout) {
+    ServiceBusSessionReactorReceiver(ClientLogger logger, ServiceBusTracer tracer,
+        Mono<ServiceBusManagementNode> managementNode, SessionProperties sessionProperties,
+        ServiceBusReceiveLink sessionLink, Duration maxSessionLockRenew, Duration sessionIdleTimeout) {
         this.logger = logger;
-        this.sessionId = sessionId;
+        this.sessionId = sessionProperties.getSessionId();
         this.sessionLink = sessionLink;
         this.hasIdleTimeout = sessionIdleTimeout != null;
         if (hasIdleTimeout) {
@@ -54,21 +56,20 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
                     idleTimeoutSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
                 }));
         }
-        this.disposables.add(sessionLink.getSessionLockedUntil()
-            .doOnNext(lockedUntil -> {
-                // Function, when invoked, renews the session lock once.
-                final Function<String, Mono<OffsetDateTime>> lockRenewFunc = __ -> {
-                    return managementNode.flatMap(mgmt -> {
-                        final Mono<OffsetDateTime> renewLock = mgmt.renewSessionLock(sessionId, sessionLink.getLinkName());
-                        return tracer.traceMono("ServiceBus.renewSessionLock", renewLock);
-                    });
-                };
-                // The operation that recurs renewal using the above 'lockRenewFunc' function.
-                final LockRenewalOperation recurringLockRenew = new LockRenewalOperation(sessionId, maxSessionLockRenew,
-                    true, lockRenewFunc, lockedUntil);
-                this.disposables.add(recurringLockRenew);
-            })
-            .subscribe());
+        final OffsetDateTime lockedUntil = sessionProperties.getSessionLockedUntil();
+        if (lockedUntil != null) {
+            // Function, when invoked, renews the session lock once.
+            final Function<String, Mono<OffsetDateTime>> lockRenewFunc = __ -> {
+                return managementNode.flatMap(mgmt -> {
+                    final Mono<OffsetDateTime> renewLock = mgmt.renewSessionLock(sessionId, sessionLink.getLinkName());
+                    return tracer.traceMono("ServiceBus.renewSessionLock", renewLock);
+                });
+            };
+            // The operation that recurs renewal using the above 'lockRenewFunc' function.
+            final LockRenewalOperation recurringLockRenew = new LockRenewalOperation(sessionId, maxSessionLockRenew,
+                true, lockRenewFunc, lockedUntil);
+            this.disposables.add(recurringLockRenew);
+        }
     }
 
     public String getSessionId() {
