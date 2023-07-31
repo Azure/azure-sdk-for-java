@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
@@ -39,6 +40,7 @@ public final class IdentityClientOptions implements Cloneable {
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
     private String authorityHost;
+    private BrowserCustomizationOptions browserCustomizationOptions;
     private String imdsAuthorityHost;
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
@@ -79,6 +81,7 @@ public final class IdentityClientOptions implements Cloneable {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         loadFromConfiguration(configuration);
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
+        browserCustomizationOptions = new BrowserCustomizationOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
         perCallPolicies = new ArrayList<>();
@@ -668,6 +671,15 @@ public final class IdentityClientOptions implements Cloneable {
     public IdentityClientOptions disableInstanceDiscovery() {
         this.instanceDiscovery = false;
         return this;
+    }
+
+    public IdentityClientOptions setBrowserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+        this.browserCustomizationOptions = browserCustomizationOptions;
+        return this;
+    }
+
+    public BrowserCustomizationOptions getBrowserCustomizationOptions() {
+        return this.browserCustomizationOptions;
     }
 
     /**

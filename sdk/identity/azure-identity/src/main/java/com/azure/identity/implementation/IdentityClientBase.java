@@ -27,24 +27,14 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
-import com.microsoft.aad.msal4j.AppTokenProviderParameters;
-import com.microsoft.aad.msal4j.ClaimsRequest;
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
-import com.microsoft.aad.msal4j.IClientCredential;
-import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.OnBehalfOfParameters;
-import com.microsoft.aad.msal4j.Prompt;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.TokenProviderResult;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.*;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
@@ -443,7 +433,7 @@ public abstract class IdentityClientBase {
         return builder.build();
     }
 
-    InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
+    InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri, BrowserCustomizationOptions browserCustomizationOptions) {
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
             InteractiveRequestParameters.builder(redirectUri)
                 .scopes(new HashSet<>(request.getScopes()))
@@ -454,6 +444,18 @@ public abstract class IdentityClientBase {
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             builder.claims(customClaimRequest);
+        }
+
+        if (IdentityUtil.browserCustomizationOptionsPresent(browserCustomizationOptions)) {
+            SystemBrowserOptions.SystemBrowserOptionsBuilder browserOptionsBuilder =  SystemBrowserOptions.builder();
+            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getHtmlMessageSuccess())) {
+                browserOptionsBuilder.htmlMessageSuccess(browserCustomizationOptions.getHtmlMessageSuccess());
+            }
+
+            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getHtmlMessageError())) {
+                browserOptionsBuilder.htmlMessageError(browserCustomizationOptions.getHtmlMessageError());
+            }
+            builder.systemBrowserOptions(browserOptionsBuilder.build());
         }
 
         if (loginHint != null) {

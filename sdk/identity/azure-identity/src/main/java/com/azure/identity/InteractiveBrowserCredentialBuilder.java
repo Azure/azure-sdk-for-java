@@ -197,6 +197,11 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
         return this;
     }
 
+    public InteractiveBrowserCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+        this.identityClientOptions.setBrowserCustomizationOptions(browserCustomizationOptions);
+        return this;
+    }
+
     /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
@@ -209,4 +214,6 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
         return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
             loginHint, identityClientOptions);
     }
+
+
 }

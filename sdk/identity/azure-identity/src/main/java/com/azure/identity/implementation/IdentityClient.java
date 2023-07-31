@@ -767,7 +767,8 @@ public class IdentityClient extends IdentityClientBase {
         } catch (URISyntaxException e) {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
-        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = buildInteractiveRequestParameters(request, loginHint, redirectUri);
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
+            buildInteractiveRequestParameters(request, loginHint, redirectUri, options.getBrowserCustomizationOptions());
 
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
                                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));

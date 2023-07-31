@@ -302,7 +302,11 @@ public class IdentitySyncClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
-        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = buildInteractiveRequestParameters(request, loginHint, redirectUri);
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
+            buildInteractiveRequestParameters(request, loginHint, redirectUri, options.getBrowserCustomizationOptions());
+
+
+
 
         PublicClientApplication pc =  publicClientApplicationAccessor.getValue();
         try {
