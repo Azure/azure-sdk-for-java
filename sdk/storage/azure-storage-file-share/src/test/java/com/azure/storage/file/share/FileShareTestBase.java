@@ -4,12 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -40,10 +35,15 @@ import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
 import okhttp3.ConnectionPool;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -54,6 +54,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -70,6 +71,9 @@ public class FileShareTestBase extends TestProxyTestBase {
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
         .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
         .build();
+
+    protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
     protected String prefix;
 
@@ -461,13 +465,13 @@ public class FileShareTestBase extends TestProxyTestBase {
      * @return Whether or not the header values are appropriate.
      */
     protected boolean validateBasicHeaders(HttpHeaders headers) {
-        return headers.getValue("etag") != null
+        return headers.getValue(HttpHeaderName.ETAG) != null
             // Quotes should be scrubbed from etag header values
-            && !headers.getValue("etag").contains("\"")
-            && headers.getValue("last-modified") != null
-            && headers.getValue("x-ms-request-id") != null
-            && headers.getValue("x-ms-version") != null
-            && headers.getValue("date") != null;
+            && !headers.getValue(HttpHeaderName.ETAG).contains("\"")
+            && headers.getValue(HttpHeaderName.LAST_MODIFIED) != null
+            && headers.getValue(X_MS_REQUEST_ID) != null
+            && headers.getValue(X_MS_VERSION) != null
+            && headers.getValue(HttpHeaderName.DATE) != null;
     }
 
     protected String setupShareLeaseCondition(ShareClient sc, String leaseID) {
@@ -491,9 +495,8 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T, E extends Exception> T retry(
-        Supplier<T> action, Predicate<E> retryPredicate,
-        int times, Duration delay) throws E, InterruptedException {
+    public static <T, E extends Exception> T retry(Supplier<T> action, Predicate<E> retryPredicate, int times,
+        Duration delay) throws E, InterruptedException {
         for (int i = 0; i < times; i++) {
             try {
                 return action.get();
@@ -521,6 +524,39 @@ public class FileShareTestBase extends TestProxyTestBase {
                 return HttpPipelinePosition.PER_CALL;
             }
         };
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    protected class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            HttpRequest request = httpPipelineCallContext.getHttpRequest();
+            String key = request.getUrl().toString();
+            // Make sure that failure happens once per url.
+            if (failureTracker.getOrDefault(key, false)) {
+                return httpPipelineNextPolicy.process();
+            } else {
+                failureTracker.put(key, true);
+                return request.getBody().flatMap(byteBuffer -> {
+                    // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                    byteBuffer.get();
+                    return Flux.just(byteBuffer);
+                }).reduce(0L, (a, byteBuffer) -> a + byteBuffer.remaining()).flatMap(aLong -> {
+                    // Throw retry-able error.
+                    return Mono.error(new IOException("KABOOM!"));
+                });
+            }
+        }
+    }
+
+    protected InputStream getInputStream(byte[] data) {
+        return new ByteArrayInputStream(data);
     }
 
     /**
@@ -553,6 +589,10 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static boolean olderThan20200210ServiceVersion() {
         return olderThan(ShareServiceVersion.V2020_02_10);
+    }
+
+    protected static boolean olderThan20201002ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2020_10_02);
     }
 
     protected static boolean olderThan20210608ServiceVersion() {
