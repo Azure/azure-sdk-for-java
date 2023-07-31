@@ -829,12 +829,12 @@ public class Transforms {
                 = innerClassifier.getAzureBlobSource();
             classifierDocumentTypeDetails =
                 new ClassifierDocumentTypeDetails(new BlobContentSource(blobContentSource.getContainerUrl())
-                .setPrefix(blobContentSource.getPrefix()));
+                .setPrefix(blobContentSource.getPrefix()), sourceKind);
         } else if (innerClassifier.getAzureBlobFileListSource() != null) {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource listSource
                 = innerClassifier.getAzureBlobFileListSource();
             classifierDocumentTypeDetails = new ClassifierDocumentTypeDetails(
-                new BlobFileListContentSource(listSource.getContainerUrl(), listSource.getFileList()));
+                new BlobFileListContentSource(listSource.getContainerUrl(), listSource.getFileList()), sourceKind);
         }
         return classifierDocumentTypeDetails;
     }

@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.ContentSourceKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.annotation.Fluent;
 
@@ -12,13 +13,16 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class ClassifierDocumentTypeDetails {
     private final TrainingDataContentSource trainingDataContentSource;
+    private final ContentSourceKind sourceKind;
 
     /**
      * Creates an instance of ClassifierDocumentTypeDetails class.
+     *
      * @param source the source of the training data.
      */
-    public ClassifierDocumentTypeDetails(TrainingDataContentSource source) {
+    public ClassifierDocumentTypeDetails(TrainingDataContentSource source, ContentSourceKind sourceKind) {
         this.trainingDataContentSource = source;
+        this.sourceKind = sourceKind;
     }
 
     /**
@@ -28,5 +32,13 @@ public final class ClassifierDocumentTypeDetails {
      */
     public TrainingDataContentSource getTrainingDataContentSource() {
         return trainingDataContentSource;
+    }
+
+    /**
+     * Get type of training data source.
+     * @return the sourceKind value.
+     */
+    public ContentSourceKind getSourceKind() {
+        return sourceKind;
     }
 }
