@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 /**
- * Interface for JsonWriter.
+ * Interface for JsonWriters.
  */
 interface IJsonWriter {
 
@@ -56,7 +56,7 @@ interface IJsonWriter {
      *
      * @param fieldName The UTF-8 field name to write.
      */
-    void writeFieldName(Utf8Span fieldName); //todo: Utf8Span
+    void writeFieldName(Utf8Span fieldName);
 
     /**
      * Writes a string to the internal buffer.
@@ -70,7 +70,7 @@ interface IJsonWriter {
      *
      * @param value The UTF-8 value to write.
      */
-    void writeStringValue(Utf8Span value); //todo: Utf8Span
+    void writeStringValue(Utf8Span value);
 
     /**
      * Writes a number to the internal buffer.

@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 /**
- * Interface for JsonReader.
+ * Interface for JsonReaders.
  */
 interface IJsonReader {
 
@@ -50,7 +50,7 @@ interface IJsonReader {
      *
      * @return The next JSON token from the JsonReader as a string.
      */
-    UtfAnyString getStringValue(); //todo: UtfAnyString
+    UtfAnyString getStringValue();
 
     /**
      * Tries to get the buffered UTF-8 string value.
@@ -58,7 +58,7 @@ interface IJsonReader {
      * @param value The buffered UTF-8 string value if found.
      * @return {@code true} if the buffered UTF-8 string value was retrieved; {@code false} otherwise.
      */
-    boolean tryGetBufferedStringValue(Utf8Memory value); //todo: Utf8Memory
+    boolean tryGetBufferedStringValue(Utf8Memory value);
 
     /**
      * Gets the next JSON token from the JsonReader as a 1 byte signed integer.

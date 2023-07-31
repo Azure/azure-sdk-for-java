@@ -6,8 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 /**
- * Base abstract class for JSON navigators.
- * The navigator defines methods that allow random access to JSON document nodes.
+ * Interface for JsonNavigators.
  */
 interface IJsonNavigator {
 
@@ -48,7 +47,7 @@ interface IJsonNavigator {
      * @param value      The buffered string value if possible.
      * @return {@code true} if the JsonNavigator successfully got the buffered string value; {@code false} if the JsonNavigator failed to get the buffered string value.
      */
-    boolean tryGetBufferedStringValue(IJsonNavigatorNode stringNode, Utf8Memory value); //todo: find/build Java UTF8Memory equivalent
+    boolean tryGetBufferedStringValue(IJsonNavigatorNode stringNode, Utf8Memory value);
 
     /**
      * Gets a string value from a node.
@@ -56,7 +55,7 @@ interface IJsonNavigator {
      * @param stringNode The node to get the string value from.
      * @return The string value from the node.
      */
-    UtfAnyString getStringValue(IJsonNavigatorNode stringNode); //todo: find/build Java UtfAnyString equivalent
+    UtfAnyString getStringValue(IJsonNavigatorNode stringNode);
 
     /**
      * Gets the numeric value for a node as a signed byte.

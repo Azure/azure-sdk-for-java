@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.json;
 
-class Number64 {
+class Utf8Span {
     //TODO
 }
