@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for NetworkWatchers UpdateTags. */
 public final class NetworkWatchersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkWatcherUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherUpdateTags.json
      */
     /**
      * Sample code: Update network watcher tags.

@@ -15,6 +15,9 @@ import java.util.List;
 @JsonTypeName("manual-reclassify")
 @Fluent
 public final class ManualReclassifyExceptionAction extends ExceptionAction {
+    /** Creates an instance of ManualReclassifyExceptionAction class. */
+    public ManualReclassifyExceptionAction() {}
+
     /*
      * Updated QueueId.
      */

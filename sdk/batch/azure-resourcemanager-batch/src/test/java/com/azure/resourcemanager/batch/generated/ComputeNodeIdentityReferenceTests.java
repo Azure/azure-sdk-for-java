@@ -7,20 +7,19 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.ComputeNodeIdentityReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeNodeIdentityReferenceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeNodeIdentityReference model =
-            BinaryData.fromString("{\"resourceId\":\"zlhjxrifkwmrvkt\"}").toObject(ComputeNodeIdentityReference.class);
-        Assertions.assertEquals("zlhjxrifkwmrvkt", model.resourceId());
+            BinaryData.fromString("{\"resourceId\":\"esaagdfm\"}").toObject(ComputeNodeIdentityReference.class);
+        Assertions.assertEquals("esaagdfm", model.resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        ComputeNodeIdentityReference model = new ComputeNodeIdentityReference().withResourceId("zlhjxrifkwmrvkt");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ComputeNodeIdentityReference model = new ComputeNodeIdentityReference().withResourceId("esaagdfm");
         model = BinaryData.fromObject(model).toObject(ComputeNodeIdentityReference.class);
-        Assertions.assertEquals("zlhjxrifkwmrvkt", model.resourceId());
+        Assertions.assertEquals("esaagdfm", model.resourceId());
     }
 }

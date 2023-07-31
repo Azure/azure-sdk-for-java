@@ -150,7 +150,7 @@ public class AddressEnumeratorTests {
                 lastUnknownTimestampField.set(testUri, time);
                 break;
             case Unhealthy:
-                Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
+                Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
                 lastUnhealthyTimestampField.setAccessible(true);
                 lastUnhealthyTimestampField.set(testUri, time);
                 break;

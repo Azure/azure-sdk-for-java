@@ -7,17 +7,15 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for AccessControlLists Delete. */
 public final class AccessControlListsDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/AccessControlLists_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/AccessControlLists_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: AccessControlLists_Delete_MinimumSet_Gen.
+     * Sample code: AccessControlLists_Delete_MaximumSet_Gen.
      *
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
-    public static void accessControlListsDeleteMinimumSetGen(
+    public static void accessControlListsDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .accessControlLists()
-            .deleteByResourceGroupWithResponse("subscriptionId", "aclOne", com.azure.core.util.Context.NONE);
+        manager.accessControlLists().delete("example-rg", "example-acl", com.azure.core.util.Context.NONE);
     }
 }

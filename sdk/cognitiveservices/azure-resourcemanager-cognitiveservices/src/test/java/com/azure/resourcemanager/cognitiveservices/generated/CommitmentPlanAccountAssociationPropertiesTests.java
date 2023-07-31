@@ -13,16 +13,16 @@ public final class CommitmentPlanAccountAssociationPropertiesTests {
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationProperties model =
             BinaryData
-                .fromString("{\"accountId\":\"jdcngqqm\"}")
+                .fromString("{\"accountId\":\"rddh\"}")
                 .toObject(CommitmentPlanAccountAssociationProperties.class);
-        Assertions.assertEquals("jdcngqqm", model.accountId());
+        Assertions.assertEquals("rddh", model.accountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommitmentPlanAccountAssociationProperties model =
-            new CommitmentPlanAccountAssociationProperties().withAccountId("jdcngqqm");
+            new CommitmentPlanAccountAssociationProperties().withAccountId("rddh");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationProperties.class);
-        Assertions.assertEquals("jdcngqqm", model.accountId());
+        Assertions.assertEquals("rddh", model.accountId());
     }
 }

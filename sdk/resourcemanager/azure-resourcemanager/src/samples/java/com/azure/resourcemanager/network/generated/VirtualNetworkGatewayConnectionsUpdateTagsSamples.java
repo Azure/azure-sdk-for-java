@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkGatewayConnections UpdateTags. */
 public final class VirtualNetworkGatewayConnectionsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkGatewayConnectionUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkGatewayConnectionUpdateTags.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGatewayConnectionTags.

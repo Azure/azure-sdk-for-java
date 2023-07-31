@@ -6,7 +6,6 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricControllerPatchableProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,10 @@ import java.util.Map;
 /**
  * Network Fabric Controller patch parameters
  *
- * <p>The NetworkFabricControllerPatch payload definition.
+ * <p>The Network Fabric Controller Patch payload definition.
  */
 @Fluent
-public final class NetworkFabricControllerPatch {
+public final class NetworkFabricControllerPatch extends TagsUpdate {
     /*
      * Network Fabric Controller updatable properties
      *
@@ -25,13 +24,6 @@ public final class NetworkFabricControllerPatch {
      */
     @JsonProperty(value = "properties")
     private NetworkFabricControllerPatchableProperties innerProperties;
-
-    /*
-     * Azure resource tags that will replace the existing ones.
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of NetworkFabricControllerPatch class. */
     public NetworkFabricControllerPatch() {
@@ -48,23 +40,10 @@ public final class NetworkFabricControllerPatch {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Azure resource tags that will replace the existing ones.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Azure resource tags that will replace the existing ones.
-     *
-     * @param tags the tags value to set.
-     * @return the NetworkFabricControllerPatch object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public NetworkFabricControllerPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
@@ -129,7 +108,9 @@ public final class NetworkFabricControllerPatch {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

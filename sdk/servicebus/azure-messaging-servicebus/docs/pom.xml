@@ -20,29 +20,29 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-servicebus</artifactId>
-            <version>7.15.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+            <version>7.15.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.19.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+            <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.19.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+            <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.19.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+            <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-jsr223</artifactId>
-            <version>4.0.10</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
+            <version>3.0.17</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
             <scope>runtime</scope>
         </dependency>
 
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.6</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+            <version>1.2.12</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.codehaus.janino</groupId>

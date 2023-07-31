@@ -32,20 +32,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>bintray</id>
-      <name>Groovy Bintray</name>
-      <url>https://dl.bintray.com/groovy/maven</url>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-
   <dependencies>
     <dependency>
       <groupId>com.microsoft.rest.v2</groupId>
@@ -56,7 +42,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>2.0.7</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
     <dependency>

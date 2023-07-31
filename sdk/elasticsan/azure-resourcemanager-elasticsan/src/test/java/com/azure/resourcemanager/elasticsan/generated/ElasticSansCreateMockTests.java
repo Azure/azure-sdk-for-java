@@ -37,7 +37,7 @@ public final class ElasticSansCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"nuqqkpikadrgvt\",\"agnb\",\"ynhijggme\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":3996731828739891249,\"extendedCapacitySizeTiB\":2578720957092092730,\"totalVolumeSizeGiB\":3371222467349281870,\"volumeGroupCount\":7973446433897202047,\"totalIops\":4751429642100442648,\"totalMBps\":7222768982101103933,\"totalSizeTiB\":4980695192319165499},\"location\":\"mpxttdbhrbnlankx\",\"tags\":{\"bhenbtkcxywnyt\":\"k\",\"qidybyx\":\"rsyn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\"},\"id\":\"nyyazttbtwwrqpue\",\"name\":\"ckzywbiexzfeyue\",\"type\":\"xibxujwbhqwalm\"}";
+            "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"skfc\",\"tq\",\"miekkezzikhlyfjh\",\"gqggebdunygae\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":8623333094540637378,\"extendedCapacitySizeTiB\":7064706580171927315,\"totalVolumeSizeGiB\":6620237582798297782,\"volumeGroupCount\":2223326609364776386,\"totalIops\":6269428665110751573,\"totalMBps\":3059787385770886832,\"totalSizeTiB\":8763898175289325999,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"dmjsjqb\",\"hhyxxrw\",\"yc\",\"duhpk\"]},\"id\":\"gymare\",\"name\":\"n\",\"type\":\"jxqugjhky\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gssofwq\",\"zqalkrmnjijpx\",\"cqqudf\",\"byxbaaabjy\"]},\"id\":\"yffimrzrtuzqogs\",\"name\":\"xnevfdnwn\",\"type\":\"mewzsyyc\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"bjudpfrxtrthzv\"]},\"id\":\"tdwkqbrq\",\"name\":\"bpaxhexiilivpdt\",\"type\":\"irqtdqoa\"}]},\"location\":\"r\",\"tags\":{\"amxjezwlw\":\"gsquyfxrxxlept\",\"ojknio\":\"wxuqlcvydypatdoo\"},\"id\":\"kooebwnu\",\"name\":\"hemms\",\"type\":\"vdkcrodtj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,23 +68,23 @@ public final class ElasticSansCreateMockTests {
         ElasticSan response =
             manager
                 .elasticSans()
-                .define("ctq")
-                .withRegion("uujqgidokgjljyo")
-                .withExistingResourceGroup("fcivfsnkym")
+                .define("uipiccjzk")
+                .withRegion("mszkkfo")
+                .withExistingResourceGroup("kallatmel")
                 .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withBaseSizeTiB(3045302180420879642L)
-                .withExtendedCapacitySizeTiB(2013084954384756967L)
-                .withTags(mapOf("hbijhtxfvgxb", "cltbgsncghkjesz", "eh", "smx", "qkkrb", "pvecxgodeb"))
-                .withAvailabilityZones(Arrays.asList("rjcxerfuwu", "ttxfvjr"))
+                .withBaseSizeTiB(4211102701501758858L)
+                .withExtendedCapacitySizeTiB(3182031582693006981L)
+                .withTags(mapOf("jawneaiv", "yfkzik", "elsfeaen", "wczelpci", "dxbjhwuaanozj", "abfatkl"))
+                .withAvailabilityZones(Arrays.asList("c"))
                 .create();
 
-        Assertions.assertEquals("mpxttdbhrbnlankx", response.location());
-        Assertions.assertEquals("k", response.tags().get("bhenbtkcxywnyt"));
+        Assertions.assertEquals("r", response.location());
+        Assertions.assertEquals("gsquyfxrxxlept", response.tags().get("amxjezwlw"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, response.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("nuqqkpikadrgvt", response.availabilityZones().get(0));
-        Assertions.assertEquals(3996731828739891249L, response.baseSizeTiB());
-        Assertions.assertEquals(2578720957092092730L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals("skfc", response.availabilityZones().get(0));
+        Assertions.assertEquals(8623333094540637378L, response.baseSizeTiB());
+        Assertions.assertEquals(7064706580171927315L, response.extendedCapacitySizeTiB());
     }
 
     @SuppressWarnings("unchecked")

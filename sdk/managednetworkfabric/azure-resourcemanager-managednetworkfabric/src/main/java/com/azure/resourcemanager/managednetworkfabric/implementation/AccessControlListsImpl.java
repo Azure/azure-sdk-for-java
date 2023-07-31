@@ -11,8 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.AccessControlListsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlLists;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 
 public final class AccessControlListsImpl implements AccessControlLists {
     private static final ClientLogger LOGGER = new ClientLogger(AccessControlListsImpl.class);
@@ -53,13 +58,12 @@ public final class AccessControlListsImpl implements AccessControlLists {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String accessControlListName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, accessControlListName, context);
-    }
-
     public void deleteByResourceGroup(String resourceGroupName, String accessControlListName) {
         this.serviceClient().delete(resourceGroupName, accessControlListName);
+    }
+
+    public void delete(String resourceGroupName, String accessControlListName, Context context) {
+        this.serviceClient().delete(resourceGroupName, accessControlListName, context);
     }
 
     public PagedIterable<AccessControlList> listByResourceGroup(String resourceGroupName) {
@@ -81,6 +85,70 @@ public final class AccessControlListsImpl implements AccessControlLists {
     public PagedIterable<AccessControlList> list(Context context) {
         PagedIterable<AccessControlListInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new AccessControlListImpl(inner1, this.manager()));
+    }
+
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, accessControlListName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, accessControlListName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate resync(String resourceGroupName, String accessControlListName) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().resync(resourceGroupName, accessControlListName);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate resync(
+        String resourceGroupName, String accessControlListName, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().resync(resourceGroupName, accessControlListName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String accessControlListName, Context context) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, accessControlListName, context);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public AccessControlList getById(String id) {
@@ -143,10 +211,10 @@ public final class AccessControlListsImpl implements AccessControlLists {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
         }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE);
+        this.delete(resourceGroupName, accessControlListName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -164,7 +232,7 @@ public final class AccessControlListsImpl implements AccessControlLists {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'accessControlLists'.", id)));
         }
-        return this.deleteByResourceGroupWithResponse(resourceGroupName, accessControlListName, context);
+        this.delete(resourceGroupName, accessControlListName, context);
     }
 
     private AccessControlListsClient serviceClient() {

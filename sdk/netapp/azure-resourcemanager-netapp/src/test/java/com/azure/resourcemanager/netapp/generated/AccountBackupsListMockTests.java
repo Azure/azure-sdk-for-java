@@ -32,7 +32,7 @@ public final class AccountBackupsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"yb\",\"properties\":{\"backupId\":\"wpgdak\",\"creationDate\":\"2021-07-03T10:06:39Z\",\"provisioningState\":\"vl\",\"size\":1102852989585943128,\"label\":\"kcxk\",\"backupType\":\"Manual\",\"failureReason\":\"xmysuxswqrntv\",\"volumeName\":\"ijpstte\",\"useExistingSnapshot\":true},\"id\":\"pwcyyufmhr\",\"name\":\"nc\",\"type\":\"wmqs\"}]}";
+            "{\"value\":[{\"location\":\"wcltyjede\",\"properties\":{\"backupId\":\"mlfmkqs\",\"creationDate\":\"2021-07-22T22:43:06Z\",\"provisioningState\":\"awx\",\"size\":69335588181115107,\"label\":\"amwabzxrvxcushsp\",\"backupType\":\"Scheduled\",\"failureReason\":\"mxyasflvgsgzw\",\"volumeName\":\"akoi\",\"useExistingSnapshot\":false},\"id\":\"smjblmljhlnym\",\"name\":\"otqyry\",\"type\":\"zcbmqqvxmvwf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class AccountBackupsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Backup> response =
-            manager.accountBackups().list("utlwexxwla", "niexzsrzpgepq", com.azure.core.util.Context.NONE);
+            manager.accountBackups().list("ickpz", "cpopmxel", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yb", response.iterator().next().location());
-        Assertions.assertEquals("kcxk", response.iterator().next().label());
-        Assertions.assertEquals(true, response.iterator().next().useExistingSnapshot());
+        Assertions.assertEquals("wcltyjede", response.iterator().next().location());
+        Assertions.assertEquals("amwabzxrvxcushsp", response.iterator().next().label());
+        Assertions.assertEquals(false, response.iterator().next().useExistingSnapshot());
     }
 }

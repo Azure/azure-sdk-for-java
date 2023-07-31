@@ -32,7 +32,7 @@ public final class DataConnectionsUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"kind\":\"DataConnection\",\"location\":\"nbsoqeqalarv\",\"id\":\"agunbtgfebw\",\"name\":\"nbmhyree\",\"type\":\"dzqavbpdqmjxlyyz\"}";
+            "{\"kind\":\"DataConnection\",\"location\":\"p\",\"id\":\"bkdq\",\"name\":\"rdzsylollgtrczzy\",\"type\":\"mxzjijpvua\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,13 @@ public final class DataConnectionsUpdateMockTests {
             manager
                 .dataConnections()
                 .update(
-                    "pcycilrmcaykg",
-                    "noxuztrksx",
-                    "pndfcpfnznt",
-                    "jtwkjaos",
-                    new DataConnectionInner().withLocation("uzvoamktcqiosm"),
+                    "ypnyghshxc",
+                    "lhkgmnsghp",
+                    "ycphdrwjjkhvyo",
+                    "ac",
+                    new DataConnectionInner().withLocation("zvxnqmhrp"),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nbsoqeqalarv", response.location());
+        Assertions.assertEquals("p", response.location());
     }
 }

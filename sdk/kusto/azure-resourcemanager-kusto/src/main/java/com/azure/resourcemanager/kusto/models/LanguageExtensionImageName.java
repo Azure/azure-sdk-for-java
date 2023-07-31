@@ -16,13 +16,6 @@ public final class LanguageExtensionImageName extends ExpandableStringEnum<Langu
     /** Static value Python3_6_5 for LanguageExtensionImageName. */
     public static final LanguageExtensionImageName PYTHON3_6_5 = fromString("Python3_6_5");
 
-    /** Static value Python3_9_12 for LanguageExtensionImageName. */
-    public static final LanguageExtensionImageName PYTHON3_9_12 = fromString("Python3_9_12");
-
-    /** Static value Python3_9_12IncludeDeepLearning for LanguageExtensionImageName. */
-    public static final LanguageExtensionImageName PYTHON3_9_12INCLUDE_DEEP_LEARNING =
-        fromString("Python3_9_12IncludeDeepLearning");
-
     /** Static value Python3_10_8 for LanguageExtensionImageName. */
     public static final LanguageExtensionImageName PYTHON3_10_8 = fromString("Python3_10_8");
 

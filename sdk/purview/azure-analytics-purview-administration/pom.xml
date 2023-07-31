@@ -33,6 +33,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.25</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -51,7 +54,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

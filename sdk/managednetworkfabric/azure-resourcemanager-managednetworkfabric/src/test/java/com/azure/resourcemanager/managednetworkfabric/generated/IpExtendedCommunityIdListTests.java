@@ -14,17 +14,17 @@ public final class IpExtendedCommunityIdListTests {
     public void testDeserialize() throws Exception {
         IpExtendedCommunityIdList model =
             BinaryData
-                .fromString("{\"ipExtendedCommunityIds\":[\"xynl\",\"xecwcro\",\"phslhcawjutifdw\",\"mvi\"]}")
+                .fromString("{\"ipExtendedCommunityIds\":[\"ssijuaxxfd\",\"ypkcpwsrqnn\",\"ju\"]}")
                 .toObject(IpExtendedCommunityIdList.class);
-        Assertions.assertEquals("xynl", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("ssijuaxxfd", model.ipExtendedCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpExtendedCommunityIdList model =
             new IpExtendedCommunityIdList()
-                .withIpExtendedCommunityIds(Arrays.asList("xynl", "xecwcro", "phslhcawjutifdw", "mvi"));
+                .withIpExtendedCommunityIds(Arrays.asList("ssijuaxxfd", "ypkcpwsrqnn", "ju"));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityIdList.class);
-        Assertions.assertEquals("xynl", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("ssijuaxxfd", model.ipExtendedCommunityIds().get(0));
     }
 }
