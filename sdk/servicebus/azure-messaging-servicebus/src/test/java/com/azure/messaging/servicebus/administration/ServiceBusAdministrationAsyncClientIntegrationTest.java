@@ -205,6 +205,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verify();
     }
 
+    //region Create tests
+
     @ParameterizedTest
     @MethodSource("createHttpClients")
     void createQueue(HttpClient httpClient) {
@@ -531,6 +533,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verifyComplete();
     }
 
+    //endregion
+
+    //region Delete tests
+
     @ParameterizedTest
     @MethodSource("createHttpClients")
     void deleteQueue(HttpClient httpClient) {
@@ -592,6 +598,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         StepVerifier.create(client.deleteTopic(topicName))
             .verifyComplete();
     }
+
+    //endregion
+
+    //region Get and exists tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -726,6 +736,22 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getRuleDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        final String ruleName = "does-not-exist-rule";
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.getRuleWithResponse(topicName, subscriptionName, ruleName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
     }
 
     @ParameterizedTest
@@ -959,6 +985,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verifyErrorMatches(throwable -> throwable instanceof ClientAuthenticationException);
     }
 
+    //endregion
+
+    //region List tests
+
     @ParameterizedTest
     @MethodSource("createHttpClients")
     void listRules(HttpClient httpClient) {
@@ -1038,6 +1068,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .thenCancel()
             .verify();
     }
+
+    //endregion
 
     @ParameterizedTest
     @MethodSource("createHttpClients")

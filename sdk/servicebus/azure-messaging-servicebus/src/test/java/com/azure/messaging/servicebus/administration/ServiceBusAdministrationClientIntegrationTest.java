@@ -154,6 +154,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(np.getName());
     }
 
+    //region Create tests
+
     @Test
     void createQueue() {
         final ServiceBusAdministrationClient client = getClient();
@@ -432,6 +434,33 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     @Test
+    void createSubscriptionWithForwarding() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = getEntityName(getTopicBaseName(), 3);
+        final String subscriptionName = testResourceNamer.randomName("sub", 50);
+        final String forwardToTopic = getEntityName(getTopicBaseName(), 4);
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
+            .setForwardTo(forwardToTopic)
+            .setForwardDeadLetteredMessagesTo(forwardToTopic);
+
+        // Act
+        final SubscriptionProperties actual = client.createSubscription(topicName, subscriptionName, expected);
+
+        // Assert
+        assertEquals(topicName, actual.getTopicName());
+        assertEquals(subscriptionName, actual.getSubscriptionName());
+
+        // URLs are redacted so they will not match.
+        if (!interceptorManager.isPlaybackMode()) {
+            assertEquals(expected.getForwardTo(), actual.getForwardTo());
+            assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+        }
+    }
+
+    //endregion
+
+    @Test
     void updateRuleResponse() {
         final ServiceBusAdministrationClient client = getClient();
 
@@ -458,6 +487,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertEquals(expectedAction.getSqlExpression(),
             ((SqlRuleAction) rule.getAction()).getSqlExpression());
     }
+
+    //region Get and exists tests
 
     @Test
     void getNamespace() {
@@ -623,8 +654,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 10);
 
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-            () ->  client.getSubscription(topicName, subscriptionName),
+        assertThrows(ResourceNotFoundException.class, () ->  client.getSubscription(topicName, subscriptionName),
             "Subscription exists! But should not. Incorrect getSubscription behavior");
     }
 
@@ -638,7 +668,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     @Test
-    void getSubscriptionExistsDoesNotExist() {
+    void getSubscriptionExistsFalse() {
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 1);
@@ -725,6 +755,24 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     @Test
+    void getRuleDoesNotExist() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+
+        final String ruleName = "does-not-exist-rule";
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class,
+            () -> client.getRuleWithResponse(topicName, subscriptionName, ruleName, Context.NONE));
+    }
+
+    //endregion
+
+    //region Delete tests
+
+    @Test
     void deleteQueue() {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = getEntityName(getQueueBaseName(), 9);
@@ -762,7 +810,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         client.deleteTopic(topicName);
     }
 
-    // List Methods
+    //endregion
+
+    //region List tests
 
     @Test
     void listQueues() {
@@ -825,6 +875,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(rule.getAction());
         assertTrue(rule.getAction() instanceof EmptyRuleAction);
     }
+
+    //endregion
 
     private ServiceBusAdministrationClient getClient() {
         final String connectionString = interceptorManager.isPlaybackMode()
