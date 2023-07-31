@@ -21,7 +21,7 @@ import com.azure.resourcemanager.containerservice.models.NetworkPlugin;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class KubernetesCniTests extends ResourceManagerTestBase {
+public class KubernetesCniTests extends ResourceManagerTestProxyTestBase {
 
     private AzureResourceManager azureResourceManager;
     private String rgName;

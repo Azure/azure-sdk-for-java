@@ -9,17 +9,17 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Static Route properties. */
+/** Route Properties. */
 @Fluent
 public final class StaticRouteProperties {
     /*
-     * IPv4 | IPv6 Prefix.
+     * Prefix of the route.
      */
     @JsonProperty(value = "prefix", required = true)
     private String prefix;
 
     /*
-     * List of next hop IPv4 | IPv6 addresses.
+     * List of next hop addresses.
      */
     @JsonProperty(value = "nextHop", required = true)
     private List<String> nextHop;
@@ -29,7 +29,7 @@ public final class StaticRouteProperties {
     }
 
     /**
-     * Get the prefix property: IPv4 | IPv6 Prefix.
+     * Get the prefix property: Prefix of the route.
      *
      * @return the prefix value.
      */
@@ -38,7 +38,7 @@ public final class StaticRouteProperties {
     }
 
     /**
-     * Set the prefix property: IPv4 | IPv6 Prefix.
+     * Set the prefix property: Prefix of the route.
      *
      * @param prefix the prefix value to set.
      * @return the StaticRouteProperties object itself.
@@ -49,7 +49,7 @@ public final class StaticRouteProperties {
     }
 
     /**
-     * Get the nextHop property: List of next hop IPv4 | IPv6 addresses.
+     * Get the nextHop property: List of next hop addresses.
      *
      * @return the nextHop value.
      */
@@ -58,7 +58,7 @@ public final class StaticRouteProperties {
     }
 
     /**
-     * Set the nextHop property: List of next hop IPv4 | IPv6 addresses.
+     * Set the nextHop property: List of next hop addresses.
      *
      * @param nextHop the nextHop value to set.
      * @return the StaticRouteProperties object itself.

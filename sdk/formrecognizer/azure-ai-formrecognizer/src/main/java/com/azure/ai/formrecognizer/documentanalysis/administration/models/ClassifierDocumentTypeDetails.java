@@ -3,61 +3,30 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.annotation.Fluent;
 
-/** Training data source. */
+/**
+ * Model representing details for classifier document types info.
+ */
 @Fluent
 public final class ClassifierDocumentTypeDetails {
-    /*
-     * Azure Blob Storage location containing the training data.
-     */
-    private AzureBlobContentSource azureBlobSource;
-
-    /*
-     * Azure Blob Storage file list specifying the training data.
-     */
-    private AzureBlobFileListSource azureBlobFileListSource;
-
-    /** Creates an instance of ClassifierDocumentTypeDetails class. */
-    public ClassifierDocumentTypeDetails() {}
+    private final TrainingDataContentSource trainingDataContentSource;
 
     /**
-     * Get the Azure Blob Storage location containing the training data.
-     *
-     * @return the azureBlobSource value.
+     * Creates an instance of ClassifierDocumentTypeDetails class.
+     * @param source the source of the training data.
      */
-    public AzureBlobContentSource getAzureBlobSource() {
-        return this.azureBlobSource;
+    public ClassifierDocumentTypeDetails(TrainingDataContentSource source) {
+        this.trainingDataContentSource = source;
     }
 
     /**
-     * Set the Azure Blob Storage location containing the training data.
-     *
-     * @param azureBlobSource the azureBlobSource value to set.
-     * @return the ClassifierDocumentTypeDetails object itself.
+     * Get the trainingDataContentSource property: The source of the training data.
+     * It can be a {@link AzureBlobContentSource} or a {@link AzureBlobFileListContentSource}.
+     * @return the trainingDataContentSource value.
      */
-    public ClassifierDocumentTypeDetails setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
-        this.azureBlobSource = azureBlobSource;
-        return this;
-    }
-
-    /**
-     * Get the Azure Blob Storage file list specifying the training data.
-     *
-     * @return the azureBlobFileListSource value.
-     */
-    public AzureBlobFileListSource getAzureBlobFileListSource() {
-        return this.azureBlobFileListSource;
-    }
-
-    /**
-     * Set the Azure Blob Storage file list specifying the training data.
-     *
-     * @param azureBlobFileListSource the azureBlobFileListSource value to set.
-     * @return the ClassifierDocumentTypeDetails object itself.
-     */
-    public ClassifierDocumentTypeDetails setAzureBlobFileListSource(AzureBlobFileListSource azureBlobFileListSource) {
-        this.azureBlobFileListSource = azureBlobFileListSource;
-        return this;
+    public TrainingDataContentSource getTrainingDataContentSource() {
+        return trainingDataContentSource;
     }
 }

@@ -110,6 +110,7 @@ public class RntbdTransportClient extends TransportClient {
     private final CosmosClientTelemetryConfig metricConfig;
     private final RntbdServerErrorInjector serverErrorInjector;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+    private final AddressSelector addressSelector;
 
     // endregion
 
@@ -141,18 +142,6 @@ public class RntbdTransportClient extends TransportClient {
             globalEndpointManager);
     }
 
-    //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
-    //  Figure out why we need this constructor, and if it can be avoided or can be fixed.
-    RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
-        this.endpointProvider = endpointProvider;
-        this.id = instanceCount.incrementAndGet();
-        this.tag = RntbdTransportClient.tag(this.id);
-        this.globalEndpointManager = null;
-        this.metricConfig = null;
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider);
-        this.serverErrorInjector = new RntbdServerErrorInjector();
-    }
-
     RntbdTransportClient(
         final Options options,
         final SslContext sslContext,
@@ -169,13 +158,15 @@ public class RntbdTransportClient extends TransportClient {
             clientTelemetry,
             this.serverErrorInjector);
 
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider);
-        this.proactiveOpenConnectionsProcessor.init();
-
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        this.addressSelector = new AddressSelector(addressResolver, Protocol.TCP);
+
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider, this.addressSelector);
+        this.proactiveOpenConnectionsProcessor.init();
+
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
 
@@ -292,7 +283,8 @@ public class RntbdTransportClient extends TransportClient {
                 request.requestContext.locationEndpointToRoute,
                 addressUri,
                 this.proactiveOpenConnectionsProcessor,
-                minConnectionPoolSizePerEndpoint);
+                minConnectionPoolSizePerEndpoint,
+                this.addressSelector);
 
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 

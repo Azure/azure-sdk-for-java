@@ -33,7 +33,7 @@ public final class IpCommunitiesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"action\":\"Deny\",\"wellKnownCommunities\":[\"NoAdvertise\",\"NoExport\"],\"communityMembers\":[\"tvt\",\"ukyefchnmnahmnxh\",\"xjqirwrweoox\"],\"provisioningState\":\"Canceled\",\"annotation\":\"hx\"},\"location\":\"snewmozqvbub\",\"tags\":{\"sycxhxzgaz\":\"m\",\"hppubowsepdfgkmt\":\"taboidvmf\",\"c\":\"herngb\",\"obkauxofsh\":\"uahokq\"},\"id\":\"phwpnulaiywzej\",\"name\":\"whslwkoj\",\"type\":\"llndnpd\"}";
+            "{\"properties\":{\"configurationState\":\"Accepted\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1698670082647863989,\"wellKnownCommunities\":[\"LocalAS\",\"LocalAS\",\"NoAdvertise\"],\"communityMembers\":[\"loxtvq\",\"b\"]},{\"action\":\"Permit\",\"sequenceNumber\":6180676424023342132,\"wellKnownCommunities\":[\"NoAdvertise\",\"Internet\"],\"communityMembers\":[\"nben\",\"p\",\"vokkyankxvcpt\",\"gfb\"]}],\"annotation\":\"kxasomafe\"},\"location\":\"z\",\"tags\":{\"pautfz\":\"dxp\",\"cyuwenbqvpraw\":\"trcdzytrtffvpkd\",\"dp\":\"oqatdjka\",\"smxfzynfemqy\":\"e\"},\"id\":\"kkp\",\"name\":\"wgssdquupirnb\",\"type\":\"lqyvdsqxkjwdzp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,17 @@ public final class IpCommunitiesGetByResourceGroupWithResponseMockTests {
         IpCommunity response =
             manager
                 .ipCommunities()
-                .getByResourceGroupWithResponse("zpofoiyjwpfilk", "kkholvdndvia", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("qfudfyziruqv", "njxiakgyjmzb", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("snewmozqvbub", response.location());
-        Assertions.assertEquals("m", response.tags().get("sycxhxzgaz"));
-        Assertions.assertEquals(CommunityActionTypes.DENY, response.action());
-        Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE, response.wellKnownCommunities().get(0));
-        Assertions.assertEquals("tvt", response.communityMembers().get(0));
-        Assertions.assertEquals("hx", response.annotation());
+        Assertions.assertEquals("z", response.location());
+        Assertions.assertEquals("dxp", response.tags().get("pautfz"));
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(1698670082647863989L, response.ipCommunityRules().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(
+                WellKnownCommunities.LOCAL_AS, response.ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions.assertEquals("loxtvq", response.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("kxasomafe", response.annotation());
     }
 }

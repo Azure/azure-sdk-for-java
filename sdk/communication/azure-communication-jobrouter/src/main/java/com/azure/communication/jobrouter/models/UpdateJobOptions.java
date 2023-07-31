@@ -61,12 +61,37 @@ public final class UpdateJobOptions {
     /**
      * A set of non-identifying attributes attached to this job.
      */
-    private Map<String, Object> tags;
+    private Map<String, LabelValue> tags;
 
     /**
      * Notes attached to a job, sorted by timestamp.
      */
-    private Map<String, String> notes;
+    private List<RouterJobNote> notes;
+
+    /*
+     * The matchingMode property.
+     */
+    private RouterJobMatchingMode matchingMode;
+
+    /**
+     * Get the matchingMode property: The matchingMode property.
+     *
+     * @return the matchingMode value.
+     */
+    public RouterJobMatchingMode getMatchingMode() {
+        return this.matchingMode;
+    }
+
+    /**
+     * Set the matchingMode property: The matchingMode property.
+     *
+     * @param matchingMode the matchingMode value to set.
+     * @return the RouterJobInternal object itself.
+     */
+    public UpdateJobOptions setMatchingMode(RouterJobMatchingMode matchingMode) {
+        this.matchingMode = matchingMode;
+        return this;
+    }
 
     /**
      * Constructor for UpdateJobOptions.
@@ -163,7 +188,7 @@ public final class UpdateJobOptions {
      * @param tags A set of non-identifying attributes attached to this job.
      * @return this
      */
-    public UpdateJobOptions setTags(Map<String, Object> tags) {
+    public UpdateJobOptions setTags(Map<String, LabelValue> tags) {
         this.tags = tags;
         return this;
     }
@@ -173,7 +198,7 @@ public final class UpdateJobOptions {
      * @param notes Notes attached to a job, sorted by timestamp.
      * @return this
      */
-    public UpdateJobOptions setNotes(Map<String, String> notes) {
+    public UpdateJobOptions setNotes(List<RouterJobNote> notes) {
         this.notes = notes;
         return this;
     }
@@ -256,7 +281,7 @@ public final class UpdateJobOptions {
      * A set of non-identifying attributes attached to this job
      * @return tags
      */
-    public Map<String, Object> getTags() {
+    public Map<String, LabelValue> getTags() {
         return this.tags;
     }
 
@@ -264,7 +289,7 @@ public final class UpdateJobOptions {
      * Notes attached to a job, sorted by timestamp
      * @return note
      */
-    public Map<String, String> getNotes() {
+    public List<RouterJobNote> getNotes() {
         return this.notes;
     }
 }

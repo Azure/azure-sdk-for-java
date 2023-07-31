@@ -5,13 +5,14 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRole;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NetworkDeviceProperties define the resource properties. */
+/** Network Device Properties defines the properties of the resource. */
 @Fluent
 public final class NetworkDeviceProperties extends AnnotationResource {
     /*
@@ -23,20 +24,14 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     /*
      * Network Device SKU name.
      */
-    @JsonProperty(value = "networkDeviceSku", required = true)
+    @JsonProperty(value = "networkDeviceSku")
     private String networkDeviceSku;
 
     /*
-     * networkDeviceRole is the device role: Example: CE | ToR.
+     * NetworkDeviceRole is the device role: Example: CE | ToR.
      */
-    @JsonProperty(value = "networkDeviceRole", required = true)
-    private NetworkDeviceRoleTypes networkDeviceRole;
-
-    /*
-     * Gets the provisioning state of the resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "networkDeviceRole", access = JsonProperty.Access.WRITE_ONLY)
+    private NetworkDeviceRole networkDeviceRole;
 
     /*
      * Reference to network rack resource id.
@@ -45,14 +40,43 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     private String networkRackId;
 
     /*
-     * The host Name of the device.
+     * Management IPv4 Address.
+     */
+    @JsonProperty(value = "managementIpv4Address", access = JsonProperty.Access.WRITE_ONLY)
+    private String managementIpv4Address;
+
+    /*
+     * Management IPv6 Address.
+     */
+    @JsonProperty(value = "managementIpv6Address", access = JsonProperty.Access.WRITE_ONLY)
+    private String managementIpv6Address;
+
+    /*
+     * Configuration state of the resource.
+     */
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
+
+    /*
+     * The host name of the device.
      */
     @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
-     * serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969
+     * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
      */
     @JsonProperty(value = "serialNumber")
     private String serialNumber;
@@ -91,32 +115,12 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     }
 
     /**
-     * Get the networkDeviceRole property: networkDeviceRole is the device role: Example: CE | ToR.
+     * Get the networkDeviceRole property: NetworkDeviceRole is the device role: Example: CE | ToR.
      *
      * @return the networkDeviceRole value.
      */
-    public NetworkDeviceRoleTypes networkDeviceRole() {
+    public NetworkDeviceRole networkDeviceRole() {
         return this.networkDeviceRole;
-    }
-
-    /**
-     * Set the networkDeviceRole property: networkDeviceRole is the device role: Example: CE | ToR.
-     *
-     * @param networkDeviceRole the networkDeviceRole value to set.
-     * @return the NetworkDeviceProperties object itself.
-     */
-    public NetworkDeviceProperties withNetworkDeviceRole(NetworkDeviceRoleTypes networkDeviceRole) {
-        this.networkDeviceRole = networkDeviceRole;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -129,7 +133,52 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     }
 
     /**
-     * Get the hostname property: The host Name of the device.
+     * Get the managementIpv4Address property: Management IPv4 Address.
+     *
+     * @return the managementIpv4Address value.
+     */
+    public String managementIpv4Address() {
+        return this.managementIpv4Address;
+    }
+
+    /**
+     * Get the managementIpv6Address property: Management IPv6 Address.
+     *
+     * @return the managementIpv6Address value.
+     */
+    public String managementIpv6Address() {
+        return this.managementIpv6Address;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.configurationState;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
+     * Get the hostname property: The host name of the device.
      *
      * @return the hostname value.
      */
@@ -138,7 +187,7 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     }
 
     /**
-     * Set the hostname property: The host Name of the device.
+     * Set the hostname property: The host name of the device.
      *
      * @param hostname the hostname value to set.
      * @return the NetworkDeviceProperties object itself.
@@ -149,8 +198,8 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     }
 
     /**
-     * Get the serialNumber property: serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969.
+     * Get the serialNumber property: Serial number of the device. Format of serial Number -
+     * Make;Model;HardwareRevisionId;SerialNumber.
      *
      * @return the serialNumber value.
      */
@@ -159,8 +208,8 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     }
 
     /**
-     * Set the serialNumber property: serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969.
+     * Set the serialNumber property: Serial number of the device. Format of serial Number -
+     * Make;Model;HardwareRevisionId;SerialNumber.
      *
      * @param serialNumber the serialNumber value to set.
      * @return the NetworkDeviceProperties object itself.
@@ -185,19 +234,5 @@ public final class NetworkDeviceProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (networkDeviceSku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkDeviceSku in model NetworkDeviceProperties"));
-        }
-        if (networkDeviceRole() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkDeviceRole in model NetworkDeviceProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NetworkDeviceProperties.class);
 }

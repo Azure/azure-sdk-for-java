@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.49.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -199,6 +199,18 @@ Licensed under the MIT License.
       <activation>
         <property>
           <name>spark-e2e_3-3</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E_3-4</id>
+      <activation>
+        <property>
+          <name>spark-e2e_3-4</name>
         </property>
       </activation>
       <properties>

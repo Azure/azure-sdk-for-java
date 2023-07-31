@@ -12,16 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StatementActionProperties {
     /*
-     * localPreference of the route policy.
+     * Local Preference of the route policy.
      */
     @JsonProperty(value = "localPreference")
     private Long localPreference;
 
     /*
-     * action. Example: Permit | Deny.
+     * Action type. Example: Permit | Deny | Continue.
      */
     @JsonProperty(value = "actionType", required = true)
-    private CommunityActionTypes actionType;
+    private RoutePolicyActionType actionType;
 
     /*
      * IP Community Properties.
@@ -40,7 +40,7 @@ public final class StatementActionProperties {
     }
 
     /**
-     * Get the localPreference property: localPreference of the route policy.
+     * Get the localPreference property: Local Preference of the route policy.
      *
      * @return the localPreference value.
      */
@@ -49,7 +49,7 @@ public final class StatementActionProperties {
     }
 
     /**
-     * Set the localPreference property: localPreference of the route policy.
+     * Set the localPreference property: Local Preference of the route policy.
      *
      * @param localPreference the localPreference value to set.
      * @return the StatementActionProperties object itself.
@@ -60,21 +60,21 @@ public final class StatementActionProperties {
     }
 
     /**
-     * Get the actionType property: action. Example: Permit | Deny.
+     * Get the actionType property: Action type. Example: Permit | Deny | Continue.
      *
      * @return the actionType value.
      */
-    public CommunityActionTypes actionType() {
+    public RoutePolicyActionType actionType() {
         return this.actionType;
     }
 
     /**
-     * Set the actionType property: action. Example: Permit | Deny.
+     * Set the actionType property: Action type. Example: Permit | Deny | Continue.
      *
      * @param actionType the actionType value to set.
      * @return the StatementActionProperties object itself.
      */
-    public StatementActionProperties withActionType(CommunityActionTypes actionType) {
+    public StatementActionProperties withActionType(RoutePolicyActionType actionType) {
         this.actionType = actionType;
         return this;
     }

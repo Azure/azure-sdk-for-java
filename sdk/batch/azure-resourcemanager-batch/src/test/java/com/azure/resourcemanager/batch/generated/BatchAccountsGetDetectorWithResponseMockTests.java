@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.DetectorResponse;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class BatchAccountsGetDetectorWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"gdknnqv\"},\"etag\":\"znqntoru\",\"id\":\"sgsahmkycgr\",\"name\":\"uwjuetaeburuvdmo\",\"type\":\"s\"}";
+            "{\"properties\":{\"value\":\"ltiugcxnavv\"},\"etag\":\"qiby\",\"id\":\"unyowxwl\",\"name\":\"djrkvfgbvfvpd\",\"type\":\"odacizs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +60,11 @@ public final class BatchAccountsGetDetectorWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DetectorResponse response =
-            manager.batchAccounts().getDetectorWithResponse("xqtvcofu", "f", "vkg", Context.NONE).getValue();
+            manager
+                .batchAccounts()
+                .getDetectorWithResponse("khevxccedc", "nmdyodnwzxl", "jc", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("gdknnqv", response.value());
+        Assertions.assertEquals("ltiugcxnavv", response.value());
     }
 }

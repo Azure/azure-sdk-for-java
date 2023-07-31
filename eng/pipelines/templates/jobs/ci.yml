@@ -218,7 +218,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
 
-      - template: ../steps/upload-repository-on-failure.yml
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
@@ -321,7 +321,7 @@ jobs:
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: ../steps/install-reporting-tools.yml
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
@@ -341,65 +341,14 @@ jobs:
           arguments: >
             -Directory sdk/${{ parameters.ServiceDirectory }}
 
-      # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
-      - task: Maven@3
-        displayName: 'Build and Install'
-        inputs:
-          mavenPomFile: pom.xml
-          goals: 'install'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
+      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
+        parameters:
+          JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+          BuildParallelization: ${{ parameters.BuildParallelization }}
+          RunLinting: true
 
-      - task: Maven@3
-        displayName: 'Run SpotBugs, Checkstyle, and RevApi'
-        inputs:
-          mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -Dcodesnippet.skip -Dmaven.javadoc.skip -DskipTests -Dgpg.skip -DskipCompile=true -DskipTestCompile=true -pl $(ProjectList)'
-          mavenOptions: '$(MemoryOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'verify'
-
-      - task: PowerShell@2
-        inputs:
-          filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Reports.ps1
-          arguments: -OutputDirectory $(Build.ArtifactStagingDirectory)/linting-reports
-          pwsh: true
-          workingDirectory: $(Pipeline.Workspace)
-        displayName: 'Generate Linting Reports'
-        condition: always()
-
-      - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
-        displayName: 'Publish Linting Reports'
-        artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-        condition: always()
-
-      - pwsh: |
-          if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
-            Write-Host "Linting errors have been found, download the 'linting-reports.zip' artifact to see what was found."
-            exit 1
-          }
-        displayName: 'Fail Pipeline if Linting Reports Exist'
-
-      - task: Maven@3
-        displayName: 'Run Javadoc'
-        inputs:
-          mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
-          mavenOptions: '$(MemoryOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'verify'
-
-      - template: ../steps/upload-repository-on-failure.yml
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
@@ -419,17 +368,15 @@ jobs:
           parameters:
             Paths:
               - '**/*.xml'
-              - '**/*.md'
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
 
       # For PullRequests CredScan will be run against the files changed in the PR.
       # For non-pull requests CredScan
       - ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-        - pwsh: |
-            $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
-            $tmp = ConvertTo-Json @($changedFiles | Sort-Object | Get-Unique) -Compress
-            Write-Host "##vso[task.setvariable variable=SparseCheckoutDirectories;]$tmp"
+        - task: PowerShell@2
+          displayName: 'Determine files changed in PR for sparse-checkout'
+          inputs:
+            pwsh: true
+            filePath: eng/pipelines/scripts/Set-CredScanCheckoutDirectories.ps1
       - ${{else}}:
         - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
           parameters:
@@ -452,8 +399,8 @@ jobs:
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            Paths: $(SparseCheckoutDirectories)
             SkipCheckoutNone: true
+            Paths: $(SparseCheckoutDirectories)
 
       - template: /eng/common/pipelines/templates/steps/credscan.yml
         parameters:
@@ -480,3 +427,4 @@ jobs:
         TestOptions: ${{ parameters.TestOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}

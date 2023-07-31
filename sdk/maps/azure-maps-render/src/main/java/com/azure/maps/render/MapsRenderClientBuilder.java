@@ -88,9 +88,11 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
     private static final ClientLogger LOGGER = new ClientLogger(MapsRenderClientBuilder.class);
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String RENDER_SUBSCRIPTION_KEY = "subscription-key";
     private static final String X_MS_CLIENT_ID = "x-ms-client-id";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
+
+    // subscription key
+    static final String RENDER_SUBSCRIPTION_KEY = "subscription-key";
 
     // instance fields
     private final Map<String, String> properties = new HashMap<>();

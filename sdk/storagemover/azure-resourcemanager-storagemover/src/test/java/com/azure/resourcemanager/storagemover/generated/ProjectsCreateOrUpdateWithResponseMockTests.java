@@ -31,7 +31,7 @@ public final class ProjectsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"t\",\"provisioningState\":\"Succeeded\"},\"id\":\"lwptfdy\",\"name\":\"pfqbuaceopzf\",\"type\":\"rhhuaopppcqeqx\"}";
+            "{\"properties\":{\"description\":\"ayriwwroyqbexrm\",\"provisioningState\":\"Succeeded\"},\"id\":\"bycnojvkn\",\"name\":\"e\",\"type\":\"qsgzvahapj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class ProjectsCreateOrUpdateWithResponseMockTests {
         Project response =
             manager
                 .projects()
-                .define("dtpnapnyiropuhp")
-                .withExistingStorageMover("hnrztfol", "bnxknalaulppg")
-                .withDescription("pgylg")
+                .define("iebwwaloayqcgwrt")
+                .withExistingStorageMover("wxzvlvqhjkb", "gibtnm")
+                .withDescription("zg")
                 .create();
 
-        Assertions.assertEquals("t", response.description());
+        Assertions.assertEquals("ayriwwroyqbexrm", response.description());
     }
 }

@@ -33,7 +33,7 @@ import com.azure.resourcemanager.search.SearchServiceManager;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class ManagerLiveTests extends ResourceManagerTestBase {
+public class ManagerLiveTests extends ResourceManagerTestProxyTestBase {
 
     private HttpPipeline httpPipeline;
 

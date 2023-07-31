@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kusto.generated;
 /** Samples for ClusterPrincipalAssignments List. */
 public final class ClusterPrincipalAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoClusterPrincipalAssignmentsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterPrincipalAssignmentsList.json
      */
     /**
      * Sample code: KustoPrincipalAssignmentsList.

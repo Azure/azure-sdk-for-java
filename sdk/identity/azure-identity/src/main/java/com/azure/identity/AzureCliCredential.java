@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 /**
  * <p>The Azure CLI is a command-line tool that allows users to manage Azure resources from their local machine or
  * terminal. It allows users to
- * <a href="https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
+ * <a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
  * user and/or a service principal against
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a>. The AzureCliCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
  * and executes an Azure CLI command underneath to authenticate the application against Azure Active Directory.</p>
@@ -83,7 +83,14 @@ public class AzureCliCredential implements TokenCredential {
         return identityClient.authenticateWithAzureCli(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+                error))
+            .onErrorMap(error -> {
+                if (identityClient.getIdentityClientOptions().isChained()) {
+                    return new CredentialUnavailableException(error.getMessage(), error);
+                } else {
+                    return error;
+                }
+            });
     }
 
     @Override
@@ -94,7 +101,11 @@ public class AzureCliCredential implements TokenCredential {
             return accessToken;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            throw e;
+            if (identityClient.getIdentityClientOptions().isChained()) {
+                throw new CredentialUnavailableException(e.getMessage(), e);
+            } else {
+                throw e;
+            }
         }
     }
 }

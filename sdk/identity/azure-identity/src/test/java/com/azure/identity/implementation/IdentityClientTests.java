@@ -509,6 +509,8 @@ public class IdentityClientTests {
                     });
                 }
             });
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
+            when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
             when(builder.build()).thenReturn(application);
         })) {
             // Mocking the static builder to ensure we pass the right thing to it.
@@ -528,6 +530,7 @@ public class IdentityClientTests {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
                 ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
@@ -557,6 +560,7 @@ public class IdentityClientTests {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
                 ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
@@ -582,6 +586,7 @@ public class IdentityClientTests {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
             PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
             when(application.acquireToken(any(DeviceCodeFlowParameters.class))).thenAnswer(invocation -> {
                 DeviceCodeFlowParameters argument = (DeviceCodeFlowParameters) invocation.getArguments()[0];
@@ -626,6 +631,7 @@ public class IdentityClientTests {
                  when(builder.authority(any())).thenReturn(builder);
                  when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
                  when(builder.httpClient(any())).thenReturn(builder);
+                 when(builder.logPii(anyBoolean())).thenReturn(builder);
              })
         ) {
             staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(eq(CLIENT_ID), any())).thenCallRealMethod();
@@ -716,6 +722,7 @@ public class IdentityClientTests {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
             Assert.assertNotNull(publicClientApplicationMock);
@@ -748,6 +755,7 @@ public class IdentityClientTests {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
             Assert.assertNotNull(publicClientApplicationMock);
@@ -769,6 +777,7 @@ public class IdentityClientTests {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
             Assert.assertNotNull(publicClientApplicationMock);
@@ -790,6 +799,7 @@ public class IdentityClientTests {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
             Assert.assertNotNull(publicClientApplicationMock);

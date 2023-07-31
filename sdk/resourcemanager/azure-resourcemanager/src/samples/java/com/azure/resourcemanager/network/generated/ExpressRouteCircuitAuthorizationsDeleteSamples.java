@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ExpressRouteCircuitAuthorizations Delete. */
 public final class ExpressRouteCircuitAuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCircuitAuthorizationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ExpressRouteCircuitAuthorizationDelete.json
      */
     /**
      * Sample code: Delete ExpressRouteCircuit Authorization.

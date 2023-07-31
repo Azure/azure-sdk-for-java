@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
+import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.OperationJobExtendedInfo;
 import com.azure.resourcemanager.dataprotection.models.RecoveryOption;
 import com.azure.resourcemanager.dataprotection.models.RestoreTargetInfoBase;
@@ -34,7 +35,7 @@ public final class BackupInstancesTriggerRestoreMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"oaimlnw\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"bp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,18 +67,22 @@ public final class BackupInstancesTriggerRestoreMockTests {
             manager
                 .backupInstances()
                 .triggerRestore(
-                    "bklftidgfcwqmpim",
-                    "qxzhem",
-                    "yhohujswtwkozzwc",
+                    "zh",
+                    "jqg",
+                    "cfhmlrqryxyn",
                     new AzureBackupRestoreRequest()
                         .withRestoreTargetInfo(
                             new RestoreTargetInfoBase()
                                 .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                                .withRestoreLocation("bawpfajnjwltlwt"))
-                        .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
-                        .withSourceResourceId("uktalhsnvkcdmxz"),
+                                .withRestoreLocation("rd"))
+                        .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                        .withSourceResourceId("vwxzn")
+                        .withIdentityDetails(
+                            new IdentityDetails()
+                                .withUseSystemAssignedIdentity(false)
+                                .withUserAssignedIdentityArmUrl("iyb")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oaimlnw", response.jobId());
+        Assertions.assertEquals("bp", response.jobId());
     }
 }

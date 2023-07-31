@@ -6,6 +6,8 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
@@ -27,10 +29,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPInputStream;
 
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,6 +46,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "Skipping playback tests");
+        super.setupTest(testInfo);
     }
 
     @Override
@@ -51,16 +57,15 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
 
     @Test
     public void setConfigurationTest() throws InterruptedException {
-        CountDownLatch appConfigCountDown = new CountDownLatch(1);
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
-        ValidationPolicy validationPolicy = new ValidationPolicy(exporterCountDown, "AppConfig.setKey");
+        ValidationPolicy validationPolicy = new ValidationPolicy(exporterCountDown, "set-config-exporter-testing");
         OpenTelemetry openTelemetry =
             TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
 
         Tracer tracer = openTelemetry.getTracer("Sample");
 
-        ConfigurationClient client = getConfigurationClient(appConfigCountDown);
+        ConfigurationClient client = getConfigurationClient();
 
         Span span = tracer.spanBuilder("set-config-exporter-testing").startSpan();
         Scope scope = span.makeCurrent();
@@ -72,7 +77,6 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
             span.end();
             scope.close();
         }
-        assertTrue(appConfigCountDown.await(60, TimeUnit.SECONDS));
         assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
     }
 
@@ -80,7 +84,6 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
         "Multiple tests fail to trigger end span - https://github.com/Azure/azure-sdk-for-java/issues/23567")
     @Test
     public void testDisableTracing() throws InterruptedException {
-        CountDownLatch appConfigCountDown = new CountDownLatch(1);
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
         ValidationPolicy validationPolicy =
@@ -90,7 +93,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
 
         Tracer tracer = openTelemetry.getTracer("Sample");
 
-        ConfigurationClient client = getConfigurationClient(appConfigCountDown);
+        ConfigurationClient client = getConfigurationClient();
 
         Span span = tracer.spanBuilder("disable-config-exporter-testing").startSpan();
         Scope scope = span.makeCurrent();
@@ -103,22 +106,13 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
             span.end();
             scope.close();
         }
-        assertTrue(appConfigCountDown.await(60, TimeUnit.SECONDS));
         assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
     }
 
-    private static ConfigurationClient getConfigurationClient(CountDownLatch appConfigCountDown) {
+    private static ConfigurationClient getConfigurationClient() {
         return new ConfigurationClientBuilder()
             .connectionString(System.getenv("AZURE_APPCONFIG_CONNECTION_STRING"))
-            .addPolicy(
-                (context, next) -> {
-                    Optional<Object> data =
-                        context.getData(com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY);
-                    if (data.isPresent() && data.get().equals("Microsoft.AppConfiguration")) {
-                        appConfigCountDown.countDown();
-                    }
-                    return next.process();
-                })
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
     }
 
@@ -137,6 +131,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
             HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             Mono<String> asyncString =
                 FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                    .map(bytes -> ungzip(bytes))
                     .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             asyncString.subscribe(
                 value -> {
@@ -145,6 +140,20 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
                     }
                 });
             return next.process();
+        }
+
+        private static byte[] ungzip(byte[] bytes) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes))) {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = gis.read(buffer)) > 0) {
+                    bos.write(buffer, 0, len);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return bos.toByteArray();
         }
     }
 }

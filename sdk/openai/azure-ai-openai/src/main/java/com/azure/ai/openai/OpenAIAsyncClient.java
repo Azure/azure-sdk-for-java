@@ -37,6 +37,34 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
 
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
+     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
+     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
+     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
+     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
+    }
+
     /**
      * Return the embeddings for a given prompt.
      *
@@ -438,34 +466,6 @@ public final class OpenAIAsyncClient {
         return chatCompletionsStream.getEvents();
     }
 
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
-    /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
-     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
-     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
-     *
-     * @param serviceClient the service client implementation for Azure OpenAI Service client.
-     */
-    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
-     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
-     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
-     *
-     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
-     */
-    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
-        this.serviceClient = null;
-        openAIServiceClient = serviceClient;
-    }
-
     /**
      * Starts the generation of a batch of images from a text caption.
      *
@@ -479,7 +479,7 @@ public final class OpenAIAsyncClient {
      * @return the {@link Mono} with the image generation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
+    public Mono<ImageResponse> getImages(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         return openAIServiceClient != null
@@ -491,53 +491,6 @@ public final class OpenAIAsyncClient {
                         .last()
                         .flatMap(it -> it.getFinalResult())
                         .map(it -> it.toObject(ImageOperationResponse.class).getResult());
-    }
-
-    /**
-     * Returns the status of the images operation.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: DataModelBase (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param operationId .
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a polling status update or final response payload for an image operation along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatusWithResponse(
-            String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getAzureBatchImageGenerationOperationStatusWithResponseAsync(
-                operationId, requestOptions);
     }
 
     /**

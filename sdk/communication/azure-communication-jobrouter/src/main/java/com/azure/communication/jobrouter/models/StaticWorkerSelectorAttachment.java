@@ -9,17 +9,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Objects;
+
 /** Describes a worker selector that will be attached to the job. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Fluent
 public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachment {
+    /**
+     * Creates an instance of StaticWorkerSelectorAttachment class.
+     *
+     * @param workerSelector Describes a condition that must be met against a set of labels for worker selection
+     */
+    public StaticWorkerSelectorAttachment(RouterWorkerSelector workerSelector) {
+        this.workerSelector = Objects.requireNonNull(workerSelector, "'workerSelector' cannot be null.");
+    }
+
     /*
      * Describes a condition that must be met against a set of labels for
      * worker selection
      */
     @JsonProperty(value = "workerSelector", required = true)
-    private RouterWorkerSelector workerSelector;
+    private final RouterWorkerSelector workerSelector;
 
     /**
      * Get the workerSelector property: Describes a condition that must be met against a set of labels for worker
@@ -29,17 +40,5 @@ public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachme
      */
     public RouterWorkerSelector getWorkerSelector() {
         return this.workerSelector;
-    }
-
-    /**
-     * Set the workerSelector property: Describes a condition that must be met against a set of labels for worker
-     * selection.
-     *
-     * @param workerSelector the workerSelector value to set.
-     * @return the StaticWorkerSelectorAttachment object itself.
-     */
-    public StaticWorkerSelectorAttachment setWorkerSelector(RouterWorkerSelector workerSelector) {
-        this.workerSelector = workerSelector;
-        return this;
     }
 }

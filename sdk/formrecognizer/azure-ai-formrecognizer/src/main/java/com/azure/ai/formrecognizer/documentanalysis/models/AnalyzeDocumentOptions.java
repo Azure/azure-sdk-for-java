@@ -14,8 +14,6 @@ import java.util.List;
 public final class AnalyzeDocumentOptions {
     private List<String> pages;
     private String locale;
-
-    private List<String> queryFields;
     private List<DocumentAnalysisFeature> documentAnalysisFeatures;
 
     /**
@@ -63,24 +61,6 @@ public final class AnalyzeDocumentOptions {
      */
     public AnalyzeDocumentOptions setLocale(String locale) {
         this.locale = locale;
-        return this;
-    }
-
-    /**
-     * Get the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     * @return List of additional fields to extract from analysis.
-     */
-    public List<String> getQueryFields() {
-        return queryFields;
-    }
-
-    /**
-     * Set the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     * @param queryFields List of additional fields to extract from analysis.
-     * @return the updated {@code AnalyzeDocumentOptions} value.
-     */
-    public AnalyzeDocumentOptions setQueryFields(List<String> queryFields) {
-        this.queryFields = queryFields;
         return this;
     }
 

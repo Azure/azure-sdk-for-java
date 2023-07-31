@@ -10,12 +10,15 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
+import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
@@ -121,6 +124,41 @@ public final class VolumesImpl implements Volumes {
         BreakFileLocksRequest body,
         Context context) {
         this.serviceClient().breakFileLocks(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body) {
+        GetGroupIdListForLdapUserResponseInner inner =
+            this
+                .serviceClient()
+                .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body);
+        if (inner != null) {
+            return new GetGroupIdListForLdapUserResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body,
+        Context context) {
+        GetGroupIdListForLdapUserResponseInner inner =
+            this
+                .serviceClient()
+                .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
+        if (inner != null) {
+            return new GetGroupIdListForLdapUserResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void breakReplication(String resourceGroupName, String accountName, String poolName, String volumeName) {

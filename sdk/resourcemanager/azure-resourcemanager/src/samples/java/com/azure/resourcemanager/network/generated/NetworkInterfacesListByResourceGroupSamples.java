@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for NetworkInterfaces ListByResourceGroup. */
 public final class NetworkInterfacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkInterfaceList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkInterfaceList.json
      */
     /**
      * Sample code: List network interfaces in resource group.

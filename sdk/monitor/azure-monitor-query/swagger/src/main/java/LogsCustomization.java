@@ -22,8 +22,19 @@ public class LogsCustomization extends Customization {
                         "/logs/AzureLogAnalyticsImplBuilder.java")
                 .replace("policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format(\"%s/" +
                                 ".default\", host)));",
-                        "String localHost = (host != null) ? host : \"https://api.loganalytics.io\";\n" +
-                                "policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format(\"%s/.default\", localHost)));");
+                    "String localHost;\n" +
+                        "        if (host != null) {\n" +
+                        "            try {\n" +
+                        "                localHost = new java.net.URL(host).getHost();\n" +
+                        "            } catch (java.net.MalformedURLException e) {\n" +
+                        "                throw new RuntimeException(e);\n" +
+                        "            }\n" +
+                        "        } else {\n" +
+                        "            localHost = \"api.loganalytics.io\";\n" +
+                        "        }\n" +
+                        "        policies.add(new BearerTokenAuthenticationPolicy(\n" +
+                        "            tokenCredential,\n" +
+                        "            String.format(\"https://%s/.default\", localHost)));");
         libraryCustomization.getRawEditor().replaceFile("src/main/java/com/azure/monitor/query/implementation" +
                 "/logs/AzureLogAnalyticsImplBuilder.java", replace);
     }

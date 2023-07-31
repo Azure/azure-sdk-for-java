@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class CdnSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageCdnProfileWithWebApp() {
         if (skipInPlayback()) {
             return;

@@ -55,6 +55,12 @@ public class AzureBatchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of AzureBatchLinkedService class. */
     public AzureBatchLinkedService() {}
 
@@ -177,6 +183,26 @@ public class AzureBatchLinkedService extends LinkedService {
      */
     public AzureBatchLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureBatchLinkedService object itself.
+     */
+    public AzureBatchLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 
