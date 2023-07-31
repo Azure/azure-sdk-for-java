@@ -202,7 +202,7 @@ public class RxDocumentServiceResponse {
 
     private static JsonNode fromJson(String json){
         try {
-            return Utils.getSimpleObjectMapper().readTree(json); // also needs to be swapped
+            return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             throw new IllegalStateException(String.format("Unable to parse JSON %s", json), e);
         }
@@ -210,7 +210,7 @@ public class RxDocumentServiceResponse {
 
     private static JsonNode fromJson(byte[] json){
         try {
-            return Utils.getSimpleObjectMapper().readTree(json); //this will need to be swapped out when dealing with binary
+            return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             throw new IllegalStateException(String.format("Unable to parse JSON %s", Arrays.toString(json)), e);
         }
