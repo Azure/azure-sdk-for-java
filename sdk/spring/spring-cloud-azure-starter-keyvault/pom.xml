@@ -117,24 +117,8 @@
         <artifactId>codesnippet-maven-plugin</artifactId>
         <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
-          <codesnippetRootDirectory>${project.basedir}/azure-resourcemanager/src/samples/java</codesnippetRootDirectory>
-          <includeSource>false</includeSource>
           <skip>true</skip>
         </configuration>
-        <executions>
-          <execution>
-            <id>update-codesnippets</id>
-            <goals>
-              <goal>update-codesnippet</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>verify-codesnippets</id>
-            <goals>
-              <goal>verify-codesnippet</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
