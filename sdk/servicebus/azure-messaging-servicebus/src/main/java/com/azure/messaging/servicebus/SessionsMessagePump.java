@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
@@ -465,10 +464,8 @@ final class SessionsMessagePump implements AsyncCloseable {
                 nextSession.closeAsync().subscribe();
                 throw new TerminatedException("rolling-session-receiver");
             }
-            final String sessionId = nextSession.id;
-            final ServiceBusReceiveLink sessionLink = nextSession.link;
             final ServiceBusSessionReactorReceiver nextReceiver = new ServiceBusSessionReactorReceiver(
-                logger, tracer, managementNode, sessionId, sessionLink, maxSessionLockRenew, sessionIdleTimeout);
+                logger, tracer, managementNode, nextSession.properties, nextSession.link, maxSessionLockRenew, sessionIdleTimeout);
             if (!super.compareAndSet(lastState, new State<>(nextReceiver))) {
                 // 1. The 'super.getAndSet(DISPOSED)' in the closeAsync won the race with the above 'super.compareAndSet'.
                 // 2. Multiple 'super.compareAndSet' will never race each other since -

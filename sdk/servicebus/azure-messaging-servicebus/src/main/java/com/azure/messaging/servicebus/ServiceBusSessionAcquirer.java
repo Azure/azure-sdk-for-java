@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink.SessionProperties;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -71,22 +72,11 @@ final class ServiceBusSessionAcquirer implements AutoCloseable {
 
     private Mono<Session> acquireIntern(String sessionId) {
         return Mono.defer(() -> createSessionReceiveLink(sessionId)
-            .flatMap(sessionLink -> sessionLink.getSessionId() // Await for sessionLink to "ACTIVE" then reads it's sessionId.
-                .flatMap(sId -> {
-                    return Mono.just(new Session(sId, sessionLink));
+            .flatMap(sessionLink -> sessionLink.getSessionProperties() // Await for sessionLink to "ACTIVE" then reads its properties
+                .flatMap(sessionProperties -> {
+                    return Mono.just(new Session(sessionLink, sessionProperties));
                 })
             ))
-            // The reason for using 'switchIfEmpty' operator -
-            //
-            // While waiting for the link to ACTIVE, if the broker detaches the link without an error-condition,
-            // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
-            // such publisher completion to transient (i.e., retriable) AmqpException to enable retry.
-            //
-            // A detach without an error-condition can happen when Service upgrades. Also, while the service often
-            // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
-            // when a free or new session is unavailable, detach can happen without the error-condition.
-            //
-            .switchIfEmpty(Mono.error(() -> new AmqpException(true, "Session receive link completed without being active", null)))
             .timeout(sessionActiveTimeout)
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
@@ -143,21 +133,21 @@ final class ServiceBusSessionAcquirer implements AutoCloseable {
     }
 
     /**
-     * A tuple type to hold id and AmqpLink to a session.
+     * A tuple type to hold properties and AmqpLink to a session.
      */
     static final class Session {
-        final String id;
         final ServiceBusReceiveLink link;
+        final SessionProperties properties;
 
         /**
-         * Create NextSession tuple.
+         * Create Session tuple to hold properties and AmqpLink to a session.
          *
-         * @param id the session id.
          * @param sessionLink the amqp link to the session.
+         * @param sessionProperties the session properties.
          */
-        Session(String id, ServiceBusReceiveLink sessionLink) {
-            this.id = id;
+        Session(ServiceBusReceiveLink sessionLink, SessionProperties sessionProperties) {
             this.link = sessionLink;
+            this.properties = sessionProperties;
         }
 
         boolean isDisposed() {

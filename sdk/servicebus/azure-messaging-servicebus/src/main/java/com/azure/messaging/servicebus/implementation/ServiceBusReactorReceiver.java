@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorReceiver;
@@ -63,6 +64,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final boolean isSettled;
     private final Mono<String> sessionIdMono;
     private final Mono<OffsetDateTime> sessionLockedUntil;
+    private final Mono<SessionProperties> sessionProperties;
 
     // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
     // is removed. At that point the type "ReceiveLinkHandlerWrapper" type will be removed and the Ctr will take
@@ -118,6 +120,35 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 }
             })
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+
+        this.sessionProperties = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
+            .next()
+            // While waiting for the link to ACTIVE, if the broker detaches the link without an error-condition,
+            // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
+            // such publisher completion to transient AmqpException.
+            //
+            // A detach without an error-condition can happen when Service upgrades. Also, while the service often
+            // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
+            // when a free or new session is unavailable, detach can happen without the error-condition.
+            .switchIfEmpty(Mono.error(() -> new AmqpException(true, "Unable to read session properties. Receive Link completed without being Active.", null)))
+            .map(__ -> {
+                @SuppressWarnings("unchecked")
+                final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
+                final Object sessionIdObject = remoteSource.get(SESSION_FILTER);
+                if (sessionIdObject == null) {
+                    throw logger.atInfo().log(new AmqpException(false, "Unable to read session properties. There is no session id.", null));
+                }
+                final OffsetDateTime sessionLockedUntil;
+                if (receiver.getRemoteProperties() != null && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
+                    final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
+                    sessionLockedUntil = MessageUtils.convertDotNetTicksToOffsetDateTime(ticks);
+                } else {
+                    logger.info("Locked until not set.");
+                    sessionLockedUntil = Instant.EPOCH.atOffset(ZoneOffset.UTC);
+                }
+                return new SessionProperties(String.valueOf(sessionIdObject), sessionLockedUntil);
+            })
+            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
     }
 
     @Override
@@ -151,6 +182,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     public Mono<OffsetDateTime> getSessionLockedUntil() {
         return sessionLockedUntil;
+    }
+
+    @Override
+    public Mono<SessionProperties> getSessionProperties() {
+        return sessionProperties;
     }
 
     @Override
