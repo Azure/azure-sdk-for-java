@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.models.ProxyOptionsTransport;
 import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
@@ -31,6 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.StringTokenizer;
 
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
@@ -187,6 +189,17 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     private boolean isRecording() {
         return xRecordingId != null;
+    }
+
+    public void setRecordingOptions(ProxyOptionsTransport proxyOptionsTransport) {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/SetRecordingOptions", proxyUrl.toString()));
+        boolean allowsRedirect = proxyOptionsTransport.isAutoRedirectAllowed();
+        String tlsCert = proxyOptionsTransport.getTLSValidationCertPath();
+        String body = String.format("{{\"Transport\":{\"HandleRedirects\":\"%s\",\"TLSValidationCert\":\"%s\"}}",
+            allowsRedirect, tlsCert);
+        request.setBody(body);
+        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        client.sendSync(request, Context.NONE);
     }
 }
 
