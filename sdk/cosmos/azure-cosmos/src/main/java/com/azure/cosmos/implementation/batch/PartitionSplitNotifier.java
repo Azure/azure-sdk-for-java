@@ -1,6 +1,5 @@
 package com.azure.cosmos.implementation.batch;
 
-
 import com.azure.cosmos.models.CosmosItemIdentity;
 
 /**

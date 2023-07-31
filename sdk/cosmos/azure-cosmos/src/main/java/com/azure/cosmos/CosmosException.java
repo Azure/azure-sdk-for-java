@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -30,7 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
-import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
 /**
  * This class defines a custom exception type for all operations on

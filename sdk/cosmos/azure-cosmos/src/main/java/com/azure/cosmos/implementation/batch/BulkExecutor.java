@@ -302,7 +302,6 @@ public final class BulkExecutor<TContext> implements Disposable {
         Mono<Integer> maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ? Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
             this.container.getFeedRanges().map(ranges -> Math.max(256, ranges.size() * 2));
 
-
         return
             maxConcurrentCosmosPartitionsMono
             .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
@@ -471,11 +470,9 @@ public final class BulkExecutor<TContext> implements Disposable {
         AtomicLong currentMicroBatchSize = new AtomicLong(0);
         AtomicInteger currentTotalSerializedLength = new AtomicInteger(0);
         Set<CosmosItemIdentity> pastIdAndPK = ConcurrentHashMap.newKeySet();
-        int microBatchConcurrency;
-        microBatchConcurrency = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        int microBatchConcurrency = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
             .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions);
-
 
         return partitionedGroupFluxOfInputOperations
             .mergeWith(groupFluxProcessor)
