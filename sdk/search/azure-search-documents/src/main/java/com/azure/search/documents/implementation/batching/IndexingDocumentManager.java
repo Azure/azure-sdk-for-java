@@ -7,7 +7,9 @@ import com.azure.search.documents.options.OnActionAddedOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +29,7 @@ final class IndexingDocumentManager<T> {
      * resilient against cases where the request timeouts or is cancelled by an external operation, preventing the
      * documents from being lost.
      */
-    private final LinkedList<TryTrackingIndexAction<T>> inFlightActions = new LinkedList<>();
+    private final Deque<TryTrackingIndexAction<T>> inFlightActions = new LinkedList<>();
 
     synchronized Collection<IndexAction<T>> getActions() {
         List<IndexAction<T>> actions = new ArrayList<>(inFlightActions.size() + this.actions.size());
@@ -52,7 +54,8 @@ final class IndexingDocumentManager<T> {
         Function<T, String> documentKeyRetriever,
         Consumer<OnActionAddedOptions<T>> onActionAddedConsumer) {
         for (IndexAction<T> action : actions) {
-            this.actions.add(new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())));
+            this.actions.addLast(new TryTrackingIndexAction<>(action,
+                documentKeyRetriever.apply(action.getDocument())));
 
             if (onActionAddedConsumer != null) {
                 onActionAddedConsumer.accept(new OnActionAddedOptions<>(action));
@@ -67,24 +70,24 @@ final class IndexingDocumentManager<T> {
     }
 
     synchronized List<TryTrackingIndexAction<T>> createBatch(int batchActionCount) {
-        final List<TryTrackingIndexAction<T>> batchActions;
-        final Set<String> keysInBatch;
-
         int actionSize = this.actions.size();
         int inFlightActionSize = this.inFlightActions.size();
         int size = Math.min(batchActionCount, actionSize + inFlightActionSize);
-        batchActions = new ArrayList<>(size);
+        final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(size);
 
         // Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
         // factor of 1 as that would potentially cause collisions.
-        keysInBatch = new HashSet<>(size * 2);
+        final Set<String> keysInBatch = new HashSet<>(size * 2);
 
         // First attempt to fill the batch from documents that were lost in-flight.
         int inFlightDocumentsAdded = fillFromQueue(batchActions, inFlightActions, size, keysInBatch);
 
-        // If the batch is filled using documents lost in-flight add the remaining back to the queue.
+        // If the batch is filled using documents lost in-flight add the remaining back to the beginning of the queue.
         if (inFlightDocumentsAdded == size) {
-            reinsertFailedActions(inFlightActions);
+            TryTrackingIndexAction<T> inflightAction;
+            while ((inflightAction = inFlightActions.pollLast()) != null) {
+                actions.push(inflightAction);
+            }
         } else {
             // Then attempt to fill the batch from documents in the actions queue.
             fillFromQueue(batchActions, actions, size - inFlightDocumentsAdded, keysInBatch);
@@ -94,22 +97,22 @@ final class IndexingDocumentManager<T> {
     }
 
     private int fillFromQueue(List<TryTrackingIndexAction<T>> batch,
-        List<TryTrackingIndexAction<T>> queue,
+        Collection<TryTrackingIndexAction<T>> queue,
         int requested,
         Set<String> duplicateKeyTracker) {
-        int offset = 0;
         int actionsAdded = 0;
-        int queueSize = queue.size();
 
-        while (actionsAdded < requested && offset < queueSize) {
-            TryTrackingIndexAction<T> potentialDocumentToAdd = queue.get(offset++ - actionsAdded);
+        Iterator<TryTrackingIndexAction<T>> iterator = queue.iterator();
+        while (actionsAdded < requested && iterator.hasNext()) {
+            TryTrackingIndexAction<T> potentialDocumentToAdd = iterator.next();
 
             if (duplicateKeyTracker.contains(potentialDocumentToAdd.getKey())) {
                 continue;
             }
 
             duplicateKeyTracker.add(potentialDocumentToAdd.getKey());
-            batch.add(queue.remove(offset - 1 - actionsAdded));
+            batch.add(potentialDocumentToAdd);
+            iterator.remove();
             actionsAdded += 1;
         }
 

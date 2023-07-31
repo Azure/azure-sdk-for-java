@@ -131,9 +131,9 @@ public final class SearchIndexingAsyncPublisher<T> {
     public Mono<Void> flush(boolean awaitLock, boolean isClose, Context context) {
         if (awaitLock) {
             processingSemaphore.acquireUninterruptibly();
-            return flushLoop(isClose, context).doFinally(ignored -> processingSemaphore.release());
+            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);
         } else if (processingSemaphore.tryAcquire()) {
-            return flushLoop(isClose, context).doFinally(ignored -> processingSemaphore.release());
+            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);
         } else {
             LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
             return Mono.empty();

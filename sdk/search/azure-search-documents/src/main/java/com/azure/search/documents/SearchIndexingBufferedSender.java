@@ -323,7 +323,7 @@ public final class SearchIndexingBufferedSender<T> {
         }
     }
 
-    private synchronized void ensureOpen() {
+    private void ensureOpen() {
         if (closed.get()) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Buffered sender has been closed."));
         }
@@ -344,7 +344,16 @@ public final class SearchIndexingBufferedSender<T> {
         if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
             try {
                 THREAD_POOL.submit(call).get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            } catch (ExecutionException e) {
+                Throwable realCause = e.getCause();
+                if (realCause instanceof Error) {
+                    throw (Error) realCause;
+                } else if (realCause instanceof RuntimeException) {
+                    throw LOGGER.logExceptionAsError((RuntimeException) realCause);
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(realCause));
+                }
+            } catch (InterruptedException | TimeoutException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
         } else {
