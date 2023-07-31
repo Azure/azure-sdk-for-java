@@ -166,7 +166,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     @Override
     public int compareTo(CosmosItemOperation operation) {
         if (operation instanceof ItemBulkOperation) {
-            ItemBulkOperation bulkOperation = (ItemBulkOperation) operation;
+            ItemBulkOperation<?, ?> bulkOperation = (ItemBulkOperation<?, ?>) operation;
             return this.index - bulkOperation.index;
         }
         return 0;

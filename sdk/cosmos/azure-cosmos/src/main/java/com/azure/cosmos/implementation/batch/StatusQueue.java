@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Queue that keeps track of the status for retries and all the failed items for a specific partition key and id combination
  */
-class StatusQueue {
+class StatusQueue<TContext> {
 
 
     enum Status {
@@ -25,7 +25,7 @@ class StatusQueue {
 
     /** Used when the id and partition key combination should not be retried
      * and want to fail fast the rest of the duplicate items */
-    private CosmosBulkOperationResponse<?> response;
+    private CosmosBulkOperationResponse<TContext> response;
 
     public StatusQueue() {
         this.queue = new ConcurrentLinkedQueue<>();
@@ -60,11 +60,11 @@ class StatusQueue {
         this.status = status;
     }
 
-    public CosmosBulkOperationResponse<?> getResponse() {
+    public CosmosBulkOperationResponse<TContext> getResponse() {
         return response;
     }
 
-    public void setResponse(CosmosBulkOperationResponse<?> response) {
+    public void setResponse(CosmosBulkOperationResponse<TContext> response) {
         this.response = response;
     }
 
