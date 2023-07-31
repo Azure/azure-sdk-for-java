@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkDevices Delete. */
 public final class NetworkDevicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkDevices_Delete_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class NetworkDevicesDeleteSamples {
      */
     public static void networkDevicesDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkDevices().delete("resourceGroupName", "networkDeviceName", com.azure.core.util.Context.NONE);
+        manager.networkDevices().delete("example-rg", "example-device", com.azure.core.util.Context.NONE);
     }
 }

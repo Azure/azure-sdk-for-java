@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,9 +34,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.RoutePoliciesClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePoliciesListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -113,7 +118,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -145,6 +150,49 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/updateAdministrativeState")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("routePolicyName") String routePolicyName,
+            @BodyParam("application/json") UpdateAdministrativeState body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/validateConfiguration")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("routePolicyName") String routePolicyName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies/{routePolicyName}/commitConfiguration")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> commitConfiguration(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("routePolicyName") String routePolicyName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1474,6 +1522,838 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutePolicyInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (routePolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter routePolicyName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateAdministrativeState(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            routePolicyName,
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (routePolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter routePolicyName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateAdministrativeState(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                routePolicyName,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAdministrativeStateWithResponseAsync(resourceGroupName, routePolicyName, body);
+        return this
+            .client
+            .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateAdministrativeStateWithResponseAsync(resourceGroupName, routePolicyName, body, context);
+        return this
+            .client
+            .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body) {
+        return this.beginUpdateAdministrativeStateAsync(resourceGroupName, routePolicyName, body).getSyncPoller();
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context) {
+        return this
+            .beginUpdateAdministrativeStateAsync(resourceGroupName, routePolicyName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, routePolicyName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, routePolicyName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body) {
+        return updateAdministrativeStateAsync(resourceGroupName, routePolicyName, body).block();
+    }
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context) {
+        return updateAdministrativeStateAsync(resourceGroupName, routePolicyName, body, context).block();
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
+        String resourceGroupName, String routePolicyName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (routePolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter routePolicyName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .validateConfiguration(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            routePolicyName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
+        String resourceGroupName, String routePolicyName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (routePolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter routePolicyName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .validateConfiguration(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                routePolicyName,
+                accept,
+                context);
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String routePolicyName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateConfigurationWithResponseAsync(resourceGroupName, routePolicyName);
+        return this
+            .client
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String routePolicyName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateConfigurationWithResponseAsync(resourceGroupName, routePolicyName, context);
+        return this
+            .client
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
+                context);
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String routePolicyName) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, routePolicyName).getSyncPoller();
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String routePolicyName, Context context) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, routePolicyName, context).getSyncPoller();
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
+        String resourceGroupName, String routePolicyName) {
+        return beginValidateConfigurationAsync(resourceGroupName, routePolicyName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
+        String resourceGroupName, String routePolicyName, Context context) {
+        return beginValidateConfigurationAsync(resourceGroupName, routePolicyName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName) {
+        return validateConfigurationAsync(resourceGroupName, routePolicyName).block();
+    }
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String routePolicyName, Context context) {
+        return validateConfigurationAsync(resourceGroupName, routePolicyName, context).block();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
+        String resourceGroupName, String routePolicyName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (routePolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter routePolicyName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .commitConfiguration(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            routePolicyName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
+        String resourceGroupName, String routePolicyName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (routePolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter routePolicyName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .commitConfiguration(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                routePolicyName,
+                accept,
+                context);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfigurationAsync(String resourceGroupName, String routePolicyName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            commitConfigurationWithResponseAsync(resourceGroupName, routePolicyName);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfigurationAsync(String resourceGroupName, String routePolicyName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            commitConfigurationWithResponseAsync(resourceGroupName, routePolicyName, context);
+        return this
+            .client
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                context);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String routePolicyName) {
+        return this.beginCommitConfigurationAsync(resourceGroupName, routePolicyName).getSyncPoller();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String routePolicyName, Context context) {
+        return this.beginCommitConfigurationAsync(resourceGroupName, routePolicyName, context).getSyncPoller();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
+        String resourceGroupName, String routePolicyName) {
+        return beginCommitConfigurationAsync(resourceGroupName, routePolicyName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
+        String resourceGroupName, String routePolicyName, Context context) {
+        return beginCommitConfigurationAsync(resourceGroupName, routePolicyName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String routePolicyName) {
+        return commitConfigurationAsync(resourceGroupName, routePolicyName).block();
+    }
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String routePolicyName, Context context) {
+        return commitConfigurationAsync(resourceGroupName, routePolicyName, context).block();
     }
 
     /**

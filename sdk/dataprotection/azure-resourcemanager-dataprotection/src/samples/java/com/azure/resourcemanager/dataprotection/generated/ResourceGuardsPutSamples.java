@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for ResourceGuards Put. */
 public final class ResourceGuardsPutSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/PutResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/PutResourceGuard.json
      */
     /**
      * Sample code: Create ResourceGuard.
@@ -23,7 +23,7 @@ public final class ResourceGuardsPutSamples {
             .define("swaggerExample")
             .withRegion("WestUS")
             .withExistingResourceGroup("SampleResourceGroup")
-            .withTags(mapOf("key1", "val1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 

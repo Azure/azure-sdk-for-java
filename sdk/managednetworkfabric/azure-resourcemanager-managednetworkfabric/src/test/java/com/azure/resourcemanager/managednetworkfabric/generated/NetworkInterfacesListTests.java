@@ -16,10 +16,10 @@ public final class NetworkInterfacesListTests {
         NetworkInterfacesList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"mxtd\",\"administrativeState\":\"Disabled\",\"provisioningState\":\"Updating\",\"connectedTo\":\"coebjvewzcj\",\"interfaceType\":\"Management\",\"ipv4Address\":\"cpmguaadraufact\",\"ipv6Address\":\"hzovaj\",\"annotation\":\"iuxxpshneekulfg\"},\"id\":\"qubkw\",\"name\":\"lenrd\",\"type\":\"utujba\"},{\"properties\":{\"physicalIdentifier\":\"juohminyflnorw\",\"administrativeState\":\"Disabled\",\"provisioningState\":\"Deleting\",\"connectedTo\":\"klvxwmyg\",\"interfaceType\":\"Data\",\"ipv4Address\":\"pqchiszep\",\"ipv6Address\":\"bjcrxgibbdaxco\",\"annotation\":\"ozauorsukokwb\"},\"id\":\"lhlv\",\"name\":\"uuepzlrphwzsoldw\",\"type\":\"yuqdu\"},{\"properties\":{\"physicalIdentifier\":\"mnnrwr\",\"administrativeState\":\"Enabled\",\"provisioningState\":\"Canceled\",\"connectedTo\":\"alywjhhgdn\",\"interfaceType\":\"Management\",\"ipv4Address\":\"ivfomiloxgg\",\"ipv6Address\":\"fi\",\"annotation\":\"dieuzaofj\"},\"id\":\"vcyy\",\"name\":\"s\",\"type\":\"gdotcubiipuipwo\"}],\"nextLink\":\"nmacj\"}")
+                    "{\"value\":[{\"properties\":{\"physicalIdentifier\":\"qdseipnquwzxhrp\",\"connectedTo\":\"odlhkfktl\",\"interfaceType\":\"Data\",\"ipv4Address\":\"objopnou\",\"ipv6Address\":\"qezkqxs\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"annotation\":\"gfcvcewbwq\"},\"id\":\"dgsjsat\",\"name\":\"rncmazdfsqxh\",\"type\":\"qmr\"},{\"properties\":{\"physicalIdentifier\":\"parn\",\"connectedTo\":\"grszrbwtdrcwg\",\"interfaceType\":\"Management\",\"ipv4Address\":\"xzlh\",\"ipv6Address\":\"ix\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"zjrmhpfywvyld\"},\"id\":\"pzfzxsoxinunjlz\",\"name\":\"drocqsxytq\",\"type\":\"tcmiwd\"},{\"properties\":{\"physicalIdentifier\":\"svnmeylajamcajy\",\"connectedTo\":\"tpzcr\",\"interfaceType\":\"Management\",\"ipv4Address\":\"leyn\",\"ipv6Address\":\"nhkigg\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"annotation\":\"hvubhgzphetxdqc\"},\"id\":\"yctajqz\",\"name\":\"vale\",\"type\":\"xb\"},{\"properties\":{\"physicalIdentifier\":\"i\",\"connectedTo\":\"sd\",\"interfaceType\":\"Management\",\"ipv4Address\":\"sbfpzvoikvntwcz\",\"ipv6Address\":\"wushlcxpbl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\",\"annotation\":\"p\"},\"id\":\"kissaidqzsaa\",\"name\":\"qdsgptotxj\",\"type\":\"fiafc\"}],\"nextLink\":\"r\"}")
                 .toObject(NetworkInterfacesList.class);
-        Assertions.assertEquals("iuxxpshneekulfg", model.value().get(0).annotation());
-        Assertions.assertEquals("nmacj", model.nextLink());
+        Assertions.assertEquals("gfcvcewbwq", model.value().get(0).annotation());
+        Assertions.assertEquals("r", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +29,13 @@ public final class NetworkInterfacesListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new NetworkInterfaceInner().withAnnotation("iuxxpshneekulfg"),
-                            new NetworkInterfaceInner().withAnnotation("ozauorsukokwb"),
-                            new NetworkInterfaceInner().withAnnotation("dieuzaofj")))
-                .withNextLink("nmacj");
+                            new NetworkInterfaceInner().withAnnotation("gfcvcewbwq"),
+                            new NetworkInterfaceInner().withAnnotation("zjrmhpfywvyld"),
+                            new NetworkInterfaceInner().withAnnotation("hvubhgzphetxdqc"),
+                            new NetworkInterfaceInner().withAnnotation("p")))
+                .withNextLink("r");
         model = BinaryData.fromObject(model).toObject(NetworkInterfacesList.class);
-        Assertions.assertEquals("iuxxpshneekulfg", model.value().get(0).annotation());
-        Assertions.assertEquals("nmacj", model.nextLink());
+        Assertions.assertEquals("gfcvcewbwq", model.value().get(0).annotation());
+        Assertions.assertEquals("r", model.nextLink());
     }
 }

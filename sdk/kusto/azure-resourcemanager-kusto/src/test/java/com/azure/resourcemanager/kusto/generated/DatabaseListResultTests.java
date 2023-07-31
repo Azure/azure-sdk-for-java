@@ -16,16 +16,24 @@ public final class DatabaseListResultTests {
         DatabaseListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"kind\":\"Database\",\"location\":\"s\",\"id\":\"bpg\",\"name\":\"xytxhpzxbz\",\"type\":\"fzab\"}]}")
+                    "{\"nextLink\":\"txnrjaw\",\"value\":[{\"kind\":\"Database\",\"location\":\"xhniskxfbkpycgk\",\"id\":\"wndnhj\",\"name\":\"auwhvylwzbtdhx\",\"type\":\"jznb\"},{\"kind\":\"Database\",\"location\":\"ow\",\"id\":\"wpr\",\"name\":\"qlveualupjmkh\",\"type\":\"xobbcswsrt\"}]}")
                 .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("s", model.value().get(0).location());
+        Assertions.assertEquals("txnrjaw", model.nextLink());
+        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabaseListResult model =
-            new DatabaseListResult().withValue(Arrays.asList(new DatabaseInner().withLocation("s")));
+            new DatabaseListResult()
+                .withNextLink("txnrjaw")
+                .withValue(
+                    Arrays
+                        .asList(
+                            new DatabaseInner().withLocation("xhniskxfbkpycgk"),
+                            new DatabaseInner().withLocation("ow")));
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("s", model.value().get(0).location());
+        Assertions.assertEquals("txnrjaw", model.nextLink());
+        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
     }
 }

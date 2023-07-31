@@ -58,8 +58,7 @@ public final class CommitmentTiersClientImpl implements CommitmentTiersClient {
     public interface CommitmentTiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}"
-                + "/commitmentTiers")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/commitmentTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommitmentTierListResult>> list(

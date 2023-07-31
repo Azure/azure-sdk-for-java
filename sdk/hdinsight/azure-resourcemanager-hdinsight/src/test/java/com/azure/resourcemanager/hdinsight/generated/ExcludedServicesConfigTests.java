@@ -7,28 +7,24 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ExcludedServicesConfig;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ExcludedServicesConfigTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ExcludedServicesConfig model =
             BinaryData
-                .fromString(
-                    "{\"excludedServicesConfigId\":\"jiwkuofoskghsau\",\"excludedServicesList\":\"mjmvxieduugidyjr\"}")
+                .fromString("{\"excludedServicesConfigId\":\"l\",\"excludedServicesList\":\"nfqqnvwp\"}")
                 .toObject(ExcludedServicesConfig.class);
-        Assertions.assertEquals("jiwkuofoskghsau", model.excludedServicesConfigId());
-        Assertions.assertEquals("mjmvxieduugidyjr", model.excludedServicesList());
+        Assertions.assertEquals("l", model.excludedServicesConfigId());
+        Assertions.assertEquals("nfqqnvwp", model.excludedServicesList());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ExcludedServicesConfig model =
-            new ExcludedServicesConfig()
-                .withExcludedServicesConfigId("jiwkuofoskghsau")
-                .withExcludedServicesList("mjmvxieduugidyjr");
+            new ExcludedServicesConfig().withExcludedServicesConfigId("l").withExcludedServicesList("nfqqnvwp");
         model = BinaryData.fromObject(model).toObject(ExcludedServicesConfig.class);
-        Assertions.assertEquals("jiwkuofoskghsau", model.excludedServicesConfigId());
-        Assertions.assertEquals("mjmvxieduugidyjr", model.excludedServicesList());
+        Assertions.assertEquals("l", model.excludedServicesConfigId());
+        Assertions.assertEquals("nfqqnvwp", model.excludedServicesList());
     }
 }

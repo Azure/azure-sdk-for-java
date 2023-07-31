@@ -15,35 +15,35 @@ public final class JobDefinitionPropertiesTests {
         JobDefinitionProperties model =
             BinaryData
                 .fromString(
-                    "{\"description\":\"ej\",\"copyMode\":\"Additive\",\"sourceName\":\"vorxzdmohct\",\"sourceResourceId\":\"vudwx\",\"sourceSubpath\":\"dnvowg\",\"targetName\":\"jjugwdkcglhslaz\",\"targetResourceId\":\"yggdtjixh\",\"targetSubpath\":\"uofqwe\",\"latestJobRunName\":\"hmenevfyexfwhybc\",\"latestJobRunResourceId\":\"vyvdcs\",\"latestJobRunStatus\":\"Running\",\"agentName\":\"naamde\",\"agentResourceId\":\"eh\",\"provisioningState\":\"Succeeded\"}")
+                    "{\"description\":\"nxkrx\",\"copyMode\":\"Additive\",\"sourceName\":\"mi\",\"sourceResourceId\":\"thz\",\"sourceSubpath\":\"qdrabhjybigehoqf\",\"targetName\":\"owskanyktz\",\"targetResourceId\":\"u\",\"targetSubpath\":\"wgqyw\",\"latestJobRunName\":\"drvyn\",\"latestJobRunResourceId\":\"gpphrcgyn\",\"latestJobRunStatus\":\"Failed\",\"agentName\":\"ecfvmm\",\"agentResourceId\":\"ofsx\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(JobDefinitionProperties.class);
-        Assertions.assertEquals("ej", model.description());
+        Assertions.assertEquals("nxkrx", model.description());
         Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
-        Assertions.assertEquals("vorxzdmohct", model.sourceName());
-        Assertions.assertEquals("dnvowg", model.sourceSubpath());
-        Assertions.assertEquals("jjugwdkcglhslaz", model.targetName());
-        Assertions.assertEquals("uofqwe", model.targetSubpath());
-        Assertions.assertEquals("naamde", model.agentName());
+        Assertions.assertEquals("mi", model.sourceName());
+        Assertions.assertEquals("qdrabhjybigehoqf", model.sourceSubpath());
+        Assertions.assertEquals("owskanyktz", model.targetName());
+        Assertions.assertEquals("wgqyw", model.targetSubpath());
+        Assertions.assertEquals("ecfvmm", model.agentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobDefinitionProperties model =
             new JobDefinitionProperties()
-                .withDescription("ej")
+                .withDescription("nxkrx")
                 .withCopyMode(CopyMode.ADDITIVE)
-                .withSourceName("vorxzdmohct")
-                .withSourceSubpath("dnvowg")
-                .withTargetName("jjugwdkcglhslaz")
-                .withTargetSubpath("uofqwe")
-                .withAgentName("naamde");
+                .withSourceName("mi")
+                .withSourceSubpath("qdrabhjybigehoqf")
+                .withTargetName("owskanyktz")
+                .withTargetSubpath("wgqyw")
+                .withAgentName("ecfvmm");
         model = BinaryData.fromObject(model).toObject(JobDefinitionProperties.class);
-        Assertions.assertEquals("ej", model.description());
+        Assertions.assertEquals("nxkrx", model.description());
         Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
-        Assertions.assertEquals("vorxzdmohct", model.sourceName());
-        Assertions.assertEquals("dnvowg", model.sourceSubpath());
-        Assertions.assertEquals("jjugwdkcglhslaz", model.targetName());
-        Assertions.assertEquals("uofqwe", model.targetSubpath());
-        Assertions.assertEquals("naamde", model.agentName());
+        Assertions.assertEquals("mi", model.sourceName());
+        Assertions.assertEquals("qdrabhjybigehoqf", model.sourceSubpath());
+        Assertions.assertEquals("owskanyktz", model.targetName());
+        Assertions.assertEquals("wgqyw", model.targetSubpath());
+        Assertions.assertEquals("ecfvmm", model.agentName());
     }
 }

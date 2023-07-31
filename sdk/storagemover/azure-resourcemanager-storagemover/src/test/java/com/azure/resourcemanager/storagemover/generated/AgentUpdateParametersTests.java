@@ -12,16 +12,14 @@ public final class AgentUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentUpdateParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"description\":\"wrlyxwjkcprb\"}}")
-                .toObject(AgentUpdateParameters.class);
-        Assertions.assertEquals("wrlyxwjkcprb", model.description());
+            BinaryData.fromString("{\"properties\":{\"description\":\"i\"}}").toObject(AgentUpdateParameters.class);
+        Assertions.assertEquals("i", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentUpdateParameters model = new AgentUpdateParameters().withDescription("wrlyxwjkcprb");
+        AgentUpdateParameters model = new AgentUpdateParameters().withDescription("i");
         model = BinaryData.fromObject(model).toObject(AgentUpdateParameters.class);
-        Assertions.assertEquals("wrlyxwjkcprb", model.description());
+        Assertions.assertEquals("i", model.description());
     }
 }

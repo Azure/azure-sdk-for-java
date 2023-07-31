@@ -9,17 +9,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Objects;
+
 /** Describes a queue selector that will be attached to the job. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Fluent
 public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment {
+    /**
+     * Creates an instance of StaticQueueSelectorAttachment class.
+     *
+     * @param queueSelector Describes a condition that must be met against a set of labels for queue selection
+     */
+    public StaticQueueSelectorAttachment(RouterQueueSelector queueSelector) {
+        this.queueSelector = Objects.requireNonNull(queueSelector, "'queueSelector' cannot be null.");
+    }
+
     /*
      * Describes a condition that must be met against a set of labels for queue
      * selection
      */
     @JsonProperty(value = "queueSelector", required = true)
-    private RouterQueueSelector queueSelector;
+    private final RouterQueueSelector queueSelector;
 
     /**
      * Get the queueSelector property: Describes a condition that must be met against a set of labels for queue
@@ -29,17 +40,5 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
      */
     public RouterQueueSelector getQueueSelector() {
         return this.queueSelector;
-    }
-
-    /**
-     * Set the queueSelector property: Describes a condition that must be met against a set of labels for queue
-     * selection.
-     *
-     * @param queueSelector the queueSelector value to set.
-     * @return the StaticQueueSelectorAttachment object itself.
-     */
-    public StaticQueueSelectorAttachment setQueueSelector(RouterQueueSelector queueSelector) {
-        this.queueSelector = queueSelector;
-        return this;
     }
 }

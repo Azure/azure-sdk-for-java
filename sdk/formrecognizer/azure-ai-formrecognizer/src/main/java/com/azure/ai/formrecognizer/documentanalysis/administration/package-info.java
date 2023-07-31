@@ -93,9 +93,9 @@
  *
  * <p>Let's take a look at the administration client scenarios and their respective usage below.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Build custom document models</h2>
  *
@@ -150,9 +150,9 @@
  * <a href="https://aka.ms/azsdk/formrecognizer/labelingtool">Form Recognizer Labeling Tool
  * .</a>.
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Manage models</h2>
  *

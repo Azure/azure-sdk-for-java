@@ -32,7 +32,7 @@ public final class ProjectsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"n\",\"provisioningState\":\"Succeeded\"},\"id\":\"i\",\"name\":\"eilpjzuaejxdu\",\"type\":\"tskzbbtdzumveek\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"wmcdytdxwi\",\"provisioningState\":\"Succeeded\"},\"id\":\"rjaw\",\"name\":\"qwgxhniskx\",\"type\":\"bkpyc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class ProjectsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Project> response =
-            manager.projects().list("zlmwlxkvugfhz", "vawjvzunlu", com.azure.core.util.Context.NONE);
+            manager.projects().list("ovbvmeueciv", "hzceuojgjrwjue", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("n", response.iterator().next().description());
+        Assertions.assertEquals("wmcdytdxwi", response.iterator().next().description());
     }
 }

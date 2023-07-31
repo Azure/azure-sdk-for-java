@@ -13,7 +13,7 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"nnust\",\"isDataAction\":true,\"display\":{\"provider\":\"nmgixh\",\"resource\":\"avmqfoudor\",\"operation\":\"gyyprotwy\",\"description\":\"ndm\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"mjkavlgorbmft\",\"isDataAction\":true,\"display\":{\"provider\":\"fjltfvnzcyjtotp\",\"resource\":\"pvpbdbzqgqqiheds\",\"operation\":\"wthmkyib\",\"description\":\"sihsgqcwdhohsd\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"ufcohdxbz\"}")
+                    "{\"value\":[{\"name\":\"bnmcvaqycd\",\"isDataAction\":true,\"display\":{\"provider\":\"esdyvf\",\"resource\":\"z\",\"operation\":\"df\",\"description\":\"ktwpd\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"ytabvb\"}")
                 .toObject(OperationListResult.class);
     }
 

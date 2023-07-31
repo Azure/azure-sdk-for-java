@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for SimPolicies UpdateTags. */
 public final class SimPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyUpdateTags.json
      */
     /**
      * Sample code: Update SIM policy tags.

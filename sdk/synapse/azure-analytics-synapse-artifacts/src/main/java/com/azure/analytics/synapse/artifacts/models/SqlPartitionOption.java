@@ -20,6 +20,14 @@ public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionO
     public static final SqlPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
+     * Creates a new instance of SqlPartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlPartitionOption() {}
+
+    /**
      * Creates or finds a SqlPartitionOption from its string representation.
      *
      * @param name a name to look for.

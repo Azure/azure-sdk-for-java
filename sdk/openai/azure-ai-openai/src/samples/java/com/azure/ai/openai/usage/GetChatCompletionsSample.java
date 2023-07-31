@@ -40,14 +40,14 @@ public class GetChatCompletionsSample {
             .buildClient();
 
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
 
         ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, new ChatCompletionsOptions(chatMessages));
 
-        System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
+        System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
         for (ChatChoice choice : chatCompletions.getChoices()) {
             ChatMessage message = choice.getMessage();
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());

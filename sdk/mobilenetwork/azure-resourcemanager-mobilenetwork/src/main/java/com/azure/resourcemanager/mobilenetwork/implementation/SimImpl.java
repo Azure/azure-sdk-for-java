@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
@@ -32,10 +31,6 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String authenticationKey() {

@@ -5,15 +5,16 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Aggregate Route properties. */
+/** aggregateIpv4Route model. */
 @Fluent
 public final class AggregateRoute {
     /*
-     * Prefix of the aggregate Route.
+     * IPv4 Prefix of the aggregate Ipv4Route.
      */
-    @JsonProperty(value = "prefix")
+    @JsonProperty(value = "prefix", required = true)
     private String prefix;
 
     /** Creates an instance of AggregateRoute class. */
@@ -21,7 +22,7 @@ public final class AggregateRoute {
     }
 
     /**
-     * Get the prefix property: Prefix of the aggregate Route.
+     * Get the prefix property: IPv4 Prefix of the aggregate Ipv4Route.
      *
      * @return the prefix value.
      */
@@ -30,7 +31,7 @@ public final class AggregateRoute {
     }
 
     /**
-     * Set the prefix property: Prefix of the aggregate Route.
+     * Set the prefix property: IPv4 Prefix of the aggregate Ipv4Route.
      *
      * @param prefix the prefix value to set.
      * @return the AggregateRoute object itself.
@@ -46,5 +47,12 @@ public final class AggregateRoute {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (prefix() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property prefix in model AggregateRoute"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AggregateRoute.class);
 }

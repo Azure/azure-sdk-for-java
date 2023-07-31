@@ -87,7 +87,7 @@ org.apache.logging.log4j:log4j-core;2.17.2
 org.apache.logging.log4j:log4j-slf4j-impl;2.17.2
 org.apache.maven:maven-core;3.5.4
 org.apache.maven.archetype:archetype-packaging;3.2.0
-org.apache.maven.archetype:maven-archetype-plugin;3.2.0
+org.apache.maven.plugins:maven-archetype-plugin;3.2.0
 org.apache.qpid:proton-j;0.33.8
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
@@ -346,9 +346,11 @@ cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
+cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
 cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
+cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos_org.scala-lang:scala-library;2.12.10
 cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
