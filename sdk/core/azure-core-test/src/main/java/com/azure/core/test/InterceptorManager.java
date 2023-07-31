@@ -27,6 +27,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -454,6 +455,9 @@ public class InterceptorManager implements AutoCloseable {
      * @throws RuntimeException Neither playback or record has started.
      */
     public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
+        if (CoreUtils.isNullOrEmpty(testProxySanitizers)) {
+            return;
+        }
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addProxySanitization(testProxySanitizers);
         } else if (testProxyRecordPolicy != null) {
@@ -464,12 +468,26 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Add sanitizer rule for sanitization during record or playback.
+     * @param testProxySanitizers the list of replacement regex and rules.
+     */
+    public void addSanitizers(TestProxySanitizer... testProxySanitizers) {
+        if (testProxySanitizers != null) {
+            addSanitizers(Arrays.asList(testProxySanitizers));
+        }
+    }
+
+    /**
      * Add matcher rules to match recorded data in playback.
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
+        if (CoreUtils.isNullOrEmpty(testProxyMatchers)) {
+            return;
+        }
+
         if (testMode != TestMode.PLAYBACK) {
             return;
         }
@@ -477,6 +495,17 @@ public class InterceptorManager implements AutoCloseable {
             testProxyPlaybackClient.addMatcherRequests(testProxyMatchers);
         } else {
             throw new RuntimeException("Playback must have been started before adding matchers.");
+        }
+    }
+
+    /**
+     * Add matcher rules to match recorded data in playback.
+     * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
+     * @param testProxyRequestMatchers the list of matcher rules when playing back recorded data.
+     */
+    public void addMatchers(TestProxyRequestMatcher... testProxyRequestMatchers) {
+        if (testProxyRequestMatchers != null) {
+            addMatchers(Arrays.asList(testProxyRequestMatchers));
         }
     }
 
