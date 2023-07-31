@@ -109,7 +109,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final Sinks.Many<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final ScheduledThreadPoolExecutor executorService;
-    private final CosmosAsyncClient cosmosClient;-
+    private final CosmosAsyncClient cosmosClient;
     private final String bulkSpanName;
     private ScheduledFuture<?> scheduledFutureForFlush;
     private final String identifier = "BulkExecutor-" + instanceCount.incrementAndGet();
