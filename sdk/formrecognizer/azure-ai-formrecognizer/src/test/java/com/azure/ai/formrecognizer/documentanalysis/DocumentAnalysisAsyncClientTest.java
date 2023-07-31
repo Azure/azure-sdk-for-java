@@ -1367,20 +1367,20 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")
+                ));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode)
@@ -1418,20 +1418,20 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")
+                ));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train"),
-                    sourceKind));
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")
+                ));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode)

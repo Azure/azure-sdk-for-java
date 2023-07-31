@@ -7,4 +7,17 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
  * Class representing the source of the training content.
  */
 public abstract class TrainingDataContentSource {
+    private final ContentSourceKind sourceKind;
+
+    protected TrainingDataContentSource(ContentSourceKind sourceKind) {
+        this.sourceKind = sourceKind;
+    }
+
+    /**
+     * Get the source kind of the training data.
+     * @return the sourceKind value.
+     */
+    public ContentSourceKind getSourceKind() {
+        return sourceKind;
+    }
 }

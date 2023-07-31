@@ -50,8 +50,8 @@ public class BuildDocumentClassifier {
         TrainingDataContentSource sourceB = new BlobContentSource(blobContainerUrl1040A);
 
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(sourceA, sourceKind));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(sourceB, sourceKind));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(sourceA));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(sourceB));
 
         SyncPoller<OperationResult, DocumentClassifierDetails> buildOperationPoller
             = client.beginBuildDocumentClassifier(docTypes);

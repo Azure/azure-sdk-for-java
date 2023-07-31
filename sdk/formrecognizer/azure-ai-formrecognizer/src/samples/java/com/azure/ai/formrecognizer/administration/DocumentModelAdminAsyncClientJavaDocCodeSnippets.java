@@ -149,10 +149,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D),
-            sourceKind));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A),
-            sourceKind));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        ));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        ));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes)
             // if polling operation completed, retrieve the final result.
@@ -181,10 +181,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D),
-            sourceKind));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A),
-            sourceKind));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        ));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        ));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes,
                 new BuildDocumentClassifierOptions()
