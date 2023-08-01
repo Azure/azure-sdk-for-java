@@ -30,7 +30,7 @@ Because in LIVE mode we are hitting an actual resource, we must set the appropri
 
 Depending on which package you are testing, it may need special environment variables to test successfully. All packages have a *TestBase.java file inside their corresponding test folder and each one of these contain the special environment variables the tests need in order to run. Make sure to set these variables before running the tests themselves. You may need to restart your development environment after creating or updating these environment variables.
 
-You can run the `mvn verify` command after setting the `AZURE_TEST_MODE` variable to `LIVE`.
+You can run the `mvn verify` command after setting the `AZURE_TEST_MODE` variable to `LIVE`. You will also need to set the `AZURE_TEST_RUN_lIVE` variable to `true`.
 
 ### Record mode
 
