@@ -286,7 +286,7 @@ public final class ContentSafetyClientBuilder
      */
     @Generated
     public ContentSafetyClient buildClient() {
-        return new ContentSafetyClient(new ContentSafetyAsyncClient(buildInnerClient()));
+        return new ContentSafetyClient(buildInnerClient());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContentSafetyClientBuilder.class);

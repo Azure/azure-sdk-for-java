@@ -6,9 +6,12 @@ package com.azure.ai.contentsafety.generated;
 
 import com.azure.ai.contentsafety.ContentSafetyClient;
 import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
+import com.azure.ai.contentsafety.models.AddBlockItemsOptions;
 import com.azure.ai.contentsafety.models.AddBlockItemsResult;
+import com.azure.ai.contentsafety.models.TextBlockItemInfo;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import java.util.Arrays;
 
 public class AddBlockItemsToTextBlocklist {
     public static void main(String[] args) {
@@ -18,7 +21,11 @@ public class AddBlockItemsToTextBlocklist {
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.addblockitems.addblockitemstotextblocklist
-        AddBlockItemsResult response = contentSafetyClient.addBlockItems("TestBlocklist", null);
+        AddBlockItemsResult response =
+                contentSafetyClient.addBlockItems(
+                        "TestBlocklist",
+                        new AddBlockItemsOptions(
+                                Arrays.asList(new TextBlockItemInfo("hate").setDescription("Hate word"))));
         // END:com.azure.ai.contentsafety.generated.addblockitems.addblockitemstotextblocklist
     }
 }

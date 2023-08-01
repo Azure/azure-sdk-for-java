@@ -6,8 +6,10 @@ package com.azure.ai.contentsafety.generated;
 
 import com.azure.ai.contentsafety.ContentSafetyClient;
 import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
+import com.azure.ai.contentsafety.models.RemoveBlockItemsOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import java.util.Arrays;
 
 public class RemoveBlockItemsFromTextBlocklist {
     public static void main(String[] args) {
@@ -17,7 +19,8 @@ public class RemoveBlockItemsFromTextBlocklist {
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.removeblockitems.removeblockitemsfromtextblocklist
-        contentSafetyClient.removeBlockItems("TestBlocklist", null);
+        contentSafetyClient.removeBlockItems(
+                "TestBlocklist", new RemoveBlockItemsOptions(Arrays.asList("9511969e-f1e3-4604-9127-05ee16c509ec")));
         // END:com.azure.ai.contentsafety.generated.removeblockitems.removeblockitemsfromtextblocklist
     }
 }

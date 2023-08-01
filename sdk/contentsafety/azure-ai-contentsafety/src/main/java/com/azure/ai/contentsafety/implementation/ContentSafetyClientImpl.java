@@ -179,6 +179,26 @@ public final class ContentSafetyClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/text:analyze")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> analyzeTextSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData body,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/image:analyze")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -199,6 +219,26 @@ public final class ContentSafetyClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/image:analyze")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> analyzeImageSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData body,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/text/blocklists/{blocklistName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -212,6 +252,26 @@ public final class ContentSafetyClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTextBlocklist(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("blocklistName") String blocklistName,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/text/blocklists/{blocklistName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getTextBlocklistSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("blocklistName") String blocklistName,
@@ -241,6 +301,28 @@ public final class ContentSafetyClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Patch("/text/blocklists/{blocklistName}")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createOrUpdateTextBlocklistSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("blocklistName") String blocklistName,
+                @HeaderParam("Content-Type") String contentType,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/merge-patch+json") BinaryData resource,
+                RequestOptions requestOptions,
+                Context context);
+
         @Delete("/text/blocklists/{blocklistName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -254,6 +336,26 @@ public final class ContentSafetyClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTextBlocklist(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("blocklistName") String blocklistName,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/text/blocklists/{blocklistName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteTextBlocklistSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("blocklistName") String blocklistName,
@@ -280,6 +382,25 @@ public final class ContentSafetyClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/text/blocklists")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTextBlocklistsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/text/blocklists/{blocklistName}:addBlockItems")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -293,6 +414,27 @@ public final class ContentSafetyClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> addBlockItems(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("blocklistName") String blocklistName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData addBlockItemsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/text/blocklists/{blocklistName}:addBlockItems")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> addBlockItemsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("blocklistName") String blocklistName,
@@ -322,6 +464,27 @@ public final class ContentSafetyClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/text/blocklists/{blocklistName}:removeBlockItems")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> removeBlockItemsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("blocklistName") String blocklistName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData removeBlockItemsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/text/blocklists/{blocklistName}/blockItems/{blockItemId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -343,6 +506,27 @@ public final class ContentSafetyClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/text/blocklists/{blocklistName}/blockItems/{blockItemId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getTextBlocklistItemSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("blocklistName") String blocklistName,
+                @PathParam("blockItemId") String blockItemId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/text/blocklists/{blocklistName}/blockItems")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -356,6 +540,26 @@ public final class ContentSafetyClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTextBlocklistItems(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("blocklistName") String blocklistName,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/text/blocklists/{blocklistName}/blockItems")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTextBlocklistItemsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("blocklistName") String blocklistName,
@@ -394,7 +598,45 @@ public final class ContentSafetyClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTextBlocklistsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTextBlocklistItemsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTextBlocklistItemsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
@@ -522,7 +764,9 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> analyzeTextWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return analyzeTextWithResponseAsync(body, requestOptions).block();
+        final String accept = "application/json";
+        return service.analyzeTextSync(
+                this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -625,7 +869,9 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> analyzeImageWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return analyzeImageWithResponseAsync(body, requestOptions).block();
+        final String accept = "application/json";
+        return service.analyzeImageSync(
+                this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -689,7 +935,14 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
-        return getTextBlocklistWithResponseAsync(blocklistName, requestOptions).block();
+        final String accept = "application/json";
+        return service.getTextBlocklistSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                blocklistName,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -777,7 +1030,17 @@ public final class ContentSafetyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(
             String blocklistName, BinaryData resource, RequestOptions requestOptions) {
-        return createOrUpdateTextBlocklistWithResponseAsync(blocklistName, resource, requestOptions).block();
+        final String contentType = "application/merge-patch+json";
+        final String accept = "application/json";
+        return service.createOrUpdateTextBlocklistSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                blocklistName,
+                contentType,
+                accept,
+                resource,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -823,7 +1086,14 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
-        return deleteTextBlocklistWithResponseAsync(blocklistName, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteTextBlocklistSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                blocklistName,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -921,11 +1191,58 @@ public final class ContentSafetyClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all text blocklists details along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listTextBlocklistsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listTextBlocklistsSync(
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get All Text Blocklists
+     *
+     * <p>Get all text blocklists details.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     blocklistName: String (Required)
+     *     description: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all text blocklists details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTextBlocklists(RequestOptions requestOptions) {
-        return new PagedIterable<>(listTextBlocklistsAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listTextBlocklistsSinglePage(requestOptions),
+                nextLink -> listTextBlocklistsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1030,7 +1347,15 @@ public final class ContentSafetyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> addBlockItemsWithResponse(
             String blocklistName, BinaryData addBlockItemsOptions, RequestOptions requestOptions) {
-        return addBlockItemsWithResponseAsync(blocklistName, addBlockItemsOptions, requestOptions).block();
+        final String accept = "application/json";
+        return service.addBlockItemsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                blocklistName,
+                accept,
+                addBlockItemsOptions,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1100,7 +1425,15 @@ public final class ContentSafetyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeBlockItemsWithResponse(
             String blocklistName, BinaryData removeBlockItemsOptions, RequestOptions requestOptions) {
-        return removeBlockItemsWithResponseAsync(blocklistName, removeBlockItemsOptions, requestOptions).block();
+        final String accept = "application/json";
+        return service.removeBlockItemsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                blocklistName,
+                accept,
+                removeBlockItemsOptions,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1171,7 +1504,15 @@ public final class ContentSafetyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTextBlocklistItemWithResponse(
             String blocklistName, String blockItemId, RequestOptions requestOptions) {
-        return getTextBlocklistItemWithResponseAsync(blocklistName, blockItemId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getTextBlocklistItemSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                blocklistName,
+                blockItemId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1314,11 +1655,74 @@ public final class ContentSafetyClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all blockItems in a text blocklist along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listTextBlocklistItemsSinglePage(
+            String blocklistName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listTextBlocklistItemsSync(
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        blocklistName,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get All BlockItems By blocklistName
+     *
+     * <p>Get all blockItems in a text blocklist.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
+     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     blockItemId: String (Required)
+     *     description: String (Optional)
+     *     text: String (Required)
+     * }
+     * }</pre>
+     *
+     * @param blocklistName Text blocklist name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all blockItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTextBlocklistItems(String blocklistName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listTextBlocklistItemsAsync(blocklistName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listTextBlocklistItemsSinglePage(blocklistName, requestOptions),
+                nextLink -> listTextBlocklistItemsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1365,6 +1769,43 @@ public final class ContentSafetyClientImpl {
     }
 
     /**
+     * Get All Text Blocklists
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     blocklistName: String (Required)
+     *     description: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of TextBlocklist items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listTextBlocklistsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listTextBlocklistsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
      * Get All BlockItems By blocklistName
      *
      * <p>Get the next page of items.
@@ -1406,6 +1847,46 @@ public final class ContentSafetyClientImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    /**
+     * Get All BlockItems By blocklistName
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     blockItemId: String (Required)
+     *     description: String (Optional)
+     *     text: String (Required)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of TextBlockItem items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listTextBlocklistItemsNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listTextBlocklistItemsNextSync(
+                        nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

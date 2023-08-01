@@ -4,6 +4,7 @@
 
 package com.azure.ai.contentsafety;
 
+import com.azure.ai.contentsafety.implementation.ContentSafetyClientImpl;
 import com.azure.ai.contentsafety.models.AddBlockItemsOptions;
 import com.azure.ai.contentsafety.models.AddBlockItemsResult;
 import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
@@ -29,16 +30,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous ContentSafetyClient type. */
 @ServiceClient(builder = ContentSafetyClientBuilder.class)
 public final class ContentSafetyClient {
-    @Generated private final ContentSafetyAsyncClient client;
+    @Generated private final ContentSafetyClientImpl serviceClient;
 
     /**
      * Initializes an instance of ContentSafetyClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    ContentSafetyClient(ContentSafetyAsyncClient client) {
-        this.client = client;
+    ContentSafetyClient(ContentSafetyClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -96,7 +97,7 @@ public final class ContentSafetyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> analyzeTextWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.client.analyzeTextWithResponse(body, requestOptions).block();
+        return this.serviceClient.analyzeTextWithResponse(body, requestOptions);
     }
 
     /**
@@ -144,7 +145,7 @@ public final class ContentSafetyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> analyzeImageWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.client.analyzeImageWithResponse(body, requestOptions).block();
+        return this.serviceClient.analyzeImageWithResponse(body, requestOptions);
     }
 
     /**
@@ -172,7 +173,7 @@ public final class ContentSafetyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
-        return this.client.getTextBlocklistWithResponse(blocklistName, requestOptions).block();
+        return this.serviceClient.getTextBlocklistWithResponse(blocklistName, requestOptions);
     }
 
     /**
@@ -211,7 +212,7 @@ public final class ContentSafetyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(
             String blocklistName, BinaryData resource, RequestOptions requestOptions) {
-        return this.client.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions).block();
+        return this.serviceClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
     }
 
     /**
@@ -230,7 +231,7 @@ public final class ContentSafetyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
-        return this.client.deleteTextBlocklistWithResponse(blocklistName, requestOptions).block();
+        return this.serviceClient.deleteTextBlocklistWithResponse(blocklistName, requestOptions);
     }
 
     /**
@@ -257,7 +258,7 @@ public final class ContentSafetyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTextBlocklists(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTextBlocklists(requestOptions));
+        return this.serviceClient.listTextBlocklists(requestOptions);
     }
 
     /**
@@ -305,7 +306,7 @@ public final class ContentSafetyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> addBlockItemsWithResponse(
             String blocklistName, BinaryData addBlockItemsOptions, RequestOptions requestOptions) {
-        return this.client.addBlockItemsWithResponse(blocklistName, addBlockItemsOptions, requestOptions).block();
+        return this.serviceClient.addBlockItemsWithResponse(blocklistName, addBlockItemsOptions, requestOptions);
     }
 
     /**
@@ -336,7 +337,7 @@ public final class ContentSafetyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeBlockItemsWithResponse(
             String blocklistName, BinaryData removeBlockItemsOptions, RequestOptions requestOptions) {
-        return this.client.removeBlockItemsWithResponse(blocklistName, removeBlockItemsOptions, requestOptions).block();
+        return this.serviceClient.removeBlockItemsWithResponse(blocklistName, removeBlockItemsOptions, requestOptions);
     }
 
     /**
@@ -367,7 +368,7 @@ public final class ContentSafetyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTextBlocklistItemWithResponse(
             String blocklistName, String blockItemId, RequestOptions requestOptions) {
-        return this.client.getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions).block();
+        return this.serviceClient.getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions);
     }
 
     /**
@@ -408,7 +409,7 @@ public final class ContentSafetyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTextBlocklistItems(String blocklistName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTextBlocklistItems(blocklistName, requestOptions));
+        return this.serviceClient.listTextBlocklistItems(blocklistName, requestOptions);
     }
 
     /**
@@ -520,7 +521,10 @@ public final class ContentSafetyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TextBlocklist> listTextBlocklists() {
         // Generated convenience method for listTextBlocklists
-        return new PagedIterable<>(client.listTextBlocklists());
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient
+                .listTextBlocklists(requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlocklist.class));
     }
 
     /**
@@ -618,7 +622,19 @@ public final class ContentSafetyClient {
     public PagedIterable<TextBlockItem> listTextBlocklistItems(
             String blocklistName, Integer top, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listTextBlocklistItems
-        return new PagedIterable<>(client.listTextBlocklistItems(blocklistName, top, skip, maxPageSize));
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
+        return serviceClient
+                .listTextBlocklistItems(blocklistName, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlockItem.class));
     }
 
     /**
@@ -639,6 +655,9 @@ public final class ContentSafetyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TextBlockItem> listTextBlocklistItems(String blocklistName) {
         // Generated convenience method for listTextBlocklistItems
-        return new PagedIterable<>(client.listTextBlocklistItems(blocklistName));
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient
+                .listTextBlocklistItems(blocklistName, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(TextBlockItem.class));
     }
 }
