@@ -9,7 +9,11 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 public abstract class TrainingDataContentSource {
     private final ContentSourceKind sourceKind;
 
-    protected TrainingDataContentSource(ContentSourceKind sourceKind) {
+    /**
+     * Constructs a TrainingDataContentSource object.
+     * @param sourceKind the source kind of the training data.
+     */
+    private TrainingDataContentSource(ContentSourceKind sourceKind) {
         this.sourceKind = sourceKind;
     }
 
