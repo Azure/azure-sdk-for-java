@@ -156,23 +156,28 @@ public final class ResourceUtils {
      * @return the default api version to use
      */
     public static String defaultApiVersion(String id, Provider provider) {
-        String resourceType = resourceTypeFromResourceId(id).toLowerCase(Locale.ROOT);
+        ResourceId resourceId = ResourceId.fromString(id);
+        String resourceType = resourceId.resourceType().toLowerCase(Locale.ROOT);
         // Exact match
         for (ProviderResourceType prt : provider.resourceTypes()) {
             if (prt.resourceType().equalsIgnoreCase(resourceType)) {
                 return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
             }
         }
-        // child resource, e.g. sites/config
-        for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.resourceType().toLowerCase(Locale.ROOT).contains("/" + resourceType)) {
-                return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
+        // child resource, e.g. Microsoft.Web/sites/config
+        // There is an edge case that two resource types share the same child resource type name, so parent type name check is needed.
+        // e.g. "dnsForwardingRulesets/virtualNetworkLinks" and "privateDnsZones/virtualNetworkLinks"
+        ResourceId parent = resourceId.parent();
+        if (parent != null) {
+            for (ProviderResourceType prt : provider.resourceTypes()) {
+                String fullResourceType = resourceId.fullResourceType().toLowerCase(Locale.ROOT);
+                // some resource types are full resource type, e.g. Microsoft.Web/sites/config
+                // some are not, e.g. privateDnsZones/virtualNetworkLinks
+                if (fullResourceType.endsWith(prt.resourceType().toLowerCase(Locale.ROOT))) {
+                    return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
+                }
             }
-        }
-        // look for parent
-        String parentId = parentResourceIdFromResourceId(id);
-        if (parentId != null) {
-            return defaultApiVersion(parentId, provider);
+            return defaultApiVersion(parent.id(), provider);
         } else {
             // Fallback: use a random one, not guaranteed to work
             return provider.resourceTypes().get(0).apiVersions().get(0);
