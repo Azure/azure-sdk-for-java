@@ -317,7 +317,7 @@ public final class CallMediaAsync {
 
         return new PlaySourceInternal()
             .setKind(PlaySourceTypeInternal.TEXT)
-            .setTextSource(textSourceInternal)
+            .setText(textSourceInternal)
             .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
     }
 
@@ -329,7 +329,7 @@ public final class CallMediaAsync {
 
         return new PlaySourceInternal()
             .setKind(PlaySourceTypeInternal.SSML)
-            .setSsmlSource(ssmlSourceInternal)
+            .setSsml(ssmlSourceInternal)
             .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
     }
 
