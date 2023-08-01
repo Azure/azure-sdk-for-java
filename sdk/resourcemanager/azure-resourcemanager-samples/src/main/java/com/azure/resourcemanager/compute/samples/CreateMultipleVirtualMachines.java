@@ -9,9 +9,11 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resourcegraph.ResourceGraphManager;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequest;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 /**
@@ -73,7 +75,7 @@ public final class CreateMultipleVirtualMachines {
                         )
                         .totalRecords();
                 if (total < desiredVMCount) {
-                    Thread.sleep(5000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(5L));
                 }
             }
             rtnValue = true;
