@@ -190,8 +190,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         if (areaCodesResult.iterator().hasNext()) {
             PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
             assertNotNull(areaCodes);
-        }
-        else {
+        } else {
             assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
         }
     }
@@ -213,8 +212,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         if (areaCodesResult.iterator().hasNext()) {
             PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
             assertNotNull(areaCodes);
-        }
-        else {
+        } else {
             assertTrue(allowEmptyListOfAreaCodes, "Empty list of geographic area codes was returned.");    
         }
     }
@@ -274,8 +272,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         if (areaCodesResult.iterator().hasNext()) {
             PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
             assertNotNull(areaCodes);
-        }
-        else {
+        } else {
             assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
         }
     }
@@ -297,8 +294,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         if (areaCodesResult.iterator().hasNext()) {
             PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
             assertNotNull(areaCodes);
-        }
-        else {
+        } else {
             assertTrue(allowEmptyListOfAreaCodes, "Empty list of geographic area codes was returned.");    
         }
     }
