@@ -556,15 +556,15 @@ public class CallAutomationEventParserUnitTests {
 
         assertNotNull(event);
 
-        SendDtmfTonesFailed SendDtmfTonesFailed = (SendDtmfTonesFailed) event;
+        SendDtmfTonesFailed sendDtmfTonesFailed = (SendDtmfTonesFailed) event;
 
-        assertNotNull(SendDtmfTonesFailed);
-        assertEquals("serverCallId", SendDtmfTonesFailed.getServerCallId());
-        assertEquals("callConnectionId", SendDtmfTonesFailed.getCallConnectionId());
-        assertEquals("correlationId", SendDtmfTonesFailed.getCorrelationId());
-        assertEquals(200, SendDtmfTonesFailed.getResultInformation().getCode());
-        assertEquals(0, SendDtmfTonesFailed.getResultInformation().getSubCode());
-        assertEquals("context", SendDtmfTonesFailed.getOperationContext());
-        assertEquals("Send DTMF couldn't be completed successfully.", SendDtmfTonesFailed.getResultInformation().getMessage());
+        assertNotNull(sendDtmfTonesFailed);
+        assertEquals("serverCallId", sendDtmfTonesFailed.getServerCallId());
+        assertEquals("callConnectionId", sendDtmfTonesFailed.getCallConnectionId());
+        assertEquals("correlationId", sendDtmfTonesFailed.getCorrelationId());
+        assertEquals(200, sendDtmfTonesFailed.getResultInformation().getCode());
+        assertEquals(0, sendDtmfTonesFailed.getResultInformation().getSubCode());
+        assertEquals("context", sendDtmfTonesFailed.getOperationContext());
+        assertEquals("Send DTMF couldn't be completed successfully.", sendDtmfTonesFailed.getResultInformation().getMessage());
     }
 }

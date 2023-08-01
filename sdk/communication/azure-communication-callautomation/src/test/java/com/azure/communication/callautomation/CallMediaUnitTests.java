@@ -151,7 +151,7 @@ public class CallMediaUnitTests {
     }
 
     @Test
-    public void sendDtmfWithResponseTest() {
+    public void sendDtmfTonesWithResponseTest() {
         CallConnection callConnection =
             CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
                 Collections.singletonList(new AbstractMap.SimpleEntry<>(

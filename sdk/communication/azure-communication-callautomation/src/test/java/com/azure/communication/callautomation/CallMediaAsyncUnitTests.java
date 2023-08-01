@@ -207,7 +207,7 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
-    public void sendDtmfWithResponse() {
+    public void sendDtmfTonesWithResponse() {
         CallConnectionAsync callConnection =
             CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
                 Collections.singletonList(new AbstractMap.SimpleEntry<>(
