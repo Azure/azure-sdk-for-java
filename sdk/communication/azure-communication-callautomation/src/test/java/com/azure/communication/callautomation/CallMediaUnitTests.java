@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.SendDtmfResponseInternal;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
@@ -13,7 +13,7 @@ import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.TextSource;
-import com.azure.communication.callautomation.models.SendDtmfResult;
+import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -155,10 +155,10 @@ public class CallMediaUnitTests {
         CallConnection callConnection =
             CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
                 Collections.singletonList(new AbstractMap.SimpleEntry<>(
-                    serializeObject(new SendDtmfResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
+                    serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<SendDtmfResult> response = callMedia.sendDtmfWithResponse(
+        Response<SendDtmfTonesResult> response = callMedia.sendDtmfTonesWithResponse(
             Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
             "ctx", Context.NONE
         );

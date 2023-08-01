@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.SendDtmfResponseInternal;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
@@ -211,11 +211,11 @@ public class CallMediaAsyncUnitTests {
         CallConnectionAsync callConnection =
             CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
                 Collections.singletonList(new AbstractMap.SimpleEntry<>(
-                    serializeObject(new SendDtmfResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
+                    serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
             );
         callMedia = callConnection.getCallMediaAsync();
         StepVerifier.create(
-                callMedia.sendDtmfWithResponse(
+                callMedia.sendDtmfTonesWithResponse(
                         Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
                         CALL_OPERATION_CONTEXT
                 )

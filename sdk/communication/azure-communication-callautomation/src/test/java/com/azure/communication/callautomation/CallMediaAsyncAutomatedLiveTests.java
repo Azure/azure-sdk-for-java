@@ -12,7 +12,7 @@ import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
-import com.azure.communication.callautomation.models.events.SendDtmfCompleted;
+import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -193,11 +193,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // start continuous dtmf
             callMediaAsync.startContinuousDtmfRecognition(caller).block();
-            callMediaAsync.sendDtmf(Stream.of(DtmfTone.A, DtmfTone.A, DtmfTone.A).collect(Collectors.toList()), receiver).block();
+            callMediaAsync.sendDtmfTones(Stream.of(DtmfTone.A, DtmfTone.A, DtmfTone.A).collect(Collectors.toList()), receiver).block();
 
             // send dtmf
-            SendDtmfCompleted sendDtmfCompleted = waitForEvent(SendDtmfCompleted.class, callerConnectionId, Duration.ofSeconds(20));
-            assertNotNull(sendDtmfCompleted);
+            SendDtmfTonesCompleted sendDtmfTonesCompleted = waitForEvent(SendDtmfTonesCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(sendDtmfTonesCompleted);
 
             // stop continuous dtmf
             callMediaAsync.stopContinuousDtmfRecognition(caller).block();

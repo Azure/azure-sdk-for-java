@@ -6,9 +6,9 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SendDtmfCompleted model. */
+/** The SendDtmfTonesCompleted model. */
 @Immutable
-public final class SendDtmfCompleted extends CallAutomationEventBase {
+public final class SendDtmfTonesCompleted extends CallAutomationEventBase {
 
     /*
      * Contains the resulting SIP code, sub-code and message.
@@ -17,9 +17,9 @@ public final class SendDtmfCompleted extends CallAutomationEventBase {
     private final ResultInformation resultInformation;
 
     /**
-     * Constructor for ContinuousDtmfRecognitionToneReceived
+     * Constructor for SendDtmfTonesCompleted
      */
-    public SendDtmfCompleted() {
+    public SendDtmfTonesCompleted() {
         resultInformation = null;
     }
 

@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.SendDtmfResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.SendDtmfTonesResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
@@ -19,7 +19,7 @@ import com.azure.communication.callautomation.implementation.models.RecognizeCho
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
@@ -36,7 +36,7 @@ import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
-import com.azure.communication.callautomation.models.SendDtmfResult;
+import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -530,10 +530,10 @@ public final class CallMediaAsync {
      *
      * @param tones tones to be sent
      * @param targetParticipant the target participant
-     * @return Response for successful sendDtmf request.
+     * @return Response for successful sendDtmfTones request.
      */
-    public Mono<SendDtmfResult> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return sendDtmfWithResponse(tones, targetParticipant, null).flatMap(FluxUtil::toMono);
+    public Mono<SendDtmfTonesResult> sendDtmfTones(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return sendDtmfTonesWithResponse(tones, targetParticipant, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -542,29 +542,29 @@ public final class CallMediaAsync {
      * @param tones tones to be sent
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
-     * @return Response for successful sendDtmf request.
+     * @return Response for successful sendDtmfTones request.
      */
-    public Mono<Response<SendDtmfResult>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context));
+    public Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
+        return withContext(context -> sendDtmfTonesWithResponseInternal(targetParticipant, tones, operationContext, context));
     }
 
-    Mono<Response<SendDtmfResult>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
+    Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
+            SendDtmfTonesRequestInternal requestInternal = new SendDtmfTonesRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
                 .setTones(tones.stream()
                 .map(this::convertDtmfToneInternal)
                 .collect(Collectors.toList()))
                 .setOperationContext(operationContext);
 
-            return contentsInternal.sendDtmfWithResponseAsync(
+            return contentsInternal.sendDtmfTonesWithResponseAsync(
                 callConnectionId,
                 requestInternal,
                 UUID.randomUUID(),
                 OffsetDateTime.now(),
                 context
-            ).map(response -> new SimpleResponse<>(response, SendDtmfResponseConstructorProxy.create(response.getValue())));
+            ).map(response -> new SimpleResponse<>(response, SendDtmfTonesResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
