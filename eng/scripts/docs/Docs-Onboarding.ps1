@@ -59,3 +59,8 @@ function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $
 function Get-java-DocsPackagesAlreadyOnboarded($docRepoLocation, $moniker) { 
     return Get-java-OnboardedDocsMsPackagesForMoniker $docRepoLocation $moniker
 }
+
+# $GetPackageIdentity = "Get-${Language}-PackageIdentity"
+function Get-java-PackageIdentity($package) { 
+    return "$($package['Group']):$($package['Name'])"
+}
