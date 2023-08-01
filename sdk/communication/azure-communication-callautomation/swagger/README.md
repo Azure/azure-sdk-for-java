@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-06-15-preview
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/7e1589a49816226d7798922757bff4357286219d/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/c88c6a0414c55167f15a4851167c03240480932e/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -125,11 +125,11 @@ directive:
     from: ContinuousDtmfRecognitionOptions
     to: ContinuousDtmfRecognitionOptionsInternal
 - rename-model:
-    from: SendDtmfOptions
-    to: SendDtmfOptionsInternal
+    from: SendDtmfTonesOptions
+    to: SendDtmfTonesOptionsInternal
 - rename-model:
-    from: SendDtmfRequest
-    to: SendDtmfRequestInternal
+    from: SendDtmfTonesRequest
+    to: SendDtmfTonesRequestInternal
 - rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal
@@ -158,14 +158,8 @@ directive:
     from: MuteParticipantsRequest
     to: MuteParticipantsRequestInternal
 - rename-model:
-    from: MuteParticipantsResponse
-    to: MuteParticipantsResponseInternal
-- rename-model:
-    from: UnmuteParticipantsRequest
-    to: UnmuteParticipantsRequestInternal
-- rename-model:
-    from: UnmuteParticipantsResponse
-    to: UnmuteParticipantsResponseInternal
+    from: MuteParticipantsResult
+    to: MuteParticipantsResultInternal
 - rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
@@ -185,8 +179,8 @@ directive:
     from: ContinuousDtmfRecognitionRequest
     to: ContinuousDtmfRecognitionRequestInternal
 - rename-model:
-    from: SendDtmfResponse
-    to: SendDtmfResponseInternal
+    from: SendDtmfTonesResult
+    to: SendDtmfTonesResultInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -208,8 +202,9 @@ directive:
 - remove-model: ToneInfo
 - remove-model: ContinuousDtmfRecognitionToneFailed
 - remove-model: ContinuousDtmfRecognitionStopped
-- remove-model: SendDtmfCompleted
-- remove-model: SendDtmfFailed
+- remove-model: SendDtmfTonesCompleted
+- remove-model: SendDtmfTonesFailed
+- remove-model: Choice
 - remove-model: ChoiceResult
 - remove-model: SpeechResult
 ```
@@ -368,13 +363,13 @@ directive:
     $.name = "DtmfOptionsInternal";
 ```
 
-### Rename GenderType to GenderTypeInternal
+### Rename VoiceKind to VoiceKindInternal
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.Gender["x-ms-enum"]
+  where: $.definitions.VoiceKind["x-ms-enum"]
   transform: >
-    $.name = "GenderTypeInternal";
+    $.name = "VoiceKindInternal";
 ```
 
 ### Rename RecordingStorageType to RecordingStorageTypeInternal

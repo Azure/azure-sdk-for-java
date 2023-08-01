@@ -8,8 +8,8 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
-import com.azure.communication.callautomation.implementation.models.SendDtmfResponseInternal;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -114,16 +114,16 @@ public final class CallMediasImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/callConnections/{callConnectionId}:sendDtmf")
+        @Post("/calling/callConnections/{callConnectionId}:sendDtmfTones")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<SendDtmfResponseInternal>> sendDtmf(
+        Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTones(
                 @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
-                @BodyParam("application/json") SendDtmfRequestInternal sendDtmfRequest,
+                @BodyParam("application/json") SendDtmfTonesRequestInternal sendDtmfTonesRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -697,7 +697,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfTonesRequest The send dtmf tones request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -712,9 +712,9 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendDtmfResponseInternal>> sendDtmfWithResponseAsync(
+    public Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTonesWithResponseAsync(
             String callConnectionId,
-            SendDtmfRequestInternal sendDtmfRequest,
+            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
         final String accept = "application/json";
@@ -722,13 +722,13 @@ public final class CallMediasImpl {
                 repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
         return FluxUtil.withContext(
                 context ->
-                        service.sendDtmf(
+                        service.sendDtmfTones(
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
                                 repeatabilityRequestID,
                                 repeatabilityFirstSentConverted,
-                                sendDtmfRequest,
+                                sendDtmfTonesRequest,
                                 accept,
                                 context));
     }
@@ -737,7 +737,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfTonesRequest The send dtmf tones request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -753,22 +753,22 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendDtmfResponseInternal>> sendDtmfWithResponseAsync(
+    public Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTonesWithResponseAsync(
             String callConnectionId,
-            SendDtmfRequestInternal sendDtmfRequest,
+            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent,
             Context context) {
         final String accept = "application/json";
         DateTimeRfc1123 repeatabilityFirstSentConverted =
                 repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
-        return service.sendDtmf(
+        return service.sendDtmfTones(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
                 repeatabilityRequestID,
                 repeatabilityFirstSentConverted,
-                sendDtmfRequest,
+                sendDtmfTonesRequest,
                 accept,
                 context);
     }
@@ -777,7 +777,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfTonesRequest The send dtmf tones request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -792,15 +792,15 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendDtmfResponseInternal> sendDtmfAsync(
+    public Mono<SendDtmfTonesResultInternal> sendDtmfTonesAsync(
             String callConnectionId,
-            SendDtmfRequestInternal sendDtmfRequest,
+            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
-        return sendDtmfWithResponseAsync(
-                        callConnectionId, sendDtmfRequest, repeatabilityRequestID, repeatabilityFirstSent)
+        return sendDtmfTonesWithResponseAsync(
+                        callConnectionId, sendDtmfTonesRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
-                        (Response<SendDtmfResponseInternal> res) -> {
+                        (Response<SendDtmfTonesResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -813,7 +813,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfTonesRequest The send dtmf tones request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -829,16 +829,16 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendDtmfResponseInternal> sendDtmfAsync(
+    public Mono<SendDtmfTonesResultInternal> sendDtmfTonesAsync(
             String callConnectionId,
-            SendDtmfRequestInternal sendDtmfRequest,
+            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent,
             Context context) {
-        return sendDtmfWithResponseAsync(
-                        callConnectionId, sendDtmfRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
+        return sendDtmfTonesWithResponseAsync(
+                        callConnectionId, sendDtmfTonesRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
                 .flatMap(
-                        (Response<SendDtmfResponseInternal> res) -> {
+                        (Response<SendDtmfTonesResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -851,7 +851,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfTonesRequest The send dtmf tones request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -866,19 +866,21 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendDtmfResponseInternal sendDtmf(
+    public SendDtmfTonesResultInternal sendDtmfTones(
             String callConnectionId,
-            SendDtmfRequestInternal sendDtmfRequest,
+            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
-        return sendDtmfAsync(callConnectionId, sendDtmfRequest, repeatabilityRequestID, repeatabilityFirstSent).block();
+        return sendDtmfTonesAsync(
+                        callConnectionId, sendDtmfTonesRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
     }
 
     /**
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfTonesRequest The send dtmf tones request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -894,14 +896,14 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendDtmfResponseInternal> sendDtmfWithResponse(
+    public Response<SendDtmfTonesResultInternal> sendDtmfTonesWithResponse(
             String callConnectionId,
-            SendDtmfRequestInternal sendDtmfRequest,
+            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent,
             Context context) {
-        return sendDtmfWithResponseAsync(
-                        callConnectionId, sendDtmfRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
+        return sendDtmfTonesWithResponseAsync(
+                        callConnectionId, sendDtmfTonesRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
                 .block();
     }
 }
