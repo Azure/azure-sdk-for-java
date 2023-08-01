@@ -8,118 +8,204 @@ import java.io.StringWriter;
  * 
  * Concrete sub classes of JsonElement should each define valid JSON types. 
  * Currently, the valid JSON types are: Object, Array, String, Number, Boolean, 
- * and Null.
+ * and Null. These are defined by the JsonObject, JsonArray, JsonString, JsonNumber, 
+ * JsonBoolean, and JsonNull classes respectively. 
  */
 public abstract class JsonElement extends StringWriter {
-
-    public JsonElement() {
-
-    }
+    /** 
+     * Default constructor. 
+     * TODO: may need to remove this due to design guidelines? Unnecessary having 
+     * this constructor defined in the source code if compiler is already adding 
+     * this constructor implicitly when no other constructor is defined. 
+     */
+    public JsonElement() {}
 
     // All throw unless isArray is true.
+    /**
+     * 
+     * @param element
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonArray addElement(JsonElement element) throws InvalidTypeException {
-        if (this.isArray()){
-            return (this.asArray()).addElement(element);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isArray()) { return (this.asArray()).addElement(element); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * 
+     * @param index
+     * @param element
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonArray addElement(int index, JsonElement element) throws InvalidTypeException {
-        if (this.isArray()){
-            return (this.asArray()).addElement(index, element);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isArray()) { return (this.asArray()).addElement(index, element); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * 
+     * @param index
+     * @param element
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonArray setElement(int index, JsonElement element) throws InvalidTypeException {
-        if (this.isArray()){
-            return (this.asArray()).setElement(index, element);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isArray()) { return (this.asArray()).setElement(index, element); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * 
+     * @param index
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonElement getElement(int index) throws InvalidTypeException {
-        if (this.isArray()){
-            return (this.asArray()).getElement(index);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isArray()) {return (this.asArray()).getElement(index); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * 
+     * @param index
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonElement removeElement(int index) throws InvalidTypeException {
-        if (this.isArray()){
-            return (this.asArray()).removeElement(index);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isArray()) { return (this.asArray()).removeElement(index); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
     // All throw unless isObject is true.
+    /**
+     * 
+     * @param key
+     * @param element
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonObject addProperty(String key, Object element) throws InvalidTypeException {
-        if (this.isObject()){
-            return (this.asObject()).addProperty(key, element);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isObject()) { return (this.asObject()).addProperty(key, element); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
+    /**
+     * 
+     * @param key
+     * @param element
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonObject setProperty(String key, Object element) throws InvalidTypeException {
-        if (this.isObject()){
-            return (this.asObject()).setProperty(key, element);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isObject()) { return (this.asObject()).setProperty(key, element); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonElement getProperty(String key) throws InvalidTypeException {
-        if (this.isObject()){
-            return (this.asObject()).getProperty(key);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isObject()) { return (this.asObject()).getProperty(key); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws InvalidTypeException
+     */
     public JsonElement removeProperty(String key) throws InvalidTypeException {
-        if (this.isObject()){
-            return (this.asObject()).removeProperty(key);
-        } else {
-            throw new InvalidTypeException();
-        }
+        // Case: 
+        if(this.isObject()) { return (this.asObject()).removeProperty(key); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
     }
 
-    //Conversion Methods
-    public boolean isArray(){return false;}
-    public JsonArray asArray(){
-        return (JsonArray)this;
-    }
+    // Conversion Methods
+    /**
+     * @return
+     */
+    public boolean isArray() { return false; }
 
-    public boolean isObject(){return false;}
-    public JsonObject asObject(){
-        return (JsonObject)this;
-    }
+    /**
+     * @return
+     */
+    public JsonArray asArray() { return (JsonArray)this; }
 
-    public boolean isBoolean(){return false;}
-    public JsonBoolean asBoolean(){
-        return (JsonBoolean) this;
-    }
+    /**
+     * @return
+     */
+    public boolean isObject() { return false; }
 
-    public boolean isNull(){return false;}
-    public JsonNull asNull(){
-        return (JsonNull)this;
-    }
+    /**
+     * @return
+     */
+    public JsonObject asObject() { return (JsonObject)this; }
 
-    public boolean isNumber(){return false;}
-    public JsonNumber asNumber(){
-        return (JsonNumber)this;
-    }
+    /**
+     * @return
+     */
+    public boolean isBoolean() { return false; }
 
-    public boolean isString(){return false;}
-    public JsonString asString(){
-        return new JsonString();
-    }
+    /**
+     * @return
+     */
+    public JsonBoolean asBoolean() { return (JsonBoolean)this; }
 
+    /**
+     * @return
+     */
+    public boolean isNull() { return false; }
+
+    /**
+     * @return
+     */
+    public JsonNull asNull() { return (JsonNull)this; }
+
+    /**
+     * @return
+     */
+    public boolean isNumber() { return false; }
+
+    /**
+     * @return
+     */
+    public JsonNumber asNumber() { return (JsonNumber)this; }
+
+    /**
+     * @return
+     */
+    public boolean isString() { return false; }
+
+    /**
+     * @return
+     */
+    public JsonString asString() { return new JsonString(); }
+
+    /**
+     * @return
+     */
     public abstract String toString(); // toString is an alias for toJson().
     //public String toJson();
 }

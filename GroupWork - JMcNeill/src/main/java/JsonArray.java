@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 /**
@@ -10,7 +11,7 @@ public class JsonArray extends JsonElement {
      * Each of these elements should be one of the following valid JSON types: 
      * Object, Array, String, Number, Boolean, or Null. 
      */
-    ArrayList<JsonElement> elements = new ArrayList<>();
+    List<JsonElement> elements = new ArrayList<>();
 
 
     /**
@@ -114,7 +115,7 @@ public class JsonArray extends JsonElement {
 
         // Iterating over all JsonElement objects in the elements JsonArray object, 
         // appending each JsonElement to jsonoutput 
-        for(Iterator<JsonElement> itr = elements.iterator(); itr.hasNext(); ) {
+        for(Iterator<JsonElement> itr = this.elements.iterator(); itr.hasNext();) {
             // Get the next JsonElement from the elements JsonArray object 
             JsonElement element = itr.next();
 
@@ -151,5 +152,5 @@ public class JsonArray extends JsonElement {
      * @return String representation of the JsonArray. This functionality is 
      * defined within the toJson method.   
      */
-    public String toString() { return toJson();}
+    public String toString() { return this.toJson();}
 }

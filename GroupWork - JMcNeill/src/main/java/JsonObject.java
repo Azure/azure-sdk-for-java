@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,48 +8,82 @@ import java.util.List;
  * Class representing the JSON object type 
  */
 public class JsonObject extends JsonElement {
-    private HashMap<String, JsonElement> properties = new HashMap<>();
+    /**
+     * 
+     */
+    private Map<String, JsonElement> properties = new HashMap<>();
 
+    /**
+     * @param key 
+     * @param element 
+     * @return 
+     */
     public JsonObject addProperty(String key, Object element){
+
         JsonElement value;
-        if (element != null){
-            if ((element instanceof String)||(element instanceof Character)){
+
+        // Case: 
+        if(element != null) {
+            // Case: 
+            if(
+                (element instanceof String)
+                || 
+                (element instanceof Character) 
+            ) {
                 String conversion = String.valueOf(element);
                 value = new JsonString(conversion);
-            } else if (element instanceof Number){
+            } 
+            // Case: 
+            else if(element instanceof Number) {
                 value = new JsonNumber((Number) element);
-            } else if (element instanceof Boolean) {
+            } 
+            // Case: 
+            else if(element instanceof Boolean) {
                 value = new JsonBoolean((Boolean) element);
-            } else if (element instanceof JsonObject) {
-                value = (JsonObject) element;
-            } else if (element instanceof JsonArray){
-                value = (JsonArray) element;
-            }
-            else if (element.getClass().isArray()){
+            } 
+            // Case: 
+            else if(element instanceof JsonObject) { value = (JsonObject)element; } 
+            // Case: 
+            else if(element instanceof JsonArray) { value = (JsonArray)element; }
+            // Case: 
+            else if(element.getClass().isArray()) {
+
                 value = new JsonArray();
-                if (element instanceof int[]){
+
+                // Case: 
+                if(element instanceof int[]) {
                     int[] entries = (int[]) element;
-                    for (int i: entries){
+
+                    for(int i : entries) {
                         ((JsonArray)value).addElement(new JsonNumber(i));
                     }
-                } else if (element instanceof float[]){
+                } 
+                // Case: 
+                else if (element instanceof float[]) {
                     float[] entries = (float[]) element;
-                    for (float i: entries){
+
+                    for(float i : entries) {
                         ((JsonArray)value).addElement(new JsonNumber(i));
                     }
-                }   else if (element instanceof String[]) {
+                } 
+                // Case: 
+                else if(element instanceof String[]) {
                     String[] entries = (String[]) element;
-                    for (String i: entries){
+
+                    for(String i : entries) {
                         ((JsonArray)value).addElement(new JsonString(i));
                     }
-                } else if (element instanceof boolean[]){
-                    boolean[] entries = (boolean[]) element;
-                    for (boolean i: entries){
+                } 
+                // Case: 
+                else if(element instanceof boolean[]) {
+                    boolean[] entries = (boolean[]) element; 
+
+                    for(boolean i : entries) {
                         value.asArray().addElement(new JsonBoolean(i));
                     }
-                } else {
-                    throw new IllegalArgumentException();
-                }
+                } 
+                // Case: 
+                else { throw new IllegalArgumentException(); }
 
                 //Need to add ability to add arrays.
             /*} else if (element.getClass().isArray()) {
@@ -61,49 +96,64 @@ public class JsonObject extends JsonElement {
                 } else if (element instanceof boolean[]){
                     System.out.println("It was found!!!");
                 }*/
-            } else {
-                throw new IllegalArgumentException();
-            }
-        } else {
-            value = new JsonNull();
-        }
+            } 
+            // Case: 
+            else { throw new IllegalArgumentException(); }
+        } 
+        // Case: 
+        else { value = new JsonNull(); }
+
         properties.put(key, value);
+
         return this;
     }
 
-    public JsonElement getProperty(String key){
-        return properties.get(key);
-    }
+    /**
+     * @param key 
+     * @return 
+     */
+    public JsonElement getProperty(String key) { return properties.get(key); }
 
-    public String toJson(){
+    /**
+     * @return
+     */
+    public String toJson() {
         String JsonOutput = "";
+
         Iterator<String> keyList = properties.keySet().iterator();
-        for (Iterator<String> it = keyList; it.hasNext(); ) {
+
+        for(Iterator<String> it = keyList; it.hasNext();) {
             String key = it.next();
+
             JsonOutput += "\""+ key + "\": ";
-            if (getProperty(key) instanceof JsonObject){
+
+            // Case: 
+            if(getProperty(key) instanceof JsonObject) {
                 JsonOutput += ((JsonObject) getProperty(key)).toJson();
-            } else if (getProperty(key) instanceof JsonArray){
+            } 
+            // Case: 
+            else if(getProperty(key) instanceof JsonArray) {
                 JsonOutput += ((JsonArray) getProperty(key)).toJson();
-            } else {
-                JsonOutput += getProperty(key);
-            }
+            } 
+            // Case: 
+            else { JsonOutput += getProperty(key); }
 
             //If it is an Object or Array, call toJson methods on them individually.
             //If it is anything else, use the value as is.
 
-            if (it.hasNext()){
-                JsonOutput += ", ";
-            }
+            // Case: 
+            if(it.hasNext()) { JsonOutput += ", "; }
         }
         return "{" + JsonOutput + "}";
     }
 
-    public String toString(){
-        return toJson();
-    }
+    /**
+     * @return 
+     */
+    public String toString() { return toJson(); }
 
-    public boolean isObject(){
-        return true;
-    }
+    /**
+     * @return 
+     */
+    public boolean isObject() { return true; }
 }
