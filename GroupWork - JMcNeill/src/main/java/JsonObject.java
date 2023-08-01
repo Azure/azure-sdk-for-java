@@ -3,6 +3,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Class representing the JSON object type 
+ */
 public class JsonObject extends JsonElement {
     private HashMap<String, JsonElement> properties = new HashMap<>();
 
