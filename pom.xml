@@ -182,6 +182,7 @@
     <module>sdk/storageimportexport</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
+    <module>sdk/storagetasks</module>
     <module>sdk/streamanalytics</module>
     <module>sdk/subscription</module>
     <module>sdk/support</module>
