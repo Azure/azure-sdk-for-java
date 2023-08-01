@@ -86,7 +86,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
             IdentityClientBuilder builder = new IdentityClientBuilder()
                 .clientAssertionPath(federatedTokenFilePathInput)
-                .clientId(clientId)
+                .clientId(clientIdInput)
                 .tenantId(tenantIdInput)
                 .identityClientOptions(identityClientOptions);
             identityClient = builder.build();

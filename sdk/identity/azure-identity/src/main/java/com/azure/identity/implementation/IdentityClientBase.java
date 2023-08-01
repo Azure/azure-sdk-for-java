@@ -334,6 +334,7 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
                 : clientId, credential);
+        applicationBuilder.instanceDiscovery(false);
         applicationBuilder.validateAuthority(false);
         try {
             applicationBuilder = applicationBuilder.authority(authorityUrl);
