@@ -104,43 +104,46 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Returns the String representation of the JSON model 
+     * Returns the String representation of the JsonArray object   
      * 
-     * @return String representation of the JSON model 
+     * @return String representation of the JsonArray object 
      */
     public String toJson() {
         // String reference that will store the resulting JSON string output to 
         // be returned by toJson 
-        String jsonoutput = "";
+        String jsonOutput = "";
 
         // Iterating over all JsonElement objects in the elements JsonArray object, 
-        // appending each JsonElement to jsonoutput 
+        // appending each JsonElement to jsonOutput 
         for(Iterator<JsonElement> itr = this.elements.iterator(); itr.hasNext();) {
             // Get the next JsonElement from the elements JsonArray object 
             JsonElement element = itr.next();
 
             // Case: element is a JsonObject, therefore the whole JSON object can 
-            // be stringified via its toJson method, then appended to jsonoutput  
+            // be stringified via its toJson method, then appended to jsonOutput  
             if(element instanceof JsonObject) {
-                jsonoutput += ((JsonObject)element).toJson();
+                jsonOutput += ((JsonObject)element).toJson();
             } 
             // Case: element is a JsonArray, therefore the nested JSON array can 
-            // be stringified via recursively toJson, then appended to jsonoutput 
+            // be stringified via recursively calling toJson and then appending 
+            // the returned String to jsonOutput 
             else if(element instanceof JsonArray) {
-                jsonoutput += ((JsonArray)element).toJson();
+                jsonOutput += ((JsonArray)element).toJson();
             } 
-            // Case: element is not a JsonObject or JsonArray, it can be simply 
-            // converted to a String object and appended to jsonoutput  
-            else { jsonoutput += element; }
+            // Case: element is not a JsonObject or JsonArray, therefore it can 
+            // be simply converted to a String object and appended to jsonOutput  
+            else { jsonOutput += element; }
 
             // Case: haven't reached the end of the JSON array, therefore more 
             // elements must be converted to String objects and appended to the 
-            // jsonoutput 
-            if(itr.hasNext()) { jsonoutput += ", "; }
+            // jsonOutput 
+            // Elements are separated by commas.  
+            if(itr.hasNext()) { jsonOutput += ", "; }
         }
 
         // Returning the resulting String representation of the JsonArray object 
-        return "[" + jsonoutput + "]";
+        // JSON arrays are delimited by opening and closing square brackets. 
+        return "[" + jsonOutput + "]";
     }
 
     /**

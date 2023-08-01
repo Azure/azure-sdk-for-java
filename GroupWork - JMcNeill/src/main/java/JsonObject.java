@@ -166,6 +166,10 @@ public class JsonObject extends JsonElement {
      * Properties are the whole key-value pair not just their key or value. 
      * Therefore, this method needs to be redefined to return key value pairs, 
      * for example Entry objects since properties is currently utilising HashMap. 
+     * Perhaps we could confirm with the dev team on discord if this method is 
+     * required to behave in the current way that it is, if so, then we could 
+     * keep this method as it is and remove the getKeyByValue and getValueByKey 
+     * methods that I have defined. 
      */
     public JsonElement getProperty(String key) { return properties.get(key); }
 
@@ -206,45 +210,64 @@ public class JsonObject extends JsonElement {
     public JsonElement getValueByKey(String key) { return properties.get(key); }
 
     /**
-     * @return
+     * Returns the String representation of the JsonObject object  
+     * 
+     * @return String representation of the JsonObject object  
      */
-    public String toJson() {
-        String JsonOutput = "";
+    public String toJson() { 
+        // String reference that will store the resulting JSON string output to 
+        // be returned by toJson 
+        String jsonOutput = "";
 
-        Iterator<String> keyList = properties.keySet().iterator();
+        // Iterating over the keys in the key set of the properties hash map, 
+        // ....  
+        for(Iterator<String> itr = properties.keySet().iterator(); itr.hasNext();) {
+            // Get the next key String from the properties hash map 
+            String key = itr.next();
 
-        for(Iterator<String> it = keyList; it.hasNext();) {
-            String key = it.next();
+            // Including the double quotations marks, via escape characters, which 
+            // will surround the given key in the String representation of the 
+            // JSON object. All keys must be in quotes.  
+            jsonOutput += "\""+ key + "\": ";
 
-            JsonOutput += "\""+ key + "\": ";
-
-            // Case: 
-            if(getProperty(key) instanceof JsonObject) {
-                JsonOutput += ((JsonObject) getProperty(key)).toJson();
+            // Case: the value pair is another JsonObject, therefore the nested 
+            // JSON object can be stringified via recursively calling toJson and 
+            // then appending the returned String to jsonoutput
+            if(this.getProperty(key) instanceof JsonObject) {
+                jsonOutput += ((JsonObject) this.getProperty(key)).toJson();
             } 
-            // Case: 
-            else if(getProperty(key) instanceof JsonArray) {
-                JsonOutput += ((JsonArray) getProperty(key)).toJson();
+            // Case: the value pair is a JsonArray, therefore the whole JSON 
+            // arary can be stringified via its toJson method, and the returned 
+            // String can be appended to jsonOutput 
+            else if(this.getProperty(key) instanceof JsonArray) {
+                jsonOutput += ((JsonArray) this.getProperty(key)).toJson();
             } 
-            // Case: 
-            else { JsonOutput += getProperty(key); }
+            // Case: the value pair is not a JsonObject or JsonArray, therefore 
+            // it can be simply converted to a String object and appended to 
+            // jsonOutput  
+            else { jsonOutput += this.getProperty(key); }
 
-            //If it is an Object or Array, call toJson methods on them individually.
-            //If it is anything else, use the value as is.
-
-            // Case: 
-            if(it.hasNext()) { JsonOutput += ", "; }
+            // Case: haven't reached the end of the JSON Object, therefore there 
+            // are more properties that must be converted to String objects and 
+            // appended to the jsonOutput.  
+            // Properties are separated by commas.  
+            if(itr.hasNext()) { jsonOutput += ", "; }
         }
-        return "{" + JsonOutput + "}";
+
+        // Returning the resulting String representation of the JsonArray object 
+        // JSON objects are delimited by opening and closing curly brackets. 
+        return "{" + jsonOutput + "}";
     }
 
     /**
-     * @return 
+     * @return boolean of whether this JsonElement object is of type JsonObject. 
+     */
+    public boolean isObject() { return true; }
+
+    /**
+     * @return String representation of the JsonObject. This functionality is 
+     * defined within the toJson method.   
      */
     public String toString() { return toJson(); }
 
-    /**
-     * @return 
-     */
-    public boolean isObject() { return true; }
 }
