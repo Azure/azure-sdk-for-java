@@ -230,7 +230,7 @@ public final class ResourceUtils {
 
     private static String getFullResourceTypeWithoutNamespace(ResourceId resourceId) {
         return resourceId.fullResourceType()
-            .split("/")[1] // e.g. "Microsoft.Web/sites" will return "sites"
+            .substring(resourceId.fullResourceType().indexOf("/") + 1) // e.g. "Microsoft.Web/sites" will return "sites"
             .toLowerCase(Locale.ROOT);
     }
 }
