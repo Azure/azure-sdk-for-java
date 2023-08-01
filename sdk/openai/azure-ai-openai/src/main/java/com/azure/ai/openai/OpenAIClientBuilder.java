@@ -309,12 +309,10 @@ public final class OpenAIClientBuilder
         return httpPipeline;
     }
 
-    private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient() {
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
-        NonAzureOpenAIClientImpl client =
-                new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
-        return client;
-    }
+	private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient() {
+		HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
+		return new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+	}
 
     private HttpPipeline createHttpPipelineNonAzureOpenAI() {
         Configuration buildConfiguration =
