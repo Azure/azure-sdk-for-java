@@ -162,14 +162,19 @@ public final class ResourceUtils {
         }
         ResourceId resourceId = ResourceId.fromString(id);
         String resourceTypeWithoutNamespace = getFullResourceTypeWithoutNamespace(resourceId);
-        String fullResourceType = resourceId.fullResourceType();
+        // exact match first
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            // child resource, e.g. sites/config
             // There is an edge case that two resource types share the same child resource type name, so parent type name check is needed.
             // e.g. "dnsForwardingRulesets/virtualNetworkLinks" and "privateDnsZones/virtualNetworkLinks"
-            if (prt.resourceType().equalsIgnoreCase(resourceTypeWithoutNamespace) // exact match
-                    // relaxed match, in case namespace is included in resource type
-                    || fullResourceType.contains(prt.resourceType())) {
+            if (prt.resourceType().equalsIgnoreCase(resourceTypeWithoutNamespace)) {
+                return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
+            }
+        }
+
+        // relaxed match, in case of edge cases(e.g. namespace included in resource type)
+        String fullResourceType = resourceId.fullResourceType();
+        for (ProviderResourceType prt : provider.resourceTypes()) {
+            if (fullResourceType.contains(prt.resourceType())) {
                 return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
             }
         }
