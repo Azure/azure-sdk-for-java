@@ -22,7 +22,7 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.MuteParticipantsResult;
+import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
@@ -377,14 +377,14 @@ public final class CallConnectionAsync {
     /**
      * Mutes a participant in the call.
      * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
-     * @return A MuteParticipantsResult object.
+     * @return A MuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResult> muteParticipant(CommunicationIdentifier targetParticipant) {
+    public Mono<MuteParticipantResult> muteParticipant(CommunicationIdentifier targetParticipant) {
         return muteParticipantWithResponseInternal(targetParticipant, null).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<MuteParticipantsResult>> muteParticipantWithResponseInternal(CommunicationIdentifier targetParticipant, Context context) {
+    Mono<Response<MuteParticipantResult>> muteParticipantWithResponseInternal(CommunicationIdentifier targetParticipant, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             MuteParticipantsRequestInternal request = new MuteParticipantsRequestInternal()

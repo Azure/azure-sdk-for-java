@@ -9,23 +9,23 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
 
-/** The MuteParticipantsResult model. */
+/** The MuteParticipantResult model. */
 @Immutable
-public final class MuteParticipantsResult {
+public final class MuteParticipantResult {
     /*
      * The operation context provided by client.
      */
     private final String operationContext;
 
     static {
-        MuteParticipantsResponseConstructorProxy.setAccessor(MuteParticipantsResult::new);
+        MuteParticipantsResponseConstructorProxy.setAccessor(MuteParticipantResult::new);
     }
 
     /**
      * Public constructor.
      *
      */
-    public MuteParticipantsResult() {
+    public MuteParticipantResult() {
         this.operationContext = null;
     }
 
@@ -34,7 +34,7 @@ public final class MuteParticipantsResult {
      *
      * @param  muteParticipantsResultInternal The response from the service
      */
-    MuteParticipantsResult(MuteParticipantsResultInternal muteParticipantsResultInternal) {
+    MuteParticipantResult(MuteParticipantsResultInternal muteParticipantsResultInternal) {
         Objects.requireNonNull(muteParticipantsResultInternal, "muteParticipantsResultInternal must not be null");
 
         this.operationContext = muteParticipantsResultInternal.getOperationContext();

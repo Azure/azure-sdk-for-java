@@ -11,7 +11,7 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.MuteParticipantsResult;
+import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
@@ -258,10 +258,10 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        MuteParticipantsResult muteParticipantsResult =
+        MuteParticipantResult muteParticipantResult =
             callConnection.muteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
-        assertNotNull(muteParticipantsResult);
-        assertNull(muteParticipantsResult.getOperationContext());
+        assertNotNull(muteParticipantResult);
+        assertNull(muteParticipantResult.getOperationContext());
     }
 }
