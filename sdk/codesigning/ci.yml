@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/codesigning/ci.yml
+      - sdk/codesigning/azure-codesigning/
+    exclude:
+      - sdk/codesigning/pom.xml
+      - sdk/codesigning/azure-codesigning/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/codesigning/ci.yml
+      - sdk/codesigning/azure-codesigning/
+    exclude:
+      - sdk/codesigning/pom.xml
+      - sdk/codesigning/azure-codesigning/pom.xml
+
+parameters:
+  - name: release_azurecodesigning
+    displayName: azure-codesigning
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: codesigning
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-codesigning
+        groupId: com.azure
+        safeName: azurecodesigning
+        releaseInBatch: ${{ parameters.release_azurecodesigning }}

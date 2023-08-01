@@ -39,6 +39,7 @@
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
+    <module>sdk/codesigning</module>
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
