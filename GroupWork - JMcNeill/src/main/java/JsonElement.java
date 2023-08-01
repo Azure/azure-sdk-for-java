@@ -2,6 +2,14 @@ import com.sun.jdi.InvalidTypeException;
 
 import java.io.StringWriter;
 
+/**
+ * Abstract class that defines the basic, abstract methods that all valid JsonElement 
+ * types need to define. 
+ * 
+ * Concrete sub classes of JsonElement should each define valid JSON types. 
+ * Currently, the valid JSON types are: Object, Array, String, Number, Boolean, 
+ * and Null.
+ */
 public abstract class JsonElement extends StringWriter {
 
     public JsonElement() {

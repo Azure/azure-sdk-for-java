@@ -1,3 +1,6 @@
+/**
+ * Class representing the JSON string type 
+ */
 public class JsonString extends JsonElement{
     private String jsonString;
 

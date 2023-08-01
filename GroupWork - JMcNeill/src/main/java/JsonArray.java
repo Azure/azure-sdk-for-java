@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Class representing a JSON array type 
+ * Class representing the JSON array type 
  */
 public class JsonArray extends JsonElement {
 

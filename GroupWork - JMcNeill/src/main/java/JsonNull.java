@@ -1,9 +1,11 @@
+/**
+ * Class representing the JSON null type 
+ */
 public class JsonNull extends JsonElement{
     private final String nullValue = "null";
 
-    public JsonNull(){
-
-    }
+    // Default constructor 
+    public JsonNull() {}
 
     public String toString(){
         return nullValue;

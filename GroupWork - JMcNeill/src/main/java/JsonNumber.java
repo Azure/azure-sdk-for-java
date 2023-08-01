@@ -1,3 +1,6 @@
+/**
+ * Class representing the JSON number type 
+ */
 public class JsonNumber extends JsonElement{
     private String number;
 
