@@ -61,10 +61,10 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the cognitiveServicesEndpoint value.
      */
     public String getCognitiveServicesEndpoint() {
         return this.cognitiveServicesEndpoint;
@@ -81,10 +81,10 @@ public final class AnswerCallOptions {
 
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param cognitiveServicesEndpoint the azureCognitiveServicesEndpointUrl value to set.
+     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the AnswerCallOptions object itself.
      */
     public AnswerCallOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
