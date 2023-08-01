@@ -5,9 +5,8 @@ import java.util.Iterator;
  * Class representing the JSON array type 
  */
 public class JsonArray extends JsonElement {
-
     /**
-     * Field used to store the JsonElements nested in this JsonArray object. 
+     * Stores the JsonElements nested in this JsonArray object. 
      * Each of these elements should be one of the following valid JSON types: 
      * Object, Array, String, Number, Boolean, or Null. 
      */
