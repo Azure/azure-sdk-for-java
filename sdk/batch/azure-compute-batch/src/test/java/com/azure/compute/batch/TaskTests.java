@@ -485,55 +485,94 @@ public class TaskTests extends BatchServiceClientTestBase {
         }
     }
 
-    @Disabled
     @Test
-    public void failCreateContainerTaskWithRegularPool() throws Exception {
-        String jobId = getStringIdWithUserNamePrefix("-failCreateContainerRegPool");
+    public void testOutputFiles() throws Exception {
+        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
+        String jobId = getStringIdWithUserNamePrefix("-testOutputFiles");
         String taskId = "mytask";
+        String badTaskId = "mytask1";
+        String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
+        String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(liveIaasPoolId);
         jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        BlobContainerClient containerClient = null;
+        String containerUrl = "";
 
-        BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "bash -c \"echo hello\"");
-        TaskContainerSettings containerSettings = new TaskContainerSettings("centos")
-                              .setContainerRunOptions("--rm");
+        //The Storage operations run only in Record mode.
+        // Playback mode is configured to test Batch operations only.
+        if(getTestMode() == TestMode.RECORD) {
+            containerClient = createBlobContainer(storageAccountName, storageAccountKey, "output");
+            containerUrl = generateContainerSasToken(containerClient);
+        }
 
-        taskToAdd.setContainerSettings(containerSettings);
+        try {
+            // CREATE
+            List<OutputFile> outputs = new ArrayList<>();
+            OutputFileBlobContainerDestination fileBlobContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            fileBlobContainerDestination.setPath("taskLogs/output.txt");
 
-        try
-        {
-            taskClient.create(jobId, taskToAdd);
-            BatchTask task = taskClient.get(jobId, taskId);
-            System.out.println(task.getState());
-        }
-        /*
-        * TODO: Create Task call does not return error... Need to investigate
-        * */
-        catch (BatchErrorException err) {
-            System.out.println("test");
-//            if (err.body().code().equals("InvalidPropertyValue")) {
-//                // Accepted Error
-//                for (int i = 0; i < err.body().values().size(); i++) {
-//                    if (err.body().values().get(i).key().equals("Reason")) {
-//                        Assert.assertEquals("The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.", err.body().values().get(i).value());
-//                        return;
-//                    }
-//                }
-//                throw new Exception("Couldn't find expect error reason");
-//            } else {
-//                throw err;
-//            }
-        }
-        catch (HttpResponseException e) {
-            throw e;
-        }
-        finally {
+            OutputFileDestination fileDestination = new OutputFileDestination();
+            fileDestination.setContainer(fileBlobContainerDestination);
+
+            outputs.add(new OutputFile("../stdout.txt", fileDestination, new OutputFileUploadOptions(OutputFileUploadCondition.TASK_COMPLETION)));
+
+            OutputFileBlobContainerDestination fileBlobErrContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            fileBlobErrContainerDestination.setPath("taskLogs/err.txt");
+
+            outputs.add(new OutputFile("../stderr.txt", new OutputFileDestination().setContainer(fileBlobErrContainerDestination), new OutputFileUploadOptions(OutputFileUploadCondition.TASK_FAILURE)));
+
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "bash -c \"echo hello\"");
+            taskToCreate.setOutputFiles(outputs);
+
+            taskClient.create(jobId, taskToCreate);
+
+            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                BatchTask task = taskClient.get(jobId, taskId);
+                Assert.assertNotNull(task);
+                Assert.assertEquals(TaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
+                Assert.assertNull(task.getExecutionInfo().getFailureInfo());
+
+                if(getTestMode() == TestMode.RECORD) {
+                    // Get the task command output file
+                    String result = getContentFromContainer(containerClient, "taskLogs/output.txt");
+                    Assert.assertEquals("hello\n", result);
+                }
+            }
+
+            taskToCreate = new BatchTaskCreateParameters(badTaskId, "bash -c \"bad command\"")
+                    .setOutputFiles(outputs);
+
+            taskClient.create(jobId, taskToCreate);
+
+            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                BatchTask task = taskClient.get(jobId, badTaskId);
+                Assert.assertNotNull(task);
+                Assert.assertEquals(TaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
+                Assert.assertNotNull(task.getExecutionInfo().getFailureInfo());
+                Assert.assertEquals(ErrorCategory.USER_ERROR.toString().toLowerCase(), task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
+                Assert.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
+
+                //The Storage operations run only in Record mode.
+                // Playback mode is configured to test Batch operations only.
+                if(getTestMode() == TestMode.RECORD) {
+                    // Get the task command output file
+                    String result = getContentFromContainer(containerClient, "taskLogs/err.txt");
+                    Assert.assertEquals("bash: bad: command not found\n", result);
+                }
+            }
+
+        } finally {
             try {
+                if (getTestMode() == TestMode.RECORD) {
+                    containerClient.delete();
+                }
                 jobClient.delete(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
         }
     }
+
 }
