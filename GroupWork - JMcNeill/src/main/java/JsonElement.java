@@ -7,8 +7,8 @@ import java.io.StringWriter;
  * types need to define. 
  * 
  * Concrete sub classes of JsonElement should each define valid JSON types. 
- * Currently, the valid JSON types are: Object, Array, String, Number, Boolean, 
- * and Null. These are defined by the JsonObject, JsonArray, JsonString, JsonNumber, 
+ * Currently, the valid JSON types are: object, array, string, number, boolean, 
+ * and null. These are defined by the JsonObject, JsonArray, JsonString, JsonNumber, 
  * JsonBoolean, and JsonNull classes respectively. 
  */
 public abstract class JsonElement extends StringWriter {
@@ -204,9 +204,8 @@ public abstract class JsonElement extends StringWriter {
     public JsonString asString() { return new JsonString(); }
 
     /**
-     * @return
+     * @return String representation of the JsonElement 
      */
-    public abstract String toString(); // toString is an alias for toJson().
-    //public String toJson();
+    public abstract String toString(); 
 }
 

@@ -9,7 +9,7 @@ public class JsonArray extends JsonElement {
     /**
      * Stores the JsonElements nested in this JsonArray object. 
      * Each of these elements should be one of the following valid JSON types: 
-     * Object, Array, String, Number, Boolean, or Null. 
+     * object, array, string, number, boolean, and null. 
      */
     List<JsonElement> elements = new ArrayList<>();
 
@@ -19,7 +19,7 @@ public class JsonArray extends JsonElement {
      * appending it to the end.  
      * 
      * @param element a JsonElement object representing one of the valid JSON 
-     * types: Object, Array, String, Number, Boolean, or Null 
+     * types: object, array, string, number, boolean, and null 
      * @return JsonArray object representing the new state of the JsonArray object 
      * after the addition of the new JsonElement object appended. 
      */
@@ -34,7 +34,7 @@ public class JsonArray extends JsonElement {
      * the right. 
      * 
      * @param element a JsonElement object representing one of the valid JSON 
-     * types: Object, Array, String, Number, Boolean, or Null 
+     * types: object, array, string, number, boolean, and null 
      * @param index the element index within the JsonArray to add the new JsonElement 
      * object and where to shift from 
      * @return JsonArray object representing the new state of the JsonArray object 
@@ -53,7 +53,7 @@ public class JsonArray extends JsonElement {
      * replacing the existing JsonElement object at this index.  
      * 
      * @param element a JsonElement object representing one of the valid JSON 
-     * types: Object, Array, String, Number, Boolean, or Null 
+     * types: object, array, string, number, boolean, and null 
      * @param index the element index within the JsonArray to replace the current 
      * JsonElement with the newly specified JsonElement object 
      * @return JsonArray object representing the new state of the JsonArray object 
