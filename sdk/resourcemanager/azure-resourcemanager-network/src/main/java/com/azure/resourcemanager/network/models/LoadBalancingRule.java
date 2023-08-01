@@ -9,6 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Collection;
+import java.util.List;
 
 /** A client-side representation of an HTTP load balancing rule. */
 @Fluent()
@@ -32,6 +33,13 @@ public interface LoadBalancingRule
 
     /** @return the probe associated with the load balancing rule */
     LoadBalancerProbe probe();
+
+    /**
+     * Gets the list of backends associated with the load balancing rule.
+     *
+     * @return the list of backends associated with the load balancing rule
+     */
+    List<LoadBalancerBackend> backends();
 
     /** Grouping of load balancing rule definition stages. */
     interface DefinitionStages {

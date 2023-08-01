@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `backends` for `LoadBalancingRule`.
 
 ## 2.29.0 (2023-07-28)
 
