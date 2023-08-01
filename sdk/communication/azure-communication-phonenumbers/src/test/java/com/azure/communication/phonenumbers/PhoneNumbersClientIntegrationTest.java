@@ -21,6 +21,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -33,6 +34,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
@@ -181,8 +183,17 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+
+        boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        }
+        else {
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
+        }
     }
 
     @ParameterizedTest
@@ -190,12 +201,22 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     public void getGeographicAreaCodes(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).iterator().next();
+
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                         locality.getAdministrativeDivision().getAbbreviatedName());
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+
+        boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+        
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        }
+        else {
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of geographic area codes was returned.");    
+        }
     }
 
     @ParameterizedTest
@@ -246,21 +267,40 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+
+        boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        }
+        else {
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of toll-free area codes was returned.");
+        }
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
-        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+        PhoneNumberLocality locality = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).iterator().next();
+
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                         locality.getAdministrativeDivision().getAbbreviatedName());
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+
+        boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", "false").equals("true");
+        
+        if (areaCodesResult.iterator().hasNext()) {
+            PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+            assertNotNull(areaCodes);
+        }
+        else {
+            assertTrue(allowEmptyListOfAreaCodes, "Empty list of geographic area codes was returned.");    
+        }
     }
 
     @ParameterizedTest

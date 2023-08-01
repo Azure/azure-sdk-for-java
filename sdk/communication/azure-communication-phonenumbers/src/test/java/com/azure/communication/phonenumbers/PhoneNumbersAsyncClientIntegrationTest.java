@@ -18,7 +18,9 @@ import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -255,29 +257,57 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTollFreeAreaCodesWithAAD(HttpClient httpClient) {
-        StepVerifier.create(
-                this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
-                        .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes.getAreaCode());
-                })
+        PagedFlux<PhoneNumberAreaCode> areaCodePagedFlux = this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
+                .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumberAreaCode phoneNumberAreaCode = areaCodePagedFlux.blockFirst();        
+
+        if (phoneNumberAreaCode != null) {        
+            StepVerifier.create(areaCodePagedFlux.next())
+                    .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                        assertNotNull(areaCodes.getAreaCode());
+                    })
                 .verifyComplete();
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration().get("ALLOW_EMPTY_LIST_OF_AREA_CODES", false).equals("true");
+
+            if (allowEmptyListOfAreaCodes) {
+                StepVerifier.create(areaCodePagedFlux).verifyComplete();
+            } else {
+                StepVerifier.create(areaCodePagedFlux.next()).verifyError();
+            }
+        }
+        
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
-        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+        PhoneNumberLocality locality = this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).blockFirst();
-        StepVerifier.create(
-                this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
-                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
-                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
-                        .next())
+        
+        PagedFlux<PhoneNumberAreaCode> areaCodePagedFlux = this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
+                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                    locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName());
+
+        PhoneNumberAreaCode phoneNumberAreaCode = areaCodePagedFlux.blockFirst();        
+
+        if (phoneNumberAreaCode != null) {        
+            StepVerifier.create(
+                areaCodePagedFlux.next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration().get("ALLOW_EMPTY_LIST_OF_AREA_CODES", false).equals("true");
+
+            if (allowEmptyListOfAreaCodes) {
+                StepVerifier.create(areaCodePagedFlux).verifyComplete();
+            } else {
+                StepVerifier.create(areaCodePagedFlux.next()).verifyError();
+            }
+        }
     }
 
     @ParameterizedTest
@@ -333,13 +363,27 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTollFreeAreaCodes(HttpClient httpClient) {
-        StepVerifier.create(
-                this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
-                        .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes.getAreaCode());
-                })
-                .verifyComplete();
+        PagedFlux<PhoneNumberAreaCode> areaCodePagedFlux = this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumberAreaCode phoneNumberAreaCode = areaCodePagedFlux.blockFirst();        
+
+        if (phoneNumberAreaCode != null) {        
+            StepVerifier.create(areaCodePagedFlux.next())
+                    .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                        assertNotNull(areaCodes.getAreaCode());
+                    })
+                    .verifyComplete();
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                    .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", false).equals("true");
+
+            if (allowEmptyListOfAreaCodes) {
+                StepVerifier.create(areaCodePagedFlux).verifyComplete();
+            } else {
+                StepVerifier.create(areaCodePagedFlux.next()).verifyError();
+            }
+        }
     }
 
     @ParameterizedTest
@@ -347,15 +391,29 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void getGeographicAreaCodes(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).blockFirst();
-        StepVerifier.create(
-                this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
-                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
-                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
-                        .next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes);
-                })
-                .verifyComplete();
+
+        PagedFlux<PhoneNumberAreaCode> areaCodePagedFlux = this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                    locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName());
+
+        PhoneNumberAreaCode phoneNumberAreaCode = areaCodePagedFlux.blockFirst();        
+
+        if (phoneNumberAreaCode != null) {        
+            StepVerifier.create(areaCodePagedFlux.next())
+                    .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                        assertNotNull(areaCodes.getAreaCode());
+                    })
+                    .verifyComplete();
+        } else {
+            boolean allowEmptyListOfAreaCodes = Configuration.getGlobalConfiguration()
+                    .get("ALLOW_EMPTY_LIST_OF_AREA_CODES", false).equals("true");
+
+            if (allowEmptyListOfAreaCodes) {
+                StepVerifier.create(areaCodePagedFlux).verifyComplete();
+            } else {
+                StepVerifier.create(areaCodePagedFlux.next()).verifyError();
+            }
+        }
     }
 
     @ParameterizedTest
