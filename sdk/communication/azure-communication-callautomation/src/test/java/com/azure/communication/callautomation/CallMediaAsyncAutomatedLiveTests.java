@@ -126,19 +126,19 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
-    public void continuousRecognitionAndSendDtmfInACallAutomatedTest(HttpClient httpClient) {
+    public void continuousRecognitionAndSendDtmfTonesInACallAutomatedTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call
          * 1. Create a CallAutomationClient.
          * 2. Create a call from source to one ACS target.
          * 3. Get updated call properties and check for the connected state.
          * 4. Start continuous recognition on source, expect no failure(exception)
-         * 5. Send Dtmf tones to target, expect SendDtmfCompleted event and no failure(exception)
+         * 5. Send Dtmf tones to target, expect SendDtmfTonesCompleted event and no failure(exception)
          * 6. Stop continuous Dtmf recognition on source, expect ContinuousDtmfRecognitionStopped event and no failure(exception)
          * 7. Hang up the call.
          */
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfInACallAutomatedTest", next))
+            .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfTonesInACallAutomatedTest", next))
             .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
@@ -149,13 +149,13 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
 
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfInACallAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfTonesInACallAutomatedTest", next))
                 .sourceIdentity(caller)
                 .buildAsyncClient();
 
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfInACallAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfTonesInACallAutomatedTest", next))
                 .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);
