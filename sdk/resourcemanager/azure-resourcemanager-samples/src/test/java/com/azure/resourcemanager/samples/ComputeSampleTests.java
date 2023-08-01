@@ -34,7 +34,7 @@ import com.azure.resourcemanager.compute.samples.ManageVirtualMachineWithDisk;
 import com.azure.resourcemanager.compute.samples.ManageVirtualMachineWithUnmanagedDisks;
 import com.azure.resourcemanager.compute.samples.ManageVirtualMachinesInParallel;
 import com.azure.resourcemanager.compute.samples.ConvertVirtualMachineToManagedDisks;
-import com.azure.resourcemanager.compute.samples.CreateMultipleVirtualMachines;
+import com.azure.resourcemanager.compute.samples.CreateMultipleVirtualMachinesAndBatchQueryStatus;
 import com.azure.resourcemanager.compute.samples.ManageZonalVirtualMachine;
 import com.azure.resourcemanager.compute.samples.ManageZonalVirtualMachineScaleSet;
 import org.junit.jupiter.api.Assertions;
@@ -210,8 +210,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
-    public void testCreateMultipleVirtualMachines() {
-        Assertions.assertTrue(CreateMultipleVirtualMachines.runSample(azureResourceManager, resourceGraphManager));
+    public void testCreateMultipleVirtualMachinesAndBatchQueryStatus() {
+        Assertions.assertTrue(CreateMultipleVirtualMachinesAndBatchQueryStatus.runSample(azureResourceManager, resourceGraphManager));
     }
 }
