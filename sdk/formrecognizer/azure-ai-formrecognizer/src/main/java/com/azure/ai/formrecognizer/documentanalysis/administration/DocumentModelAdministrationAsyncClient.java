@@ -34,7 +34,7 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transfor
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSource;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -1296,8 +1296,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
-     * docTypes.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;
+     * &#41;&#41;;
+     * docTypes.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;
+     * &#41;&#41;;
      *
      * documentModelAdministrationAsyncClient.beginBuildDocumentClassifier&#40;docTypes&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
@@ -1344,8 +1346,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
-     * docTypes.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;
+     * &#41;&#41;;
+     * docTypes.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;
+     * &#41;&#41;;
      *
      * documentModelAdministrationAsyncClient.beginBuildDocumentClassifier&#40;docTypes,
      *         new BuildDocumentClassifierOptions&#40;&#41;

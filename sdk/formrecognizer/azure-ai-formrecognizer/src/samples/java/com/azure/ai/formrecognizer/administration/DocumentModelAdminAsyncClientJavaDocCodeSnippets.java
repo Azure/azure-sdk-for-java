@@ -20,7 +20,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -235,7 +235,6 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     *
      * {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(TrainingDataContentSource, DocumentModelBuildMode, BuildDocumentModelOptions)}
      */
     public void beginBuildModelWithFileListWithOptions() {

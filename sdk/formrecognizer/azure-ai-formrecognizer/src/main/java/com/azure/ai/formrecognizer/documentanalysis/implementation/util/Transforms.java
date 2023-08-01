@@ -36,7 +36,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
-import com.azure.ai.formrecognizer.documentanalysis.models.ContentSourceKind;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSourceKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
@@ -63,7 +63,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSource;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
@@ -786,12 +786,12 @@ public class Transforms {
         tags.forEach((key, classifierDocumentTypeDetails) -> {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails innerClassifyDocTypeDetails
                 = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails();
-            if (classifierDocumentTypeDetails.getTrainingDataContentSource().getSourceKind().equals(ContentSourceKind.AZURE_BLOB_FILE_LIST)) {
+            if (classifierDocumentTypeDetails.getTrainingDataContentSource().getKind().equals(TrainingDataContentSourceKind.AZURE_BLOB_FILE_LIST)) {
                 innerClassifyDocTypeDetails.setAzureBlobFileListSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl(),
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getFileList()));
-            } else if (classifierDocumentTypeDetails.getTrainingDataContentSource().getSourceKind().equals(ContentSourceKind.AZURE_BLOB)) {
+            } else if (classifierDocumentTypeDetails.getTrainingDataContentSource().getKind().equals(TrainingDataContentSourceKind.AZURE_BLOB)) {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
                         ((BlobContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl())

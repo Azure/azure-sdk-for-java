@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.documentanalysis.models;
+package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -9,13 +9,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Type of content source. */
-public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceKind> {
+public final class TrainingDataContentSourceKind extends ExpandableStringEnum<TrainingDataContentSourceKind> {
 
     /** Enum value azureBlob. */
-    public static final ContentSourceKind AZURE_BLOB = fromString("azureBlob");
+    public static final TrainingDataContentSourceKind AZURE_BLOB = fromString("azureBlob");
 
     /** Enum value azureBlobFileList. */
-    public static final ContentSourceKind AZURE_BLOB_FILE_LIST = fromString("azureBlobFileList");
+    public static final TrainingDataContentSourceKind AZURE_BLOB_FILE_LIST = fromString("azureBlobFileList");
 
     /**
      * Creates or finds a ContentSourceKind from its string representation.
@@ -24,8 +24,8 @@ public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceK
      * @return the corresponding ContentSourceKind.
      */
     @JsonCreator
-    public static ContentSourceKind fromString(String name) {
-        return fromString(name, ContentSourceKind.class);
+    public static TrainingDataContentSourceKind fromString(String name) {
+        return fromString(name, TrainingDataContentSourceKind.class);
     }
 
     /**
@@ -33,7 +33,7 @@ public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceK
      *
      * @return known ContentSourceKind values.
      */
-    public static Collection<ContentSourceKind> values() {
-        return values(ContentSourceKind.class);
+    public static Collection<TrainingDataContentSourceKind> values() {
+        return values(TrainingDataContentSourceKind.class);
     }
 }

@@ -21,7 +21,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -551,7 +551,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
         ));
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
         ));
 
         DocumentClassifierDetails classifierDetails
@@ -582,7 +582,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
         ));
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
         ));
 
         DocumentClassifierDetails classifierDetails
