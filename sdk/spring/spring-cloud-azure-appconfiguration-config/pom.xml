@@ -77,6 +77,15 @@
       <version>3.0.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <!-- Add mockito-core 4.11.0 to work with Java 20 -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
     <!-- Added this dependency to include necessary annotations used
             by reactor core. Without this dependency, javadoc throws a warning as it
             cannot find enum When.MAYBE which is used in @Nullable annotation in reactor
