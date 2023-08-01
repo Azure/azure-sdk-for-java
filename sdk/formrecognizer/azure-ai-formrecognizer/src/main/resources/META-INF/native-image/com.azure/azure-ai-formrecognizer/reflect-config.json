@@ -1,0 +1,1736 @@
+[
+    {
+        "name": "com.azure.ai.formrecognizer.FormRecognizerAsyncClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.FormRecognizerClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.FormRecognizerClientBuilder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.FormRecognizerServiceVersion",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.Transforms",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyToOperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentTypeDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationKind",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImplBuilder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AddressValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperationStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ApiVersion",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.BoundingRegion",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComponentDocumentModelDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ContentType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyDocumentModelToHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.CurrencyValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.CustomDocumentModelsDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.Document",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentField",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldSchema",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentKeyValueElement",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentKeyValuePair",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentLanguage",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentLine",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentPage",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentParagraph",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSelectionMark",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSignatureType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSpan",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentStyle",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentTable",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentTableCell",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentTableCellKind",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentTypeDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentWord",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetDocumentModelsResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetOperationsResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.InnerError",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.LengthUnit",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationKind",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ParagraphRole",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.ResourceDetails",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.SelectionMarkState",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.AddressValueHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.AnalyzedDocumentHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.AnalyzeResultHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.BoundingRegionHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.CurrencyValueHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFieldHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFieldSchemaHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentKeyValueElementHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentKeyValuePairHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentLanguageHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentLineHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelBuildOperationDetailsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelComposeOperationDetailsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelCopyToOperationDetailsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelDetailsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelSummaryHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentPageHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentParagraphHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSelectionMarkHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSpanHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentStyleHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentTableCellHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentTableHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentTypeDetailsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentWordHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.OperationDetailsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.OperationResultHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.OperationSummaryHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.PointHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.ResourceDetailsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.TypedDocumentFieldHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.AddressValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentField",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueElement",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageLengthUnit",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentParagraph",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentSignatureType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCell",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCellKind",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.OperationResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.Point",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.documentanalysis.models.TypedDocumentField",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.Constants",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.CustomFormModelHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.CustomFormModelInfoHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.CustomFormModelPropertiesHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.FormLineHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.FormPageHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.FormTableHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.RecognizedFormHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.TextAppearanceHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.TrainingDocumentInfoHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.Utility",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeBusinessCardAsyncHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeBusinessCardAsyncResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeIdDocumentAsyncHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeIdDocumentAsyncResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeInvoiceAsyncHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeInvoiceAsyncResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeLayoutAsyncHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeLayoutAsyncResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Appearance",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Attributes",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ComposeCustomModelsAsyncHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ComposeCustomModelsAsyncResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ComposeRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ContentType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.CopyCustomModelHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.CopyCustomModelResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.CopyOperationResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.CopyRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.CopyResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.DataTable",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.DataTableCell",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.DocumentResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Enum0",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ErrorInformation",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ErrorResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ErrorResponseException",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.FieldValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.FieldValueSelectionMark",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.FieldValueType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.FormFieldsReport",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.GenerateModelCopyAuthorizationHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.GenerateModelCopyAuthorizationResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.KeysResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.KeyValueElement",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.KeyValuePair",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.KeyValueType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Language",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Locale",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Model",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ModelInfo",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Models",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ModelsModel",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ModelsSummary",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ModelStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.OperationStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.PageResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ReadingOrder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.ReadResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.SelectionMark",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.SelectionMarkState",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.SourcePath",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.Style",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TextLine",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TextStyle",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TextWord",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncResponse",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TrainRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TrainResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.implementation.models.TrainStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.CreateComposedModelOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FieldBoundingBox",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FieldData",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FieldValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FieldValueType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormContentType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormElement",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormField",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormLine",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormPage",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormPageRange",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormReadingOrder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormRecognizerAudience",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormRecognizerError",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormRecognizerException",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormRecognizerLanguage",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormRecognizerLocale",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormRecognizerOperationResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormSelectionMark",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormTable",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormTableCell",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.FormWord",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.LengthUnit",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.Point",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.RecognizeContentOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.RecognizedForm",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.SelectionMarkState",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.TextAppearance",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.models.TextStyleName",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.CustomModelTransforms",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.FormTrainingAsyncClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.FormTrainingClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.FormTrainingClientBuilder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.AccountProperties",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.CopyAuthorization",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.CustomFormModel",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.CustomFormModelField",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.CustomFormModelInfo",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.CustomFormModelProperties",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.CustomFormModelStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.CustomFormSubmodel",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.TrainingFileFilter",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.TrainingOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.formrecognizer.training.models.TrainingStatus",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    }
+]

@@ -1,0 +1,46 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-eventhubs") -}}
+{{- define "stress.java-eventhubs" -}}
+metadata:
+  labels:
+    testInstance: "eventhubs-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testName: eventhubs-stress-test
+    chaos: "true"
+spec:
+  containers:
+    - name: sender
+      image: {{ .Stress.imageTag }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          source $ENV_FILE &&
+          export CONTAINER_NAME=sender &&
+          export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
+          -jar /app/azure-messaging-eventhubs-stress-1.0.0-beta.1.jar \
+          --TEST_CLASS=EventSender
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      resources:
+        requests:
+          memory: "1G"
+          cpu: "1"
+    - name: receiver
+      image: {{ .Stress.imageTag }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          source $ENV_FILE &&
+          export CONTAINER_NAME=receiver &&
+          export APPLICATIONINSIGHTS_ROLE_NAME=receiver &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
+          -jar /app/azure-messaging-eventhubs-stress-1.0.0-beta.1.jar \
+          --TEST_CLASS=EventProcessor
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      resources:
+        requests:
+          memory: "1G"
+          cpu: "1"
+{{- end -}}

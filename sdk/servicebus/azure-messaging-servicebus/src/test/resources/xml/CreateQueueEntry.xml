@@ -1,0 +1,27 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <content type="application/xml">
+    <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">
+      <LockDuration>PT10M</LockDuration>
+      <MaxSizeInMegabytes>1028</MaxSizeInMegabytes>
+      <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+      <RequiresSession>true</RequiresSession>
+      <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+      <MaxDeliveryCount>5</MaxDeliveryCount>
+      <EnableBatchedOperations>true</EnableBatchedOperations>
+      <AuthorizationRules>
+        <AuthorizationRule xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:type="SharedAccessAuthorizationRule">
+          <ClaimType>SharedAccessKey</ClaimType>
+          <ClaimValue>None</ClaimValue>
+          <Rights>
+            <AccessRights>Send</AccessRights>
+          </Rights>
+          <KeyName>test-name</KeyName>
+          <PrimaryKey>fakePrimaryKey</PrimaryKey>
+          <SecondaryKey>fakeSecondaryKey</SecondaryKey>
+        </AuthorizationRule>
+      </AuthorizationRules>
+      <Status>Active</Status>
+      <EnablePartitioning>false</EnablePartitioning>
+    </QueueDescription>
+  </content>
+</entry>

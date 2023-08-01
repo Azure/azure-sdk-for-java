@@ -1,0 +1,17 @@
+[
+    {
+        "Id": "America/Vancouver",
+        "IsAlias": false,
+        "HasZone1970Location": true
+    },
+    {
+        "Id": "America/Los_Angeles",
+        "IsAlias": false,
+        "HasZone1970Location": true
+    },
+    {
+        "Id": "PST8PDT",
+        "IsAlias": false,
+        "HasZone1970Location": false
+    }
+]

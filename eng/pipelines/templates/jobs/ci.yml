@@ -1,0 +1,430 @@
+parameters:
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: Artifacts
+    type: object
+    default: []
+  - name: ReleaseArtifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: PreTestSteps
+    type: object
+    default: []
+  - name: MatrixConfigs
+    type: object
+  - name: AdditionalMatrixConfigs
+    type: object
+    default: []
+  - name: MatrixFilters
+    type: object
+    default: []
+  - name: MatrixReplace
+    type: object
+    default: []
+  - name: PreBuildSteps
+    type: object
+    default: []
+  - name: AdditionalLintingOptions
+    type: string
+    default: ''
+  - name: BuildParallelization
+    type: string
+    default: '2C'
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestOptions
+    type: string
+    default: $(TestOptions)
+  - name: TestParallelization
+    type: string
+    default: '1C'
+  - name: JavaBuildVersion
+    type: string
+    default: $(JavaBuildVersion)
+
+jobs:
+  - job: 'Build'
+
+    variables:
+      ArtifactName: 'packages'
+      Codeql.Enabled: true
+      Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
+      Codeql.SkipTaskAutoInjection: false
+
+    pool:
+      name: azsdk-pool-mms-ubuntu-2004-general
+
+    steps:
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - '**/*.xml'
+              - '**/*.md'
+              - '!sdk/**/test-recordings'
+              - '!sdk/**/session-records'
+
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+          JobType: 'Build'
+
+      - task: UsePythonVersion@0
+        displayName: 'Use Python $(PythonVersion)'
+        inputs:
+          versionSpec: $(PythonVersion)
+
+      # This step needs to run before we update to using dev versions otherwise dependency
+      # check in the script will not fully work because the versions will mismatch
+      - task: PowerShell@2
+        displayName: Generate directories variable for sparse checkout
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+          arguments: >
+            -SourcesDirectory $(Build.SourcesDirectory)
+            -ProjectList $(ProjectList)
+
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: $(SparseCheckoutDirectories)
+            SkipCheckoutNone: true
+
+      - ${{ parameters.PreBuildSteps }}
+
+      - script: |
+          echo "##vso[build.addbuildtag]Scheduled"
+        displayName: 'Tag scheduled builds'
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+        parameters:
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+
+      - pwsh: |
+          $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
+          python3 --version
+
+          # Append dev package version suffix for each artifact
+          foreach ($artifact in $artifacts) {
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id $artifact.name --group-id $artifact.groupId
+          }
+
+          # Set zero-dev-version for packages
+          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber)
+
+          # Apply version settings to repository
+          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+        displayName: Setup Dev versioning
+
+      - ${{if ne(parameters.ServiceDirectory, '')}}:
+        - task: Powershell@2
+          inputs:
+            filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+            arguments: >
+              -ServiceDirectory ${{parameters.ServiceDirectory}}
+              -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+              -AddDevVersion
+            pwsh: true
+            workingDirectory: $(Pipeline.Workspace)
+          displayName: Update package properties with dev version
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
+      - script: |
+          python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
+        displayName: 'pip install markdown2 and BeautifulSoup4'
+
+      - task: Maven@3
+        displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
+        inputs:
+          mavenPomFile: pom.xml
+          goals: 'deploy'
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Verify Required Maven Artifacts'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Verify-Required-Maven-Artifacts.ps1
+          arguments: >
+            -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
+            -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+            -InformationAction Continue
+
+      - task: PowerShell@2
+        displayName: 'Copy artifacts to staging'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
+          arguments: >
+            -SourceDirectory $(System.DefaultWorkingDirectory)/build
+            -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
+            -InformationAction Continue
+
+      - template: /eng/common/pipelines/templates/steps/create-apireview.yml
+        parameters:
+          Artifacts: ${{parameters.ReleaseArtifacts}}
+
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: $(Build.ArtifactStagingDirectory)
+          ArtifactName: '$(ArtifactName)'
+
+      - ${{if eq(variables['System.TeamProject'], 'internal') }}:
+        - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+          displayName: 'Generate SBOM'
+          condition: succeededOrFailed()
+          inputs:
+            BuildDropPath: $(Build.ArtifactStagingDirectory)
+
+        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+          parameters:
+            ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+            ArtifactName: 'manifest'
+
+      - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+
+  - job: 'Analyze'
+    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+
+    pool:
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
+
+    steps:
+      - task: UsePythonVersion@0
+        displayName: 'Use Python $(PythonVersion)'
+        inputs:
+          versionSpec: $(PythonVersion)
+
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - '**/*.xml'
+              - '**/*.md'
+              - '.vscode/cspell.json'
+              - '!sdk/**/test-recordings'
+              - '!sdk/**/session-records'
+
+      - task: PowerShell@2
+        displayName: 'Verify versions in POM files'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/versioning/pom_file_version_scanner.ps1
+          arguments: -Debug:$$(IsDebug)
+
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          JobType: 'Analyze'
+
+      - task: PowerShell@2
+        displayName: Generate directories variable for sparse checkout
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+          arguments: >
+            -SourcesDirectory $(Build.SourcesDirectory)
+            -ProjectList $(ProjectList)
+
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: $(SparseCheckoutDirectories)
+            SkipCheckoutNone: true
+
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+        parameters:
+          CspellConfigPath: .vscode/cspell.json
+          ContinueOnError: false
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+        parameters:
+          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+
+      - template: /eng/common/pipelines/templates/steps/verify-links.yml
+        parameters:
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: ''
+            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: sdk/${{ parameters.ServiceDirectory }}
+          CheckLinkGuidance: $true
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
+      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)
+          BasePathLength: 38
+
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - ${{ each artifact in parameters.Artifacts }}:
+          - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
+            - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+              parameters:
+                PackageName: ${{artifact.name}}
+                ServiceName: ${{parameters.ServiceDirectory}}
+                ForRelease: false
+
+      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: ${{ parameters.JavaBuildVersion }}
+
+      - task: PowerShell@2
+        displayName: Verify Code Generation
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -Directory sdk/${{ parameters.ServiceDirectory }}
+
+      - task: PowerShell@2
+        displayName: Verify TypeSpec Code Generation
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -Directory sdk/${{ parameters.ServiceDirectory }}
+
+      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
+        parameters:
+          JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+          BuildParallelization: ${{ parameters.BuildParallelization }}
+          RunLinting: true
+
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+
+      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  - job: Compliance
+    variables:
+    - template: /eng/pipelines/templates/variables/globals.yml
+
+    pool:
+      name: azsdk-pool-mms-win-2022-general
+      vmImage: windows-2022
+
+    steps:
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - '**/*.xml'
+
+      # For PullRequests CredScan will be run against the files changed in the PR.
+      # For non-pull requests CredScan
+      - ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
+        - task: PowerShell@2
+          displayName: 'Determine files changed in PR for sparse-checkout'
+          inputs:
+            pwsh: true
+            filePath: eng/pipelines/scripts/Set-CredScanCheckoutDirectories.ps1
+      - ${{else}}:
+        - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+          parameters:
+            Artifacts: ${{ parameters.Artifacts }}
+            AdditionalModules: ${{ parameters.AdditionalModules }}
+            JobType: 'Compliance'
+            UseCache: false
+
+        - task: PowerShell@2
+          displayName: Generate directories variable for sparse checkout
+          inputs:
+            pwsh: true
+            filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+            arguments: >
+              -SourcesDirectory $(Build.SourcesDirectory)
+              -ProjectList $(ProjectList)
+
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            SkipCheckoutNone: true
+            Paths: $(SparseCheckoutDirectories)
+
+      - template: /eng/common/pipelines/templates/steps/credscan.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          BaselineFilePath: $(Build.SourcesDirectory)\eng\java.gdnbaselines
+
+  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+    parameters:
+      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+      MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      MatrixFilters: ${{ parameters.MatrixFilters }}
+      MatrixReplace: ${{ parameters.MatrixReplace }}
+      CloudConfig:
+        Cloud: Public
+      AdditionalParameters:
+        SDKType: ${{ parameters.SDKType }}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
+        PreTestSteps: ${{ parameters.PreTestSteps }}
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        TestGoals: ${{ parameters.TestGoals }}
+        TestOptions: ${{ parameters.TestOptions }}
+        TestParallelization: ${{ parameters.TestParallelization }}
+        BuildParallelization: ${{ parameters.BuildParallelization }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}

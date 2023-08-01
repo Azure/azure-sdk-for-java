@@ -1,0 +1,69 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 05:06:33 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/job-1",
+      "retry-after" : "0",
+      "request-id" : "b10262e2-c88a-482a-b2e6-bb0ea15f0e0a",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 05:06:33 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "25943e07-5a7f-4fed-8726-765e965b2852",
+      "etag" : "0x8DB5B4B7A7C65CF",
+      "location" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/job-1",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-failCreateContainerRegPool/tasks?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 05:06:33 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-failCreateContainerRegPool/tasks/mytask",
+      "retry-after" : "0",
+      "request-id" : "4f5e4ab1-202c-4c50-bf63-046f682b722a",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 05:06:34 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "6e2f5dcc-7041-45ae-a092-3248de899241",
+      "etag" : "0x8DB5B4B7A982716",
+      "location" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-failCreateContainerRegPool/tasks/mytask",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-failCreateContainerRegPool?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 05:06:33 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "7a0628a7-a36e-4ccc-bbc5-b18ce078c2cd",
+      "retry-after" : "0",
+      "request-id" : "a8ce065f-ea26-4ff0-a6ba-c7845b779c62",
+      "StatusCode" : "202",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  } ],
+  "variables" : [ ]
+}

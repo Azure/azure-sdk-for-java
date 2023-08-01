@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <packaging>jar</packaging>
+
+    <name>${artifactId}</name>
+
+    <properties>
+        <maven.compiler.target>${javaVersion}</maven.compiler.target>
+        <maven.compiler.source>${javaVersion}</maven.compiler.source>
+        <bom.version>1.0.2</bom.version>
+        <graalvm.version>21.2.0</graalvm.version>
+        <buildtool.version>1.0.0-beta.1</buildtool.version>
+#if( ${junitVersion} == '4')
+        <junit4.version>4.13.2</junit4.version>
+#end
+#if( ${junitVersion} == '5')
+        <junit5.version>5.7.2</junit5.version>
+#end
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-sdk-bom</artifactId>
+                <version>${bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+#set($libraries = ${azureLibraries})
+#set($dependencies = $libraries.split(","))
+#foreach($dependency in $dependencies)
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>$dependency.trim()</artifactId>
+        </dependency>
+#end
+#if( ${enableGraalVM} == 'true')
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>${graalvm.version}</version>
+            <scope>provided</scope>
+        </dependency>
+#end
+
+#if( ${junitVersion} == '4')
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit4.version}</version>
+            <scope>test</scope>
+        </dependency>
+#end
+
+#if( ${junitVersion} == '5')
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+#end
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <mainClass>${package}.App</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.azure.tools</groupId>
+                <artifactId>azure-sdk-build-tool</artifactId>
+                <version>${buildtool.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+#if( ${enableGraalVM} == 'true')
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${graalvm.version}</version>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>${artifactId}</imageName>
+                            <mainClass>${package}.App</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+#end
+
+</project>

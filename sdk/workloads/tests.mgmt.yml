@@ -1,0 +1,16 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: workloads
+      Artifacts:
+        - name: azure-resourcemanager-workloads
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagerworkloads
+      Clouds: 'Public'
+      # Only run tests on Windows to save cost.
+      MatrixFilters:
+        - pool=.*(win).*

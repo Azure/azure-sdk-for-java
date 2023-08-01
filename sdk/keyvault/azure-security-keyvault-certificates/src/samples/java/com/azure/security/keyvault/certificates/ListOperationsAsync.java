@@ -1,0 +1,131 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.security.keyvault.certificates;
+
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Sample demonstrates how to asynchronously list keys and versions of a given key in the key vault.
+ */
+public class ListOperationsAsync {
+    /**
+     * Authenticates with the key vault and shows how to asynchronously list keys and list versions of a specific key in the key vault.
+     *
+     * @param args Unused. Arguments to the program.
+     * @throws IllegalArgumentException when invalid key vault endpoint is passed.
+     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     */
+    public static void main(String[] args) throws InterruptedException {
+        /* Instantiate a CertificateAsyncClient that will be used to call the service. Notice that the client is using
+        default Azure credentials. For more information on this and other types of credentials, see this document:
+        https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
+
+        To get started, you'll need a URL to an Azure Key Vault. See the README
+        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        for links and instructions. */
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
+            .vaultUrl("<your-key-vault-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
+        // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
+        // then a new version of the certificate is created.
+        CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
+            .setKeyReusable(true)
+            .setKeyCurveName(CertificateKeyCurveName.P_256);
+        Map<String, String> tags = new HashMap<>();
+        tags.put("foo", "bar");
+
+        certificateAsyncClient.beginCreateCertificate("myCertificate", policy, true, tags)
+            .subscribe(pollResponse -> {
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.println(pollResponse.getStatus());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
+            });
+
+        Thread.sleep(22000);
+
+        // Let's create a certificate issuer.
+        certificateAsyncClient.createIssuer(new CertificateIssuer("myIssuer", "Test"))
+            .subscribe(issuer ->
+                System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProvider()));
+
+        Thread.sleep(2000);
+
+        // Let's create a certificate signed by our issuer.
+        certificateAsyncClient.beginCreateCertificate("myCert",
+                new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
+            .subscribe(pollResponse -> {
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.println(pollResponse.getStatus());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
+            });
+
+        Thread.sleep(22000);
+
+        // Let's list all the certificates in the key vault.
+        certificateAsyncClient.listPropertiesOfCertificates()
+            .subscribe(certificateProperties ->
+                certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
+                        certificateProperties.getVersion())
+                    .subscribe(certificateResponse ->
+                        System.out.printf("Received certificate with name %s and key id %s \n",
+                            certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
+
+        Thread.sleep(5000);
+
+        // Let's list all certificate versions of the certificate.
+        certificateAsyncClient.listPropertiesOfCertificateVersions("myCertificate")
+            .subscribe(certificateProperties ->
+                certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
+                        certificateProperties.getVersion())
+                    .subscribe(certificateResponse ->
+                        System.out.printf("Received certificate with name %s and key id %s\n",
+                            certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
+
+        Thread.sleep(5000);
+
+        // Let's list all certificate issuers in the key vault.
+        certificateAsyncClient.listPropertiesOfIssuers()
+            .subscribe(issuerProperties ->
+                certificateAsyncClient.getIssuer(issuerProperties.getName())
+                    .subscribe(issuerResponse ->
+                        System.out.printf("Received issuer with name %s and provider %s\n", issuerResponse.getName(),
+                            issuerResponse.getProvider())));
+
+        Thread.sleep(5000);
+
+        // Let's set certificate contacts on the Key vault.
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@example.com");
+        certificateAsyncClient.setContacts(Collections.singletonList(contactToAdd)).subscribe(contact ->
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail()));
+
+        Thread.sleep(3000);
+
+        // Let's list all certificate contacts in the key vault.
+        certificateAsyncClient.listContacts().subscribe(contact ->
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail()));
+
+        Thread.sleep(3000);
+
+        // Let's delete all certificate contacts in the key vault.
+        certificateAsyncClient.listContacts().subscribe(contact ->
+            System.out.printf("Deleted Contact name %s and email %s\n", contact.getName(), contact.getEmail()));
+
+        Thread.sleep(2000);
+    }
+}

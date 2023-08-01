@@ -1,0 +1,16 @@
+[
+  {
+    "name": "io.netty.channel.socket.nio.NioSocketChannel",
+    "methods": [
+      {
+        "name": "<init>"
+      }
+    ]
+  },
+  {
+    "name": "com.azure.core.http.netty.NettyAsyncHttpClientProvider",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true
+  }
+]

@@ -1,0 +1,107 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ace5d33b0ace5d33b96e0226240c65b6eb0674a71809?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3de8a744-e6d1-47d2-bfcf-343086813bc8"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DB2AEAA8DE5A1D",
+      "Last-Modified" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "cc9fffa5-201e-003b-0ad3-5ca2f5000000",
+      "Date" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "x-ms-client-request-id" : "3de8a744-e6d1-47d2-bfcf-343086813bc8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ace5d33b0ace5d33b96e0226240c65b6eb0674a71809/ace5d33b1ace5d33b96e37147ec40b3dbdc314142b7c",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ce847fe4-39e4-4fa6-81c2-4a7392967de2",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "aRcIKUUwSpg=",
+      "Last-Modified" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "x-ms-version-id" : "2023-03-22T15:32:34.9232889Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "Content-MD5" : "MH3KQrB1pH42HDtBy7+i3g==",
+      "ETag" : "0x8DB2AEAA9018FF0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "f0348fcc-701e-0001-2bd3-5ce156000000",
+      "x-ms-client-request-id" : "ce847fe4-39e4-4fa6-81c2-4a7392967de2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ace5d33b0ace5d33b96e0226240c65b6eb0674a71809/ace5d33b1ace5d33b96e37147ec40b3dbdc314142b7c",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2e30662b-4225-4c07-9206-02b8a6812266"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Content-Range" : "bytes 0-1023/1024",
+      "x-ms-lease-state" : "available",
+      "x-ms-blob-content-md5" : "MH3KQrB1pH42HDtBy7+i3g==",
+      "x-ms-version-id" : "2023-03-22T15:32:34.9232889Z",
+      "Last-Modified" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "206",
+      "Date" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "0x8DB2AEAA9018FF0",
+      "x-ms-creation-time" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "Content-Length" : "1024",
+      "x-ms-request-id" : "cca000a2-201e-003b-6dd3-5ca2f5000000",
+      "Body" : "lEWIgYvJz/M+ZKrDUJUtBSypwq+PCyQMcDXLKysjxt70svf5BLHMikjg4maE36tZfA9voKkDGVJQWuoPtgUtPYhYboslcWRsLdkc3KN+8d3zjYDmFNxRiiZQgbvr6fmsz7hBuWJqQqPnwU/2WYbpG9Ecn2TcZDo2gWqz46GtIRPsm56/BPx7wbQF9y5I12zrOzDGWiQGSYNxtTiN41ZiZiOgZk+lCrojmUyXi4NJiw240JpuoC6qxwsCowRvZuTzX1r/xLXWnFTdz/dfE6ffRrVDPEIbEnuG6AKIEDn6w9avBrUQ+CJUX4m+gal2dnihAkRRWPO3LYCmeCIv5r+rCcXIkvkGq6UF77F3HBuVH0ZTylNamFnwjGZuPJFSt+t0dnzS3crp21ogMvef56EKzMFlXbQRETIgTIZ0LArFtX48FkaWBDBXOnRK9uGzNz71RiT233bXnl0DVjCv0hRq7reTXKzHCrttBi6v4Mv3LY1EC6ild9MsmTbTzVghTB1nJ3ykpPv58Rs27CvDcGRjhv8fWRPT9xT1GNDluKCMwlj08O253HaBRyU15B5XizWDHgCu4+Lx0JHdh7Egr0ajCidObgd5Sui3PC6f1CmA26wuCveYDGh4bT475SHg2w5N7lqHyjY0AaelVgsDAadjGx8WapxQiBeh+dyRznoRbHMcChQXSuCj8NB7vinxzlkYxb2qSL7m2CNPzt+N91IWc6bKXBNCLv5P8L2Pe30cJjVYNePk/ascnYWrtEGGxLBmJ2gVk3zHX2t8pH2LHsRuhfSz7zvGE9cXYyiWKYol2UBdewazrQVyDK5CkvPAlAZNGmxeqWY70Jq4/FtnGYNkLKlqROlcKRboB2x3UURSMhgtFEYsQECfwtTggkp9uo/zk/oV2GTgY8bJ+Kz4/99OhPb+NE5Jrnp7DJoyj7fLzcpEbuwTdhyCsHwakwY5OyL2IcS6cos+OOI5F0mO9/sdBws4D/eVOVQHacC6GK9FYRq+eE5youUVJTmd/PMlyBOb2Tndj5h0NQsiDC7CEmA0VMF3kzlCMib2bQPn8lyn+rDElcWwq7E8avjVogCG1MQsgbo+hK/7ecI6AIwRaZ2/W4gOWivOksLfg0HJXiQRHW49wR6xQ2BhaoiFrKBQnYojAfgcSlTeI80fYigleLLl0pILCBvrE16oRi35oMe7MSayt+yuZjX6+GnvOvcDXskbBiGoWKr+oK3ktfVeujHwnkHVLtZ+GkVPxQm+frpsieqBKYFDFSstvNeOH1TFLgvs+JocoexHPZLbDmRThWUN+s8VkKzWBPqvGHWp7L17TpRGRtNzVFbMaBZ+XSHBR/cpH1hfMyrnrnmlH16pJ+2KYQ==",
+      "x-ms-client-request-id" : "2e30662b-4225-4c07-9206-02b8a6812266",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ace5d33b0ace5d33b96e0226240c65b6eb0674a71809/ace5d33b1ace5d33b96e37147ec40b3dbdc314142b7c",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1e20253a-a9ab-49df-9a34-77d3be1b66fe"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Content-Range" : "bytes */1024",
+      "x-ms-error-code" : "InvalidRange",
+      "retry-after" : "0",
+      "Content-Length" : "249",
+      "StatusCode" : "416",
+      "x-ms-request-id" : "cca001b0-201e-003b-6cd3-5ca2f5000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidRange</Code><Message>The range specified is invalid for the current size of the resource.\nRequestId:cca001b0-201e-003b-6cd3-5ca2f5000000\nTime:2023-03-22T15:32:35.2712048Z</Message></Error>",
+      "Date" : "Wed, 22 Mar 2023 15:32:34 GMT",
+      "x-ms-client-request-id" : "1e20253a-a9ab-49df-9a34-77d3be1b66fe",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ace5d33b0ace5d33b96e0226240c65b6eb0674a71809", "ace5d33b1ace5d33b96e37147ec40b3dbdc314142b7c", "ace5d33b2ace5d33b96e729030703b6a4ff094bcdb60", "237218f3-d4c5-4c22-9fcf-174c5e6db2ac" ]
+}

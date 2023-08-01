@@ -1,0 +1,40 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/loganalytics/ci.data.yml
+      - sdk/loganalytics/microsoft-azure-loganalytics/
+    exclude:
+      - sdk/loganalytics/pom.xml
+      - sdk/loganalytics/microsoft-azure-loganalytics/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/loganalytics/ci.data.yml
+      - sdk/loganalytics/microsoft-azure-loganalytics/
+    exclude:
+      - sdk/loganalytics/pom.xml
+      - sdk/loganalytics/microsoft-azure-loganalytics/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    SDKType: data
+    ServiceDirectory: loganalytics
+    Artifacts:
+      - name: azure-loganalytics
+        groupId: com.microsoft.azure
+        safeName: azureloganalytics

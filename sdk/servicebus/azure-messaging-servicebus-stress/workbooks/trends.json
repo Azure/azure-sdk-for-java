@@ -1,0 +1,165 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## ServiceBus for Java stress testing\n\nEnter the test runId - it matches ServiceBus resource name and is a suffix in ApplocationInsights role instance."
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics \r\n| where sdkVersion startswith \"java\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize start=min(timestamp), end=max(timestamp), measurements=count() by runId \r\n| order by start desc\r\n",
+        "size": 0,
+        "title": "Runs in last 24 hours",
+        "noDataMessageStyle": 5,
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "start",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "start",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "customWidth": "100",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "100"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs=customMetrics \r\n| where sdkVersion startswith \"java\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize end=max(timestamp) by runId;\r\nlet total_messages_sent=customMetrics\r\n| where name == \"messaging.servicebus.messages.sent\"\r\n| where sdkVersion startswith \"java\" \r\n| extend status = tostring(customDimensions[\"otel.status_code\"]), runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| where status  == \"ok\"\r\n| summarize sent = sum(valueSum) by runId;\r\nlet total_messages_received = customMetrics\r\n| where name == \"messaging.servicebus.receiver.lag\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize received = sum(valueCount) by runId;\r\nlet total_messages_settled = customMetrics\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| where customDimensions[\"otel.status_code\"] == \"ok\"\r\n| summarize settled = sum(valueCount) by runId;\r\nruns\r\n| join kind = fullouter total_messages_sent on runId\r\n| join kind = fullouter total_messages_received on runId\r\n| join kind = fullouter total_messages_settled on runId\r\n| project-away runId1, runId2, runId3, runId\r\n| render areachart  with (xcolumn=end, ycolumns=sent, received, settled, kind=stacked)",
+        "size": 0,
+        "title": "Throughput comparison across runs",
+        "noDataMessageStyle": 5,
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 2",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs=customMetrics \r\n| where sdkVersion startswith \"java\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize end=max(timestamp) by runId;\r\nlet amqp_send = customMetrics\r\n| where name == \"messaging.az.amqp.producer.send.duration\" and customDimensions[\"amqp.delivery_state\"] != \"accepted\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| union (print valueCount = toint(0), runId = \"none\")\r\n| summarize amqp_send_errors = sum(valueCount) by runId;\r\nlet send = customMetrics\r\n| where name == \"messaging.servicebus.messages.sent\" and customDimensions[\"otel.status_code\"] != \"ok\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| union (print valueSum = toreal(0), runId = \"none\")\r\n| summarize message_send_errors = sum(valueSum) by runId;\r\nlet settle = customMetrics\r\n| where name == \"messaging.servicebus.settlement.request.duration\" and customDimensions[\"otel.status_code\"] != \"ok\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| union (print valueCount = toint(0), runId = \"none\")\r\n| summarize settle_errors = sum(valueCount) by runId;\r\nlet management = customMetrics\r\n| where name == \"messaging.az.amqp.management.request.duration\" and customDimensions[\"otel.status_code\"] != \"ok\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| union (print valueCount = toint(0), runId = \"none\")\r\n| summarize management_errors = sum(valueCount) by runId;\r\nlet connection = customMetrics\r\n| where name == \"messaging.az.amqp.client.connections.closed\" and customDimensions[\"amqp.error_condition\"] != \"ok\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| union (print valueSum = toreal(0), runId = \"none\")\r\n| summarize connection_errors = sum(valueSum) by runId;\r\nlet transport = customMetrics\r\n| where name == \"messaging.az.amqp.client.transport.errors\" and customDimensions[\"amqp.error_condition\"] != \"ok\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| union (print valueSum = toreal(0), runId = \"none\")\r\n| summarize transport_errors = sum(valueSum) by runId;\r\nruns\r\n| join kind = fullouter (amqp_send) on runId\r\n| join kind = fullouter (send) on runId\r\n| join kind = fullouter (settle) on runId\r\n| join kind = fullouter (management) on runId\r\n| join kind = fullouter (connection) on runId\r\n| join kind = fullouter (transport) on runId\r\n| extend runId=coalesce(runId, runId1, runId2, runId3, runId4, runId5, runId6)\r\n| where runId != \"none\"\r\n| project-away runId, runId1, runId2, runId3, runId4, runId5, runId6\r\n| render areachart  with (xcolumn=end, kind=stacked)",
+        "size": 0,
+        "title": "Errors #",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 4",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs=customMetrics \r\n| where sdkVersion startswith \"java\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize end=max(timestamp) by runId;\r\nlet logs = traces\r\n| where severityLevel > 1\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize log_warnings = countif(severityLevel == 2), log_errors = countif(severityLevel == 3) by runId;\r\nlet exc = exceptions\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize exceptions=count() by runId;\r\nruns\r\n| join kind = fullouter (logs) on runId\r\n| join kind = fullouter (exc) on runId\r\n| project-away runId, runId1, runId2\r\n| render areachart  with (xcolumn=end, kind=stacked)",
+        "size": 0,
+        "title": "Warnings and errors in logs, #",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 6",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs=customMetrics \r\n| where sdkVersion startswith \"java\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize end=max(timestamp) by runId;\r\nlet cpu = performanceCounters\r\n| where sdkVersion startswith \"java\" and name == \"% Processor Time Normalized\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize avg_cpu = avg(value) by runId;\r\nruns\r\n| join kind = fullouter (cpu) on runId\r\n| project-away runId, runId1\r\n| render areachart  with (xcolumn=end, kind=stacked)",
+        "size": 0,
+        "title": "CPU %",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 5",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs=customMetrics \r\n| where sdkVersion startswith \"java\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize end=max(timestamp) by runId;\r\nlet memory = customMetrics\r\n| where sdkVersion startswith \"java\" and name == \"Heap Memory Used (MB)\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize avg_memory = avg(value) by runId;\r\nruns\r\n| join kind = fullouter (memory) on runId\r\n| project-away runId, runId1\r\n| render areachart  with (xcolumn=end, kind=stacked)",
+        "size": 0,
+        "title": "Heap memory used (MB)",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 6",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs=customMetrics \r\n| where sdkVersion startswith \"java\" \r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize end=max(timestamp) by runId;\r\nlet gc_time = customMetrics\r\n| where sdkVersion startswith \"java\" and name == \"GC Total Time\"\r\n| extend runId = tostring(split(cloud_RoleInstance, \"-\")[1])\r\n| summarize gc_total_time = sum(valueSum) by runId;\r\nruns\r\n| join kind = fullouter (gc_time) on runId\r\n| project-away runId, runId1\r\n| render areachart  with (xcolumn=end, kind=stacked)\r\n",
+        "size": 0,
+        "title": "GC time, total",
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 7",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    }
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

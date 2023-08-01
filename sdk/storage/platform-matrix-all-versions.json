@@ -1,0 +1,25 @@
+{
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" },
+      "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" }
+    },
+    "JavaTestVersion": [ "1.8", "1.11" ],
+    "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
+    "TestGoals": "surefire:test",
+    "AZURE_LIVE_TEST_SERVICE_VERSION": [
+        "V2019_02_02",
+        "V2019_07_07",
+        "V2019_12_12",
+        "V2020_02_10",
+        "V2020_04_08",
+        "V2020_06_12",
+        "V2020_08_04",
+        "V2020_10_02",
+        "V2020_12_06",
+        "V2021_02_12",
+        "V2021_04_10",
+        "V2021_06_08"
+    ]
+  }
+}

@@ -1,0 +1,164 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20230613.1
+
+parameters:
+- name: Artifacts
+  type: object
+  default: []
+- name: TestPipeline
+  type: boolean
+  default: false
+- name: AdditionalModules
+  type: object
+  default: []
+- name: SDKType
+  type: string
+  default: client
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
+- name: MatrixConfigs
+  type: object
+  default:
+    - Name: Java_ci_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      NonSparseParameters: Agent
+      GenerateVMJobs: true
+- name: AdditionalMatrixConfigs
+  type: object
+  default: []
+- name: MatrixFilters
+  type: object
+  default: []
+- name: MatrixReplace
+  type: object
+  default: []
+- name: PreBuildSteps
+  type: object
+  default: []
+- name: AdditionalLintingOptions
+  type: string
+  default: ''
+- name: AdditionalStagesAfterBuild
+  type: object
+  default: []
+- name: EnableBatchRelease
+  type: boolean
+  default: false
+- name: UseEsrpRelease
+  type: boolean
+  default: true
+- name: JavaBuildVersion
+  type: string
+  default: $(JavaBuildVersion)
+- name: LiveTestStages
+  type: stageList
+  default: []
+- name: ReleaseDependsOnLiveTests
+  type: string
+  default: not-specified
+
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+
+stages:
+  - stage: Build
+    jobs:
+    - template: /eng/pipelines/templates/jobs/ci.yml
+      parameters:
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
+        ReleaseArtifacts:
+        - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+              - ${{ artifact }}
+        - ${{ else }}:
+          - ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
+        MatrixConfigs:
+          - ${{ each config in parameters.MatrixConfigs }}:
+            -  ${{ config }}
+          - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+            -  ${{ config }}
+        MatrixFilters:
+          - ${{ each filter in parameters.MatrixFilters }}:
+            - ${{ filter }}
+          # Skip TestFromSource jobs for SDKType data
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestFromSource=^(?!true).*
+        MatrixReplace:
+          - ${{ each replacement in parameters.MatrixReplace }}:
+            - ${{ replacement }}
+
+          - AZURE_TEST.*=.*/
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        ${{ if eq(parameters.SDKType, 'data') }}:
+          TestGoals: 'verify'
+          TestOptions: '-am'
+          JavaBuildVersion: '1.11'
+        ${{ else }}:
+          JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+
+  - ${{ parameters.AdditionalStagesAfterBuild }}
+
+  - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'],'IndividualCI')) }}:
+    - ${{ parameters.LiveTestStages }}
+
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  # The tests-weekly check needs to be done so we don't create signing/release tasks for manual weekly-test runs
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
+    - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
+      - template: archetype-java-release-batch.yml
+        parameters:
+          DependsOn:
+            - Build
+            # Only depend on live test stages if the build depends on live tests and the build reason is manual.
+            # This prevents check-in builds and scheduled builds from having a requirement on live test stages.
+            - ${{ if and(eq(parameters.ReleaseDependsOnLiveTests, 'true'), eq(variables['Build.Reason'],'Manual')) }}:
+              - ${{ each liveTestStage in parameters.LiveTestStages }}:
+                - ${{ liveTestStage.stage }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
+          # specifically, has releaseInBatch set to false. releaseInBatch should only be set libraries,
+          # not ready for release, in service directories that have batch release enabled. The if statement
+          # below, looking for releaseInBatch not equal false has to be set this way because if the library's
+          # metadata in the ci.yml doesn't have this variable then it defaults to being released.
+          Artifacts:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+              - ${{ artifact }}
+          TestPipeline: ${{ parameters.TestPipeline }}
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+          # This where the MavenBreakGlassApprovers is set for the release tasks.
+          ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
+            Environment: 'MavenBreakGlassApprovers'
+    - ${{ else }}:
+      - template: archetype-java-release.yml
+        parameters:
+          DependsOn:
+            - Build
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          Artifacts: ${{ parameters.Artifacts }}
+          TestPipeline: ${{ parameters.TestPipeline }}
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+

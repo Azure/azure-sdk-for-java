@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/dc9af76adc9af76a81154918517e1199b74c4498b3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "92c2cd0c-c18b-48f5-8468-9b0ecc612f17"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA8C742F1E6FD7",
+      "Last-Modified" : "Thu, 01 Sep 2022 23:46:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a6be2c6d-d01a-0037-6d5d-be086e000000",
+      "x-ms-client-request-id" : "92c2cd0c-c18b-48f5-8468-9b0ecc612f17",
+      "Date" : "Thu, 01 Sep 2022 23:46:25 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/dc9af76adc9af76a81154918517e1199b74c4498b3/dc9af76adc9af76a81122608b6f785932e1c408fa4?comp=copy&copyid=randomId",
+    "Headers" : {
+      "x-ms-version" : "2021-10-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5508765-d2a4-4397-8be4-e79b9f1a43e0"
+    },
+    "Response" : {
+      "content-length" : "418",
+      "x-ms-version" : "2021-10-04",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidQueryParameterValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "a6be2c74-d01a-0037-705d-be086e000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:a6be2c74-d01a-0037-705d-be086e000000\nTime:2022-09-01T23:46:26.3034147Z</Message><QueryParameterName>copyid</QueryParameterName><QueryParameterValue>randomId</QueryParameterValue><Reason>copyid needs to be valid Guid.</Reason></Error>",
+      "x-ms-client-request-id" : "f5508765-d2a4-4397-8be4-e79b9f1a43e0",
+      "Date" : "Thu, 01 Sep 2022 23:46:25 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "dc9af76adc9af76a81154918517e1199b74c4498b3", "dc9af76adc9af76a81122608b6f785932e1c408fa4" ]
+}

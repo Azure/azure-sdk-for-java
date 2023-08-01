@@ -1,0 +1,13 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: resourcehealth
+      Artifacts:
+        - name: azure-resourcemanager-resourcehealth
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagerresourcehealth
+      Clouds: 'Public'

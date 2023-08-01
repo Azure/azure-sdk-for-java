@@ -1,0 +1,40 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/parents/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/parents/
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
+  parameters:
+    ServiceDirectory: parents
+    Artifacts:
+      - name: azure-client-sdk-parent
+        groupId: com.azure
+        safeName: azureclientsdkparent
+      - name: azure-data-sdk-parent
+        groupId: com.azure
+        safeName: azuredatasdkparent
+      - name: azure-sdk-parent
+        groupId: com.azure
+        safeName: azuresdkparent
+      - name: azure-perf-test-parent
+        groupId: com.azure
+        safeName: azureperftestparent

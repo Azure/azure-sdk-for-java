@@ -1,0 +1,46 @@
+[
+  {
+    "id": "56afc886-767b-d359-d59e-0da7877166b2",
+    "topic": "/SUBSCRIPTIONS/id/RESOURCEGROUPS/rg/PROVIDERS/MICROSOFT.DEVICES/IOTHUBS/hub1",
+    "subject": "devices/LogicAppTestDevice",
+    "eventType": "Microsoft.Devices.DeviceDeleted",
+    "eventTime": "2018-01-02T19:17:44.4383997Z",
+    "data": {
+      "twin": {
+        "deviceId": "LogicAppTestDevice",
+        "etag": "AAAAAAAAAAE=",
+        "status": "enabled",
+        "statusUpdateTime": "0001-01-01T00:00:00",
+        "connectionState": "Disconnected",
+        "lastActivityTime": "0001-01-01T00:00:00",
+        "cloudToDeviceMessageCount": 0,
+        "authenticationType": "sas",
+        "x509Thumbprint": {
+          "primaryThumbprint": null,
+          "secondaryThumbprint": null
+        },
+        "version": 2,
+        "properties": {
+          "desired": {
+            "$metadata": {
+              "$lastUpdated": "2018-01-02T19:17:44.4383997Z"
+            },
+            "$version": 1
+          },
+          "reported": {
+            "$metadata": {
+              "$lastUpdated": "2018-01-02T19:17:44.4383997Z"
+            },
+            "$version": 1
+          }
+        }
+      },
+      "hubName": "egtesthub1",
+      "deviceId": "LogicAppTestDevice",
+      "operationTimestamp": "2018-01-02T19:17:44.4383997Z",
+      "opType": "DeviceCreated"
+    },
+    "dataVersion": "",
+    "metadataVersion": "1"
+  }
+]
