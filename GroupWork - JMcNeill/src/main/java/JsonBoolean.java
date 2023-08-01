@@ -1,11 +1,11 @@
-public class JsonBoolean extends JsonElement{
+public class JsonBoolean extends JsonElement {
     private String booleanText;
 
-    public JsonBoolean(){
+    public JsonBoolean() {
 
     }
 
-    public JsonBoolean(boolean value){
+    public JsonBoolean(boolean value) {
         if(value){
             booleanText = "true";
         } else {
@@ -13,11 +13,11 @@ public class JsonBoolean extends JsonElement{
         }
     }
 
-    public String toString(){
+    public String toString() {
         return booleanText;
     }
 
-    public boolean isBoolean(){
+    public boolean isBoolean() {
         return true;
     }
 }

@@ -4,9 +4,10 @@ import java.io.StringWriter;
 
 public abstract class JsonElement extends StringWriter {
 
-    public JsonElement(){
+    public JsonElement() {
 
     }
+
     // All throw unless isArray is true.
     public JsonArray addElement(JsonElement element) throws InvalidTypeException {
         if (this.isArray()){
