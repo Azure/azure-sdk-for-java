@@ -142,13 +142,12 @@ public class RntbdConnectionStateListener {
         checkNotNull(exception, "expected non-null exception");
 
         if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"cause\":{})",
-                    event,
-                    RntbdObjectMapper.toJson(Instant.now()),
-                    RntbdObjectMapper.toJson(this.endpoint),
-                    RntbdObjectMapper.toJson(exception));
-            }
+
+            logger.info("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"cause\":{})",
+                event,
+                RntbdObjectMapper.toJson(Instant.now()),
+                RntbdObjectMapper.toJson(this.endpoint),
+                RntbdObjectMapper.toJson(exception));
 
             // When idleEndpointTimeout reached, SDK will close all existing channels,
             // which will translate into ClosedChannelException which does not mean server is in unhealthy status.

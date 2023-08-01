@@ -215,6 +215,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             return promise.setSuccess(transitTimeoutValidationMessage);
         }
 
+        String badChannelValidationMessage = this.isBadChannelValidation(timestamps, currentTime, channel);
+        if (StringUtils.isNotEmpty(badChannelValidationMessage)) {
+            return promise.setSuccess(badChannelValidationMessage);
+        }
+
         String idleConnectionValidationMessage = this.idleConnectionValidation(timestamps, currentTime, channel);
         if(StringUtils.isNotEmpty(idleConnectionValidationMessage)) {
             return promise.setSuccess(idleConnectionValidationMessage);
@@ -374,6 +379,27 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         }
 
         return transitTimeoutValidationMessage;
+    }
+
+    private String isBadChannelValidation(Timestamps timestamps, Instant currentTime, Channel channel) {
+
+        final Duration readDelay = Duration.between(timestamps.lastChannelReadTime(), currentTime);
+        String errorMessage = StringUtils.EMPTY;
+
+        if (readDelay.compareTo(Duration.ofSeconds(13)) > 0) {
+            errorMessage = MessageFormat.format(
+                "{0} health check failed due to bad channel timeout: [lastChannelWrite: {1}, lastChannelRead: {2}, "
+                    + "idleConnectionTimeout: {3}, currentTime: {4}]",
+                channel,
+                timestamps.lastChannelWriteTime(),
+                timestamps.lastChannelReadTime(),
+                idleConnectionTimeoutInNanos,
+                currentTime);
+
+            logger.warn(errorMessage);
+        }
+
+        return errorMessage;
     }
 
     private String idleConnectionValidation(Timestamps timestamps, Instant currentTime, Channel channel) {
