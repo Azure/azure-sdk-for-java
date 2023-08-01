@@ -38,6 +38,7 @@
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
+    <module>sdk/chaos</module>
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
@@ -98,6 +99,7 @@
     <module>sdk/identity</module>
     <module>sdk/imagebuilder</module>
     <module>sdk/iotcentral</module>
+    <module>sdk/iotfirmwaredefense</module>
     <module>sdk/iothub</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
@@ -171,6 +173,7 @@
     <module>sdk/servicelinker</module>
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
+    <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
     <module>sdk/sqlvirtualmachine</module>

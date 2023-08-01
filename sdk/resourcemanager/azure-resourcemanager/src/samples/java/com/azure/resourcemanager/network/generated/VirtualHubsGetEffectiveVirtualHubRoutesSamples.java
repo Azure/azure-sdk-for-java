@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
 /** Samples for VirtualHubs GetEffectiveVirtualHubRoutes. */
 public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/EffectiveRoutesListForRouteTable.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/EffectiveRoutesListForRouteTable.json
      */
     /**
      * Sample code: Effective Routes for a Route Table resource.
@@ -33,7 +33,7 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/EffectiveRoutesListForConnection.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/EffectiveRoutesListForConnection.json
      */
     /**
      * Sample code: Effective Routes for a Connection resource.
@@ -57,7 +57,7 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/EffectiveRoutesListForVirtualHub.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/EffectiveRoutesListForVirtualHub.json
      */
     /**
      * Sample code: Effective Routes for the Virtual Hub.

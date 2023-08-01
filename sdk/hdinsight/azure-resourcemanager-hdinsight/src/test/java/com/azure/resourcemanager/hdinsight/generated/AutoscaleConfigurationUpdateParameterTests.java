@@ -9,36 +9,75 @@ import com.azure.resourcemanager.hdinsight.models.Autoscale;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleCapacity;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleConfigurationUpdateParameter;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleRecurrence;
+import com.azure.resourcemanager.hdinsight.models.AutoscaleSchedule;
+import com.azure.resourcemanager.hdinsight.models.AutoscaleTimeAndCapacity;
+import com.azure.resourcemanager.hdinsight.models.DaysOfWeek;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoscaleConfigurationUpdateParameterTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoscaleConfigurationUpdateParameter model =
             BinaryData
                 .fromString(
-                    "{\"autoscale\":{\"capacity\":{\"minInstanceCount\":421254098,\"maxInstanceCount\":661393497},\"recurrence\":{\"timeZone\":\"lhspkdee\",\"schedule\":[]}}}")
+                    "{\"autoscale\":{\"capacity\":{\"minInstanceCount\":745673634,\"maxInstanceCount\":1373872192},\"recurrence\":{\"timeZone\":\"wdsjnkalju\",\"schedule\":[{\"days\":[\"Sunday\"],\"timeAndCapacity\":{\"time\":\"fgdkzzew\",\"minInstanceCount\":2137392775,\"maxInstanceCount\":1769895546}},{\"days\":[\"Saturday\",\"Monday\",\"Tuesday\"],\"timeAndCapacity\":{\"time\":\"n\",\"minInstanceCount\":831905679,\"maxInstanceCount\":1159921712}}]}}}")
                 .toObject(AutoscaleConfigurationUpdateParameter.class);
-        Assertions.assertEquals(421254098, model.autoscale().capacity().minInstanceCount());
-        Assertions.assertEquals(661393497, model.autoscale().capacity().maxInstanceCount());
-        Assertions.assertEquals("lhspkdee", model.autoscale().recurrence().timeZone());
+        Assertions.assertEquals(745673634, model.autoscale().capacity().minInstanceCount());
+        Assertions.assertEquals(1373872192, model.autoscale().capacity().maxInstanceCount());
+        Assertions.assertEquals("wdsjnkalju", model.autoscale().recurrence().timeZone());
+        Assertions.assertEquals(DaysOfWeek.SUNDAY, model.autoscale().recurrence().schedule().get(0).days().get(0));
+        Assertions.assertEquals("fgdkzzew", model.autoscale().recurrence().schedule().get(0).timeAndCapacity().time());
+        Assertions
+            .assertEquals(
+                2137392775, model.autoscale().recurrence().schedule().get(0).timeAndCapacity().minInstanceCount());
+        Assertions
+            .assertEquals(
+                1769895546, model.autoscale().recurrence().schedule().get(0).timeAndCapacity().maxInstanceCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoscaleConfigurationUpdateParameter model =
             new AutoscaleConfigurationUpdateParameter()
                 .withAutoscale(
                     new Autoscale()
                         .withCapacity(
-                            new AutoscaleCapacity().withMinInstanceCount(421254098).withMaxInstanceCount(661393497))
+                            new AutoscaleCapacity().withMinInstanceCount(745673634).withMaxInstanceCount(1373872192))
                         .withRecurrence(
-                            new AutoscaleRecurrence().withTimeZone("lhspkdee").withSchedule(Arrays.asList())));
+                            new AutoscaleRecurrence()
+                                .withTimeZone("wdsjnkalju")
+                                .withSchedule(
+                                    Arrays
+                                        .asList(
+                                            new AutoscaleSchedule()
+                                                .withDays(Arrays.asList(DaysOfWeek.SUNDAY))
+                                                .withTimeAndCapacity(
+                                                    new AutoscaleTimeAndCapacity()
+                                                        .withTime("fgdkzzew")
+                                                        .withMinInstanceCount(2137392775)
+                                                        .withMaxInstanceCount(1769895546)),
+                                            new AutoscaleSchedule()
+                                                .withDays(
+                                                    Arrays
+                                                        .asList(
+                                                            DaysOfWeek.SATURDAY, DaysOfWeek.MONDAY, DaysOfWeek.TUESDAY))
+                                                .withTimeAndCapacity(
+                                                    new AutoscaleTimeAndCapacity()
+                                                        .withTime("n")
+                                                        .withMinInstanceCount(831905679)
+                                                        .withMaxInstanceCount(1159921712))))));
         model = BinaryData.fromObject(model).toObject(AutoscaleConfigurationUpdateParameter.class);
-        Assertions.assertEquals(421254098, model.autoscale().capacity().minInstanceCount());
-        Assertions.assertEquals(661393497, model.autoscale().capacity().maxInstanceCount());
-        Assertions.assertEquals("lhspkdee", model.autoscale().recurrence().timeZone());
+        Assertions.assertEquals(745673634, model.autoscale().capacity().minInstanceCount());
+        Assertions.assertEquals(1373872192, model.autoscale().capacity().maxInstanceCount());
+        Assertions.assertEquals("wdsjnkalju", model.autoscale().recurrence().timeZone());
+        Assertions.assertEquals(DaysOfWeek.SUNDAY, model.autoscale().recurrence().schedule().get(0).days().get(0));
+        Assertions.assertEquals("fgdkzzew", model.autoscale().recurrence().schedule().get(0).timeAndCapacity().time());
+        Assertions
+            .assertEquals(
+                2137392775, model.autoscale().recurrence().schedule().get(0).timeAndCapacity().minInstanceCount());
+        Assertions
+            .assertEquals(
+                1769895546, model.autoscale().recurrence().schedule().get(0).timeAndCapacity().maxInstanceCount());
     }
 }

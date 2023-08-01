@@ -6,15 +6,16 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricOperationalState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NetworkFabricProperties - define the resource properties. */
+/** Network Fabric Properties defines the properties of the resource. */
 @Fluent
 public final class NetworkFabricProperties extends AnnotationResource {
     /*
@@ -26,10 +27,28 @@ public final class NetworkFabricProperties extends AnnotationResource {
     private String networkFabricSku;
 
     /*
-     * Number of racks associated to Network Fabric.Possible values are from 2-8.
+     * The version of Network Fabric.
      */
-    @JsonProperty(value = "rackCount", required = true)
-    private int rackCount;
+    @JsonProperty(value = "fabricVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String fabricVersion;
+
+    /*
+     * Array of router IDs.
+     */
+    @JsonProperty(value = "routerIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> routerIds;
+
+    /*
+     * Azure resource ID for the NetworkFabricController the NetworkFabric belongs.
+     */
+    @JsonProperty(value = "networkFabricControllerId", required = true)
+    private String networkFabricControllerId;
+
+    /*
+     * Number of compute racks associated to Network Fabric.
+     */
+    @JsonProperty(value = "rackCount")
+    private Integer rackCount;
 
     /*
      * Number of servers.Possible values are from 1-16.
@@ -40,32 +59,20 @@ public final class NetworkFabricProperties extends AnnotationResource {
     /*
      * IPv4Prefix for Management Network. Example: 10.1.0.0/19.
      */
-    @JsonProperty(value = "ipv4Prefix")
+    @JsonProperty(value = "ipv4Prefix", required = true)
     private String ipv4Prefix;
 
     /*
-     * IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
+     * IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59
      */
     @JsonProperty(value = "ipv6Prefix")
     private String ipv6Prefix;
 
     /*
-     * Router Id of CE to be used for MP-BGP between PE and CE
-     */
-    @JsonProperty(value = "routerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String routerId;
-
-    /*
      * ASN of CE devices for CE/PE connectivity.
      */
     @JsonProperty(value = "fabricASN", required = true)
-    private int fabricAsn;
-
-    /*
-     * Azure resource ID for the NetworkFabricController the NetworkFabric belongs.
-     */
-    @JsonProperty(value = "networkFabricControllerId", required = true)
-    private String networkFabricControllerId;
+    private long fabricAsn;
 
     /*
      * Network and credentials configuration currently applied to terminal server.
@@ -77,19 +84,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * Configuration to be used to setup the management network.
      */
     @JsonProperty(value = "managementNetworkConfiguration", required = true)
-    private ManagementNetworkConfiguration managementNetworkConfiguration;
-
-    /*
-     * Gets the operational state of the resource.
-     */
-    @JsonProperty(value = "operationalState", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkFabricOperationalState operationalState;
-
-    /*
-     * Gets the provisioning state of the resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ManagementNetworkConfigurationProperties managementNetworkConfiguration;
 
     /*
      * List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed depends on the Network
@@ -99,16 +94,35 @@ public final class NetworkFabricProperties extends AnnotationResource {
     private List<String> racks;
 
     /*
-     * List of L2IsolationDomain resource IDs under the Network Fabric.
+     * List of L2 Isolation Domain resource IDs under the Network Fabric.
      */
     @JsonProperty(value = "l2IsolationDomains", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> l2IsolationDomains;
 
     /*
-     * List of L3IsolationDomain resource IDs under the Network Fabric.
+     * List of L3 Isolation Domain resource IDs under the Network Fabric.
      */
     @JsonProperty(value = "l3IsolationDomains", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> l3IsolationDomains;
+
+    /*
+     * Configuration state of the resource.
+     */
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
+
+    /*
+     * Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
+     * this process, the states keep changing based on the status of NFC provisioning.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
 
     /** Creates an instance of NetworkFabricProperties class. */
     public NetworkFabricProperties() {
@@ -139,21 +153,61 @@ public final class NetworkFabricProperties extends AnnotationResource {
     }
 
     /**
-     * Get the rackCount property: Number of racks associated to Network Fabric.Possible values are from 2-8.
+     * Get the fabricVersion property: The version of Network Fabric.
+     *
+     * @return the fabricVersion value.
+     */
+    public String fabricVersion() {
+        return this.fabricVersion;
+    }
+
+    /**
+     * Get the routerIds property: Array of router IDs.
+     *
+     * @return the routerIds value.
+     */
+    public List<String> routerIds() {
+        return this.routerIds;
+    }
+
+    /**
+     * Get the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
+     * belongs.
+     *
+     * @return the networkFabricControllerId value.
+     */
+    public String networkFabricControllerId() {
+        return this.networkFabricControllerId;
+    }
+
+    /**
+     * Set the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
+     * belongs.
+     *
+     * @param networkFabricControllerId the networkFabricControllerId value to set.
+     * @return the NetworkFabricProperties object itself.
+     */
+    public NetworkFabricProperties withNetworkFabricControllerId(String networkFabricControllerId) {
+        this.networkFabricControllerId = networkFabricControllerId;
+        return this;
+    }
+
+    /**
+     * Get the rackCount property: Number of compute racks associated to Network Fabric.
      *
      * @return the rackCount value.
      */
-    public int rackCount() {
+    public Integer rackCount() {
         return this.rackCount;
     }
 
     /**
-     * Set the rackCount property: Number of racks associated to Network Fabric.Possible values are from 2-8.
+     * Set the rackCount property: Number of compute racks associated to Network Fabric.
      *
      * @param rackCount the rackCount value to set.
      * @return the NetworkFabricProperties object itself.
      */
-    public NetworkFabricProperties withRackCount(int rackCount) {
+    public NetworkFabricProperties withRackCount(Integer rackCount) {
         this.rackCount = rackCount;
         return this;
     }
@@ -219,20 +273,11 @@ public final class NetworkFabricProperties extends AnnotationResource {
     }
 
     /**
-     * Get the routerId property: Router Id of CE to be used for MP-BGP between PE and CE.
-     *
-     * @return the routerId value.
-     */
-    public String routerId() {
-        return this.routerId;
-    }
-
-    /**
      * Get the fabricAsn property: ASN of CE devices for CE/PE connectivity.
      *
      * @return the fabricAsn value.
      */
-    public int fabricAsn() {
+    public long fabricAsn() {
         return this.fabricAsn;
     }
 
@@ -242,30 +287,8 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * @param fabricAsn the fabricAsn value to set.
      * @return the NetworkFabricProperties object itself.
      */
-    public NetworkFabricProperties withFabricAsn(int fabricAsn) {
+    public NetworkFabricProperties withFabricAsn(long fabricAsn) {
         this.fabricAsn = fabricAsn;
-        return this;
-    }
-
-    /**
-     * Get the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
-     * belongs.
-     *
-     * @return the networkFabricControllerId value.
-     */
-    public String networkFabricControllerId() {
-        return this.networkFabricControllerId;
-    }
-
-    /**
-     * Set the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
-     * belongs.
-     *
-     * @param networkFabricControllerId the networkFabricControllerId value to set.
-     * @return the NetworkFabricProperties object itself.
-     */
-    public NetworkFabricProperties withNetworkFabricControllerId(String networkFabricControllerId) {
-        this.networkFabricControllerId = networkFabricControllerId;
         return this;
     }
 
@@ -297,7 +320,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
      *
      * @return the managementNetworkConfiguration value.
      */
-    public ManagementNetworkConfiguration managementNetworkConfiguration() {
+    public ManagementNetworkConfigurationProperties managementNetworkConfiguration() {
         return this.managementNetworkConfiguration;
     }
 
@@ -308,27 +331,9 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * @return the NetworkFabricProperties object itself.
      */
     public NetworkFabricProperties withManagementNetworkConfiguration(
-        ManagementNetworkConfiguration managementNetworkConfiguration) {
+        ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
         this.managementNetworkConfiguration = managementNetworkConfiguration;
         return this;
-    }
-
-    /**
-     * Get the operationalState property: Gets the operational state of the resource.
-     *
-     * @return the operationalState value.
-     */
-    public NetworkFabricOperationalState operationalState() {
-        return this.operationalState;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -342,7 +347,7 @@ public final class NetworkFabricProperties extends AnnotationResource {
     }
 
     /**
-     * Get the l2IsolationDomains property: List of L2IsolationDomain resource IDs under the Network Fabric.
+     * Get the l2IsolationDomains property: List of L2 Isolation Domain resource IDs under the Network Fabric.
      *
      * @return the l2IsolationDomains value.
      */
@@ -351,12 +356,41 @@ public final class NetworkFabricProperties extends AnnotationResource {
     }
 
     /**
-     * Get the l3IsolationDomains property: List of L3IsolationDomain resource IDs under the Network Fabric.
+     * Get the l3IsolationDomains property: List of L3 Isolation Domain resource IDs under the Network Fabric.
      *
      * @return the l3IsolationDomains value.
      */
     public List<String> l3IsolationDomains() {
         return this.l3IsolationDomains;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.configurationState;
+    }
+
+    /**
+     * Get the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
+     * updating, Succeeded or Failed. During this process, the states keep changing based on the status of NFC
+     * provisioning.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
     }
 
     /** {@inheritDoc} */
@@ -385,6 +419,12 @@ public final class NetworkFabricProperties extends AnnotationResource {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property networkFabricControllerId in model NetworkFabricProperties"));
+        }
+        if (ipv4Prefix() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ipv4Prefix in model NetworkFabricProperties"));
         }
         if (terminalServerConfiguration() == null) {
             throw LOGGER

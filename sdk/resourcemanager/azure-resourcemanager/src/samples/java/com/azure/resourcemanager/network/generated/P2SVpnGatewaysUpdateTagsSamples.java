@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for P2SVpnGateways UpdateTags. */
 public final class P2SVpnGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/P2SVpnGatewayUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/P2SVpnGatewayUpdateTags.json
      */
     /**
      * Sample code: P2SVpnGatewayUpdate.

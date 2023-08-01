@@ -16,10 +16,10 @@ public final class TriggerBackupRequestTests {
         TriggerBackupRequest model =
             BinaryData
                 .fromString(
-                    "{\"backupRuleOptions\":{\"ruleName\":\"yqzrnkcqvyxlw\",\"triggerOption\":{\"retentionTagOverride\":\"lsicohoqqnwv\"}}}")
+                    "{\"backupRuleOptions\":{\"ruleName\":\"yudxytlmoy\",\"triggerOption\":{\"retentionTagOverride\":\"vwfudwpzntxhd\"}}}")
                 .toObject(TriggerBackupRequest.class);
-        Assertions.assertEquals("yqzrnkcqvyxlw", model.backupRuleOptions().ruleName());
-        Assertions.assertEquals("lsicohoqqnwv", model.backupRuleOptions().triggerOption().retentionTagOverride());
+        Assertions.assertEquals("yudxytlmoy", model.backupRuleOptions().ruleName());
+        Assertions.assertEquals("vwfudwpzntxhd", model.backupRuleOptions().triggerOption().retentionTagOverride());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,10 +28,10 @@ public final class TriggerBackupRequestTests {
             new TriggerBackupRequest()
                 .withBackupRuleOptions(
                     new AdHocBackupRuleOptions()
-                        .withRuleName("yqzrnkcqvyxlw")
-                        .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("lsicohoqqnwv")));
+                        .withRuleName("yudxytlmoy")
+                        .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("vwfudwpzntxhd")));
         model = BinaryData.fromObject(model).toObject(TriggerBackupRequest.class);
-        Assertions.assertEquals("yqzrnkcqvyxlw", model.backupRuleOptions().ruleName());
-        Assertions.assertEquals("lsicohoqqnwv", model.backupRuleOptions().triggerOption().retentionTagOverride());
+        Assertions.assertEquals("yudxytlmoy", model.backupRuleOptions().ruleName());
+        Assertions.assertEquals("vwfudwpzntxhd", model.backupRuleOptions().triggerOption().retentionTagOverride());
     }
 }

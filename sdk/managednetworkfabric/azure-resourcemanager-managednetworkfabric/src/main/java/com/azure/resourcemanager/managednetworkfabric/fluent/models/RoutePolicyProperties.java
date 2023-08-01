@@ -6,29 +6,125 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** RoutePolicy Properties define the resource properties. */
+/** RoutePolicyProperties defines the resource properties. */
 @Fluent
 public final class RoutePolicyProperties extends AnnotationResource {
     /*
-     * Route Policy statements.
+     * Arm Resource ID of Network Fabric.
      */
-    @JsonProperty(value = "statements", required = true)
-    private List<RoutePolicyStatementProperties> statements;
+    @JsonProperty(value = "networkFabricId", required = true)
+    private String networkFabricId;
 
     /*
-     * Gets the provisioning state of the resource.
+     * AddressFamilyType. This parameter decides whether the given ipv4 or ipv6 route policy.
+     */
+    @JsonProperty(value = "addressFamilyType")
+    private AddressFamilyType addressFamilyType;
+
+    /*
+     * Configuration state of the resource.
+     */
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
+
+    /*
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
+
+    /*
+     * Route Policy statements.
+     */
+    @JsonProperty(value = "statements")
+    private List<RoutePolicyStatementProperties> statements;
+
     /** Creates an instance of RoutePolicyProperties class. */
     public RoutePolicyProperties() {
+    }
+
+    /**
+     * Get the networkFabricId property: Arm Resource ID of Network Fabric.
+     *
+     * @return the networkFabricId value.
+     */
+    public String networkFabricId() {
+        return this.networkFabricId;
+    }
+
+    /**
+     * Set the networkFabricId property: Arm Resource ID of Network Fabric.
+     *
+     * @param networkFabricId the networkFabricId value to set.
+     * @return the RoutePolicyProperties object itself.
+     */
+    public RoutePolicyProperties withNetworkFabricId(String networkFabricId) {
+        this.networkFabricId = networkFabricId;
+        return this;
+    }
+
+    /**
+     * Get the addressFamilyType property: AddressFamilyType. This parameter decides whether the given ipv4 or ipv6
+     * route policy.
+     *
+     * @return the addressFamilyType value.
+     */
+    public AddressFamilyType addressFamilyType() {
+        return this.addressFamilyType;
+    }
+
+    /**
+     * Set the addressFamilyType property: AddressFamilyType. This parameter decides whether the given ipv4 or ipv6
+     * route policy.
+     *
+     * @param addressFamilyType the addressFamilyType value to set.
+     * @return the RoutePolicyProperties object itself.
+     */
+    public RoutePolicyProperties withAddressFamilyType(AddressFamilyType addressFamilyType) {
+        this.addressFamilyType = addressFamilyType;
+        return this;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.configurationState;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
     }
 
     /**
@@ -51,15 +147,6 @@ public final class RoutePolicyProperties extends AnnotationResource {
         return this;
     }
 
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
     /** {@inheritDoc} */
     @Override
     public RoutePolicyProperties withAnnotation(String annotation) {
@@ -75,12 +162,13 @@ public final class RoutePolicyProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (statements() == null) {
+        if (networkFabricId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property statements in model RoutePolicyProperties"));
-        } else {
+                        "Missing required property networkFabricId in model RoutePolicyProperties"));
+        }
+        if (statements() != null) {
             statements().forEach(e -> e.validate());
         }
     }

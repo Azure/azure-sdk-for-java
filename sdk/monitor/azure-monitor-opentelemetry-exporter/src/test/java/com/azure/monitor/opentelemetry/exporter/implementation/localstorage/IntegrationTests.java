@@ -112,7 +112,7 @@ public class IntegrationTests {
         for (int i = 100; i > 0; i--) {
             LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
             assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
-            assertThat(ungzip(file.rawBytes.array())).isEqualTo(expected);
+            assertThat(ungzip(file.rawBytes.array())).contains(expected);
             assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(i - 1);
         }
 

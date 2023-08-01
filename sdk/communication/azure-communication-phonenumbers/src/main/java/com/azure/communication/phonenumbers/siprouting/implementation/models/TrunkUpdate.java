@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a SIP trunk update. */
 @Fluent
+@Generated
 public final class TrunkUpdate {
     /*
      * Gets or sets SIP signaling port of the trunk.

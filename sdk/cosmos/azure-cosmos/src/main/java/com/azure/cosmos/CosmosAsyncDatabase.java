@@ -1207,7 +1207,19 @@ public class CosmosAsyncDatabase {
     /**
      * Sets throughput provisioned for a container in measurement of
      * Requests-per-Unit in the Azure Cosmos service.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.replaceThroughput -->
+     * <pre>
+     * ThroughputProperties autoscaledThroughput = ThroughputProperties
+     *     .createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * cosmosAsyncDatabase.replaceThroughput&#40;autoscaledThroughput&#41;
+     *     .subscribe&#40;throughputResponse -&gt; &#123;
+     *             System.out.println&#40;throughputResponse&#41;;
+     *         &#125;,
+     *         throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.replaceThroughput -->
      * @param throughputProperties the throughput properties.
      * @return the mono.
      */
@@ -1217,7 +1229,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Gets the throughput of the database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readThroughput -->
+     * <pre>
+     * cosmosAsyncDatabase.readThroughput&#40;&#41;
+     *     .subscribe&#40;throughputResponse -&gt; &#123;
+     *             System.out.println&#40;throughputResponse&#41;;
+     *         &#125;,
+     *         throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readThroughput -->
      * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> readThroughput() {

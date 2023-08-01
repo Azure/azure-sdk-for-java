@@ -281,6 +281,7 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-spark_3-4_2-12" = "Javadoc dependency issue.";  
   "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
@@ -736,6 +737,8 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   }
 }
 
+# Defined in common.ps1 as:
+# $ValidateDocsMsPackagesFn = "Validate-${Language}-DocMsPackages" 
 function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
   # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
   if (!$PackageInfos) {
@@ -744,9 +747,10 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
 
   if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
     Write-Error "Package validation failed" -ErrorAction Continue
+    return $false
   }
 
-  return
+  return $true
 }
 
 function Get-java-EmitterName() {

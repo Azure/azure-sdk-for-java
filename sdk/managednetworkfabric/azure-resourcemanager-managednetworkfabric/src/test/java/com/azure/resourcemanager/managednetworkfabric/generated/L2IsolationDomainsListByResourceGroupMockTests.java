@@ -32,7 +32,7 @@ public final class L2IsolationDomainsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"networkFabricId\":\"ytwvczcswkacve\",\"vlanId\":1992700575,\"mtu\":1873913067,\"disabledOnResources\":[\"vhb\",\"rnfxtgddp\"],\"administrativeState\":\"Disabled\",\"provisioningState\":\"Updating\",\"annotation\":\"mnaoy\"},\"location\":\"kcoeqswank\",\"tags\":{\"ktgj\":\"tmhdroznnhdr\",\"eml\":\"sggux\",\"ukklelss\":\"ywaeeczgf\",\"smdesqplpvmjcd\":\"blycsxzujksr\"},\"id\":\"ewbidyvteowxv\",\"name\":\"piudeugfsxzecpa\",\"type\":\"wkufykhvuhxepm\"}]}";
+            "{\"value\":[{\"properties\":{\"networkFabricId\":\"ylyumb\",\"vlanId\":965402508,\"mtu\":1411400151,\"configurationState\":\"Accepted\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\",\"annotation\":\"hdkhmemxka\"},\"location\":\"pesnb\",\"tags\":{\"jvwbat\":\"llyfzmnxrmx\",\"kmwfwzlmpxfmdjs\":\"g\",\"cbdnpfcg\":\"ommdzphxulx\"},\"id\":\"dttowqxxc\",\"name\":\"bzxp\",\"type\":\"loovhati\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,13 +61,13 @@ public final class L2IsolationDomainsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<L2IsolationDomain> response =
-            manager.l2IsolationDomains().listByResourceGroup("snsqowxwcoml", com.azure.core.util.Context.NONE);
+            manager.l2IsolationDomains().listByResourceGroup("ogbv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kcoeqswank", response.iterator().next().location());
-        Assertions.assertEquals("tmhdroznnhdr", response.iterator().next().tags().get("ktgj"));
-        Assertions.assertEquals("ytwvczcswkacve", response.iterator().next().networkFabricId());
-        Assertions.assertEquals(1992700575, response.iterator().next().vlanId());
-        Assertions.assertEquals(1873913067, response.iterator().next().mtu());
-        Assertions.assertEquals("mnaoy", response.iterator().next().annotation());
+        Assertions.assertEquals("pesnb", response.iterator().next().location());
+        Assertions.assertEquals("llyfzmnxrmx", response.iterator().next().tags().get("jvwbat"));
+        Assertions.assertEquals("ylyumb", response.iterator().next().networkFabricId());
+        Assertions.assertEquals(965402508, response.iterator().next().vlanId());
+        Assertions.assertEquals(1411400151, response.iterator().next().mtu());
+        Assertions.assertEquals("hdkhmemxka", response.iterator().next().annotation());
     }
 }

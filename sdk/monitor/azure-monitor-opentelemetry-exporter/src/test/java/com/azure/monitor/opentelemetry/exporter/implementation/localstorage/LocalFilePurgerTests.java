@@ -32,7 +32,8 @@ public class LocalFilePurgerTests {
         for (int i = 0; i < 100; i++) {
             writer.writeToDisk(
                 "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEE;IngestionEndpoint=http://foo.bar/",
-                singletonList(ByteBuffer.wrap(text.getBytes(UTF_8))));
+                singletonList(ByteBuffer.wrap(text.getBytes(UTF_8))),
+                "original error message");
         }
 
         List<File> files = FileUtil.listTrnFiles(tempFolder);

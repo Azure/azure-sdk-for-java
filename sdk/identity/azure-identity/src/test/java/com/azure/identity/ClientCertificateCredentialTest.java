@@ -14,6 +14,7 @@ import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockedConstruction;
+import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -144,6 +145,61 @@ public class ClientCertificateCredentialTest {
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
             when(identityClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testValidPemCertificatePathCAE() throws Exception {
+        // setup
+        String pemPath = "C:\\fakepath\\cert1.pem";
+        String token1 = "token1";
+
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setEnableCae(true);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithConfidentialClient(request1))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalToken(token1, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identityClient.authenticateWithConfidentialClient(request1))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalTokenSync(token1, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
         })) {
             // test
             ClientCertificateCredential credential =

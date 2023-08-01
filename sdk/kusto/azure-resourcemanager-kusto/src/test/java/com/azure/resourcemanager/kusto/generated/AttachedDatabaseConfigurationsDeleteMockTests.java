@@ -56,6 +56,6 @@ public final class AttachedDatabaseConfigurationsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.attachedDatabaseConfigurations().delete("irudh", "m", "es", com.azure.core.util.Context.NONE);
+        manager.attachedDatabaseConfigurations().delete("xtiv", "j", "nidibgqjxg", com.azure.core.util.Context.NONE);
     }
 }

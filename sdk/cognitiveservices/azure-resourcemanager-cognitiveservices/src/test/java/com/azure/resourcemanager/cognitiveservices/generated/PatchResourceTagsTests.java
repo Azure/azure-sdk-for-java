@@ -15,17 +15,28 @@ public final class PatchResourceTagsTests {
     public void testDeserialize() throws Exception {
         PatchResourceTags model =
             BinaryData
-                .fromString("{\"tags\":{\"tor\":\"knnqvsaznq\",\"a\":\"dsg\",\"wjue\":\"mkycgra\"}}")
+                .fromString(
+                    "{\"tags\":{\"fhsxttaugz\":\"bsazejjoqka\",\"jlwuenvrkp\":\"nfaazpxdtnkdmkq\",\"ibreb\":\"ou\",\"kixqtnqtt\":\"aays\"}}")
                 .toObject(PatchResourceTags.class);
-        Assertions.assertEquals("knnqvsaznq", model.tags().get("tor"));
+        Assertions.assertEquals("bsazejjoqka", model.tags().get("fhsxttaugz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchResourceTags model =
-            new PatchResourceTags().withTags(mapOf("tor", "knnqvsaznq", "a", "dsg", "wjue", "mkycgra"));
+            new PatchResourceTags()
+                .withTags(
+                    mapOf(
+                        "fhsxttaugz",
+                        "bsazejjoqka",
+                        "jlwuenvrkp",
+                        "nfaazpxdtnkdmkq",
+                        "ibreb",
+                        "ou",
+                        "kixqtnqtt",
+                        "aays"));
         model = BinaryData.fromObject(model).toObject(PatchResourceTags.class);
-        Assertions.assertEquals("knnqvsaznq", model.tags().get("tor"));
+        Assertions.assertEquals("bsazejjoqka", model.tags().get("fhsxttaugz"));
     }
 
     @SuppressWarnings("unchecked")

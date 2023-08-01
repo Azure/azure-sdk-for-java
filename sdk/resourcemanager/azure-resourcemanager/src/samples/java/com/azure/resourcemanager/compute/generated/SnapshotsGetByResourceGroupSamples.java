@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for Snapshots GetByResourceGroup. */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_GetIncrementalSnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/snapshotExamples/Snapshot_GetIncrementalSnapshot.json
      */
     /**
      * Sample code: Get information about an incremental snapshot.
@@ -25,7 +25,7 @@ public final class SnapshotsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/snapshotExamples/Snapshot_Get.json
      */
     /**
      * Sample code: Get information about a snapshot.

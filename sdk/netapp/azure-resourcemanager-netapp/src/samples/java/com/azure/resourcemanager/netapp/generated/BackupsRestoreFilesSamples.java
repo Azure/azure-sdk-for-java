@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for Backups RestoreFiles. */
 public final class BackupsRestoreFilesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_SingleFileRestore.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_SingleFileRestore.json
      */
     /**
      * Sample code: Backups_SingleFileRestore.

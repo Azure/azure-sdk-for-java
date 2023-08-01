@@ -32,71 +32,25 @@ public final class InternalNetworkPatch {
     }
 
     /**
-     * Get the mtu property: Maximum transmission unit. Default value is 1500.
+     * Get the bgpConfiguration property: BGP configuration properties.
      *
-     * @return the mtu value.
+     * @return the bgpConfiguration value.
      */
-    public Integer mtu() {
-        return this.innerProperties() == null ? null : this.innerProperties().mtu();
+    public BgpConfiguration bgpConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().bgpConfiguration();
     }
 
     /**
-     * Set the mtu property: Maximum transmission unit. Default value is 1500.
+     * Set the bgpConfiguration property: BGP configuration properties.
      *
-     * @param mtu the mtu value to set.
+     * @param bgpConfiguration the bgpConfiguration value to set.
      * @return the InternalNetworkPatch object itself.
      */
-    public InternalNetworkPatch withMtu(Integer mtu) {
+    public InternalNetworkPatch withBgpConfiguration(BgpConfiguration bgpConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new InternalNetworkPatchProperties();
         }
-        this.innerProperties().withMtu(mtu);
-        return this;
-    }
-
-    /**
-     * Get the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
-     *
-     * @return the connectedIPv4Subnets value.
-     */
-    public List<ConnectedSubnet> connectedIPv4Subnets() {
-        return this.innerProperties() == null ? null : this.innerProperties().connectedIPv4Subnets();
-    }
-
-    /**
-     * Set the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
-     *
-     * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
-     * @return the InternalNetworkPatch object itself.
-     */
-    public InternalNetworkPatch withConnectedIPv4Subnets(List<ConnectedSubnet> connectedIPv4Subnets) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InternalNetworkPatchProperties();
-        }
-        this.innerProperties().withConnectedIPv4Subnets(connectedIPv4Subnets);
-        return this;
-    }
-
-    /**
-     * Get the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
-     *
-     * @return the connectedIPv6Subnets value.
-     */
-    public List<ConnectedSubnet> connectedIPv6Subnets() {
-        return this.innerProperties() == null ? null : this.innerProperties().connectedIPv6Subnets();
-    }
-
-    /**
-     * Set the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
-     *
-     * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
-     * @return the InternalNetworkPatch object itself.
-     */
-    public InternalNetworkPatch withConnectedIPv6Subnets(List<ConnectedSubnet> connectedIPv6Subnets) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InternalNetworkPatchProperties();
-        }
-        this.innerProperties().withConnectedIPv6Subnets(connectedIPv6Subnets);
+        this.innerProperties().withBgpConfiguration(bgpConfiguration);
         return this;
     }
 
@@ -124,30 +78,77 @@ public final class InternalNetworkPatch {
     }
 
     /**
-     * Get the bgpConfiguration property: BGP configuration properties.
+     * Get the mtu property: Maximum transmission unit. Default value is 1500.
      *
-     * @return the bgpConfiguration value.
+     * @return the mtu value.
      */
-    public BgpConfiguration bgpConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().bgpConfiguration();
+    public Integer mtu() {
+        return this.innerProperties() == null ? null : this.innerProperties().mtu();
     }
 
     /**
-     * Set the bgpConfiguration property: BGP configuration properties.
+     * Set the mtu property: Maximum transmission unit. Default value is 1500.
      *
-     * @param bgpConfiguration the bgpConfiguration value to set.
+     * @param mtu the mtu value to set.
      * @return the InternalNetworkPatch object itself.
      */
-    public InternalNetworkPatch withBgpConfiguration(BgpConfiguration bgpConfiguration) {
+    public InternalNetworkPatch withMtu(Integer mtu) {
         if (this.innerProperties() == null) {
             this.innerProperties = new InternalNetworkPatchProperties();
         }
-        this.innerProperties().withBgpConfiguration(bgpConfiguration);
+        this.innerProperties().withMtu(mtu);
         return this;
     }
 
     /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
+     *
+     * @return the connectedIPv4Subnets value.
+     */
+    public List<ConnectedSubnet> connectedIPv4Subnets() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectedIPv4Subnets();
+    }
+
+    /**
+     * Set the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
+     *
+     * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
+     * @return the InternalNetworkPatch object itself.
+     */
+    public InternalNetworkPatch withConnectedIPv4Subnets(List<ConnectedSubnet> connectedIPv4Subnets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkPatchProperties();
+        }
+        this.innerProperties().withConnectedIPv4Subnets(connectedIPv4Subnets);
+        return this;
+    }
+
+    /**
+     * Get the connectedIPv6Subnets property: List of connected IPv6 Subnets.
+     *
+     * @return the connectedIPv6Subnets value.
+     */
+    public List<ConnectedSubnet> connectedIPv6Subnets() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectedIPv6Subnets();
+    }
+
+    /**
+     * Set the connectedIPv6Subnets property: List of connected IPv6 Subnets.
+     *
+     * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
+     * @return the InternalNetworkPatch object itself.
+     */
+    public InternalNetworkPatch withConnectedIPv6Subnets(List<ConnectedSubnet> connectedIPv6Subnets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkPatchProperties();
+        }
+        this.innerProperties().withConnectedIPv6Subnets(connectedIPv6Subnets);
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -156,7 +157,8 @@ public final class InternalNetworkPatch {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the InternalNetworkPatch object itself.
@@ -170,7 +172,8 @@ public final class InternalNetworkPatch {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -179,7 +182,8 @@ public final class InternalNetworkPatch {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the InternalNetworkPatch object itself.
@@ -189,6 +193,121 @@ public final class InternalNetworkPatch {
             this.innerProperties = new InternalNetworkPatchProperties();
         }
         this.innerProperties().withExportRoutePolicyId(exportRoutePolicyId);
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().importRoutePolicy();
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the InternalNetworkPatch object itself.
+     */
+    public InternalNetworkPatch withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkPatchProperties();
+        }
+        this.innerProperties().withImportRoutePolicy(importRoutePolicy);
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().exportRoutePolicy();
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the InternalNetworkPatch object itself.
+     */
+    public InternalNetworkPatch withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkPatchProperties();
+        }
+        this.innerProperties().withExportRoutePolicy(exportRoutePolicy);
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.innerProperties() == null ? null : this.innerProperties().ingressAclId();
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the InternalNetworkPatch object itself.
+     */
+    public InternalNetworkPatch withIngressAclId(String ingressAclId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkPatchProperties();
+        }
+        this.innerProperties().withIngressAclId(ingressAclId);
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.innerProperties() == null ? null : this.innerProperties().egressAclId();
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the InternalNetworkPatch object itself.
+     */
+    public InternalNetworkPatch withEgressAclId(String egressAclId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkPatchProperties();
+        }
+        this.innerProperties().withEgressAclId(egressAclId);
+        return this;
+    }
+
+    /**
+     * Get the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @return the isMonitoringEnabled value.
+     */
+    public IsMonitoringEnabled isMonitoringEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isMonitoringEnabled();
+    }
+
+    /**
+     * Set the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @param isMonitoringEnabled the isMonitoringEnabled value to set.
+     * @return the InternalNetworkPatch object itself.
+     */
+    public InternalNetworkPatch withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkPatchProperties();
+        }
+        this.innerProperties().withIsMonitoringEnabled(isMonitoringEnabled);
         return this;
     }
 

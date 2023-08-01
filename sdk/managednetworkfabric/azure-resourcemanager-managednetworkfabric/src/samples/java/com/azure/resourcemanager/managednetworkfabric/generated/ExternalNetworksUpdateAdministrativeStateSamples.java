@@ -4,17 +4,17 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import java.util.Arrays;
 
 /** Samples for ExternalNetworks UpdateAdministrativeState. */
 public final class ExternalNetworksUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/ExternalNetworks_updateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/ExternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExternalNetworks_updateAdministrativeState_MaximumSet_Gen.
+     * Sample code: ExternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.
      *
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
@@ -23,15 +23,10 @@ public final class ExternalNetworksUpdateAdministrativeStateSamples {
         manager
             .externalNetworks()
             .updateAdministrativeState(
-                "resourceGroupName",
+                "example-rg",
                 "example-l3domain",
                 "example-externalnetwork",
-                new UpdateAdministrativeState()
-                    .withResourceIds(
-                        Arrays
-                            .asList(
-                                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"))
-                    .withState(AdministrativeState.ENABLE),
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
                 com.azure.core.util.Context.NONE);
     }
 }

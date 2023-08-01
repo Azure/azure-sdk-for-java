@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Snapshots CreateOrUpdate. */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-05-01/examples/SnapshotsCreate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/SnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Snapshot.
@@ -30,7 +30,7 @@ public final class SnapshotsCreateOrUpdateSamples {
                 "snapshot1",
                 new SnapshotInner()
                     .withLocation("westus")
-                    .withTags(mapOf("key1", "val1", "key2", "val2"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
                     .withCreationData(
                         new CreationData()
                             .withSourceResourceId(

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -28,7 +28,7 @@ public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMac
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("testuser")
-                .withRootPassword(ResourceManagerTestBase.password())
+                .withRootPassword(ResourceManagerTestProxyTestBase.password())
                 .withComputerName("myvm123")
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewAvailabilitySet(newAvailSetName)

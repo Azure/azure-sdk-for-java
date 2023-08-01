@@ -78,8 +78,7 @@ public final class ClustersClientImpl implements ClustersClient {
     public interface ClustersService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -94,8 +93,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterInner>> update(
@@ -110,8 +108,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -125,8 +122,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterInner>> getByResourceGroup(
@@ -153,8 +149,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/roles/{roleName}/resize")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/roles/{roleName}/resize")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resize(
@@ -170,8 +165,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/roles/{roleName}/autoscale")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/roles/{roleName}/autoscale")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateAutoScaleConfiguration(
@@ -198,8 +192,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/rotatediskencryptionkey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/rotatediskencryptionkey")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> rotateDiskEncryptionKey(
@@ -214,8 +207,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/getGatewaySettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/getGatewaySettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GatewaySettingsInner>> getGatewaySettings(
@@ -229,8 +221,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/updateGatewaySettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/updateGatewaySettings")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateGatewaySettings(
@@ -245,8 +236,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/azureasyncoperations/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/azureasyncoperations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AsyncOperationResultInner>> getAzureAsyncOperationStatus(
@@ -261,8 +251,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/updateClusterIdentityCertificate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/updateClusterIdentityCertificate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateIdentityCertificate(
@@ -277,9 +266,11 @@ public final class ClustersClientImpl implements ClustersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/executeScriptActions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/executeScriptActions")
         @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(
+            value = ManagementException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> executeScriptActions(
             @HostParam("$host") String endpoint,
@@ -479,7 +470,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters) {
-        return beginCreateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
     /**
@@ -497,7 +488,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -879,7 +870,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        return beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -896,7 +887,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -1456,7 +1447,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResize(
         String resourceGroupName, String clusterName, RoleName roleName, ClusterResizeParameters parameters) {
-        return beginResizeAsync(resourceGroupName, clusterName, roleName, parameters).getSyncPoller();
+        return this.beginResizeAsync(resourceGroupName, clusterName, roleName, parameters).getSyncPoller();
     }
 
     /**
@@ -1479,7 +1470,7 @@ public final class ClustersClientImpl implements ClustersClient {
         RoleName roleName,
         ClusterResizeParameters parameters,
         Context context) {
-        return beginResizeAsync(resourceGroupName, clusterName, roleName, parameters, context).getSyncPoller();
+        return this.beginResizeAsync(resourceGroupName, clusterName, roleName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1764,7 +1755,8 @@ public final class ClustersClientImpl implements ClustersClient {
         String clusterName,
         RoleName roleName,
         AutoscaleConfigurationUpdateParameter parameters) {
-        return beginUpdateAutoScaleConfigurationAsync(resourceGroupName, clusterName, roleName, parameters)
+        return this
+            .beginUpdateAutoScaleConfigurationAsync(resourceGroupName, clusterName, roleName, parameters)
             .getSyncPoller();
     }
 
@@ -1788,7 +1780,8 @@ public final class ClustersClientImpl implements ClustersClient {
         RoleName roleName,
         AutoscaleConfigurationUpdateParameter parameters,
         Context context) {
-        return beginUpdateAutoScaleConfigurationAsync(resourceGroupName, clusterName, roleName, parameters, context)
+        return this
+            .beginUpdateAutoScaleConfigurationAsync(resourceGroupName, clusterName, roleName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2191,7 +2184,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(
         String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters) {
-        return beginRotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        return this.beginRotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
     /**
@@ -2209,7 +2202,9 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(
         String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters, Context context) {
-        return beginRotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        return this
+            .beginRotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2595,7 +2590,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
-        return beginUpdateGatewaySettingsAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        return this.beginUpdateGatewaySettingsAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
     /**
@@ -2613,7 +2608,9 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context) {
-        return beginUpdateGatewaySettingsAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateGatewaySettingsAsync(resourceGroupName, clusterName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3020,7 +3017,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(
         String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters) {
-        return beginUpdateIdentityCertificateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        return this.beginUpdateIdentityCertificateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
     /**
@@ -3041,7 +3038,9 @@ public final class ClustersClientImpl implements ClustersClient {
         String clusterName,
         UpdateClusterIdentityCertificateParameters parameters,
         Context context) {
-        return beginUpdateIdentityCertificateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateIdentityCertificateAsync(resourceGroupName, clusterName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3130,6 +3129,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param parameters The parameters for executing script actions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3186,6 +3186,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3238,6 +3239,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param parameters The parameters for executing script actions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
@@ -3261,6 +3263,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
@@ -3283,13 +3286,14 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param parameters The parameters for executing script actions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(
         String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters) {
-        return beginExecuteScriptActionsAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        return this.beginExecuteScriptActionsAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
     /**
@@ -3301,13 +3305,14 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(
         String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters, Context context) {
-        return beginExecuteScriptActionsAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        return this.beginExecuteScriptActionsAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -3318,6 +3323,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param parameters The parameters for executing script actions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3338,6 +3344,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3357,6 +3364,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param parameters The parameters for executing script actions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3374,6 +3382,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
