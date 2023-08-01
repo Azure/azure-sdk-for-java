@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
@@ -32,12 +32,12 @@ public final class MuteParticipantsResult {
     /**
      * Package-private constructor of the class, used internally only.
      *
-     * @param  muteParticipantsResponseInternal The response from the service
+     * @param  muteParticipantsResultInternal The response from the service
      */
-    MuteParticipantsResult(MuteParticipantsResponseInternal muteParticipantsResponseInternal) {
-        Objects.requireNonNull(muteParticipantsResponseInternal, "muteParticipantsResponseInternal must not be null");
+    MuteParticipantsResult(MuteParticipantsResultInternal muteParticipantsResultInternal) {
+        Objects.requireNonNull(muteParticipantsResultInternal, "muteParticipantsResultInternal must not be null");
 
-        this.operationContext = muteParticipantsResponseInternal.getOperationContext();
+        this.operationContext = muteParticipantsResultInternal.getOperationContext();
     }
 
     /**

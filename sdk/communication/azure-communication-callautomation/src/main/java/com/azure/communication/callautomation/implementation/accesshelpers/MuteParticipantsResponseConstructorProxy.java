@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.implementation.accesshelpers;
 
-import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 
 /**
@@ -26,7 +26,7 @@ public final class MuteParticipantsResponseConstructorProxy {
          * @param internalResponse The internal response.
          * @return A new instance of {@link MuteParticipantsResult}.
          */
-        MuteParticipantsResult create(MuteParticipantsResponseInternal internalResponse);
+        MuteParticipantsResult create(MuteParticipantsResultInternal internalResponse);
     }
 
     /**
@@ -45,7 +45,7 @@ public final class MuteParticipantsResponseConstructorProxy {
      * @param internalResponse The internal response.
      * @return A new instance of {@link MuteParticipantsResult}.
      */
-    public static MuteParticipantsResult create(MuteParticipantsResponseInternal internalResponse) {
+    public static MuteParticipantsResult create(MuteParticipantsResultInternal internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
