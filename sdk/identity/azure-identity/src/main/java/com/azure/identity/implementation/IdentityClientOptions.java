@@ -771,6 +771,7 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies)
+            .setBrowserCustomizationOptions(this.browserCustomizationOptions)
             .setChained(this.isChained);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
