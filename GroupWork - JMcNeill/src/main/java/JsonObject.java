@@ -160,6 +160,12 @@ public class JsonObject extends JsonElement {
     /**
      * @param key specifies the property to return by its respective key
      * @return JsonElement representing the 
+     * 
+     * TODO: this method currently does what the new getValueBykey method does. 
+     * This getProperty method should do what it suggests, which is get a property. 
+     * Properties are the whole key-value pair not just their key or value. 
+     * Therefore, this method needs to be redefined to return key value pairs, 
+     * for example Entry objects since properties is currently utilising HashMap. 
      */
     public JsonElement getProperty(String key) { return properties.get(key); }
 

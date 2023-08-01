@@ -20,6 +20,13 @@ public abstract class JsonElement extends StringWriter {
      */
     public JsonElement() {}
 
+    //------------------------------------------------------------------------// 
+    //------------------------ Methods for JsonArray -------------------------// 
+    // TODO: could be extracted into an interface instead of type checking in //
+    // JsonElement. Could create JsonArrayable interface or some other more   // 
+    // appropriately named interface to be implemented by JsonArray.          // 
+    //------------------------------------------------------------------------// 
+
     // All throw unless isArray is true.
     /**
      * 
@@ -88,7 +95,13 @@ public abstract class JsonElement extends StringWriter {
         else { throw new InvalidTypeException(); }
     }
 
-    // All throw unless isObject is true.
+    //------------------------------------------------------------------------// 
+    //------------------------ Methods for JsonObject ------------------------// 
+    // TODO: could be extracted into an interface instead of type checking in //
+    // JsonElement. Could create JsonObjectable interface or some other more  // 
+    // appropriately named interface to be implemented by JsonObject.         // 
+    //------------------------------------------------------------------------// 
+
     /**
      * 
      * @param key
@@ -169,7 +182,13 @@ public abstract class JsonElement extends StringWriter {
         else { throw new InvalidTypeException(); }
     }
 
-    // Conversion Methods
+
+    //------------------------------------------------------------------------// 
+    //------------------------ Methods for Conversion ------------------------// 
+    // TODO: not sure if these really need to be defined or how they will be  //  
+    // used in the current implementation.                                    // 
+    //------------------------------------------------------------------------// 
+
     /**
      * @return
      */
