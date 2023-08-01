@@ -24,7 +24,7 @@ public final class ElasticSanInner extends Resource {
     private ElasticSanProperties innerProperties = new ElasticSanProperties();
 
     /*
-     * Resource metadata required by ARM RPC
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -43,7 +43,7 @@ public final class ElasticSanInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Resource metadata required by ARM RPC.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -209,6 +209,15 @@ public final class ElasticSanInner extends Resource {
      */
     public Long totalSizeTiB() {
         return this.innerProperties() == null ? null : this.innerProperties().totalSizeTiB();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**

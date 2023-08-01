@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for SecurityAdminConfigurations CreateOrUpdate. */
 public final class SecurityAdminConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerSecurityAdminConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerSecurityAdminConfigurationPut.json
      */
     /**
      * Sample code: Create network manager security admin configuration.

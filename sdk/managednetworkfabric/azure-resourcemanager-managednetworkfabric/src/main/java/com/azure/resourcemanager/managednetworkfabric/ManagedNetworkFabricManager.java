@@ -28,38 +28,48 @@ import com.azure.resourcemanager.managednetworkfabric.implementation.AccessContr
 import com.azure.resourcemanager.managednetworkfabric.implementation.AzureNetworkFabricManagementServiceApiBuilder;
 import com.azure.resourcemanager.managednetworkfabric.implementation.ExternalNetworksImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.InternalNetworksImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.InternetGatewayRulesImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.InternetGatewaysImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.IpCommunitiesImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.IpExtendedCommunitiesImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.IpPrefixesImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.L2IsolationDomainsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.L3IsolationDomainsImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.NeighborGroupsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkDeviceSkusImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkDevicesImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkFabricControllersImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkFabricSkusImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkFabricsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkInterfacesImpl;
-import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkRackSkusImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkPacketBrokersImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkRacksImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkTapRulesImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkTapsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkToNetworkInterconnectsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.OperationsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.RoutePoliciesImpl;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlLists;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworks;
 import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworks;
+import com.azure.resourcemanager.managednetworkfabric.models.InternetGatewayRules;
+import com.azure.resourcemanager.managednetworkfabric.models.InternetGateways;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunities;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunities;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixes;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomains;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomains;
+import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroups;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceSkus;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevices;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricControllers;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricSkus;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabrics;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfaces;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackSkus;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBrokers;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRacks;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRules;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkTaps;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnects;
 import com.azure.resourcemanager.managednetworkfabric.models.Operations;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicies;
@@ -73,6 +83,10 @@ import java.util.stream.Collectors;
 /** Entry point to ManagedNetworkFabricManager. Self service experience for Azure Network Fabric API. */
 public final class ManagedNetworkFabricManager {
     private AccessControlLists accessControlLists;
+
+    private InternetGateways internetGateways;
+
+    private InternetGatewayRules internetGatewayRules;
 
     private IpCommunities ipCommunities;
 
@@ -88,6 +102,8 @@ public final class ManagedNetworkFabricManager {
 
     private ExternalNetworks externalNetworks;
 
+    private NeighborGroups neighborGroups;
+
     private NetworkDeviceSkus networkDeviceSkus;
 
     private NetworkDevices networkDevices;
@@ -102,9 +118,13 @@ public final class ManagedNetworkFabricManager {
 
     private NetworkToNetworkInterconnects networkToNetworkInterconnects;
 
-    private NetworkRackSkus networkRackSkus;
+    private NetworkPacketBrokers networkPacketBrokers;
 
     private NetworkRacks networkRacks;
+
+    private NetworkTapRules networkTapRules;
+
+    private NetworkTaps networkTaps;
 
     private Operations operations;
 
@@ -275,7 +295,7 @@ public final class ManagedNetworkFabricManager {
                 .append("-")
                 .append("com.azure.resourcemanager.managednetworkfabric")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -342,6 +362,30 @@ public final class ManagedNetworkFabricManager {
             this.accessControlLists = new AccessControlListsImpl(clientObject.getAccessControlLists(), this);
         }
         return accessControlLists;
+    }
+
+    /**
+     * Gets the resource collection API of InternetGateways. It manages InternetGateway.
+     *
+     * @return Resource collection API of InternetGateways.
+     */
+    public InternetGateways internetGateways() {
+        if (this.internetGateways == null) {
+            this.internetGateways = new InternetGatewaysImpl(clientObject.getInternetGateways(), this);
+        }
+        return internetGateways;
+    }
+
+    /**
+     * Gets the resource collection API of InternetGatewayRules. It manages InternetGatewayRule.
+     *
+     * @return Resource collection API of InternetGatewayRules.
+     */
+    public InternetGatewayRules internetGatewayRules() {
+        if (this.internetGatewayRules == null) {
+            this.internetGatewayRules = new InternetGatewayRulesImpl(clientObject.getInternetGatewayRules(), this);
+        }
+        return internetGatewayRules;
     }
 
     /**
@@ -426,6 +470,18 @@ public final class ManagedNetworkFabricManager {
             this.externalNetworks = new ExternalNetworksImpl(clientObject.getExternalNetworks(), this);
         }
         return externalNetworks;
+    }
+
+    /**
+     * Gets the resource collection API of NeighborGroups. It manages NeighborGroup.
+     *
+     * @return Resource collection API of NeighborGroups.
+     */
+    public NeighborGroups neighborGroups() {
+        if (this.neighborGroups == null) {
+            this.neighborGroups = new NeighborGroupsImpl(clientObject.getNeighborGroups(), this);
+        }
+        return neighborGroups;
     }
 
     /**
@@ -515,15 +571,15 @@ public final class ManagedNetworkFabricManager {
     }
 
     /**
-     * Gets the resource collection API of NetworkRackSkus.
+     * Gets the resource collection API of NetworkPacketBrokers. It manages NetworkPacketBroker.
      *
-     * @return Resource collection API of NetworkRackSkus.
+     * @return Resource collection API of NetworkPacketBrokers.
      */
-    public NetworkRackSkus networkRackSkus() {
-        if (this.networkRackSkus == null) {
-            this.networkRackSkus = new NetworkRackSkusImpl(clientObject.getNetworkRackSkus(), this);
+    public NetworkPacketBrokers networkPacketBrokers() {
+        if (this.networkPacketBrokers == null) {
+            this.networkPacketBrokers = new NetworkPacketBrokersImpl(clientObject.getNetworkPacketBrokers(), this);
         }
-        return networkRackSkus;
+        return networkPacketBrokers;
     }
 
     /**
@@ -536,6 +592,30 @@ public final class ManagedNetworkFabricManager {
             this.networkRacks = new NetworkRacksImpl(clientObject.getNetworkRacks(), this);
         }
         return networkRacks;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkTapRules. It manages NetworkTapRule.
+     *
+     * @return Resource collection API of NetworkTapRules.
+     */
+    public NetworkTapRules networkTapRules() {
+        if (this.networkTapRules == null) {
+            this.networkTapRules = new NetworkTapRulesImpl(clientObject.getNetworkTapRules(), this);
+        }
+        return networkTapRules;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkTaps. It manages NetworkTap.
+     *
+     * @return Resource collection API of NetworkTaps.
+     */
+    public NetworkTaps networkTaps() {
+        if (this.networkTaps == null) {
+            this.networkTaps = new NetworkTapsImpl(clientObject.getNetworkTaps(), this);
+        }
+        return networkTaps;
     }
 
     /**

@@ -17,46 +17,36 @@ public final class DppWorkerRequestTests {
         DppWorkerRequest model =
             BinaryData
                 .fromString(
-                    "{\"subscriptionId\":\"etaebu\",\"uri\":\"vdmovsmzlxwabm\",\"headers\":{\"btndo\":[\"kif\",\"vtpuqujmqlgk\"],\"ed\":[\"n\",\"bjcntujitc\"]},\"supportedGroupVersions\":[\"waezkojvd\"],\"cultureInfo\":\"zfoqouicybxar\",\"parameters\":{\"x\":\"zuf\",\"khazxkhnzbonlwn\":\"iqopidoamciod\",\"szzcmrvexztv\":\"oegokdwbwh\",\"gsfraoyzkoow\":\"t\"},\"httpMethod\":\"mnguxawqaldsyu\"}")
+                    "{\"subscriptionId\":\"fffiak\",\"uri\":\"pqqmted\",\"headers\":{\"mdscwxqupev\":[\"jihy\",\"ozphvwauyqncygu\",\"kvi\"]},\"supportedGroupVersions\":[\"stotxh\"],\"cultureInfo\":\"ujbypelmcuvhixb\",\"parameters\":{\"yl\":\"fw\",\"ujrywvtyl\":\"coolsttpkiwkkb\"},\"httpMethod\":\"pncur\"}")
                 .toObject(DppWorkerRequest.class);
-        Assertions.assertEquals("etaebu", model.subscriptionId());
-        Assertions.assertEquals("vdmovsmzlxwabm", model.uri());
-        Assertions.assertEquals("kif", model.headers().get("btndo").get(0));
-        Assertions.assertEquals("waezkojvd", model.supportedGroupVersions().get(0));
-        Assertions.assertEquals("zfoqouicybxar", model.cultureInfo());
-        Assertions.assertEquals("zuf", model.parameters().get("x"));
-        Assertions.assertEquals("mnguxawqaldsyu", model.httpMethod());
+        Assertions.assertEquals("fffiak", model.subscriptionId());
+        Assertions.assertEquals("pqqmted", model.uri());
+        Assertions.assertEquals("jihy", model.headers().get("mdscwxqupev").get(0));
+        Assertions.assertEquals("stotxh", model.supportedGroupVersions().get(0));
+        Assertions.assertEquals("ujbypelmcuvhixb", model.cultureInfo());
+        Assertions.assertEquals("fw", model.parameters().get("yl"));
+        Assertions.assertEquals("pncur", model.httpMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DppWorkerRequest model =
             new DppWorkerRequest()
-                .withSubscriptionId("etaebu")
-                .withUri("vdmovsmzlxwabm")
-                .withHeaders(
-                    mapOf("btndo", Arrays.asList("kif", "vtpuqujmqlgk"), "ed", Arrays.asList("n", "bjcntujitc")))
-                .withSupportedGroupVersions(Arrays.asList("waezkojvd"))
-                .withCultureInfo("zfoqouicybxar")
-                .withParameters(
-                    mapOf(
-                        "x",
-                        "zuf",
-                        "khazxkhnzbonlwn",
-                        "iqopidoamciod",
-                        "szzcmrvexztv",
-                        "oegokdwbwh",
-                        "gsfraoyzkoow",
-                        "t"))
-                .withHttpMethod("mnguxawqaldsyu");
+                .withSubscriptionId("fffiak")
+                .withUri("pqqmted")
+                .withHeaders(mapOf("mdscwxqupev", Arrays.asList("jihy", "ozphvwauyqncygu", "kvi")))
+                .withSupportedGroupVersions(Arrays.asList("stotxh"))
+                .withCultureInfo("ujbypelmcuvhixb")
+                .withParameters(mapOf("yl", "fw", "ujrywvtyl", "coolsttpkiwkkb"))
+                .withHttpMethod("pncur");
         model = BinaryData.fromObject(model).toObject(DppWorkerRequest.class);
-        Assertions.assertEquals("etaebu", model.subscriptionId());
-        Assertions.assertEquals("vdmovsmzlxwabm", model.uri());
-        Assertions.assertEquals("kif", model.headers().get("btndo").get(0));
-        Assertions.assertEquals("waezkojvd", model.supportedGroupVersions().get(0));
-        Assertions.assertEquals("zfoqouicybxar", model.cultureInfo());
-        Assertions.assertEquals("zuf", model.parameters().get("x"));
-        Assertions.assertEquals("mnguxawqaldsyu", model.httpMethod());
+        Assertions.assertEquals("fffiak", model.subscriptionId());
+        Assertions.assertEquals("pqqmted", model.uri());
+        Assertions.assertEquals("jihy", model.headers().get("mdscwxqupev").get(0));
+        Assertions.assertEquals("stotxh", model.supportedGroupVersions().get(0));
+        Assertions.assertEquals("ujbypelmcuvhixb", model.cultureInfo());
+        Assertions.assertEquals("fw", model.parameters().get("yl"));
+        Assertions.assertEquals("pncur", model.httpMethod());
     }
 
     @SuppressWarnings("unchecked")

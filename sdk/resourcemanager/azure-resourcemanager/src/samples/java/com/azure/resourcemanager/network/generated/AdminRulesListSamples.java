@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for AdminRules List. */
 public final class AdminRulesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerAdminRuleList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerAdminRuleList.json
      */
     /**
      * Sample code: List security admin rules.

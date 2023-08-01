@@ -10,17 +10,23 @@ import java.util.Collection;
 
 /** Defines values for DocumentAnalysisFeature. */
 public final class DocumentAnalysisFeature extends ExpandableStringEnum<DocumentAnalysisFeature> {
-    /** Static value ocr.highResolution for DocumentAnalysisFeature. */
-    public static final DocumentAnalysisFeature OCR_HIGH_RESOLUTION = fromString("ocr.highResolution");
+    /** Static value ocrHighResolution for DocumentAnalysisFeature. */
+    public static final DocumentAnalysisFeature OCR_HIGH_RESOLUTION = fromString("ocrHighResolution");
 
-    /** Static value ocr.formula for DocumentAnalysisFeature. */
-    public static final DocumentAnalysisFeature OCR_FORMULA = fromString("ocr.formula");
+    /** Static value languages for DocumentAnalysisFeature. */
+    public static final DocumentAnalysisFeature LANGUAGES = fromString("languages");
 
-    /** Static value ocr.font for DocumentAnalysisFeature. */
-    public static final DocumentAnalysisFeature OCR_FONT = fromString("ocr.font");
+    /** Static value barcodes for DocumentAnalysisFeature. */
+    public static final DocumentAnalysisFeature BARCODES = fromString("barcodes");
 
-    /** Static value queryFields.premium for DocumentAnalysisFeature. */
-    public static final DocumentAnalysisFeature QUERY_FIELDS_PREMIUM = fromString("queryFields.premium");
+    /** Static value formulas for DocumentAnalysisFeature. */
+    public static final DocumentAnalysisFeature FORMULAS = fromString("formulas");
+
+    /** Static value keyValuePairs for DocumentAnalysisFeature. */
+    public static final DocumentAnalysisFeature KEY_VALUE_PAIRS = fromString("keyValuePairs");
+
+    /** Static value styleFont for DocumentAnalysisFeature. */
+    public static final DocumentAnalysisFeature STYLE_FONT = fromString("styleFont");
 
     /**
      * Creates a new instance of DocumentAnalysisFeature value.

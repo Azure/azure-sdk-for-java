@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 /** Samples for PacketCoreDataPlanes Delete. */
 public final class PacketCoreDataPlanesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreDataPlaneDelete.json
      */
     /**
      * Sample code: Delete packet core data plane.

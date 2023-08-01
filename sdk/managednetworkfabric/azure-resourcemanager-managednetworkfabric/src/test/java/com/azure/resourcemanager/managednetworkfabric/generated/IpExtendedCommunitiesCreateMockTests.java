@@ -14,6 +14,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunity;
+import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityRule;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -35,7 +36,7 @@ public final class IpExtendedCommunitiesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"action\":\"Permit\",\"routeTargets\":[\"wlkjxn\",\"pvwgfstmhqykizmd\",\"saoafcluqvox\"],\"provisioningState\":\"Succeeded\",\"annotation\":\"im\"},\"location\":\"vwg\",\"tags\":{\"w\":\"pbmz\",\"bvopwndyqle\":\"sydsxwefohe\",\"lowkxxpvb\":\"llklmtk\",\"k\":\"dfjmzsyzfhotlh\"},\"id\":\"yych\",\"name\":\"nsjlpjrtws\",\"type\":\"hv\"}";
+            "{\"properties\":{\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":3441323160807993650,\"routeTargets\":[\"lqwzkny\",\"j\"]}],\"annotation\":\"svclfjycl\"},\"location\":\"ldlfflleirmtx\",\"tags\":{\"cryvidbzdylbvj\":\"fildcgbfouzfbp\",\"rzsqm\":\"tgngwnxjftecg\"},\"id\":\"dq\",\"name\":\"akzbyqha\",\"type\":\"t\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,20 +67,26 @@ public final class IpExtendedCommunitiesCreateMockTests {
         IpExtendedCommunity response =
             manager
                 .ipExtendedCommunities()
-                .define("kuma")
-                .withRegion("aclgschorimk")
-                .withExistingResourceGroup("opfppdbwnupgah")
-                .withTags(mapOf("puviyfcaabe", "rmoucsofl"))
-                .withAction(CommunityActionTypes.PERMIT)
-                .withRouteTargets(Arrays.asList("acfdmmcpugme", "qepvufhbzeh"))
-                .withAnnotation("qhnlbqnbld")
+                .define("cnuqhqpvtw")
+                .withRegion("tejobjzrl")
+                .withExistingResourceGroup("vkbuxlepg")
+                .withIpExtendedCommunityRules(
+                    Arrays
+                        .asList(
+                            new IpExtendedCommunityRule()
+                                .withAction(CommunityActionTypes.DENY)
+                                .withSequenceNumber(4571737221481443797L)
+                                .withRouteTargets(Arrays.asList("ntbfytnhdnihu", "zjuzvw", "bzdtorbiwnyfzdpx"))))
+                .withTags(mapOf("nzalgm", "d", "uudvbgvzlzjsb", "upjhltyl"))
+                .withAnnotation("sucr")
                 .create();
 
-        Assertions.assertEquals("vwg", response.location());
-        Assertions.assertEquals("pbmz", response.tags().get("w"));
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.action());
-        Assertions.assertEquals("wlkjxn", response.routeTargets().get(0));
-        Assertions.assertEquals("im", response.annotation());
+        Assertions.assertEquals("ldlfflleirmtx", response.location());
+        Assertions.assertEquals("fildcgbfouzfbp", response.tags().get("cryvidbzdylbvj"));
+        Assertions.assertEquals(CommunityActionTypes.DENY, response.ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(3441323160807993650L, response.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("lqwzkny", response.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("svclfjycl", response.annotation());
     }
 
     @SuppressWarnings("unchecked")

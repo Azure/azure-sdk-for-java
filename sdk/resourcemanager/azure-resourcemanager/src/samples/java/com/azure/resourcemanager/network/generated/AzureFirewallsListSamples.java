@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for AzureFirewalls List. */
 public final class AzureFirewallsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/AzureFirewallListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/AzureFirewallListBySubscription.json
      */
     /**
      * Sample code: List all Azure Firewalls for a given subscription.

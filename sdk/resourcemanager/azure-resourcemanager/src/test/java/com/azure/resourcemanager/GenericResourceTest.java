@@ -19,7 +19,7 @@ import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenericResourceTest extends ResourceManagerTestBase {
+public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
 
     private AzureResourceManager azureResourceManager;
 

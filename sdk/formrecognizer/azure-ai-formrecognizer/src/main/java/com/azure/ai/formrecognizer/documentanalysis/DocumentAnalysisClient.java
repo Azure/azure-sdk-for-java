@@ -242,7 +242,6 @@ public final class DocumentAnalysisClient {
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
                 finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
-                finalAnalyzeDocumentOptions.getQueryFields(),
                 null,
                 documentUrl,
                 finalContext).apply(cxt)),
@@ -356,7 +355,6 @@ public final class DocumentAnalysisClient {
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
                 finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
-                finalAnalyzeDocumentOptions.getQueryFields(),
                 document,
                 null,
                 finalContext).apply(cxt)),
@@ -480,14 +478,14 @@ public final class DocumentAnalysisClient {
     }
 
     private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
-        String modelId, List<String> pages, String locale, List<com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature> features, List<String> queryFields,
+        String modelId, List<String> pages, String locale,
+        List<com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature> features,
         BinaryData document, String documentUrl, Context context) {
         return (pollingContext) ->
             Transforms.toDocumentOperationResult(analyzeDocument(modelId,
                 CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
                 locale,
                 features,
-                queryFields,
                 document,
                 documentUrl,
                 context)
@@ -518,7 +516,7 @@ public final class DocumentAnalysisClient {
     }
 
     private ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
-                                                                                     List<com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature> features, List<String> queryFields,
+                                                                                     List<com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature> features,
                                                                                      BinaryData document, String documentUrl, Context context) {
         try {
             if (documentUrl == null) {
@@ -528,7 +526,6 @@ public final class DocumentAnalysisClient {
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
                     features,
-                    queryFields,
                     document,
                     document.getLength(),
                     context);
@@ -538,7 +535,6 @@ public final class DocumentAnalysisClient {
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
                     features,
-                    queryFields,
                     new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                     context);
             }

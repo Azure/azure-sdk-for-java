@@ -43,7 +43,7 @@ public class GetCompletionsStreamSample {
             new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true));
 
         completionsStream.forEach(completions -> {
-            System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+            System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
             for (Choice choice : completions.getChoices()) {
                 System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
             }

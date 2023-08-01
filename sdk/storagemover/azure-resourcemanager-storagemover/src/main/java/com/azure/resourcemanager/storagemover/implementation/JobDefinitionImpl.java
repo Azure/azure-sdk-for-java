@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.implementation;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionInner;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
@@ -30,10 +29,6 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String description() {

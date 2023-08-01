@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for Sims CreateOrUpdate. */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimCreate.json
      */
     /**
      * Sample code: Create SIM.
@@ -34,7 +34,7 @@ public final class SimsCreateOrUpdateSamples {
             .withSimPolicy(
                 new SimPolicyResourceId()
                     .withId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
             .withStaticIpConfiguration(
                 Arrays
                     .asList(
@@ -42,11 +42,11 @@ public final class SimsCreateOrUpdateSamples {
                             .withAttachedDataNetwork(
                                 new AttachedDataNetworkResourceId()
                                     .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
                             .withSlice(
                                 new SliceResourceId()
                                     .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
                             .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1"))))
             .create();
     }

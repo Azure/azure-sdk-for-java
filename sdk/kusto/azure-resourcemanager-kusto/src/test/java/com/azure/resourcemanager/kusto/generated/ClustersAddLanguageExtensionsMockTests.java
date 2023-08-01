@@ -64,18 +64,15 @@ public final class ClustersAddLanguageExtensionsMockTests {
         manager
             .clusters()
             .addLanguageExtensions(
-                "qytibyowbblgyavu",
-                "pthjoxo",
+                "p",
+                "n",
                 new LanguageExtensionsList()
                     .withValue(
                         Arrays
                             .asList(
                                 new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5),
-                                new LanguageExtensionInner()
                                     .withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8))),
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R))),
                 com.azure.core.util.Context.NONE);
     }
 }

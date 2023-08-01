@@ -27,7 +27,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpExtendedCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(
@@ -45,7 +45,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpExtendedCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(
@@ -62,7 +62,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpExtendedCommunity resource definition.
+     * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpExtendedCommunityInner create(
@@ -80,7 +80,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpExtendedCommunity resource definition.
+     * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpExtendedCommunityInner create(
@@ -97,7 +97,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpExtendedCommunity resource definition along with {@link Response}.
+     * @return the IP Extended Community resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpExtendedCommunityInner> getByResourceGroupWithResponse(
@@ -113,7 +113,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpExtendedCommunity resource definition.
+     * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpExtendedCommunityInner getByResourceGroup(String resourceGroupName, String ipExtendedCommunityName);
@@ -129,7 +129,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpExtendedCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(
@@ -147,7 +147,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IpExtendedCommunity resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(
@@ -164,7 +164,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpExtendedCommunity resource definition.
+     * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpExtendedCommunityInner update(
@@ -182,7 +182,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpExtendedCommunity resource definition.
+     * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpExtendedCommunityInner update(
@@ -258,7 +258,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpExtendedCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Extended Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpExtendedCommunityInner> listByResourceGroup(String resourceGroupName);
@@ -273,7 +273,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpExtendedCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Extended Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpExtendedCommunityInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -285,7 +285,7 @@ public interface IpExtendedCommunitiesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpExtendedCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Extended Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpExtendedCommunityInner> list();
@@ -299,7 +299,7 @@ public interface IpExtendedCommunitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpExtendedCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Extended Communities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpExtendedCommunityInner> list(Context context);

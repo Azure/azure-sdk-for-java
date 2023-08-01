@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for Snapshots List. */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/snapshotExamples/Snapshot_ListBySubscription.json
      */
     /**
      * Sample code: List all snapshots in a subscription.

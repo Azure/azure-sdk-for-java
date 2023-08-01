@@ -113,6 +113,7 @@
 - [FinalizeRelocation](#volumes_finalizerelocation)
 - [Get](#volumes_get)
 - [List](#volumes_list)
+- [ListGetGroupIdListForLdapUser](#volumes_listgetgroupidlistforldapuser)
 - [ListReplications](#volumes_listreplications)
 - [PoolChange](#volumes_poolchange)
 - [ReInitializeReplication](#volumes_reinitializereplication)
@@ -130,7 +131,7 @@
 /** Samples for AccountBackups Delete. */
 public final class AccountBackupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Account_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Account_Delete.json
      */
     /**
      * Sample code: AccountBackups_Delete.
@@ -149,7 +150,7 @@ public final class AccountBackupsDeleteSamples {
 /** Samples for AccountBackups Get. */
 public final class AccountBackupsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Account_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Account_Get.json
      */
     /**
      * Sample code: AccountBackups_Get.
@@ -168,7 +169,7 @@ public final class AccountBackupsGetSamples {
 /** Samples for AccountBackups List. */
 public final class AccountBackupsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Account_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Account_List.json
      */
     /**
      * Sample code: AccountBackups_List.
@@ -190,7 +191,7 @@ import java.util.Arrays;
 /** Samples for Accounts CreateOrUpdate. */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -202,7 +203,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_CreateOrUpdateAD.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
@@ -241,7 +242,7 @@ public final class AccountsCreateOrUpdateSamples {
 /** Samples for Accounts Delete. */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_Delete.json
      */
     /**
      * Sample code: Accounts_Delete.
@@ -260,7 +261,7 @@ public final class AccountsDeleteSamples {
 /** Samples for Accounts GetByResourceGroup. */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_Get.json
      */
     /**
      * Sample code: Accounts_Get.
@@ -279,7 +280,7 @@ public final class AccountsGetByResourceGroupSamples {
 /** Samples for Accounts List. */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_List.json
      */
     /**
      * Sample code: Accounts_List.
@@ -298,7 +299,7 @@ public final class AccountsListSamples {
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_List.json
      */
     /**
      * Sample code: Accounts_List.
@@ -317,7 +318,7 @@ public final class AccountsListByResourceGroupSamples {
 /** Samples for Accounts RenewCredentials. */
 public final class AccountsRenewCredentialsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_RenewCredentials.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_RenewCredentials.json
      */
     /**
      * Sample code: Accounts_RenewCredentials.
@@ -340,7 +341,7 @@ import java.util.Map;
 /** Samples for Accounts Update. */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.
@@ -375,7 +376,7 @@ public final class AccountsUpdateSamples {
 /** Samples for BackupPolicies Create. */
 public final class BackupPoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/BackupPolicies_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/BackupPolicies_Create.json
      */
     /**
      * Sample code: BackupPolicies_Create.
@@ -403,7 +404,7 @@ public final class BackupPoliciesCreateSamples {
 /** Samples for BackupPolicies Delete. */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/BackupPolicies_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/BackupPolicies_Delete.json
      */
     /**
      * Sample code: Backups_Delete.
@@ -424,7 +425,7 @@ public final class BackupPoliciesDeleteSamples {
 /** Samples for BackupPolicies Get. */
 public final class BackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/BackupPolicies_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/BackupPolicies_Get.json
      */
     /**
      * Sample code: Backups_Get.
@@ -445,7 +446,7 @@ public final class BackupPoliciesGetSamples {
 /** Samples for BackupPolicies List. */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/BackupPolicies_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/BackupPolicies_List.json
      */
     /**
      * Sample code: Backups_List.
@@ -466,7 +467,7 @@ import com.azure.resourcemanager.netapp.models.BackupPolicy;
 /** Samples for BackupPolicies Update. */
 public final class BackupPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/BackupPolicies_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/BackupPolicies_Update.json
      */
     /**
      * Sample code: BackupPolicies_Update.
@@ -496,7 +497,7 @@ public final class BackupPoliciesUpdateSamples {
 /** Samples for Backups Create. */
 public final class BackupsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Create.json
      */
     /**
      * Sample code: Backups_Create.
@@ -521,7 +522,7 @@ public final class BackupsCreateSamples {
 /** Samples for Backups Delete. */
 public final class BackupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Delete.json
      */
     /**
      * Sample code: Backups_Delete.
@@ -548,7 +549,7 @@ public final class BackupsDeleteSamples {
 /** Samples for Backups Get. */
 public final class BackupsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Get.json
      */
     /**
      * Sample code: Backups_Get.
@@ -569,7 +570,7 @@ public final class BackupsGetSamples {
 /** Samples for Backups GetStatus. */
 public final class BackupsGetStatusSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_BackupStatus.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_BackupStatus.json
      */
     /**
      * Sample code: Volumes_BackupStatus.
@@ -590,7 +591,7 @@ public final class BackupsGetStatusSamples {
 /** Samples for Backups GetVolumeRestoreStatus. */
 public final class BackupsGetVolumeRestoreStatusSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_RestoreStatus.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_RestoreStatus.json
      */
     /**
      * Sample code: Volumes_RestoreStatus.
@@ -612,7 +613,7 @@ public final class BackupsGetVolumeRestoreStatusSamples {
 /** Samples for Backups List. */
 public final class BackupsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_List.json
      */
     /**
      * Sample code: Backups_List.
@@ -634,7 +635,7 @@ import java.util.Arrays;
 /** Samples for Backups RestoreFiles. */
 public final class BackupsRestoreFilesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_SingleFileRestore.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_SingleFileRestore.json
      */
     /**
      * Sample code: Backups_SingleFileRestore.
@@ -667,7 +668,7 @@ import com.azure.resourcemanager.netapp.models.Backup;
 /** Samples for Backups Update. */
 public final class BackupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Backups_Update.json
      */
     /**
      * Sample code: Backups_Update.
@@ -693,7 +694,7 @@ import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
 /** Samples for NetAppResource CheckFilePathAvailability. */
 public final class NetAppResourceCheckFilePathAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/CheckFilePathAvailability.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/CheckFilePathAvailability.json
      */
     /**
      * Sample code: CheckFilePathAvailability.
@@ -723,7 +724,7 @@ import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
 /** Samples for NetAppResource CheckNameAvailability. */
 public final class NetAppResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
@@ -753,7 +754,7 @@ import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 /** Samples for NetAppResource CheckQuotaAvailability. */
 public final class NetAppResourceCheckQuotaAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/CheckQuotaAvailability.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/CheckQuotaAvailability.json
      */
     /**
      * Sample code: CheckQuotaAvailability.
@@ -780,7 +781,7 @@ public final class NetAppResourceCheckQuotaAvailabilitySamples {
 /** Samples for NetAppResource QueryRegionInfo. */
 public final class NetAppResourceQueryRegionInfoSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/RegionInfo.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/RegionInfo.json
      */
     /**
      * Sample code: RegionInfo_Query.
@@ -799,7 +800,7 @@ public final class NetAppResourceQueryRegionInfoSamples {
 /** Samples for NetAppResourceQuotaLimits Get. */
 public final class NetAppResourceQuotaLimitsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/QuotaLimits_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/QuotaLimits_Get.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -820,7 +821,7 @@ public final class NetAppResourceQuotaLimitsGetSamples {
 /** Samples for NetAppResourceQuotaLimits List. */
 public final class NetAppResourceQuotaLimitsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/QuotaLimits_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/QuotaLimits_List.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -839,7 +840,7 @@ public final class NetAppResourceQuotaLimitsListSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/OperationList.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/OperationList.json
      */
     /**
      * Sample code: OperationList.
@@ -861,7 +862,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 /** Samples for Pools CreateOrUpdate. */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Pools_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Pools_CreateOrUpdate.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -888,7 +889,7 @@ public final class PoolsCreateOrUpdateSamples {
 /** Samples for Pools Delete. */
 public final class PoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Pools_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Pools_Delete.json
      */
     /**
      * Sample code: Pools_Delete.
@@ -907,7 +908,7 @@ public final class PoolsDeleteSamples {
 /** Samples for Pools Get. */
 public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Pools_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.
@@ -926,7 +927,7 @@ public final class PoolsGetSamples {
 /** Samples for Pools List. */
 public final class PoolsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Pools_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Pools_List.json
      */
     /**
      * Sample code: Pools_List.
@@ -947,7 +948,7 @@ import com.azure.resourcemanager.netapp.models.CapacityPool;
 /** Samples for Pools Update. */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Pools_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Pools_Update.json
      */
     /**
      * Sample code: Pools_Update.
@@ -973,7 +974,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
 /** Samples for SnapshotPolicies Create. */
 public final class SnapshotPoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/SnapshotPolicies_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/SnapshotPolicies_Create.json
      */
     /**
      * Sample code: SnapshotPolicies_Create.
@@ -1004,7 +1005,7 @@ public final class SnapshotPoliciesCreateSamples {
 /** Samples for SnapshotPolicies Delete. */
 public final class SnapshotPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/SnapshotPolicies_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/SnapshotPolicies_Delete.json
      */
     /**
      * Sample code: SnapshotPolicies_Delete.
@@ -1025,7 +1026,7 @@ public final class SnapshotPoliciesDeleteSamples {
 /** Samples for SnapshotPolicies Get. */
 public final class SnapshotPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/SnapshotPolicies_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/SnapshotPolicies_Get.json
      */
     /**
      * Sample code: SnapshotPolicies_Get.
@@ -1046,7 +1047,7 @@ public final class SnapshotPoliciesGetSamples {
 /** Samples for SnapshotPolicies List. */
 public final class SnapshotPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/SnapshotPolicies_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/SnapshotPolicies_List.json
      */
     /**
      * Sample code: SnapshotPolicies_List.
@@ -1065,7 +1066,7 @@ public final class SnapshotPoliciesListSamples {
 /** Samples for SnapshotPolicies ListVolumes. */
 public final class SnapshotPoliciesListVolumesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/SnapshotPolicies_ListVolumes.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/SnapshotPolicies_ListVolumes.json
      */
     /**
      * Sample code: SnapshotPolicies_ListVolumes.
@@ -1092,7 +1093,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
 /** Samples for SnapshotPolicies Update. */
 public final class SnapshotPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/SnapshotPolicies_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/SnapshotPolicies_Update.json
      */
     /**
      * Sample code: SnapshotPolicies_Update.
@@ -1125,7 +1126,7 @@ public final class SnapshotPoliciesUpdateSamples {
 /** Samples for Snapshots Create. */
 public final class SnapshotsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Snapshots_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Snapshots_Create.json
      */
     /**
      * Sample code: Snapshots_Create.
@@ -1149,7 +1150,7 @@ public final class SnapshotsCreateSamples {
 /** Samples for Snapshots Delete. */
 public final class SnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Snapshots_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Snapshots_Delete.json
      */
     /**
      * Sample code: Snapshots_Delete.
@@ -1170,7 +1171,7 @@ public final class SnapshotsDeleteSamples {
 /** Samples for Snapshots Get. */
 public final class SnapshotsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Snapshots_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Snapshots_Get.json
      */
     /**
      * Sample code: Snapshots_Get.
@@ -1191,7 +1192,7 @@ public final class SnapshotsGetSamples {
 /** Samples for Snapshots List. */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Snapshots_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Snapshots_List.json
      */
     /**
      * Sample code: Snapshots_List.
@@ -1213,7 +1214,7 @@ import java.util.Arrays;
 /** Samples for Snapshots RestoreFiles. */
 public final class SnapshotsRestoreFilesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Snapshots_SingleFileRestore.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Snapshots_SingleFileRestore.json
      */
     /**
      * Sample code: Snapshots_SingleFileRestore.
@@ -1245,7 +1246,7 @@ import java.io.IOException;
 /** Samples for Snapshots Update. */
 public final class SnapshotsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Snapshots_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Snapshots_Update.json
      */
     /**
      * Sample code: Snapshots_Update.
@@ -1275,7 +1276,7 @@ public final class SnapshotsUpdateSamples {
 /** Samples for Subvolumes Create. */
 public final class SubvolumesCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Subvolumes_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Subvolumes_Create.json
      */
     /**
      * Sample code: Subvolumes_Create.
@@ -1299,7 +1300,7 @@ public final class SubvolumesCreateSamples {
 /** Samples for Subvolumes Delete. */
 public final class SubvolumesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Subvolumes_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Subvolumes_Delete.json
      */
     /**
      * Sample code: Subvolumes_Delete.
@@ -1320,7 +1321,7 @@ public final class SubvolumesDeleteSamples {
 /** Samples for Subvolumes Get. */
 public final class SubvolumesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Subvolumes_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Subvolumes_Get.json
      */
     /**
      * Sample code: Subvolumes_Get.
@@ -1341,7 +1342,7 @@ public final class SubvolumesGetSamples {
 /** Samples for Subvolumes GetMetadata. */
 public final class SubvolumesGetMetadataSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Subvolumes_Metadata.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Subvolumes_Metadata.json
      */
     /**
      * Sample code: Subvolumes_Metadata.
@@ -1362,7 +1363,7 @@ public final class SubvolumesGetMetadataSamples {
 /** Samples for Subvolumes ListByVolume. */
 public final class SubvolumesListByVolumeSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Subvolumes_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Subvolumes_List.json
      */
     /**
      * Sample code: Subvolumes_List.
@@ -1383,7 +1384,7 @@ import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
 /** Samples for Subvolumes Update. */
 public final class SubvolumesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Subvolumes_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Subvolumes_Update.json
      */
     /**
      * Sample code: Subvolumes_Update.
@@ -1413,7 +1414,7 @@ import java.util.Arrays;
 /** Samples for VolumeGroups Create. */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeGroups_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeGroups_Create.json
      */
     /**
      * Sample code: VolumeGroups_Create.
@@ -1485,7 +1486,7 @@ public final class VolumeGroupsCreateSamples {
 /** Samples for VolumeGroups Delete. */
 public final class VolumeGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeGroups_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeGroups_Delete.json
      */
     /**
      * Sample code: VolumeGroups_Delete.
@@ -1504,7 +1505,7 @@ public final class VolumeGroupsDeleteSamples {
 /** Samples for VolumeGroups Get. */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeGroups_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeGroups_Get.json
      */
     /**
      * Sample code: VolumeGroups_Get.
@@ -1523,7 +1524,7 @@ public final class VolumeGroupsGetSamples {
 /** Samples for VolumeGroups ListByNetAppAccount. */
 public final class VolumeGroupsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeGroups_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeGroups_List.json
      */
     /**
      * Sample code: VolumeGroups_List.
@@ -1544,7 +1545,7 @@ import com.azure.resourcemanager.netapp.models.Type;
 /** Samples for VolumeQuotaRules Create. */
 public final class VolumeQuotaRulesCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeQuotaRules_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeQuotaRules_Create.json
      */
     /**
      * Sample code: VolumeQuotaRules_Create.
@@ -1571,7 +1572,7 @@ public final class VolumeQuotaRulesCreateSamples {
 /** Samples for VolumeQuotaRules Delete. */
 public final class VolumeQuotaRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeQuotaRules_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeQuotaRules_Delete.json
      */
     /**
      * Sample code: VolumeQuotaRules_Delete.
@@ -1592,7 +1593,7 @@ public final class VolumeQuotaRulesDeleteSamples {
 /** Samples for VolumeQuotaRules Get. */
 public final class VolumeQuotaRulesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeQuotaRules_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeQuotaRules_Get.json
      */
     /**
      * Sample code: VolumeQuotaRules_Get.
@@ -1614,7 +1615,7 @@ public final class VolumeQuotaRulesGetSamples {
 /** Samples for VolumeQuotaRules ListByVolume. */
 public final class VolumeQuotaRulesListByVolumeSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeQuotaRules_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeQuotaRules_List.json
      */
     /**
      * Sample code: VolumeQuotaRules_List.
@@ -1637,7 +1638,7 @@ import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
 /** Samples for VolumeQuotaRules Update. */
 public final class VolumeQuotaRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeQuotaRules_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeQuotaRules_Update.json
      */
     /**
      * Sample code: VolumeQuotaRules_Update.
@@ -1664,7 +1665,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 /** Samples for Volumes AuthorizeReplication. */
 public final class VolumesAuthorizeReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_AuthorizeReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_AuthorizeReplication.json
      */
     /**
      * Sample code: Volumes_AuthorizeReplication.
@@ -1695,7 +1696,7 @@ import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 /** Samples for Volumes BreakFileLocks. */
 public final class VolumesBreakFileLocksSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_BreakFileLocks.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_BreakFileLocks.json
      */
     /**
      * Sample code: Volumes_BreakFileLocks.
@@ -1724,7 +1725,7 @@ import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 /** Samples for Volumes BreakReplication. */
 public final class VolumesBreakReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_BreakReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_BreakReplication.json
      */
     /**
      * Sample code: Volumes_BreakReplication.
@@ -1753,7 +1754,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 /** Samples for Volumes CreateOrUpdate. */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -1782,7 +1783,7 @@ public final class VolumesCreateOrUpdateSamples {
 /** Samples for Volumes Delete. */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_Delete.json
      */
     /**
      * Sample code: Volumes_Delete.
@@ -1801,7 +1802,7 @@ public final class VolumesDeleteSamples {
 /** Samples for Volumes DeleteReplication. */
 public final class VolumesDeleteReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_DeleteReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_DeleteReplication.json
      */
     /**
      * Sample code: Volumes_DeleteReplication.
@@ -1820,7 +1821,7 @@ public final class VolumesDeleteReplicationSamples {
 /** Samples for Volumes FinalizeRelocation. */
 public final class VolumesFinalizeRelocationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_FinalizeRelocation.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_FinalizeRelocation.json
      */
     /**
      * Sample code: Volumes_FinalizeRelocation.
@@ -1839,7 +1840,7 @@ public final class VolumesFinalizeRelocationSamples {
 /** Samples for Volumes Get. */
 public final class VolumesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_Get.json
      */
     /**
      * Sample code: Volumes_Get.
@@ -1858,7 +1859,7 @@ public final class VolumesGetSamples {
 /** Samples for Volumes List. */
 public final class VolumesListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_List.json
      */
     /**
      * Sample code: Volumes_List.
@@ -1871,13 +1872,42 @@ public final class VolumesListSamples {
 }
 ```
 
+### Volumes_ListGetGroupIdListForLdapUser
+
+```java
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
+
+/** Samples for Volumes ListGetGroupIdListForLdapUser. */
+public final class VolumesListGetGroupIdListForLdapUserSamples {
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/GroupIdListForLDAPUser.json
+     */
+    /**
+     * Sample code: GetGroupIdListForUser.
+     *
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void getGroupIdListForUser(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager
+            .volumes()
+            .listGetGroupIdListForLdapUser(
+                "myRG",
+                "account1",
+                "pool1",
+                "volume1",
+                new GetGroupIdListForLdapUserRequest().withUsername("user1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Volumes_ListReplications
 
 ```java
 /** Samples for Volumes ListReplications. */
 public final class VolumesListReplicationsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_ListReplications.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_ListReplications.json
      */
     /**
      * Sample code: Volumes_ListReplications.
@@ -1898,7 +1928,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 /** Samples for Volumes PoolChange. */
 public final class VolumesPoolChangeSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_PoolChange.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_PoolChange.json
      */
     /**
      * Sample code: Volumes_AuthorizeReplication.
@@ -1927,7 +1957,7 @@ public final class VolumesPoolChangeSamples {
 /** Samples for Volumes ReInitializeReplication. */
 public final class VolumesReInitializeReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_ReInitializeReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_ReInitializeReplication.json
      */
     /**
      * Sample code: Volumes_ReInitializeReplication.
@@ -1950,7 +1980,7 @@ import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 /** Samples for Volumes ReestablishReplication. */
 public final class VolumesReestablishReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_ReestablishReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_ReestablishReplication.json
      */
     /**
      * Sample code: Volumes_ReestablishReplication.
@@ -1981,7 +2011,7 @@ import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 /** Samples for Volumes Relocate. */
 public final class VolumesRelocateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Relocate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_Relocate.json
      */
     /**
      * Sample code: Volumes_Relocate.
@@ -2003,7 +2033,7 @@ public final class VolumesRelocateSamples {
 /** Samples for Volumes ReplicationStatus. */
 public final class VolumesReplicationStatusSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_ReplicationStatus.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_ReplicationStatus.json
      */
     /**
      * Sample code: Volumes_ReplicationStatus.
@@ -2024,7 +2054,7 @@ public final class VolumesReplicationStatusSamples {
 /** Samples for Volumes ResetCifsPassword. */
 public final class VolumesResetCifsPasswordSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_ResetCifsPassword.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_ResetCifsPassword.json
      */
     /**
      * Sample code: Volumes_ResetCifsPassword.
@@ -2043,7 +2073,7 @@ public final class VolumesResetCifsPasswordSamples {
 /** Samples for Volumes ResyncReplication. */
 public final class VolumesResyncReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_ResyncReplication.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_ResyncReplication.json
      */
     /**
      * Sample code: Volumes_ResyncReplication.
@@ -2064,7 +2094,7 @@ import com.azure.resourcemanager.netapp.models.VolumeRevert;
 /** Samples for Volumes Revert. */
 public final class VolumesRevertSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Revert.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_Revert.json
      */
     /**
      * Sample code: Volumes_Revert.
@@ -2093,7 +2123,7 @@ public final class VolumesRevertSamples {
 /** Samples for Volumes RevertRelocation. */
 public final class VolumesRevertRelocationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_RevertRelocation.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_RevertRelocation.json
      */
     /**
      * Sample code: Volumes_RevertRelocation.
@@ -2114,7 +2144,7 @@ import com.azure.resourcemanager.netapp.models.Volume;
 /** Samples for Volumes Update. */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_Update.json
      */
     /**
      * Sample code: Volumes_Update.

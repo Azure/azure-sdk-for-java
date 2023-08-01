@@ -170,7 +170,7 @@ public abstract class IdentityClientBase {
 
     }
 
-    ConfidentialClientApplication getConfidentialClient() {
+    ConfidentialClientApplication getConfidentialClient(boolean enableCae) {
         if (clientId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "A non-null value for client ID must be provided for user authentication."));
@@ -216,7 +216,10 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            applicationBuilder = applicationBuilder
+                .logPii(options.isSupportLoggingEnabled())
+                .authority(authorityUrl)
+                .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -225,6 +228,12 @@ public abstract class IdentityClientBase {
             }
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+        }
+
+        if (enableCae) {
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            applicationBuilder.clientCapabilities(set);
         }
 
         applicationBuilder.sendX5c(options.isIncludeX5c());
@@ -244,7 +253,7 @@ public abstract class IdentityClientBase {
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
-                tokenCache = new PersistentTokenCacheImpl()
+                tokenCache = new PersistentTokenCacheImpl(enableCae)
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 applicationBuilder.setTokenCacheAccessAspect(tokenCache);
@@ -268,7 +277,7 @@ public abstract class IdentityClientBase {
         return confidentialClientApplication;
     }
 
-    PublicClientApplication getPublicClient(boolean sharedTokenCacheCredential) {
+    PublicClientApplication getPublicClient(boolean sharedTokenCacheCredential, boolean enableCae) {
         if (clientId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "A non-null value for client ID must be provided for user authentication."));
@@ -277,7 +286,9 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            builder = builder
+                .logPii(options.isSupportLoggingEnabled())
+                .authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -299,7 +310,7 @@ public abstract class IdentityClientBase {
             builder.executorService(options.getExecutorService());
         }
 
-        if (!options.isCp1Disabled()) {
+        if (enableCae) {
             Set<String> set = new HashSet<>(1);
             set.add("CP1");
             builder.clientCapabilities(set);
@@ -309,7 +320,7 @@ public abstract class IdentityClientBase {
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
-                tokenCache = new PersistentTokenCacheImpl()
+                tokenCache = new PersistentTokenCacheImpl(enableCae)
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 builder.setTokenCacheAccessAspect(tokenCache);
@@ -336,7 +347,11 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
                 : clientId, credential);
-        applicationBuilder.validateAuthority(false);
+
+        applicationBuilder
+            .validateAuthority(false)
+            .logPii(options.isSupportLoggingEnabled());
+
         try {
             applicationBuilder = applicationBuilder.authority(authorityUrl);
         } catch (MalformedURLException e) {
@@ -391,7 +406,9 @@ public abstract class IdentityClientBase {
                 : clientId, credential);
 
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            applicationBuilder = applicationBuilder.authority(authorityUrl)
+                .logPii(options.isSupportLoggingEnabled())
+                .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -442,6 +459,11 @@ public abstract class IdentityClientBase {
         OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.isCaeEnabled() && request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(customClaimRequest);
+        }
         return builder.build();
     }
 
@@ -453,7 +475,7 @@ public abstract class IdentityClientBase {
                 .tenant(IdentityUtil
                     .resolveTenantId(tenantId, request, options));
 
-        if (request.getClaims() != null) {
+        if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             builder.claims(customClaimRequest);
         }
@@ -481,7 +503,7 @@ public abstract class IdentityClientBase {
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()),
                 username, password.toCharArray());
 
-        if (request.getClaims() != null) {
+        if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest
                 .formatAsClaimsRequest(request.getClaims());
             userNamePasswordParametersBuilder.claims(customClaimRequest);
