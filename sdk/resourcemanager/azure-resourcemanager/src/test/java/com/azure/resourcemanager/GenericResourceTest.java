@@ -164,7 +164,7 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
 
         azureResourceManager.genericResources().deleteById(vnetLinkId);
 
-        // test Microsoft.Web/sites/config
+        // test sites/config, which searches its parent's(sites) api-version
         String webappName = generateRandomResourceName("webapp", 15);
         azureResourceManager.webApps()
             .define(webappName)

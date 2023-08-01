@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 
@@ -156,27 +157,24 @@ public final class ResourceUtils {
      * @return the default api version to use
      */
     public static String defaultApiVersion(String id, Provider provider) {
+        if (id == null || provider == null) {
+            return null;
+        }
         ResourceId resourceId = ResourceId.fromString(id);
-        String resourceType = resourceId.resourceType().toLowerCase(Locale.ROOT);
-        // Exact match
+        String resourceTypeWithoutNamespace = getFullResourceTypeWithoutNamespace(resourceId);
+        String fullResourceType = resourceId.fullResourceType();
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.resourceType().equalsIgnoreCase(resourceType)) {
+            // child resource, e.g. sites/config
+            // There is an edge case that two resource types share the same child resource type name, so parent type name check is needed.
+            // e.g. "dnsForwardingRulesets/virtualNetworkLinks" and "privateDnsZones/virtualNetworkLinks"
+            if (prt.resourceType().equalsIgnoreCase(resourceTypeWithoutNamespace) // exact match
+                    // relaxed match, in case namespace is included in resource type
+                    || fullResourceType.contains(prt.resourceType())) {
                 return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
             }
         }
-        // child resource, e.g. Microsoft.Web/sites/config
-        // There is an edge case that two resource types share the same child resource type name, so parent type name check is needed.
-        // e.g. "dnsForwardingRulesets/virtualNetworkLinks" and "privateDnsZones/virtualNetworkLinks"
         ResourceId parent = resourceId.parent();
-        if (parent != null) {
-            for (ProviderResourceType prt : provider.resourceTypes()) {
-                String fullResourceType = resourceId.fullResourceType().toLowerCase(Locale.ROOT);
-                // some resource types are full resource type, e.g. Microsoft.Web/sites/config
-                // some are not, e.g. privateDnsZones/virtualNetworkLinks
-                if (fullResourceType.endsWith(prt.resourceType().toLowerCase(Locale.ROOT))) {
-                    return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
-                }
-            }
+        if (parent != null && !CoreUtils.isNullOrEmpty(parent.id())) {
             return defaultApiVersion(parent.id(), provider);
         } else {
             // Fallback: use a random one, not guaranteed to work
@@ -228,5 +226,11 @@ public final class ResourceUtils {
             return null;
         }
         return resourceId.replaceAll(" ", "%20");
+    }
+
+    private static String getFullResourceTypeWithoutNamespace(ResourceId resourceId) {
+        return resourceId.fullResourceType()
+            .split("/")[1] // e.g. "Microsoft.Web/sites" will return "sites"
+            .toLowerCase(Locale.ROOT);
     }
 }
