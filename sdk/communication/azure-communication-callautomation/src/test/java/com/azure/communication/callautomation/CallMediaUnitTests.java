@@ -8,7 +8,7 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOpt
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognitionChoice;
@@ -54,7 +54,7 @@ public class CallMediaUnitTests {
 
         playTextSource = new TextSource();
         playTextSource.setPlaySourceCacheId("playTextSourceCacheId");
-        playTextSource.setVoiceGender(GenderType.MALE);
+        playTextSource.setVoiceKind(VoiceKind.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
     }

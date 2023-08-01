@@ -10,7 +10,7 @@ import com.azure.communication.callautomation.implementation.models.ContinuousDt
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
-import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
+import com.azure.communication.callautomation.implementation.models.VoiceKindInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -302,8 +302,8 @@ public final class CallMediaAsync {
 
     private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
         TextSourceInternal textSourceInternal = new TextSourceInternal().setText(playSource.getText());
-        if (playSource.getVoiceGender() != null) {
-            textSourceInternal.setVoiceGender(GenderTypeInternal.fromString(playSource.getVoiceGender().toString()));
+        if (playSource.getVoiceKind() != null) {
+            textSourceInternal.setVoiceKind(VoiceKindInternal.fromString(playSource.getVoiceKind().toString()));
         }
         if (playSource.getSourceLocale() != null) {
             textSourceInternal.setSourceLocale(playSource.getSourceLocale());
