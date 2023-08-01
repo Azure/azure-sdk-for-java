@@ -23,15 +23,15 @@ public class JsonBoolean extends JsonElement {
      * true or false. If value is true, then booleanValue set to "true"; otherwise, 
      * set to "false" 
      */
-    public JsonBoolean(boolean value) { booleanValue = (value)? "true" : "false"; }
+    public JsonBoolean(boolean value) { this.booleanValue = (value)? "true" : "false"; }
 
     /**
-     * Returns String representation of the JsonBoolean object 
+     * Returns the String representation of the JsonBoolean object 
      * 
-     * @return the booleanValue field, a String representation of this JsonBoolean 
-     * object.  
+     * @return the booleanValue field which is a String representation of the 
+     * current state of this JsonBoolean object.  
      */
-    public String toString() { return booleanValue; }
+    public String toString() { return this.booleanValue; }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonBoolean. 
@@ -42,11 +42,11 @@ public class JsonBoolean extends JsonElement {
      * @return boolean of whether this JsonBoolean object is currently representing 
      * true  
      */
-    public boolean isTrue() { return booleanValue.equals("true"); }
+    public boolean isTrue() { return this.booleanValue.equals("true"); }
 
     /**
      * @return boolean of whether this JsonBoolean object is currently representing 
      * false 
      */
-    public boolean isFalse() { return booleanValue.equals("false"); }
+    public boolean isFalse() { return this.booleanValue.equals("false"); }
 }

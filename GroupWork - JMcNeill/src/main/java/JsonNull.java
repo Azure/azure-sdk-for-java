@@ -3,7 +3,8 @@
  */
 public class JsonNull extends JsonElement{
     /**
-     * Stores the String representation of the JSON null type. 
+     * Stores the String representation of the current state of the JsonNull   
+     * object. 
      * Always set to "null". Cannot be changed. 
      */
     private final String nullValue = "null";
@@ -17,11 +18,12 @@ public class JsonNull extends JsonElement{
     public JsonNull() {}
 
     /**
-     * Returns String representation of the JsonNull object 
+     * Returns the String representation of the JsonNull object 
      * 
-     * @return the nullValue field, a String representation of this JsonNull object. 
+     * @return the nullValue field which is a String representation of the 
+     * current state of this JsonNull object. 
      */
-    public String toString() { return nullValue; }
+    public String toString() { return this.nullValue; }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonNull. 
