@@ -53,6 +53,16 @@ public final class NetworkConfiguration {
     @JsonProperty(value = "publicIPAddressConfiguration")
     private PublicIpAddressConfiguration publicIpAddressConfiguration;
 
+    /*
+     * Whether this pool should enable accelerated networking.
+     *
+     * Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, which may lead to improved
+     * networking performance. For more details, see:
+     * https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.
+     */
+    @JsonProperty(value = "enableAcceleratedNetworking")
+    private Boolean enableAcceleratedNetworking;
+
     /** Creates an instance of NetworkConfiguration class. */
     public NetworkConfiguration() {
     }
@@ -175,6 +185,34 @@ public final class NetworkConfiguration {
     public NetworkConfiguration withPublicIpAddressConfiguration(
         PublicIpAddressConfiguration publicIpAddressConfiguration) {
         this.publicIpAddressConfiguration = publicIpAddressConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the enableAcceleratedNetworking property: Whether this pool should enable accelerated networking.
+     *
+     * <p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, which may lead to improved
+     * networking performance. For more details, see:
+     * https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.
+     *
+     * @return the enableAcceleratedNetworking value.
+     */
+    public Boolean enableAcceleratedNetworking() {
+        return this.enableAcceleratedNetworking;
+    }
+
+    /**
+     * Set the enableAcceleratedNetworking property: Whether this pool should enable accelerated networking.
+     *
+     * <p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, which may lead to improved
+     * networking performance. For more details, see:
+     * https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.
+     *
+     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
+     * @return the NetworkConfiguration object itself.
+     */
+    public NetworkConfiguration withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
+        this.enableAcceleratedNetworking = enableAcceleratedNetworking;
         return this;
     }
 

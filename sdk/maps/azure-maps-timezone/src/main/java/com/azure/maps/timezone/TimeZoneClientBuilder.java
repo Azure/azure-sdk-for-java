@@ -62,18 +62,20 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
     TokenCredentialTrait<TimeZoneClientBuilder>, HttpTrait<TimeZoneClientBuilder>,
     ConfigurationTrait<TimeZoneClientBuilder>, EndpointTrait<TimeZoneClientBuilder> {
 
+    // constants
+    private static final ClientLogger LOGGER = new ClientLogger(TimeZoneClientBuilder.class);
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+
+    // subscription-key
+    static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
-    // constants
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-    private static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
-    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
-
     // instance fields
-    private static final ClientLogger LOGGER = new ClientLogger(TimeZoneClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
+
     private String endpoint;
     private TimeZoneServiceVersion serviceVersion;
     /*

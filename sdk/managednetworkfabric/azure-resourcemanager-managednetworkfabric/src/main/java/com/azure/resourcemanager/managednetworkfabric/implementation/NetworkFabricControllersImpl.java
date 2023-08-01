@@ -84,24 +84,6 @@ public final class NetworkFabricControllersImpl implements NetworkFabricControll
         return Utils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
     }
 
-    public void enableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName) {
-        this.serviceClient().enableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName);
-    }
-
-    public void enableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        this.serviceClient().enableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName, context);
-    }
-
-    public void disableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName) {
-        this.serviceClient().disableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName);
-    }
-
-    public void disableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        this.serviceClient().disableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName, context);
-    }
-
     public NetworkFabricController getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.SupportedSku;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class LocationsListSupportedVirtualMachineSkusMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"psqxq\",\"familyName\":\"svuo\",\"capabilities\":[{\"name\":\"celve\",\"value\":\"ypql\"}]}]}";
+            "{\"value\":[{\"name\":\"wx\",\"familyName\":\"pevzhfst\",\"capabilities\":[{\"name\":\"ojujbyp\",\"value\":\"mc\"},{\"name\":\"hixbjxyfwnyl\",\"value\":\"ool\"}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,9 @@ public final class LocationsListSupportedVirtualMachineSkusMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SupportedSku> response =
-            manager.locations().listSupportedVirtualMachineSkus("dnkfx", 10642389, "emdwzrmuhapfc", Context.NONE);
+            manager
+                .locations()
+                .listSupportedVirtualMachineSkus(
+                    "mjihyeozphv", 1018976472, "uyqncygupkvipmd", com.azure.core.util.Context.NONE);
     }
 }

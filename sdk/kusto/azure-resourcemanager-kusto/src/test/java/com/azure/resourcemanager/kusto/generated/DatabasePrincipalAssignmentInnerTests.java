@@ -16,26 +16,26 @@ public final class DatabasePrincipalAssignmentInnerTests {
         DatabasePrincipalAssignmentInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"principalId\":\"vmkfssxqu\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"plgmgsxnk\",\"principalType\":\"User\",\"tenantName\":\"deslp\",\"principalName\":\"opwi\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"xpkd\"},\"id\":\"zb\",\"name\":\"iuebbaumny\",\"type\":\"upedeojnabckhs\"}")
+                    "{\"properties\":{\"principalId\":\"aq\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"yjpkiidzyexz\",\"principalType\":\"App\",\"tenantName\":\"ixhnrztf\",\"principalName\":\"hb\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"alaulppggdtpnapn\"},\"id\":\"iropuhpigvpgylg\",\"name\":\"git\",\"type\":\"medjvcslynqwwncw\"}")
                 .toObject(DatabasePrincipalAssignmentInner.class);
-        Assertions.assertEquals("vmkfssxqu", model.principalId());
+        Assertions.assertEquals("aq", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
-        Assertions.assertEquals("plgmgsxnk", model.tenantId());
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
+        Assertions.assertEquals("yjpkiidzyexz", model.tenantId());
+        Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabasePrincipalAssignmentInner model =
             new DatabasePrincipalAssignmentInner()
-                .withPrincipalId("vmkfssxqu")
+                .withPrincipalId("aq")
                 .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
-                .withTenantId("plgmgsxnk")
-                .withPrincipalType(PrincipalType.USER);
+                .withTenantId("yjpkiidzyexz")
+                .withPrincipalType(PrincipalType.APP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalAssignmentInner.class);
-        Assertions.assertEquals("vmkfssxqu", model.principalId());
+        Assertions.assertEquals("aq", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
-        Assertions.assertEquals("plgmgsxnk", model.tenantId());
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
+        Assertions.assertEquals("yjpkiidzyexz", model.tenantId());
+        Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 }

@@ -5,112 +5,90 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** IpCommunityProperties define the resource properties. */
+/** IP Community Properties defines the resource properties. */
 @Fluent
 public final class IpCommunityProperties extends AnnotationResource {
     /*
-     * Action to be taken on the configuration. Example: Permit | Deny.
+     * Configuration state of the resource.
      */
-    @JsonProperty(value = "action", required = true)
-    private CommunityActionTypes action;
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
 
     /*
-     * Supported well known Community List.
-     */
-    @JsonProperty(value = "wellKnownCommunities")
-    private List<WellKnownCommunities> wellKnownCommunities;
-
-    /*
-     * List the communityMembers of IP Community .
-     */
-    @JsonProperty(value = "communityMembers", required = true)
-    private List<String> communityMembers;
-
-    /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
+
+    /*
+     * List of IP Community Rules.
+     */
+    @JsonProperty(value = "ipCommunityRules")
+    private List<IpCommunityRule> ipCommunityRules;
 
     /** Creates an instance of IpCommunityProperties class. */
     public IpCommunityProperties() {
     }
 
     /**
-     * Get the action property: Action to be taken on the configuration. Example: Permit | Deny.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the action value.
+     * @return the configurationState value.
      */
-    public CommunityActionTypes action() {
-        return this.action;
+    public ConfigurationState configurationState() {
+        return this.configurationState;
     }
 
     /**
-     * Set the action property: Action to be taken on the configuration. Example: Permit | Deny.
-     *
-     * @param action the action value to set.
-     * @return the IpCommunityProperties object itself.
-     */
-    public IpCommunityProperties withAction(CommunityActionTypes action) {
-        this.action = action;
-        return this;
-    }
-
-    /**
-     * Get the wellKnownCommunities property: Supported well known Community List.
-     *
-     * @return the wellKnownCommunities value.
-     */
-    public List<WellKnownCommunities> wellKnownCommunities() {
-        return this.wellKnownCommunities;
-    }
-
-    /**
-     * Set the wellKnownCommunities property: Supported well known Community List.
-     *
-     * @param wellKnownCommunities the wellKnownCommunities value to set.
-     * @return the IpCommunityProperties object itself.
-     */
-    public IpCommunityProperties withWellKnownCommunities(List<WellKnownCommunities> wellKnownCommunities) {
-        this.wellKnownCommunities = wellKnownCommunities;
-        return this;
-    }
-
-    /**
-     * Get the communityMembers property: List the communityMembers of IP Community .
-     *
-     * @return the communityMembers value.
-     */
-    public List<String> communityMembers() {
-        return this.communityMembers;
-    }
-
-    /**
-     * Set the communityMembers property: List the communityMembers of IP Community .
-     *
-     * @param communityMembers the communityMembers value to set.
-     * @return the IpCommunityProperties object itself.
-     */
-    public IpCommunityProperties withCommunityMembers(List<String> communityMembers) {
-        this.communityMembers = communityMembers;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
+     * Get the ipCommunityRules property: List of IP Community Rules.
+     *
+     * @return the ipCommunityRules value.
+     */
+    public List<IpCommunityRule> ipCommunityRules() {
+        return this.ipCommunityRules;
+    }
+
+    /**
+     * Set the ipCommunityRules property: List of IP Community Rules.
+     *
+     * @param ipCommunityRules the ipCommunityRules value to set.
+     * @return the IpCommunityProperties object itself.
+     */
+    public IpCommunityProperties withIpCommunityRules(List<IpCommunityRule> ipCommunityRules) {
+        this.ipCommunityRules = ipCommunityRules;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -128,18 +106,8 @@ public final class IpCommunityProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model IpCommunityProperties"));
-        }
-        if (communityMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property communityMembers in model IpCommunityProperties"));
+        if (ipCommunityRules() != null) {
+            ipCommunityRules().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(IpCommunityProperties.class);
 }

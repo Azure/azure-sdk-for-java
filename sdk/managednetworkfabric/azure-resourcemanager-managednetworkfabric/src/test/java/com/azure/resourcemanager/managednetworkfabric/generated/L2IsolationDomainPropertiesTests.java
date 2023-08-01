@@ -14,26 +14,26 @@ public final class L2IsolationDomainPropertiesTests {
         L2IsolationDomainProperties model =
             BinaryData
                 .fromString(
-                    "{\"networkFabricId\":\"wkgshwa\",\"vlanId\":595861111,\"mtu\":691407592,\"disabledOnResources\":[\"injep\"],\"administrativeState\":\"Enabled\",\"provisioningState\":\"Failed\",\"annotation\":\"wnuzoqftiyqzrnkc\"}")
+                    "{\"networkFabricId\":\"ajxeiygle\",\"vlanId\":216127976,\"mtu\":1327006192,\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"annotation\":\"rceqnkbrupob\"}")
                 .toObject(L2IsolationDomainProperties.class);
-        Assertions.assertEquals("wnuzoqftiyqzrnkc", model.annotation());
-        Assertions.assertEquals("wkgshwa", model.networkFabricId());
-        Assertions.assertEquals(595861111, model.vlanId());
-        Assertions.assertEquals(691407592, model.mtu());
+        Assertions.assertEquals("rceqnkbrupob", model.annotation());
+        Assertions.assertEquals("ajxeiygle", model.networkFabricId());
+        Assertions.assertEquals(216127976, model.vlanId());
+        Assertions.assertEquals(1327006192, model.mtu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2IsolationDomainProperties model =
             new L2IsolationDomainProperties()
-                .withAnnotation("wnuzoqftiyqzrnkc")
-                .withNetworkFabricId("wkgshwa")
-                .withVlanId(595861111)
-                .withMtu(691407592);
+                .withAnnotation("rceqnkbrupob")
+                .withNetworkFabricId("ajxeiygle")
+                .withVlanId(216127976)
+                .withMtu(1327006192);
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainProperties.class);
-        Assertions.assertEquals("wnuzoqftiyqzrnkc", model.annotation());
-        Assertions.assertEquals("wkgshwa", model.networkFabricId());
-        Assertions.assertEquals(595861111, model.vlanId());
-        Assertions.assertEquals(691407592, model.mtu());
+        Assertions.assertEquals("rceqnkbrupob", model.annotation());
+        Assertions.assertEquals("ajxeiygle", model.networkFabricId());
+        Assertions.assertEquals(216127976, model.vlanId());
+        Assertions.assertEquals(1327006192, model.mtu());
     }
 }

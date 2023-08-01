@@ -10,9 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkInterfacesClient;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.InterfaceStatusInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInterfaceInner;
-import com.azure.resourcemanager.managednetworkfabric.models.InterfaceStatus;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterface;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfaces;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -65,57 +65,50 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
         this.serviceClient().delete(resourceGroupName, networkDeviceName, networkInterfaceName, context);
     }
 
-    public PagedIterable<NetworkInterface> list(String resourceGroupName, String networkDeviceName) {
-        PagedIterable<NetworkInterfaceInner> inner = this.serviceClient().list(resourceGroupName, networkDeviceName);
-        return Utils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<NetworkInterface> list(String resourceGroupName, String networkDeviceName, Context context) {
+    public PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName) {
         PagedIterable<NetworkInterfaceInner> inner =
-            this.serviceClient().list(resourceGroupName, networkDeviceName, context);
+            this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName);
         return Utils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
     }
 
-    public InterfaceStatus getStatus(String resourceGroupName, String networkDeviceName, String networkInterfaceName) {
-        InterfaceStatusInner inner =
-            this.serviceClient().getStatus(resourceGroupName, networkDeviceName, networkInterfaceName);
-        if (inner != null) {
-            return new InterfaceStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<NetworkInterface> listByNetworkDevice(
+        String resourceGroupName, String networkDeviceName, Context context) {
+        PagedIterable<NetworkInterfaceInner> inner =
+            this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName, context);
+        return Utils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
     }
 
-    public InterfaceStatus getStatus(
-        String resourceGroupName, String networkDeviceName, String networkInterfaceName, Context context) {
-        InterfaceStatusInner inner =
-            this.serviceClient().getStatus(resourceGroupName, networkDeviceName, networkInterfaceName, context);
-        if (inner != null) {
-            return new InterfaceStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,
         UpdateAdministrativeState body) {
-        this
-            .serviceClient()
-            .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
         String resourceGroupName,
         String networkDeviceName,
         String networkInterfaceName,
         UpdateAdministrativeState body,
         Context context) {
-        this
-            .serviceClient()
-            .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body, context);
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateAdministrativeState(resourceGroupName, networkDeviceName, networkInterfaceName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public NetworkInterface getById(String id) {

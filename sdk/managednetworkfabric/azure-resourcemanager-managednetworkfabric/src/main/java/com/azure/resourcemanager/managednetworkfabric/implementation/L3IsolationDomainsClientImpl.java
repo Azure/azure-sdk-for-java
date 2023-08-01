@@ -34,8 +34,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.L3IsolationDomainsClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainInner;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -116,7 +118,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -154,7 +156,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/updateAdministrativeState")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
             @HostParam("$host") String endpoint,
@@ -168,46 +170,29 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/updateOptionBAdministrativeState")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/validateConfiguration")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateOptionBAdministrativeState(
+        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/clearArpTable")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/commitConfiguration")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> clearArpTable(
+        Mono<Response<Flux<ByteBuffer>>> commitConfiguration(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
-            @BodyParam("application/json") EnableDisableOnResources body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}/clearNeighborTable")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> clearNeighborTable(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("l3IsolationDomainName") String l3IsolationDomainName,
-            @BodyParam("application/json") EnableDisableOnResources body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -245,8 +230,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -307,8 +292,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -365,7 +350,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreateAsync(
@@ -395,7 +380,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreateAsync(
@@ -426,7 +411,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(
@@ -448,7 +433,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(
@@ -469,7 +454,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L3 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L3IsolationDomainInner> createAsync(
@@ -493,7 +478,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L3 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L3IsolationDomainInner> createAsync(
@@ -516,7 +501,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition.
+     * @return the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner create(
@@ -538,7 +523,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition.
+     * @return the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner create(
@@ -556,8 +541,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L3IsolationDomainInner>> getByResourceGroupWithResponseAsync(
@@ -609,8 +594,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L3IsolationDomainInner>> getByResourceGroupWithResponseAsync(
@@ -658,7 +643,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L3 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L3IsolationDomainInner> getByResourceGroupAsync(
@@ -678,7 +663,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<L3IsolationDomainInner> getByResourceGroupWithResponse(
@@ -696,7 +681,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition.
+     * @return the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner getByResourceGroup(String resourceGroupName, String l3IsolationDomainName) {
@@ -714,8 +699,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -774,8 +759,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -830,7 +815,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdateAsync(
@@ -858,7 +843,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link PollerFlux} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdateAsync(
@@ -887,7 +872,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(
@@ -907,7 +892,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L3IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(
@@ -926,7 +911,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L3 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L3IsolationDomainInner> updateAsync(
@@ -948,7 +933,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition on successful completion of {@link Mono}.
+     * @return the L3 Isolation Domain resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L3IsolationDomainInner> updateAsync(
@@ -969,7 +954,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition.
+     * @return the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner update(
@@ -989,7 +974,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition.
+     * @return the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3IsolationDomainInner update(
@@ -1260,7 +1245,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1314,7 +1299,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listByResourceGroupSinglePageAsync(
@@ -1365,7 +1350,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3IsolationDomainInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1384,7 +1369,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3IsolationDomainInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1402,7 +1387,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> listByResourceGroup(String resourceGroupName) {
@@ -1419,7 +1404,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1433,7 +1418,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listSinglePageAsync() {
@@ -1481,7 +1466,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listSinglePageAsync(Context context) {
@@ -1524,7 +1509,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3IsolationDomainInner> listAsync() {
@@ -1541,7 +1526,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedFlux}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3IsolationDomainInner> listAsync(Context context) {
@@ -1556,7 +1541,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> list() {
@@ -1572,7 +1557,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3IsolationDomainInner> list(Context context) {
@@ -1585,12 +1570,12 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
@@ -1643,13 +1628,13 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
@@ -1699,22 +1684,28 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAdministrativeStateAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAdministrativeStateWithResponseAsync(resourceGroupName, l3IsolationDomainName, body);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1723,23 +1714,30 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAdministrativeStateAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeStateAsync(
+            String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAdministrativeStateWithResponseAsync(resourceGroupName, l3IsolationDomainName, body, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class,
+                context);
     }
 
     /**
@@ -1748,16 +1746,18 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
         return this.beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body).getSyncPoller();
     }
 
@@ -1767,17 +1767,19 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
         return this
             .beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body, context)
             .getSyncPoller();
@@ -1789,15 +1791,15 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAdministrativeStateAsync(
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
         return beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body)
             .last()
@@ -1810,16 +1812,16 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAdministrativeStateAsync(
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> updateAdministrativeStateAsync(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
         return beginUpdateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body, context)
             .last()
@@ -1832,16 +1834,17 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
-        updateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body).block();
+        return updateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body).block();
     }
 
     /**
@@ -1850,35 +1853,34 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAdministrativeState(
+    public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        updateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body, context).block();
+        return updateAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body, context).block();
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateOptionBAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
+        String resourceGroupName, String l3IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1898,46 +1900,38 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
         if (l3IsolationDomainName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter l3IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .updateOptionBAdministrativeState(
+                        .validateConfiguration(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             this.client.getApiVersion(),
                             l3IsolationDomainName,
-                            body,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response of the action validate configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateOptionBAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1958,213 +1952,190 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter l3IsolationDomainName is required and cannot be null."));
         }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .updateOptionBAdministrativeState(
+            .validateConfiguration(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 this.client.getApiVersion(),
                 l3IsolationDomainName,
-                body,
                 accept,
                 context);
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateOptionBAdministrativeStateAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String l3IsolationDomainName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateOptionBAdministrativeStateWithResponseAsync(resourceGroupName, l3IsolationDomainName, body);
+            validateConfigurationWithResponseAsync(resourceGroupName, l3IsolationDomainName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateOptionBAdministrativeStateAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
+    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfigurationAsync(String resourceGroupName, String l3IsolationDomainName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateOptionBAdministrativeStateWithResponseAsync(resourceGroupName, l3IsolationDomainName, body, context);
+            validateConfigurationWithResponseAsync(resourceGroupName, l3IsolationDomainName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ValidateConfigurationResponseInner.class,
+                ValidateConfigurationResponseInner.class,
+                context);
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
-        return this
-            .beginUpdateOptionBAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body)
-            .getSyncPoller();
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String l3IsolationDomainName) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, l3IsolationDomainName).getSyncPoller();
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        return this
-            .beginUpdateOptionBAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String l3IsolationDomainName, Context context) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, l3IsolationDomainName, context).getSyncPoller();
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateOptionBAdministrativeStateAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
-        return beginUpdateOptionBAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body)
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
+        String resourceGroupName, String l3IsolationDomainName) {
+        return beginValidateConfigurationAsync(resourceGroupName, l3IsolationDomainName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateOptionBAdministrativeStateAsync(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateOptionBAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body, context)
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
+        return beginValidateConfigurationAsync(resourceGroupName, l3IsolationDomainName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body) {
-        updateOptionBAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body).block();
+    public ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String l3IsolationDomainName) {
+        return validateConfigurationAsync(resourceGroupName, l3IsolationDomainName).block();
     }
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context) {
-        updateOptionBAdministrativeStateAsync(resourceGroupName, l3IsolationDomainName, body, context).block();
+    public ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
+        return validateConfigurationAsync(resourceGroupName, l3IsolationDomainName, context).block();
     }
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearArpTableWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
+        String resourceGroupName, String l3IsolationDomainName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2184,46 +2155,40 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
         if (l3IsolationDomainName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter l3IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .clearArpTable(
+                        .commitConfiguration(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             this.client.getApiVersion(),
                             l3IsolationDomainName,
-                            body,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearArpTableWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2244,474 +2209,192 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter l3IsolationDomainName is required and cannot be null."));
         }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .clearArpTable(
+            .commitConfiguration(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 this.client.getApiVersion(),
                 l3IsolationDomainName,
-                body,
                 accept,
                 context);
     }
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearArpTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfigurationAsync(String resourceGroupName, String l3IsolationDomainName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            clearArpTableWithResponseAsync(resourceGroupName, l3IsolationDomainName, body);
+            commitConfigurationWithResponseAsync(resourceGroupName, l3IsolationDomainName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
+                this.client.getContext());
     }
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearArpTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
+    private PollerFlux<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfigurationAsync(String resourceGroupName, String l3IsolationDomainName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            clearArpTableWithResponseAsync(resourceGroupName, l3IsolationDomainName, body, context);
+            commitConfigurationWithResponseAsync(resourceGroupName, l3IsolationDomainName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * executes clear ARP operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearArpTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        return this.beginClearArpTableAsync(resourceGroupName, l3IsolationDomainName, body).getSyncPoller();
-    }
-
-    /**
-     * executes clear ARP operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearArpTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return this.beginClearArpTableAsync(resourceGroupName, l3IsolationDomainName, body, context).getSyncPoller();
-    }
-
-    /**
-     * executes clear ARP operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearArpTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        return beginClearArpTableAsync(resourceGroupName, l3IsolationDomainName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * executes clear ARP operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearArpTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return beginClearArpTableAsync(resourceGroupName, l3IsolationDomainName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * executes clear ARP operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearArpTable(String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        clearArpTableAsync(resourceGroupName, l3IsolationDomainName, body).block();
-    }
-
-    /**
-     * executes clear ARP operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearArpTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        clearArpTableAsync(resourceGroupName, l3IsolationDomainName, body, context).block();
-    }
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearNeighborTableWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l3IsolationDomainName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter l3IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .clearNeighborTable(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            l3IsolationDomainName,
-                            body,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> clearNeighborTableWithResponseAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l3IsolationDomainName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter l3IsolationDomainName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .clearNeighborTable(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                l3IsolationDomainName,
-                body,
-                accept,
+            .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class,
                 context);
     }
 
     /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearNeighborTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            clearNeighborTableWithResponseAsync(resourceGroupName, l3IsolationDomainName, body);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String l3IsolationDomainName) {
+        return this.beginCommitConfigurationAsync(resourceGroupName, l3IsolationDomainName).getSyncPoller();
     }
 
     /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClearNeighborTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            clearNeighborTableWithResponseAsync(resourceGroupName, l3IsolationDomainName, body, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    public SyncPoller<
+            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String l3IsolationDomainName, Context context) {
+        return this.beginCommitConfigurationAsync(resourceGroupName, l3IsolationDomainName, context).getSyncPoller();
     }
 
     /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearNeighborTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        return this.beginClearNeighborTableAsync(resourceGroupName, l3IsolationDomainName, body).getSyncPoller();
-    }
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClearNeighborTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return this
-            .beginClearNeighborTableAsync(resourceGroupName, l3IsolationDomainName, body, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearNeighborTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        return beginClearNeighborTableAsync(resourceGroupName, l3IsolationDomainName, body)
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
+        String resourceGroupName, String l3IsolationDomainName) {
+        return beginCommitConfigurationAsync(resourceGroupName, l3IsolationDomainName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> clearNeighborTableAsync(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        return beginClearNeighborTableAsync(resourceGroupName, l3IsolationDomainName, body, context)
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
+        return beginCommitConfigurationAsync(resourceGroupName, l3IsolationDomainName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearNeighborTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body) {
-        clearNeighborTableAsync(resourceGroupName, l3IsolationDomainName, body).block();
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String l3IsolationDomainName) {
+        return commitConfigurationAsync(resourceGroupName, l3IsolationDomainName).block();
     }
 
     /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void clearNeighborTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context) {
-        clearNeighborTableAsync(resourceGroupName, l3IsolationDomainName, body, context).block();
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String l3IsolationDomainName, Context context) {
+        return commitConfigurationAsync(resourceGroupName, l3IsolationDomainName, context).block();
     }
 
     /**
@@ -2722,7 +2405,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2760,7 +2443,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listByResourceGroupNextSinglePageAsync(
@@ -2797,7 +2480,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2835,7 +2518,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3IsolationDomainInner>> listBySubscriptionNextSinglePageAsync(

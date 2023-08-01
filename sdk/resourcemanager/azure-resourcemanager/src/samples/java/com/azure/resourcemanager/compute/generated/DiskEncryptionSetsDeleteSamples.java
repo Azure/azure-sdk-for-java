@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for DiskEncryptionSets Delete. */
 public final class DiskEncryptionSetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Delete.json
      */
     /**
      * Sample code: Delete a disk encryption set.

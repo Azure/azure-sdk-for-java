@@ -71,7 +71,7 @@ public final class ManageNetworkWatcher {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_NORTH_CENTRAL;
+        final Region region = Region.US_WEST3;
         final String nwName = Utils.randomResourceName(azureResourceManager, "nw", 8);
 
         final String userName = "tirekicker";

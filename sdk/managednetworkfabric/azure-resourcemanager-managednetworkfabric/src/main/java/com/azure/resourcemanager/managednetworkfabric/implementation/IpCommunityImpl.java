@@ -8,11 +8,12 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpCommunityInner;
-import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunity;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,30 +52,25 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
         return this.innerModel().systemData();
     }
 
-    public CommunityActionTypes action() {
-        return this.innerModel().action();
-    }
-
-    public List<WellKnownCommunities> wellKnownCommunities() {
-        List<WellKnownCommunities> inner = this.innerModel().wellKnownCommunities();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<String> communityMembers() {
-        List<String> inner = this.innerModel().communityMembers();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
     }
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
+    }
+
+    public List<IpCommunityRule> ipCommunityRules() {
+        List<IpCommunityRule> inner = this.innerModel().ipCommunityRules();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String annotation() {
@@ -209,19 +205,14 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
         }
     }
 
-    public IpCommunityImpl withAction(CommunityActionTypes action) {
-        this.innerModel().withAction(action);
-        return this;
-    }
-
-    public IpCommunityImpl withWellKnownCommunities(List<WellKnownCommunities> wellKnownCommunities) {
-        this.innerModel().withWellKnownCommunities(wellKnownCommunities);
-        return this;
-    }
-
-    public IpCommunityImpl withCommunityMembers(List<String> communityMembers) {
-        this.innerModel().withCommunityMembers(communityMembers);
-        return this;
+    public IpCommunityImpl withIpCommunityRules(List<IpCommunityRule> ipCommunityRules) {
+        if (isInCreateMode()) {
+            this.innerModel().withIpCommunityRules(ipCommunityRules);
+            return this;
+        } else {
+            this.updateBody.withIpCommunityRules(ipCommunityRules);
+            return this;
+        }
     }
 
     public IpCommunityImpl withAnnotation(String annotation) {

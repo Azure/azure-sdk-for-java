@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for IpPrefixes ListByResourceGroup. */
 public final class IpPrefixesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpPrefixes_ListByResourceGroup_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class IpPrefixesListByResourceGroupSamples {
      */
     public static void ipPrefixesListByResourceGroupMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.ipPrefixes().listByResourceGroup("resourcegroupname", com.azure.core.util.Context.NONE);
+        manager.ipPrefixes().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
     }
 }

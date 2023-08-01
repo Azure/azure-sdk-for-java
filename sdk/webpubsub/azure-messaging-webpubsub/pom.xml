@@ -32,12 +32,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <!-- Once full testing is added this should either be removed or increased -->
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -135,7 +129,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>com.nimbusds:nimbus-jose-jwt:[9.31]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>

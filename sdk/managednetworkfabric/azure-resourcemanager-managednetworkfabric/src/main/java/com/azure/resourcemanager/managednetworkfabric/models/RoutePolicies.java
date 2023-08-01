@@ -119,6 +119,95 @@ public interface RoutePolicies {
     PagedIterable<RoutePolicy> list(Context context);
 
     /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body);
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName);
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String routePolicyName, Context context);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String routePolicyName);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String routePolicyName, Context context);
+
+    /**
      * Gets a Route Policy.
      *
      * <p>Implements Route Policy GET method.
