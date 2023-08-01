@@ -142,6 +142,33 @@ public abstract class JsonElement extends StringWriter {
         else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * 
+     * @param value
+     * @return
+     * @throws InvalidTypeException
+     * @throws IllegalArgumentException
+     */
+    public String getKeyByValue(JsonElement value) throws InvalidTypeException, IllegalArgumentException { 
+        // Case: 
+        if(this.isObject()) { return (this.asObject()).getKeyByValue(value); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
+    } 
+
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws InvalidTypeException
+     */
+    public JsonElement getValueByKey(String key) throws InvalidTypeException {
+        // Case: 
+        if(this.isObject()) { return (this.asObject()).getValueByKey(key); } 
+        // Case: 
+        else { throw new InvalidTypeException(); }
+    }
+
     // Conversion Methods
     /**
      * @return

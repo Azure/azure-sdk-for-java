@@ -1,8 +1,7 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Class representing the JSON object type.  
@@ -159,10 +158,46 @@ public class JsonObject extends JsonElement {
     }
 
     /**
-     * @param key 
-     * @return 
+     * @param key specifies the property to return by its respective key
+     * @return JsonElement representing the 
      */
     public JsonElement getProperty(String key) { return properties.get(key); }
+
+    /**
+     * Gets the key for a given property by value. 
+     * TODO: this method may be matching values based off objects matching, not 
+     * their substance. Either implementation could be useful. 
+     * 
+     * @param value specifying the value to match a property with to find the 
+     * respective key pair of 
+     * @return String object representing the respective key pair of the search value  
+     */
+    public String getKeyByValue(JsonElement value) throws IllegalArgumentException { 
+        // Iterating over all entries in the properties hash map, inspecting each 
+        // key-value pair (property) for the one whose value matches the value 
+        // argument passed. 
+        for(Entry<String, JsonElement> entry : properties.entrySet()) {
+            // Case: found entry with matching value. Returning the key as a result. 
+            if(((JsonElement)value).equals(entry.getValue())) { return entry.getKey(); }
+            // TODO: the following code may be a better substitute for equating 
+            // two objects: 
+            // if(((JsonElement)value) == entry.getValue()) { return entry.getKey(); }
+        }
+        // Case: if the for loop didn't return at any point, then there is no 
+        // property in the JsonObject where the value matches the value passed 
+        // to this method invocation. 
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Gets the value for a given property by key. 
+     * 
+     * @param key specifying the key to match a property with to find the 
+     * respective value pair of 
+     * @return JsonElement object representing the respective value pair of the 
+     * search key   
+     */
+    public JsonElement getValueByKey(String key) { return properties.get(key); }
 
     /**
      * @return
