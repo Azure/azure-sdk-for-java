@@ -7,20 +7,21 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
-/** The L2IsolationDomain resource definition. */
+/** The L2 Isolation Domain resource definition. */
 @Fluent
 public final class L2IsolationDomainInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
-    private L2IsolationDomainProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private L2IsolationDomainProperties innerProperties = new L2IsolationDomainProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -65,7 +66,7 @@ public final class L2IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the networkFabricId property: Network Fabric ARM resource id.
+     * Get the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @return the networkFabricId value.
      */
@@ -74,7 +75,7 @@ public final class L2IsolationDomainInner extends Resource {
     }
 
     /**
-     * Set the networkFabricId property: Network Fabric ARM resource id.
+     * Set the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @param networkFabricId the networkFabricId value to set.
      * @return the L2IsolationDomainInner object itself.
@@ -88,21 +89,21 @@ public final class L2IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the vlanId property: vlanId. Example: 501.
+     * Get the vlanId property: Vlan Identifier of the Network Fabric. Example: 501.
      *
      * @return the vlanId value.
      */
-    public Integer vlanId() {
-        return this.innerProperties() == null ? null : this.innerProperties().vlanId();
+    public int vlanId() {
+        return this.innerProperties() == null ? 0 : this.innerProperties().vlanId();
     }
 
     /**
-     * Set the vlanId property: vlanId. Example: 501.
+     * Set the vlanId property: Vlan Identifier of the Network Fabric. Example: 501.
      *
      * @param vlanId the vlanId value to set.
      * @return the L2IsolationDomainInner object itself.
      */
-    public L2IsolationDomainInner withVlanId(Integer vlanId) {
+    public L2IsolationDomainInner withVlanId(int vlanId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L2IsolationDomainProperties();
         }
@@ -111,7 +112,7 @@ public final class L2IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the mtu property: maximum transmission unit. Default value is 1500.
+     * Get the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @return the mtu value.
      */
@@ -120,7 +121,7 @@ public final class L2IsolationDomainInner extends Resource {
     }
 
     /**
-     * Set the mtu property: maximum transmission unit. Default value is 1500.
+     * Set the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @param mtu the mtu value to set.
      * @return the L2IsolationDomainInner object itself.
@@ -134,33 +135,30 @@ public final class L2IsolationDomainInner extends Resource {
     }
 
     /**
-     * Get the disabledOnResources property: List of resources the L2 Isolation Domain is disabled on. Can be either
-     * entire NetworkFabric or NetworkRack.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the disabledOnResources value.
+     * @return the configurationState value.
      */
-    public List<String> disabledOnResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().disabledOnResources();
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
     }
 
     /**
-     * Get the administrativeState property: state. Example: Enabled | Disabled. It indicates administrative state of
-     * the isolationDomain, whether it is enabled or disabled. If enabled, the configuration is applied on the devices.
-     * If disabled, the configuration is removed from the devices.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
     }
 
     /**
@@ -192,8 +190,15 @@ public final class L2IsolationDomainInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model L2IsolationDomainInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(L2IsolationDomainInner.class);
 }

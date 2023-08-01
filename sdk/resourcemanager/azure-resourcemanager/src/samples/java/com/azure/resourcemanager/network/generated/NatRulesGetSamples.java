@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for NatRules Get. */
 public final class NatRulesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NatRuleGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NatRuleGet.json
      */
     /**
      * Sample code: NatRuleGet.

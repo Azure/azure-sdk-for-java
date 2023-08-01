@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.SkuInformation;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
@@ -35,7 +34,7 @@ public final class SkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"pnpulexxbczwtru\",\"locations\":[\"zb\",\"j\",\"sovmyokacspkwl\"],\"locationInfo\":[{\"location\":\"bpxjmfl\",\"zones\":[\"nchrkcciww\",\"juqk\",\"rsa\"]},{\"location\":\"wkuofoskghsauu\",\"zones\":[\"mvxi\",\"duugidyjr\"]},{\"location\":\"byao\",\"zones\":[\"xc\"]},{\"location\":\"npc\",\"zones\":[\"cohslkev\",\"eggzfb\",\"hfmvfaxkffe\"]}],\"capabilities\":[{\"name\":\"lvmezyvshxmzsbbz\",\"value\":\"gigr\"}]}]}";
+            "{\"value\":[{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"fbjfdtwssotftpvj\",\"locations\":[\"xilzznf\",\"q\",\"vwpm\",\"taruoujmkcj\"],\"locationInfo\":[{\"location\":\"tjrybnwjewgdr\",\"zones\":[\"vnaenqpehindoyg\",\"ifthnz\",\"ndslgnayqigynduh\"]},{\"location\":\"hqlkthumaqo\",\"zones\":[\"ycduier\",\"gccymvaolpssl\"]},{\"location\":\"fmmdnbbg\",\"zones\":[\"swiydmcwyhzdx\",\"sadbz\",\"nvdfznuda\"]},{\"location\":\"vxzbncb\",\"zones\":[\"pstdbhhxsrzd\",\"ucerscdntnevfi\",\"jmygtdsslswtmwer\",\"ofz\"]}],\"capabilities\":[{\"name\":\"emwabnet\",\"value\":\"hszhedplvwiwu\"},{\"name\":\"wmbesldnkw\",\"value\":\"pp\"},{\"name\":\"lcxog\",\"value\":\"konzmnsik\"}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +62,7 @@ public final class SkusListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SkuInformation> response = manager.skus().list("d", Context.NONE);
+        PagedIterable<SkuInformation> response = manager.skus().list("ubcgjbirxb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.iterator().next().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().tier());

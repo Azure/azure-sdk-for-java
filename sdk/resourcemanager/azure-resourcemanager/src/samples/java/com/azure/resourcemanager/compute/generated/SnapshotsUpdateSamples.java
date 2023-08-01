@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Snapshots Update. */
 public final class SnapshotsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Update_WithAcceleratedNetwork.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/snapshotExamples/Snapshot_Update_WithAcceleratedNetwork.json
      */
     /**
      * Sample code: Update a snapshot with accelerated networking.
@@ -36,7 +36,7 @@ public final class SnapshotsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/snapshotExamples/Snapshot_Update.json
      */
     /**
      * Sample code: Update a snapshot.

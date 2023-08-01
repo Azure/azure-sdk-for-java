@@ -4,22 +4,26 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterSeverity;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -38,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
@@ -45,7 +50,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
             .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -67,8 +71,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     OpenAIClientBuilder getNonAzureOpenAIClientBuilder(HttpClient httpClient) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            .httpClient(httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
@@ -138,13 +141,51 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         );
     }
 
+    void getChatFunctionForNonAzureRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-0613", getChatMessagesWithFunction());
+    }
+
+    void getChatFunctionForRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4", getChatMessagesWithFunction());
+    }
+
+    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-4", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept("gpt-35-turbo", "What is 3 times 4?");
+    }
+
+    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-0613", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, String> testRunner) {
+        testRunner.accept("text-davinci-002", "What is 3 times 4?");
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
         return chatMessages;
+    }
+
+    private ChatCompletionsOptions getChatMessagesWithFunction() {
+        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
+        Parameters parameters = new Parameters();
+        functionDefinition.setParameters(parameters);
+        List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
+
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the weather like in San Francisco in Celsius?"));
+
+        ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
+        chatCompletionOptions.setFunctions(functions);
+        return chatCompletionOptions;
     }
 
     static void assertCompletions(int choicesPerPrompt, Completions actual) {
@@ -193,18 +234,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
     static void assertChatCompletionsStream(ChatCompletions chatCompletions) {
-        assertNotNull(chatCompletions.getId());
-        assertNotNull(chatCompletions.getChoices());
-        assertFalse(chatCompletions.getChoices().isEmpty());
-        assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+        if (chatCompletions.getId() != null && !chatCompletions.getId().isEmpty()) {
+            assertNotNull(chatCompletions.getId());
+            assertNotNull(chatCompletions.getChoices());
+            assertFalse(chatCompletions.getChoices().isEmpty());
+            assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+        }
     }
 
     // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
     static void assertCompletionsStream(Completions completions) {
-        assertNotNull(completions.getId());
-        assertNotNull(completions.getChoices());
-        assertFalse(completions.getChoices().isEmpty());
-        assertNotNull(completions.getChoices().get(0).getText());
+        if (completions.getId() != null && !completions.getId().isEmpty()) {
+            assertNotNull(completions.getId());
+            assertNotNull(completions.getChoices());
+            assertFalse(completions.getChoices().isEmpty());
+            assertNotNull(completions.getChoices().get(0).getText());
+        }
     }
 
     static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole, ChatCompletions actual) {
@@ -245,5 +290,34 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     static void assertImageResponse(ImageResponse actual) {
         assertNotNull(actual.getData());
         assertFalse(actual.getData().isEmpty());
+    }
+
+    static <T> T assertFunctionCall(ChatChoice actual, String functionName, Class<T> myPropertiesClazz) {
+        assertEquals(0, actual.getIndex());
+        assertEquals("function_call", actual.getFinishReason().toString());
+        FunctionCall functionCall = actual.getMessage().getFunctionCall();
+        assertEquals(functionName, functionCall.getName());
+        BinaryData argumentJson = BinaryData.fromString(functionCall.getArguments());
+        return argumentJson.toObject(myPropertiesClazz);
+    }
+
+    static void assertSafeContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertFalse(contentFilterResults.getHate().isFiltered());
+        assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSexual().isFiltered());
+        assertEquals(contentFilterResults.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSelfHarm().isFiltered());
+        assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getViolence().isFiltered());
+        assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+    }
+
+    static void assertEmptyContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertNull(contentFilterResults.getHate());
+        assertNull(contentFilterResults.getSexual());
+        assertNull(contentFilterResults.getViolence());
+        assertNull(contentFilterResults.getSelfHarm());
     }
 }

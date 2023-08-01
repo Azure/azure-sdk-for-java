@@ -11,6 +11,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -82,7 +84,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -91,8 +93,16 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-public class AzureResourceManagerTests extends ResourceManagerTestBase {
+public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
+
+    public AzureResourceManagerTests() {
+        addSanitizers(
+            // Search key
+            new TestProxySanitizer("$.key", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.value[*].key", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+        );
+    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -307,7 +317,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     @Test
     public void testManagementLocks() throws Exception {
         // Prepare a VM
-        final String password = ResourceManagerTestBase.password();
+        final String password = ResourceManagerTestProxyTestBase.password();
         final String rgName = generateRandomResourceName("rg", 15);
         final String vmName = generateRandomResourceName("vm", 15);
         final String storageName = generateRandomResourceName("st", 15);
@@ -554,6 +564,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersNatRules() throws Exception {
         new TestLoadBalancer().new InternetWithNatRule(azureResourceManager.virtualMachines().manager())
@@ -565,6 +576,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersNatPools() throws Exception {
         new TestLoadBalancer().new InternetWithNatPool(azureResourceManager.virtualMachines().manager())
@@ -576,6 +588,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer().new InternetMinimal(azureResourceManager.virtualMachines().manager())
@@ -587,6 +600,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersNatOnly() throws Exception {
         new TestLoadBalancer().new InternetNatOnly(azureResourceManager.virtualMachines().manager())
@@ -598,6 +612,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer().new InternalMinimal(azureResourceManager.virtualMachines().manager())
@@ -935,6 +950,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLocalNetworkGateways() throws Exception {
         new TestLocalNetworkGateway().runTest(azureResourceManager.localNetworkGateways(), azureResourceManager.resourceGroups());
@@ -1043,7 +1059,9 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertTrue(0 < TestUtilities.getSize(azureResourceManager.subscriptions().list()));
         Subscription subscription = azureResourceManager.getCurrentSubscription();
         Assertions.assertNotNull(subscription);
-        Assertions.assertTrue(azureResourceManager.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
+        if (!isPlaybackMode()) {
+            Assertions.assertTrue(azureResourceManager.subscriptionId().equalsIgnoreCase(subscription.subscriptionId()));
+        }
     }
 
     /**
@@ -1156,7 +1174,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     @Test
     public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
         new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI()
-            .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
+            .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups());
     }
 
     @Test
@@ -1283,6 +1301,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(), azureResourceManager.resourceGroups());
     }
 
+    @Disabled("Often encounters service does not have enough resource in target region. cosmos module should have similar tests.")
     @Test
     public void testCosmosDB() throws Exception {
         new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());
@@ -1306,6 +1325,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
                 .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
     }
 
+    // secret in URL on API deleteQueryKey
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testSearchServiceAnySku() throws Exception {
         new TestSearchService.SearchServiceAnySku()

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.10.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.10.0-beta.1 (2023-07-24)
+
+### Features Added
+- Added CAE Authentication support for Service principal authentication.
+- Added the ability to log PII from MSAL using new `enableSupportLogging` API.
+
+### Other Changes
+
+#### Behavioral Breaking Change
+- CAE Authentication is disabled by default. It needs to be enabled by invoking `setEnableCae` on `TokenRequestContext` class.
+
+## 1.9.2 (2023-07-10)
+
+### Bugs Fixed
+- Azure CLI and Azure Developer CLI no longer pass `organizations` as a tenant value when retrieving a token. [#34387](https://github.com/Azure/azure-sdk-for-java/issues/34387)
+- `WorkloadIdentityCredential` now uses the tenant value specified in `DefaultAzureCredential` when authenticating with Azure Identity. [#35619](https://github.com/Azure/azure-sdk-for-java/pull/35619)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 
 ## 1.9.1 (2023-06-06)
 

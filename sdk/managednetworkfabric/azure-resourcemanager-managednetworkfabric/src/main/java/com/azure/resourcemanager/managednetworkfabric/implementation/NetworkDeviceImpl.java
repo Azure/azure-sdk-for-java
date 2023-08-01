@@ -8,18 +8,17 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDeviceInner;
-import com.azure.resourcemanager.managednetworkfabric.models.GetDeviceStatusProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.GetDynamicInterfaceMapsPropertiesItem;
-import com.azure.resourcemanager.managednetworkfabric.models.GetStaticInterfaceMapsPropertiesItem;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevice;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevicePatchParameters;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRole;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.SupportPackageProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdatePowerCycleProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersionProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.RebootProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Definition, NetworkDevice.Update {
@@ -64,16 +63,32 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
         return this.innerModel().networkDeviceSku();
     }
 
-    public NetworkDeviceRoleTypes networkDeviceRole() {
+    public NetworkDeviceRole networkDeviceRole() {
         return this.innerModel().networkDeviceRole();
+    }
+
+    public String networkRackId() {
+        return this.innerModel().networkRackId();
+    }
+
+    public String managementIpv4Address() {
+        return this.innerModel().managementIpv4Address();
+    }
+
+    public String managementIpv6Address() {
+        return this.innerModel().managementIpv6Address();
+    }
+
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
     }
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
-    public String networkRackId() {
-        return this.innerModel().networkRackId();
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
     }
 
     public String hostname() {
@@ -196,68 +211,39 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
         return this;
     }
 
-    public void reboot() {
-        serviceManager.networkDevices().reboot(resourceGroupName, networkDeviceName);
+    public CommonPostActionResponseForStateUpdate reboot(RebootProperties body) {
+        return serviceManager.networkDevices().reboot(resourceGroupName, networkDeviceName, body);
     }
 
-    public void reboot(Context context) {
-        serviceManager.networkDevices().reboot(resourceGroupName, networkDeviceName, context);
+    public CommonPostActionResponseForStateUpdate reboot(RebootProperties body, Context context) {
+        return serviceManager.networkDevices().reboot(resourceGroupName, networkDeviceName, body, context);
     }
 
-    public void restoreConfig() {
-        serviceManager.networkDevices().restoreConfig(resourceGroupName, networkDeviceName);
+    public CommonPostActionResponseForStateUpdate refreshConfiguration() {
+        return serviceManager.networkDevices().refreshConfiguration(resourceGroupName, networkDeviceName);
     }
 
-    public void restoreConfig(Context context) {
-        serviceManager.networkDevices().restoreConfig(resourceGroupName, networkDeviceName, context);
+    public CommonPostActionResponseForStateUpdate refreshConfiguration(Context context) {
+        return serviceManager.networkDevices().refreshConfiguration(resourceGroupName, networkDeviceName, context);
     }
 
-    public void updateVersion(UpdateVersionProperties body) {
-        serviceManager.networkDevices().updateVersion(resourceGroupName, networkDeviceName, body);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateDeviceAdministrativeState body) {
+        return serviceManager.networkDevices().updateAdministrativeState(resourceGroupName, networkDeviceName, body);
     }
 
-    public void updateVersion(UpdateVersionProperties body, Context context) {
-        serviceManager.networkDevices().updateVersion(resourceGroupName, networkDeviceName, body, context);
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        UpdateDeviceAdministrativeState body, Context context) {
+        return serviceManager
+            .networkDevices()
+            .updateAdministrativeState(resourceGroupName, networkDeviceName, body, context);
     }
 
-    public SupportPackageProperties generateSupportPackage() {
-        return serviceManager.networkDevices().generateSupportPackage(resourceGroupName, networkDeviceName);
+    public CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body) {
+        return serviceManager.networkDevices().upgrade(resourceGroupName, networkDeviceName, body);
     }
 
-    public SupportPackageProperties generateSupportPackage(Context context) {
-        return serviceManager.networkDevices().generateSupportPackage(resourceGroupName, networkDeviceName, context);
-    }
-
-    public void updatePowerCycle(UpdatePowerCycleProperties body) {
-        serviceManager.networkDevices().updatePowerCycle(resourceGroupName, networkDeviceName, body);
-    }
-
-    public void updatePowerCycle(UpdatePowerCycleProperties body, Context context) {
-        serviceManager.networkDevices().updatePowerCycle(resourceGroupName, networkDeviceName, body, context);
-    }
-
-    public GetDeviceStatusProperties getStatus() {
-        return serviceManager.networkDevices().getStatus(resourceGroupName, networkDeviceName);
-    }
-
-    public GetDeviceStatusProperties getStatus(Context context) {
-        return serviceManager.networkDevices().getStatus(resourceGroupName, networkDeviceName, context);
-    }
-
-    public List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps() {
-        return serviceManager.networkDevices().getStaticInterfaceMaps(resourceGroupName, networkDeviceName);
-    }
-
-    public List<GetStaticInterfaceMapsPropertiesItem> getStaticInterfaceMaps(Context context) {
-        return serviceManager.networkDevices().getStaticInterfaceMaps(resourceGroupName, networkDeviceName, context);
-    }
-
-    public List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps() {
-        return serviceManager.networkDevices().getDynamicInterfaceMaps(resourceGroupName, networkDeviceName);
-    }
-
-    public List<GetDynamicInterfaceMapsPropertiesItem> getDynamicInterfaceMaps(Context context) {
-        return serviceManager.networkDevices().getDynamicInterfaceMaps(resourceGroupName, networkDeviceName, context);
+    public CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body, Context context) {
+        return serviceManager.networkDevices().upgrade(resourceGroupName, networkDeviceName, body, context);
     }
 
     public NetworkDeviceImpl withRegion(Region location) {
@@ -282,11 +268,6 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
 
     public NetworkDeviceImpl withNetworkDeviceSku(String networkDeviceSku) {
         this.innerModel().withNetworkDeviceSku(networkDeviceSku);
-        return this;
-    }
-
-    public NetworkDeviceImpl withNetworkDeviceRole(NetworkDeviceRoleTypes networkDeviceRole) {
-        this.innerModel().withNetworkDeviceRole(networkDeviceRole);
         return this;
     }
 

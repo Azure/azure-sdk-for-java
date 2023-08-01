@@ -55,7 +55,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canListApplications() {
         if (skipInPlayback()) {
             return;

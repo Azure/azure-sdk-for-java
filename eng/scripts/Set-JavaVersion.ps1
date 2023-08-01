@@ -25,6 +25,7 @@ if ("" -eq $JdkPath) {
     $registryBase = "HKLM:\SOFTWARE"
     $azulJdks = "$registryBase\Azul Systems\Zulu"
     $eclipseJdks = "$registryBase\Eclipse Adoptium\JDK"
+    $microsoftJdks = "$registryBase\Microsoft\JDK"
 
     # Collect all available JDK installations in the following format
     #
@@ -60,12 +61,14 @@ if ("" -eq $JdkPath) {
     # Select the installs in the following format
     #
     # Zulu | <MajorVersion> | <CurrentVersion> | <InstallationPath>
-    foreach ($jdk in Get-ChildItem -Path $azulJdks) {
-        $jdkHKeyPath = $jdk.Name
-        $values = Get-ItemProperty -Path "Registry::$jdkHKeyPath"
+    if (Test-Path -Path $azulJdks) {
+        foreach ($jdk in Get-ChildItem -Path $azulJdks) {
+            $jdkHKeyPath = $jdk.Name
+            $values = Get-ItemProperty -Path "Registry::$jdkHKeyPath"
 
-        [void]$jdkOptions.Rows.Add($choiceNumber, "Zulu", $values.MajorVersion, $values.CurrentVersion, $values.InstallationPath)
-        $choiceNumber++
+            [void]$jdkOptions.Rows.Add($choiceNumber, "Zulu", $values.MajorVersion, $values.CurrentVersion, $values.InstallationPath)
+            $choiceNumber++
+        }
     }
 
     # Eclipse uses a registry key pattern of
@@ -80,13 +83,38 @@ if ("" -eq $JdkPath) {
     # Select the installs in the following format
     #
     # Eclipse | <First number segment in Current Version> | <Current Version> | <Path>
-    foreach ($jdk in Get-ChildItem -Path $eclipseJdks) {
-        $jdkHKeyPath = $jdk.Name
-        $jdkFullVersion = $jdk.PSChildName
-        $jdkChoicePath = (Get-ItemProperty -Path "Registry::$jdkHKeyPath\hotspot\MSI").Path
+    if (Test-Path -Path $eclipseJdks) {
+        foreach ($jdk in Get-ChildItem -Path $eclipseJdks) {
+            $jdkHKeyPath = $jdk.Name
+            $jdkFullVersion = $jdk.PSChildName
+            $jdkChoicePath = (Get-ItemProperty -Path "Registry::$jdkHKeyPath\hotspot\MSI").Path
 
-        [void]$jdkOptions.Rows.Add($choiceNumber, "Eclipse", $jdkFullVersion.split(".")[0], $jdkFullVersion, $jdkChoicePath)
-        $choiceNumber++
+            [void]$jdkOptions.Rows.Add($choiceNumber, "Eclipse", $jdkFullVersion.split(".")[0], $jdkFullVersion, $jdkChoicePath)
+            $choiceNumber++
+        }
+    }
+
+    # Microsoft uses a registry key pattern of
+    #
+    # <Current Version> (ex 17.0.7.7)
+    # - \ <Implementation> (ex hotspot)
+    #     - \ <MSI>
+    #         - \ <Path> (ex C:\Program Files\Microsoft\jdk-17.0.7.7-hotspot\)
+    #
+    # There are additional properties that aren't needed and aren't included above.
+    #
+    # Select the installs in the following format
+    #
+    # Microsoft | <First number segment in Current Version> | <Current Version> | <Path>
+    if (Test-Path -Path $microsoftJdks) {
+        foreach ($jdk in Get-ChildItem -Path $microsoftJdks) {
+            $jdkHKeyPath = $jdk.Name
+            $jdkFullVersion = $jdk.PSChildName
+            $jdkChoicePath = (Get-ItemProperty -Path "Registry::$jdkHKeyPath\hotspot\MSI").Path
+
+            [void]$jdkOptions.Rows.Add($choiceNumber, "Microsoft", $jdkFullVersion.split(".")[0], $jdkFullVersion, $jdkChoicePath)
+            $choiceNumber++
+        }
     }
 
     $choiceNumber--
@@ -94,7 +122,7 @@ if ("" -eq $JdkPath) {
 
     while ($null -eq $selection) {
         $jdkOptions | Format-Table -AutoSize
-        $selection = Read-Host "Select the JDK to set (or select no JDK by entering no option)"
+        $selection = Read-Host "Select the JDK to set (or keep current JDK by entering no option)"
 
         if ($null -ne $selection) {
             if ($selection.Trim() -eq "") {

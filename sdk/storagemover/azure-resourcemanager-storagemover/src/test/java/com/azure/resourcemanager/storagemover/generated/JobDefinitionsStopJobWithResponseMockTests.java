@@ -29,7 +29,7 @@ public final class JobDefinitionsStopJobWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"jobRunResourceId\":\"odkwobd\"}";
+        String responseStr = "{\"jobRunResourceId\":\"t\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,12 +60,7 @@ public final class JobDefinitionsStopJobWithResponseMockTests {
         JobRunResourceId response =
             manager
                 .jobDefinitions()
-                .stopJobWithResponse(
-                    "mwmbes",
-                    "dnkwwtppjflcxog",
-                    "okonzmnsikvmkqz",
-                    "qqkdltfzxmhhvhgu",
-                    com.azure.core.util.Context.NONE)
+                .stopJobWithResponse("uvwbhsqfs", "bcgjbirxbp", "bsrfbj", "dtws", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import java.util.List;
@@ -32,13 +31,6 @@ public interface Sim {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the authenticationKey property: The Ki value for the SIM.
@@ -152,11 +144,13 @@ public interface Sim {
             DefinitionStages.WithInternationalMobileSubscriberIdentity,
             DefinitionStages.WithCreate {
     }
+
     /** The Sim definition stages. */
     interface DefinitionStages {
         /** The first stage of the Sim definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Sim definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -169,6 +163,7 @@ public interface Sim {
             WithInternationalMobileSubscriberIdentity withExistingSimGroup(
                 String resourceGroupName, String simGroupName);
         }
+
         /** The stage of the Sim definition allowing to specify internationalMobileSubscriberIdentity. */
         interface WithInternationalMobileSubscriberIdentity {
             /**
@@ -181,6 +176,7 @@ public interface Sim {
              */
             WithCreate withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity);
         }
+
         /**
          * The stage of the Sim definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -207,6 +203,7 @@ public interface Sim {
              */
             Sim create(Context context);
         }
+
         /** The stage of the Sim definition allowing to specify authenticationKey. */
         interface WithAuthenticationKey {
             /**
@@ -217,6 +214,7 @@ public interface Sim {
              */
             WithCreate withAuthenticationKey(String authenticationKey);
         }
+
         /** The stage of the Sim definition allowing to specify operatorKeyCode. */
         interface WithOperatorKeyCode {
             /**
@@ -227,6 +225,7 @@ public interface Sim {
              */
             WithCreate withOperatorKeyCode(String operatorKeyCode);
         }
+
         /** The stage of the Sim definition allowing to specify integratedCircuitCardIdentifier. */
         interface WithIntegratedCircuitCardIdentifier {
             /**
@@ -238,6 +237,7 @@ public interface Sim {
              */
             WithCreate withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
         }
+
         /** The stage of the Sim definition allowing to specify deviceType. */
         interface WithDeviceType {
             /**
@@ -252,6 +252,7 @@ public interface Sim {
              */
             WithCreate withDeviceType(String deviceType);
         }
+
         /** The stage of the Sim definition allowing to specify simPolicy. */
         interface WithSimPolicy {
             /**
@@ -263,6 +264,7 @@ public interface Sim {
              */
             WithCreate withSimPolicy(SimPolicyResourceId simPolicy);
         }
+
         /** The stage of the Sim definition allowing to specify staticIpConfiguration. */
         interface WithStaticIpConfiguration {
             /**
@@ -276,6 +278,7 @@ public interface Sim {
             WithCreate withStaticIpConfiguration(List<SimStaticIpProperties> staticIpConfiguration);
         }
     }
+
     /**
      * Begins update for the Sim resource.
      *
@@ -306,6 +309,7 @@ public interface Sim {
          */
         Sim apply(Context context);
     }
+
     /** The Sim update stages. */
     interface UpdateStages {
         /** The stage of the Sim update allowing to specify authenticationKey. */
@@ -318,6 +322,7 @@ public interface Sim {
              */
             Update withAuthenticationKey(String authenticationKey);
         }
+
         /** The stage of the Sim update allowing to specify operatorKeyCode. */
         interface WithOperatorKeyCode {
             /**
@@ -328,6 +333,7 @@ public interface Sim {
              */
             Update withOperatorKeyCode(String operatorKeyCode);
         }
+
         /** The stage of the Sim update allowing to specify integratedCircuitCardIdentifier. */
         interface WithIntegratedCircuitCardIdentifier {
             /**
@@ -339,6 +345,7 @@ public interface Sim {
              */
             Update withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
         }
+
         /** The stage of the Sim update allowing to specify deviceType. */
         interface WithDeviceType {
             /**
@@ -353,6 +360,7 @@ public interface Sim {
              */
             Update withDeviceType(String deviceType);
         }
+
         /** The stage of the Sim update allowing to specify simPolicy. */
         interface WithSimPolicy {
             /**
@@ -364,6 +372,7 @@ public interface Sim {
              */
             Update withSimPolicy(SimPolicyResourceId simPolicy);
         }
+
         /** The stage of the Sim update allowing to specify staticIpConfiguration. */
         interface WithStaticIpConfiguration {
             /**
@@ -377,6 +386,7 @@ public interface Sim {
             Update withStaticIpConfiguration(List<SimStaticIpProperties> staticIpConfiguration);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.Troubleshooting;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
@@ -19,7 +20,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +31,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
+public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
 
     @Override
@@ -150,6 +151,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testVirtualNetworkGateways() throws Exception {
         new TestVirtualNetworkGateway().new Basic(azureResourceManager.virtualNetworkGateways().manager())
@@ -162,6 +164,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testVirtualNetworkGatewaySiteToSite() throws Exception {
         new TestVirtualNetworkGateway().new SiteToSite(azureResourceManager.virtualNetworkGateways().manager())
@@ -174,6 +177,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      *
      * @throws Exception
      */
+    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
         new TestVirtualNetworkGateway().new VNetToVNet(azureResourceManager.virtualNetworkGateways().manager())

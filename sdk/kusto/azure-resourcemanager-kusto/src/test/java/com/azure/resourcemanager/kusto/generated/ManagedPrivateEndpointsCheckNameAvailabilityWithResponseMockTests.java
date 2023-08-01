@@ -32,8 +32,7 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilityWithResponseMockT
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"nameAvailable\":false,\"name\":\"etpwbralll\",\"message\":\"phbqz\",\"reason\":\"AlreadyExists\"}";
+        String responseStr = "{\"nameAvailable\":true,\"name\":\"dt\",\"message\":\"epu\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,15 +64,15 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilityWithResponseMockT
             manager
                 .managedPrivateEndpoints()
                 .checkNameAvailabilityWithResponse(
-                    "egprhptil",
-                    "ucb",
-                    new ManagedPrivateEndpointsCheckNameRequest().withName("qtgdqohmcwsl"),
+                    "sfnrdtjxt",
+                    "r",
+                    new ManagedPrivateEndpointsCheckNameRequest().withName("cq"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("etpwbralll", response.name());
-        Assertions.assertEquals("phbqz", response.message());
-        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("dt", response.name());
+        Assertions.assertEquals("epu", response.message());
+        Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

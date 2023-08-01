@@ -8,34 +8,33 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RuntimeScriptActionDetailInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RuntimeScriptActionDetailInner model =
             BinaryData
                 .fromString(
-                    "{\"scriptExecutionId\":6042347797530197687,\"startTime\":\"w\",\"endTime\":\"kpnb\",\"status\":\"zejjoqk\",\"operation\":\"fhsxttaugz\",\"executionSummary\":[{\"status\":\"azpxdtnkdmkqjjl\",\"instanceCount\":1899473333},{\"status\":\"vrkpyouaibreb\",\"instanceCount\":1719378885},{\"status\":\"sj\",\"instanceCount\":1330578772},{\"status\":\"tnqttezlwfffiak\",\"instanceCount\":1860291958}],\"debugInformation\":\"qmt\",\"name\":\"d\",\"uri\":\"tmmjihyeozph\",\"parameters\":\"auyqncygupkv\",\"roles\":[\"mdscwxqupev\"],\"applicationName\":\"f\"}")
+                    "{\"scriptExecutionId\":1138155605453758000,\"startTime\":\"pmjerbdkelvidiz\",\"endTime\":\"sdbccxjmonfdgnwn\",\"status\":\"puuw\",\"operation\":\"tvuqjctzenkeifzz\",\"executionSummary\":[{\"status\":\"as\",\"instanceCount\":897576014},{\"status\":\"hbxcu\",\"instanceCount\":995133757},{\"status\":\"gsrboldforobw\",\"instanceCount\":2116230034},{\"status\":\"zbfhfovvac\",\"instanceCount\":1350154839}],\"debugInformation\":\"uodxesza\",\"name\":\"belawumuaslzkwr\",\"uri\":\"woycqucwyha\",\"parameters\":\"omd\",\"roles\":[\"ywuhpsvfuur\",\"tlwexxwlalniexz\",\"rzpgep\"],\"applicationName\":\"yb\"}")
                 .toObject(RuntimeScriptActionDetailInner.class);
-        Assertions.assertEquals("d", model.name());
-        Assertions.assertEquals("tmmjihyeozph", model.uri());
-        Assertions.assertEquals("auyqncygupkv", model.parameters());
-        Assertions.assertEquals("mdscwxqupev", model.roles().get(0));
+        Assertions.assertEquals("belawumuaslzkwr", model.name());
+        Assertions.assertEquals("woycqucwyha", model.uri());
+        Assertions.assertEquals("omd", model.parameters());
+        Assertions.assertEquals("ywuhpsvfuur", model.roles().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RuntimeScriptActionDetailInner model =
             new RuntimeScriptActionDetailInner()
-                .withName("d")
-                .withUri("tmmjihyeozph")
-                .withParameters("auyqncygupkv")
-                .withRoles(Arrays.asList("mdscwxqupev"));
+                .withName("belawumuaslzkwr")
+                .withUri("woycqucwyha")
+                .withParameters("omd")
+                .withRoles(Arrays.asList("ywuhpsvfuur", "tlwexxwlalniexz", "rzpgep"));
         model = BinaryData.fromObject(model).toObject(RuntimeScriptActionDetailInner.class);
-        Assertions.assertEquals("d", model.name());
-        Assertions.assertEquals("tmmjihyeozph", model.uri());
-        Assertions.assertEquals("auyqncygupkv", model.parameters());
-        Assertions.assertEquals("mdscwxqupev", model.roles().get(0));
+        Assertions.assertEquals("belawumuaslzkwr", model.name());
+        Assertions.assertEquals("woycqucwyha", model.uri());
+        Assertions.assertEquals("omd", model.parameters());
+        Assertions.assertEquals("ywuhpsvfuur", model.roles().get(0));
     }
 }

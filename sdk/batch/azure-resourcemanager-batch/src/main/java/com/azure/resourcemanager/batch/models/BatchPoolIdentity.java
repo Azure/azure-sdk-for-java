@@ -15,7 +15,7 @@ import java.util.Map;
  * the new vms which are created after the pool shrinks to 0 will have the updated identities.
  */
 @Fluent
-public class BatchPoolIdentity {
+public final class BatchPoolIdentity {
     /*
      * The type of identity used for the Batch Pool.
      */

@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.util;
 
-import com.test.models.AnnotationA;
+import com.azure.sdk.build.tool.test.models.AnnotationA;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

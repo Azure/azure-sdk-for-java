@@ -139,7 +139,7 @@ public final class SearchOptions {
      * appending the pipe character '|' followed by the 'count-<number of
      * answers>' option after the answers parameter value, such as
      * 'extractive|count-3'. Default count is 1. The confidence threshold can
-     * be configured by appending the pipe character '|' followed by the 
+     * be configured by appending the pipe character '|' followed by the
      * 'threshold-<confidence threshold>' option after the answers parameter
      * value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
      */
@@ -159,7 +159,7 @@ public final class SearchOptions {
      * This parameter is only valid if the query type is 'semantic'.
      * The confidence threshold can be configured by appending the pipe
      * character '|' followed by the 'threshold-<confidence threshold>'
-     * option after the answers parameter value, such as 
+     * option after the answers parameter value, such as
      * 'extractive|threshold-0.9'. Default threshold is 0.7.
      */
     private Double answerThreshold;
@@ -235,6 +235,11 @@ public final class SearchOptions {
      * The list of field names used for semantic search.
      */
     private List<String> semanticFields;
+
+    /**
+     * The query parameters for vector and hybrid search queries.
+     */
+    private SearchQueryVector vector;
 
     /**
      * Creates an instance of {@link SearchOptions}.
@@ -656,7 +661,7 @@ public final class SearchOptions {
      *
      * @return the answers value.
      */
-    public QueryAnswerType getAnswers() {
+    public QueryAnswerType getQueryAnswer() {
         return this.answers;
     }
 
@@ -671,7 +676,7 @@ public final class SearchOptions {
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswers(QueryAnswerType answers) {
+    public SearchOptions setQueryAnswer(QueryAnswerType answers) {
         this.answers = answers;
         return this;
     }
@@ -706,9 +711,9 @@ public final class SearchOptions {
      * Get the answer threshold property: This parameter is only valid if the query type is 'semantic'.
      * The confidence threshold can be configured by appending the pipe
      * character '|' followed by the 'threshold-&lt;confidence threshold&gt;'
-     * option after the answers parameter value, such as 
+     * option after the answers parameter value, such as
      * 'extractive|threshold-0.9'. Default threshold is 0.7.
-     * 
+     *
      * @return the answer threshold value.
      */
     public Double getAnswerThreshold() {
@@ -719,7 +724,7 @@ public final class SearchOptions {
      * Set the answer threshold property: This parameter is only valid if the query type is 'semantic'.
      * The confidence threshold can be configured by appending the pipe
      * character '|' followed by the 'threshold-&lt;confidence threshold&gt;'
-     * option after the answers parameter value, such as 
+     * option after the answers parameter value, such as
      * 'extractive|threshold-0.9'. Default threshold is 0.7.
      * @param answerThreshold the answer threshold value to set.
      * @return the SearchOptions object itself.
@@ -940,6 +945,26 @@ public final class SearchOptions {
      */
     public SearchOptions setSemanticFields(List<String> semanticFields) {
         this.semanticFields = semanticFields;
+        return this;
+    }
+
+    /**
+     * Get the vector property: The query parameters for vector and hybrid search queries.
+     *
+     * @return the vector value.
+     */
+    public SearchQueryVector getVector() {
+        return this.vector;
+    }
+
+    /**
+     * Set the vector property: The query parameters for vector and hybrid search queries.
+     *
+     * @param vector the vector value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchOptions setVector(SearchQueryVector vector) {
+        this.vector = vector;
         return this;
     }
 }

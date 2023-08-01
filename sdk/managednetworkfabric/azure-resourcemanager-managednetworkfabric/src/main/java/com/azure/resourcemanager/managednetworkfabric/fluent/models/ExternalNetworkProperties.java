@@ -6,14 +6,16 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPropertiesOptionAProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.OptionBProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3OptionBProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** External Network Properties. */
 @Fluent
@@ -25,24 +27,6 @@ public final class ExternalNetworkProperties extends AnnotationResource {
     private String networkToNetworkInterconnectId;
 
     /*
-     * List of resources the externalNetwork is disabled on. Can be either entire NetworkFabric or NetworkRack.
-     */
-    @JsonProperty(value = "disabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> disabledOnResources;
-
-    /*
-     * AdministrativeState of the externalNetwork. Example: Enabled | Disabled.
-     */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
-    private EnabledDisabledState administrativeState;
-
-    /*
-     * Gets the provisioning state of the resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
      * Peering option list.
      */
     @JsonProperty(value = "peeringOption", required = true)
@@ -52,7 +36,7 @@ public final class ExternalNetworkProperties extends AnnotationResource {
      * option B properties object
      */
     @JsonProperty(value = "optionBProperties")
-    private OptionBProperties optionBProperties;
+    private L3OptionBProperties optionBProperties;
 
     /*
      * option A properties object
@@ -61,16 +45,46 @@ public final class ExternalNetworkProperties extends AnnotationResource {
     private ExternalNetworkPropertiesOptionAProperties optionAProperties;
 
     /*
-     * ARM resource ID of importRoutePolicy.
+     * Configuration state of the resource.
+     */
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
+
+    /*
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
-     * ARM resource ID of exportRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
+
+    /*
+     * Import Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "importRoutePolicy")
+    private ImportRoutePolicy importRoutePolicy;
+
+    /*
+     * Export Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "exportRoutePolicy")
+    private ExportRoutePolicy exportRoutePolicy;
 
     /** Creates an instance of ExternalNetworkProperties class. */
     public ExternalNetworkProperties() {
@@ -83,34 +97,6 @@ public final class ExternalNetworkProperties extends AnnotationResource {
      */
     public String networkToNetworkInterconnectId() {
         return this.networkToNetworkInterconnectId;
-    }
-
-    /**
-     * Get the disabledOnResources property: List of resources the externalNetwork is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the disabledOnResources value.
-     */
-    public List<String> disabledOnResources() {
-        return this.disabledOnResources;
-    }
-
-    /**
-     * Get the administrativeState property: AdministrativeState of the externalNetwork. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.administrativeState;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -138,7 +124,7 @@ public final class ExternalNetworkProperties extends AnnotationResource {
      *
      * @return the optionBProperties value.
      */
-    public OptionBProperties optionBProperties() {
+    public L3OptionBProperties optionBProperties() {
         return this.optionBProperties;
     }
 
@@ -148,7 +134,7 @@ public final class ExternalNetworkProperties extends AnnotationResource {
      * @param optionBProperties the optionBProperties value to set.
      * @return the ExternalNetworkProperties object itself.
      */
-    public ExternalNetworkProperties withOptionBProperties(OptionBProperties optionBProperties) {
+    public ExternalNetworkProperties withOptionBProperties(L3OptionBProperties optionBProperties) {
         this.optionBProperties = optionBProperties;
         return this;
     }
@@ -175,7 +161,35 @@ public final class ExternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.configurationState;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -184,7 +198,8 @@ public final class ExternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the ExternalNetworkProperties object itself.
@@ -195,7 +210,8 @@ public final class ExternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -204,13 +220,54 @@ public final class ExternalNetworkProperties extends AnnotationResource {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the ExternalNetworkProperties object itself.
      */
     public ExternalNetworkProperties withExportRoutePolicyId(String exportRoutePolicyId) {
         this.exportRoutePolicyId = exportRoutePolicyId;
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.importRoutePolicy;
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the ExternalNetworkProperties object itself.
+     */
+    public ExternalNetworkProperties withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        this.importRoutePolicy = importRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.exportRoutePolicy;
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the ExternalNetworkProperties object itself.
+     */
+    public ExternalNetworkProperties withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        this.exportRoutePolicy = exportRoutePolicy;
         return this;
     }
 
@@ -240,6 +297,12 @@ public final class ExternalNetworkProperties extends AnnotationResource {
         }
         if (optionAProperties() != null) {
             optionAProperties().validate();
+        }
+        if (importRoutePolicy() != null) {
+            importRoutePolicy().validate();
+        }
+        if (exportRoutePolicy() != null) {
+            exportRoutePolicy().validate();
         }
     }
 

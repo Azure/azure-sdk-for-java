@@ -29,12 +29,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.7.11</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+			<version>2.7.13</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>2.7.11</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+			<version>2.7.13</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>2.7.11</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+			<version>2.7.13</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -67,8 +67,8 @@
 					<rules>
 						<bannedDependencies>
 							<includes>
-								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.11]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-								<include>org.springframework.boot:spring-boot-starter-web:[2.7.11]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.13]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+								<include>org.springframework.boot:spring-boot-starter-web:[2.7.13]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
 								<include>org.springframework.cloud:spring-cloud-bus:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
 							</includes>
 						</bannedDependencies>
@@ -78,7 +78,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+				<version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -126,7 +126,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+				<version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -142,7 +142,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+				<version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
 				<executions>
 					<execution>
 						<id>copy-readme-to-javadocTemp-and-sourceTemp</id>

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.ConnectedClusterResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
 import com.azure.resourcemanager.mobilenetwork.models.CustomLocationResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.DesiredInstallationState;
 import com.azure.resourcemanager.mobilenetwork.models.HttpsServerCertificate;
+import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
@@ -21,7 +23,7 @@ import java.util.Arrays;
 /** Samples for PacketCoreControlPlanes CreateOrUpdate. */
 public final class PacketCoreControlPlanesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneCreate.json
      */
     /**
      * Sample code: Create packet core control plane.
@@ -40,22 +42,22 @@ public final class PacketCoreControlPlanesCreateOrUpdateSamples {
                     .asList(
                         new SiteResourceId()
                             .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite")))
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite")))
             .withPlatform(
                 new PlatformConfiguration()
                     .withType(PlatformType.AKS_HCI)
                     .withAzureStackEdgeDevice(
                         new AzureStackEdgeDeviceResourceId()
                             .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"))
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"))
                     .withConnectedCluster(
                         new ConnectedClusterResourceId()
                             .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"))
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"))
                     .withCustomLocation(
                         new CustomLocationResourceId()
                             .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation")))
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation")))
             .withControlPlaneAccessInterface(new InterfaceProperties().withName("N2"))
             .withSku(BillingSku.G0)
             .withLocalDiagnosticsAccess(
@@ -64,6 +66,7 @@ public final class PacketCoreControlPlanesCreateOrUpdateSamples {
                     .withHttpsServerCertificate(
                         new HttpsServerCertificate()
                             .withCertificateUrl("https://contosovault.vault.azure.net/certificates/ingress")))
+            .withInstallation(new Installation().withDesiredState(DesiredInstallationState.INSTALLED))
             .withCoreNetworkTechnology(CoreNetworkType.FIVE_GC)
             .withVersion("0.2.0")
             .withUeMtu(1600)

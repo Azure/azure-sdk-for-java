@@ -43,6 +43,12 @@ public class SqlServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /*
+     * Sql always encrypted properties.
+     */
+    @JsonProperty(value = "typeProperties.alwaysEncryptedSettings")
+    private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
+
     /** Creates an instance of SqlServerLinkedService class. */
     public SqlServerLinkedService() {}
 
@@ -129,6 +135,26 @@ public class SqlServerLinkedService extends LinkedService {
      */
     public SqlServerLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
+     *
+     * @return the alwaysEncryptedSettings value.
+     */
+    public SqlAlwaysEncryptedProperties getAlwaysEncryptedSettings() {
+        return this.alwaysEncryptedSettings;
+    }
+
+    /**
+     * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
+     *
+     * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
+     * @return the SqlServerLinkedService object itself.
+     */
+    public SqlServerLinkedService setAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
+        this.alwaysEncryptedSettings = alwaysEncryptedSettings;
         return this;
     }
 
