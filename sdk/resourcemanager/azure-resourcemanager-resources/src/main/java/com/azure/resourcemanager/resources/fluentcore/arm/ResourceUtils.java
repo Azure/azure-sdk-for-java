@@ -172,9 +172,9 @@ public final class ResourceUtils {
         }
 
         // relaxed match, in case of edge cases(e.g. namespace included in resource type)
-        String fullResourceType = resourceId.fullResourceType();
+        String fullResourceType = resourceId.fullResourceType().toLowerCase(Locale.ROOT);
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (fullResourceType.contains(prt.resourceType())) {
+            if (fullResourceType.contains(prt.resourceType().toLowerCase(Locale.ROOT))) {
                 return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
             }
         }
