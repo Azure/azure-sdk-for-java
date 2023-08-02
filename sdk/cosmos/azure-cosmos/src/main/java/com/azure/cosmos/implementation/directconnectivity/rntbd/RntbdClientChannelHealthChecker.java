@@ -413,7 +413,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, Channel channel) {
         String errorMessage = StringUtils.EMPTY;
 
-        if (timestamps.cancellationCount() > this.cancellationCountSinceLastReadThreshold) {
+        if (timestamps.cancellationCount() >= this.cancellationCountSinceLastReadThreshold) {
 
             if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
                 return errorMessage;
