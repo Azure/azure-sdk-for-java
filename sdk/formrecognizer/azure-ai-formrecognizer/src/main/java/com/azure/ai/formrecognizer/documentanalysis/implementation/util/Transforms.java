@@ -36,7 +36,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSourceKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
@@ -63,6 +62,8 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
+import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
+import com.azure.ai.formrecognizer.documentanalysis.models.FontWeight;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSource;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
@@ -189,6 +190,17 @@ public class Transforms {
                     DocumentStyleHelper.setConfidence(documentStyle, innerDocumentStyle.getConfidence());
                     DocumentStyleHelper.setIsHandwritten(documentStyle, innerDocumentStyle.isHandwritten());
                     DocumentStyleHelper.setSpans(documentStyle, toDocumentSpans(innerDocumentStyle.getSpans()));
+                    DocumentStyleHelper.setColor(documentStyle, innerDocumentStyle.getColor());
+                    DocumentStyleHelper.setBackgroundColor(documentStyle, innerDocumentStyle.getBackgroundColor());
+                    if (innerDocumentStyle.getFontWeight() != null) {
+                        DocumentStyleHelper.setFontWeight(documentStyle,
+                                FontWeight.fromString(innerDocumentStyle.getFontWeight().toString()));
+                    }
+                    DocumentStyleHelper.setSimilarFontFamily(documentStyle, innerDocumentStyle.getSimilarFontFamily());
+                    if (innerDocumentStyle.getFontStyle() != null) {
+                        DocumentStyleHelper.setFontStyle(documentStyle,
+                                FontStyle.fromString(innerDocumentStyle.getFontStyle().toString()));
+                    }
                     return documentStyle;
                 })
                 .collect(Collectors.toList()));
