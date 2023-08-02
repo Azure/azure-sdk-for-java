@@ -7,14 +7,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModel
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
-import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
-import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.*;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
@@ -38,37 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BARCODE_TIF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BLANK_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_JPG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_PNG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_FORM_JPG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_GERMAN_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_DOCX;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_HTML;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_PPTX;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_XLSX;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.FORMULA_JPG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.GERMAN_PNG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_6_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.IRS_1040;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.LICENSE_PNG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_BUSINESS_CARD_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_INVOICE_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_RECEIPT_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_VENDOR_INVOICE_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.RECEIPT_CONTOSO_JPG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.RECEIPT_CONTOSO_PNG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.SELECTION_MARK_PDF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.W2_JPG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.damagedPdfDataRunner;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.encodedBlankSpaceSourceUrlRunner;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getContentDetectionFileData;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.invalidSourceUrlRunner;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.localFilePathRunner;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.urlRunner;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -1493,9 +1456,31 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult.getPages());
+
             DocumentBarcode barcode =
                 analyzeResult.getPages().get(0).getBarcodes().get(0);
             Assertions.assertEquals(DocumentBarcodeKind.CODE_39, barcode.getKind());
         }, BARCODE_TIF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void testStyleFeatureFlagPrebuiltLayout(HttpClient httpClient,
+                                        DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        testingContainerUrlRunner((sourceUrl) -> {
+            SyncPoller<OperationResult, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-layout", sourceUrl,
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.STYLE_FONT)))
+                .setPollInterval(durationTestMode)
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult.getPages());
+            DocumentStyle style =
+                analyzeResult.getStyles().get(3);
+            Assertions.assertEquals(FontStyle.ITALIC, style.getFontStyle());
+        }, STYLE_PNG);
     }
 }

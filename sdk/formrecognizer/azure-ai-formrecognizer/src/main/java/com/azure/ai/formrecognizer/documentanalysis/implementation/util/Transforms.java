@@ -3,28 +3,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobFileListContentSource;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyToOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentTypeDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationKind;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.QuotaDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.*;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentClassifierRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
@@ -36,7 +15,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSourceKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
@@ -63,7 +41,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSource;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
@@ -288,8 +265,8 @@ public class Transforms {
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(
-        TrainingDataContentSource trainingDataContentSource, DocumentModelBuildMode buildMode,
-        String modelId, BuildDocumentModelOptions buildDocumentModelOptions) {
+            TrainingDataContentSource trainingDataContentSource, DocumentModelBuildMode buildMode,
+            String modelId, BuildDocumentModelOptions buildDocumentModelOptions) {
         BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest(modelId,
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
                 .fromString(buildMode.toString()))
@@ -786,12 +763,12 @@ public class Transforms {
         tags.forEach((key, classifierDocumentTypeDetails) -> {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails innerClassifyDocTypeDetails
                 = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails();
-            if (TrainingDataContentSourceKind.AZURE_BLOB_FILE_LIST.equals(classifierDocumentTypeDetails.getTrainingDataContentSource().getKind())) {
+            if (classifierDocumentTypeDetails.getTrainingDataContentSource() instanceof BlobFileListContentSource) {
                 innerClassifyDocTypeDetails.setAzureBlobFileListSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl(),
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getFileList()));
-            } else if (TrainingDataContentSourceKind.AZURE_BLOB.equals(classifierDocumentTypeDetails.getTrainingDataContentSource().getKind())) {
+            } else {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
                         ((BlobContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl())
