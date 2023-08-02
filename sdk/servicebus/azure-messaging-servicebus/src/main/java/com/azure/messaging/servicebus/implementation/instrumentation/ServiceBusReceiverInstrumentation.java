@@ -17,15 +17,16 @@ import java.time.Instant;
  * Contains convenience methods to instrument specific calls with traces and metrics.
  */
 public final class ServiceBusReceiverInstrumentation {
+    ;
+
     private final ServiceBusMeter meter;
     private final ServiceBusTracer tracer;
+    private final ReceiverKind receiverKind;
 
-    private final boolean isSync;
-
-    public ServiceBusReceiverInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityPath, String subscriptionName, boolean isSync) {
+    public ServiceBusReceiverInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityPath, String subscriptionName, ReceiverKind receiverKind) {
         this.tracer = new ServiceBusTracer(tracer, fullyQualifiedName, entityPath);
         this.meter = new ServiceBusMeter(meter, fullyQualifiedName, entityPath, subscriptionName);
-        this.isSync = isSync;
+        this.receiverKind = receiverKind;
     }
 
     /**
@@ -36,6 +37,9 @@ public final class ServiceBusReceiverInstrumentation {
         return meter.isSettlementEnabled() ? this.meter.trackSettlementSequenceNumber() : null;
     }
 
+    public ReceiverKind getReceiverKind() {
+         return receiverKind;
+    }
     /**
      * Instruments even processing. For Processor traces processMessage callback, for async receiver
      * traces subscriber call. Does not trace anything for sync receiver - use {@link ServiceBusTracer#traceSyncReceive(String, Flux)}
@@ -47,7 +51,7 @@ public final class ServiceBusReceiverInstrumentation {
             return parent;
         }
 
-        Context span = (tracer.isEnabled() && !isSync) ? tracer.startProcessSpan(name, message, parent) : parent;
+        Context span = (tracer.isEnabled() && receiverKind != ReceiverKind.SYNC_RECEIVER) ? tracer.startProcessSpan(name, message, parent) : parent;
         meter.reportConsumerLag(message.getEnqueuedTime(), span);
 
         return span;

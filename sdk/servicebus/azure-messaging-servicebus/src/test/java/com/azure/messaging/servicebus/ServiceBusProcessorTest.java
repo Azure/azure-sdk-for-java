@@ -9,6 +9,7 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracingLink;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -57,7 +59,7 @@ public class ServiceBusProcessorTest {
     private static final String NAMESPACE = "namespace";
     private static final String ENTITY_NAME = "entity";
     private static final ServiceBusReceiverInstrumentation DEFAULT_INSTRUMENTATION =
-        new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_NAME, "subscription", false);
+        new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_NAME, "subscription", ReceiverKind.PROCESSOR);
 
     /**
      * Tests receiving messages using a {@link ServiceBusProcessorClient}.
@@ -225,7 +227,7 @@ public class ServiceBusProcessorTest {
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
                 ServiceBusMessageContext serviceBusMessageContext =
                     new ServiceBusMessageContext(serviceBusReceivedMessage);
-                if (state == 2) {
+                 if (state == 2) {
                     throw new IllegalStateException("error");
                 } else {
                     sink.next(serviceBusMessageContext);
@@ -252,7 +254,7 @@ public class ServiceBusProcessorTest {
                     countDownLatch.get().countDown();
                 }
             },
-            error -> { /* ignored */ },
+            error -> { },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
 
         serviceBusProcessorClient.start();
@@ -287,7 +289,7 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
 
-        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(receiverBuilder.buildAsyncClient(eq(true), any())).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
@@ -343,7 +345,7 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(receiverBuilder.buildAsyncClient(eq(true), any())).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -530,11 +532,13 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(receiverBuilder.buildAsyncClient(eq(true), any())).thenAnswer(i -> {
+            return asyncClient;
+        });
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
 
-        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, false);
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(
             new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
         when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
