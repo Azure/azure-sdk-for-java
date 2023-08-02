@@ -31,7 +31,7 @@
       "type": "String"
     },
     "regionId": {
-      "defaultValue": "westus2",
+      "defaultValue": "[resourceGroup().location]",
       "type": "string",
       "metadata": {
         "description": "Which Azure Region to deploy the resource to. This must be a valid Azure regionId."
@@ -73,12 +73,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "westus2",
-      "allowedValues": [
-        "westus2",
-        "eastus2",
-        "eastus2euap"
-      ],
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Specifies the location in which to create the Data Collection Endpoint."
       }
@@ -103,7 +98,7 @@
     "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_java_name'))]",
     "uniqueAppInsightsName": "[concat(parameters('baseName'),'-' , parameters('appinsights_java_name'))]",
     "endpointValue": "[concat('https://', parameters('baseName'), '-', parameters('configurationStores_azconfig_java_name'), parameters('endpointSuffix'))]",
-    "location": "[resourceGroup().location]",
+    "location": "[parameters('location')]",
     "authorizationApiVersion": "2018-09-01-preview",
     "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
     "eventHubsApiVersion": "2017-04-01",
@@ -282,7 +277,7 @@
       "type": "microsoft.operationalinsights/workspaces",
       "apiVersion": "2021-12-01-preview",
       "name": "[parameters('workspaceName')]",
-      "location": "westus2",
+      "location": "[variables('location')]",
       "properties": {
         "sku": {
           "name": "pergb2018"
@@ -376,6 +371,18 @@
     "AZURE_MONITOR_DCR_ID": {
       "type": "string",
       "value": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleName')), '2021-04-01').immutableId]"
+    },
+    "AZURE_MONITOR_LOGS_WORKSPACE_ID": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))).customerId]"
+    },
+    "AZURE_MONITOR_LOGS_RESOURCE_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]"
+    },
+    "AZURE_MONITOR_METRICS_RESOURCE_URI": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Eventhub/Namespaces', variables('eventHubsNamespaceName'))]"
     }
   }
 }

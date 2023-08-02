@@ -10,33 +10,32 @@ import com.azure.resourcemanager.batch.models.EndpointAccessProfile;
 import com.azure.resourcemanager.batch.models.IpRule;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointAccessProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EndpointAccessProfile model =
             BinaryData
                 .fromString(
-                    "{\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"uksjtxukcdmp\"},{\"value\":\"rcryuanzwuxzdxta\"},{\"value\":\"rlhm\"}]}")
+                    "{\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"eupewnwreitjz\"},{\"value\":\"flusarhmof\"},{\"value\":\"qhsmyurkdtml\"}]}")
                 .toObject(EndpointAccessProfile.class);
         Assertions.assertEquals(EndpointAccessDefaultAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals("uksjtxukcdmp", model.ipRules().get(0).value());
+        Assertions.assertEquals("eupewnwreitjz", model.ipRules().get(0).value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EndpointAccessProfile model =
             new EndpointAccessProfile()
                 .withDefaultAction(EndpointAccessDefaultAction.ALLOW)
                 .withIpRules(
                     Arrays
                         .asList(
-                            new IpRule().withValue("uksjtxukcdmp"),
-                            new IpRule().withValue("rcryuanzwuxzdxta"),
-                            new IpRule().withValue("rlhm")));
+                            new IpRule().withValue("eupewnwreitjz"),
+                            new IpRule().withValue("flusarhmof"),
+                            new IpRule().withValue("qhsmyurkdtml")));
         model = BinaryData.fromObject(model).toObject(EndpointAccessProfile.class);
         Assertions.assertEquals(EndpointAccessDefaultAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals("uksjtxukcdmp", model.ipRules().get(0).value());
+        Assertions.assertEquals("eupewnwreitjz", model.ipRules().get(0).value());
     }
 }

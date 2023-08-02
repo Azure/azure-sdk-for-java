@@ -32,7 +32,7 @@ public final class SubvolumesListByVolumeMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"path\":\"i\",\"size\":8841673596868858874,\"parentPath\":\"wmxqhndvnoamlds\",\"provisioningState\":\"aohdjh\"},\"id\":\"lzok\",\"name\":\"coxpelnjeta\",\"type\":\"ltsxoatf\"}]}";
+            "{\"value\":[{\"properties\":{\"path\":\"jawrtmjfjmyc\",\"size\":3597660503783686847,\"parentPath\":\"coxovn\",\"provisioningState\":\"henlusfnr\"},\"id\":\"tjxtxr\",\"name\":\"cq\",\"type\":\"jvidttge\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class SubvolumesListByVolumeMockTests {
         PagedIterable<SubvolumeInfo> response =
             manager
                 .subvolumes()
-                .listByVolume("ziqgfuh", "kzruswh", "hczznvf", "ycjsx", com.azure.core.util.Context.NONE);
+                .listByVolume("rmlmuowo", "bauiropi", "nszonwpngaj", "n", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("i", response.iterator().next().path());
-        Assertions.assertEquals(8841673596868858874L, response.iterator().next().size());
-        Assertions.assertEquals("wmxqhndvnoamlds", response.iterator().next().parentPath());
+        Assertions.assertEquals("jawrtmjfjmyc", response.iterator().next().path());
+        Assertions.assertEquals(3597660503783686847L, response.iterator().next().size());
+        Assertions.assertEquals("coxovn", response.iterator().next().parentPath());
     }
 }

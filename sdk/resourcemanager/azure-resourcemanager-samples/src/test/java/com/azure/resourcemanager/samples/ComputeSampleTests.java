@@ -83,7 +83,9 @@ public class ComputeSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ListVirtualMachineExtensionImages.runSample(azureResourceManager));
     }
 
+    // record too large, playback takes 30+ seconds
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testListVirtualMachineImages() {
         Assertions.assertTrue(ListVirtualMachineImages.runSample(azureResourceManager));
     }
@@ -184,6 +186,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testManageDiskEncryptionSet() {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertNotNull(clientId);
         Assertions.assertTrue(ManageDiskEncryptionSet.runSample(azureResourceManager, clientId));
     }
 
@@ -192,9 +195,11 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testCreateVirtualMachineEncryptedUsingCustomerManagedKey() {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertNotNull(clientId);
         Assertions.assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
     }
 
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testCloneVirtualMachineToNewRegion() {
         Assertions.assertTrue(CloneVirtualMachineToNewRegion.runSample(azureResourceManager));

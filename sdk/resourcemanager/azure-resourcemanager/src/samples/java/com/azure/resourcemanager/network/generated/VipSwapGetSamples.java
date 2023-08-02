@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VipSwap Get. */
 public final class VipSwapGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/CloudServiceSwapGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/CloudServiceSwapGet.json
      */
     /**
      * Sample code: Get swap resource.

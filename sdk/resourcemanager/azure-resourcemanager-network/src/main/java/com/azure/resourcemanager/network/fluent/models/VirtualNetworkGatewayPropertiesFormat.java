@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
@@ -163,6 +164,13 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      */
     @JsonProperty(value = "allowRemoteVnetTraffic")
     private Boolean allowRemoteVnetTraffic;
+
+    /*
+     * Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways
+     * in the vnet
+     */
+    @JsonProperty(value = "adminState")
+    private AdminState adminState;
 
     /** Creates an instance of VirtualNetworkGatewayPropertiesFormat class. */
     public VirtualNetworkGatewayPropertiesFormat() {
@@ -619,6 +627,28 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      */
     public VirtualNetworkGatewayPropertiesFormat withAllowRemoteVnetTraffic(Boolean allowRemoteVnetTraffic) {
         this.allowRemoteVnetTraffic = allowRemoteVnetTraffic;
+        return this;
+    }
+
+    /**
+     * Get the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @return the adminState value.
+     */
+    public AdminState adminState() {
+        return this.adminState;
+    }
+
+    /**
+     * Set the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @param adminState the adminState value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAdminState(AdminState adminState) {
+        this.adminState = adminState;
         return this;
     }
 

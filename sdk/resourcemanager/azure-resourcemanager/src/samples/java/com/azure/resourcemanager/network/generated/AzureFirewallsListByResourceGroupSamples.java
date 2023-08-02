@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for AzureFirewalls ListByResourceGroup. */
 public final class AzureFirewallsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/AzureFirewallListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/AzureFirewallListByResourceGroup.json
      */
     /**
      * Sample code: List all Azure Firewalls for a given resource group.

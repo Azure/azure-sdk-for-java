@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for DiskEncryptionSets GetByResourceGroup. */
 public final class DiskEncryptionSetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get.json
      */
     /**
      * Sample code: Get information about a disk encryption set.
@@ -24,7 +24,7 @@ public final class DiskEncryptionSetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
      */
     /**
      * Sample code: Get information about a disk encryption set when auto-key rotation failed.

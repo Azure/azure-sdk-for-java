@@ -32,7 +32,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":7267482395817324073,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"qjujeickpzvcp\"},\"location\":\"mxelnwcltyjed\",\"tags\":{\"azuawx\":\"mlfmkqs\"},\"id\":\"z\",\"name\":\"puamwabzxr\",\"type\":\"xcushs\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":5768052751054245204,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"pyogtieyuj\"},\"location\":\"czkcnyxrxmunjd\",\"tags\":{\"aglqivbgkcvkh\":\"lnkvxlx\",\"yp\":\"zvuqdflvon\",\"idibgqjxgpn\":\"pubcpzgpxtivhjk\"},\"id\":\"hgovfgp\",\"name\":\"kqmhhaowjr\",\"type\":\"zvuporqzdfuydz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,14 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
         VolumeQuotaRule response =
             manager
                 .volumeQuotaRules()
-                .getWithResponse("jphslhcaw", "u", "i", "dwfmvigorqjb", "tzh", com.azure.core.util.Context.NONE)
+                .getWithResponse(
+                    "dtmaa", "quhuxylrj", "m", "ygjbmzyospspsh", "kfkyjp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("mxelnwcltyjed", response.location());
-        Assertions.assertEquals("mlfmkqs", response.tags().get("azuawx"));
-        Assertions.assertEquals(7267482395817324073L, response.quotaSizeInKiBs());
+        Assertions.assertEquals("czkcnyxrxmunjd", response.location());
+        Assertions.assertEquals("lnkvxlx", response.tags().get("aglqivbgkcvkh"));
+        Assertions.assertEquals(5768052751054245204L, response.quotaSizeInKiBs());
         Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, response.quotaType());
-        Assertions.assertEquals("qjujeickpzvcp", response.quotaTarget());
+        Assertions.assertEquals("pyogtieyuj", response.quotaTarget());
     }
 }

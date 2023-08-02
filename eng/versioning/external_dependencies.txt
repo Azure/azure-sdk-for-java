@@ -346,9 +346,11 @@ cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
+cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
 cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
+cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos_org.scala-lang:scala-library;2.12.10
 cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
