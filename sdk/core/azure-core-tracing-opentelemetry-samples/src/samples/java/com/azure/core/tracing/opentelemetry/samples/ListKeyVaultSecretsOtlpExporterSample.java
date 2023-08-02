@@ -10,19 +10,16 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
+import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-
-import java.time.Duration;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
 /**
- * Sample to demonstrate using {@link JaegerGrpcSpanExporter} to export telemetry events when asynchronously creating
+ * Sample to demonstrate using {@link OtlpGrpcSpanExporter} to export telemetry events when asynchronously creating
  * and listing secrets from a Key Vault using the {@link SecretClient}.
  */
-public class ListKeyVaultSecretsJaegerExporterSample {
-    private static final Tracer TRACER = configureJaegerExporter();
+public class ListKeyVaultSecretsOtlpExporterSample {
     private static final String VAULT_URL = "<YOUR_VAULT_URL>";
 
     /**
@@ -30,44 +27,17 @@ public class ListKeyVaultSecretsJaegerExporterSample {
      *
      * @param args Ignored args.
      */
+    @SuppressWarnings("try")
     public static void main(String[] args) {
+        OpenTelemetrySdk openTelemetry = configureTracing();
+        Tracer tracer = openTelemetry.getTracer("sample");
+
         SecretClient secretClient = new SecretClientBuilder()
             .vaultUrl(VAULT_URL)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        doClientWork(secretClient);
-    }
-
-    /**
-     * Configure the OpenTelemetry {@link JaegerGrpcSpanExporter} to enable tracing.
-     *
-     * @return The OpenTelemetry {@link Tracer} instance.
-     */
-    private static Tracer configureJaegerExporter() {
-        // Export traces to Jaeger
-        JaegerGrpcSpanExporter jaegerExporter =
-            JaegerGrpcSpanExporter.builder()
-                .setEndpoint("http://localhost:14250")
-                .setTimeout(Duration.ofMinutes(30000))
-                .build();
-
-        // Set to process the spans by the Jaeger Exporter
-        return OpenTelemetrySdk.builder()
-            .setTracerProvider(
-                SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(jaegerExporter)).build())
-            .buildAndRegisterGlobal()
-            .getTracer("List-KV-Secrets-Sample");
-    }
-
-    /**
-     * Create a secret and list all the secrets for a Key Vault using the
-     * {@link SecretClient} with distributed tracing enabled and using the Jaeger exporter to export telemetry events.
-     */
-    @SuppressWarnings("try")
-    private static void doClientWork(SecretClient secretClient) {
-
-        Span span = TRACER.spanBuilder("my-span").startSpan();
+        Span span = tracer.spanBuilder("my-span").startSpan();
         try (Scope s = span.makeCurrent()) {
             // current span propagates into synchronous calls automatically. ApplicationInsights or OpenTelemetry agent
             // also propagate context through async reactor calls.
@@ -79,5 +49,24 @@ public class ListKeyVaultSecretsJaegerExporterSample {
         } finally {
             span.end();
         }
+
+        openTelemetry.close();
+    }
+
+    /**
+     * Configure the OpenTelemetry to export spans to an OTLP endpoint with {@link OtlpGrpcSpanExporter}.
+     */
+    private static OpenTelemetrySdk configureTracing() {
+        OtlpGrpcSpanExporter spanExporter =
+            OtlpGrpcSpanExporter.builder()
+                .setEndpoint("http://localhost:4317")
+                .build();
+
+        return OpenTelemetrySdk.builder()
+            .setTracerProvider(
+                SdkTracerProvider.builder()
+                    .addSpanProcessor(BatchSpanProcessor.builder(spanExporter).build())
+                    .build())
+            .buildAndRegisterGlobal();
     }
 }

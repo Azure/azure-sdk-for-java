@@ -59,8 +59,8 @@
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-exporter-jaeger</artifactId>
-      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
+      <artifactId>opentelemetry-exporter-otlp</artifactId>
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
