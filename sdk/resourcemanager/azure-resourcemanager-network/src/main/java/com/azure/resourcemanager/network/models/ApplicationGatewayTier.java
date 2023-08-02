@@ -11,9 +11,11 @@ import java.util.Collection;
 /** Tier of an application gateway. */
 public final class ApplicationGatewayTier extends ExpandableStringEnum<ApplicationGatewayTier> {
     /** Static value Standard for ApplicationGatewayTier. */
+    @Deprecated
     public static final ApplicationGatewayTier STANDARD = fromString("Standard");
 
     /** Static value WAF for ApplicationGatewayTier. */
+    @Deprecated
     public static final ApplicationGatewayTier WAF = fromString("WAF");
 
     /** Static value Standard_v2 for ApplicationGatewayTier. */

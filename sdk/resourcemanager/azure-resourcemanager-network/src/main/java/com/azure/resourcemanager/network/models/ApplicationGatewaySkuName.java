@@ -11,18 +11,23 @@ import java.util.Collection;
 /** Name of an application gateway SKU. */
 public final class ApplicationGatewaySkuName extends ExpandableStringEnum<ApplicationGatewaySkuName> {
     /** Static value Standard_Small for ApplicationGatewaySkuName. */
+    @Deprecated
     public static final ApplicationGatewaySkuName STANDARD_SMALL = fromString("Standard_Small");
 
     /** Static value Standard_Medium for ApplicationGatewaySkuName. */
+    @Deprecated
     public static final ApplicationGatewaySkuName STANDARD_MEDIUM = fromString("Standard_Medium");
 
     /** Static value Standard_Large for ApplicationGatewaySkuName. */
+    @Deprecated
     public static final ApplicationGatewaySkuName STANDARD_LARGE = fromString("Standard_Large");
 
     /** Static value WAF_Medium for ApplicationGatewaySkuName. */
+    @Deprecated
     public static final ApplicationGatewaySkuName WAF_MEDIUM = fromString("WAF_Medium");
 
     /** Static value WAF_Large for ApplicationGatewaySkuName. */
+    @Deprecated
     public static final ApplicationGatewaySkuName WAF_LARGE = fromString("WAF_Large");
 
     /** Static value Standard_v2 for ApplicationGatewaySkuName. */
