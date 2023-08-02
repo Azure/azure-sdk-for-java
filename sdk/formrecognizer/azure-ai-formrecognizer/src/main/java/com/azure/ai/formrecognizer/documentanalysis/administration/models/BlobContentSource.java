@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.annotation.Fluent;
 
 /** Azure Blob Storage content. */
@@ -25,6 +24,7 @@ public final class BlobContentSource extends TrainingDataContentSource {
      * @param containerUrl the containerUrl value to set.
      */
     public BlobContentSource(String containerUrl) {
+        super(TrainingDataContentSourceKind.AZURE_BLOB);
         this.containerUrl = containerUrl;
     }
 

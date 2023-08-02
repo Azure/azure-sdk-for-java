@@ -96,7 +96,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     }
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
             return new DefaultAzureCredentialBuilder()
                 .authorityHost(TestUtils.getAuthority(endpoint))
                 .build();
