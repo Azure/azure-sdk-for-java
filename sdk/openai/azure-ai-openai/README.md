@@ -176,12 +176,13 @@ prompt.add("How to bake a cake?");
 IterableStream<Completions> completionsStream = client
     .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
 
-completionsStream.forEach(completions -> {
-    System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
-    for (Choice choice : completions.getChoices()) {
-        System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
-    }
-});
+completionsStream
+    .stream()
+    // Remove .skip(1) when using Non-Azure OpenAI API
+    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+    // TODO: remove .skip(1) when service fix the issue.
+    .skip(1)
+    .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
 ```
 
 For a complete sample example, see sample [Streaming Text Completions][sample_get_completions_streaming].
@@ -224,24 +225,21 @@ chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a 
 IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
     new ChatCompletionsOptions(chatMessages));
 
-chatCompletionsStream.forEach(chatCompletions -> {
-    System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
-    for (ChatChoice choice : chatCompletions.getChoices()) {
-        ChatMessage message = choice.getDelta();
-        if (message != null) {
-            System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-            System.out.println("Message:");
-            System.out.println(message.getContent());
+chatCompletionsStream
+    .stream()
+    // Remove .skip(1) when using Non-Azure OpenAI API
+    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+    // TODO: remove .skip(1) when service fix the issue.
+    .skip(1)
+    .forEach(chatCompletions -> {
+        ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+        if (delta.getRole() != null) {
+            System.out.println("Role = " + delta.getRole());
         }
-    }
-
-    CompletionsUsage usage = chatCompletions.getUsage();
-    if (usage != null) {
-        System.out.printf("Usage: number of prompt token is %d, "
-                + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-            usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-    }
-});
+        if (delta.getContent() != null) {
+            System.out.print(delta.getContent());
+        }
+    });
 ```
 For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
