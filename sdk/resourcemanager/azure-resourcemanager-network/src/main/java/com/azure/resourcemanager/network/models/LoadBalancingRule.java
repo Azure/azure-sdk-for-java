@@ -28,7 +28,14 @@ public interface LoadBalancingRule
     /** @return the number of minutes before an inactive connection is closed */
     int idleTimeoutInMinutes();
 
-    /** @return the backend associated with the load balancing rule */
+    /**
+     * Gets the backend associated with the load balancing rule.
+     * <p>
+     * If there are multiple backends associated with the rule, this API only returns the first backend.
+     * Use {@link #backends()} for the case of multiple backends associated with the rule.
+     *
+     * @return the backend associated with the load balancing rule
+     */
     LoadBalancerBackend backend();
 
     /** @return the probe associated with the load balancing rule */
