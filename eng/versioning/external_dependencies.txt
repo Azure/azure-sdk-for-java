@@ -313,6 +313,8 @@ org.revapi:revapi-maven-plugin;0.14.6
 org.sonatype.plugins:nexus-staging-maven-plugin;1.6.8
 org.testcontainers:testcontainers;1.17.6
 org.testcontainers:junit-jupiter;1.17.6
+org.codehaus.mojo:animal-sniffer-maven-plugin;1.23
+com.toasttab.android:gummy-bears-api-26;0.5.1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
