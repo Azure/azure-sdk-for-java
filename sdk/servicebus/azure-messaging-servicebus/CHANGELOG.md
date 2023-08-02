@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed incorrect process span duration reported by `ServiceBusProcessorClient` when max concurrency is bigger than 1.
+  ([#35916](https://github.com/Azure/azure-sdk-for-java/issues/35916))
 
 ### Other Changes
 
