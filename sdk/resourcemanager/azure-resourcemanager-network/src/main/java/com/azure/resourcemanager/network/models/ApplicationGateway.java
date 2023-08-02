@@ -401,6 +401,11 @@ public interface ApplicationGateway
             /**
              * Set tier of an application gateway. Possible values include: 'Standard', 'WAF', 'Standard_v2', 'WAF_v2'.
              *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             *
+             * See <a href="https://learn.microsoft.com/en-us/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
+             *
              * @param tier the tier value to set
              * @return the next stage of the definition
              */
@@ -413,6 +418,10 @@ public interface ApplicationGateway
              * the most correct, so following that here.
              *
              * <p>By default, the smallest size is used.
+             *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             * See <a href="https://learn.microsoft.com/en-us/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
              *
              * @param size an application gateway SKU name
              * @return the next stage of the definition
@@ -992,6 +1001,10 @@ public interface ApplicationGateway
             /**
              * Set tier of an application gateway. Possible values include: 'Standard', 'WAF', 'Standard_v2', 'WAF_v2'.
              *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             * See <a href="https://learn.microsoft.com/en-us/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
+             *
              * @param tier the tier value to set
              * @return the next stage of the update
              */
@@ -999,6 +1012,10 @@ public interface ApplicationGateway
 
             /**
              * Specifies the size of the application gateway to use within the context of the selected tier.
+             *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             * See <a href="https://learn.microsoft.com/en-us/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
              *
              * @param size an application gateway size name
              * @return the next stage of the update

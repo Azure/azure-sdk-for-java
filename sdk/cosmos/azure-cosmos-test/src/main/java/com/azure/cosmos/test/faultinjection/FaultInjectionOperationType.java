@@ -36,6 +36,10 @@ public enum FaultInjectionOperationType {
      */
     PATCH_ITEM,
     /**
+     * Batch item.
+     */
+    BATCH_ITEM,
+    /**
      * Read container request.
      */
     METADATA_REQUEST_CONTAINER,

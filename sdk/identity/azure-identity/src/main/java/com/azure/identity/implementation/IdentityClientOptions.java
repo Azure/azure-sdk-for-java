@@ -53,7 +53,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
-    private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
     private UserAssertion userAssertion;
     private boolean multiTenantAuthDisabled;
@@ -74,6 +73,7 @@ public final class IdentityClientOptions implements Cloneable {
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
     private boolean isChained;
+    private boolean enableSupportLogging;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -346,15 +346,6 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Check whether CP1 client capability should be disabled.
-     *
-     * @return the status indicating if CP1 client capability should be disabled.
-     */
-    public boolean isCp1Disabled() {
-        return this.cp1Disabled;
-    }
-
-    /**
      * Gets the regional authority, or null if regional authority should not be used.
      * @return the regional authority value if specified
      */
@@ -605,11 +596,6 @@ public final class IdentityClientOptions implements Cloneable {
         return this.perCallPolicies;
     }
 
-    IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
-        this.cp1Disabled = cp1Disabled;
-        return this;
-    }
-
     IdentityClientOptions setMultiTenantAuthDisabled(boolean multiTenantAuthDisabled) {
         this.multiTenantAuthDisabled = multiTenantAuthDisabled;
         return this;
@@ -690,7 +676,6 @@ public final class IdentityClientOptions implements Cloneable {
         imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
             IdentityConstants.DEFAULT_IMDS_ENDPOINT);
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
-        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
@@ -729,6 +714,23 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    /**
+     * Gets the status whether support logging is enabled or not.
+     * @return the flag indicating if support logging is enabled or not.
+     */
+    public boolean isSupportLoggingEnabled() {
+        return enableSupportLogging;
+    }
+
+    /**
+     * Enables additional support logging (including PII) for MSAL based credentials.
+     * @return the updated client options
+     */
+    public IdentityClientOptions enableSupportLogging() {
+        this.enableSupportLogging = true;
+        return this;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -747,7 +749,6 @@ public final class IdentityClientOptions implements Cloneable {
             .setIntelliJKeePassDatabasePath(this.keePassDatabasePath)
             .setAuthorityHost(this.authorityHost)
             .setImdsAuthorityHost(this.imdsAuthorityHost)
-            .setCp1Disabled(this.cp1Disabled)
             .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
             .setUserAssertion(this.userAssertion)
             .setConfigurationStore(this.configuration)
@@ -761,6 +762,9 @@ public final class IdentityClientOptions implements Cloneable {
             .setChained(this.isChained);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
+        }
+        if (isSupportLoggingEnabled()) {
+            clone.enableSupportLogging();
         }
         return clone;
     }

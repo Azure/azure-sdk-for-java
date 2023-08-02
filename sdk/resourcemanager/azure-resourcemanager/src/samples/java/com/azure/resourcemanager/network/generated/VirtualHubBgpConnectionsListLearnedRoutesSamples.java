@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualHubBgpConnections ListLearnedRoutes. */
 public final class VirtualHubBgpConnectionsListLearnedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualRouterPeerListLearnedRoute.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualRouterPeerListLearnedRoute.json
      */
     /**
      * Sample code: VirtualRouterPeerListLearnedRoutes.

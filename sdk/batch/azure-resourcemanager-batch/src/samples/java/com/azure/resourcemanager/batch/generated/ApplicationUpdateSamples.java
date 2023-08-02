@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.Application;
 
 /** Samples for Application Update. */
 public final class ApplicationUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationUpdate.json
      */
     /**
      * Sample code: ApplicationUpdate.
@@ -21,7 +20,7 @@ public final class ApplicationUpdateSamples {
         Application resource =
             manager
                 .applications()
-                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", Context.NONE)
+                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withDisplayName("myAppName").withAllowUpdates(true).withDefaultVersion("2").apply();
     }

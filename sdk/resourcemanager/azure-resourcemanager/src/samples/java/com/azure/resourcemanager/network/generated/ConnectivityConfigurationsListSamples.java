@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ConnectivityConfigurations List. */
 public final class ConnectivityConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerConnectivityConfigurationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerConnectivityConfigurationList.json
      */
     /**
      * Sample code: ConnectivityConfigurationsList.

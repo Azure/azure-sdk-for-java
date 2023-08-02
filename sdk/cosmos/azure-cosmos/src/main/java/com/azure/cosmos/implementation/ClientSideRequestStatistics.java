@@ -128,7 +128,7 @@ public class ClientSideRequestStatistics {
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
-        storeResponseStatistics.requestStartTimeUTC = this.requestStartTimeUTC;
+        storeResponseStatistics.requestStartTimeUTC = this.extractRequestStartTime(storeResultDiagnostics);
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
@@ -406,6 +406,17 @@ public class ClientSideRequestStatistics {
         }
     }
 
+    private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics){
+        if (storeResultDiagnostics == null
+            || storeResultDiagnostics.getStoreResponseDiagnostics() == null) {
+            return null;
+        }
+
+        RequestTimeline requestTimeline = storeResultDiagnostics.getStoreResponseDiagnostics().getRequestTimeline();
+
+        return requestTimeline != null ? requestTimeline.getRequestStartTimeUTC() : null;
+    }
+
     public void recordContributingPointOperation(ClientSideRequestStatistics other) {
         this.mergeClientSideRequestStatistics(other);
     }
@@ -569,6 +580,10 @@ public class ClientSideRequestStatistics {
 
         public Instant getRequestResponseTimeUTC() {
             return requestResponseTimeUTC;
+        }
+
+        public Instant getRequestStartTimeUTC() {
+            return requestStartTimeUTC;
         }
 
         public ResourceType getRequestResourceType() {

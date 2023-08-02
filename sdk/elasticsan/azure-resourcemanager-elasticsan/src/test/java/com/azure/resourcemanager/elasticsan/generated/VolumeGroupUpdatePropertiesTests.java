@@ -13,28 +13,26 @@ import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeGroupUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VolumeGroupUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[{\"id\":\"vvtpgvdfgio\",\"action\":\"Allow\",\"state\":\"failed\"},{\"id\":\"tqxln\",\"action\":\"Allow\",\"state\":\"deprovisioning\"},{\"id\":\"gug\",\"action\":\"Allow\",\"state\":\"provisioning\"}]}}")
+                    "{\"protocolType\":\"Iscsi\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[{\"id\":\"cuh\",\"action\":\"Allow\",\"state\":\"provisioning\"},{\"id\":\"yqiklbbovplwzb\",\"action\":\"Allow\",\"state\":\"provisioning\"},{\"id\":\"gu\",\"action\":\"Allow\",\"state\":\"deprovisioning\"},{\"id\":\"fssxqukkfplg\",\"action\":\"Allow\",\"state\":\"failed\"}]}}")
                 .toObject(VolumeGroupUpdateProperties.class);
-        Assertions.assertEquals(StorageTargetType.NONE, model.protocolType());
+        Assertions.assertEquals(StorageTargetType.ISCSI, model.protocolType());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, model.encryption());
-        Assertions
-            .assertEquals("vvtpgvdfgio", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("cuh", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.networkAcls().virtualNetworkRules().get(0).action());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VolumeGroupUpdateProperties model =
             new VolumeGroupUpdateProperties()
-                .withProtocolType(StorageTargetType.NONE)
+                .withProtocolType(StorageTargetType.ISCSI)
                 .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
                 .withNetworkAcls(
                     new NetworkRuleSet()
@@ -42,19 +40,21 @@ public final class VolumeGroupUpdatePropertiesTests {
                             Arrays
                                 .asList(
                                     new VirtualNetworkRule()
-                                        .withVirtualNetworkResourceId("vvtpgvdfgio")
+                                        .withVirtualNetworkResourceId("cuh")
                                         .withAction(Action.ALLOW),
                                     new VirtualNetworkRule()
-                                        .withVirtualNetworkResourceId("tqxln")
+                                        .withVirtualNetworkResourceId("yqiklbbovplwzb")
                                         .withAction(Action.ALLOW),
                                     new VirtualNetworkRule()
-                                        .withVirtualNetworkResourceId("gug")
+                                        .withVirtualNetworkResourceId("gu")
+                                        .withAction(Action.ALLOW),
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("fssxqukkfplg")
                                         .withAction(Action.ALLOW))));
         model = BinaryData.fromObject(model).toObject(VolumeGroupUpdateProperties.class);
-        Assertions.assertEquals(StorageTargetType.NONE, model.protocolType());
+        Assertions.assertEquals(StorageTargetType.ISCSI, model.protocolType());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, model.encryption());
-        Assertions
-            .assertEquals("vvtpgvdfgio", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("cuh", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.networkAcls().virtualNetworkRules().get(0).action());
     }
 }

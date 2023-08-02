@@ -18,7 +18,7 @@ import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.azure.security.keyvault.keys.models.KeyType;
@@ -27,7 +27,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class DiskEncryptionTestBase extends ResourceManagerTestBase {
+public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
 
     protected AzureResourceManager azureResourceManager;
 

@@ -56,8 +56,6 @@ public final class VolumesRevertRelocationMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .volumes()
-            .revertRelocation("bm", "pjbabwidfc", "sspuunnoxyhkx", "qddrihpfhoqcaae", com.azure.core.util.Context.NONE);
+        manager.volumes().revertRelocation("vtsoxf", "kenx", "m", "yefrpmpdnqqska", com.azure.core.util.Context.NONE);
     }
 }

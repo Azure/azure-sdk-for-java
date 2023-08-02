@@ -30,6 +30,12 @@ public final class TransferToParticipantRequestInternal {
     private String operationContext;
 
     /*
+     * Transferee is the participant who is transferring the call.
+     */
+    @JsonProperty(value = "transferee")
+    private CommunicationIdentifierModel transferee;
+
+    /*
      * The callback URI override.
      */
     @JsonProperty(value = "callbackUriOverride")
@@ -98,6 +104,29 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Get the transferee property: Transferee is the participant who is transferring the call.
+     *
+     * @return the transferee value.
+     */
+    public CommunicationIdentifierModel getTransferee() {
+        return this.transferee;
+    }
+
+    /**
+     * Set the transferee property: Transferee is the participant who is transferring the call.
+     *
+     * @param transferee the transferee value to set.
+     * @return the TransferToParticipantRequestInternal object itself.
+     */
+    public TransferToParticipantRequestInternal setTransferee(CommunicationIdentifierModel transferee) {
+        this.transferee = transferee;
+        return this;
+    }
+
+    /**
+>>>>>>> 1800d18d847 (add transfer in group call support)
      * Get the callbackUriOverride property: The callback URI override.
      *
      * @return the callbackUriOverride value.

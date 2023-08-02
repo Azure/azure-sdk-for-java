@@ -477,8 +477,9 @@ public class AlertsTests extends MonitorManagementTest {
 
         Assertions.assertNotNull(ala);
         Assertions.assertEquals(1, ala.scopes().size());
-        Assertions
-            .assertEquals("/subscriptions/" + monitorManager.subscriptionId(), ala.scopes().iterator().next());
+        if (!isPlaybackMode()) {
+            Assertions.assertEquals("/subscriptions/" + monitorManager.subscriptionId(), ala.scopes().iterator().next());
+        }
         Assertions.assertEquals("AutoScale-VM-Creation-Failed", ala.description());
         Assertions.assertEquals(true, ala.enabled());
         Assertions.assertEquals(1, ala.actionGroupIds().size());
@@ -516,8 +517,9 @@ public class AlertsTests extends MonitorManagementTest {
             .apply();
 
         Assertions.assertEquals(1, ala.scopes().size());
-        Assertions
-            .assertEquals("/subscriptions/" + monitorManager.subscriptionId(), ala.scopes().iterator().next());
+        if (!isPlaybackMode()) {
+            Assertions.assertEquals("/subscriptions/" + monitorManager.subscriptionId(), ala.scopes().iterator().next());
+        }
         Assertions.assertEquals("AutoScale-VM-Creation-Failed", ala.description());
         Assertions.assertEquals(false, ala.enabled());
         Assertions.assertEquals(1, ala.actionGroupIds().size());

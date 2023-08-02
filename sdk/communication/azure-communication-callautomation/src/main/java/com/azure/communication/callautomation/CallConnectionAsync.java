@@ -279,6 +279,10 @@ public final class CallConnectionAsync {
                             .setSipHeaders(transferCallToParticipantOptions.getCustomContext().getSipHeaders())
                             .setVoipHeaders(transferCallToParticipantOptions.getCustomContext().getVoipHeaders()));
             }
+            
+            if (transferCallToParticipantOptions.getTransferee() != null) {
+                request.setTransferee(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTransferee()));
+            }
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(
                     callConnectionId,

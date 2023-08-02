@@ -290,8 +290,7 @@ public final class AzureMonitorExporterBuilder {
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
                 LOGGER,
-                "Telemetry will not be stored to disk and retried later"
-                    + " on sporadic network failures");
+                "Telemetry will not be stored to disk and retried on sporadic network failures");
 
         TelemetryItemExporter telemetryItemExporter;
         if (tempDir != null) {
