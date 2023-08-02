@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 /**
@@ -8,9 +9,9 @@ public class JsonArray extends JsonElement {
     /**
      * Stores the JsonElements nested in this JsonArray object. 
      * Each of these elements should be one of the following valid JSON types: 
-     * Object, Array, String, Number, Boolean, or Null. 
+     * object, array, string, number, boolean, and null. 
      */
-    ArrayList<JsonElement> elements = new ArrayList<>();
+    List<JsonElement> elements = new ArrayList<>();
 
 
     /**
@@ -18,7 +19,7 @@ public class JsonArray extends JsonElement {
      * appending it to the end.  
      * 
      * @param element a JsonElement object representing one of the valid JSON 
-     * types: Object, Array, String, Number, Boolean, or Null 
+     * types: object, array, string, number, boolean, and null 
      * @return JsonArray object representing the new state of the JsonArray object 
      * after the addition of the new JsonElement object appended. 
      */
@@ -33,7 +34,7 @@ public class JsonArray extends JsonElement {
      * the right. 
      * 
      * @param element a JsonElement object representing one of the valid JSON 
-     * types: Object, Array, String, Number, Boolean, or Null 
+     * types: object, array, string, number, boolean, and null 
      * @param index the element index within the JsonArray to add the new JsonElement 
      * object and where to shift from 
      * @return JsonArray object representing the new state of the JsonArray object 
@@ -52,7 +53,7 @@ public class JsonArray extends JsonElement {
      * replacing the existing JsonElement object at this index.  
      * 
      * @param element a JsonElement object representing one of the valid JSON 
-     * types: Object, Array, String, Number, Boolean, or Null 
+     * types: object, array, string, number, boolean, and null 
      * @param index the element index within the JsonArray to replace the current 
      * JsonElement with the newly specified JsonElement object 
      * @return JsonArray object representing the new state of the JsonArray object 
@@ -103,53 +104,58 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Returns the String representation of the JSON model 
+     * Returns the String representation of the JsonArray object   
      * 
-     * @return String representation of the JSON model 
+     * @return String representation of the JsonArray object 
      */
     public String toJson() {
         // String reference that will store the resulting JSON string output to 
         // be returned by toJson 
-        String jsonoutput = "";
+        String jsonOutput = "";
 
         // Iterating over all JsonElement objects in the elements JsonArray object, 
-        // appending each JsonElement to jsonoutput 
-        for(Iterator<JsonElement> itr = elements.iterator(); itr.hasNext(); ) {
+        // appending each JsonElement to jsonOutput 
+        for(Iterator<JsonElement> itr = this.elements.iterator(); itr.hasNext();) {
             // Get the next JsonElement from the elements JsonArray object 
             JsonElement element = itr.next();
 
             // Case: element is a JsonObject, therefore the whole JSON object can 
-            // be stringified via its toJson method, then appended to jsonoutput  
+            // be stringified via its toJson method, then appended to jsonOutput  
             if(element instanceof JsonObject) {
-                jsonoutput += ((JsonObject)element).toJson();
+                jsonOutput += ((JsonObject)element).toJson();
             } 
             // Case: element is a JsonArray, therefore the nested JSON array can 
-            // be stringified via recursively toJson, then appended to jsonoutput 
+            // be stringified via recursively calling toJson and then appending 
+            // the returned String to jsonOutput 
             else if(element instanceof JsonArray) {
-                jsonoutput += ((JsonArray)element).toJson();
+                jsonOutput += ((JsonArray)element).toJson();
             } 
-            // Case: element is not a JsonObject or JsonArray, it can be simply 
-            // converted to a String object and appended to jsonoutput  
-            else { jsonoutput += element; }
+            // Case: element is not a JsonObject or JsonArray, therefore it can 
+            // be simply converted to a String object and appended to jsonOutput  
+            else { jsonOutput += element; }
 
             // Case: haven't reached the end of the JSON array, therefore more 
             // elements must be converted to String objects and appended to the 
-            // jsonoutput 
-            if(itr.hasNext()) { jsonoutput += ", "; }
+            // jsonOutput 
+            // Elements are separated by commas.  
+            if(itr.hasNext()) { jsonOutput += ", "; }
         }
 
         // Returning the resulting String representation of the JsonArray object 
-        return "[" + jsonoutput + "]";
+        // JSON arrays are delimited by opening and closing square brackets. 
+        return "[" + jsonOutput + "]";
     }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonArray. 
      */
+    @Override
     public boolean isArray() { return true; }
 
     /**
      * @return String representation of the JsonArray. This functionality is 
      * defined within the toJson method.   
      */
-    public String toString() { return toJson();}
+    @Override
+    public String toString() { return this.toJson();}
 }

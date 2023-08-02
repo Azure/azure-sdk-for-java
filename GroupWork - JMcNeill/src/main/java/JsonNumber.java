@@ -31,11 +31,13 @@ public class JsonNumber extends JsonElement {
      * @return the numberValue field which is a String representation of the 
      * current state of this JsonNumber object. 
      */
+    @Override
     public String toString() { return this.numberValue; } 
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonNumber. 
      */
+    @Override
     public boolean isNumber() { return true; }
 
     /* 

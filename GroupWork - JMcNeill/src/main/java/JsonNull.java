@@ -23,10 +23,12 @@ public class JsonNull extends JsonElement{
      * @return the nullValue field which is a String representation of the 
      * current state of this JsonNull object. 
      */
+    @Override
     public String toString() { return this.nullValue; }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonNull. 
      */
+    @Override
     public boolean isNull() { return true; }
 }

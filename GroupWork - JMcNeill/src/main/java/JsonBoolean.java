@@ -31,11 +31,13 @@ public class JsonBoolean extends JsonElement {
      * @return the booleanValue field which is a String representation of the 
      * current state of this JsonBoolean object.  
      */
+    @Override
     public String toString() { return this.booleanValue; }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonBoolean. 
      */
+    @Override
     public boolean isBoolean() { return true; }
 
     /**
