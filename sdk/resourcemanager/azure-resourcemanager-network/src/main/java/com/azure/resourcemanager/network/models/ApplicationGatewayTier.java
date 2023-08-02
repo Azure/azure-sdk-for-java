@@ -14,7 +14,7 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
      * Static value Standard for ApplicationGatewayTier.
      *
      * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
-     *             See <a href="https://learn.microsoft.com/en-us/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
      *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
      */
     @Deprecated
@@ -24,7 +24,7 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
      * Static value WAF for ApplicationGatewayTier.
      *
      * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
-     *             See <a href="https://learn.microsoft.com/en-us/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
      *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
      */
     @Deprecated
