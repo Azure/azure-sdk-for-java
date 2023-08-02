@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RecognizeChoiceInternal model. */
+/** The RecognitionChoiceInternal model. */
 @Fluent
-public final class RecognizeChoiceInternal {
+public final class RecognitionChoiceInternal {
     /*
      * Identifier for a given choice
      */
@@ -42,9 +42,9 @@ public final class RecognizeChoiceInternal {
      * Set the label property: Identifier for a given choice.
      *
      * @param label the label value to set.
-     * @return the RecognizeChoiceInternal object itself.
+     * @return the RecognitionChoiceInternal object itself.
      */
-    public RecognizeChoiceInternal setLabel(String label) {
+    public RecognitionChoiceInternal setLabel(String label) {
         this.label = label;
         return this;
     }
@@ -62,9 +62,9 @@ public final class RecognizeChoiceInternal {
      * Set the phrases property: List of phrases to recognize.
      *
      * @param phrases the phrases value to set.
-     * @return the RecognizeChoiceInternal object itself.
+     * @return the RecognitionChoiceInternal object itself.
      */
-    public RecognizeChoiceInternal setPhrases(List<String> phrases) {
+    public RecognitionChoiceInternal setPhrases(List<String> phrases) {
         this.phrases = phrases;
         return this;
     }
@@ -82,9 +82,9 @@ public final class RecognizeChoiceInternal {
      * Set the tone property: The tone property.
      *
      * @param tone the tone value to set.
-     * @return the RecognizeChoiceInternal object itself.
+     * @return the RecognitionChoiceInternal object itself.
      */
-    public RecognizeChoiceInternal setTone(DtmfToneInternal tone) {
+    public RecognitionChoiceInternal setTone(DtmfToneInternal tone) {
         this.tone = tone;
         return this;
     }

@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOptions {
     /*
-     * List of recognize choice.
+     * List of recognition choices.
      */
     private final List<RecognitionChoice> choices;
 
@@ -31,11 +31,11 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     private String speechRecognitionModelEndpointId;
 
     /**
-     * Get the list of recognize choice.
+     * Get the list of recognition choices.
      *
-     * @return the list of recognize choice.
+     * @return the list of recognition choices.
      */
-    public List<RecognitionChoice> getRecognizeChoices() {
+    public List<RecognitionChoice> getChoices() {
         return this.choices;
     }
 

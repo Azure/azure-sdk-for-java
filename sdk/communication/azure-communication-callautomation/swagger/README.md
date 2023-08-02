@@ -153,7 +153,7 @@ directive:
     to: RecognizeOptionsInternal
 - rename-model:
     from: Choice
-    to: RecognizeChoiceInternal
+    to: RecognitionChoiceInternal
 - rename-model:
     from: MuteParticipantsRequest
     to: MuteParticipantsRequestInternal
