@@ -22,31 +22,35 @@ public class LargeQuerySample {
     static final String WORKSPACE_ID = "{workspace-id}";
     // END: com.azure.monitor.query.LargeQuerySample-setWorkspaceId
 
-
     static LogsQueryClient client;
 
     public static void main(String[] args) {
+
+        String queryString = "query string";
+
         // BEGIN: com.azure.monitor.query.LargeQuerySample-createLogsQueryClient
         LogsQueryClient client = new LogsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.monitor.query.LargeQuerySample-createLogsQueryClient
+
+
+
     }
 
 
     // BEGIN: com.azure.monitor.query.LargeQuerySample-createBatchQueryFromLargeQuery
     static LogsBatchQuery createBatchQueryFromLargeQuery(String originalQuery,
-                                                         List<OffsetDateTime> endpoints,
-                                                         String timeColumn) {
+                                                         List<OffsetDateTime> endpoints) {
         LogsBatchQuery batchQuery = new LogsBatchQuery();
 
         for (int i = 0; i < endpoints.size(); i++) {
             String queryString;
             if (i == endpoints.size() - 1) {
-                queryString = String.format("%1$s | where %3$s >= datetime('%2$s')", originalQuery, endpoints.get(i), timeColumn);
+                queryString = String.format("%1$s | where %3$s >= datetime('%2$s')", originalQuery, endpoints.get(i), "TimeGenerated");
             }
             else {
-                queryString = String.format("%1$s | where %4$s >= datetime('%2$s') and %4$s < datetime('%3$s')", originalQuery, endpoints.get(i), endpoints.get(i + 1), timeColumn);
+                queryString = String.format("%1$s | where %4$s >= datetime('%2$s') and %4$s < datetime('%3$s')", originalQuery, endpoints.get(i), endpoints.get(i + 1));
             }
             batchQuery.addWorkspaceQuery(WORKSPACE_ID, queryString, null);
         }
@@ -58,12 +62,11 @@ public class LargeQuerySample {
 
     // BEGIN: com.azure.monitor.query.LargeQuerySample-createBatchQueryFromLargeQueryBySize
     static LogsBatchQuery createBatchQueryFromLargeQueryByByteSize(String originalQuery,
-                                                                   int maxByteSizePerBatch,
-                                                                   String timeColumn) {
+                                                                   int maxByteSizePerBatch) {
         String findBatchEndpointsQuery = String.format(
             "%1$s | sort by %2$s desc | extend batch_num = row_cumsum(estimate_data_size(*)) / %3$s | summarize endpoint=min(%2$s) by batch_num | sort by batch_num desc | project endpoint",
             originalQuery,
-            timeColumn,
+            "TimeGenerated",
             maxByteSizePerBatch);
 
         LogsQueryResult result = client.queryWorkspace(WORKSPACE_ID, findBatchEndpointsQuery, QueryTimeInterval.ALL);
@@ -78,19 +81,18 @@ public class LargeQuerySample {
             });
         }
 
-        return createBatchQueryFromLargeQuery(originalQuery, endpoints, timeColumn);
+        return createBatchQueryFromLargeQuery(originalQuery, endpoints);
     }
     // END: com.azure.monitor.query.LargeQuerySample-createBatchQueryFromLargeQueryBySize
 
     // BEGIN: com.azure.monitor.query.LargeQuerySample-createBatchQueryFromLargeQueryByRows
     static LogsBatchQuery createBatchQueryFromLargeQueryByRowCount(String originalQuery,
-                                                                   int maxRowPerBatch,
-                                                                   String timeColumn) {
+                                                                   int maxRowPerBatch) {
 
         String findBatchEndpointsQuery = String.format(
             "%1$s | sort by %2$s desc | extend batch_num = row_cumsum(1) / %3$s | summarize endpoint=min(%2$s) by batch_num | sort by batch_num desc | project endpoint",
             originalQuery,
-            timeColumn,
+            "TimeGenerated",
             maxRowPerBatch);
 
         LogsQueryResult result = client.queryWorkspace(WORKSPACE_ID, findBatchEndpointsQuery, QueryTimeInterval.ALL);
@@ -105,7 +107,7 @@ public class LargeQuerySample {
             });
         }
 
-        return createBatchQueryFromLargeQuery(originalQuery, endpoints, timeColumn);
+        return createBatchQueryFromLargeQuery(originalQuery, endpoints);
     }
     // END: com.azure.monitor.query.LargeQuerySample-createBatchQueryFromLargeQueryByRows
 }
