@@ -10,11 +10,13 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
@@ -39,6 +41,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BARCODE_TIF;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.STYLE_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_JPG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_PNG;
@@ -1493,9 +1496,31 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult.getPages());
+
             DocumentBarcode barcode =
                 analyzeResult.getPages().get(0).getBarcodes().get(0);
             Assertions.assertEquals(DocumentBarcodeKind.CODE_39, barcode.getKind());
         }, BARCODE_TIF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void testStyleFeatureFlagPrebuiltLayout(HttpClient httpClient,
+                                        DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        testingContainerUrlRunner((sourceUrl) -> {
+            SyncPoller<OperationResult, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-layout", sourceUrl,
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.STYLE_FONT)))
+                .setPollInterval(durationTestMode)
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult.getPages());
+            DocumentStyle style =
+                analyzeResult.getStyles().get(3);
+            Assertions.assertEquals(FontStyle.ITALIC, style.getFontStyle());
+        }, STYLE_PNG);
     }
 }
