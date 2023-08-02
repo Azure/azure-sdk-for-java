@@ -58,7 +58,7 @@ SpanExporter exporter = new AzureMonitorExporterBuilder()
     .buildTraceExporter();
 
 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-    .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+    .addSpanProcessor(BatchSpanProcessor.builder(exporter).build())
     .build();
 
 OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()

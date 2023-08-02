@@ -12,7 +12,7 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.util.Collection;
@@ -50,7 +50,7 @@ public class ReadmeSamples {
             .buildTraceExporter();
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
+            .addSpanProcessor(BatchSpanProcessor.builder(exporter).build())
             .build();
 
         OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
