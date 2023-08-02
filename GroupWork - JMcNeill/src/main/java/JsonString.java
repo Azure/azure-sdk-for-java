@@ -34,11 +34,13 @@ public class JsonString extends JsonElement{
      * expliclity added in the public JsonString(String value) constructor. Maybe 
      * we could make another method which does/doesn't include them. 
      */
+    @Override
     public String toString() { return this.stringValue; }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonString. 
      */
+    @Override
     public boolean isString() { return true; };
 
 }

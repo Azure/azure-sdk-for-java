@@ -1,6 +1,19 @@
 import com.azure.json.*;
 import com.sun.jdi.InvalidTypeException;
 
+/**
+ * This class acts purely as a playground for testing and playing around with 
+ * the current implementation of the JSON model related classes:   
+ *      - JsonElement 
+ *      - JsonArray 
+ *      - JsonBoolean 
+ *      - JsonNull 
+ *      - JsonNumber 
+ *      - JsonObject 
+ *      - JsonString 
+ * 
+ * NOTE: can be removed later. 
+ */
 public class MainClass {
     public static void main(String[] args) throws InvalidTypeException {
 
@@ -25,16 +38,6 @@ public class MainClass {
                 .addElement(new JsonObject().addProperty("Value3", true).addProperty("Value4", null))
                 .toJson();
         System.out.println(arrayTest);
-
-
-
-
-
-
-
-
-
-
 
         /*
 

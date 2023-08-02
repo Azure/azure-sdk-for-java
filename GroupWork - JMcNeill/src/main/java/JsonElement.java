@@ -2,6 +2,48 @@ import com.sun.jdi.InvalidTypeException;
 
 import java.io.StringWriter;
 
+/*
+
+TODO: the methods defined in this class for JSON arrays: 
+    - addElement 
+    - setElement 
+    - getElement 
+    - removeElement 
+Could be extracted as abstract methods into a separate interface, perhaps called 
+JsonArrayable or some other more appropriately named interface. The only (arguable) 
+advantage of having these methods defined in this class the way they currently 
+are is because they prevent any other sub class of JsonElement from having JSON 
+array capabilities/functionalities. Helping isolate the functionality to JsonArray. 
+The disadvantage of extracting to an interface means the functionality is opened 
+to other classes and could interfere with the current implementations. 
+
+TODO: the methods defined in this class for JSON objects: 
+    - addProperty  
+    - setProperty  
+    - getProperty  
+    - removeProperty  
+Could be extracted as abstract methods into a separate interface, perhaps called 
+JsonObjectable or some other more appropriately named interface. The only (arguable) 
+advantage of having these methods defined in this class the way they currently 
+are is because they prevent any other sub class of JsonElement from having JSON 
+object capabilities/functionalities. Helping isolate the functionality to JsonObject.   
+The disadvantage of extracting to an interface means the functionality is opened 
+to other classes and could interfere with the current implementations. 
+
+TODO: the conversion methods at the bottom of this class may be unnecessary, 
+especially in the way they are currently defined. 
+
+
+If all three previous TODOs were to be done, then this class would simply be 
+left with an abstract toString() method and the isX methods.  
+
+*/
+
+/*
+SUGGESTION: Could rename class to e.g. JsonType, although low priority and hard 
+to tell what would be the best name here. 
+*/
+
 /**
  * Abstract class that defines the basic, abstract methods that all valid JsonElement 
  * types need to define. 
@@ -182,17 +224,59 @@ public abstract class JsonElement extends StringWriter {
         else { throw new InvalidTypeException(); }
     }
 
+    /**
+     * Abstract method that should be defined in a JsonElement sub class to 
+     * handle how to represent the given JsonElement as a String. 
+     * 
+     * @return String representation of the JsonElement 
+     */
+    public abstract String toString(); 
+
+
+    //------------------------------------------------------------------------// 
+    //--------------- isX Methods (JSON type checking methods) ---------------// 
+    //------------------------------------------------------------------------// 
+    // The following isX methods are necessary in order for the sub classes of 
+    // JsonElement to be able to return false if the type does not match, however 
+    // each JsonElement MUST override one of these methods to return true for 
+    // their respective type. 
+
+    /**
+     * @return boolean on whether the given JsonElement is a JsonArray 
+     */
+    public boolean isArray() { return false; }
+
+    /**
+     * @return boolean on whether the given JsonElement is a JsonObject 
+     */
+    public boolean isObject() { return false; }
+
+    /**
+     * @return boolean on whether the given JsonElement is a JsonBoolean  
+     */
+    public boolean isBoolean() { return false; }
+
+    /**
+     * @return boolean on whether the given JsonElement is a JsonNull  
+     */
+    public boolean isNull() { return false; }
+
+    /**
+     * @return boolean on whether the given JsonElement is a JsonNumber  
+     */
+    public boolean isNumber() { return false; }
+
+    /**
+     * @return boolean on whether the given JsonElement is a JsonString  
+     */
+    public boolean isString() { return false; } 
+
 
     //------------------------------------------------------------------------// 
     //------------------------ Methods for Conversion ------------------------// 
-    // TODO: not sure if these really need to be defined or how they will be  //  
-    // used in the current implementation.                                    // 
+    // TODO: not sure if these asX methods really need to be defined or how   // 
+    // they will be used in their current implementation.                     // 
     //------------------------------------------------------------------------// 
-
-    /**
-     * @return
-     */
-    public boolean isArray() { return false; }
 
     /**
      * @return
@@ -202,17 +286,7 @@ public abstract class JsonElement extends StringWriter {
     /**
      * @return
      */
-    public boolean isObject() { return false; }
-
-    /**
-     * @return
-     */
     public JsonObject asObject() { return (JsonObject)this; }
-
-    /**
-     * @return
-     */
-    public boolean isBoolean() { return false; }
 
     /**
      * @return
@@ -222,17 +296,7 @@ public abstract class JsonElement extends StringWriter {
     /**
      * @return
      */
-    public boolean isNull() { return false; }
-
-    /**
-     * @return
-     */
     public JsonNull asNull() { return (JsonNull)this; }
-
-    /**
-     * @return
-     */
-    public boolean isNumber() { return false; }
 
     /**
      * @return
@@ -242,16 +306,7 @@ public abstract class JsonElement extends StringWriter {
     /**
      * @return
      */
-    public boolean isString() { return false; }
-
-    /**
-     * @return
-     */
     public JsonString asString() { return new JsonString(); }
 
-    /**
-     * @return String representation of the JsonElement 
-     */
-    public abstract String toString(); 
 }
 

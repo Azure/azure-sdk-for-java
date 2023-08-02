@@ -262,12 +262,14 @@ public class JsonObject extends JsonElement {
     /**
      * @return boolean of whether this JsonElement object is of type JsonObject. 
      */
+    @Override
     public boolean isObject() { return true; }
 
     /**
      * @return String representation of the JsonObject. This functionality is 
      * defined within the toJson method.   
      */
+    @Override
     public String toString() { return toJson(); }
 
 }

@@ -149,11 +149,13 @@ public class JsonArray extends JsonElement {
     /**
      * @return boolean of whether this JsonElement object is of type JsonArray. 
      */
+    @Override
     public boolean isArray() { return true; }
 
     /**
      * @return String representation of the JsonArray. This functionality is 
      * defined within the toJson method.   
      */
+    @Override
     public String toString() { return this.toJson();}
 }
