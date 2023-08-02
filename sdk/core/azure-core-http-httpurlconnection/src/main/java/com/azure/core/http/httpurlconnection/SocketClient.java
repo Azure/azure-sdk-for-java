@@ -35,25 +35,4 @@ public class SocketClient {
             printWriter.println("Test");
         }
     }
-
-
-    // Testing
-    public static void main(String[] args) throws IOException, URISyntaxException {
-//        SocketClient client = new SocketClient("localhost", 9000);
-//        client.sendPatchRequest();
-
-
-
-        // Test block
-
-        String requestBody = "This is the body of the request";
-        byte[] bodyBytes = requestBody.getBytes();
-
-        HttpRequest httpRequest  = new HttpRequest(HttpMethod.PATCH, "http://www.localhost.com", null, bodyBytes);
-
-
-
-
-    }
-
 }
