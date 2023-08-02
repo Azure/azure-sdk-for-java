@@ -73,6 +73,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private final int timeoutOnWriteThreshold;
     @JsonProperty
     private final long timeoutOnWriteTimeLimitInNanos;
+    @JsonProperty
+    private final long nonRespondingChannelReadDelayTimeLimitInNanos;
+    @JsonProperty
+    private final int cancellationCountSinceLastReadThreshold;
+
 
     // endregion
 
@@ -101,6 +106,8 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.timeoutHighFrequencyTimeLimitInNanos = config.timeoutDetectionHighFrequencyTimeLimitInNanos();
         this.timeoutOnWriteThreshold = config.timeoutDetectionOnWriteThreshold();
         this.timeoutOnWriteTimeLimitInNanos = config.timeoutDetectionOnWriteTimeLimitInNanos();
+        this.nonRespondingChannelReadDelayTimeLimitInNanos = config.nonRespondingChannelReadDelayTimeLimitInNanos();
+        this.cancellationCountSinceLastReadThreshold = config.cancellationCountSinceLastReadThreshold();
     }
 
     // endregion
@@ -406,11 +413,15 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, Channel channel) {
         String errorMessage = StringUtils.EMPTY;
 
-        if (timestamps.cancellationCount() > 0) {
-            final long writeRecency = Duration.between(timestamps.lastChannelWriteTime(), currentTime).toNanos();
+        if (timestamps.cancellationCount() > this.cancellationCountSinceLastReadThreshold) {
+
+            if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
+                return errorMessage;
+            }
+
             final long readSuccessRecency = Duration.between(timestamps.lastChannelReadTime(), currentTime).toNanos();
 
-            if (writeRecency < 1_000_000_000 && readSuccessRecency > 40L * 1_000_000_000L) {
+            if (readSuccessRecency > this.nonRespondingChannelReadDelayTimeLimitInNanos) {
                 errorMessage = MessageFormat.format(
                     "{0} health check failed due to channel being cancellation prone: [lastChannelWrite: {1}, lastChannelRead: {2},"
                         + "cancellationCountSinceLastSuccessfulRead: {3}, currentTime: {4}]",
@@ -566,6 +577,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         @JsonProperty
         public int cancellationCount() {
             return cancellationCountUpdater.get(this);
+        }
+
+        @JsonProperty
+        public void cancellation() {
+            cancellationCountUpdater.incrementAndGet(this);
         }
 
         @Override
