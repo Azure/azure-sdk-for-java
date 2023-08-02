@@ -3,7 +3,6 @@
 ## 12.17.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added RehydratePendingToCold value to ArchiveStatus enum.
 
 ### Breaking Changes
 
