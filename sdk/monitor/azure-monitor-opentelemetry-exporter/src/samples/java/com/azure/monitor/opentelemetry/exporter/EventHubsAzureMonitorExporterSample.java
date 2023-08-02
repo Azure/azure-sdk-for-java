@@ -8,13 +8,10 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,19 +46,13 @@ public class EventHubsAzureMonitorExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        SpanExporter exporter = new AzureMonitorExporterBuilder()
+        OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildTraceExporter();
+            .getOpenTelemetrySdkBuilder()
+            .build()
+            .getOpenTelemetrySdk();
 
-        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
-            .build();
-
-        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
-
-        return openTelemetrySdk.getTracer("Sample");
+        return openTelemetry.getTracer("Sample");
     }
 
     /**

@@ -29,7 +29,6 @@ import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -103,8 +102,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry =
-            TestUtils.createOpenTelemetrySdkDeprecated(
+        OpenTelemetry openTelemetry =
+            TestUtils.createOpenTelemetrySdk(
                 getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate a log
@@ -125,8 +124,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(3);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry =
-            TestUtils.createOpenTelemetrySdkDeprecated(
+        OpenTelemetry openTelemetry =
+            TestUtils.createOpenTelemetrySdk(
                 getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate telemetry
@@ -193,8 +192,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
                 AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
     }
 
-    private static void generateLog(OpenTelemetrySdk openTelemetry) {
-        Logger logger = openTelemetry.getSdkLoggerProvider().get("Sample");
+    private static void generateLog(OpenTelemetry openTelemetry) {
+        Logger logger = openTelemetry.getLogsBridge().get("Sample");
         logger
             .logRecordBuilder()
             .setBody("test body")

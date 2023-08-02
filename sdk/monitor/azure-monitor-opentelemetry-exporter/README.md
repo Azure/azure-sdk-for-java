@@ -37,8 +37,8 @@ In order to export telemetry data to Azure Monitor, you will need the instrument
 search for your resource. On the overview page of your resource, you will find the instrumentation key in the top
 right corner.
 
-### Creating exporter for Azure Monitor
-```java readme-sample-createExporter
+### Creating exporter builder for Azure Monitor
+```java readme-sample-createExporterBuilder
 SpanExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
     .buildTraceExporter();
@@ -49,7 +49,7 @@ SpanExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
 The following example shows how to export a trace data to Azure Monitor through the
  `AzureMonitorTraceExporter`
 
-##### Setup OpenTelemetry Tracer to work with Azure Monitor exporter
+##### Setup OpenTelemetry SDK to work with Azure Monitor exporter
 ```java readme-sample-setupExporter
 // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
 // This should be done just once when application starts up

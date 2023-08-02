@@ -76,7 +76,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
                     });
                 return next.process();
             };
-        Tracer tracer = TestUtils.configureAzureMonitorTraceExporter(getHttpPipeline(validationPolicy));
+        Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
         EventHubProducerAsyncClient producer =
             new EventHubClientBuilder().connectionString(CONNECTION_STRING).buildAsyncProducerClient();
         Span span = tracer.spanBuilder(spanName).startSpan();
@@ -127,7 +127,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
                     });
                 return next.process();
             };
-        Tracer tracer = TestUtils.configureAzureMonitorTraceExporter(getHttpPipeline(validationPolicy));
+        Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
 
         CountDownLatch partitionOwned = new CountDownLatch(1);
         CountDownLatch eventCountDown = new CountDownLatch(1);
