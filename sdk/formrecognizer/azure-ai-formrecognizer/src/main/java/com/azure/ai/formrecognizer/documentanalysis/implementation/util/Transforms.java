@@ -786,7 +786,7 @@ public class Transforms {
         tags.forEach((key, classifierDocumentTypeDetails) -> {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails innerClassifyDocTypeDetails
                 = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails();
-            if (classifierDocumentTypeDetails.getTrainingDataContentSource().getKind().equals(TrainingDataContentSourceKind.AZURE_BLOB_FILE_LIST)) {
+            if (TrainingDataContentSourceKind.AZURE_BLOB_FILE_LIST.equals(classifierDocumentTypeDetails.getTrainingDataContentSource().getKind())) {
                 innerClassifyDocTypeDetails.setAzureBlobFileListSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl(),
