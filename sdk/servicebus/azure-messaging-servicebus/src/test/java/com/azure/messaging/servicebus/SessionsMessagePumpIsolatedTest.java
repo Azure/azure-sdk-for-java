@@ -46,7 +46,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -104,7 +103,7 @@ public class SessionsMessagePumpIsolatedTest {
                 .thenCancel()
                 .verify();
         }
-        verify(session1.link, times(2)).closeAsync();
+        verify(session1.link, times(1)).closeAsync();
     }
 
     @Test
@@ -138,10 +137,8 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
-        // Two invocation of closeAsync -
-        // 1. One invocation upon RollingSessionReceiver.MessageFlux cancellation.
-        // 2. Another invocation upon RollingSessionReceiver.closeAsync(CANCELED) by When operator in RollingSessionReceiver.receive().
-        verify(session1.link, times(2)).closeAsync();
+        // closeAsync() invocation upon RollingSessionReceiver.MessageFlux cancellation.
+        verify(session1.link, times(1)).closeAsync();
     }
 
     @Test
@@ -180,8 +177,8 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link, times(2)).closeAsync();
-        verify(session2.link, times(2)).closeAsync();
+        verify(session1.link, times(1)).closeAsync();
+        verify(session2.link, times(1)).closeAsync();
     }
 
     @Test
@@ -255,11 +252,9 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link, times(2)).closeAsync();
-        // Because roll to Session3 from Session2 is internal to RollingSessionReceiver.MessageFlux, there will be only one
-        // call to closeAsync(), which is from MessageFlux.
+        verify(session1.link, times(1)).closeAsync();
         verify(session2.link, times(1)).closeAsync();
-        verify(session3.link, times(2)).closeAsync();
+        verify(session3.link, times(1)).closeAsync();
     }
 
     @Test
@@ -305,11 +300,9 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link, times(2)).closeAsync();
-        // Because roll to Session3 from Session2 is internal to RollingSessionReceiver.MessageFlux, there will be only one
-        // call to closeAsync(), which is from MessageFlux.
+        verify(session1.link, times(1)).closeAsync();
         verify(session2.link, times(1)).closeAsync();
-        verify(session3.link, times(2)).closeAsync();
+        verify(session3.link, times(1)).closeAsync();
     }
 
     @Test
@@ -352,7 +345,7 @@ public class SessionsMessagePumpIsolatedTest {
         final DeliveryState deliveryState = deliveryStateCaptor.getValue();
         Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
         Assertions.assertEquals(Accepted.getInstance(), deliveryState);
-        verify(session1.link, times(2)).closeAsync();
+        verify(session1.link, times(1)).closeAsync();
     }
 
     @Test
@@ -397,12 +390,12 @@ public class SessionsMessagePumpIsolatedTest {
         final DeliveryState deliveryState = deliveryStateCaptor.getValue();
         Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
         Assertions.assertTrue(deliveryState instanceof Modified);
-        verify(session1.link, times(2)).closeAsync();
+        verify(session1.link, times(1)).closeAsync();
     }
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void shouldCloseBackingSessionReceiverOnCloseAsync() {
+    public void shouldEmitErrorIfBeginInvokedMoreThanOnce() {
         final String session1Id = "1";
 
         final HashMap<Message, ServiceBusReceivedMessage> session1Messages = new HashMap<>(0);
@@ -420,13 +413,19 @@ public class SessionsMessagePumpIsolatedTest {
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
             autoDispositionEnabled, serializer, processMessage, processError);
 
-        pump.begin().subscribe(__ -> { }, e -> { }, () -> { });
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> pump.begin())
+                .thenAwait()
+                .thenCancel()
+                .verify();
+        }
 
-        StepVerifier.create(pump.closeAsync())
-            .thenAwait()
-            .verifyComplete();
-
-        verify(session1.link, atLeast(1)).closeAsync();
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> pump.begin())
+                .verifyErrorSatisfies(e -> {
+                    Assertions.assertTrue(e instanceof SessionsMessagePump.TerminatedException);
+                });
+        }
     }
 
     private static HashMap<Message, ServiceBusReceivedMessage> createMockMessages(String sessionId, int count) {
