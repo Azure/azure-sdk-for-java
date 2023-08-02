@@ -220,9 +220,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             return promise.setSuccess(idleConnectionValidationMessage);
         }
 
-        String isCancellationProneChannel = this.isCancellationProneChannel(timestamps, currentTime, channel);
-        if (StringUtils.isNotEmpty(isCancellationProneChannel)) {
-            return promise.setSuccess(isCancellationProneChannel);
+        String isCancellationProneChannelMessage = this.isCancellationProneChannel(timestamps, currentTime, channel);
+        if (StringUtils.isNotEmpty(isCancellationProneChannelMessage)) {
+            return promise.setSuccess(isCancellationProneChannelMessage);
         }
 
         channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
