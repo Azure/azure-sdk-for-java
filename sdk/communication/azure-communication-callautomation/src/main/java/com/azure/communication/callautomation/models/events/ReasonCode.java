@@ -5,6 +5,8 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /** Defines values for ReasonCode. */
 public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     /** Reason code names for the Recognize operation */
@@ -49,7 +51,7 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
      * @param reasonCode a reasonCode to look for.
      * @return the corresponding ResourceCode.
      */
-    private static ReasonCode fromString(String reasonCode) {
+    public static ReasonCode fromString(String reasonCode) {
         return fromString(reasonCode, ReasonCode.class);
     }
 
@@ -61,5 +63,14 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
      */
     static ReasonCode fromReasonCode(int reasonCode) {
         return fromString(Integer.toString(reasonCode));
+    }
+
+    /**
+     * Gets known ReasonCode values.
+     *
+     * @return known ReasonCode values.
+     */
+    public static Collection<ReasonCode> values() {
+        return values(ReasonCode.class);
     }
 }
