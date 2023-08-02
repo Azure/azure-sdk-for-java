@@ -276,7 +276,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void sendAndReceiveParallelNoAutoComplete() throws InterruptedException {
+    public void sendAndReceiveParallelNoAutoCompleteAndLockRenewal() throws InterruptedException {
         int messageCount = 5;
         StepVerifier.create(sender.createMessageBatch()
             .doOnNext(batch -> {
@@ -289,8 +289,16 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
+        ServiceBusReceiverAsyncClient receiverWithLockRenewal = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
+            .receiver()
+            .queueName(getQueueName(0))
+            .disableAutoComplete()
+            .buildAsyncClient());
+
         StepVerifier.create(
-                receiver.receiveMessages()
+                receiverWithLockRenewal.receiveMessages()
                     .take(messageCount)
                     .doOnNext(msg -> {
                         if (Span.current().getSpanContext().isValid()) {
@@ -304,7 +312,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                         receiver.complete(msg).block();
                     })
                     .parallel(messageCount, 1)
-                    .runOn(Schedulers.boundedElastic()))
+                    .runOn(Schedulers.boundedElastic(), 1))
             .expectNextCount(messageCount)
             .verifyComplete();
 
@@ -317,6 +325,16 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(messageCount, processed.size());
         assertEquals(messageCount, completed.size());
         for (ReadableSpan c : completed) {
+            // all completed spans should have a parent, but complete call may start after the parent span has ended
+            // the last part heavily depends on how above code is written wrt parallelization.
+            // in the current form (receive -> doonnext (complete) -> parallel)
+            // complete is called happens synchronously from the receive perspective
+            // so complete will finish before processing is completed.
+            //
+            // if complete call is done differently (e.g. receive -> parallel -> runon -> doonnext (complete))
+            // then doonnext callbacks become async and may happen after receiver call has completed
+            // then complete will be a child of process, but will last longer than processing
+            // TODO (limolkova): this is another good reason to rename receiver's span to delivery instead of processing.
             assertParentFound(c, processed, true);
         }
     }
@@ -668,8 +686,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
         List<ReadableSpan> completed = findSpans(spans, "ServiceBus.complete");
 
-        assertTrue(messageCount <= processed.size());
-        assertTrue(messageCount <= completed.size());
+        assertEquals(messageCount, processed.size());
+        assertEquals(messageCount, completed.size());
         for (ReadableSpan c : completed) {
             assertParentFound(c, processed, true);
         }

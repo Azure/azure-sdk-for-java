@@ -60,7 +60,7 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
             AutoCloseable scope = tracer.makeSpanCurrent(span);
             try {
                 downstream.onNext(message);
-                if (instrumentation.isProcessorInstrumentation()) {
+                if (!instrumentation.isProcessorInstrumentation()) {
                     tracer.endSpan(null, span, scope);
                 }
             } catch (Throwable t) {
