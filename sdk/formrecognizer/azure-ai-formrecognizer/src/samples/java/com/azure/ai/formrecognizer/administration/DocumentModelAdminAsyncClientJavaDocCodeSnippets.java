@@ -20,7 +20,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.TrainingDataContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -149,8 +149,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        ));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        ));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes)
             // if polling operation completed, retrieve the final result.
@@ -179,8 +181,10 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        ));
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        ));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes,
                 new BuildDocumentClassifierOptions()
@@ -231,7 +235,6 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     *
      * {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(TrainingDataContentSource, DocumentModelBuildMode, BuildDocumentModelOptions)}
      */
     public void beginBuildModelWithFileListWithOptions() {

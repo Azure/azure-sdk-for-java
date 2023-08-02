@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -15,6 +14,7 @@ public final class ClassifierDocumentTypeDetails {
 
     /**
      * Creates an instance of ClassifierDocumentTypeDetails class.
+     *
      * @param source the source of the training data.
      */
     public ClassifierDocumentTypeDetails(TrainingDataContentSource source) {
