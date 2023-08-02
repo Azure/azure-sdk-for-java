@@ -7,9 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SendDtmfResponseInternal model. */
+/** The SendDtmfTonesResultInternal model. */
 @Fluent
-public final class SendDtmfResponseInternal {
+public final class SendDtmfTonesResultInternal {
     /*
      * The operation context provided by client.
      */
@@ -29,9 +29,9 @@ public final class SendDtmfResponseInternal {
      * Set the operationContext property: The operation context provided by client.
      *
      * @param operationContext the operationContext value to set.
-     * @return the SendDtmfResponseInternal object itself.
+     * @return the SendDtmfTonesResultInternal object itself.
      */
-    public SendDtmfResponseInternal setOperationContext(String operationContext) {
+    public SendDtmfTonesResultInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

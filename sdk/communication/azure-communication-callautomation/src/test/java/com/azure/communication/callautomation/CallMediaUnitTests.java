@@ -3,16 +3,17 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.TextSource;
-import com.azure.communication.callautomation.models.SendDtmfResult;
+import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -27,6 +28,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.CALL_OPERATION_CONTEXT;
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.serializeObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CallMediaUnitTests {
@@ -51,7 +54,7 @@ public class CallMediaUnitTests {
 
         playTextSource = new TextSource();
         playTextSource.setPlaySourceCacheId("playTextSourceCacheId");
-        playTextSource.setVoiceGender(GenderType.MALE);
+        playTextSource.setVoiceKind(VoiceKind.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
     }
@@ -60,7 +63,7 @@ public class CallMediaUnitTests {
     public void playFileWithResponseTest() {
         playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -69,7 +72,7 @@ public class CallMediaUnitTests {
     public void playFileToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playFileSource)
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -78,7 +81,7 @@ public class CallMediaUnitTests {
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -87,7 +90,7 @@ public class CallMediaUnitTests {
     public void playTextToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playTextSource)
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -107,12 +110,12 @@ public class CallMediaUnitTests {
 
     @Test
     public void recognizeWithChoiceResponseTest() {
-        RecognizeChoice recognizeChoice1 = new RecognizeChoice();
-        RecognizeChoice recognizeChoice2 = new RecognizeChoice();
-        List<RecognizeChoice> recognizeChoices = new ArrayList<>(
-            Arrays.asList(recognizeChoice1, recognizeChoice2)
+        RecognitionChoice recognitionChoice1 = new RecognitionChoice();
+        RecognitionChoice recognitionChoice2 = new RecognitionChoice();
+        List<RecognitionChoice> recognitionChoices = new ArrayList<>(
+            Arrays.asList(recognitionChoice1, recognitionChoice2)
         );
-        CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
+        CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognitionChoices);
         Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -127,7 +130,7 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
         Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(
             new CommunicationUserIdentifier("id"),
-            "operationContext", Context.NONE
+            CALL_OPERATION_CONTEXT, Context.NONE
         );
         assertEquals(response.getStatusCode(), 200);
     }
@@ -142,14 +145,20 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
         Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(
             new CommunicationUserIdentifier("id"),
-            "operationContext", Context.NONE
+            CALL_OPERATION_CONTEXT, Context.NONE
         );
         assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
-    public void sendDtmfWithResponseTest() {
-        Response<SendDtmfResult> response = callMedia.sendDtmfWithResponse(
+    public void sendDtmfTonesWithResponseTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>(
+                    serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
+            );
+        callMedia = callConnection.getCallMedia();
+        Response<SendDtmfTonesResult> response = callMedia.sendDtmfTonesWithResponse(
             Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
             "ctx", Context.NONE
         );

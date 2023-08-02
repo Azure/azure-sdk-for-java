@@ -12,7 +12,7 @@ import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
-import com.azure.communication.callautomation.models.events.SendDtmfCompleted;
+import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -126,19 +126,19 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
-    public void continuousRecognitionAndSendDtmfInACallAutomatedTest(HttpClient httpClient) {
+    public void continuousRecognitionAndSendDtmfTonesInACallAutomatedTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call
          * 1. Create a CallAutomationClient.
          * 2. Create a call from source to one ACS target.
          * 3. Get updated call properties and check for the connected state.
          * 4. Start continuous recognition on source, expect no failure(exception)
-         * 5. Send Dtmf tones to target, expect SendDtmfCompleted event and no failure(exception)
+         * 5. Send Dtmf tones to target, expect SendDtmfTonesCompleted event and no failure(exception)
          * 6. Stop continuous Dtmf recognition on source, expect ContinuousDtmfRecognitionStopped event and no failure(exception)
          * 7. Hang up the call.
          */
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfInACallAutomatedTest", next))
+            .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfTonesInACallAutomatedTest", next))
             .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
@@ -149,13 +149,13 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
 
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfInACallAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfTonesInACallAutomatedTest", next))
                 .sourceIdentity(caller)
                 .buildAsyncClient();
 
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfInACallAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders("continuousRecognitionAndSendDtmfTonesInACallAutomatedTest", next))
                 .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);
@@ -193,11 +193,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // start continuous dtmf
             callMediaAsync.startContinuousDtmfRecognition(caller).block();
-            callMediaAsync.sendDtmf(Stream.of(DtmfTone.A, DtmfTone.A, DtmfTone.A).collect(Collectors.toList()), receiver).block();
+            callMediaAsync.sendDtmfTones(Stream.of(DtmfTone.A, DtmfTone.A, DtmfTone.A).collect(Collectors.toList()), receiver).block();
 
             // send dtmf
-            SendDtmfCompleted sendDtmfCompleted = waitForEvent(SendDtmfCompleted.class, callerConnectionId, Duration.ofSeconds(20));
-            assertNotNull(sendDtmfCompleted);
+            SendDtmfTonesCompleted sendDtmfTonesCompleted = waitForEvent(SendDtmfTonesCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(sendDtmfTonesCompleted);
 
             // stop continuous dtmf
             callMediaAsync.stopContinuousDtmfRecognition(caller).block();

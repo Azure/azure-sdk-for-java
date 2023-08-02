@@ -52,8 +52,8 @@ public final class CreateCallRequestInternal {
     /*
      * The identifier of the Cognitive Service resource assigned to this call.
      */
-    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
-    private String azureCognitiveServicesEndpointUrl;
+    @JsonProperty(value = "cognitiveServicesEndpoint")
+    private String cognitiveServicesEndpoint;
 
     /**
      * Get the targets property: The targets of the call.
@@ -178,24 +178,24 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
-     * this call.
+     * Get the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
+     * call.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the cognitiveServicesEndpoint value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getCognitiveServicesEndpoint() {
+        return this.cognitiveServicesEndpoint;
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
-     * this call.
+     * Set the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
+     * call.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public CreateCallRequestInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
+        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
 }

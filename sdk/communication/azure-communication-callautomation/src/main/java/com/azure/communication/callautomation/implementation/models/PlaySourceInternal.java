@@ -31,15 +31,15 @@ public final class PlaySourceInternal {
     /*
      * Defines the text source info to be used for play
      */
-    @JsonProperty(value = "textSource")
-    private TextSourceInternal textSource;
+    @JsonProperty(value = "text")
+    private TextSourceInternal text;
 
     /*
      * Defines the ssml(Speech Synthesis Markup Language) source info to be
      * used for play
      */
-    @JsonProperty(value = "ssmlSource")
-    private SsmlSourceInternal ssmlSource;
+    @JsonProperty(value = "ssml")
+    private SsmlSourceInternal ssml;
 
     /**
      * Get the kind property: Defines the type of the play source.
@@ -102,42 +102,42 @@ public final class PlaySourceInternal {
     }
 
     /**
-     * Get the textSource property: Defines the text source info to be used for play.
+     * Get the text property: Defines the text source info to be used for play.
      *
-     * @return the textSource value.
+     * @return the text value.
      */
-    public TextSourceInternal getTextSource() {
-        return this.textSource;
+    public TextSourceInternal getText() {
+        return this.text;
     }
 
     /**
-     * Set the textSource property: Defines the text source info to be used for play.
+     * Set the text property: Defines the text source info to be used for play.
      *
-     * @param textSource the textSource value to set.
+     * @param text the text value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setTextSource(TextSourceInternal textSource) {
-        this.textSource = textSource;
+    public PlaySourceInternal setText(TextSourceInternal text) {
+        this.text = text;
         return this;
     }
 
     /**
-     * Get the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     * Get the ssml property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
      *
-     * @return the ssmlSource value.
+     * @return the ssml value.
      */
-    public SsmlSourceInternal getSsmlSource() {
-        return this.ssmlSource;
+    public SsmlSourceInternal getSsml() {
+        return this.ssml;
     }
 
     /**
-     * Set the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     * Set the ssml property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
      *
-     * @param ssmlSource the ssmlSource value to set.
+     * @param ssml the ssml value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setSsmlSource(SsmlSourceInternal ssmlSource) {
-        this.ssmlSource = ssmlSource;
+    public PlaySourceInternal setSsml(SsmlSourceInternal ssml) {
+        this.ssml = ssml;
         return this;
     }
 }

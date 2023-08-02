@@ -4,22 +4,22 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.SendDtmfResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.SendDtmfTonesResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
-import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
+import com.azure.communication.callautomation.implementation.models.VoiceKindInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeChoiceInternal;
+import com.azure.communication.callautomation.implementation.models.RecognitionChoiceInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
@@ -33,10 +33,10 @@ import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
-import com.azure.communication.callautomation.models.SendDtmfResult;
+import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -302,8 +302,8 @@ public final class CallMediaAsync {
 
     private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
         TextSourceInternal textSourceInternal = new TextSourceInternal().setText(playSource.getText());
-        if (playSource.getVoiceGender() != null) {
-            textSourceInternal.setVoiceGender(GenderTypeInternal.fromString(playSource.getVoiceGender().toString()));
+        if (playSource.getVoiceKind() != null) {
+            textSourceInternal.setVoiceKind(VoiceKindInternal.fromString(playSource.getVoiceKind().toString()));
         }
         if (playSource.getSourceLocale() != null) {
             textSourceInternal.setSourceLocale(playSource.getSourceLocale());
@@ -317,7 +317,7 @@ public final class CallMediaAsync {
 
         return new PlaySourceInternal()
             .setKind(PlaySourceTypeInternal.TEXT)
-            .setTextSource(textSourceInternal)
+            .setText(textSourceInternal)
             .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
     }
 
@@ -329,7 +329,7 @@ public final class CallMediaAsync {
 
         return new PlaySourceInternal()
             .setKind(PlaySourceTypeInternal.SSML)
-            .setSsmlSource(ssmlSourceInternal)
+            .setSsml(ssmlSourceInternal)
             .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
     }
 
@@ -345,24 +345,24 @@ public final class CallMediaAsync {
         return playSourceInternal;
     }
 
-    private List<RecognizeChoiceInternal> convertListRecognizeChoiceInternal(List<RecognizeChoice> recognizeChoices) {
-        return recognizeChoices.stream()
-            .map(this::convertRecognizeChoiceInternal)
+    private List<RecognitionChoiceInternal> convertListRecognitionChoiceInternal(List<RecognitionChoice> recognitionChoices) {
+        return recognitionChoices.stream()
+            .map(this::convertRecognitionChoiceInternal)
             .collect(Collectors.toList());
     }
 
-    private RecognizeChoiceInternal convertRecognizeChoiceInternal(RecognizeChoice recognizeChoice) {
-        RecognizeChoiceInternal internalRecognizeChoice = new RecognizeChoiceInternal();
-        if (recognizeChoice.getLabel() != null) {
-            internalRecognizeChoice.setLabel(recognizeChoice.getLabel());
+    private RecognitionChoiceInternal convertRecognitionChoiceInternal(RecognitionChoice recognitionChoice) {
+        RecognitionChoiceInternal internalRecognitionChoice = new RecognitionChoiceInternal();
+        if (recognitionChoice.getLabel() != null) {
+            internalRecognitionChoice.setLabel(recognitionChoice.getLabel());
         }
-        if (recognizeChoice.getPhrases() != null) {
-            internalRecognizeChoice.setPhrases(recognizeChoice.getPhrases());
+        if (recognitionChoice.getPhrases() != null) {
+            internalRecognitionChoice.setPhrases(recognitionChoice.getPhrases());
         }
-        if (recognizeChoice.getTone() != null) {
-            internalRecognizeChoice.setTone(convertDtmfToneInternal(recognizeChoice.getTone()));
+        if (recognitionChoice.getTone() != null) {
+            internalRecognitionChoice.setTone(convertDtmfToneInternal(recognitionChoice.getTone()));
         }
-        return internalRecognizeChoice;
+        return internalRecognitionChoice;
     }
 
     private DtmfToneInternal convertDtmfToneInternal(DtmfTone dtmfTone) {
@@ -399,7 +399,7 @@ public final class CallMediaAsync {
         CallMediaRecognizeChoiceOptions choiceRecognizeOptions = (CallMediaRecognizeChoiceOptions) recognizeOptions;
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-            .setChoices(convertListRecognizeChoiceInternal(choiceRecognizeOptions.getRecognizeChoices()))
+            .setChoices(convertListRecognitionChoiceInternal(choiceRecognizeOptions.getChoices()))
             .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
             .setTargetParticipant(CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
 
@@ -429,7 +429,7 @@ public final class CallMediaAsync {
     private RecognizeRequest getRecognizeRequestFromSpeechConfiguration(CallMediaRecognizeOptions recognizeOptions) {
         CallMediaRecognizeSpeechOptions speechRecognizeOptions = (CallMediaRecognizeSpeechOptions) recognizeOptions;
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeout().toMillis());
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setSpeechOptions(speechOptionsInternal)
@@ -468,7 +468,7 @@ public final class CallMediaAsync {
             speechOrDtmfRecognizeOptions.getStopTones()
         );
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeout().toMillis());
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setSpeechOptions(speechOptionsInternal)
@@ -530,10 +530,10 @@ public final class CallMediaAsync {
      *
      * @param tones tones to be sent
      * @param targetParticipant the target participant
-     * @return Response for successful sendDtmf request.
+     * @return Response for successful sendDtmfTones request.
      */
-    public Mono<SendDtmfResult> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return sendDtmfWithResponse(tones, targetParticipant, null).flatMap(FluxUtil::toMono);
+    public Mono<SendDtmfTonesResult> sendDtmfTones(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return sendDtmfTonesWithResponse(tones, targetParticipant, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -542,29 +542,29 @@ public final class CallMediaAsync {
      * @param tones tones to be sent
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
-     * @return Response for successful sendDtmf request.
+     * @return Response for successful sendDtmfTones request.
      */
-    public Mono<Response<SendDtmfResult>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context));
+    public Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
+        return withContext(context -> sendDtmfTonesWithResponseInternal(targetParticipant, tones, operationContext, context));
     }
 
-    Mono<Response<SendDtmfResult>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
+    Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
+            SendDtmfTonesRequestInternal requestInternal = new SendDtmfTonesRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
                 .setTones(tones.stream()
                 .map(this::convertDtmfToneInternal)
                 .collect(Collectors.toList()))
                 .setOperationContext(operationContext);
 
-            return contentsInternal.sendDtmfWithResponseAsync(
+            return contentsInternal.sendDtmfTonesWithResponseAsync(
                 callConnectionId,
                 requestInternal,
                 UUID.randomUUID(),
                 OffsetDateTime.now(),
                 context
-            ).map(response -> new SimpleResponse<>(response, SendDtmfResponseConstructorProxy.create(response.getValue())));
+            ).map(response -> new SimpleResponse<>(response, SendDtmfTonesResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

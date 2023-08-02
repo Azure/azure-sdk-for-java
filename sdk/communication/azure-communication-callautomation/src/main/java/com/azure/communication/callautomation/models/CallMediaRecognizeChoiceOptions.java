@@ -14,9 +14,9 @@ import java.util.List;
 @Fluent
 public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOptions {
     /*
-     * List of recognize choice.
+     * List of recognition choices.
      */
-    private final List<RecognizeChoice> recognizeChoices;
+    private final List<RecognitionChoice> choices;
 
     /*
      * Speech language to be recognized, If not set default is en-US
@@ -31,12 +31,12 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     private String speechRecognitionModelEndpointId;
 
     /**
-     * Get the list of recognize choice.
+     * Get the list of recognition choices.
      *
-     * @return the list of recognize choice.
+     * @return the list of recognition choices.
      */
-    public List<RecognizeChoice> getRecognizeChoices() {
-        return this.recognizeChoices;
+    public List<RecognitionChoice> getChoices() {
+        return this.choices;
     }
 
     /**
@@ -169,10 +169,10 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Initializes a CallMediaRecognizeDtmfOptions object.
      *
      * @param targetParticipant Target participant of DTFM tone recognition.
-     * @param recognizeChoices Maximum number of DTMF tones to be collected.
+     * @param choices Maximum number of DTMF tones to be collected.
      */
-    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognizeChoice> recognizeChoices) {
+    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognitionChoice> choices) {
         super(RecognizeInputType.CHOICES, targetParticipant);
-        this.recognizeChoices = recognizeChoices;
+        this.choices = choices;
     }
 }

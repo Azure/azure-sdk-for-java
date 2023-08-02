@@ -8,7 +8,7 @@ import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.SendDtmfResult;
+import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -153,11 +153,11 @@ public final class CallMedia {
      *
      * @param tones tones to be sent
      * @param targetParticipant the target participant
-     * @return Response for successful sendDtmf request.
+     * @return Response for successful sendDtmfTones request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendDtmfResult sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.sendDtmf(tones, targetParticipant).block();
+    public SendDtmfTonesResult sendDtmfTones(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return callMediaAsync.sendDtmfTones(tones, targetParticipant).block();
     }
 
     /**
@@ -167,12 +167,12 @@ public final class CallMedia {
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
      * @param context Context
-     * @return Response for successful sendDtmf request.
+     * @return Response for successful sendDtmfTones request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendDtmfResult> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
-                                                         String operationContext, Context context) {
-        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context).block();
+    public Response<SendDtmfTonesResult> sendDtmfTonesWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
+                                                                   String operationContext, Context context) {
+        return callMediaAsync.sendDtmfTonesWithResponseInternal(targetParticipant, tones, operationContext, context).block();
     }
 
     /**

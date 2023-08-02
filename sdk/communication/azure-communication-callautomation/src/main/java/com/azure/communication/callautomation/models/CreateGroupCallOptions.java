@@ -42,7 +42,7 @@ public final class CreateGroupCallOptions {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String azureCognitiveServicesEndpointUrl;
+    private String cognitiveServicesEndpoint;
 
     /**
      * Constructor
@@ -132,24 +132,24 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the cognitiveServicesEndpoint value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getCognitiveServicesEndpoint() {
+        return this.cognitiveServicesEndpoint;
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public CreateGroupCallOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
+        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
 

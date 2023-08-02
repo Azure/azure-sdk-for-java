@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SendDtmfRequest model. */
+/** The SendDtmfTonesRequestInternal model. */
 @Fluent
-public final class SendDtmfRequest {
+public final class SendDtmfTonesRequestInternal {
     /*
      * List of tones to be sent to target participant.
      */
@@ -18,7 +18,7 @@ public final class SendDtmfRequest {
     private List<DtmfToneInternal> tones;
 
     /*
-     * Target participant of send DTMF.
+     * Target participant of send Dtmf tones.
      */
     @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
@@ -42,15 +42,15 @@ public final class SendDtmfRequest {
      * Set the tones property: List of tones to be sent to target participant.
      *
      * @param tones the tones value to set.
-     * @return the SendDtmfRequest object itself.
+     * @return the SendDtmfTonesRequestInternal object itself.
      */
-    public SendDtmfRequest setTones(List<DtmfToneInternal> tones) {
+    public SendDtmfTonesRequestInternal setTones(List<DtmfToneInternal> tones) {
         this.tones = tones;
         return this;
     }
 
     /**
-     * Get the targetParticipant property: Target participant of send DTMF.
+     * Get the targetParticipant property: Target participant of send Dtmf tones.
      *
      * @return the targetParticipant value.
      */
@@ -59,12 +59,12 @@ public final class SendDtmfRequest {
     }
 
     /**
-     * Set the targetParticipant property: Target participant of send DTMF.
+     * Set the targetParticipant property: Target participant of send Dtmf tones.
      *
      * @param targetParticipant the targetParticipant value to set.
-     * @return the SendDtmfRequest object itself.
+     * @return the SendDtmfTonesRequestInternal object itself.
      */
-    public SendDtmfRequest setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+    public SendDtmfTonesRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }
@@ -82,9 +82,9 @@ public final class SendDtmfRequest {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the SendDtmfRequest object itself.
+     * @return the SendDtmfTonesRequestInternal object itself.
      */
-    public SendDtmfRequest setOperationContext(String operationContext) {
+    public SendDtmfTonesRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

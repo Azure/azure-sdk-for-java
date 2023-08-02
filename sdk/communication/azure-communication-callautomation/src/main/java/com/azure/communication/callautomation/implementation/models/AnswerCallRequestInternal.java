@@ -31,8 +31,8 @@ public final class AnswerCallRequestInternal {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
-    private String azureCognitiveServicesEndpointUrl;
+    @JsonProperty(value = "cognitiveServicesEndpoint")
+    private String cognitiveServicesEndpoint;
 
     /*
      * The identifier of the call automation entity which answers the call
@@ -101,24 +101,22 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource attached.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the cognitiveServicesEndpoint value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getCognitiveServicesEndpoint() {
+        return this.cognitiveServicesEndpoint;
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public AnswerCallRequestInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
+        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
 

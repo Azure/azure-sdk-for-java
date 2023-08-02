@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** The RecognizeChoice model. */
-public final class RecognizeChoice {
+/** The RecognitionChoice model. */
+public final class RecognitionChoice {
     /*
      * Identifier for a given choice
      */
@@ -40,9 +40,9 @@ public final class RecognizeChoice {
      * Set the label property: Identifier for a given choice.
      *
      * @param label the label value to set.
-     * @return the RecognizeChoice object itself.
+     * @return the RecognitionChoice object itself.
      */
-    public RecognizeChoice setLabel(String label) {
+    public RecognitionChoice setLabel(String label) {
         this.label = label;
         return this;
     }
@@ -57,12 +57,12 @@ public final class RecognizeChoice {
     }
 
     /**
-     * Set the phrases property: List of phrases to recognize.
+     * Set the phrases property: The phrases property.
      *
      * @param phrases the phrases value to set.
-     * @return the RecognizeChoice object itself.
+     * @return the RecognitionChoice object itself.
      */
-    public RecognizeChoice setPhrases(List<String> phrases) {
+    public RecognitionChoice setPhrases(List<String> phrases) {
         this.phrases = phrases;
         return this;
     }
@@ -80,9 +80,9 @@ public final class RecognizeChoice {
      * Set the tone property: The tone property.
      *
      * @param tone the tone value to set.
-     * @return the RecognizeChoice object itself.
+     * @return the RecognitionChoice object itself.
      */
-    public RecognizeChoice setTone(DtmfTone tone) {
+    public RecognitionChoice setTone(DtmfTone tone) {
         this.tone = tone;
         return this;
     }

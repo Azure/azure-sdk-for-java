@@ -6,9 +6,9 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SendDtmfFailed model. */
+/** The SendDtmfTonesFailed model. */
 @Fluent
-public final class SendDtmfFailed extends CallAutomationEventBase {
+public final class SendDtmfTonesFailed extends CallAutomationEventBase {
 
     /*
      * Contains the resulting SIP code, sub-code and message.
@@ -17,9 +17,9 @@ public final class SendDtmfFailed extends CallAutomationEventBase {
     private final ResultInformation resultInformation;
 
     /**
-     * Constructor for ContinuousDtmfRecognitionToneReceived
+     * Constructor for SendDtmfTonesFailed
      */
-    public SendDtmfFailed() {
+    public SendDtmfTonesFailed() {
         resultInformation = null;
     }
 
