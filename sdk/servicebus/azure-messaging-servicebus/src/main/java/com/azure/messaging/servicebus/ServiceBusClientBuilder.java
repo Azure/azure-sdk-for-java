@@ -1981,6 +1981,10 @@ public final class ServiceBusClientBuilder implements
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
+        ServiceBusReceiverAsyncClient buildAsyncClientForProcessor() {
+            return buildAsyncClient(true, ReceiverKind.PROCESSOR);
+        }
+
         ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, ReceiverKind receiverKind) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);

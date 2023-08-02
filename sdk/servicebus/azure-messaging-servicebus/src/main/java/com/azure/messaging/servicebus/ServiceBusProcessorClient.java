@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
-import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -216,7 +215,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
-        ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClient(true, ReceiverKind.PROCESSOR);
+        ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
         this.asyncClient.set(client);
         this.sessionReceiverBuilder = null;
         this.queueName = queueName;
@@ -251,10 +250,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
 
         if (asyncClient.get() == null) {
-            ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
-                ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-                : this.receiverBuilder.buildAsyncClient();
-            asyncClient.set(newReceiverClient);
+            asyncClient.set(createNewReceiver());
         }
 
         receiveMessages();
@@ -347,10 +343,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized String getIdentifier() {
         if (asyncClient.get() == null) {
-            ServiceBusReceiverAsyncClient newReceiverClient = receiverBuilder == null
-                ? sessionReceiverBuilder.buildAsyncClientForProcessor()
-                : receiverBuilder.buildAsyncClient();
-            asyncClient.set(newReceiverClient);
+            asyncClient.set(createNewReceiver());
         }
 
         return asyncClient.get().getIdentifier();
@@ -477,10 +470,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         receiverSubscriptions.clear();
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverClient.close();
-        ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
-            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-            : this.receiverBuilder.buildAsyncClient();
-        asyncClient.set(newReceiverClient);
+        asyncClient.set(createNewReceiver());
         receiveMessages();
+    }
+
+    private ServiceBusReceiverAsyncClient createNewReceiver() {
+        return this.receiverBuilder == null
+            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
+            : this.receiverBuilder.buildAsyncClientForProcessor();
     }
 }

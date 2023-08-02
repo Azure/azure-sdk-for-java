@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
-import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Subscription;
@@ -61,7 +60,7 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
             AutoCloseable scope = tracer.makeSpanCurrent(span);
             try {
                 downstream.onNext(message);
-                if (instrumentation.getReceiverKind() != ReceiverKind.PROCESSOR) {
+                if (instrumentation.isProcessorInstrumentation()) {
                     tracer.endSpan(null, span, scope);
                 }
             } catch (Throwable t) {

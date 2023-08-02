@@ -17,8 +17,6 @@ import java.time.Instant;
  * Contains convenience methods to instrument specific calls with traces and metrics.
  */
 public final class ServiceBusReceiverInstrumentation {
-    ;
-
     private final ServiceBusMeter meter;
     private final ServiceBusTracer tracer;
     private final ReceiverKind receiverKind;
@@ -37,9 +35,14 @@ public final class ServiceBusReceiverInstrumentation {
         return meter.isSettlementEnabled() ? this.meter.trackSettlementSequenceNumber() : null;
     }
 
-    public ReceiverKind getReceiverKind() {
-         return receiverKind;
+    /**
+     * Checks if the instrumentation is created for processor client.
+     * @return
+     */
+    public boolean isProcessorInstrumentation() {
+        return receiverKind == ReceiverKind.PROCESSOR;
     }
+
     /**
      * Instruments even processing. For Processor traces processMessage callback, for async receiver
      * traces subscriber call. Does not trace anything for sync receiver - use {@link ServiceBusTracer#traceSyncReceive(String, Flux)}
