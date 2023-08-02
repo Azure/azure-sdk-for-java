@@ -10,6 +10,8 @@
 - Fixed incorrect process span duration reported by `ServiceBusProcessorClient` when max concurrency is bigger than 1.
   ([#35916](https://github.com/Azure/azure-sdk-for-java/issues/35916))
 
+- Update create-batch and send API to treat RequestResponseChannelClosedException as retriable and enable retry for potential network call that create-batch makes. ([34646](https://github.com/Azure/azure-sdk-for-java/issues/34646))
+
 ### Other Changes
 
 ## 7.15.0-beta.2 (2023-07-18)
