@@ -791,7 +791,7 @@ public class Transforms {
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl(),
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getFileList()));
-            } else if (classifierDocumentTypeDetails.getTrainingDataContentSource().getKind().equals(TrainingDataContentSourceKind.AZURE_BLOB)) {
+            } else if (TrainingDataContentSourceKind.AZURE_BLOB.equals(classifierDocumentTypeDetails.getTrainingDataContentSource().getKind())) {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
                         ((BlobContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl())
