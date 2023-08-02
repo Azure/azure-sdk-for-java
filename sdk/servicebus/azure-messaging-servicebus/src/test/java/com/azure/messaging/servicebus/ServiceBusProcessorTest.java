@@ -253,7 +253,7 @@ public class ServiceBusProcessorTest {
                     countDownLatch.get().countDown();
                 }
             },
-            error -> { },
+            error -> { /* ignored */ },
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
 
         serviceBusProcessorClient.start();

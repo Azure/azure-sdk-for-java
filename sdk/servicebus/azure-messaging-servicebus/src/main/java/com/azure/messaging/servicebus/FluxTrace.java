@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Subscription;
@@ -56,7 +57,7 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
         @Override
         protected void hookOnNext(ServiceBusMessageContext message) {
             Context span = instrumentation.instrumentProcess("ServiceBus.process", message.getMessage(), Context.NONE);
-
+            message.getMessage().setContext(span);
             AutoCloseable scope = tracer.makeSpanCurrent(span);
             try {
                 downstream.onNext(message);
