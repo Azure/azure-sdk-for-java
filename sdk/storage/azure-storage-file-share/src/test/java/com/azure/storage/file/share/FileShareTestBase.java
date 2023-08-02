@@ -9,6 +9,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -22,8 +23,11 @@ import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
+import com.azure.storage.file.share.models.ClearRange;
+import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
@@ -35,6 +39,7 @@ import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
 import okhttp3.ConnectionPool;
+import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,8 +53,10 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
@@ -58,6 +65,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -494,6 +502,26 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
     }
 
+    /**
+     * Temporary utility method that waits if running against a live service.
+     * <p>
+     * Remove this once {@code azure-core-test} has a static equivalent of
+     * {@link TestBase#sleepIfRunningAgainstService(long)}.
+     *
+     * @param sleepMillis Milliseconds to sleep.
+     */
+    public static void sleepIfLiveTesting(long sleepMillis) {
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            return;
+        }
+
+        try {
+            Thread.sleep(sleepMillis);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static <T, E extends Exception> T retry(Supplier<T> action, Predicate<E> retryPredicate, int times,
         Duration delay) throws E, InterruptedException {
@@ -569,6 +597,30 @@ public class FileShareTestBase extends TestProxyTestBase {
         return expectedTime.truncatedTo(ChronoUnit.MINUTES) == actualTime.truncatedTo(ChronoUnit.MINUTES);
     }
 
+    public static List<FileRange> createFileRanges(long... offsets) {
+        List<FileRange> fileRanges = new ArrayList<>();
+        if (offsets == null || offsets.length == 0) {
+            return fileRanges;
+        }
+        for (int i = 0; i < offsets.length / 2; i++) {
+            FileRange range = new FileRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]);
+            fileRanges.add(range);
+        }
+        return fileRanges;
+    }
+
+    public static List<ClearRange> createClearRanges(long... offsets) {
+        List<ClearRange> clearRanges = new ArrayList<>();
+        if (offsets == null || offsets.length == 0) {
+            return clearRanges;
+        }
+        for (int i = 0; i < offsets.length / 2; i++) {
+            ClearRange range = new ClearRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]);
+            clearRanges.add(range);
+        }
+        return clearRanges;
+    }
+
     // add this to FileTestHelper class
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
         ShareErrorCode errMessage) {
@@ -583,6 +635,35 @@ public class FileShareTestBase extends TestProxyTestBase {
         return response;
     }
 
+    protected static Stream<Arguments> startCopyWithCopySourceFileErrorSupplier() {
+        return Stream.of(
+            Arguments.of(true, false, false, false),
+            Arguments.of(false, true, false, false),
+            Arguments.of(false, false, true, false),
+            Arguments.of(false, false, false, true)
+        );
+    }
+
+    protected static Stream<Arguments> listRangesDiffSupplier() {
+        return Stream.of(
+            Arguments.of(createFileRanges(), createFileRanges(), createFileRanges(), createClearRanges()),
+            Arguments.of(createFileRanges(0, 511), createFileRanges(), createFileRanges(0, 511), createClearRanges()),
+            Arguments.of(createFileRanges(), createFileRanges(0, 511), createFileRanges(), createClearRanges(0, 511)),
+            Arguments.of(createFileRanges(0, 511), createFileRanges(512, 1023), createFileRanges(0, 511),
+                createClearRanges(512, 1023)),
+            Arguments.of(createFileRanges(0, 511, 1024, 1535), createFileRanges(512, 1023, 1536, 2047),
+                createFileRanges(0, 511, 1024, 1535), createClearRanges(512, 1023, 1536, 2047))
+        );
+    }
+
+    protected static Stream<Arguments> startCopyArgumentsSupplier() {
+        return Stream.of(
+            Arguments.of(true, false, false, false, PermissionCopyModeType.OVERRIDE),
+            Arguments.of(false, true, false, false, PermissionCopyModeType.OVERRIDE),
+            Arguments.of(false, false, true, false, PermissionCopyModeType.SOURCE),
+            Arguments.of(false, false, false, true, PermissionCopyModeType.SOURCE));
+    }
+
     protected static boolean olderThan20190707ServiceVersion() {
         return olderThan(ShareServiceVersion.V2019_07_07);
     }
@@ -593,6 +674,10 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static boolean olderThan20201002ServiceVersion() {
         return olderThan(ShareServiceVersion.V2020_10_02);
+    }
+
+    protected static boolean olderThan20210212ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2021_02_12);
     }
 
     protected static boolean olderThan20210608ServiceVersion() {
@@ -611,6 +696,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         return olderThan(ShareServiceVersion.V2022_11_02);
     }
 
+    protected static boolean olderThan20230103ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2023_01_03);
+    }
+
     protected static boolean olderThan(ShareServiceVersion targetVersion) {
         String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
         ShareServiceVersion version = (targetServiceVersionFromEnvironment != null)
@@ -618,5 +707,14 @@ public class FileShareTestBase extends TestProxyTestBase {
             : ShareServiceVersion.getLatest();
 
         return version.ordinal() < targetVersion.ordinal();
+    }
+
+    public static boolean isLiveMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
+    }
+
+    protected Duration getPollingDuration(long liveTestDurationInMillis) {
+        return (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) ? Duration.ofMillis(10)
+            : Duration.ofMillis(liveTestDurationInMillis);
     }
 }

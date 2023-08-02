@@ -17,7 +17,7 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 
-class FileSasClientTests extends APISpec {
+class FileSasClientTest extends APISpec {
 
     private ShareFileClient primaryFileClient
     private ShareClient primaryShareClient
