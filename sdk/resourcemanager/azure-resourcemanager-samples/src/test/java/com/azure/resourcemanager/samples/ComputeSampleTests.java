@@ -186,6 +186,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testManageDiskEncryptionSet() {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertNotNull(clientId);
         Assertions.assertTrue(ManageDiskEncryptionSet.runSample(azureResourceManager, clientId));
     }
 
@@ -194,6 +195,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testCreateVirtualMachineEncryptedUsingCustomerManagedKey() {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertNotNull(clientId);
         Assertions.assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
     }
 

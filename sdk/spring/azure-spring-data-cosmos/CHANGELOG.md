@@ -1,15 +1,19 @@
 ## Release History
 
-### 3.37.0-beta.1 (Unreleased)
+### 3.38.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 35546](https://github.com/Azure/azure-sdk-for-java/pull/35546)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.37.0 (2023-08-01)
+
+#### Features Added
+* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 35546](https://github.com/Azure/azure-sdk-for-java/pull/35546)
 
 ### 3.36.0 (2023-06-29)
 
