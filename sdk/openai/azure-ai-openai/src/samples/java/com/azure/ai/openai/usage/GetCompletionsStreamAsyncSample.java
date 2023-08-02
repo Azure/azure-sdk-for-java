@@ -39,7 +39,9 @@ public class GetCompletionsStreamAsyncSample {
 
         client.getCompletionsStream(deploymentOrModelId, new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true))
             // Remove .skip(1) when using Non-Azure OpenAI API
-            .skip(1) // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
             .map(completions -> completions.getChoices().get(0).getText())
             .subscribe(
                 System.out::print,

@@ -46,7 +46,9 @@ public class GetChatCompletionsStreamAsyncSample {
 
         client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages))
             // Remove .skip(1) when using Non-Azure OpenAI API
-            .skip(1) // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
             .map(chatCompletions -> {
                 /* The delta is the message content for a streaming response.
                  * Subsequence of streaming delta will be like:

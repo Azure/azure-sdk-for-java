@@ -63,7 +63,9 @@ public class StreamingChatSample {
         chatCompletionsStream
             .stream()
             // Remove .skip(1) when using Non-Azure OpenAI API
-            .skip(1) // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
             .forEach(chatCompletions -> {
                 ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
                 if (delta.getRole() != null) {
