@@ -116,10 +116,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         };
     }
 
-    @DataProvider(name = "isContainerUnderWarmUpFlowArgsProvider")
-    public Object[] isContainerUnderWarmUpFlowArgsProvider() {
+    @DataProvider(name = "isCollectionUnderWarmUpFlowArgsProvider")
+    public Object[] isCollectionUnderWarmUpFlowArgsProvider() {
         return new Object[] {
-            // isContainerUnderWarmUpFlow
+            // isCollectionUnderWarmUpFlow
             true, false
         };
     }
@@ -277,7 +277,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             List<String> allPartitionKeyRangeIds,
             String partitionKeyRangeId,
             String collectionLink,
-            boolean isContainerUnderWarmUpFlow) throws Exception {
+            boolean isCollectionUnderWarmUpFlow) throws Exception {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
@@ -399,7 +399,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
-        // isCollectionRidUnderOpenConnectionsFlow is called at least thrice
+        // isCollectionRidUnderOpenConnectionsFlow is called 6 times
         // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
         // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
@@ -407,11 +407,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
         // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
         // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
-        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atMost(6))
+        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
                 .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeast(3))
-               .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
 
         if (isCollectionUnderWarmUpFlow) {
             // if the collection is under the warm up flow and the replica health status is Unknown / UnhealthyPending
@@ -450,7 +448,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             List<String> allPartitionKeyRangeIds,
             String partitionKeyRangeId,
             String collectionLink,
-            boolean isContainerUnderWarmUpFlow) throws Exception {
+            boolean isCollectionUnderWarmUpFlow) throws Exception {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
@@ -493,7 +491,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         collectionLink,
                         new Database(), new HashMap<>());
 
-        if (isContainerUnderWarmUpFlow) {
+        if (isCollectionUnderWarmUpFlow) {
             Mockito
                 .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
                 .thenReturn(true);
@@ -507,7 +505,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = origCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
-        // isCollectionRidUnderOpenConnectionsFlow called at least thrice
+        // isCollectionRidUnderOpenConnectionsFlow called 6 times
         // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
         // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
@@ -516,11 +514,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
         // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
         // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeast(3))
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atMost(6))
-               .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
-        if (isContainerUnderWarmUpFlow) {
+        if (isCollectionUnderWarmUpFlow) {
             Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
         } else {
@@ -1289,8 +1285,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    @Test(groups = { "direct" }, dataProvider = "isContainerUnderWarmUpFlowArgsProvider", timeOut = TIMEOUT)
-    public void validateReplicaAddressesTests(boolean isContainerUnderWarmUpFlow) throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @Test(groups = { "direct" }, dataProvider = "isCollectionUnderWarmUpFlowArgsProvider", timeOut = TIMEOUT)
+    public void validateReplicaAddressesTests(boolean isCollectionUnderWarmUpFlow) throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
@@ -1339,7 +1335,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         replicaValidationScopes.add(Unknown);
         replicaValidationScopes.add(UnhealthyPending);
 
-        if (isContainerUnderWarmUpFlow) {
+        if (isCollectionUnderWarmUpFlow) {
             Mockito
                 .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
                 .thenReturn(true);
@@ -1358,7 +1354,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ArgumentCaptor<Uri> openConnectionArguments = ArgumentCaptor.forClass(Uri.class);
         ArgumentCaptor<URI> serviceEndpointArguments = ArgumentCaptor.forClass(URI.class);
 
-        if (isContainerUnderWarmUpFlow) {
+        if (isCollectionUnderWarmUpFlow) {
             Mockito
                 .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(2))
                 .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
