@@ -310,6 +310,22 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     @Test
+    void createTopicExistingName() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = getEntityName(getTopicBaseName(), 3);
+        final CreateTopicOptions expected = new CreateTopicOptions()
+            .setMaxSizeInMegabytes(2048L)
+            .setDuplicateDetectionRequired(true)
+            .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
+            .setUserMetadata("some-metadata-for-testing-topic");
+
+        // Act & Assert
+        assertThrows(ResourceExistsException.class,
+            () -> client.createTopicWithResponse(topicName, expected, Context.NONE));
+    }
+
+    @Test
     void createSubscription() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);

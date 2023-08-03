@@ -533,6 +533,24 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createTopicExistingName(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = getEntityName(getTopicBaseName(), 3);
+        final CreateTopicOptions expected = new CreateTopicOptions()
+            .setMaxSizeInMegabytes(2048L)
+            .setDuplicateDetectionRequired(true)
+            .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
+            .setUserMetadata("some-metadata-for-testing-topic");
+
+        // Act & Assert
+        StepVerifier.create(client.createTopicWithResponse(topicName, expected))
+            .expectError(ResourceExistsException.class)
+            .verify();
+    }
+
     //endregion
 
     //region Delete tests
