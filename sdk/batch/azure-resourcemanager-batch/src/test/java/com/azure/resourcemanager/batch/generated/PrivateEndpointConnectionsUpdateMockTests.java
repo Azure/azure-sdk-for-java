@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.batch.models.PrivateEndpointConnection;
@@ -35,7 +34,7 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"tpwoqhihejq\"},\"groupIds\":[\"pnfqntcyp\",\"xjvfoimwksl\",\"rcizjxvyd\",\"ceacvlhvygdy\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"rtwnawjslbi\",\"actionsRequired\":\"ojgcyzt\"}},\"etag\":\"mznbaeqphch\",\"id\":\"nrnrp\",\"name\":\"ehuwrykqgaifmvik\",\"type\":\"bydvkhbejdz\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"raufactkahzova\"},\"groupIds\":[\"iuxxpshneekulfg\",\"lqubkwdlen\",\"d\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"jbazpjuohminy\",\"actionsRequired\":\"norwmduvwpklvx\"}},\"etag\":\"ygdxpgpqchis\",\"id\":\"epn\",\"name\":\"bjcrxgibbdaxco\",\"type\":\"fozauorsuk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,20 +66,20 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
             manager
                 .privateEndpointConnections()
                 .update(
-                    "rymsgaojfmw",
-                    "cotmr",
-                    "hirctymoxoftpipi",
+                    "ookk",
+                    "fqjbvleo",
+                    "fmluiqtqzfavyvn",
                     new PrivateEndpointConnectionInner()
                         .withPrivateLinkServiceConnectionState(
                             new PrivateLinkServiceConnectionState()
                                 .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                                .withDescription("gz")),
-                    "ublwpcesutrg",
-                    Context.NONE);
+                                .withDescription("ntiew")),
+                    "znmwcp",
+                    com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(
                 PrivateLinkServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("rtwnawjslbi", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jbazpjuohminy", response.privateLinkServiceConnectionState().description());
     }
 }

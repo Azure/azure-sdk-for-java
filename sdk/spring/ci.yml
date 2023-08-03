@@ -10,6 +10,10 @@ trigger:
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/pom.xml
+
 pr:
   branches:
     include:
@@ -20,6 +24,9 @@ pr:
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/pom.xml
 
 # Note - the name parameter cannot contain dashes (-) which is why both
 # a name and displayName are required. Each parameter corresponds to a

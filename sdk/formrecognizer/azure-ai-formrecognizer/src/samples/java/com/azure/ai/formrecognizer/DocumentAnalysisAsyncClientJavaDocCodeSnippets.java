@@ -148,7 +148,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
         final AnalyzeDocumentOptions analyzeDocumentOptions =
             new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")).setDocumentAnalysisFeatures(Arrays.asList(
-                DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Arrays.asList("Charges", "Tax"));
+                DocumentAnalysisFeature.FORMULAS));
 
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));

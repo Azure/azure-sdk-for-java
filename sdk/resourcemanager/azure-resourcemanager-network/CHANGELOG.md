@@ -1,6 +1,16 @@
 # Release History
 
-## 2.29.0-beta.1 (Unreleased)
+## 2.30.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `backends` for `LoadBalancingRule`.
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed a bug that `priority` wasn't set for path-based request routing rules when creating V2 Application Gateways.
 
 ### Other Changes
 

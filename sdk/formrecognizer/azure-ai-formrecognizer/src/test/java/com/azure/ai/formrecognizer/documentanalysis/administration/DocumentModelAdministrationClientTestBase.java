@@ -96,7 +96,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     }
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
             return new DefaultAzureCredentialBuilder()
                 .authorityHost(TestUtils.getAuthority(endpoint))
                 .build();
@@ -133,7 +133,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     void validateClassifierModelData(DocumentClassifierDetails documentClassifierDetails) {
         assertNotNull(documentClassifierDetails.getCreatedOn());
         assertNotNull(documentClassifierDetails.getClassifierId());
-        assertNotNull(documentClassifierDetails.getApiVersion());
+        assertNotNull(documentClassifierDetails.getServiceVersion());
     }
 
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {

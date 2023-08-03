@@ -8,6 +8,12 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where unknown status was treated as complete status, 
+  in long-running operation with `OperationResourcePollingStrategy` polling strategy. 
+  ([#35628](https://github.com/Azure/azure-sdk-for-java/issues/35628))
+- Fixed a bug where JacksonDatabind215 throws AccessControlException under SecurityManager
+  ([#36187](https://github.com/Azure/azure-sdk-for-java/issues/36187))
+
 ### Other Changes
 
 ## 1.42.0-beta.1 (2023-07-24)

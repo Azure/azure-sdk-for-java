@@ -33,7 +33,7 @@
     <!-- Anomaly detector temporarily skipping code coverage until tests are added -->
     <jacoco.skip>false</jacoco.skip>
     <jacoco.min.linecoverage>0.001</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.001</jacoco.min.branchcoverage> 
+    <jacoco.min.branchcoverage>0.001</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.42.0-beta.2</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
