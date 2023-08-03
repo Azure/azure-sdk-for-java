@@ -979,6 +979,8 @@ public class GatewayAddressCache implements IAddressCache {
                                         .stream()
                                         .map(Uri::getURIAsString)
                                         .collect(Collectors.toList()));
+
+                minConnectionsRequiredForEndpoint = this.connectionPolicy.getMinConnectionPoolSizePerEndpoint();
             }
 
             for (Uri addressToBeValidated : addressesNeedToValidation) {
@@ -988,7 +990,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 collectionRid,
                                 this.serviceEndpoint,
                                 addressToBeValidated,
-                                this.connectionPolicy.getMinConnectionPoolSizePerEndpoint()))
+                                minConnectionsRequiredForEndpoint))
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
             }
