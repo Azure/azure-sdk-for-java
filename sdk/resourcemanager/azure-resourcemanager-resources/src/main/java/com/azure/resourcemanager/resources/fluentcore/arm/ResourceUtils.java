@@ -162,7 +162,6 @@ public final class ResourceUtils {
         }
         ResourceId resourceId = ResourceId.fromString(id);
         String resourceTypeWithoutNamespace = getFullResourceTypeWithoutNamespace(resourceId);
-        // exact match first
         for (ProviderResourceType prt : provider.resourceTypes()) {
             // There is an edge case that two resource types share the same child resource type name, so parent type name check is needed.
             // e.g. "dnsForwardingRulesets/virtualNetworkLinks" and "privateDnsZones/virtualNetworkLinks"
@@ -171,13 +170,6 @@ public final class ResourceUtils {
             }
         }
 
-        // relaxed match, in case of edge cases(e.g. namespace included in resource type)
-        String fullResourceType = resourceId.fullResourceType().toLowerCase(Locale.ROOT);
-        for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (fullResourceType.contains(prt.resourceType().toLowerCase(Locale.ROOT))) {
-                return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
-            }
-        }
         ResourceId parent = resourceId.parent();
         if (parent != null && !CoreUtils.isNullOrEmpty(parent.id())) {
             return defaultApiVersion(parent.id(), provider);
