@@ -49,6 +49,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -580,6 +582,22 @@ public class IdentityClientTests {
             test.run();
             Assert.assertNotNull(confidentialClientApplicationBuilderMock);
         }
+    }
+
+    @Test
+    public void validateRedaction() {
+        String s = "        WARNING: Could not retrieve credential from local cache for service principal *** under tenant organizations. Trying credential under tenant 72f988bf-86f1-41af-91ab-2d7cd011db47, assuming that is an app credential.\n"
+            + "        {\n"
+            + "            \"accessToken\": \"ANACCESSTOKEN\",\n"
+            + "            \"expiresOn\": \"2023-08-03 12:29:07.000000\",\n"
+            + "            \"subscription\": \"subscription\",\n"
+            + "            \"tenant\": \"tenant\",\n"
+            + "            \"tokenType\": \"Bearer\"\n"
+            + "        }";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String redacted = client.redactInfo(s);
+        assertTrue(redacted.contains("****"));
+        assertFalse(redacted.contains("accessToken"));
     }
 
     private void mockForDeviceCodeFlow(TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) {
