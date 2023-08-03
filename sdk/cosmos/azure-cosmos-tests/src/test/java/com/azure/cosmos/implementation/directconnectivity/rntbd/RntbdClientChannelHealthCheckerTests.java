@@ -333,7 +333,7 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(channelMock.writeAndFlush(RntbdHealthCheckRequest.MESSAGE)).thenReturn(defaultChannelPromise);
 
         Instant current = Instant.now();
-        Instant lastChannelReadTime = current.minusNanos(config.nonRespondingChannelReadDelayTimeLimitInNanos());
+        Instant lastChannelReadTime = current.minusNanos(5 * config.nonRespondingChannelReadDelayTimeLimitInNanos());
         Instant lastChannelWriteTime = current.plusSeconds(1);
         Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
 
