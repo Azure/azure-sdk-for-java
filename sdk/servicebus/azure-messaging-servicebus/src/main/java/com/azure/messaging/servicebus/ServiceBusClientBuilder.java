@@ -2190,7 +2190,7 @@ public final class ServiceBusClientBuilder implements
             return buildAsyncClient(true, ReceiverKind.PROCESSOR);
         }
 
-         // Common function to build Non-Session Receiver-Async-Client - For Async[Reactor|Processor]Client Or to back SyncClient.
+        // Common function to build "Non-Session" Receiver-Client - For Async[Reactor|Processor]Client Or to back SyncClient.
         ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, ReceiverKind receiverKind) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
@@ -2212,7 +2212,7 @@ public final class ServiceBusClientBuilder implements
 
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
-            if (syncConsumer) {
+            if (receiverKind == ReceiverKind.SYNC_RECEIVER) {
                 final boolean syncReceiveOnV2 = v2StackSupport.isNonSessionSyncReceiveEnabled(configuration);
                 if (syncReceiveOnV2) {
                     // "Non-Session" Sync Receiver-Client on the V2-Stack.
@@ -2245,10 +2245,10 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
-            return new ServiceBusReceiverAsyncClient(connectionSupport.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionSupport, ServiceBusConstants.OPERATION_TIMEOUT,
-                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
+                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
+            return new ServiceBusReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
+                instrumentation, messageSerializer, onClientClose, clientIdentifier);
         }
     }
 

@@ -229,7 +229,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             this.tracer = null;
         } else {
             this.nonSessionProcessorV2 = null;
-            ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
+            final ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
             this.asyncClient.set(client);
             this.tracer = client.getInstrumentation().getTracer();
         }

@@ -298,7 +298,7 @@ public class ServiceBusProcessorTest {
         if (isV2) {
             when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
         } else {
-            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new));
         }
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
@@ -360,7 +360,7 @@ public class ServiceBusProcessorTest {
         if (isV2) {
             when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
         } else {
-            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new));
         }
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -564,7 +564,7 @@ public class ServiceBusProcessorTest {
             when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux.publishOn(Schedulers.boundedElastic()));
         } else {
             when(asyncClient.receiveMessagesWithContext()).thenReturn(
-                new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
+                new FluxTrace(messageFlux.map(ServiceBusMessageContext::new), instrumentation).publishOn(Schedulers.boundedElastic()));
         }
         when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
         when(asyncClient.isConnectionClosed()).thenReturn(false);

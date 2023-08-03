@@ -72,7 +72,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
         final AtomicInteger buildClientCalls = new AtomicInteger();
-        when(builder.buildAsyncClient()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
+        when(builder.buildAsyncClientForProcessor()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
             @Override
             public ServiceBusReceiverAsyncClient answer(InvocationOnMock invocation) {
                 if (buildClientCalls.incrementAndGet() == 1) {
@@ -118,7 +118,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
         final AtomicInteger buildClientCalls = new AtomicInteger();
-        when(builder.buildAsyncClient()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
+        when(builder.buildAsyncClientForProcessor()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
             @Override
             public ServiceBusReceiverAsyncClient answer(InvocationOnMock invocation) {
                 if (buildClientCalls.incrementAndGet() == 1) {
@@ -168,7 +168,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
         final AtomicInteger buildClientCalls = new AtomicInteger();
-        when(builder.buildAsyncClient()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
+        when(builder.buildAsyncClientForProcessor()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
             @Override
             public ServiceBusReceiverAsyncClient answer(InvocationOnMock invocation) {
                 if (buildClientCalls.incrementAndGet() == 1) {
@@ -216,7 +216,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
         final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
-        when(builder.buildAsyncClient()).thenReturn(client);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(instrumentation.getTracer()).thenReturn(tracer);
         when(client.getInstrumentation()).thenReturn(instrumentation);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.concat(Flux.just(message), Flux.never()));
@@ -254,7 +254,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
         final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
-        when(builder.buildAsyncClient()).thenReturn(client);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(instrumentation.getTracer()).thenReturn(tracer);
         when(client.getInstrumentation()).thenReturn(instrumentation);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.concat(Flux.just(message), Flux.never()));
