@@ -6,90 +6,91 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** IpExtendedCommunityProperties define the resource properties. */
+/** IP Extended Community Properties defines the resource properties. */
 @Fluent
 public final class IpExtendedCommunityProperties extends AnnotationResource {
     /*
-     * Action to be taken on the configuration. Example: Permit | Deny.
+     * Configuration state of the resource.
      */
-    @JsonProperty(value = "action", required = true)
-    private CommunityActionTypes action;
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
 
     /*
-     * Route Target List.The expected formats are ASN(plain):NN >> example 4294967294:50, ASN.ASN:NN >> example
-     * 65533.65333:40, IP-address:NN >> example 10.10.10.10:65535. The possible values of ASN,NN are in range of
-     * 0-65535, ASN(plain) is in range of 0-4294967295.
-     */
-    @JsonProperty(value = "routeTargets", required = true)
-    private List<String> routeTargets;
-
-    /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
+
+    /*
+     * List of IP Extended Community Rules.
+     */
+    @JsonProperty(value = "ipExtendedCommunityRules", required = true)
+    private List<IpExtendedCommunityRule> ipExtendedCommunityRules;
 
     /** Creates an instance of IpExtendedCommunityProperties class. */
     public IpExtendedCommunityProperties() {
     }
 
     /**
-     * Get the action property: Action to be taken on the configuration. Example: Permit | Deny.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the action value.
+     * @return the configurationState value.
      */
-    public CommunityActionTypes action() {
-        return this.action;
+    public ConfigurationState configurationState() {
+        return this.configurationState;
     }
 
     /**
-     * Set the action property: Action to be taken on the configuration. Example: Permit | Deny.
-     *
-     * @param action the action value to set.
-     * @return the IpExtendedCommunityProperties object itself.
-     */
-    public IpExtendedCommunityProperties withAction(CommunityActionTypes action) {
-        this.action = action;
-        return this;
-    }
-
-    /**
-     * Get the routeTargets property: Route Target List.The expected formats are ASN(plain):NN &gt;&gt; example
-     * 4294967294:50, ASN.ASN:NN &gt;&gt; example 65533.65333:40, IP-address:NN &gt;&gt; example 10.10.10.10:65535. The
-     * possible values of ASN,NN are in range of 0-65535, ASN(plain) is in range of 0-4294967295.
-     *
-     * @return the routeTargets value.
-     */
-    public List<String> routeTargets() {
-        return this.routeTargets;
-    }
-
-    /**
-     * Set the routeTargets property: Route Target List.The expected formats are ASN(plain):NN &gt;&gt; example
-     * 4294967294:50, ASN.ASN:NN &gt;&gt; example 65533.65333:40, IP-address:NN &gt;&gt; example 10.10.10.10:65535. The
-     * possible values of ASN,NN are in range of 0-65535, ASN(plain) is in range of 0-4294967295.
-     *
-     * @param routeTargets the routeTargets value to set.
-     * @return the IpExtendedCommunityProperties object itself.
-     */
-    public IpExtendedCommunityProperties withRouteTargets(List<String> routeTargets) {
-        this.routeTargets = routeTargets;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
+    }
+
+    /**
+     * Get the ipExtendedCommunityRules property: List of IP Extended Community Rules.
+     *
+     * @return the ipExtendedCommunityRules value.
+     */
+    public List<IpExtendedCommunityRule> ipExtendedCommunityRules() {
+        return this.ipExtendedCommunityRules;
+    }
+
+    /**
+     * Set the ipExtendedCommunityRules property: List of IP Extended Community Rules.
+     *
+     * @param ipExtendedCommunityRules the ipExtendedCommunityRules value to set.
+     * @return the IpExtendedCommunityProperties object itself.
+     */
+    public IpExtendedCommunityProperties withIpExtendedCommunityRules(
+        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+        this.ipExtendedCommunityRules = ipExtendedCommunityRules;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -107,17 +108,13 @@ public final class IpExtendedCommunityProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (action() == null) {
+        if (ipExtendedCommunityRules() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property action in model IpExtendedCommunityProperties"));
-        }
-        if (routeTargets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property routeTargets in model IpExtendedCommunityProperties"));
+                        "Missing required property ipExtendedCommunityRules in model IpExtendedCommunityProperties"));
+        } else {
+            ipExtendedCommunityRules().forEach(e -> e.validate());
         }
     }
 

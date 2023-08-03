@@ -33,7 +33,7 @@ public final class L3IsolationDomainsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"networkFabricId\":\"zvxnqmhrp\",\"disabledOnResources\":[\"fwmkoisqcssffxui\"],\"administrativeState\":\"Disabled\",\"optionBDisabledOnResources\":[\"p\",\"bkdq\",\"rdzsylollgtrczzy\"],\"provisioningState\":\"Updating\",\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[],\"ipv6Routes\":[]},\"description\":\"urkihci\",\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"efxrdcoxnbk\",\"administrativeState\":\"Enabled\"},\"annotation\":\"urnnqbnqbpiz\"},\"location\":\"ltgrdogypxrxv\",\"tags\":{\"rbxrblmliowxihsp\":\"hwuhvctaf\",\"klsbsbqqqagw\":\"xwqagnepzw\",\"k\":\"rxaomzisglrrcze\",\"yueayfbpcmsp\":\"hltnjadhqoawjq\"},\"id\":\"byrrueqth\",\"name\":\"mg\",\"type\":\"mbscbbx\"}";
+            "{\"properties\":{\"networkFabricId\":\"vdjlww\",\"configurationState\":\"Accepted\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"oyvfwgkz\"},{\"prefix\":\"h\"}],\"ipv6Routes\":[{\"prefix\":\"xjkckwbqwjyfmmkw\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"ooyzhob\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"uepaco\",\"exportIpv6RoutePolicyId\":\"ohex\"}},\"annotation\":\"gukfkbsycbdymb\"},\"location\":\"eenlqtqyvlfb\",\"tags\":{\"sqephtoshqtua\":\"qdvfj\",\"xaeypyqoizf\":\"jwgujrc\",\"omiflrvfeowc\":\"asyddqbwscjwyy\",\"bvau\":\"shwfrhhas\"},\"id\":\"nwwumkbpg\",\"name\":\"ilbwtpwbjlpfwuq\",\"type\":\"rpdgitenyuksli\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +64,23 @@ public final class L3IsolationDomainsGetByResourceGroupWithResponseMockTests {
         L3IsolationDomain response =
             manager
                 .l3IsolationDomains()
-                .getByResourceGroupWithResponse("ycphdrwjjkhvyo", "ac", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("nat", "vgcm", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ltgrdogypxrxv", response.location());
-        Assertions.assertEquals("hwuhvctaf", response.tags().get("rbxrblmliowxihsp"));
-        Assertions.assertEquals("zvxnqmhrp", response.networkFabricId());
+        Assertions.assertEquals("eenlqtqyvlfb", response.location());
+        Assertions.assertEquals("qdvfj", response.tags().get("sqephtoshqtua"));
+        Assertions.assertEquals("vdjlww", response.networkFabricId());
         Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, response.redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, response.redistributeStaticRoutes());
-        Assertions.assertEquals("urkihci", response.description());
-        Assertions.assertEquals("efxrdcoxnbk", response.connectedSubnetRoutePolicy().exportRoutePolicyId());
-        Assertions.assertEquals("urnnqbnqbpiz", response.annotation());
+        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, response.redistributeStaticRoutes());
+        Assertions.assertEquals("oyvfwgkz", response.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions
+            .assertEquals("xjkckwbqwjyfmmkw", response.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("ooyzhob", response.connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions
+            .assertEquals(
+                "uepaco", response.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions
+            .assertEquals("ohex", response.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("gukfkbsycbdymb", response.annotation());
     }
 }

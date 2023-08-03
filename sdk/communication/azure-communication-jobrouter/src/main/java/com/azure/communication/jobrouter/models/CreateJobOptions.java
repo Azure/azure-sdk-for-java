@@ -27,11 +27,6 @@ public final class CreateJobOptions {
     private final String channelId;
 
     /**
-     * The Id of the Classification policy used for classifying a job.
-     */
-    private String classificationPolicyId;
-
-    /**
      * The Id of the Queue that this job is queued to.
      */
     private final String queueId;
@@ -126,16 +121,6 @@ public final class CreateJobOptions {
     }
 
     /**
-     * Sets classificationPolicyId.
-     * @param classificationPolicyId The Id of the Classification policy used for classifying a job.
-     * @return this
-     */
-    public CreateJobOptions setClassificationPolicyId(String classificationPolicyId) {
-        this.classificationPolicyId = classificationPolicyId;
-        return this;
-    }
-
-    /**
      * Sets dispositionCode.
      * @param dispositionCode Reason code for cancelled or closed jobs.
      * @return this
@@ -209,14 +194,6 @@ public final class CreateJobOptions {
      */
     public String getChannelId() {
         return this.channelId;
-    }
-
-    /**
-     * Returns the Id of the Classification policy used for classifying a job.
-     * @return classificationPolicyId
-     */
-    public String getClassificationPolicyId() {
-        return this.classificationPolicyId;
     }
 
     /**

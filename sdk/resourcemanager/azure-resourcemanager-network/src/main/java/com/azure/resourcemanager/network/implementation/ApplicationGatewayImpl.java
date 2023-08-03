@@ -1022,7 +1022,9 @@ class ApplicationGatewayImpl
                 .withName(name)
                 .withRuleType(ApplicationGatewayRequestRoutingRuleType.PATH_BASED_ROUTING)
                 .withUrlPathMap(ref);
-        rules.put(name, new ApplicationGatewayRequestRoutingRuleImpl(inner, this));
+        ApplicationGatewayRequestRoutingRuleImpl requestRoutingRule = new ApplicationGatewayRequestRoutingRuleImpl(inner, this);
+        rules.put(name, requestRoutingRule);
+        addedRuleCollection.addRule(requestRoutingRule);
         return urlPathMap;
     }
 
@@ -1833,6 +1835,9 @@ class ApplicationGatewayImpl
         }
     }
 
+    /**
+     * Keeps track of newly added request routing rules, for priority auto-assignment if not specified for them.
+     */
     private static class AddedRuleCollection {
         private static final int AUTO_ASSIGN_PRIORITY_START = 10010;
         private static final int MAX_PRIORITY = 20000;

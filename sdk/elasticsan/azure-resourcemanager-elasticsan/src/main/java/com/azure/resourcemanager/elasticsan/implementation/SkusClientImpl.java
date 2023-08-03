@@ -54,7 +54,7 @@ public final class SkusClientImpl implements SkusClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ElasticSanManagement")
-    private interface SkusService {
+    public interface SkusService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ElasticSan/skus")
         @ExpectedResponses({200})

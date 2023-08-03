@@ -6,20 +6,19 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.OutboundEnvironmentEndpointInner;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundEnvironmentEndpointInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"category\":\"ofwq\",\"endpoints\":[{\"domainName\":\"lkrm\",\"description\":\"i\",\"endpointDetails\":[]}]}")
+                    "{\"category\":\"df\",\"endpoints\":[{\"domainName\":\"ezkojvdcp\",\"description\":\"oqouicybxarzgszu\",\"endpointDetails\":[{\"port\":1319234884}]},{\"domainName\":\"opidoamciodh\",\"description\":\"azxkhnzbonlwnto\",\"endpointDetails\":[{\"port\":2078888236},{\"port\":542586349}]},{\"domainName\":\"hksz\",\"description\":\"mrv\",\"endpointDetails\":[{\"port\":1285484058},{\"port\":152154395},{\"port\":991988200}]}]}")
                 .toObject(OutboundEnvironmentEndpointInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OutboundEnvironmentEndpointInner model = new OutboundEnvironmentEndpointInner();
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointInner.class);
     }

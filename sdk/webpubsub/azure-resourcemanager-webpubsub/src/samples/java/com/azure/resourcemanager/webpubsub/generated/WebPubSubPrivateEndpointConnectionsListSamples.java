@@ -7,7 +7,7 @@ package com.azure.resourcemanager.webpubsub.generated;
 /** Samples for WebPubSubPrivateEndpointConnections List. */
 public final class WebPubSubPrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateEndpointConnections_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubPrivateEndpointConnections_List.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_List.

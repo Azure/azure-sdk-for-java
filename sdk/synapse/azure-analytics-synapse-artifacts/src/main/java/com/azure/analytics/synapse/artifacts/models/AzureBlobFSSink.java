@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobFSSink extends CopySink {
     /*
-     * The type of copy behavior for copy sink.
+     * The type of copy behavior for copy sink. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
@@ -24,7 +24,8 @@ public final class AzureBlobFSSink extends CopySink {
     public AzureBlobFSSink() {}
 
     /**
-     * Get the copyBehavior property: The type of copy behavior for copy sink.
+     * Get the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
      *
      * @return the copyBehavior value.
      */
@@ -33,7 +34,8 @@ public final class AzureBlobFSSink extends CopySink {
     }
 
     /**
-     * Set the copyBehavior property: The type of copy behavior for copy sink.
+     * Set the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
      *
      * @param copyBehavior the copyBehavior value to set.
      * @return the AzureBlobFSSink object itself.

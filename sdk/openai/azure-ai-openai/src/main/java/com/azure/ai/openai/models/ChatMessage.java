@@ -27,17 +27,6 @@ public final class ChatMessage {
     private String content;
 
     /**
-     * Creates an instance of ChatMessage class.
-     *
-     * @param role the role value to set.
-     */
-    @Generated
-    @JsonCreator
-    public ChatMessage(@JsonProperty(value = "role") ChatRole role) {
-        this.role = role;
-    }
-
-    /**
      * Get the role property: The role associated with this message payload.
      *
      * @return the role value.
@@ -55,18 +44,6 @@ public final class ChatMessage {
     @Generated
     public String getContent() {
         return this.content;
-    }
-
-    /**
-     * Set the content property: The text associated with this message payload.
-     *
-     * @param content the content value to set.
-     * @return the ChatMessage object itself.
-     */
-    @Generated
-    public ChatMessage setContent(String content) {
-        this.content = content;
-        return this;
     }
 
     /*
@@ -135,5 +112,18 @@ public final class ChatMessage {
     public ChatMessage setFunctionCall(FunctionCall functionCall) {
         this.functionCall = functionCall;
         return this;
+    }
+
+    /**
+     * Creates an instance of ChatMessage class.
+     *
+     * @param role the role value to set.
+     * @param content the content value to set.
+     */
+    @Generated
+    @JsonCreator
+    public ChatMessage(@JsonProperty(value = "role") ChatRole role, @JsonProperty(value = "content") String content) {
+        this.role = role;
+        this.content = content;
     }
 }

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
@@ -35,7 +34,7 @@ public final class ElasticSansListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"jx\",\"jnspydp\"],\"provisioningState\":\"Updating\",\"baseSizeTiB\":2872617202997783845,\"extendedCapacitySizeTiB\":3980056682158656120,\"totalVolumeSizeGiB\":3290062663385259489,\"volumeGroupCount\":316131865784554272,\"totalIops\":5918766078843387031,\"totalMBps\":5757208941637083541,\"totalSizeTiB\":2493670032116286006},\"location\":\"kpoc\",\"tags\":{\"xoegukgjnpiucgy\":\"z\",\"zcdrqjsdpydnfyhx\":\"evqzntypmrbp\",\"ifsjttgzfbishcb\":\"eoejzic\"},\"id\":\"hajdeyeamdpha\",\"name\":\"alpbuxwgipwhon\",\"type\":\"wkgshwa\"}]}";
+            "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"qqkdltfzxmhhvhgu\",\"eodkwobda\",\"xtibqdxbxwakbog\"],\"provisioningState\":\"Creating\",\"baseSizeTiB\":1899793527406427487,\"extendedCapacitySizeTiB\":389744531539649860,\"totalVolumeSizeGiB\":5105282198099297863,\"volumeGroupCount\":4187834271496207519,\"totalIops\":822687425279743867,\"totalMBps\":5090164062241027652,\"totalSizeTiB\":7759435142378575824,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"byyntwlrbqt\",\"oievseotgqrlltm\"]},\"id\":\"lauwzizxbmpgcjef\",\"name\":\"zmuvpbttdumorppx\",\"type\":\"bmnzbtbhjpgl\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"neuelfphsdyhtoz\"]},\"id\":\"kd\",\"name\":\"wwquuvxzxclvithh\",\"type\":\"zonosgg\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"wdsjnkalju\",\"iiswacffgdkzze\"]},\"id\":\"fvhqc\",\"name\":\"a\",\"type\":\"lvpnpp\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"dmhdlxyjr\",\"sag\",\"fcnihgwq\"]},\"id\":\"nedgfbc\",\"name\":\"kcvqvpke\",\"type\":\"dcvd\"}]},\"location\":\"vo\",\"tags\":{\"vnhdldwmgxcxr\":\"otbobzdopcj\",\"niyqslui\":\"lpmutwuoegrpkhj\"},\"id\":\"pdggkzzlvm\",\"name\":\"mpaxmodfvuefywsb\",\"type\":\"fvmwy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +62,14 @@ public final class ElasticSansListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ElasticSan> response = manager.elasticSans().list(Context.NONE);
+        PagedIterable<ElasticSan> response = manager.elasticSans().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kpoc", response.iterator().next().location());
-        Assertions.assertEquals("z", response.iterator().next().tags().get("xoegukgjnpiucgy"));
+        Assertions.assertEquals("vo", response.iterator().next().location());
+        Assertions.assertEquals("otbobzdopcj", response.iterator().next().tags().get("vnhdldwmgxcxr"));
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
-        Assertions.assertEquals("jx", response.iterator().next().availabilityZones().get(0));
-        Assertions.assertEquals(2872617202997783845L, response.iterator().next().baseSizeTiB());
-        Assertions.assertEquals(3980056682158656120L, response.iterator().next().extendedCapacitySizeTiB());
+        Assertions.assertEquals("qqkdltfzxmhhvhgu", response.iterator().next().availabilityZones().get(0));
+        Assertions.assertEquals(1899793527406427487L, response.iterator().next().baseSizeTiB());
+        Assertions.assertEquals(389744531539649860L, response.iterator().next().extendedCapacitySizeTiB());
     }
 }

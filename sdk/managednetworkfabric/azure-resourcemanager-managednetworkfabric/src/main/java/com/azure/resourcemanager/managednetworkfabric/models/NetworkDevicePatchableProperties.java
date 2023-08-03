@@ -11,14 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class NetworkDevicePatchableProperties {
     /*
-     * The host Name of the device.
+     * The host name of the device.
      */
     @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
-     * serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969
+     * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
      */
     @JsonProperty(value = "serialNumber")
     private String serialNumber;
@@ -28,7 +27,7 @@ public class NetworkDevicePatchableProperties {
     }
 
     /**
-     * Get the hostname property: The host Name of the device.
+     * Get the hostname property: The host name of the device.
      *
      * @return the hostname value.
      */
@@ -37,7 +36,7 @@ public class NetworkDevicePatchableProperties {
     }
 
     /**
-     * Set the hostname property: The host Name of the device.
+     * Set the hostname property: The host name of the device.
      *
      * @param hostname the hostname value to set.
      * @return the NetworkDevicePatchableProperties object itself.
@@ -48,8 +47,8 @@ public class NetworkDevicePatchableProperties {
     }
 
     /**
-     * Get the serialNumber property: serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969.
+     * Get the serialNumber property: Serial number of the device. Format of serial Number -
+     * Make;Model;HardwareRevisionId;SerialNumber.
      *
      * @return the serialNumber value.
      */
@@ -58,8 +57,8 @@ public class NetworkDevicePatchableProperties {
     }
 
     /**
-     * Set the serialNumber property: serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969.
+     * Set the serialNumber property: Serial number of the device. Format of serial Number -
+     * Make;Model;HardwareRevisionId;SerialNumber.
      *
      * @param serialNumber the serialNumber value to set.
      * @return the NetworkDevicePatchableProperties object itself.

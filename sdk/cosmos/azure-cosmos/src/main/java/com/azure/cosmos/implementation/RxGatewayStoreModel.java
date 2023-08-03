@@ -251,6 +251,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
             if (this.gatewayServerErrorInjector != null) {
                 httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
+                return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
             }
 
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
@@ -521,9 +522,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics)));
+
+        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
+        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+        return BackoffRetryUtility.executeRetry(funcDelegate, metadataRequestRetryPolicy);
     }
 
     @Override

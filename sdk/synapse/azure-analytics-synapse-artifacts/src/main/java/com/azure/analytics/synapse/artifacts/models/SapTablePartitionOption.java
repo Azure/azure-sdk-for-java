@@ -29,6 +29,14 @@ public final class SapTablePartitionOption extends ExpandableStringEnum<SapTable
     public static final SapTablePartitionOption PARTITION_ON_TIME = fromString("PartitionOnTime");
 
     /**
+     * Creates a new instance of SapTablePartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapTablePartitionOption() {}
+
+    /**
      * Creates or finds a SapTablePartitionOption from its string representation.
      *
      * @param name a name to look for.

@@ -31,7 +31,7 @@ public final class BackupsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"qtgdqohmcwsl\",\"properties\":{\"backupId\":\"izetpw\",\"creationDate\":\"2021-01-12T03:51:17Z\",\"provisioningState\":\"llibphbqzmizak\",\"size\":2130055064209410437,\"label\":\"jpdn\",\"backupType\":\"Manual\",\"failureReason\":\"joylh\",\"volumeName\":\"muoyxprimr\",\"useExistingSnapshot\":false},\"id\":\"eecjmeis\",\"name\":\"stvasylwxdzaumw\",\"type\":\"oohgu\"}";
+            "{\"location\":\"zlmcmuapcvhdb\",\"properties\":{\"backupId\":\"wqqxeysko\",\"creationDate\":\"2020-12-31T09:10:56Z\",\"provisioningState\":\"nkfkbgbzb\",\"size\":5579125360239999126,\"label\":\"o\",\"backupType\":\"Manual\",\"failureReason\":\"ygvkzqkjj\",\"volumeName\":\"kbzefezrxcczurt\",\"useExistingSnapshot\":true},\"id\":\"pqxbkwvzgnzvdf\",\"name\":\"zdix\",\"type\":\"mqpnoda\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,17 +62,11 @@ public final class BackupsGetWithResponseMockTests {
         Backup response =
             manager
                 .backups()
-                .getWithResponse(
-                    "oajvgcxtxjcs",
-                    "eafidltugsresm",
-                    "ssjhoiftxfkf",
-                    "egprhptil",
-                    "ucb",
-                    com.azure.core.util.Context.NONE)
+                .getWithResponse("qwthmky", "bcysih", "gqcwdhohsdtmc", "zsu", "cohdx", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("qtgdqohmcwsl", response.location());
-        Assertions.assertEquals("jpdn", response.label());
-        Assertions.assertEquals(false, response.useExistingSnapshot());
+        Assertions.assertEquals("zlmcmuapcvhdb", response.location());
+        Assertions.assertEquals("o", response.label());
+        Assertions.assertEquals(true, response.useExistingSnapshot());
     }
 }

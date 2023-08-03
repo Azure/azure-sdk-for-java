@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class NetworkWatcherSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageNetworkWatcher() {
         if (skipInPlayback()) {
             return;
