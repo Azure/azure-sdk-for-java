@@ -581,7 +581,9 @@ public abstract class IdentityClientBase {
                 .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
+            ex.setStackTrace(e.getStackTrace());
+            throw LOGGER.logExceptionAsError(ex);
         }
         return token;
     }
@@ -681,7 +683,9 @@ public abstract class IdentityClientBase {
                     .withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
+            ex.setStackTrace(e.getStackTrace());
+            throw LOGGER.logExceptionAsError(ex);
         }
 
         return token;
