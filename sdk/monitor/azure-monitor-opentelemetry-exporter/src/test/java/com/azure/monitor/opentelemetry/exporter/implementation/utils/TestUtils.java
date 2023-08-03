@@ -12,6 +12,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBas
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,11 +61,11 @@ public final class TestUtils {
         return telemetry;
     }
 
-    public static OpenTelemetry createOpenTelemetrySdk(HttpPipeline httpPipeline) {
+    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline) {
         return createOpenTelemetrySdk(httpPipeline, Configuration.NONE);
     }
 
-    public static OpenTelemetry createOpenTelemetrySdk(
+    public static OpenTelemetrySdk createOpenTelemetrySdk(
         HttpPipeline httpPipeline, Configuration configuration) {
 
         return new AzureMonitorExporterBuilder()

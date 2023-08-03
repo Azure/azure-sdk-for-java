@@ -35,6 +35,9 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGene
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
+import io.opentelemetry.sdk.metrics.Aggregation;
+import io.opentelemetry.sdk.metrics.InstrumentSelector;
+import io.opentelemetry.sdk.metrics.View;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -378,6 +381,25 @@ public final class AzureMonitorExporterBuilder {
                         logRecordExporter = buildLogRecordExporter();
                     }
                     return logRecordExporter;
-                });
+                })
+            .addMeterProviderCustomizer((sdkMeterProviderBuilder, configProperties) -> {
+                sdkMeterProviderBuilder.registerView(
+                    InstrumentSelector.builder()
+                        .setMeterName("io.opentelemetry.sdk.trace")
+                        .build(),
+                    View.builder()
+                        .setAggregation(Aggregation.drop())
+                        .build()
+                );
+                sdkMeterProviderBuilder.registerView(
+                    InstrumentSelector.builder()
+                        .setMeterName("io.opentelemetry.sdk.logs")
+                        .build(),
+                    View.builder()
+                        .setAggregation(Aggregation.drop())
+                        .build()
+                );
+                return sdkMeterProviderBuilder;
+            });
     }
 }
