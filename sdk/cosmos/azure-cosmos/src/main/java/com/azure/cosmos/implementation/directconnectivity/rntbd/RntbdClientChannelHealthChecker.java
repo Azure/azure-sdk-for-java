@@ -424,9 +424,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
             if (readSuccessRecency > this.nonRespondingChannelReadDelayTimeLimitInNanos) {
                 errorMessage = MessageFormat.format(
-                    "{0} health check failed due to channel being cancellation prone: [lastChannelWrite: {1}, lastChannelRead: {2},"
-                        + "cancellationCountSinceLastSuccessfulRead: {3}, currentTime: {4}]",
+                    "{0} health check failed due to channel being cancellation prone: [rntbdContext: {1}, lastChannelWrite: {2}, lastChannelRead: {3},"
+                        + "cancellationCountSinceLastSuccessfulRead: {4}, currentTime: {5}]",
                     channel,
+                    rntbdContext,
                     timestamps.lastChannelWriteTime(),
                     timestamps.lastChannelReadTime(),
                     timestamps.cancellationCount(),
