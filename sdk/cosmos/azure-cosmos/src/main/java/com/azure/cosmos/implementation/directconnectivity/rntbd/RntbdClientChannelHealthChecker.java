@@ -227,7 +227,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             return promise.setSuccess(idleConnectionValidationMessage);
         }
 
-        String isCancellationProneChannelMessage = this.isCancellationProneChannel(timestamps, currentTime, channel);
+        String isCancellationProneChannelMessage = this.isCancellationProneChannel(timestamps, currentTime, requestManager, channel);
         if (StringUtils.isNotEmpty(isCancellationProneChannelMessage)) {
             return promise.setSuccess(isCancellationProneChannelMessage);
         }
@@ -409,8 +409,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         return errorMessage;
     }
 
-    private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, Channel channel) {
+    private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, RntbdRequestManager requestManager, Channel channel) {
         String errorMessage = StringUtils.EMPTY;
+
+        final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
 
         if (timestamps.cancellationCount() >= this.cancellationCountSinceLastReadThreshold) {
 
