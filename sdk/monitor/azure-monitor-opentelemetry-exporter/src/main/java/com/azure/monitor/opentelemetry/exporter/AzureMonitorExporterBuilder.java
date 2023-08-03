@@ -362,6 +362,8 @@ public final class AzureMonitorExporterBuilder {
                 props.put("otel.logs.exporter", "none");
                 return props;
             })
+            // TODO (trask) support otel.bsp.*, otel.blrp.*, and otel.metric.export.* properties
+            //  (which unfortunately we don't get for free)
             .addTracerProviderCustomizer(
                 (sdkTracerProviderBuilder, configProperties) ->
                     sdkTracerProviderBuilder.addSpanProcessor(BatchSpanProcessor.builder(buildTraceExporter()).build()))
