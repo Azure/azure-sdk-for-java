@@ -1,9 +1,20 @@
 # Release History
 
+## 1.10.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.10.0-beta.1 (2023-07-24)
 
 ### Features Added
 - Added CAE Authentication support for Service principal authentication.
+- Added the ability to log PII from MSAL using new `enableSupportLogging` API.
 
 ### Other Changes
 

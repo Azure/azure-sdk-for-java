@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -44,9 +44,9 @@ public class ManageDocumentClassifiersAsync {
                 System.out.printf("Classifier ID: %s%n", documentClassifier.getClassifierId());
                 System.out.printf("Classifier Description: %s%n", documentClassifier.getDescription());
                 System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedOn());
-                documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
-                    if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
-                        System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
+                documentClassifier.getDocumentTypeDetails().forEach((key, documentTypeDetails) -> {
+                    if (documentTypeDetails.getTrainingDataContentSource() instanceof BlobContentSource) {
+                        System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
                             .getTrainingDataContentSource()).getContainerUrl());
                     }
                 });
