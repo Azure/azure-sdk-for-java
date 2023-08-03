@@ -573,6 +573,22 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void deleteQueueDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("queue", 10);
+
+        client.createQueue(queueName)
+            .onErrorResume(ResourceExistsException.class, e -> Mono.empty())
+            .block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteQueue(queueName))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void deleteRule(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
@@ -585,6 +601,21 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.deleteRule(topicName, subscriptionName, ruleName))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteRuleDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String ruleName = testResourceNamer.randomName("rule-", 11);
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.deleteRule(topicName, subscriptionName, ruleName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
     }
 
     @ParameterizedTest
@@ -605,6 +636,23 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void deleteSubscriptionDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("topic", 10);
+        final String subscriptionName = testResourceNamer.randomName("sub", 7);
+
+        // The topic exists but the subscription does not.
+        client.createTopic(topicName).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteSubscription(topicName, subscriptionName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void deleteTopic(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
@@ -615,6 +663,19 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.deleteTopic(topicName))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteTopicDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("topic", 10);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteTopic(topicName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
     }
 
     //endregion

@@ -796,6 +796,19 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         client.deleteQueue(queueName);
     }
 
+
+    @Test
+    void deleteQueueDoesNotExist() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String queueName = testResourceNamer.randomName("queue", 10);
+
+        client.createQueue(queueName);
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteQueue(queueName));
+    }
+
     @Test
     void deleteRule() {
         final ServiceBusAdministrationClient client = getClient();
@@ -805,6 +818,18 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         client.createRule(topicName, subscriptionName, ruleName);
 
         client.deleteRule(topicName, subscriptionName, ruleName);
+    }
+
+    @Test
+    void deleteRuleDoesNotExist() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String ruleName = testResourceNamer.randomName("rule-", 11);
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteRule(topicName, subscriptionName, ruleName));
     }
 
     @Test
@@ -819,11 +844,35 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     @Test
+    void deleteSubscriptionDoesNotExist() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = testResourceNamer.randomName("topic", 10);
+        final String subscriptionName = testResourceNamer.randomName("sub", 7);
+
+        // The topic exists but the subscription does not.
+        client.createTopic(topicName);
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteSubscription(topicName, subscriptionName));
+    }
+
+    @Test
     void deleteTopic() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 9);
 
         client.deleteTopic(topicName);
+    }
+
+    @Test
+    void deleteTopicDoesNotExist() {
+        // Arrange
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = testResourceNamer.randomName("topic", 10);
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> client.deleteTopic(topicName));
     }
 
     //endregion
