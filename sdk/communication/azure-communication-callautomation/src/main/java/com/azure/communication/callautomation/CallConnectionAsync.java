@@ -381,14 +381,26 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MuteParticipantResult> muteParticipant(CommunicationIdentifier targetParticipant) {
-        return muteParticipantWithResponseInternal(targetParticipant, null).flatMap(FluxUtil::toMono);
+        return muteParticipantWithResponse(targetParticipant, null).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<MuteParticipantResult>> muteParticipantWithResponseInternal(CommunicationIdentifier targetParticipant, Context context) {
+    /**
+     * Mutes a participant in the call.
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
+     * @param operationContext operationContext (pass null if not applicable)
+     * @return Response with result of muting a participant from the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantResult>> muteParticipantWithResponse(CommunicationIdentifier targetParticipant, String operationContext) {
+        return withContext(context -> muteParticipantWithResponseInternal(targetParticipant, operationContext, context));
+    }
+
+    Mono<Response<MuteParticipantResult>> muteParticipantWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             MuteParticipantsRequestInternal request = new MuteParticipantsRequestInternal()
-                .setTargetParticipants(Collections.singletonList(CommunicationIdentifierConverter.convert(targetParticipant)));
+                .setTargetParticipants(Collections.singletonList(CommunicationIdentifierConverter.convert(targetParticipant)))
+                .setOperationContext(operationContext);
 
             return callConnectionInternal.muteWithResponseAsync(
                 callConnectionId,

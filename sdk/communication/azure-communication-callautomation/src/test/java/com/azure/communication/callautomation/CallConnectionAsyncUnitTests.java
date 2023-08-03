@@ -259,11 +259,11 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        MuteParticipantResult muteParticipantResult = callConnectionAsync.muteParticipant(
-            new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+        Response<MuteParticipantResult> muteParticipantResultResponse = callConnectionAsync.muteParticipantWithResponse(
+            new CommunicationUserIdentifier(CALL_TARGET_ID), CALL_OPERATION_CONTEXT).block();
 
-        assertNotNull(muteParticipantResult);
-        assertNull(muteParticipantResult.getOperationContext());
+        assertNotNull(muteParticipantResultResponse);
+        assertNull(muteParticipantResultResponse.getValue().getOperationContext());
     }
 
     @Test
