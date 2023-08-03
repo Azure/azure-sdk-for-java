@@ -10,6 +10,14 @@
 
 #### Other Changes
 
+### 5.4.0 (2023-08-02)
+
+#### Features Added
+* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 36134](https://github.com/Azure/azure-sdk-for-java/pull/36134)
+
+#### Bugs Fixed
+* Fix circular references error when using Cosmos Auditing - See [PR 36123](https://github.com/Azure/azure-sdk-for-java/pull/36123).
+
 ### 3.37.0 (2023-08-01)
 
 #### Features Added
