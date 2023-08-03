@@ -17,18 +17,22 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resourcegraph.ResourceGraphManager;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequest;
+import com.azure.resourcemanager.resourcegraph.models.QueryRequestOptions;
+import com.azure.resourcemanager.resourcegraph.models.QueryResponse;
+import com.azure.resourcemanager.resourcegraph.models.ResultFormat;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Azure Compute sample for batch create virtual machines and batch query status
  * - Create multiple virtual machines from PIR image with data disks
- * - Use Azure Resource Graph to batch query the status (the number of provisioningState=Succeeded ?).
+ * - Use Azure Resource Graph to query the count number for each [provisioningState].
  */
 public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
 
@@ -40,13 +44,12 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, ResourceGraphManager resourceGraphManager) {
-        final Long desiredVMCount = 6L;
+        final Integer desiredVMCount = 6;
         final Region region = Region.US_EAST;
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg-", 15);
         final String networkName = Utils.randomResourceName(azureResourceManager, "vnet-", 15);
         final String subNetName = Utils.randomResourceName(azureResourceManager, "snet-", 15);
-        List<String> vmNameList = new ArrayList<>();
-        Long total = 0L;
+        Integer succeededTotal = 0;
         try {
             System.out.println("Creating Resource Group: " + rgName);
             azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
@@ -61,11 +64,9 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
                     .create();
 
             System.out.println("Batch creating Virtual Machines");
-            for (long i = 0; i < desiredVMCount; i++) {
-                String vmName = Utils.randomResourceName(azureResourceManager, "javascvm", 15);
-                vmNameList.add("'".concat(vmName).concat("'"));
+            for (int i = 0; i < desiredVMCount; i++) {
                 azureResourceManager.virtualMachines()
-                        .define(vmName)
+                        .define(Utils.randomResourceName(azureResourceManager, "javascvm", 15))
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(primaryNetwork)
@@ -80,31 +81,72 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
                         .beginCreate();
             }
 
-            System.out.println("Use Azure Resource Graph to batch query the status(the number of provisioningState=Succeeded and Failed).");
-            StringBuilder succeededQuery = new StringBuilder();
-            succeededQuery.append("resources ")
+            System.out.println("Use Azure Resource Graph to query the count number for each [provisioningState].");
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.append("resources ")
                     .append("| where (resourceGroup =~ ('").append(rgName).append("')) ")
                     .append("| where (type =~ ('microsoft.compute/virtualmachines')) ")
-                    .append("| where (name in~ (").append(String.join(",", vmNameList)).append(")) ")
-                    .append("| where (properties['provisioningState'] =~ ('Succeeded')) ")
-                    .append("| project name,type,properties['provisioningState']");
-            StringBuilder failedQuery = new StringBuilder();
+                    .append("| where (name contains 'javascvm') ")
+                    .append("| extend provisioningState = case(")
+                    .append("properties['provisioningState'] =~ 'NotSpecified','NotSpecified',")
+                    .append("properties['provisioningState'] =~ 'Accepted','Accepted',")
+                    .append("properties['provisioningState'] =~ 'Running','Running',")
+                    .append("properties['provisioningState'] =~ 'Ready','Ready',")
+                    .append("properties['provisioningState'] =~ 'Creating','Creating',")
+                    .append("properties['provisioningState'] =~ 'Created','Created',")
+                    .append("properties['provisioningState'] =~ 'Deleting','Deleting',")
+                    .append("properties['provisioningState'] =~ 'Deleted','Deleted',")
+                    .append("properties['provisioningState'] =~ 'Canceled','Canceled',")
+                    .append("properties['provisioningState'] =~ 'Failed','Failed',")
+                    .append("properties['provisioningState'] =~ 'Succeeded','Succeeded',")
+                    .append("properties['provisioningState'] =~ 'Updating','Updating',")
+                    .append("properties['provisioningState']) ")
+                    .append("| summarize count=count() by provisioningState");
 
-            failedQuery.append("resources ")
-                    .append("| where (resourceGroup =~ ('").append(rgName).append("')) ")
-                    .append("| where (type =~ ('microsoft.compute/virtualmachines')) ")
-                    .append("| where (name in~ (").append(String.join(",", vmNameList)).append(")) ")
-                    .append("| where (properties['provisioningState'] =~ ('Failed')) ")
-                    .append("| project name,type,properties['provisioningState']");
+            while (succeededTotal < desiredVMCount) {
+                Integer creatingTotal = 0;
+                Integer updatingTotal = 0;
+                Integer failedTotal = 0;
+                Integer otherTotal = 0;
+                succeededTotal = 0;
 
-            while (total < desiredVMCount
-                    && resourceGraphManager.resourceProviders().resources(new QueryRequest()
-                    .withSubscriptions(Collections.singletonList(azureResourceManager.subscriptionId()))
-                    .withQuery(failedQuery.toString())).totalRecords() == 0) {
-                total = resourceGraphManager.resourceProviders().resources(new QueryRequest()
-                        .withSubscriptions(Collections.singletonList(azureResourceManager.subscriptionId()))
-                        .withQuery(succeededQuery.toString())).totalRecords();
-                if (total < desiredVMCount) {
+                QueryResponse queryResponse = resourceGraphManager.resourceProviders()
+                        .resources(new QueryRequest()
+                                .withSubscriptions(Collections.singletonList(azureResourceManager.subscriptionId()))
+                                .withQuery(queryBuilder.toString())
+                                .withOptions(new QueryRequestOptions().withResultFormat(ResultFormat.OBJECT_ARRAY)));
+
+                List<TotalResult> totalResultList = new ObjectMapper().convertValue(queryResponse.data(), new TypeReference<List<TotalResult>>() {});
+                for (TotalResult totalResult : totalResultList) {
+                    switch (totalResult.getProvisioningState()) {
+                        case "Creating":
+                            creatingTotal = totalResult.getCount();
+                            break;
+                        case "Succeeded":
+                            succeededTotal = totalResult.getCount();
+                            break;
+                        case "Updating":
+                            updatingTotal = totalResult.getCount();
+                            break;
+                        case "Failed":
+                            failedTotal = totalResult.getCount();
+                            break;
+                        default:
+                            otherTotal += totalResult.getCount();
+                            break;
+                    }
+                }
+
+                System.out.println(new StringBuilder()
+                        .append("\n\tThe total number of Creating : ").append(creatingTotal)
+                        .append("\n\tThe total number of Updating : ").append(updatingTotal)
+                        .append("\n\tThe total number of Failed : ").append(failedTotal)
+                        .append("\n\tThe total number of Succeeded : ").append(succeededTotal)
+                        .append("\n\tThe total number of Other Status : ").append(otherTotal));
+
+                if (failedTotal > 0) {
+                    break;
+                } else if (succeededTotal < desiredVMCount) {
                     ResourceManagerUtils.sleep(Duration.ofSeconds(5L));
                 }
             }
@@ -121,7 +163,7 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
                 g.printStackTrace();
             }
         }
-        return total == desiredVMCount;
+        return succeededTotal.equals(desiredVMCount);
     }
 
     public static void main(String[] args) {
@@ -154,6 +196,26 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
         }
     }
 
-    private CreateMultipleVirtualMachinesAndBatchQueryStatus() {
+    private CreateMultipleVirtualMachinesAndBatchQueryStatus() {}
+
+    private static class TotalResult {
+        private String provisioningState;
+        private Integer count;
+
+        public String getProvisioningState() {
+            return provisioningState;
+        }
+
+        public void setProvisioningState(String provisioningState) {
+            this.provisioningState = provisioningState;
+        }
+
+        public Integer getCount() {
+            return count;
+        }
+
+        public void setCount(Integer count) {
+            this.count = count;
+        }
     }
 }
