@@ -985,6 +985,14 @@ public class GatewayAddressCache implements IAddressCache {
 
             for (Uri addressToBeValidated : addressesNeedToValidation) {
 
+                // replica validation should be triggered for an address with Unknown health status only when
+                // the address is used by a container / collection which was part of the warm up flow
+                if (addressToBeValidated.getHealthStatus() == Uri.HealthStatus.Unknown) {
+                    if (!this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
+                        continue;
+                    }
+                }
+
                 Mono.fromFuture(this.proactiveOpenConnectionsProcessor
                         .submitOpenConnectionTaskOutsideLoop(
                                 collectionRid,

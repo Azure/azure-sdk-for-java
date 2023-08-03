@@ -409,7 +409,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         return errorMessage;
     }
 
-
     private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, Channel channel) {
         String errorMessage = StringUtils.EMPTY;
 
