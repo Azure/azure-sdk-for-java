@@ -9,13 +9,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Type of content source. */
-public final class TrainingDataContentSourceKind extends ExpandableStringEnum<TrainingDataContentSourceKind> {
+public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceKind> {
 
     /** Enum value azureBlob. */
-    public static final TrainingDataContentSourceKind AZURE_BLOB = fromString("azureBlob");
+    public static final ContentSourceKind AZURE_BLOB = fromString("azureBlob");
 
     /** Enum value azureBlobFileList. */
-    public static final TrainingDataContentSourceKind AZURE_BLOB_FILE_LIST = fromString("azureBlobFileList");
+    public static final ContentSourceKind AZURE_BLOB_FILE_LIST = fromString("azureBlobFileList");
 
     /**
      * Creates or finds a ContentSourceKind from its string representation.
@@ -24,8 +24,8 @@ public final class TrainingDataContentSourceKind extends ExpandableStringEnum<Tr
      * @return the corresponding ContentSourceKind.
      */
     @JsonCreator
-    public static TrainingDataContentSourceKind fromString(String name) {
-        return fromString(name, TrainingDataContentSourceKind.class);
+    public static ContentSourceKind fromString(String name) {
+        return fromString(name, ContentSourceKind.class);
     }
 
     /**
@@ -33,7 +33,7 @@ public final class TrainingDataContentSourceKind extends ExpandableStringEnum<Tr
      *
      * @return known ContentSourceKind values.
      */
-    public static Collection<TrainingDataContentSourceKind> values() {
-        return values(TrainingDataContentSourceKind.class);
+    public static Collection<ContentSourceKind> values() {
+        return values(ContentSourceKind.class);
     }
 }

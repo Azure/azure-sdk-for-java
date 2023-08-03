@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 
 /** Azure Blob Storage content. */
 @Fluent
-public final class BlobContentSource extends TrainingDataContentSource {
+public final class BlobContentSource extends ContentSource {
     /*
      * Azure Blob Storage container URL.
      */
@@ -24,7 +24,7 @@ public final class BlobContentSource extends TrainingDataContentSource {
      * @param containerUrl the containerUrl value to set.
      */
     public BlobContentSource(String containerUrl) {
-        super(TrainingDataContentSourceKind.AZURE_BLOB);
+        super(ContentSourceKind.AZURE_BLOB);
         this.containerUrl = containerUrl;
     }
 
@@ -55,5 +55,10 @@ public final class BlobContentSource extends TrainingDataContentSource {
     public BlobContentSource setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
+    }
+
+    @Override
+    public ContentSourceKind getKind() {
+        return ContentSourceKind.AZURE_BLOB;
     }
 }
