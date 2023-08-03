@@ -158,7 +158,7 @@ public final class NonSessionProcessor {
         Mono<Void> beginIntern() {
             final Mono<Void> pumping = Mono.using(
                 () -> {
-                    return builder.buildAsyncClient();
+                    return builder.buildAsyncClientForProcessor();
                 },
                 client -> {
                     clientIdentifier.set(client.getIdentifier());

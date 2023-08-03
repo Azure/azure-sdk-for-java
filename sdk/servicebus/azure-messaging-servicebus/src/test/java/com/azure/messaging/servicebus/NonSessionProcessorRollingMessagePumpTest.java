@@ -43,7 +43,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
-        when(builder.buildAsyncClient()).thenReturn(client);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
@@ -57,7 +57,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
-        when(builder.buildAsyncClient()).thenReturn(client);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
@@ -77,7 +77,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
-        when(builder.buildAsyncClient()).thenReturn(client);
+        when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
         doNothing().when(client).close();
 
