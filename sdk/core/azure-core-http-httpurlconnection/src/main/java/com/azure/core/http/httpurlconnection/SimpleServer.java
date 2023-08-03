@@ -13,12 +13,14 @@ public class SimpleServer {
         try (ServerSocket server = new ServerSocket(9000)) {
             while (true) {
                 Socket client = server.accept();
-                System.out.println("A client has connected.");
+                System.out.println("A client has connected.\n");
 
+                // Print the input stream
                 BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-                String text = reader.readLine();
-                System.out.println(text);
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
             }
         }
 
