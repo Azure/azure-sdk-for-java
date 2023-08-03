@@ -254,6 +254,7 @@ com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.31
 com.puppycrawl.tools:checkstyle;9.3
+com.toasttab.android:gummy-bears-api-26;0.5.1
 commons-io:commons-io;2.11.0
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.2.19
@@ -290,6 +291,7 @@ org.apache.maven.plugins:maven-shade-plugin;3.3.0
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.2.1
 org.apache.maven.plugins:maven-surefire-plugin;3.1.0
+org.codehaus.mojo:animal-sniffer-maven-plugin;1.23
 org.codehaus.mojo:build-helper-maven-plugin;3.3.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
 org.codehaus.mojo:exec-maven-plugin;3.1.0
