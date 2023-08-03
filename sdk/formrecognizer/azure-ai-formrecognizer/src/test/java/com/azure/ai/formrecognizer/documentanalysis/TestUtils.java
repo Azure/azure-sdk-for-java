@@ -72,6 +72,7 @@ public final class TestUtils {
     static final String ANNOTATION_JPG = "annotations.jpg";
     static final String BARCODE_TIF = "barcode2.tif";
     static final String INVALID_URL = "htttttttps://localhost:8080";
+    static final String STYLE_PNG = "read-healthcare.png";
 
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
     static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or empty";
