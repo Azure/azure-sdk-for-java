@@ -19,9 +19,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
+import com.azure.monitor.opentelemetry.exporter.implementation.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
@@ -36,12 +34,9 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
-import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
-import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.io.File;
@@ -357,21 +352,32 @@ public final class AzureMonitorExporterBuilder {
         return AutoConfiguredOpenTelemetrySdk.builder()
             .addPropertiesSupplier(() -> {
                 Map<String, String> props = new HashMap<>();
-                props.put("otel.traces.exporter", "none");
-                props.put("otel.metrics.exporter", "none");
-                props.put("otel.logs.exporter", "none");
+                props.put("otel.traces.exporter", "azmon");
+                props.put("otel.metrics.exporter", "azmon");
+                props.put("otel.logs.exporter", "azmon");
+                props.put("_internal_azuremonitorexporterbuilder", "true");
                 return props;
             })
-            // TODO (trask) support otel.bsp.*, otel.blrp.*, and otel.metric.export.* properties
-            //  (which unfortunately we don't get for free)
-            .addTracerProviderCustomizer(
-                (sdkTracerProviderBuilder, configProperties) ->
-                    sdkTracerProviderBuilder.addSpanProcessor(BatchSpanProcessor.builder(buildTraceExporter()).build()))
-            .addMeterProviderCustomizer(
-                (sdkMeterProviderBuilder, configProperties) ->
-                    sdkMeterProviderBuilder.registerMetricReader(PeriodicMetricReader.builder(buildMetricExporter()).build()))
-            .addLoggerProviderCustomizer(
-                (sdkLoggerProviderBuilder, configProperties) ->
-                    sdkLoggerProviderBuilder.addLogRecordProcessor(BatchLogRecordProcessor.builder(buildLogRecordExporter()).build()));
+            .addSpanExporterCustomizer(
+                (spanExporter, configProperties) -> {
+                    if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
+                        spanExporter = buildTraceExporter();
+                    }
+                    return spanExporter;
+                })
+            .addMetricExporterCustomizer(
+                (metricExporter, configProperties) -> {
+                    if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
+                        metricExporter = buildMetricExporter();
+                    }
+                    return metricExporter;
+                })
+            .addLogRecordExporterCustomizer(
+                (logRecordExporter, configProperties) -> {
+                    if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
+                        logRecordExporter = buildLogRecordExporter();
+                    }
+                    return logRecordExporter;
+                });
     }
 }
