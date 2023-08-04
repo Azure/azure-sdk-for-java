@@ -57,6 +57,7 @@ import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -394,6 +395,86 @@ class AdministrationModelConverter {
         }
     }
 
+    /**
+     * Given an HTTP response, will deserialize it into a strongly typed Response object.
+     *
+     * @param response HTTP response to deserialize response body from.
+     * @param clazz Class to deserialize response type into.
+     * @param <T> Class type to deserialize response into.
+     *
+     * @return A Response with a strongly typed response value.
+     */
+    <T> Response<T> deserialize(Response<Object> response, Class<T> clazz) {
+        final T deserialize = deserialize(response.getValue(), clazz);
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            deserialize);
+    }
+
+    private <T> T deserialize(Object object, Class<T> clazz) {
+        if (object == null) {
+            return null;
+        }
+
+        final String contents = String.valueOf(object);
+        if (contents.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return serializer.deserialize(contents, clazz);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException(String.format(
+                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
+        }
+    }
+
+    Response<QueueProperties> deserializeQueue(Response<Object> response) {
+        final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
+
+        // This was an empty response (ie. 204).
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent().getQueueDescription() == null) {
+            final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
+            if (entryTopic != null && entryTopic.getContent() != null
+                && entryTopic.getContent().getTopicDescription() != null) {
+                logger.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    null);
+            }
+        }
+
+        final QueueProperties result = getQueueProperties(entry);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+    }
+
+    Response<TopicProperties> deserializeTopic(Response<Object> response) {
+        final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
+
+        // This was an empty response (ie. 204).
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent().getTopicDescription() == null) {
+            final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
+            if (entryQueue != null && entryQueue.getContent() != null
+                && entryQueue.getContent().getQueueDescription() != null) {
+                logger.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    null);
+            }
+        }
+
+        final TopicProperties result = getTopicProperties(entry);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+    }
+
     Context getContext(Context context) {
         context = context == null ? Context.NONE : context;
         return context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
@@ -403,44 +484,11 @@ class AdministrationModelConverter {
      * Checks if the given entity is an absolute URL, if so return it. Otherwise, construct the URL from the given
      * entity and return that.
      *
-     * @param entity : entity to forward messages to.
+     * @param entity Entity to generate absolute URL from.
      *
-     * @return Forward to Entity represented as an absolute URL
+     * @return Forward to Entity represented as an absolute URL. null if a valid URL could not be constructed.
      */
     String getAbsoluteUrlFromEntity(String entity) {
-        // Check if passed entity is an absolute URL
-        try {
-            URL url = new URL(entity);
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // Entity is not a URL, continue.
-        }
-        UrlBuilder urlBuilder = new UrlBuilder();
-        urlBuilder.setScheme("https");
-        urlBuilder.setHost(serviceBusNamespace);
-        urlBuilder.setPath(entity);
-
-        try {
-            URL url = urlBuilder.toUrl();
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // This is not expected.
-            logger.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'", serviceBusNamespace,
-                entity);
-            logger.logThrowableAsError(ex);
-        }
-        return null;
-    }
-
-    /**
-     * Checks if the given entity is an absolute URL, if so return it.
-     * Otherwise, construct the URL from the given entity and return that.
-     *
-     * @param entity : entity to forward messages to.
-     *
-     * @return Forward to Entity represented as an absolute URL
-     */
-    private String getForwardDlqEntity(String entity) {
         // Check if passed entity is an absolute URL
         try {
             URL url = new URL(entity);
