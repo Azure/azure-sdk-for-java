@@ -6,9 +6,11 @@
 - Add helper methods for adding sanitizers and matchers
 - Updated the list of headers to redact to include "subscription-key"
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
 
 ## 1.18.1 (2023-07-06)
 
