@@ -112,7 +112,6 @@ public final class ServiceBusAdministrationClient {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
-    private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
     private final AdministrationModelConverter converter;
 
@@ -125,7 +124,8 @@ public final class ServiceBusAdministrationClient {
      */
     ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
-        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
@@ -844,8 +844,11 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> getRuleWithResponse(String topicName, String subscriptionName,
         String ruleName, Context context) {
-        return converter.getRulePropertiesSimpleResponse(rulesClient.getWithResponse(topicName, subscriptionName,
-            ruleName, true, enableSyncContext(context)));
+
+        final Response<RuleDescriptionEntryImpl> response = executeAndThrowException(() ->
+            rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true, enableSyncContext(context)));
+
+        return converter.getRulePropertiesSimpleResponse(response);
     }
 
 
