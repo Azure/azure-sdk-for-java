@@ -1419,7 +1419,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return entityClient.putWithResponseAsync(queueName, createEntity, null, contextWithHeaders)
                 .onErrorMap(AdministrationModelConverter::mapException)
-                .map(this::deserializeQueue);
+                .map(response -> converter.deserializeQueue(response));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1526,7 +1526,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return entityClient.putWithResponseAsync(topicName, createEntity, null, converter.getContext(context))
                 .onErrorMap(AdministrationModelConverter::mapException)
-                .map(this::deserializeTopic);
+                .map(response -> converter.deserializeTopic(response));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1682,7 +1682,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return entityClient.getWithResponseAsync(queueName, true, converter.getContext(context))
                 .onErrorMap(AdministrationModelConverter::mapException)
                 .handle((response, sink) -> {
-                    final Response<QueueProperties> deserialize = deserializeQueue(response);
+                    final Response<QueueProperties> deserialize = converter.deserializeQueue(response);
 
                     // if this is null, then the queue could not be found.
                     if (deserialize.getValue() == null) {
@@ -1802,7 +1802,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return entityClient.getWithResponseAsync(topicName, true, converter.getContext(context))
                 .onErrorMap(AdministrationModelConverter::mapException)
                 .handle((response, sink) -> {
-                    final Response<TopicProperties> deserialize = deserializeTopic(response);
+                    final Response<TopicProperties> deserialize = converter.deserializeTopic(response);
 
                     // if this is null, then the queue could not be found.
                     if (deserialize.getValue() == null) {
@@ -1994,7 +1994,7 @@ public final class ServiceBusAdministrationAsyncClient {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", contextWithHeaders)
                 .onErrorMap(AdministrationModelConverter::mapException)
-                .map(this::deserializeQueue);
+                .map(response -> converter.deserializeQueue(response));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2081,7 +2081,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return entityClient.putWithResponseAsync(topic.getName(), createEntity, "*",
                     converter.getContext(context))
                 .onErrorMap(AdministrationModelConverter::mapException)
-                .map(this::deserializeTopic);
+                .map(response -> converter.deserializeTopic(response));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2099,7 +2099,7 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(AdministrationModelConverter::mapException)
             .flatMap(response -> {
-                final Response<QueueDescriptionFeedImpl> feedResponse = deserialize(response, QueueDescriptionFeedImpl.class);
+                final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserialize(response, QueueDescriptionFeedImpl.class);
                 final QueueDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
@@ -2193,7 +2193,7 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(AdministrationModelConverter::mapException)
             .flatMap(response -> {
-                final Response<TopicDescriptionFeedImpl> feedResponse = deserialize(response, TopicDescriptionFeedImpl.class);
+                final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserialize(response, TopicDescriptionFeedImpl.class);
                 final TopicDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
