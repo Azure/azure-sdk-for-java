@@ -301,7 +301,7 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.9
 org.jacoco:org.jacoco.agent;0.8.9
-org.mockito:mockito-core;5.3.1
+org.mockito:mockito-core;4.11.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.5
