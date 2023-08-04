@@ -29,11 +29,9 @@ import com.azure.messaging.servicebus.administration.implementation.models.Creat
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -49,7 +47,6 @@ import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -2088,104 +2085,6 @@ public final class ServiceBusAdministrationAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    private <T> T deserialize(Object object, Class<T> clazz) {
-        if (object == null) {
-            return null;
-        }
-
-        final String contents = String.valueOf(object);
-        if (contents.isEmpty()) {
-            return null;
-        }
-
-        try {
-            return serializer.deserialize(contents, clazz);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
-        }
-    }
-
-    /**
-     * Given an HTTP response, will deserialize it into a strongly typed Response object.
-     *
-     * @param response HTTP response to deserialize response body from.
-     * @param clazz Class to deserialize response type into.
-     * @param <T> Class type to deserialize response into.
-     *
-     * @return A Response with a strongly typed response value.
-     */
-    private <T> Response<T> deserialize(Response<Object> response, Class<T> clazz) {
-        final T deserialize = deserialize(response.getValue(), clazz);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            deserialize);
-    }
-
-    /**
-     * Converts a Response into its corresponding {@link QueueDescriptionEntryImpl} then mapped into {@link
-     * QueueProperties}.
-     *
-     * @param response HTTP Response to deserialize.
-     *
-     * @return The corresponding HTTP response with convenience properties set.
-     */
-    private Response<QueueProperties> deserializeQueue(Response<Object> response) {
-        final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent().getQueueDescription() == null) {
-            final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
-            if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getTopicDescription() != null) {
-                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-            }
-        }
-
-        final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
-        final String queueName = entry.getTitle().getContent();
-        EntityHelper.setQueueName(result, queueName);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
-    }
-
-    /**
-     * Converts a Response into its corresponding {@link TopicDescriptionEntryImpl} then mapped into {@link
-     * QueueProperties}.
-     *
-     * @param response HTTP Response to deserialize.
-     *
-     * @return The corresponding HTTP response with convenience properties set.
-     */
-    private Response<TopicProperties> deserializeTopic(Response<Object> response) {
-        final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent().getTopicDescription() == null) {
-            final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
-            if (entryQueue != null && entryQueue.getContent() != null && entryQueue.getContent().getQueueDescription() != null) {
-                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-            }
-        }
-
-        final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
-        final String topicName = entry.getTitle().getContent();
-        EntityHelper.setTopicName(result, topicName);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
 
     /**
