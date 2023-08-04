@@ -355,10 +355,10 @@ public final class AzureMonitorExporterBuilder {
         return AutoConfiguredOpenTelemetrySdk.builder()
             .addPropertiesSupplier(() -> {
                 Map<String, String> props = new HashMap<>();
-                props.put("otel.traces.exporter", "azmon");
-                props.put("otel.metrics.exporter", "azmon");
-                props.put("otel.logs.exporter", "azmon");
-                props.put("_internal_azuremonitorexporterbuilder", "true");
+                props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
+                props.put("otel.metrics.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
+                props.put("otel.logs.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
+                props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, "true");
                 return props;
             })
             .addSpanExporterCustomizer(

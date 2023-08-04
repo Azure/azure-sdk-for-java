@@ -206,6 +206,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>org.awaitility:awaitility:[4.2.0]</include> <!-- {x-include-update;org.awaitility:awaitility;external_dependency} -->
                 <include>io.github.hakky54:logcaptor:[2.9.0]</include> <!-- {x-include-update;io.github.hakky54:logcaptor;external_dependency} -->

@@ -12,7 +12,7 @@ import java.util.Collection;
 public class AzureMonitorSpanExporterProvider implements ConfigurableSpanExporterProvider {
     @Override
     public SpanExporter createExporter(ConfigProperties configProperties) {
-        if (configProperties.getBoolean("_internal_azuremonitorexporterbuilder", false)) {
+        if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
             return MarkerSpanExporter.INSTANCE;
         }
         return new AzureMonitorExporterBuilder().buildTraceExporter();
@@ -20,7 +20,7 @@ public class AzureMonitorSpanExporterProvider implements ConfigurableSpanExporte
 
     @Override
     public String getName() {
-        return "azmon";
+        return AzureMonitorExporterProviderKeys.EXPORTER_NAME;
     }
 
     public enum MarkerSpanExporter implements SpanExporter {

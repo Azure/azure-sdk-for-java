@@ -12,7 +12,7 @@ import java.util.Collection;
 public class AzureMonitorLogRecordExporterProvider implements ConfigurableLogRecordExporterProvider {
     @Override
     public LogRecordExporter createExporter(ConfigProperties configProperties) {
-        if (configProperties.getBoolean("_internal_azuremonitorexporterbuilder", false)) {
+        if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
             return AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter.INSTANCE;
         }
         return new AzureMonitorExporterBuilder().buildLogRecordExporter();
@@ -20,7 +20,7 @@ public class AzureMonitorLogRecordExporterProvider implements ConfigurableLogRec
 
     @Override
     public String getName() {
-        return "azmon";
+        return AzureMonitorExporterProviderKeys.EXPORTER_NAME;
     }
 
     public enum MarkerLogRecordExporter implements LogRecordExporter {

@@ -8,15 +8,13 @@ import io.opentelemetry.sdk.metrics.InstrumentType;
 import io.opentelemetry.sdk.metrics.data.AggregationTemporality;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
-import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.util.Collection;
 
 public class AzureMonitorMetricExporterProvider implements ConfigurableMetricExporterProvider {
     @Override
     public MetricExporter createExporter(ConfigProperties configProperties) {
-        if (configProperties.getBoolean("_internal_azuremonitorexporterbuilder", false)) {
+        if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
             return AzureMonitorMetricExporterProvider.MarkerMetricExporter.INSTANCE;
         }
         return new AzureMonitorExporterBuilder().buildMetricExporter();
@@ -24,7 +22,7 @@ public class AzureMonitorMetricExporterProvider implements ConfigurableMetricExp
 
     @Override
     public String getName() {
-        return "azmon";
+        return AzureMonitorExporterProviderKeys.EXPORTER_NAME;
     }
 
     public enum MarkerMetricExporter implements MetricExporter {
