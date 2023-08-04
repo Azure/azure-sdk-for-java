@@ -949,14 +949,14 @@ public final class SearchOptions {
     }
 
     /**
-     * Set the vectors property using a single vector: The query parameters for vector and hybrid search
+     * Set the vectors property: The query parameters for vector and hybrid search
      * queries.
      *
-     * @param vector the vector value to set.
+     * @param vectors the vector value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchOptions setVector(SearchQueryVector vector) {
-        setVectors(vector);
+    public SearchOptions setVectors(List<SearchQueryVector> vectors) {
+        setVectors(vectors);
         return this;
     }
 
