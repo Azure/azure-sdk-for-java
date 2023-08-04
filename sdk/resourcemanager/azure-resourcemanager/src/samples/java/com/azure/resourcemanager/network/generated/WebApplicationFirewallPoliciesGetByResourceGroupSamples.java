@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for WebApplicationFirewallPolicies GetByResourceGroup. */
 public final class WebApplicationFirewallPoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafPolicyGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/WafPolicyGet.json
      */
     /**
      * Sample code: Gets a WAF policy within a resource group.
