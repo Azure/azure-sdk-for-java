@@ -120,6 +120,13 @@
       <artifactId>jetty-servlet</artifactId>
       <version>11.0.15</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
     </dependency>
+
+    <!--add to void err "module not found: javax.servlet.api"    -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version> <!-- {x-version-update;javax.servlet:javax.servlet-api;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
