@@ -31,6 +31,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -45,7 +46,10 @@ import java.util.zip.GZIPInputStream;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD;
 
+// TODO (trask) remove this annotation after https://github.com/Azure/azure-sdk-for-java/pull/36253
+@Execution(SAME_THREAD) // this test conflicts with other tests which set OTEL_RESOURCE_ATTRIBUTES env var
 public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTestBase {
 
     private static final String CONNECTION_STRING_ENV =
