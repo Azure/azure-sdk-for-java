@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -201,6 +202,9 @@ public interface ApplicationGateway
      * @return {@link Mono} of Web Application Firewall Policy (if any) associated with the application gateway
      */
     Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync();
+
+    /** @return SSL policy of the application gateway */
+    ApplicationGatewaySslPolicy sslPolicy();
 
     /** Grouping of application gateway definition stages. */
     interface DefinitionStages {
@@ -639,6 +643,37 @@ public interface ApplicationGateway
         }
 
         /**
+         * The stage of the application gateway definition allowing to configure TLS/SSL policy for the application gateway.
+         */
+        interface WithSslPolicy {
+            /**
+             * Configures to use predefined TLS/SSL policy for the application gateway.
+             *
+             * @param policyName predefined TLS/SSL policy name
+             * @return the next stage of the definition
+             */
+            WithCreate withPredefinedSslPolicy(ApplicationGatewaySslPolicyName policyName);
+
+            /**
+             * Configures to use CustomV2 policy for the application gateway.
+             *
+             * @param minProtocolVersion  minimum version of TLS/SSL protocol to be supported on application gateway.
+             * @param cipherSuites TLS/SSL cipher suites to be enabled in the specified order to application gateway.
+             * @return the next stage of the definition
+             */
+            WithCreate withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion,
+                                             List<ApplicationGatewaySslCipherSuite> cipherSuites);
+
+            /**
+             * Configures to use the provided TLS/SSL policy for the application gateway.
+             *
+             * @param sslPolicy the TLS/SSL policy to use for the application gateway
+             * @return the next stage of the definition
+             */
+            WithCreate withSslPolicy(ApplicationGatewaySslPolicy sslPolicy);
+        }
+
+        /**
          * The stage of an application gateway definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
@@ -665,7 +700,8 @@ public interface ApplicationGateway
                 WithAvailabilityZone,
                 WithManagedServiceIdentity,
                 WithHttp2,
-                WithWebApplicationFirewallPolicy {
+                WithWebApplicationFirewallPolicy,
+                WithSslPolicy {
         }
     }
 
@@ -1351,6 +1387,37 @@ public interface ApplicationGateway
              */
             Update withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable);
         }
+
+        /**
+         * The stage of the application gateway update allowing to configure TLS/SSL policy for the application gateway.
+         */
+        interface WithSslPolicy {
+            /**
+             * Configures to use predefined TLS/SSL policy for the application gateway.
+             *
+             * @param policyName predefined TLS/SSL policy name
+             * @return the next stage of the update
+             */
+            Update withPredefinedSslPolicy(ApplicationGatewaySslPolicyName policyName);
+
+            /**
+             * Configures to use CustomV2 policy for the application gateway.
+             *
+             * @param minProtocolVersion  minimum version of TLS/SSL protocol to be supported on application gateway.
+             * @param cipherSuites TLS/SSL cipher suites to be enabled in the specified order to application gateway.
+             * @return the next stage of the update
+             */
+            Update withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion,
+                                                              List<ApplicationGatewaySslCipherSuite> cipherSuites);
+
+            /**
+             * Configures to use the provided TLS/SSL policy for the application gateway.
+             *
+             * @param sslPolicy the TLS/SSL policy to use for the application gateway
+             * @return the next stage of the update
+             */
+            Update withSslPolicy(ApplicationGatewaySslPolicy sslPolicy);
+        }
     }
 
     /** The template for an application gateway update operation, containing all the settings that can be modified. */
@@ -1377,6 +1444,7 @@ public interface ApplicationGateway
             UpdateStages.WithUrlPathMap,
             UpdateStages.WithManagedServiceIdentity,
             UpdateStages.WithHttp2,
-            UpdateStages.WithWebApplicationFirewallPolicy {
+            UpdateStages.WithWebApplicationFirewallPolicy,
+            UpdateStages.WithSslPolicy {
     }
 }
