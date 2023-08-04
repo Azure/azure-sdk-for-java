@@ -24,6 +24,9 @@ public class Address {
     @Id
     String postalCode;
     String street;
+
+    Long longId;
+
     @PartitionKey
     String city;
 
@@ -47,9 +50,15 @@ public class Address {
         return city;
     }
 
+    public Long getLongId() {
+        return longId;
+    }
+
     public void setCity(String city) {
         this.city = city;
     }
+
+    public void setLongId(Long longId) { this.longId = longId; }
 
     @Override
     public boolean equals(Object o) {

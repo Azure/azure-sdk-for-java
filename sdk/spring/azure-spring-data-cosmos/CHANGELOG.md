@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed when IN statement in annotated query didn't work with Long values
 
 #### Other Changes
 

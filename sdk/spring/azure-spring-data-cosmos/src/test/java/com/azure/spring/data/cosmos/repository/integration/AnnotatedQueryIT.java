@@ -282,6 +282,23 @@ public class AnnotatedQueryIT {
     }
 
     @Test
+    public void testAnnotatedQueryWithInLongParameters() {
+        Address.TEST_ADDRESS1_PARTITION1.setLongId(TestConstants.LongId1);
+        Address.TEST_ADDRESS2_PARTITION1.setLongId(TestConstants.LongId1);
+        Address.TEST_ADDRESS1_PARTITION2.setLongId(TestConstants.LongId2);
+        Address.TEST_ADDRESS4_PARTITION3.setLongId(TestConstants.LongId3);
+
+        final List<Long> longListForIn = Arrays.asList(TestConstants.LongId1, TestConstants.LongId2);
+        int expectedInQueryResultSize = 3;
+
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS4_PARTITION3);
+        addressRepository.saveAll(addresses);
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindByInLongParameters(longListForIn, Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertThat(resultsAsc.size()).isEqualTo(expectedInQueryResultSize);
+    }
+
+    @Test
     public void testAnnotatedQueryWithArrayContains() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
         addressRepository.saveAll(addresses);
