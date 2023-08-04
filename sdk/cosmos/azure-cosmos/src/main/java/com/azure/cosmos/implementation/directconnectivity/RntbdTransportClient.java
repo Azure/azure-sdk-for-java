@@ -615,6 +615,11 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration timeoutDetectionOnWriteTimeLimit;
 
+        @JsonProperty()
+        private final Duration nonRespondingChannelReadDelayTimeLimit;
+
+        @JsonProperty()
+        private final int cancellationCountSinceLastReadThreshold;
 
         // endregion
 
@@ -657,6 +662,8 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionHighFrequencyTimeLimit = builder.timeoutDetectionHighFrequencyTimeLimit;
             this.timeoutDetectionOnWriteThreshold = builder.timeoutDetectionOnWriteThreshold;
             this.timeoutDetectionOnWriteTimeLimit = builder.timeoutDetectionOnWriteTimeLimit;
+            this.nonRespondingChannelReadDelayTimeLimit = builder.nonRespondingChannelReadDelayTimeLimit;
+            this.cancellationCountSinceLastReadThreshold = builder.cancellationCountSinceLastReadThreshold;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -698,6 +705,8 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionOnWriteThreshold = 1;
             this.timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
             this.preferTcpNative = true;
+            this.cancellationCountSinceLastReadThreshold = 5;
+            this.nonRespondingChannelReadDelayTimeLimit = Duration.ofSeconds(60);
         }
 
         // endregion
@@ -828,6 +837,14 @@ public class RntbdTransportClient extends TransportClient {
 
         public Duration timeoutDetectionOnWriteTimeLimit() {
             return this.timeoutDetectionOnWriteTimeLimit;
+        }
+
+        public Duration nonRespondingChannelReadDelayTimeLimit() {
+            return this.nonRespondingChannelReadDelayTimeLimit;
+        }
+
+        public int cancellationCountSinceLastReadThreshold() {
+            return this.cancellationCountSinceLastReadThreshold;
         }
 
         // endregion
@@ -1002,7 +1019,8 @@ public class RntbdTransportClient extends TransportClient {
             private Duration timeoutDetectionHighFrequencyTimeLimit;
             private int timeoutDetectionOnWriteThreshold;
             private Duration timeoutDetectionOnWriteTimeLimit;
-
+            private Duration nonRespondingChannelReadDelayTimeLimit;
+            private int cancellationCountSinceLastReadThreshold;
 
             // endregion
 
@@ -1044,6 +1062,8 @@ public class RntbdTransportClient extends TransportClient {
                 this.timeoutDetectionHighFrequencyTimeLimit = DEFAULT_OPTIONS.timeoutDetectionHighFrequencyTimeLimit;
                 this.timeoutDetectionOnWriteThreshold = DEFAULT_OPTIONS.timeoutDetectionOnWriteThreshold;
                 this.timeoutDetectionOnWriteTimeLimit = DEFAULT_OPTIONS.timeoutDetectionOnWriteTimeLimit;
+                this.nonRespondingChannelReadDelayTimeLimit = DEFAULT_OPTIONS.nonRespondingChannelReadDelayTimeLimit;
+                this.cancellationCountSinceLastReadThreshold = DEFAULT_OPTIONS.cancellationCountSinceLastReadThreshold;
             }
 
             // endregion
