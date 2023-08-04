@@ -154,7 +154,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null,
-                new SearchOptions().setVector(searchQueryVector), Context.NONE);
+                new SearchOptions().setVectors(searchQueryVector), Context.NONE);
 
         int count = 0;
         System.out.println("Single Vector Search Results:");
@@ -181,7 +181,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
-            .setVector(searchQueryVector)
+            .setVectors(searchQueryVector)
             .setFilter("Category eq 'Luxury'"), Context.NONE);
 
         int count = 0;
@@ -209,7 +209,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search("Top hotels in town", new SearchOptions()
-            .setVector(searchQueryVector), Context.NONE);
+            .setVectors(searchQueryVector), Context.NONE);
 
         int count = 0;
         System.out.println("Simple Hybrid Search Results:");
@@ -239,7 +239,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(searchQueryVector)
+            .setVectors(searchQueryVector)
             .setQueryType(QueryType.SEMANTIC)
             .setQueryLanguage(QueryLanguage.EN_US)
             .setSemanticConfigurationName("my-semantic-config")
