@@ -1,10 +1,10 @@
 # Release History
 
-## 1.19.0-beta.1 (Unreleased)
+## 1.19.0 (2023-08-04)
 
 ### Features Added
-
-### Breaking Changes
+- Add helper methods for adding sanitizers and matchers
+- Updated the list of headers to redact to include "subscription-key"
 
 ### Bugs Fixed
 
