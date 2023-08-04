@@ -164,6 +164,7 @@
                 <include>org.apache.commons:commons-compress:[1.22]</include> <!-- {x-include-update;org.apache.commons:commons-compress;external_dependency} -->
                 <include>org.eclipse.jetty:jetty-server:[11.0.15]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-server;external_dependency} -->
                 <include>org.eclipse.jetty:jetty-servlet:[11.0.15]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+                <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
