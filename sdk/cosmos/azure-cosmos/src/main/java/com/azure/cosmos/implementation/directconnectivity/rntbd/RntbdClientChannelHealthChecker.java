@@ -416,13 +416,16 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         if (timestamps.cancellationCount() >= this.cancellationCountSinceLastReadThreshold) {
 
+            // Request cancellations could be a normal symptom under high CPU load.
+            // When request cancellations are due to high CPU,
+            // close the existing the connection and re-establish a new one will not help the issue but rather make it worse, return fast
             if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
                 return errorMessage;
             }
 
             final long readSuccessRecency = Duration.between(timestamps.lastChannelReadTime(), currentTime).toNanos();
 
-            if (readSuccessRecency > this.nonRespondingChannelReadDelayTimeLimitInNanos) {
+            if (readSuccessRecency >= this.nonRespondingChannelReadDelayTimeLimitInNanos) {
                 errorMessage = MessageFormat.format(
                     "{0} health check failed due to channel being cancellation prone: [rntbdContext: {1}, lastChannelWrite: {2}, lastChannelRead: {3},"
                         + "cancellationCountSinceLastSuccessfulRead: {4}, currentTime: {5}]",
