@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for CustomIpPrefixes ListByResourceGroup. */
 public final class CustomIpPrefixesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/CustomIpPrefixList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/CustomIpPrefixList.json
      */
     /**
      * Sample code: List resource group Custom IP prefixes.

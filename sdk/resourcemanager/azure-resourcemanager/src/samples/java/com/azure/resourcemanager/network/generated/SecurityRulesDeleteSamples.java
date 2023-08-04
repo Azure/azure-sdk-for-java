@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for SecurityRules Delete. */
 public final class SecurityRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkSecurityGroupRuleDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkSecurityGroupRuleDelete.json
      */
     /**
      * Sample code: Delete network security rule from network security group.
