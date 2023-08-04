@@ -831,6 +831,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             if (pendingRequestTimeout.get() != null) {
                 pendingRequestTimeout.get().cancel();
             }
+
+            if (record.isCancelled()) {
+                this.timestamps.cancellation();
+            }
         });
 
         return record;

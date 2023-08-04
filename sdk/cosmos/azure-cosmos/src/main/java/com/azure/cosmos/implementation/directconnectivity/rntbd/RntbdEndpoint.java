@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -303,6 +302,16 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public long timeoutDetectionOnWriteTimeLimitInNanos() {
             return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public long nonRespondingChannelReadDelayTimeLimitInNanos() {
+            return this.options.nonRespondingChannelReadDelayTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int cancellationCountSinceLastReadThreshold() {
+            return this.options.cancellationCountSinceLastReadThreshold();
         }
 
         @Override
