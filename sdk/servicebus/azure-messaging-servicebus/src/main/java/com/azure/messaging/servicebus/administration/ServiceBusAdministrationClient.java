@@ -736,8 +736,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getQueueExistsWithResponse(String queueName, Context context) {
-        final Response<QueueProperties> queueWithResponse = getQueueInternal(queueName, context);
-        return getEntityExistsWithResponse(queueWithResponse);
+        return getEntityExistsWithResponse(() -> getQueueInternal(queueName, context));
     }
 
     /**
@@ -914,8 +913,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean getSubscriptionExists(String topicName, String subscriptionName) {
-        final Boolean exists = getSubscriptionExistsWithResponse(topicName, subscriptionName, null).getValue();
-        return exists != null && exists;
+        return getSubscriptionExistsWithResponse(topicName, subscriptionName, null).getValue();
     }
 
     /**
@@ -933,9 +931,8 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getSubscriptionExistsWithResponse(String topicName, String subscriptionName,
         Context context) {
-        final Response<SubscriptionProperties> subscriptionWithResponse =
-            getSubscriptionInternal(topicName, subscriptionName, context);
-        return getEntityExistsWithResponse(subscriptionWithResponse);
+
+        return getEntityExistsWithResponse(() -> getSubscriptionInternal(topicName, subscriptionName, context));
     }
 
     /**
@@ -1065,8 +1062,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getTopicExistsWithResponse(String topicName, Context context) {
-        final Response<TopicProperties> topicWithResponse = getTopicInternal(topicName, context);
-        return getEntityExistsWithResponse(topicWithResponse);
+        return getEntityExistsWithResponse(() -> getTopicInternal(topicName, context));
     }
 
     /**
@@ -1112,11 +1108,20 @@ public final class ServiceBusAdministrationClient {
             response.getHeaders(), new TopicRuntimeProperties(response.getValue()));
     }
 
-    private <T> Response<Boolean> getEntityExistsWithResponse(Response<T> getEntityOperation) {
-        // When an entity does not exist, it does not have any description object in it.
-        final boolean exists = getEntityOperation.getValue() != null;
-        return new SimpleResponse<>(getEntityOperation.getRequest(), getEntityOperation.getStatusCode(),
-            getEntityOperation.getHeaders(), exists);
+    private <T> Response<Boolean> getEntityExistsWithResponse(Supplier<Response<T>> supplier) {
+        try {
+            // When an entity does not exist, it does not have any description object in it.
+            final Response<T> getEntityOperation = supplier.get();
+            final boolean exists = getEntityOperation.getValue() != null;
+
+            return new SimpleResponse<>(getEntityOperation.getRequest(), getEntityOperation.getStatusCode(),
+                getEntityOperation.getHeaders(), exists);
+        } catch (ResourceNotFoundException exception) {
+            final HttpResponse response = exception.getResponse();
+
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                false);
+        }
     }
 
     /**
