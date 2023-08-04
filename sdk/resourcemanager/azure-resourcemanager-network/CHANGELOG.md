@@ -6,6 +6,12 @@
 
 - Supported `backends` for `LoadBalancingRule`.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
+
 ## 2.29.0 (2023-07-28)
 
 ### Bugs Fixed
