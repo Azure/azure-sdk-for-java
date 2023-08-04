@@ -803,8 +803,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = testResourceNamer.randomName("queue", 10);
 
-        client.createQueue(queueName);
-
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> client.deleteQueue(queueName));
     }
