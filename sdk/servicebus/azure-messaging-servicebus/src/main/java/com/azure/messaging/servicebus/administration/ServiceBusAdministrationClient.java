@@ -28,14 +28,12 @@ import com.azure.messaging.servicebus.administration.implementation.models.Creat
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -50,7 +48,6 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -201,7 +198,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() ->
             entityClient.putWithResponse(queueName, createEntity, null, contextWithHeaders));
 
-        return deserializeQueue(response);
+        return converter.deserializeQueue(response);
     }
 
     /**
@@ -490,7 +487,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() -> entityClient.putWithResponse(
             topicName, createEntity, null, enableSyncContext(context)));
 
-        return deserializeTopic(response);
+        return converter.deserializeTopic(response);
     }
 
     /**
@@ -707,7 +704,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() -> entityClient.getWithResponse(
             queueName, true, enableSyncContext(context)));
 
-        return deserializeQueue(response);
+        return converter.deserializeQueue(response);
     }
 
     /**
@@ -1033,7 +1030,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() -> entityClient.getWithResponse(topicName,
             true, enableSyncContext(context)));
 
-        return deserializeTopic(response);
+        return converter.deserializeTopic(response);
     }
 
     /**
@@ -1159,7 +1156,8 @@ public final class ServiceBusAdministrationClient {
     private PagedResponse<QueueProperties> listQueues(int skip, Context context) {
         final Response<Object> response = executeAndThrowException(() -> managementClient.listEntitiesWithResponse(
             QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context)));
-        final QueueDescriptionFeedImpl feed = deserialize(response.getValue(), QueueDescriptionFeedImpl.class);
+        final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserialize(response, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeedImpl feed = feedResponse.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
@@ -1351,7 +1349,9 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() ->
             managementClient.listEntitiesWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context)));
-        final TopicDescriptionFeedImpl feed = deserialize(response.getValue(), TopicDescriptionFeedImpl.class);
+        final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserialize(response, TopicDescriptionFeedImpl.class);
+        final TopicDescriptionFeedImpl feed = feedResponse.getValue();
+
         if (feed == null) {
             LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
                 NUMBER_OF_ELEMENTS);
@@ -1448,7 +1448,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() -> entityClient.putWithResponse(
             queue.getName(), createEntity, "*", contextWithHeaders));
 
-        return deserializeQueue(response);
+        return converter.deserializeQueue(response);
     }
 
     /**
@@ -1685,53 +1685,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() -> entityClient.putWithResponse(
             topic.getName(), createEntity, "*", enableSyncContext(context)));
 
-        return deserializeTopic(response);
-    }
-
-    private Response<QueueProperties> deserializeQueue(Response<Object> response) {
-        final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent().getQueueDescription() == null) {
-            final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
-            if (entryTopic != null && entryTopic.getContent() != null
-                && entryTopic.getContent().getTopicDescription() != null) {
-                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-            }
-        }
-
-        final QueueProperties result = converter.getQueueProperties(entry);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
-    }
-
-    private Response<TopicProperties> deserializeTopic(Response<Object> response) {
-        final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent().getTopicDescription() == null) {
-            final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
-            if (entryQueue != null && entryQueue.getContent() != null
-                && entryQueue.getContent().getQueueDescription() != null) {
-                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-            }
-        }
-
-        final TopicProperties result = converter.getTopicProperties(entry);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+        return converter.deserializeTopic(response);
     }
 
     private Context enableSyncContext(Context context) {
@@ -1752,24 +1706,6 @@ public final class ServiceBusAdministrationClient {
             return serviceCall.get();
         } catch (ServiceBusManagementErrorException error) {
             throw AdministrationModelConverter.mapException(error);
-        }
-    }
-
-    private <T> T deserialize(Object object, Class<T> clazz) {
-        if (object == null) {
-            return null;
-        }
-
-        final String contents = String.valueOf(object);
-        if (contents.isEmpty()) {
-            return null;
-        }
-
-        try {
-            return serializer.deserialize(contents, clazz);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
     }
 }
