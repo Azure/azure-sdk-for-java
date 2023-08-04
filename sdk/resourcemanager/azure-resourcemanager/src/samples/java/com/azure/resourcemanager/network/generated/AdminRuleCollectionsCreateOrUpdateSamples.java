@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for AdminRuleCollections CreateOrUpdate. */
 public final class AdminRuleCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerAdminRuleCollectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerAdminRuleCollectionPut.json
      */
     /**
      * Sample code: Create or Update an admin rule collection.

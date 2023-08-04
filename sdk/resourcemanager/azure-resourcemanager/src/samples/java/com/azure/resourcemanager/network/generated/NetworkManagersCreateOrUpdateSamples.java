@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for NetworkManagers CreateOrUpdate. */
 public final class NetworkManagersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerPut.json
      */
     /**
      * Sample code: Put Network Manager.

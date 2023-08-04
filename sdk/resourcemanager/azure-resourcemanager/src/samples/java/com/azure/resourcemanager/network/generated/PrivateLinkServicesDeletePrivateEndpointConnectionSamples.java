@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PrivateLinkServices DeletePrivateEndpointConnection. */
 public final class PrivateLinkServicesDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: delete private end point connection for a private link service.
