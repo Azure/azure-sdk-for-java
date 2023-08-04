@@ -134,9 +134,9 @@ public final class TestConstants {
     public static final int PRECONDITION_FAILED_STATUS_CODE = 412;
     public static final int CONFLICT_STATUS_CODE = 409;
 
-    public static final Long LongId1 = new Long(10000001);
-    public static final Long LongId2 = new Long(20000002);
-    public static final Long LongId3 = new Long(54600003);
+    public static final Long LongId1 = Long.valueOf(10000001);
+    public static final Long LongId2 = Long.valueOf(20000002);
+    public static final Long LongId3 = Long.valueOf(54600003);
 
     public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
         put("United States of America", "123456789");
