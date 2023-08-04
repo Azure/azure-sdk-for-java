@@ -1,11 +1,17 @@
 package com.azure.compute.batch;
 
+import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
 import com.azure.compute.batch.models.*;
+import com.azure.compute.batch.models.BatchClientParallelOptions;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobContainerClient;
+import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import com.azure.core.test.TestMode;
 
@@ -16,6 +22,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class TaskTests extends BatchServiceClientTestBase {
@@ -248,4 +256,323 @@ public class TaskTests extends BatchServiceClientTestBase {
                 }
             }
     }
+
+    @Test
+    public void testAddMultiTasks() throws Exception {
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks");
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(livePoolId);
+        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+
+        int TASK_COUNT=1000;
+
+        try {
+            // CREATE
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+            for (int i=0; i<TASK_COUNT; i++)
+            {
+                BatchTaskCreateParameters addParameter = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addParameter);
+            }
+            BatchClientParallelOptions parallelOptions = new BatchClientParallelOptions(10);
+            taskClient.createTasks(jobId, tasksToAdd, parallelOptions);
+
+            // LIST
+            PagedIterable<BatchTask> tasks = taskClient.list(jobId);
+            Assert.assertNotNull(tasks);
+            int taskListCount = 0;
+            for (BatchTask task: tasks) {
+                ++taskListCount;
+            }
+            Assert.assertTrue(taskListCount == TASK_COUNT);
+        } finally {
+            try {
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
+
+    @Test
+    public void testAddMultiTasksWithError() throws Exception {
+        String accessKey = Configuration.getGlobalConfiguration().get("AZURE_BATCH_ACCESS_KEY");
+        accessKey = (accessKey == null || accessKey.length() == 0) ? "RANDOM_KEY" : accessKey;
+
+        BatchSharedKeyCredentials noExistCredentials1 = new BatchSharedKeyCredentials(
+                "https://noexistaccount.westus.batch.azure.com",
+                "noexistaccount", accessKey
+        );
+        batchClientBuilder.credential(noExistCredentials1);
+
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasksWithError");
+        int TASK_COUNT=1000;
+
+        try {
+            // CREATE
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+            for (int i=0; i<TASK_COUNT; i++)
+            {
+                BatchTaskCreateParameters addParameter = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addParameter);
+            }
+            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            batchClientBuilder.buildTaskClient().createTasks(jobId, tasksToAdd, option);
+            Assert.assertTrue("Should not here", true);
+        } catch (RuntimeException ex) {
+            System.out.printf("Expect exception %s", ex.toString());
+        }
+    }
+
+    @Test
+    public void failIfPoisonTaskTooLarge() throws Exception {
+        //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
+        // Linux machines are causing issues. This issue is under investigation.
+        Assume.assumeFalse("This Test only runs in Live/Record mode", getTestMode() == TestMode.PLAYBACK);
+
+        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge");
+        String taskId = "mytask";
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(liveIaasPoolId);
+        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "sleep 1");
+        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        ResourceFile resourceFile;
+
+        // If this test fails try increasing the size of the Task in case maximum size increase
+        for(int i = 0; i < 10000; i++) {
+            resourceFile = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).setFilePath("resourceFile"+i);
+            resourceFiles.add(resourceFile);
+        }
+        taskToAdd.setResourceFiles(resourceFiles);
+        tasksToAdd.add(taskToAdd);
+
+        try
+        {
+            taskClient.createTasks(jobId, tasksToAdd);
+            try {
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.fail("Expected RequestBodyTooLarge error");
+        }
+        catch (HttpResponseException err) {
+            try {
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.assertEquals(err.getResponse().getStatusCode(), 413);
+        }
+        catch (Exception err) {
+            try {
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.fail("Expected RequestBodyTooLarge error");
+        }
+    }
+
+    @Test
+    public void succeedWithRetry() throws Exception {
+        //This test does not run in Playback mode. It only runs in Record/Live mode.
+        // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
+        // Hence Playback of this test is disabled.
+        Assume.assumeFalse("This Test only runs in Live/Record mode", getTestMode() == TestMode.PLAYBACK);
+
+        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry");
+        String taskId = "mytask";
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(liveIaasPoolId);
+        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        BatchTaskCreateParameters taskToAdd;
+        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        ResourceFile resourceFile;
+
+        BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+
+        // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
+        for(int i = 0; i < 100; i++) {
+            resourceFile = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).setFilePath("resourceFile" + i);
+            resourceFiles.add(resourceFile);
+        }
+        // Num tasks to add
+        for(int i = 0; i < 1500; i++) {
+            taskToAdd = new BatchTaskCreateParameters(taskId + i, "sleep 1");
+            taskToAdd.setResourceFiles(resourceFiles);
+            tasksToAdd.add(taskToAdd);
+        }
+
+        try
+        {
+            taskClient.createTasks(jobId, tasksToAdd, option);
+            try {
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+        catch (Exception err) {
+            try {
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.fail("Expected Success");
+        }
+    }
+
+    @Test
+    public void testGetTaskCounts() throws Exception {
+        String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts");
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(livePoolId);
+        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+
+        int TASK_COUNT=1000;
+
+        try {
+            // Test Job count
+            TaskCountsResult countResult = jobClient.getTaskCounts(jobId);
+
+            TaskCounts counts = countResult.getTaskCounts();
+            int all = counts.getActive() + counts.getCompleted() + counts.getRunning();
+            Assert.assertEquals(0, all);
+
+            TaskSlotCounts slotCounts = countResult.getTaskSlotCounts();
+            int allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
+            Assert.assertEquals(0, allSlots);
+
+            // CREATE
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+            for (int i=0; i<TASK_COUNT; i++)
+            {
+                BatchTaskCreateParameters addParameter = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addParameter);
+            }
+            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            taskClient.createTasks(jobId, tasksToAdd, option);
+
+            //The Waiting period is only needed in record mode.
+            threadSleepInRecordMode(30 * 1000);
+
+            // Test Job count
+            countResult = jobClient.getTaskCounts(jobId);
+            counts = countResult.getTaskCounts();
+            all = counts.getActive() + counts.getCompleted() + counts.getRunning();
+            Assert.assertEquals(TASK_COUNT, all);
+
+            slotCounts = countResult.getTaskSlotCounts();
+            allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
+            // One slot per task
+            Assert.assertEquals(TASK_COUNT, allSlots);
+        } finally {
+            try {
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
+
+    @Test
+    public void testOutputFiles() throws Exception {
+        int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
+        String jobId = getStringIdWithUserNamePrefix("-testOutputFiles");
+        String taskId = "mytask";
+        String badTaskId = "mytask1";
+        String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
+        String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(liveIaasPoolId);
+        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        BlobContainerClient containerClient = null;
+        String containerUrl = "";
+
+        //The Storage operations run only in Record mode.
+        // Playback mode is configured to test Batch operations only.
+        if(getTestMode() == TestMode.RECORD) {
+            containerClient = createBlobContainer(storageAccountName, storageAccountKey, "output");
+            containerUrl = generateContainerSasToken(containerClient);
+        }
+
+        try {
+            // CREATE
+            List<OutputFile> outputs = new ArrayList<>();
+            OutputFileBlobContainerDestination fileBlobContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            fileBlobContainerDestination.setPath("taskLogs/output.txt");
+
+            OutputFileDestination fileDestination = new OutputFileDestination();
+            fileDestination.setContainer(fileBlobContainerDestination);
+
+            outputs.add(new OutputFile("../stdout.txt", fileDestination, new OutputFileUploadOptions(OutputFileUploadCondition.TASK_COMPLETION)));
+
+            OutputFileBlobContainerDestination fileBlobErrContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            fileBlobErrContainerDestination.setPath("taskLogs/err.txt");
+
+            outputs.add(new OutputFile("../stderr.txt", new OutputFileDestination().setContainer(fileBlobErrContainerDestination), new OutputFileUploadOptions(OutputFileUploadCondition.TASK_FAILURE)));
+
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "bash -c \"echo hello\"");
+            taskToCreate.setOutputFiles(outputs);
+
+            taskClient.create(jobId, taskToCreate);
+
+            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                BatchTask task = taskClient.get(jobId, taskId);
+                Assert.assertNotNull(task);
+                Assert.assertEquals(TaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
+                Assert.assertNull(task.getExecutionInfo().getFailureInfo());
+
+                if(getTestMode() == TestMode.RECORD) {
+                    // Get the task command output file
+                    String result = getContentFromContainer(containerClient, "taskLogs/output.txt");
+                    Assert.assertEquals("hello\n", result);
+                }
+            }
+
+            taskToCreate = new BatchTaskCreateParameters(badTaskId, "bash -c \"bad command\"")
+                    .setOutputFiles(outputs);
+
+            taskClient.create(jobId, taskToCreate);
+
+            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                BatchTask task = taskClient.get(jobId, badTaskId);
+                Assert.assertNotNull(task);
+                Assert.assertEquals(TaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
+                Assert.assertNotNull(task.getExecutionInfo().getFailureInfo());
+                Assert.assertEquals(ErrorCategory.USER_ERROR.toString().toLowerCase(), task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
+                Assert.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
+
+                //The Storage operations run only in Record mode.
+                // Playback mode is configured to test Batch operations only.
+                if(getTestMode() == TestMode.RECORD) {
+                    // Get the task command output file
+                    String result = getContentFromContainer(containerClient, "taskLogs/err.txt");
+                    Assert.assertEquals("bash: bad: command not found\n", result);
+                }
+            }
+
+        } finally {
+            try {
+                if (getTestMode() == TestMode.RECORD) {
+                    containerClient.delete();
+                }
+                jobClient.delete(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
+
 }

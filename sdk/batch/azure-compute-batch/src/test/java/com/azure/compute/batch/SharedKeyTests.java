@@ -2,22 +2,15 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
 import com.azure.compute.batch.models.*;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.*;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.DateTimeRfc1123;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,9 +61,9 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Updating Pool
              */
-            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters(new LinkedList<CertificateReference>(),
-                                                   new LinkedList<ApplicationPackageReference>(),
-                                                   new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));
+            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters(new LinkedList<>(),
+                    new LinkedList<>(),
+                    new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));
 
             poolUpdateParameters.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED);
 
@@ -84,8 +77,8 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Patch Pool
              */
-            BatchPoolPatchParameters poolPatchParameters = new BatchPoolPatchParameters().setMetadata(new ArrayList<MetadataItem>(List.of(new MetadataItem("key1", "value1")))).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
-            Response patchPoolResponse = poolClientWithSharedKey.patchWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolPatchParameters), null);
+            BatchPoolPatchParameters poolPatchParameters = new BatchPoolPatchParameters().setMetadata(new ArrayList<>(List.of(new MetadataItem("key1", "value1")))).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
+            Response<Void> patchPoolResponse = poolClientWithSharedKey.patchWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolPatchParameters), null);
             HttpRequest patchPoolRequest = patchPoolResponse.getRequest();
             HttpHeader ocpDateHeader = patchPoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNull(ocpDateHeader);
