@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
@@ -26,6 +27,12 @@ public class Address {
     String street;
 
     Long longId;
+
+    Integer homeNumber;
+
+    LocalDate registrationDate;
+
+    boolean isOffice;
 
     @PartitionKey
     String city;
@@ -54,11 +61,29 @@ public class Address {
         return longId;
     }
 
+    public Integer getHomeNumber() {
+        return homeNumber;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public boolean getIsOffice() {
+        return isOffice;
+    }
+
     public void setCity(String city) {
         this.city = city;
     }
 
     public void setLongId(Long longId) { this.longId = longId; }
+
+    public void setHomeNumber(Integer homeNumber) { this.homeNumber = homeNumber; }
+
+    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }
+
+    public void setIsOffice(boolean isOffice) { this.isOffice = isOffice; }
 
     @Override
     public boolean equals(Object o) {
