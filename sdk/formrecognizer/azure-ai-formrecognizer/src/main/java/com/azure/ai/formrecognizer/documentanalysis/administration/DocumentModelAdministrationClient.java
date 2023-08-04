@@ -1253,21 +1253,21 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
-     * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;
+     * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; documentTypes = new HashMap&lt;&gt;&#40;&#41;;
+     * documentTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;
      * &#41;&#41;;
-     * docTypes.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;
+     * documentTypes.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;
      * &#41;&#41;;
      *
      * DocumentClassifierDetails classifierDetails
-     *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes&#41;
+     *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;documentTypes&#41;
      *     .getFinalResult&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, classifierDetails.getClassifierId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier description: %s%n&quot;, classifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier created on: %s%n&quot;, classifierDetails.getCreatedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier expires on: %s%n&quot;, classifierDetails.getExpiresOn&#40;&#41;&#41;;
-     * classifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     * classifierDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
      *     if &#40;documentTypeDetails.getContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
      *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
@@ -1276,16 +1276,16 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map -->
      *
-     * @param docTypes List of document types to classify against.
+     * @param documentTypes List of document types to classify against.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document analysis model}.
      * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code docTypes} is null.
+     * @throws NullPointerException If {@code documentTypes} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(
-        Map<String, ClassifierDocumentTypeDetails> docTypes) {
-        return beginBuildDocumentClassifier(docTypes, null, Context.NONE);
+        Map<String, ClassifierDocumentTypeDetails> documentTypes) {
+        return beginBuildDocumentClassifier(documentTypes, null, Context.NONE);
     }
 
     /**
@@ -1301,14 +1301,14 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
-     * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
-     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;
+     * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; documentTypesDetailsMap = new HashMap&lt;&gt;&#40;&#41;;
+     * documentTypesDetailsMap.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040D&#41;
      * &#41;&#41;;
-     * docTypes.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;
+     * documentTypesDetailsMap.put&#40;&quot;1040-A&quot;, new ClassifierDocumentTypeDetails&#40;new BlobContentSource&#40;blobContainerUrl1040A&#41;
      * &#41;&#41;;
      *
      * DocumentClassifierDetails classifierDetails
-     *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes,
+     *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;documentTypesDetailsMap,
      *         new BuildDocumentClassifierOptions&#40;&#41;
      *             .setClassifierId&#40;&quot;classifierId&quot;&#41;
      *             .setDescription&#40;&quot;classifier desc&quot;&#41;,
@@ -1319,7 +1319,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Classifier description: %s%n&quot;, classifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier created on: %s%n&quot;, classifierDetails.getCreatedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier expires on: %s%n&quot;, classifierDetails.getExpiresOn&#40;&#41;&#41;;
-     * classifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     * classifierDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
      *     if &#40;documentTypeDetails.getContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
      *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
@@ -1328,23 +1328,23 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map-Options-Context -->
      *
-     * @param docTypes List of document types to classify against.
+     * @param documentTypes List of document types to classify against.
      * @param buildDocumentClassifierOptions The configurable {@link BuildDocumentClassifierOptions options} to pass when
      * building a custom classifier document model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document classifier model}.
      * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code docTypes} is null.
+     * @throws NullPointerException If {@code documentTypes} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(
-        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions buildDocumentClassifierOptions, Context context) {
-        return beginBuildDocumentClassifierSync(docTypes, buildDocumentClassifierOptions, context);
+        Map<String, ClassifierDocumentTypeDetails> documentTypes, BuildDocumentClassifierOptions buildDocumentClassifierOptions, Context context) {
+        return beginBuildDocumentClassifierSync(documentTypes, buildDocumentClassifierOptions, context);
     }
 
     private SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifierSync(
-        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions options, Context context) {
+        Map<String, ClassifierDocumentTypeDetails> documentTypes, BuildDocumentClassifierOptions options, Context context) {
 
         BuildDocumentClassifierOptions
             finalBuildDocumentClassifierOptions = options == null ? new BuildDocumentClassifierOptions() : options;
@@ -1360,7 +1360,7 @@ public final class DocumentModelAdministrationClient {
             DEFAULT_POLL_INTERVAL,
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, buildClassifierActivationOperation(
                 finalId,
-                docTypes,
+                documentTypes,
                 finalBuildDocumentClassifierOptions,
                 finalContext).apply(cxt)),
             buildModelPollingOperation(finalContext),
@@ -1471,7 +1471,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, documentClassifierDetails.getClassifierId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Description: %s%n&quot;, documentClassifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Created on: %s%n&quot;, documentClassifierDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentClassifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     * documentClassifierDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
      *     if &#40;documentTypeDetails.getContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
      *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
@@ -1509,7 +1509,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, documentClassifierDetails.getClassifierId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Description: %s%n&quot;, documentClassifierDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Classifier Created on: %s%n&quot;, documentClassifierDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentClassifierDetails.getDocumentTypeDetails&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     * documentClassifierDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
      *     if &#40;documentTypeDetails.getContentSource&#40;&#41; instanceof BlobContentSource&#41; &#123;
      *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, &#40;&#40;BlobContentSource&#41; documentTypeDetails
      *             .getContentSource&#40;&#41;&#41;.getContainerUrl&#40;&#41;&#41;;
@@ -1716,15 +1716,15 @@ public final class DocumentModelAdministrationClient {
     }
 
     private Function<PollingContext<OperationResult>, OperationResult> buildClassifierActivationOperation(
-        String classifierId, Map<String, ClassifierDocumentTypeDetails> docTypes,
+        String classifierId, Map<String, ClassifierDocumentTypeDetails> documentTypes,
         BuildDocumentClassifierOptions buildDocumentClassifierOptions, Context context) {
         return (pollingContext) -> {
             try {
-                Objects.requireNonNull(docTypes, "'docTypes' cannot be null.");
+                Objects.requireNonNull(documentTypes, "'documentTypes' cannot be null.");
                 BuildDocumentClassifierRequest buildDocumentModelRequest =
                     getBuildDocumentClassifierRequest(classifierId,
                         buildDocumentClassifierOptions.getDescription(),
-                        toInnerDocTypes(docTypes));
+                        toInnerDocTypes(documentTypes));
 
                 ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>
                     response = documentClassifiersImpl.buildClassifierWithResponse(buildDocumentModelRequest, context);

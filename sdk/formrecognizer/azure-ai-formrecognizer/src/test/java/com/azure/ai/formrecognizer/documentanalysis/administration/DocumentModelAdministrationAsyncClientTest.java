@@ -560,7 +560,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(buildModelPoller.getFinalResult());
-            assertNotNull(documentClassifierDetails.getDocumentTypeDetails());
+            assertNotNull(documentClassifierDetails.getDocumentTypes());
             // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
             // documentClassifierDetails.getDocumentTypeDetails().forEach((s, classifierDocumentTypeDetails)
             //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl().contains("training-data-classifier")));
@@ -598,7 +598,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                         new BuildDocumentClassifierOptions().setDescription("Json L classifier model"))
                     .setPollInterval(durationTestMode).getSyncPoller();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
-            assertNotNull(documentClassifierDetails.getDocumentTypeDetails());
+            assertNotNull(documentClassifierDetails.getDocumentTypes());
             // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
             // documentClassifierDetails.getDocumentTypeDetails().forEach((s, classifierDocumentTypeDetails)
             //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobFileListContentSource().getContainerUrl().contains("training-data-classifier")));

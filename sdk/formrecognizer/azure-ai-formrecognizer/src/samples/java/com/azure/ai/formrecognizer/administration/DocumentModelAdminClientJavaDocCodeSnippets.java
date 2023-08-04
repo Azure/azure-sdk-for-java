@@ -548,21 +548,21 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
-        HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        HashMap<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
+        documentTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
         ));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        documentTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
         ));
 
         DocumentClassifierDetails classifierDetails
-            = documentModelAdministrationClient.beginBuildDocumentClassifier(docTypes)
+            = documentModelAdministrationClient.beginBuildDocumentClassifier(documentTypes)
             .getFinalResult();
 
         System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
         System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
         System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
         System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
-        classifierDetails.getDocumentTypeDetails().forEach((key, documentTypeDetails) -> {
+        classifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
                 System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
                     .getContentSource()).getContainerUrl());
@@ -579,14 +579,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map-Options-Context
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
-        HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        HashMap<String, ClassifierDocumentTypeDetails> documentTypesDetailsMap = new HashMap<>();
+        documentTypesDetailsMap.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
         ));
-        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        documentTypesDetailsMap.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
         ));
 
         DocumentClassifierDetails classifierDetails
-            = documentModelAdministrationClient.beginBuildDocumentClassifier(docTypes,
+            = documentModelAdministrationClient.beginBuildDocumentClassifier(documentTypesDetailsMap,
                 new BuildDocumentClassifierOptions()
                     .setClassifierId("classifierId")
                     .setDescription("classifier desc"),
@@ -597,7 +597,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
         System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
         System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
-        classifierDetails.getDocumentTypeDetails().forEach((key, documentTypeDetails) -> {
+        classifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
                 System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
                     .getContentSource()).getContainerUrl());
@@ -671,7 +671,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
         System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
         System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
-        documentClassifierDetails.getDocumentTypeDetails().forEach((key, documentTypeDetails) -> {
+        documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
                 System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
                     .getContentSource()).getContainerUrl());
@@ -698,7 +698,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
         System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
         System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
-        documentClassifierDetails.getDocumentTypeDetails().forEach((key, documentTypeDetails) -> {
+        documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
                 System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
                     .getContentSource()).getContainerUrl());

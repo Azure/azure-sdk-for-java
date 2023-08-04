@@ -59,7 +59,7 @@ public class BuildDocumentClassifierAsync {
         System.out.printf("Classifier description: %s%n", documentClassifierDetails.getDescription());
         System.out.printf("Classifier created on: %s%n", documentClassifierDetails.getCreatedOn());
         System.out.printf("Classifier expires on: %s%n", documentClassifierDetails.getExpiresOn());
-        documentClassifierDetails.getDocumentTypeDetails().forEach((key, documentTypeDetails) -> {
+        documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
                 System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
                     .getContentSource()).getContainerUrl());
