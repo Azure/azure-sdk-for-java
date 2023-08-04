@@ -1,4 +1,6 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 3.1.2 and Spring Cloud dependencies version to 2022.0.4
 
 ## 5.4.0 (2023-08-02)
 - This release is compatible with Spring Boot 3.0.0-3.1.0. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
