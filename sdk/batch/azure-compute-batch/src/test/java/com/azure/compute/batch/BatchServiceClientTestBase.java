@@ -24,6 +24,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
@@ -324,7 +325,8 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         // Create policy with 1 day read permission
         BlobSasPermission permissions = new BlobSasPermission()
-                .setReadPermission(true);
+                .setReadPermission(true)
+                .setWritePermission(true);
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
@@ -387,5 +389,11 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         Assert.assertTrue("The pool did not reach a allocationStateReached state in the allotted time", allocationStateReached);
         return pool;
+    }
+
+    static String getContentFromContainer(BlobContainerClient container, String fileName)
+            throws URISyntaxException, IOException {
+        BlobClient blobClient = container.getBlobClient(fileName);
+        return blobClient.downloadContent().toString();
     }
 }
