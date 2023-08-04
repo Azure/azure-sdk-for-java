@@ -4,7 +4,7 @@
 
 ### Features Added
 - Added `DataLakeDirectoryClient.deleteRecursively()` which allows users to delete a directory and all of its contents recursively. 
-- Added support for paginated directory delete when using AAD authentication. Note that this feature only applies to HNS storage accounts.
+- Added support for paginated directory delete when using AAD authentication. Note that this feature only applies to HNS storage accounts and when using token authentication.
 
 ### Breaking Changes
 
