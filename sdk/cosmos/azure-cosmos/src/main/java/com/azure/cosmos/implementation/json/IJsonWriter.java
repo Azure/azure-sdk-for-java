@@ -52,32 +52,11 @@ interface IJsonWriter {
     void writeFieldName(String fieldName);
 
     /**
-     * Writes a UTF-8 field name to the internal buffer.
-     *
-     * @param fieldName The UTF-8 field name to write.
-     */
-    void writeFieldName(Utf8Span fieldName);
-
-    /**
      * Writes a string to the internal buffer.
      *
      * @param value The value of the string to write.
      */
     void writeStringValue(String value);
-
-    /**
-     * Writes a UTF-8 string value to the internal buffer.
-     *
-     * @param value The UTF-8 value to write.
-     */
-    void writeStringValue(Utf8Span value);
-
-    /**
-     * Writes a number to the internal buffer.
-     *
-     * @param value The value of the number to write.
-     */
-    void writeNumber64Value(Number64 value);
 
     /**
      * Writes a boolean to the internal buffer.
@@ -134,11 +113,11 @@ interface IJsonWriter {
     void writeFloat64Value(double value);
 
     /**
-     * Writes a Guid value into the internal buffer.
+     * Writes a UUID value into the internal buffer.
      *
-     * @param value The value of the Guid to write.
+     * @param value The value of the Uuid to write.
      */
-    void writeGuidValue(UUID value);
+    void writeUuidValue(UUID value);
 
     /**
      * Writes a Binary value into the internal buffer.

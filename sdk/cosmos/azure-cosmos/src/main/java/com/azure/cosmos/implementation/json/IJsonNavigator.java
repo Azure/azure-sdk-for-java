@@ -33,21 +33,13 @@ interface IJsonNavigator {
     JsonNodeType getNodeType(IJsonNavigatorNode node);
 
     /**
-     * Gets the numeric value for a node.
-     *
-     * @param numberNode The node you want the number value from.
-     * @return A double that represents the number value in the node.
-     */
-    Number64 getNumber64Value(IJsonNavigatorNode numberNode);
-
-    /**
      * Tries to get the buffered string value from a node.
      *
      * @param stringNode The node to get the buffered string from.
      * @param value      The buffered string value if possible.
      * @return {@code true} if the JsonNavigator successfully got the buffered string value; {@code false} if the JsonNavigator failed to get the buffered string value.
      */
-    boolean tryGetBufferedStringValue(IJsonNavigatorNode stringNode, Utf8Memory value);
+    boolean tryGetBufferedStringValue(IJsonNavigatorNode stringNode, ByteBuffer value);
 
     /**
      * Gets a string value from a node.
@@ -55,7 +47,7 @@ interface IJsonNavigator {
      * @param stringNode The node to get the string value from.
      * @return The string value from the node.
      */
-    UtfAnyString getStringValue(IJsonNavigatorNode stringNode);
+    String getStringValue(IJsonNavigatorNode stringNode);
 
     /**
      * Gets the numeric value for a node as a signed byte.
@@ -98,12 +90,12 @@ interface IJsonNavigator {
     double getFloat64Value(IJsonNavigatorNode numberNode);
 
     /**
-     * Gets the GUID value for a node.
+     * Gets the UUID value for a node.
      *
-     * @param guidNode The node you want the GUID value from.
-     * @return A GUID read from the node.
+     * @param uuidNode The node you want the UUID value from.
+     * @return A UUID read from the node.
      */
-    UUID getGuidValue(IJsonNavigatorNode guidNode); //todo: should all GUID references be renamed to UUID?
+    UUID getUuidValue(IJsonNavigatorNode uuidNode);
 
     /**
      * Gets a binary value for a given node from the input.

@@ -95,7 +95,7 @@ enum JsonTokenType {
     /**
      * Corresponds to a UUID.
      */
-    GUID,  //todo: should this be renamed to UUID?
+    UUID,
 
     /**
      * Corresponds to an arbitrary sequence of bytes in an object.

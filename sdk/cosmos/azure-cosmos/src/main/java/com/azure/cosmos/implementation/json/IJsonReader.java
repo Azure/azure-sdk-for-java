@@ -39,18 +39,11 @@ interface IJsonReader {
     boolean read();
 
     /**
-     * Gets the next JSON token from the JsonReader as a double.
-     *
-     * @return The next JSON token from the JsonReader as a double.
-     */
-    Number64 getNumberValue();
-
-    /**
      * Gets the next JSON token from the JsonReader as a UTF-16 string.
      *
      * @return The next JSON token from the JsonReader as a string.
      */
-    UtfAnyString getStringValue();
+    String getStringValue();
 
     /**
      * Tries to get the buffered UTF-8 string value.
@@ -58,7 +51,7 @@ interface IJsonReader {
      * @param value The buffered UTF-8 string value if found.
      * @return {@code true} if the buffered UTF-8 string value was retrieved; {@code false} otherwise.
      */
-    boolean tryGetBufferedStringValue(Utf8Memory value);
+    boolean tryGetBufferedStringValue(ByteBuffer value);
 
     /**
      * Gets the next JSON token from the JsonReader as a 1 byte signed integer.
@@ -103,11 +96,11 @@ interface IJsonReader {
     double getFloat64Value();
 
     /**
-     * Gets the next JSON token from the JsonReader as a GUID.
+     * Gets the next JSON token from the JsonReader as a UUID.
      *
-     * @return The next JSON token from the JsonReader as a GUID.
+     * @return The next JSON token from the JsonReader as a UUID.
      */
-    UUID getGuidValue();
+    UUID getUuidValue();
 
     /**
      * Gets the next JSON token from the JsonReader as a binary list.
