@@ -555,7 +555,12 @@ public interface ApplicationGateway
              *
              * @param protocol an SSL protocol
              * @return the next stage of the definition
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             WithCreate withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -563,7 +568,12 @@ public interface ApplicationGateway
              *
              * @param protocols SSL protocols
              * @return the next stage of the definition
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             WithCreate withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols);
         }
 
@@ -657,7 +667,7 @@ public interface ApplicationGateway
             /**
              * Configures to use CustomV2 policy for the application gateway.
              *
-             * @param minProtocolVersion  minimum version of TLS/SSL protocol to be supported on application gateway.
+             * @param minProtocolVersion minimum version of TLS/SSL protocol to be supported on application gateway.
              * @param cipherSuites TLS/SSL cipher suites to be enabled in the specified order to application gateway.
              * @return the next stage of the definition
              */
@@ -1292,7 +1302,12 @@ public interface ApplicationGateway
              *
              * @param protocol an SSL protocol
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -1300,7 +1315,12 @@ public interface ApplicationGateway
              *
              * @param protocols SSL protocols
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols);
 
             /**
@@ -1308,7 +1328,12 @@ public interface ApplicationGateway
              *
              * @param protocol an SSL protocol
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -1316,14 +1341,24 @@ public interface ApplicationGateway
              *
              * @param protocols SSL protocols
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withoutDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols);
 
             /**
              * Enables all SSL protocols, if previously disabled.
              *
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withoutAnyDisabledSslProtocols();
         }
 
@@ -1403,7 +1438,7 @@ public interface ApplicationGateway
             /**
              * Configures to use CustomV2 policy for the application gateway.
              *
-             * @param minProtocolVersion  minimum version of TLS/SSL protocol to be supported on application gateway.
+             * @param minProtocolVersion minimum version of TLS/SSL protocol to be supported on application gateway.
              * @param cipherSuites TLS/SSL cipher suites to be enabled in the specified order to application gateway.
              * @return the next stage of the update
              */

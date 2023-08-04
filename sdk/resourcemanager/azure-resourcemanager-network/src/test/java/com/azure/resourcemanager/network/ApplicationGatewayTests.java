@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -642,11 +643,11 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
-                .fromPublicFrontend()
-                .fromFrontendHttpPort(80)
-                .toBackendHttpPort(8080)
-                .toBackendIPAddress("11.1.1.1")
-                .attach()
+                    .fromPublicFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("11.1.1.1")
+                    .attach()
                 .withExistingPublicIpAddress(pip)
                 .withTier(ApplicationGatewayTier.WAF_V2)
                 .withSize(ApplicationGatewaySkuName.WAF_V2)
@@ -667,7 +668,18 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertNotNull(sslPolicy);
         Assertions.assertEquals(ApplicationGatewaySslPolicyType.CUSTOM_V2, sslPolicy.policyType());
         Assertions.assertNull(sslPolicy.policyName());
+        Assertions.assertEquals(ApplicationGatewaySslProtocol.TLSV1_2, sslPolicy.minProtocolVersion());
         Assertions.assertTrue(sslPolicy.cipherSuites().contains(ApplicationGatewaySslCipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256));
+
+        // predefined policy doesn't not support minProtocolVersion
+        Assertions.assertThrows(ManagementException.class, () -> {
+            appGateway.update()
+                .withSslPolicy(new ApplicationGatewaySslPolicy()
+                    .withPolicyType(ApplicationGatewaySslPolicyType.PREDEFINED)
+                    .withPolicyName(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20150501)
+                    .withMinProtocolVersion(ApplicationGatewaySslProtocol.TLSV1_1))
+                .apply();
+        });
     }
 
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {

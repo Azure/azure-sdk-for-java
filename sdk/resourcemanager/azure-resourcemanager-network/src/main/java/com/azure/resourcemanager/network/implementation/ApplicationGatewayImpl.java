@@ -707,6 +707,7 @@ class ApplicationGatewayImpl
         return withSslPolicy(
             new ApplicationGatewaySslPolicy()
                 .withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM_V2)
+                .withMinProtocolVersion(minProtocolVersion)
                 .withCipherSuites(cipherSuites));
     }
 
