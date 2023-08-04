@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/ci.yml
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/azure-resourcemanager-hdinsightmicrosofthdinsighthdinsightonaks/
+    exclude:
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/pom.xml
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/azure-resourcemanager-hdinsightmicrosofthdinsighthdinsightonaks/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/ci.yml
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/azure-resourcemanager-hdinsightmicrosofthdinsighthdinsightonaks/
+    exclude:
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/pom.xml
+      - sdk/hdinsightmicrosofthdinsighthdinsightonaks/azure-resourcemanager-hdinsightmicrosofthdinsighthdinsightonaks/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerhdinsightmicrosofthdinsighthdinsightonaks
+    displayName: azure-resourcemanager-hdinsightmicrosofthdinsighthdinsightonaks
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: hdinsightmicrosofthdinsighthdinsightonaks
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-hdinsightmicrosofthdinsighthdinsightonaks
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhdinsightmicrosofthdinsighthdinsightonaks
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerhdinsightmicrosofthdinsighthdinsightonaks }}
