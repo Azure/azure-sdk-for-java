@@ -111,6 +111,11 @@
       <version>2.15.2</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.15.2</version>
+    </dependency>
+    <dependency>
       <groupId>org.javatuples</groupId>
       <artifactId>javatuples</artifactId>
       <version>1.2</version> <!-- {x-version-update;org.javatuples:javatuples;external_dependency} -->
