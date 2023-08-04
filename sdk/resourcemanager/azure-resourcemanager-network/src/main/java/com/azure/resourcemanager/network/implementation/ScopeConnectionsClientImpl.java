@@ -179,7 +179,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -247,7 +247,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -372,7 +372,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -430,7 +430,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -535,7 +535,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -592,7 +592,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -695,7 +695,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -762,7 +762,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
