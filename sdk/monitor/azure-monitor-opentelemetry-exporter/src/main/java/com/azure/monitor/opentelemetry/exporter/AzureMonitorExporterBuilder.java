@@ -351,6 +351,11 @@ public final class AzureMonitorExporterBuilder {
         ResourceParser.updateRoleNameAndInstance(builder, resource, configuration);
     }
 
+    /**
+     * Creates an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
+     *
+     * @return An instance of {@link AutoConfiguredOpenTelemetrySdkBuilder}.
+     */
     public AutoConfiguredOpenTelemetrySdkBuilder getOpenTelemetrySdkBuilder() {
         return AutoConfiguredOpenTelemetrySdk.builder()
             .addPropertiesSupplier(() -> {
