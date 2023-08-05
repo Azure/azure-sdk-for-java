@@ -179,7 +179,15 @@ final class SessionsMessagePump {
         this.nextSession = new NextSession(sessionAcquirer).mono();
     }
 
-    public String getIdentifier() {
+    String getFqdn() {
+        return fqdn;
+    }
+
+    String getEntityPath() {
+        return entityPath;
+    }
+
+    String getIdentifier() {
         return identifier;
     }
 
@@ -192,7 +200,7 @@ final class SessionsMessagePump {
      *
      * @return the Mono to begin and cancel message pumping.
      */
-    public Mono<Void> begin() {
+    Mono<Void> begin() {
         final Mono<List<RollingSessionReceiver>> createReceiversMono = Mono.fromSupplier(() -> {
             throwIfTerminatedOrInitialized();
             final List<RollingSessionReceiver> rollingReceivers = createRollingSessionReceivers();
