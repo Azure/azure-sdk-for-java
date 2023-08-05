@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.fluent.models.StaticMemberInner;
 /** Samples for StaticMembers CreateOrUpdate. */
 public final class StaticMembersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerStaticMemberPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerStaticMemberPut.json
      */
     /**
      * Sample code: StaticMemberPut.

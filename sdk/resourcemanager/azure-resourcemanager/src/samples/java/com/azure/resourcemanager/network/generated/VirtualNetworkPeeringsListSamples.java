@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualNetworkPeerings List. */
 public final class VirtualNetworkPeeringsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkPeeringList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualNetworkPeeringList.json
      */
     /**
      * Sample code: List peerings.
@@ -24,7 +24,7 @@ public final class VirtualNetworkPeeringsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: List peerings with remote virtual network encryption.

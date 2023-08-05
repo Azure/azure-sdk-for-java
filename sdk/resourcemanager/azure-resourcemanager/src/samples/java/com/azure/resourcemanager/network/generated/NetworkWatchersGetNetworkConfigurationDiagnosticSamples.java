@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for NetworkWatchers GetNetworkConfigurationDiagnostic. */
 public final class NetworkWatchersGetNetworkConfigurationDiagnosticSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherNetworkConfigurationDiagnostic.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkWatcherNetworkConfigurationDiagnostic.json
      */
     /**
      * Sample code: Network configuration diagnostic.
