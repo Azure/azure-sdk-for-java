@@ -28,7 +28,11 @@ public class HttpUrlConnectionClient {
 
         // For PATCH requests, use the Socket client
         if(httpMethod == HttpMethod.PATCH) {
-            return null;
+            try {
+                /*return*/ new SocketClient(httpRequest.getUrl().toString()).sendPatchRequest(httpRequest);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         // Create a URL object for use with HttpUrlConnection
