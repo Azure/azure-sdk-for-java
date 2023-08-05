@@ -11,8 +11,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -27,8 +25,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class SessionProcessor {
     private final Object lock = new Object();
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder;
-    private final String fqdn;
-    private final String entityPath;
     private final int concurrencyPerSession;
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
@@ -36,11 +32,9 @@ public final class SessionProcessor {
     private RollingSessionsMessagePump rollingSessionsMessagePump;
 
     SessionProcessor(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder,
-        String fqdn, String entityPath, int concurrencyPerSession,
+        int concurrencyPerSession,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError) {
         this.builder = builder;
-        this.fqdn = fqdn;
-        this.entityPath = entityPath;
         this.concurrencyPerSession = concurrencyPerSession;
         this.processError = processError;
         this.processMessage = processMessage;
@@ -57,7 +51,7 @@ public final class SessionProcessor {
                 return;
             }
             isRunning = true;
-            rollingSessionsMessagePump = new RollingSessionsMessagePump(builder, fqdn, entityPath, concurrencyPerSession,
+            rollingSessionsMessagePump = new RollingSessionsMessagePump(builder, concurrencyPerSession,
                 processMessage, processError);
             p = rollingSessionsMessagePump;
         }
@@ -109,7 +103,7 @@ public final class SessionProcessor {
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final Disposable.Composite disposable = Disposables.composite();
-        private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
+        private final AtomicReference<PumpContext> pumpContext = new AtomicReference<>(PumpContext.NONE);
 
         /**
          * Instantiate {@link RollingSessionsMessagePump} that stream messages using {@link SessionsMessagePump}.
@@ -117,8 +111,6 @@ public final class SessionProcessor {
          * when the current {@link SessionsMessagePump} terminates.
          *
          * @param builder The builder to build the client for pulling messages from the broker.
-         * @param fqdn The fully qualified Service Bus namespace.
-         * @param entityPath The Service Bus session resource name.
          * @param concurrencyPerSession The parallelism, i.e., how many invocations of {@code processMessage} should happen
          *      in parallel for each session.
          * @param processMessage The consumer to invoke for each message.
@@ -126,12 +118,9 @@ public final class SessionProcessor {
 
          */
         RollingSessionsMessagePump(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder,
-            String fqdn, String entityPath, int concurrencyPerSession,
+            int concurrencyPerSession,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError) {
-            final Map<String, Object> loggingContext = new HashMap<>(2);
-            loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn);
-            loggingContext.put(ENTITY_PATH_KEY, entityPath);
-            this.logger = new ClientLogger(RollingSessionsMessagePump.class, loggingContext);
+            this.logger = new ClientLogger(RollingSessionsMessagePump.class);
             this.builder = builder;
             this.concurrency = concurrencyPerSession;
             this.processError = processError;
@@ -163,7 +152,7 @@ public final class SessionProcessor {
                     return pump;
                 },
                 pump -> {
-                    clientIdentifier.set(pump.getIdentifier());
+                    pumpContext.set(new PumpContext(pump.getFqdn(), pump.getEntityPath(), pump.getIdentifier()));
                     return pump.begin();
                 },
                 pump -> {
@@ -175,7 +164,7 @@ public final class SessionProcessor {
         }
 
         String getClientIdentifier() {
-            return clientIdentifier.get();
+            return pumpContext.get().identifier;
         }
 
         void dispose() {
@@ -219,10 +208,32 @@ public final class SessionProcessor {
         }
 
         private void log(String message, Throwable error) {
+            // This log(,) method call-site is restricted to retry-path, which is not a hot-path at all hence
+            // atomic read doesn't add any overhead. (See if we can be set infos at Ctr as finals avoiding PumpingContext type).
+            final PumpContext c = pumpContext.get();
             if (error == null) {
-                logger.atInfo().log(message);
+                logger.atInfo()
+                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, c.fqdn)
+                    .addKeyValue(ENTITY_PATH_KEY, c.entityPath)
+                    .log(message);
             } else {
-                logger.atInfo().log(message, error);
+                logger.atInfo()
+                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, c.fqdn)
+                    .addKeyValue(ENTITY_PATH_KEY, c.entityPath)
+                    .log(message, error);
+            }
+        }
+
+        private static final class PumpContext {
+            private static final PumpContext NONE = new PumpContext(null, null, null);
+            private final String fqdn;
+            private final String entityPath;
+            private final String identifier;
+
+            PumpContext(String fqdn, String entityPath, String identifier) {
+                this.fqdn = fqdn;
+                this.entityPath = entityPath;
+                this.identifier = identifier;
             }
         }
     }
