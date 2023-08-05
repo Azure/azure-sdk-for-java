@@ -10,14 +10,20 @@ import java.nio.charset.Charset;
 
 public class HttpResponse extends com.azure.core.http.HttpResponse {
 
+    private final HttpHeaders headers;
+    private final int responseCode;
+    private final byte[] body;
 
-    protected HttpResponse(HttpRequest request) {
+    protected HttpResponse(HttpRequest request, HttpHeaders headers, int responseCode, byte[] body) {
         super(request);
+        this.headers = headers;
+        this.responseCode = responseCode;
+        this.body = body;
     }
 
     @Override
     public int getStatusCode() {
-        return 0;
+        return this.responseCode;
     }
 
     /**
@@ -26,12 +32,12 @@ public class HttpResponse extends com.azure.core.http.HttpResponse {
      */
     @Override
     public String getHeaderValue(String s) {
-        return null;
+        return this.headers.get(s).toString();
     }
 
     @Override
     public HttpHeaders getHeaders() {
-        return null;
+        return this.headers;
     }
 
     @Override
@@ -41,16 +47,16 @@ public class HttpResponse extends com.azure.core.http.HttpResponse {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return null;
+        return Mono.just(this.body);
     }
 
     @Override
     public Mono<String> getBodyAsString() {
-        return null;
+        return Mono.just(this.body.toString());
     }
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return null;
+        return Mono.just(new String(this.body, charset));
     }
 }
