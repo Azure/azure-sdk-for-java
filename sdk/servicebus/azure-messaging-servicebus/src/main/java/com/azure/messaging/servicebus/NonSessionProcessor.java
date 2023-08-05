@@ -139,7 +139,8 @@ public final class NonSessionProcessor {
         }
 
         /**
-         * Begin streaming messages. To terminate the streaming, dispose the pump by invoking {@link MessagePump#dispose()}.
+         * Begin streaming messages. To terminate the streaming, dispose the pump by invoking
+         * {@link RollingMessagePump#dispose()}.
          *
          * @throws IllegalStateException If the API is called more than once or after the disposal.
          */
@@ -154,7 +155,7 @@ public final class NonSessionProcessor {
         }
 
         // Internal API that begin streaming messages once subscribed to the mono it returns, this method is supposed
-        // to be called only from 'MessagePump#begin'. The package internal scope is to support testing.
+        // to be called only from 'RollingMessagePump#begin'. The package internal scope is to support testing.
         Mono<Void> beginIntern() {
             final Mono<Void> pumping = Mono.using(
                 () -> {
