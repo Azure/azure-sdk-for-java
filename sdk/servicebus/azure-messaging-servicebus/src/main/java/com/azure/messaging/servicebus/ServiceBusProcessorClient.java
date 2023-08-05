@@ -164,6 +164,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private Disposable monitorDisposable;
     private boolean wasStopped = false;
     private final NonSessionProcessor nonSessionProcessorV2;
+    private final SessionProcessor sessionProcessorV2;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -187,14 +188,23 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
-        ServiceBusReceiverAsyncClient client = sessionReceiverBuilder.buildAsyncClientForProcessor();
-        this.asyncClient.set(client);
         this.receiverBuilder = null;
+        this.nonSessionProcessorV2 = null;
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
-        this.tracer = client.getInstrumentation().getTracer();
-        this.nonSessionProcessorV2 = null;
+        if (processorOptions.isSessionProcessorV2()) {
+            // V2
+            final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
+            this.sessionProcessorV2 = new SessionProcessor(sessionReceiverBuilder, concurrencyPerSession, processMessage, processError);
+            this.tracer = null;
+        } else {
+            // V1
+            this.sessionProcessorV2 = null;
+            ServiceBusReceiverAsyncClient client = sessionReceiverBuilder.buildAsyncClientForProcessor();
+            this.asyncClient.set(client);
+            this.tracer = client.getInstrumentation().getTracer();
+        }
     }
 
     /**
@@ -218,16 +228,19 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
         this.sessionReceiverBuilder = null;
+        this.sessionProcessorV2 = null;
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
         if (this.processorOptions.isNonSessionProcessorV2()) {
+            // V2
             final int concurrency = this.processorOptions.getMaxConcurrentCalls();
             final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
             this.nonSessionProcessorV2 = new NonSessionProcessor(receiverBuilder, processMessage, processError,
                 concurrency, enableAutoDisposition);
             this.tracer = null;
         } else {
+            // V1
             this.nonSessionProcessorV2 = null;
             final ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
             this.asyncClient.set(client);
@@ -250,6 +263,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     public synchronized void start() {
         if (isNonSessionProcessorV2()) {
             nonSessionProcessorV2.start();
+            return;
+        } else if (isSessionProcessorV2()) {
+            sessionProcessorV2.start();
             return;
         }
         if (isRunning.getAndSet(true)) {
@@ -291,6 +307,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         if (isNonSessionProcessorV2()) {
             nonSessionProcessorV2.stop();
             return;
+        } else if (isSessionProcessorV2()) {
+            sessionProcessorV2.stop();
+            return;
         }
         wasStopped = true;
         isRunning.set(false);
@@ -304,6 +323,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     public synchronized void close() {
         if (isNonSessionProcessorV2()) {
             nonSessionProcessorV2.close();
+            return;
+        } else if (isSessionProcessorV2()) {
+            sessionProcessorV2.close();
             return;
         }
         isRunning.set(false);
@@ -328,6 +350,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     public synchronized boolean isRunning() {
         if (isNonSessionProcessorV2()) {
             return nonSessionProcessorV2.isRunning();
+        } else if (isSessionProcessorV2()) {
+            return sessionProcessorV2.isRunning();
         }
         return isRunning.get();
     }
@@ -370,6 +394,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     public synchronized String getIdentifier() {
         if (isNonSessionProcessorV2()) {
             return nonSessionProcessorV2.getIdentifier();
+        } else if (isSessionProcessorV2()) {
+            return sessionProcessorV2.getIdentifier();
         }
         if (asyncClient.get() == null) {
             asyncClient.set(createNewReceiver());
@@ -511,5 +537,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private boolean isNonSessionProcessorV2() {
         return this.processorOptions.isNonSessionProcessorV2();
+    }
+
+    private boolean isSessionProcessorV2() {
+        return this.processorOptions.isSessionProcessorV2();
     }
 }
