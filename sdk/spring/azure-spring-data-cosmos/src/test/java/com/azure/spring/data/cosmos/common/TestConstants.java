@@ -141,7 +141,7 @@ public final class TestConstants {
 
     public static final Integer HOME_NUMBER_1 = 1;
     public static final Integer HOME_NUMBER_2 = 99;
-    public static final Integer HOME_NUMBER_3 = 4444;
+    public static final Integer HOME_NUMBER_3 = 4445;
 
     public static final LocalDate REGISTRATION_TIME_1D_AGO = LocalDate.now().minusDays(1);
     public static final LocalDate REGISTRATION_TIME_1W_AGO = LocalDate.now().minusDays(7);
