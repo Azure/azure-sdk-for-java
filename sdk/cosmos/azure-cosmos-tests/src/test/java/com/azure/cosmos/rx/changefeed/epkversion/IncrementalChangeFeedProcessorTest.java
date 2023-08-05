@@ -83,6 +83,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
+    private final String MULTI_WRITE_DATABASE_NAME = "multi-write-test-database";
+    private final String MULTI_WRITE_MONITORED_COLLECTION_NAME = "multi-write-test-monitored-container";
+    private final String MULTI_WRITE_LEASE_COLLECTION_NAME = "multi-write-test-lease-container";
 
     private CosmosAsyncClient client;
 
@@ -244,13 +247,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
         try {
 
-            cosmosAsyncClient.createDatabaseIfNotExists("multi-write-test-db").block();
-            CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("multi-write-test-db");
-            cosmosAsyncDatabase.createContainerIfNotExists("multi-write-monitored-container", "/id", ThroughputProperties.createManualThroughput(400)).block();
-            cosmosAsyncDatabase.createContainerIfNotExists("multi-write-lease-container", "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncClient.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
+            CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
 
-            createdFeedCollection = cosmosAsyncDatabase.getContainer("multi-write-monitored-container");
-            createdLeaseCollection = cosmosAsyncDatabase.getContainer("multi-write-lease-container");
+            createdFeedCollection = cosmosAsyncDatabase.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollection = cosmosAsyncDatabase.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
 
             try {
                 List<InternalObjectNode> createdDocuments = new ArrayList<>();
@@ -342,7 +345,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncClient cosmosAsyncClientForLocalRegion = clientBuilder
             .multipleWriteRegionsEnabled(true)
             .endpointDiscoveryEnabled(true)
-            .preferredRegions(Arrays.asList(preferredRegions.get(0)))
+            .preferredRegions(preferredRegions)
             .buildAsyncClient();
 
         CosmosAsyncClient cosmosAsyncClientForSatelliteRegion = clientBuilder
@@ -359,17 +362,17 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
         try {
 
-            cosmosAsyncClientForLocalRegion.createDatabaseIfNotExists("multi-write-test-db").block();
-            CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = cosmosAsyncClientForLocalRegion.getDatabase("multi-write-test-db");
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists("multi-write-monitored-container", "/id", ThroughputProperties.createManualThroughput(400)).block();
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists("multi-write-lease-container", "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncClientForLocalRegion.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
+            CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = cosmosAsyncClientForLocalRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
 
-            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer("multi-write-monitored-container");
-            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer("multi-write-lease-container");
+            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
 
-            CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientForSatelliteRegion.getDatabase("multi-write-test-db");
-            createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer("multi-write-monitored-container");
-            createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer("multi-write-lease-container");
+            CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientForSatelliteRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
 
             try {
 
@@ -445,10 +448,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     public void readFeedDocumentsStartFromCustomDateForMultiWrite_WithCFPReadSwitchToSatelliteRegion_test() throws InterruptedException {
         CosmosClientBuilder clientBuilder = getClientBuilder();
 
-        String dbId = UUID.randomUUID().toString();
-        String feedCollectionId = UUID.randomUUID().toString();
-        String leaseCollectionId = UUID.randomUUID().toString();
-
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
         GlobalEndpointManager globalEndpointManager = rxDocumentClient.getGlobalEndpointManager();
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
@@ -481,17 +480,17 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
         try {
 
-            cosmosAsyncClientLocalRegion.createDatabaseIfNotExists(dbId).block();
-            cosmosAsyncDatabaseRegionOne = cosmosAsyncClientLocalRegion.getDatabase(dbId);
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(feedCollectionId, "/id", ThroughputProperties.createManualThroughput(400)).block();
-            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(leaseCollectionId, "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncClientLocalRegion.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
+            cosmosAsyncDatabaseRegionOne = cosmosAsyncClientLocalRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
 
-            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(feedCollectionId);
-            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(leaseCollectionId);
+            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
 
-            CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientRemoteRegion.getDatabase(dbId);
-            createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(feedCollectionId);
-            createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(leaseCollectionId);
+            CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientRemoteRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
 
             Thread.sleep(20_000);
 
@@ -502,7 +501,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 ChangeFeedProcessor changeFeedProcessorLocalRegion = new ChangeFeedProcessorBuilder()
                     .hostName(RandomStringUtils.randomAlphabetic(6))
                     .feedContainer(createdFeedCollectionLocalRegion)
-                    .leaseContainer(createdFeedCollectionLocalRegion)
+                    .leaseContainer(createdLeaseCollectionLocalRegion)
                     .handleLatestVersionChanges((List<ChangeFeedProcessorItem> docs) -> {
                         logger.info("START processing from thread {}", Thread.currentThread().getId());
                         for (ChangeFeedProcessorItem item : docs) {
@@ -515,7 +514,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                         .setLeaseAcquireInterval(Duration.ofSeconds(10))
                         .setLeaseExpirationInterval(Duration.ofSeconds(30))
                         .setFeedPollDelay(Duration.ofSeconds(1))
-                        .setLeasePrefix("TEST")
+                        .setLeasePrefix("TEST-1")
                         .setMaxItemCount(10)
                         .setStartTime(cfpStartTimeSnapshot)
                         .setMinScaleCount(1)
@@ -539,7 +538,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                         .setLeaseAcquireInterval(Duration.ofSeconds(10))
                         .setLeaseExpirationInterval(Duration.ofSeconds(30))
                         .setFeedPollDelay(Duration.ofSeconds(1))
-                        .setLeasePrefix("TEST")
+                        .setLeasePrefix("TEST-2")
                         .setMaxItemCount(10)
                         .setStartTime(cfpStartTimeSnapshot)
                         .setMinScaleCount(1)
