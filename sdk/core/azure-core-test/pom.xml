@@ -54,6 +54,10 @@
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
     <surefireXmx>4g</surefireXmx>
+
+    <!-- skipping test coverage requirements for azure-core-test as this is a utility library for testing -->
+    <jacoco.skip>true</jacoco.skip>
+
   </properties>
 
   <dependencies>
