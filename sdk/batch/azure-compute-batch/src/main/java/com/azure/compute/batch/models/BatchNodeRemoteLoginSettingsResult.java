@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The remote login settings for a Compute Node. */
 @Immutable
-public final class BatchNodeGetRemoteLoginSettingsResult {
+public final class BatchNodeRemoteLoginSettingsResult {
 
     /*
      * The IP address used for remote login to the Compute Node.
@@ -27,14 +27,14 @@ public final class BatchNodeGetRemoteLoginSettingsResult {
     private int remoteLoginPort;
 
     /**
-     * Creates an instance of BatchNodeGetRemoteLoginSettingsResult class.
+     * Creates an instance of BatchNodeRemoteLoginSettingsResult class.
      *
      * @param remoteLoginIPAddress the remoteLoginIPAddress value to set.
      * @param remoteLoginPort the remoteLoginPort value to set.
      */
     @Generated
     @JsonCreator
-    private BatchNodeGetRemoteLoginSettingsResult(
+    private BatchNodeRemoteLoginSettingsResult(
             @JsonProperty(value = "remoteLoginIPAddress") String remoteLoginIPAddress,
             @JsonProperty(value = "remoteLoginPort") int remoteLoginPort) {
         this.remoteLoginIPAddress = remoteLoginIPAddress;

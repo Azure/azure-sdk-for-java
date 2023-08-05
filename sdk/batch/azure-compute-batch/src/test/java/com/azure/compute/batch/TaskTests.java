@@ -206,8 +206,7 @@ public class TaskTests extends BatchServiceClientTestBase {
                 // Get the task command output file
                 task = taskClient.get(jobId, taskId);
 
-                FileClient fileClient = batchClientBuilder.buildFileClient();
-                BinaryData binaryData = fileClient.getFromTask(jobId, taskId, STANDARD_CONSOLE_OUTPUT_FILENAME);
+                BinaryData binaryData = taskClient.getFileFromTask(jobId, taskId, STANDARD_CONSOLE_OUTPUT_FILENAME);
 
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
                 Assertions.assertEquals("This is an example", fileContent);

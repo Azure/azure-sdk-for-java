@@ -61,8 +61,6 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
     protected CertificatesClient certificatesClient;
 
-    protected FileClient fileClient;
-
     protected JobScheduleClient jobScheduleClient;
 
     protected TaskClient taskClient;
@@ -101,7 +99,6 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         accountClient = batchClientBuilder.buildAccountClient();
         jobClient = batchClientBuilder.buildJobClient();
         certificatesClient = batchClientBuilder.buildCertificatesClient();
-        fileClient = batchClientBuilder.buildFileClient();
         jobScheduleClient = batchClientBuilder.buildJobScheduleClient();
         taskClient = batchClientBuilder.buildTaskClient();
     }

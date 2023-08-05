@@ -65,44 +65,6 @@ public final class JobsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "BatchServiceClientJo")
     public interface JobsService {
-        @Get("/lifetimejobstats")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllLifetimeStatistics(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/lifetimejobstats")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAllLifetimeStatisticsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Delete("/jobs/{jobId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -711,146 +673,6 @@ public final class JobsImpl {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     *
-     * <p>Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the
-     * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
-     * periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Required)
-     *     startTime: OffsetDateTime (Required)
-     *     lastUpdateTime: OffsetDateTime (Required)
-     *     userCPUTime: Duration (Required)
-     *     kernelCPUTime: Duration (Required)
-     *     wallClockTime: Duration (Required)
-     *     readIOps: int (Required)
-     *     writeIOps: int (Required)
-     *     readIOGiB: double (Required)
-     *     writeIOGiB: double (Required)
-     *     numSucceededTasks: int (Required)
-     *     numFailedTasks: int (Required)
-     *     numTaskRetries: int (Required)
-     *     waitTime: Duration (Required)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return resource usage statistics for a Job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAllLifetimeStatisticsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAllLifetimeStatistics(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     *
-     * <p>Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the
-     * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
-     * periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Required)
-     *     startTime: OffsetDateTime (Required)
-     *     lastUpdateTime: OffsetDateTime (Required)
-     *     userCPUTime: Duration (Required)
-     *     kernelCPUTime: Duration (Required)
-     *     wallClockTime: Duration (Required)
-     *     readIOps: int (Required)
-     *     writeIOps: int (Required)
-     *     readIOGiB: double (Required)
-     *     writeIOGiB: double (Required)
-     *     numSucceededTasks: int (Required)
-     *     numFailedTasks: int (Required)
-     *     numTaskRetries: int (Required)
-     *     waitTime: Duration (Required)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return resource usage statistics for a Job along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAllLifetimeStatisticsWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getAllLifetimeStatisticsSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
-    }
-
-    /**
      * Deletes a Job.
      *
      * <p>Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
@@ -1195,7 +1017,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -1218,6 +1040,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -1276,6 +1099,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -1643,7 +1467,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -1666,6 +1490,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -1724,6 +1549,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -1964,7 +1790,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -1994,6 +1820,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -2052,6 +1879,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -2287,7 +2115,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -2317,6 +2145,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -2375,6 +2204,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -2734,7 +2564,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -2757,6 +2587,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -2815,6 +2646,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -3189,7 +3021,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -3212,6 +3044,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -3270,6 +3103,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -4071,7 +3905,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -4094,6 +3928,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -4152,6 +3987,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -4473,7 +4309,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -4496,6 +4332,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -4554,6 +4391,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -4880,7 +4718,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -4903,6 +4741,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -4961,6 +4800,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -5328,7 +5168,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -5351,6 +5191,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -5409,6 +5250,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -5765,7 +5607,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -5788,6 +5630,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -5846,6 +5689,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -6209,7 +6053,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -6232,6 +6076,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -6290,6 +6135,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -6646,7 +6492,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -6669,6 +6515,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -6727,6 +6574,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -7097,7 +6945,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -7120,6 +6968,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -7178,6 +7027,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -7535,7 +7385,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -7558,6 +7408,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -7616,6 +7467,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -7982,7 +7834,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -8005,6 +7857,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -8063,6 +7916,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -8996,7 +8850,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -9019,6 +8873,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -9077,6 +8932,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -9426,7 +9282,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -9449,6 +9305,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -9507,6 +9364,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -9852,7 +9710,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -9875,6 +9733,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -9933,6 +9792,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
@@ -10284,7 +10144,7 @@ public final class JobsImpl {
      *                     ]
      *                     licenseType: String (Optional)
      *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible) (Required)
+     *                         type: String(dockerCompatible/criCompatible) (Required)
      *                         containerImageNames (Optional): [
      *                             String (Optional)
      *                         ]
@@ -10307,6 +10167,7 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
      *                                 String: String (Optional)
      *                             }
@@ -10365,6 +10226,7 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)

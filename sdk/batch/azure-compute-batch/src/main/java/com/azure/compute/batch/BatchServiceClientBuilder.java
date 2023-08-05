@@ -14,6 +14,11 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -46,7 +51,6 @@ import java.util.Objects;
             AccountClient.class,
             JobClient.class,
             CertificatesClient.class,
-            FileClient.class,
             JobScheduleClient.class,
             TaskClient.class,
             BatchNodesClient.class,
@@ -55,7 +59,6 @@ import java.util.Objects;
             AccountAsyncClient.class,
             JobAsyncClient.class,
             CertificatesAsyncClient.class,
-            FileAsyncClient.class,
             JobScheduleAsyncClient.class,
             TaskAsyncClient.class,
             BatchNodesAsyncClient.class
@@ -270,7 +273,9 @@ public final class BatchServiceClientBuilder
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        localClientOptions
+                .getHeaders()
+                .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -351,16 +356,6 @@ public final class BatchServiceClientBuilder
     }
 
     /**
-     * Builds an instance of FileAsyncClient class.
-     *
-     * @return an instance of FileAsyncClient.
-     */
-    @Generated
-    public FileAsyncClient buildFileAsyncClient() {
-        return new FileAsyncClient(buildInnerClient().getFiles());
-    }
-
-    /**
      * Builds an instance of JobScheduleAsyncClient class.
      *
      * @return an instance of JobScheduleAsyncClient.
@@ -438,16 +433,6 @@ public final class BatchServiceClientBuilder
     @Generated
     public CertificatesClient buildCertificatesClient() {
         return new CertificatesClient(buildInnerClient().getCertificates());
-    }
-
-    /**
-     * Builds an instance of FileClient class.
-     *
-     * @return an instance of FileClient.
-     */
-    @Generated
-    public FileClient buildFileClient() {
-        return new FileClient(buildInnerClient().getFiles());
     }
 
     /**
