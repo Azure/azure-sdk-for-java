@@ -12,6 +12,7 @@ import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions.ProcessorModeV2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -85,7 +86,11 @@ public class ServiceBusProcessorTest {
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, null);
-
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -95,7 +100,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
@@ -160,7 +165,11 @@ public class ServiceBusProcessorTest {
         AtomicReference<FluxSink<ServiceBusReceivedMessage>> sink = new AtomicReference<>();
         Flux<ServiceBusReceivedMessage> messageFlux = Flux.create(sink::set);
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, null);
-
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(2));
@@ -179,7 +188,7 @@ public class ServiceBusProcessorTest {
                 }
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         for (int i = 0; i < 2; i++) {
@@ -240,6 +249,11 @@ public class ServiceBusProcessorTest {
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, null);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(4));
@@ -259,7 +273,7 @@ public class ServiceBusProcessorTest {
                 }
             },
             error -> { /* ignored */ },
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.get().await(20, TimeUnit.SECONDS);
@@ -294,8 +308,12 @@ public class ServiceBusProcessorTest {
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         if (isV2) {
             when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
         } else {
@@ -321,7 +339,7 @@ public class ServiceBusProcessorTest {
                 assertSame(exception.getErrorSource(), ServiceBusErrorSource.USER_CALLBACK);
                 countDownLatch.countDown();
             },
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
@@ -358,6 +376,12 @@ public class ServiceBusProcessorTest {
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1)
+            .setDisableAutoComplete(true);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         if (isV2) {
             when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
         } else {
@@ -383,7 +407,7 @@ public class ServiceBusProcessorTest {
                 assertEquals(ServiceBusErrorSource.USER_CALLBACK, exception.getErrorSource());
                 countDownLatch.countDown();
             },
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setDisableAutoComplete(true).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(30, TimeUnit.SECONDS);
@@ -433,7 +457,11 @@ public class ServiceBusProcessorTest {
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
-
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -443,7 +471,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
@@ -508,13 +536,17 @@ public class ServiceBusProcessorTest {
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
-
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
             null, null,
             messageContext -> countDownLatch.countDown(),
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(1, TimeUnit.SECONDS);
@@ -555,7 +587,11 @@ public class ServiceBusProcessorTest {
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
-
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+        }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -565,7 +601,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
