@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -21,11 +20,10 @@ import reactor.util.retry.Retry;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 
-final class ServiceBusSessionAcquirer implements AutoCloseable {
+final class ServiceBusSessionAcquirer {
     private static final String TRACKING_ID_KEY = "trackingId";
     private final ClientLogger logger;
     private final String identifier;
@@ -34,7 +32,6 @@ final class ServiceBusSessionAcquirer implements AutoCloseable {
     private final Duration sessionActiveTimeout;
     private final ServiceBusReceiveMode receiveMode;
     private final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
-    private final AtomicBoolean isDisposed = new AtomicBoolean();
 
     ServiceBusSessionAcquirer(ClientLogger logger, String identifier, String entityPath,
         MessagingEntityType entityType, ServiceBusReceiveMode receiveMode, Duration sessionActiveTimeout,
@@ -46,6 +43,10 @@ final class ServiceBusSessionAcquirer implements AutoCloseable {
         this.sessionActiveTimeout = sessionActiveTimeout;
         this.receiveMode = receiveMode;
         this.connectionCache = connectionCache;
+    }
+
+    boolean isConnectionClosed() {
+        return this.connectionCache.isCurrentConnectionClosed();
     }
 
     /**
@@ -88,10 +89,7 @@ final class ServiceBusSessionAcquirer implements AutoCloseable {
                         : "Error occurred while getting session " + sessionId,
                         failure);
 
-                if (isDisposed.get()) {
-                    return Mono.<Long>error(new AmqpException(false, "ServiceBusSessionLinkAcquirer is already disposed.",
-                        failure, new SessionErrorContext(connectionCache.getFullyQualifiedNamespace(), entityPath)));
-                } else if (failure instanceof TimeoutException) {
+                if (failure instanceof TimeoutException) {
                     return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
@@ -99,17 +97,17 @@ final class ServiceBusSessionAcquirer implements AutoCloseable {
                     // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
                     //
                     // Given N seconds elapsed since the last session acquire attempt, request for a session on
-                    // the 'parallel' Scheduler and free the 'QPid' thread for other IO.
+                    // the 'parallel' Scheduler and free the QPid thread for other IO.
                     //
                     return Mono.delay(Duration.ZERO);
                 } else {
                     final long id = System.nanoTime();
                     logger.atInfo()
                         .addKeyValue(TRACKING_ID_KEY, id)
-                        .log("Unable to acquire new session.", failure);
-                    // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
-                    // non-blocking, if we use the session processor to recover the error, it requires a blocking
-                    // thread to close the client. Hence, we publish the error on the bounded-elastic thread.
+                        .log("Unable to acquire a session.", failure);
+                    // The link-endpoint-state publisher will emit error on the QPid Thread, that is a non-blocking Thread,
+                    // publish the error on the (blockable) bounded-elastic thread to free QPid thread and to allow
+                    // any blocking operation that downstream may do.
                     return Mono.<Long>error(failure)
                         .publishOn(Schedulers.boundedElastic())
                         .doOnError(e -> logger.atInfo()
@@ -125,11 +123,6 @@ final class ServiceBusSessionAcquirer implements AutoCloseable {
         return connectionCache.get()
             .flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiveMode,
                 null, entityType, identifier, sessionId));
-    }
-
-    @Override
-    public void close() {
-        isDisposed.getAndSet(true);
     }
 
     /**

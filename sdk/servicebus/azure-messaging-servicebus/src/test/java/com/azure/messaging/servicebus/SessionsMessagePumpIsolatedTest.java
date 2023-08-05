@@ -46,6 +46,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -88,14 +89,15 @@ public class SessionsMessagePumpIsolatedTest {
         final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
         final MessageSerializer serializer = mock(MessageSerializer.class);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 1;
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = false;
+        final boolean autoDispositionDisabled = true;
         final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> { };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -104,6 +106,7 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         verify(session1.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -118,17 +121,18 @@ public class SessionsMessagePumpIsolatedTest {
         final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 1;
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = false;
+        final boolean autoDispositionDisabled = true;
         final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages);
         final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
             unseenMessages.remove(context.getMessage());
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -139,6 +143,7 @@ public class SessionsMessagePumpIsolatedTest {
         Assertions.assertTrue(unseenMessages.isEmpty());
         // closeAsync() invocation upon RollingSessionReceiver.MessageFlux cancellation.
         verify(session1.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -158,17 +163,18 @@ public class SessionsMessagePumpIsolatedTest {
         final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages, session2Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1, session2);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 2;
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = false;
+        final boolean autoDispositionDisabled = true;
         final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages, session2Messages);
         final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
             unseenMessages.remove(context.getMessage());
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -179,6 +185,7 @@ public class SessionsMessagePumpIsolatedTest {
         Assertions.assertTrue(unseenMessages.isEmpty());
         verify(session1.link, times(1)).closeAsync();
         verify(session2.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -186,15 +193,16 @@ public class SessionsMessagePumpIsolatedTest {
     public void shouldTerminateOnAcquireError() {
         final int maxSessions = 1;
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = false;
+        final boolean autoDispositionDisabled = true;
         final ServiceBusSessionAcquirer sessionAcquirer = mock(ServiceBusSessionAcquirer.class);
         when(sessionAcquirer.acquire()).thenReturn(Mono.<Session>fromCallable(() -> {
             throw new RuntimeException("non-transient-error");
         }));
+        final Runnable onTerminate = createMockOnTerminate();
         final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> { };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, mock(ServiceBusMessageSerializer.class), processMessage, processError);
+            autoDispositionDisabled, mock(ServiceBusMessageSerializer.class), processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -206,6 +214,42 @@ public class SessionsMessagePumpIsolatedTest {
                     Assertions.assertEquals("non-transient-error", e.getCause().getMessage());
                 });
         }
+        verify(onTerminate, times(1)).run();
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldTerminateOnConnectionTermination() {
+        final Duration connectionStatePollInterval = Duration.ofSeconds(20);
+        final String session1Id = "1";
+
+        final HashMap<Message, ServiceBusReceivedMessage> session1Messages = new HashMap<>(0);
+        final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
+        session1EpStates.next(AmqpEndpointState.ACTIVE);
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
+        final MessageSerializer serializer = mock(MessageSerializer.class);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        when(sessionAcquirer.isConnectionClosed()).thenReturn(false, true);
+        final Runnable onTerminate = createMockOnTerminate();
+
+        final int maxSessions = 1;
+        final int concurrency = 1;
+        final boolean autoDispositionDisabled = true;
+        final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> { };
+        final Consumer<ServiceBusErrorContext> processError = e -> { };
+        final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> pump.begin())
+                .thenAwait(connectionStatePollInterval.multipliedBy(3))
+                .verifyErrorSatisfies(e -> {
+                    Assertions.assertTrue(e instanceof SessionsMessagePump.TerminatedException);
+                    Assertions.assertEquals("Cannot pump messages after termination. (Detected at connection-state-poll).", e.getMessage());
+                });
+        }
+        verify(session1.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -231,17 +275,18 @@ public class SessionsMessagePumpIsolatedTest {
         final Session session3 = createMockSession(session3Id, session3Messages, session3EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages, session2Messages, session3Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1, session2, session3);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 2; // Initially pump only from Session1 and Session2.
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = false;
+        final boolean autoDispositionDisabled = true;
         final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages, session2Messages, session3Messages);
         final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
             unseenMessages.remove(context.getMessage());
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -255,6 +300,7 @@ public class SessionsMessagePumpIsolatedTest {
         verify(session1.link, times(1)).closeAsync();
         verify(session2.link, times(1)).closeAsync();
         verify(session3.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -279,17 +325,18 @@ public class SessionsMessagePumpIsolatedTest {
         final Session session3 = createMockSession(session3Id, session3Messages, session3EpStates);
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages, session2Messages, session3Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1, session2, session3);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 2; // Initially pump only from Session1 and Session2.
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = false;
+        final boolean autoDispositionDisabled = true;
         final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages, session2Messages, session3Messages);
         final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
             unseenMessages.remove(context.getMessage());
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -303,6 +350,7 @@ public class SessionsMessagePumpIsolatedTest {
         verify(session1.link, times(1)).closeAsync();
         verify(session2.link, times(1)).closeAsync();
         verify(session3.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -318,10 +366,11 @@ public class SessionsMessagePumpIsolatedTest {
         when(session1.link.updateDisposition(any(), any())).thenReturn(Mono.empty());
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 1;
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = true;
+        final boolean autoDispositionDisabled = false;
         final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages);
         Assertions.assertEquals(1, unseenMessages.size());
         final ServiceBusReceivedMessage processedMessage = unseenMessages.iterator().next();
@@ -330,7 +379,7 @@ public class SessionsMessagePumpIsolatedTest {
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -346,6 +395,7 @@ public class SessionsMessagePumpIsolatedTest {
         Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
         Assertions.assertEquals(Accepted.getInstance(), deliveryState);
         verify(session1.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -361,10 +411,11 @@ public class SessionsMessagePumpIsolatedTest {
         when(session1.link.updateDisposition(any(), any())).thenReturn(Mono.empty());
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 1;
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = true;
+        final boolean autoDispositionDisabled = false;
         final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages);
         Assertions.assertEquals(1, unseenMessages.size());
         final ServiceBusReceivedMessage processedMessage = unseenMessages.iterator().next();
@@ -374,7 +425,7 @@ public class SessionsMessagePumpIsolatedTest {
         };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -391,6 +442,7 @@ public class SessionsMessagePumpIsolatedTest {
         Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
         Assertions.assertTrue(deliveryState instanceof Modified);
         verify(session1.link, times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
     }
 
     @Test
@@ -404,14 +456,15 @@ public class SessionsMessagePumpIsolatedTest {
         final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
         final MessageSerializer serializer = mock(MessageSerializer.class);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        final Runnable onTerminate = createMockOnTerminate();
 
         final int maxSessions = 1;
         final int concurrency = 1;
-        final boolean autoDispositionEnabled = false;
+        final boolean autoDispositionDisabled = true;
         final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> { };
         final Consumer<ServiceBusErrorContext> processError = e -> { };
         final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
-            autoDispositionEnabled, serializer, processMessage, processError);
+            autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
@@ -426,6 +479,7 @@ public class SessionsMessagePumpIsolatedTest {
                     Assertions.assertTrue(e instanceof SessionsMessagePump.TerminatedException);
                 });
         }
+        verify(onTerminate, times(1)).run();
     }
 
     private static HashMap<Message, ServiceBusReceivedMessage> createMockMessages(String sessionId, int count) {
@@ -504,6 +558,10 @@ public class SessionsMessagePumpIsolatedTest {
         return sessionAcquirer;
     }
 
+    private static Runnable createMockOnTerminate() {
+        return mock(Runnable.class);
+    }
+
     @SafeVarargs
     private static Set<ServiceBusReceivedMessage> values(HashMap<Message, ServiceBusReceivedMessage>... sessionMessagesArray) {
         final Set<ServiceBusReceivedMessage> values = new HashSet<>();
@@ -517,13 +575,15 @@ public class SessionsMessagePumpIsolatedTest {
     }
 
     private SessionsMessagePump createSessionsMessagePump(ServiceBusSessionAcquirer sessionAcquirer, Duration sessionIdleTimeout,
-        int maxConcurrentSessions, int concurrencyPerSession, boolean enableAutoDisposition, MessageSerializer serializer,
-        Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError) {
+        int maxConcurrentSessions, int concurrencyPerSession, boolean autoDispositionDisabled, MessageSerializer serializer,
+        Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError, Runnable onTerminate) {
         final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
         when(instrumentation.getTracer()).thenReturn(mock(ServiceBusTracer.class));
+        doNothing().when(onTerminate).run();
+        final boolean enableAutoDisposition = !autoDispositionDisabled;
         return new SessionsMessagePump("identifier-1", "FQDN", "Orders", ServiceBusReceiveMode.PEEK_LOCK,
             instrumentation, sessionAcquirer, Duration.ZERO, sessionIdleTimeout, maxConcurrentSessions, concurrencyPerSession,
-            0, enableAutoDisposition, Mono.empty(), serializer, retryPolicy, processMessage, processError);
+            0, enableAutoDisposition, Mono.empty(), serializer, retryPolicy, processMessage, processError, onTerminate);
     }
 
     private static final class VirtualTimeStepVerifier implements AutoCloseable {
