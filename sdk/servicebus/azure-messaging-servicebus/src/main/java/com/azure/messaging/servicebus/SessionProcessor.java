@@ -15,8 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
-import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -103,7 +101,7 @@ public final class SessionProcessor {
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final Disposable.Composite disposable = Disposables.composite();
-        private final AtomicReference<PumpContext> pumpContext = new AtomicReference<>(PumpContext.NONE);
+        private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
 
         /**
          * Instantiate {@link RollingSessionsMessagePump} that stream messages using {@link SessionsMessagePump}.
@@ -152,7 +150,7 @@ public final class SessionProcessor {
                     return pump;
                 },
                 pump -> {
-                    pumpContext.set(new PumpContext(pump.getFqdn(), pump.getEntityPath(), pump.getIdentifier()));
+                    clientIdentifier.set(pump.getIdentifier());
                     return pump.begin();
                 },
                 pump -> {
@@ -164,7 +162,7 @@ public final class SessionProcessor {
         }
 
         String getClientIdentifier() {
-            return pumpContext.get().identifier;
+            return clientIdentifier.get();
         }
 
         void dispose() {
@@ -186,55 +184,31 @@ public final class SessionProcessor {
                     if (error == null) {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() not expected to be null."));
                     }
+                    if (!(error instanceof SessionsMessagePump.TerminatedException)) {
+                        return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be MessagePump.TerminatedException.", error));
+                    }
+
+                    final SessionsMessagePump.TerminatedException e = (SessionsMessagePump.TerminatedException) error;
 
                     if (disposable.isDisposed()) {
-                        log("The Processor closure disposed the streaming, canceling retry for the next SessionsMessagePump.", error);
+                        e.log(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.", true);
                         return Mono.error(DISPOSED_ERROR);
                     }
 
-                    log("The current SessionsMessagePump is terminated, scheduling retry for the next pump.", error);
+                    e.log(logger, "The current MessagePump is terminated, scheduling retry for the next pump.", true);
 
                     return Mono.delay(NEXT_PUMP_BACKOFF, Schedulers.boundedElastic())
                         .handle((v, sink) -> {
                             if (disposable.isDisposed()) {
-                                log("During backoff, The Processor closure disposed the streaming, canceling retry for the next SessionsMessagePump.", error);
+                                e.log(logger,
+                                    "During backoff, The Processor closure disposed the streaming, canceling retry for the next MessagePump.", false);
                                 sink.error(DISPOSED_ERROR);
                             } else {
-                                log("Retrying for the next SessionsMessagePump.", error);
+                                e.log(logger, "Retrying for the next MessagePump.", false);
                                 sink.next(v);
                             }
                         });
                 }));
-        }
-
-        private void log(String message, Throwable error) {
-            // This log(,) method call-site is restricted to retry-path, which is not a hot-path at all hence
-            // atomic read doesn't add any overhead. (See if we can be set infos at Ctr as finals avoiding PumpingContext type).
-            final PumpContext c = pumpContext.get();
-            if (error == null) {
-                logger.atInfo()
-                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, c.fqdn)
-                    .addKeyValue(ENTITY_PATH_KEY, c.entityPath)
-                    .log(message);
-            } else {
-                logger.atInfo()
-                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, c.fqdn)
-                    .addKeyValue(ENTITY_PATH_KEY, c.entityPath)
-                    .log(message, error);
-            }
-        }
-
-        private static final class PumpContext {
-            private static final PumpContext NONE = new PumpContext(null, null, null);
-            private final String fqdn;
-            private final String entityPath;
-            private final String identifier;
-
-            PumpContext(String fqdn, String entityPath, String identifier) {
-                this.fqdn = fqdn;
-                this.entityPath = entityPath;
-                this.identifier = identifier;
-            }
         }
     }
 }
