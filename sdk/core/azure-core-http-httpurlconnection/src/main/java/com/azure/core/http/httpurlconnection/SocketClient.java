@@ -43,7 +43,7 @@ public class SocketClient {
         }
     }
 
-    // This method extracts an HttpResponse object from the response string
+    // This method reads the response line by line and constructs an HttpResponse object
     private HttpResponse buildResponse(HttpRequest request, BufferedReader reader) throws IOException {
         // Read the first line as the status line
         String statusLine = reader.readLine();
@@ -64,7 +64,6 @@ public class SocketClient {
             // todo - may need to check that the HttpHeaderName is valid
             headers.set(HttpHeaderName.fromString(k), v);
         }
-
         // Read the newline through
         reader.readLine();
         // The remainder of the response is the body
