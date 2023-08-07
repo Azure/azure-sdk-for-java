@@ -208,7 +208,7 @@ public class SessionsMessagePumpIsolatedTest {
             verifier.create(() -> pump.begin())
                 .thenAwait()
                 .verifyErrorSatisfies(e -> {
-                    Assertions.assertTrue(e instanceof TerminatedException);
+                    Assertions.assertTrue(e instanceof MessagePumpTerminatedException);
                     Assertions.assertNotNull(e.getCause());
                     Assertions.assertTrue(e.getCause() instanceof RuntimeException);
                     Assertions.assertEquals("non-transient-error", e.getCause().getMessage());
@@ -244,7 +244,7 @@ public class SessionsMessagePumpIsolatedTest {
             verifier.create(() -> pump.begin())
                 .thenAwait(connectionStatePollInterval.multipliedBy(3))
                 .verifyErrorSatisfies(e -> {
-                    Assertions.assertTrue(e instanceof TerminatedException);
+                    Assertions.assertTrue(e instanceof MessagePumpTerminatedException);
                     Assertions.assertEquals("session#connection-state-poll", e.getMessage());
                 });
         }
@@ -476,7 +476,7 @@ public class SessionsMessagePumpIsolatedTest {
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
                 .verifyErrorSatisfies(e -> {
-                    Assertions.assertTrue(e instanceof TerminatedException);
+                    Assertions.assertTrue(e instanceof MessagePumpTerminatedException);
                     Assertions.assertNotNull(e.getCause());
                     Assertions.assertTrue(e.getCause() instanceof IllegalStateException);
                 });

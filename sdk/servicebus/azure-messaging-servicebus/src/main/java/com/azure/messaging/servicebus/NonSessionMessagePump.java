@@ -90,7 +90,7 @@ final class NonSessionMessagePump {
     /**
      * Begin pumping messages in parallel, with the parallelism equal to the configured {@code concurrency}.
      *
-     * @return a mono that emits {@link TerminatedException} when this {@link NonSessionMessagePump} terminates.
+     * @return a mono that emits {@link MessagePumpTerminatedException} when this {@link NonSessionMessagePump} terminates.
      * The pumping terminates when the underlying client encounters a non-retriable error, the retries exhaust,
      * or rejection when scheduling concurrently.
      */
@@ -103,21 +103,21 @@ final class NonSessionMessagePump {
 
         return pumpingMessages
             .onErrorMap(e -> {
-                if (e instanceof TerminatedException) {
+                if (e instanceof MessagePumpTerminatedException) {
                     // 'e' propagated from pollConnectionState().
                     return e;
                 }
                 // 'e' propagated from client.nonSessionProcessorReceiveV2().
-                return new TerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
+                return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
             })
-            .then(Mono.error(() -> TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
+            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
     }
 
     private Mono<Void> pollConnectionState() {
         return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
             .handle((ignored, sink) -> {
                 if (client.isConnectionClosed()) {
-                    final RuntimeException e = logger.atInfo().log(new TerminatedException(pumpId, fqdn, entityPath, "non-session#connection-state-poll"));
+                    final RuntimeException e = logger.atInfo().log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "non-session#connection-state-poll"));
                     sink.error(e);
                 }
             }).then();
