@@ -258,10 +258,10 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        MuteParticipantResult muteParticipantResult =
-            callConnection.muteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        Response<MuteParticipantResult> muteParticipantResultResponse =
+            callConnection.muteParticipantWithResponse(new CommunicationUserIdentifier(CALL_TARGET_ID), CALL_OPERATION_CONTEXT, Context.NONE);
 
-        assertNotNull(muteParticipantResult);
-        assertNull(muteParticipantResult.getOperationContext());
+        assertNotNull(muteParticipantResultResponse);
+        assertNull(muteParticipantResultResponse.getValue().getOperationContext());
     }
 }

@@ -228,6 +228,19 @@ public final class CallConnection {
         return callConnectionAsync.muteParticipant(targetParticipant).block();
     }
 
+    /**
+     * Mutes a participant in the call.
+     *
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response with result of muting a participant from the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MuteParticipantResult> muteParticipantWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(targetParticipant, operationContext, context).block();
+    }
+
     //region Content management Actions
     /***
      * Returns an object of CallContent
