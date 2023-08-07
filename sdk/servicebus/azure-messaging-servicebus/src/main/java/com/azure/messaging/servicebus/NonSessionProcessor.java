@@ -203,20 +203,20 @@ public final class NonSessionProcessor {
                     final MessagePump.TerminatedException e = (MessagePump.TerminatedException) error;
 
                     if (disposable.isDisposed()) {
-                        e.logWithCause(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.");
+                        e.log(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.", true);
                         return Mono.error(DISPOSED_ERROR);
                     }
 
-                    e.logWithCause(logger, "The current MessagePump is terminated, scheduling retry for the next pump.");
+                    e.log(logger, "The current MessagePump is terminated, scheduling retry for the next pump.", true);
 
                     return Mono.delay(NEXT_PUMP_BACKOFF, Schedulers.boundedElastic())
                         .handle((v, sink) -> {
                             if (disposable.isDisposed()) {
                                 e.log(logger,
-                                    "During backoff, The Processor closure disposed the streaming, canceling retry for the next MessagePump.");
+                                    "During backoff, The Processor closure disposed the streaming, canceling retry for the next MessagePump.", false);
                                 sink.error(DISPOSED_ERROR);
                             } else {
-                                e.log(logger, "Retrying for the next MessagePump.");
+                                e.log(logger, "Retrying for the next MessagePump.", false);
                                 sink.next(v);
                             }
                         });
@@ -299,7 +299,12 @@ public final class NonSessionProcessor {
                     .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
 
                 return Mono.firstWithSignal(pumping, terminatePumping)
-                    .onErrorMap(e -> new TerminatedException(pumpId, fqdn, entityPath, e))
+                    .onErrorMap(e -> {
+                        if (e instanceof TerminatedException) {
+                            return e;
+                        }
+                        return new TerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
+                    })
                     .then(Mono.error(() -> TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
             }
 
@@ -307,13 +312,10 @@ public final class NonSessionProcessor {
                 return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
                     .handle((ignored, sink) -> {
                         if (client.isConnectionClosed()) {
-                            sink.error(new RuntimeException("Connection is terminated."));
-                        } else {
-                            sink.next(false);
+                            final RuntimeException e = logger.atInfo().log(new TerminatedException(pumpId, fqdn, entityPath, "non-session#connection-state-poll"));
+                            sink.error(e);
                         }
-                    })
-                    .ignoreElements()
-                    .then();
+                    }).then();
             }
 
             private void handleMessage(ServiceBusReceivedMessage message) {
@@ -408,55 +410,57 @@ public final class NonSessionProcessor {
             }
 
             /**
-             * The exception emitted by the mono returned from the {@link MessagePump#begin()}.
-             * The {@link TerminatedException#getCause()}} indicates the cause for the termination of message pumping.
+             * The exception emitted by the mono returned from the MessagePump#begin() API.
+             * If available, the {@link TerminatedException#getCause()}} indicates the cause for the termination of message pumping.
              */
-            private static final class TerminatedException extends RuntimeException {
-                static final RuntimeException COMPLETION_ERROR = new RuntimeException("The MessagePump reached completion.");
+            static final class TerminatedException extends RuntimeException {
+                private static final String PUMP_ID_KEY = "pump-id";
                 private final long pumpId;
                 private final String fqdn;
                 private final String entityPath;
 
                 /**
-                 * Instantiate {@link TerminatedException} representing termination of a {@link MessagePump}.
+                 * Instantiate {@link TerminatedException} representing termination of a MessagePump.
                  *
-                 * @param pumpId The unique identifier of the {@link MessagePump} that terminated.
+                 * @param pumpId The unique identifier of the MessagePump that terminated.
                  * @param fqdn The FQDN of the host from which the message was pumping.
                  * @param entityPath The path to the entity within the FQDN streaming message.
-                 * @param terminationCause The reason for the termination of the pump.
+                 * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
                  */
-                TerminatedException(long pumpId, String fqdn, String entityPath, Throwable terminationCause) {
-                    super(terminationCause);
+                TerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt) {
+                    super(detectedAt);
                     this.pumpId = pumpId;
                     this.fqdn = fqdn;
                     this.entityPath = entityPath;
                 }
 
                 /**
-                 * Instantiate {@link TerminatedException} that represents the case when the {@link MessagePump}
-                 * terminates by running into the completion.
+                 * Instantiate {@link TerminatedException} representing termination of a MessagePump.
+                 *
+                 * @param pumpId The unique identifier of the MessagePump that terminated.
+                 * @param fqdn The FQDN of the host from which the message was pumping.
+                 * @param entityPath The path to the entity within the FQDN streaming message.
+                 * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
+                 * @param terminationCause The reason for the termination of the pump.
+                 */
+                TerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt, Throwable terminationCause) {
+                    super(detectedAt, terminationCause);
+                    this.pumpId = pumpId;
+                    this.fqdn = fqdn;
+                    this.entityPath = entityPath;
+                }
+
+                /**
+                 * Instantiate {@link TerminatedException} that represents the case when the MessagePump terminates by running
+                 * into the completion.
                  *
                  * @param pumpId The unique identifier of the pump that terminated.
                  * @param fqdn The FQDN of the host from which the message was pumping.
                  * @param entityPath The path to the entity within the FQDN streaming message.
-                 * @return the {@link TerminatedException}.
+                 * @return the {@link SessionsMessagePump.TerminatedException}.
                  */
                 static TerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
-                    return new TerminatedException(pumpId, fqdn, entityPath, COMPLETION_ERROR);
-                }
-
-                /**
-                 * Logs the cause for termination and the given {@code message} along with pump identifier, FQDN and entity path.
-                 *
-                 * @param logger The logger.
-                 * @param message The message to log.
-                 */
-                void logWithCause(ClientLogger logger, String message) {
-                    logger.atInfo()
-                        .addKeyValue(PUMP_ID_KEY, pumpId)
-                        .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .log(message, getCause());
+                    return new TerminatedException(pumpId, fqdn, entityPath, "pumping#reached-completion");
                 }
 
                 /**
@@ -464,13 +468,23 @@ public final class NonSessionProcessor {
                  *
                  * @param logger The logger.
                  * @param message The message to log.
+                 * @param logError should this (TerminatedException) error be logged as well.
                  */
-                void log(ClientLogger logger, String message) {
-                    logger.atInfo()
-                        .addKeyValue(PUMP_ID_KEY, pumpId)
-                        .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .log(message);
+                void log(ClientLogger logger, String message, boolean logError) {
+                    if (logError) {
+                        final TerminatedException error = this;
+                        logger.atInfo()
+                            .addKeyValue(PUMP_ID_KEY, pumpId)
+                            .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log(message, error);
+                    } else {
+                        logger.atInfo()
+                            .addKeyValue(PUMP_ID_KEY, pumpId)
+                            .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log(message);
+                    }
                 }
             }
         }
