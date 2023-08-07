@@ -247,11 +247,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
         CosmosAsyncContainer createdFeedCollection = null;
         CosmosAsyncContainer createdLeaseCollection = null;
+        CosmosAsyncDatabase cosmosAsyncDatabase = null;
 
         try {
 
             cosmosAsyncClient.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
-            CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            cosmosAsyncDatabase = cosmosAsyncClient.getDatabase(MULTI_WRITE_DATABASE_NAME);
             cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
             cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
 
@@ -325,6 +326,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
+            safeDeleteDatabase(cosmosAsyncDatabase);
             safeClose(cosmosAsyncClient);
 
             // Allow some time for the collections to be deleted before exiting.
@@ -368,11 +370,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollectionLocalRegion = null;
         CosmosAsyncContainer createdFeedCollectionSatelliteRegion = null;
         CosmosAsyncContainer createdLeaseCollectionSatelliteRegion = null;
+        CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = null;
 
         try {
 
             cosmosAsyncClientForLocalRegion.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
-            CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = cosmosAsyncClientForLocalRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            cosmosAsyncDatabaseRegionOne = cosmosAsyncClientForLocalRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
             cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
             cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
 
@@ -452,6 +455,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         } finally {
             safeDeleteCollection(createdFeedCollectionLocalRegion);
             safeDeleteCollection(createdLeaseCollectionLocalRegion);
+            safeDeleteDatabase(cosmosAsyncDatabaseRegionOne);
             safeClose(cosmosAsyncClientForLocalRegion);
             safeClose(cosmosAsyncClientForSatelliteRegion);
             // Allow some time for the collections to be deleted before exiting.
