@@ -24,6 +24,10 @@ public final class SqlVirtualMachineListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SqlVirtualMachineListResult class. */
+    public SqlVirtualMachineListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

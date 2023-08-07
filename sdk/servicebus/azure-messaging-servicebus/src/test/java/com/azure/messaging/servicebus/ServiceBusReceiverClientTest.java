@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
@@ -90,7 +91,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
-        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false));
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
         client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
     }
 
@@ -415,7 +416,7 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.getSessionState(SESSION_ID)).thenReturn(Mono.just(contents));
+        when(asyncClient.getSessionState()).thenReturn(Mono.just(contents));
 
         // Act
         final byte[] actual = client.getSessionState();
@@ -428,7 +429,7 @@ class ServiceBusReceiverClientTest {
     void getSessionStateNull() {
         // Arrange
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.getSessionState(SESSION_ID)).thenReturn(Mono.empty());
+        when(asyncClient.getSessionState()).thenReturn(Mono.empty());
 
         // Act
         final byte[] actual = client.getSessionState();
@@ -841,7 +842,7 @@ class ServiceBusReceiverClientTest {
         final String sessionId = "a-session-id";
         final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.renewSessionLock(SESSION_ID)).thenReturn(Mono.just(response));
+        when(asyncClient.renewSessionLock()).thenReturn(Mono.just(response));
 
 
         // Act
@@ -856,13 +857,13 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.setSessionState(SESSION_ID, contents)).thenReturn(Mono.empty());
+        when(asyncClient.setSessionState(contents)).thenReturn(Mono.empty());
 
         // Act
         client.setSessionState(contents);
 
         // Assert
-        verify(asyncClient).setSessionState(SESSION_ID, contents);
+        verify(asyncClient).setSessionState(contents);
     }
 
     @Test

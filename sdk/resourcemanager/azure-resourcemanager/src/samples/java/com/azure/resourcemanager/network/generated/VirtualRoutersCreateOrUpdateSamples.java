@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for VirtualRouters CreateOrUpdate. */
 public final class VirtualRoutersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualRouterPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualRouterPut.json
      */
     /**
      * Sample code: Create VirtualRouter.
@@ -30,7 +30,7 @@ public final class VirtualRoutersCreateOrUpdateSamples {
                 "virtualRouter",
                 new VirtualRouterInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withHostedGateway(
                         new SubResource()
                             .withId(
@@ -38,6 +38,7 @@ public final class VirtualRoutersCreateOrUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

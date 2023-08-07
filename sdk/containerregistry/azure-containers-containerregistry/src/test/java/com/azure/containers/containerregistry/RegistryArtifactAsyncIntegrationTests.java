@@ -73,19 +73,19 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     }
 
     private String getDigest(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getArtifact(HELLO_WORLD_REPOSITORY_NAME, LATEST_TAG_NAME).getManifestProperties().getDigest();
     }
 
     private RegistryArtifactAsync getRegistryArtifactAsyncClient(HttpClient httpClient, String digest) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
             .buildAsyncClient()
             .getArtifact(HELLO_WORLD_REPOSITORY_NAME, digest);
     }
 
     private RegistryArtifact getRegistryArtifactClient(HttpClient httpClient, String digest) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getArtifact(HELLO_WORLD_REPOSITORY_NAME, digest);
     }

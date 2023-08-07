@@ -22,7 +22,9 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -34,6 +36,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
@@ -887,22 +890,35 @@ public class KeyClientImpl {
 
     public PollerFlux<DeletedKey, Void> beginDeleteKeyAsync(String name) {
         return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(name),
-            createPollOperation(name),
+            activationOperationAsync(name),
+            createPollOperationAsync(name),
             (context, firstResponse) -> Mono.empty(),
             (context) -> Mono.empty());
     }
 
-    private Function<PollingContext<DeletedKey>, Mono<DeletedKey>> activationOperation(String name) {
-        return (pollingContext) -> withContext(context -> deleteKeyWithResponse(name, context))
+    public SyncPoller<DeletedKey, Void> beginDeleteKey(String name, Context context) {
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation(name, context).apply(cxt)),
+            createPollOperation(name, context),
+            (pollingContext, firstResponse) -> null,
+            (pollingContext) -> null);
+    }
+
+    private Function<PollingContext<DeletedKey>, Mono<DeletedKey>> activationOperationAsync(String name) {
+        return (pollingContext) -> withContext(context -> deleteKeyWithResponseAsync(name, context))
             .flatMap(deletedKeyResponse -> Mono.just(deletedKeyResponse.getValue()));
     }
 
+    private Function<PollingContext<DeletedKey>, DeletedKey> activationOperation(String name, Context context) {
+        return (pollingContext) -> deleteKeyWithResponse(name, context).getValue();
+    }
+
     /*
-     * Polling operation to poll on create delete key operation status.
+     * Async polling operation to poll on create delete key operation status.
      */
-    private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperation(String keyName) {
-        return pollingContext ->
+    private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperationAsync(String keyName) {
+        return (pollingContext) ->
             withContext(context -> service.getDeletedKeyPollerAsync(vaultUrl, keyName, keyServiceVersion.getVersion(),
                 ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(deletedKeyResponse -> {
@@ -922,12 +938,48 @@ public class KeyClientImpl {
                     pollingContext.getLatestResponse().getValue()));
     }
 
-    private Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
+    /**
+     * Sync polling operation to poll on the delete key operation status.
+     */
+    private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> createPollOperation(String keyName,
+                                                                                               Context context) {
+        return (pollingContext) -> {
+            try {
+                Context contextToUse = context;
+                contextToUse = enableSyncRestProxy(contextToUse);
+                Response<DeletedKey> deletedKeyResponse = service.getDeletedKeyPoller(vaultUrl, keyName,
+                    keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, contextToUse);
+
+                if (deletedKeyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    deletedKeyResponse.getValue());
+            } catch (HttpResponseException e) {
+                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
+                // operation. In both cases deletion operation was successful when activation operation succeeded before
+                // reaching here.
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue());
+            }
+        };
+    }
+
+    private Mono<Response<DeletedKey>> deleteKeyWithResponseAsync(String name, Context context) {
         return service.deleteKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Deleting key - {}", name))
             .doOnSuccess(response -> LOGGER.verbose("Deleted key - {}", response.getValue().getName()))
             .doOnError(error -> LOGGER.warning("Failed to delete key - {}", name, error));
+    }
+
+    private Response<DeletedKey> deleteKeyWithResponse(String name, Context context) {
+        context = enableSyncRestProxy(context);
+
+        return service.deleteKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponseAsync(String name, Context context) {
@@ -964,22 +1016,35 @@ public class KeyClientImpl {
 
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKeyAsync(String name) {
         return new PollerFlux<>(getDefaultPollingInterval(),
-            recoverActivationOperation(name),
-            createRecoverPollOperation(name),
+            recoverActivationOperationAsync(name),
+            createRecoverPollOperationAsync(name),
             (context, firstResponse) -> Mono.empty(),
             context -> Mono.empty());
     }
 
-    private Function<PollingContext<KeyVaultKey>, Mono<KeyVaultKey>> recoverActivationOperation(String name) {
-        return (pollingContext) -> withContext(context -> recoverDeletedKeyWithResponse(name, context))
+    public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Context context) {
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                recoverActivationOperation(name, context).apply(cxt)),
+            createRecoverPollOperation(name, context),
+            (pollingContext, firstResponse) -> null,
+            (pollingContext) -> null);
+    }
+
+    private Function<PollingContext<KeyVaultKey>, Mono<KeyVaultKey>> recoverActivationOperationAsync(String name) {
+        return (pollingContext) -> withContext(context -> recoverDeletedKeyWithResponseAsync(name, context))
             .flatMap(keyResponse -> Mono.just(keyResponse.getValue()));
     }
 
+    private Function<PollingContext<KeyVaultKey>, KeyVaultKey> recoverActivationOperation(String name, Context context) {
+        return (pollingContext) -> recoverDeletedKeyWithResponse(name, context).getValue();
+    }
+
     /*
-     * Polling operation to poll on create delete key operation status.
+     * Async polling operation to poll on create delete key operation status.
      */
-    private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperation(String keyName) {
-        return pollingContext ->
+    private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperationAsync(String keyName) {
+        return (pollingContext) ->
             withContext(context ->
                 service.getKeyPollerAsync(vaultUrl, keyName, "", keyServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
@@ -998,12 +1063,47 @@ public class KeyClientImpl {
                     pollingContext.getLatestResponse().getValue()));
     }
 
-    private Mono<Response<KeyVaultKey>> recoverDeletedKeyWithResponse(String name, Context context) {
+    /**
+     * Sync polling operation to poll on the delete key operation status.
+     */
+    private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> createRecoverPollOperation(String keyName, Context context) {
+        return (pollingContext) -> {
+            try {
+                Context contextToUse = context;
+                contextToUse = enableSyncRestProxy(contextToUse);
+                Response<KeyVaultKey> keyResponse =
+                    service.getKeyPoller(vaultUrl, keyName, "", keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
+                        CONTENT_TYPE_HEADER_VALUE, contextToUse);
+
+                if (keyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    keyResponse.getValue());
+            } catch (HttpResponseException e) {
+                // This means permission is not granted for the get deleted key operation. In both cases the deletion
+                // operation was successful when activation operation succeeded before reaching here.
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue());
+            }
+        };
+    }
+
+    private Mono<Response<KeyVaultKey>> recoverDeletedKeyWithResponseAsync(String name, Context context) {
         return service.recoverDeletedKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Recovering deleted key - {}", name))
             .doOnSuccess(response -> LOGGER.verbose("Recovered deleted key - {}", response.getValue().getName()))
             .doOnError(error -> LOGGER.warning("Failed to recover deleted key - {}", name, error));
+    }
+
+    private Response<KeyVaultKey> recoverDeletedKeyWithResponse(String name, Context context) {
+        context = enableSyncRestProxy(context);
+
+        return service.recoverDeletedKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<byte[]>> backupKeyWithResponseAsync(String name, Context context) {
@@ -1046,18 +1146,13 @@ public class KeyClientImpl {
             CONTENT_TYPE_HEADER_VALUE, context);
     }
 
-    public PagedFlux<KeyProperties> listPropertiesOfKeys() {
+    public PagedFlux<KeyProperties> listPropertiesOfKeysAsync() {
         try {
-            return new PagedFlux<>(() -> withContext(this::listKeysFirstPage),
-                continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
+            return new PagedFlux<>(() -> withContext(this::listKeysFirstPageAsync),
+                continuationToken -> withContext(context -> listKeysNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
-    }
-
-    public PagedFlux<KeyProperties> listPropertiesOfKeys(Context context) {
-        return new PagedFlux<>(() -> listKeysFirstPage(context),
-            continuationToken -> listKeysNextPage(continuationToken, context));
     }
 
     /**
@@ -1069,7 +1164,7 @@ public class KeyClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
      * results.
      */
-    private Mono<PagedResponse<KeyProperties>> listKeysFirstPage(Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeysFirstPageAsync(Context context) {
         try {
             return service.getKeysAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1082,8 +1177,8 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyClientImpl#listPropertiesOfKeys()}.
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
+     * {@link KeyClientImpl#listPropertiesOfKeysAsync()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
      * of the list operations.
@@ -1091,7 +1186,7 @@ public class KeyClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
      * results.
      */
-    private Mono<PagedResponse<KeyProperties>> listKeysNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeysNextPageAsync(String continuationToken, Context context) {
         try {
             return service.getKeysAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -1104,18 +1199,57 @@ public class KeyClientImpl {
         }
     }
 
-    public PagedFlux<DeletedKey> listDeletedKeys() {
+    public PagedIterable<KeyProperties> listPropertiesOfKeys() {
+        return new PagedIterable<>(
+            () -> listKeysFirstPage(Context.NONE),
+            continuationToken -> listKeysNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<KeyProperties> listPropertiesOfKeys(Context context) {
+        return new PagedIterable<>(
+            () -> listKeysFirstPage(context),
+            continuationToken -> listKeysNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 keys that can be found on a given key vault.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link PagedResponse} containing {@link KeyProperties} instances from the next page of results.
+     */
+    private PagedResponse<KeyProperties> listKeysFirstPage(Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
+     * {@link KeyClientImpl#listPropertiesOfKeys(Context)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
+     *
+     * @return A {@link PagedResponse} containing {@link KeyProperties} instances from the next page of results.
+     */
+    private PagedResponse<KeyProperties> listKeysNextPage(String continuationToken, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getKeys(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public PagedFlux<DeletedKey> listDeletedKeysAsync() {
         try {
-            return new PagedFlux<>(() -> withContext(this::listDeletedKeysFirstPage),
-                continuationToken -> withContext(context -> listDeletedKeysNextPage(continuationToken, context)));
+            return new PagedFlux<>(() -> withContext(this::listDeletedKeysFirstPageAsync),
+                continuationToken -> withContext(context -> listDeletedKeysNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
-    }
-
-    public PagedFlux<DeletedKey> listDeletedKeys(Context context) {
-        return new PagedFlux<>(() -> listDeletedKeysFirstPage(context),
-            continuationToken -> listDeletedKeysNextPage(continuationToken, context));
     }
 
     /**
@@ -1127,7 +1261,7 @@ public class KeyClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
      * results.
      */
-    private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage(Context context) {
+    private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPageAsync(Context context) {
         try {
             return service.getDeletedKeysAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1140,8 +1274,8 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyClientImpl#listDeletedKeys()}.
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
+     * {@link KeyClientImpl#listDeletedKeysAsync()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to
      * one of the list operations.
@@ -1149,7 +1283,7 @@ public class KeyClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link DeletedKey} instances from the next page of
      * results.
      */
-    private Mono<PagedResponse<DeletedKey>> listDeletedKeysNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<DeletedKey>> listDeletedKeysNextPageAsync(String continuationToken, Context context) {
         try {
             return service.getDeletedKeysAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -1162,18 +1296,53 @@ public class KeyClientImpl {
         }
     }
 
-    public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
+    public PagedIterable<DeletedKey> listDeletedKeys() {
+        return new PagedIterable<>(
+            () -> listDeletedKeysFirstPage(Context.NONE),
+            continuationToken -> listDeletedKeysNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
+        return new PagedIterable<>(
+            () -> listDeletedKeysFirstPage(context),
+            continuationToken -> listDeletedKeysNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 deleted keys that can be found on a given key vault.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link PagedResponse} containing {@link KeyProperties} instances from the next page of results.
+     */
+    private PagedResponse<DeletedKey> listDeletedKeysFirstPage(Context context) {
+        return service.getDeletedKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
+     * {@link KeyClientImpl#listDeletedKeys()}.
+     *
+     * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
+     * list operations.
+     *
+     * @return A {@link PagedResponse} that contains {@link DeletedKey} from the next page of results.
+     */
+    private PagedResponse<DeletedKey> listDeletedKeysNextPage(String continuationToken, Context context) {
+        return service.getDeletedKeys(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public PagedFlux<KeyProperties> listPropertiesOfKeyVersionsAsync(String name) {
         try {
-            return new PagedFlux<>(() -> withContext(context -> listKeyVersionsFirstPage(name, context)),
-                continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
+            return new PagedFlux<>(
+                () -> withContext(context -> listKeyVersionsFirstPageAsync(name, context)),
+                continuationToken -> withContext(context -> listKeyVersionsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
-    }
-
-    public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
-        return new PagedFlux<>(() -> listKeyVersionsFirstPage(name, context),
-            continuationToken -> listKeyVersionsNextPage(continuationToken, context));
     }
 
     /**
@@ -1185,7 +1354,7 @@ public class KeyClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
      * results.
      */
-    private Mono<PagedResponse<KeyProperties>> listKeyVersionsFirstPage(String name, Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeyVersionsFirstPageAsync(String name, Context context) {
         try {
             return service.getKeyVersionsAsync(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1198,8 +1367,8 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyClientImpl#listPropertiesOfKeyVersions(String)}.
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
+     * {@link KeyClientImpl#listPropertiesOfKeyVersionsAsync(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
      * of the list operations.
@@ -1207,7 +1376,7 @@ public class KeyClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
      * results.
      */
-    private Mono<PagedResponse<KeyProperties>> listKeyVersionsNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeyVersionsNextPageAsync(String continuationToken, Context context) {
         try {
             return service.getKeysAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -1218,6 +1387,50 @@ public class KeyClientImpl {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name) {
+        return new PagedIterable<>(
+            () -> listKeyVersionsFirstPage(name, Context.NONE),
+            continuationToken -> listKeyVersionsNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
+        return new PagedIterable<>(
+            () -> listKeyVersionsFirstPage(name, context),
+            continuationToken -> listKeyVersionsNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 versions of a key.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link PagedResponse} containing {@link KeyProperties} instances from the next page of results.
+     */
+    private PagedResponse<KeyProperties> listKeyVersionsFirstPage(String name, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getKeyVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
+     * {@link KeyClientImpl#listPropertiesOfKeyVersions(String)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
+     *
+     * @return A {@link PagedResponse} containing {@link KeyProperties} instances from the next page of results.
+     */
+    private PagedResponse<KeyProperties> listKeyVersionsNextPage(String continuationToken, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getKeys(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<byte[]>> getRandomBytesWithResponseAsync(int count, Context context) {

@@ -13,6 +13,9 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageOperationResponse;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -25,6 +28,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,6 +36,34 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
+
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
+     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
+     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
+     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
+     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
+    }
 
     /**
      * Return the embeddings for a given prompt.
@@ -67,7 +99,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -82,10 +115,12 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponse(
-            String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions)
-                : serviceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
+                ? openAIServiceClient.getEmbeddingsWithResponseAsync(
+                        deploymentOrModelName, embeddingsOptions, requestOptions)
+                : serviceClient.getEmbeddingsWithResponseAsync(
+                        deploymentOrModelName, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -157,7 +192,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -171,10 +207,12 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponse(
-            String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions)
-                : serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
+                ? openAIServiceClient.getCompletionsWithResponseAsync(
+                        deploymentOrModelName, completionsOptions, requestOptions)
+                : serviceClient.getCompletionsWithResponseAsync(
+                        deploymentOrModelName, completionsOptions, requestOptions);
     }
 
     /**
@@ -237,7 +275,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -251,18 +290,19 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponse(
-            String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
                 ? openAIServiceClient.getChatCompletionsWithResponseAsync(
-                        deploymentId, chatCompletionsOptions, requestOptions)
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions)
                 : serviceClient.getChatCompletionsWithResponseAsync(
-                        deploymentId, chatCompletionsOptions, requestOptions);
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
     /**
      * Return the embeddings for a given prompt.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -278,10 +318,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Embeddings> getEmbeddings(String deploymentId, EmbeddingsOptions embeddingsOptions) {
+    public Mono<Embeddings> getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(deploymentId, BinaryData.fromObject(embeddingsOptions), requestOptions)
+        return getEmbeddingsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Embeddings.class));
     }
@@ -290,7 +331,8 @@ public final class OpenAIAsyncClient {
      * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,10 +346,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Completions> getCompletions(String deploymentId, CompletionsOptions completionsOptions) {
+    public Mono<Completions> getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
+        return getCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
     }
@@ -316,7 +359,8 @@ public final class OpenAIAsyncClient {
      * Gets completions for the provided input prompt. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param prompt The prompt to generate completion text from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -328,15 +372,16 @@ public final class OpenAIAsyncClient {
      *     that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Completions> getCompletions(String deploymentId, String prompt) {
-        return getCompletions(deploymentId, CompletionsUtils.defaultCompletionsOptions(prompt));
+    public Mono<Completions> getCompletions(String deploymentOrModelName, String prompt) {
+        return getCompletions(deploymentOrModelName, CompletionsUtils.defaultCompletionsOptions(prompt));
     }
 
     /**
      * Gets completions as a stream for the provided input prompts. Completions support a wide variety of tasks and
      * generate text that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,12 +394,12 @@ public final class OpenAIAsyncClient {
      *     and generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<Completions> getCompletionsStream(String deploymentId, CompletionsOptions completionsOptions) {
+    public Flux<Completions> getCompletionsStream(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         completionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         BinaryData requestBody = BinaryData.fromObject(completionsOptions);
         Flux<ByteBuffer> responseStream =
-                getCompletionsWithResponse(deploymentId, requestBody, requestOptions)
+                getCompletionsWithResponse(deploymentOrModelName, requestBody, requestOptions)
                         .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents<Completions> completionsStream =
                 new OpenAIServerSentEvents<>(responseStream, Completions.class);
@@ -365,7 +410,8 @@ public final class OpenAIAsyncClient {
      * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      * text that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -380,11 +426,11 @@ public final class OpenAIAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatCompletions> getChatCompletions(
-            String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
+            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getChatCompletionsWithResponse(
-                        deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
     }
@@ -393,7 +439,8 @@ public final class OpenAIAsyncClient {
      * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
      * generate text that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -407,43 +454,93 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ChatCompletions> getChatCompletionsStream(
-            String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
+            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream =
                 getChatCompletionsWithResponse(
-                                deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                         .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
     }
 
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
     /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
-     * and Non-Azure OpenAI service implementations are mutually exclusive. Both service client implementation cannot
-     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     * Starts the generation of a batch of images from a text caption.
      *
-     * @param serviceClient the service client implementation for Azure OpenAI service client.
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Mono} with the image generation result
      */
-    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        openAIServiceClient = null;
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ImageResponse> getImages(ImageGenerationOptions imageGenerationOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        return openAIServiceClient != null
+                ? openAIServiceClient
+                        .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
+                        .flatMap(FluxUtil::toMono)
+                        .map(it -> it.toObject(ImageResponse.class))
+                : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
+                        .last()
+                        .flatMap(it -> it.getFinalResult())
+                        .map(it -> it.toObject(ImageOperationResponse.class).getResult());
     }
 
     /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
-     * OpenAI and Non-Azure OpenAI service implementations are mutually exclusive. Both service client implementation
-     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     * Starts the generation of a batch of images from a text caption.
      *
-     * @param serviceClient the service client implementation for Non-Azure OpenAI service client.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of status details for long running operations.
      */
-    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
-        this.serviceClient = null;
-        openAIServiceClient = serviceClient;
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
+            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return this.serviceClient.beginBeginAzureBatchImageGenerationAsync(imageGenerationOptions, requestOptions);
     }
 }

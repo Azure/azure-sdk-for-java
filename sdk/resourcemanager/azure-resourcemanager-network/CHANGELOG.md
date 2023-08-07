@@ -1,14 +1,37 @@
 # Release History
 
-## 2.28.0-beta.1 (Unreleased)
+## 2.30.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `backends` for `LoadBalancingRule`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
+
+## 2.29.0 (2023-07-28)
 
 ### Bugs Fixed
 
+- Fixed a bug that `priority` wasn't set for path-based request routing rules when creating V2 Application Gateways.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-02-01`.
+
+## 2.28.0 (2023-06-25)
+
+### Features Added
+
+- Supported `WebApplicationFirewallPolicy` for Web Application Firewall Policy.
+- Supported associating `ApplicationGateway` with `WebApplicationFirewallPolicy`.
+- Deprecated `withWebApplicationFirewall` in `ApplicationGateway` since no further investments will be made on legacy 
+  WAF configuration.
 
 ## 2.27.0 (2023-05-25)
 

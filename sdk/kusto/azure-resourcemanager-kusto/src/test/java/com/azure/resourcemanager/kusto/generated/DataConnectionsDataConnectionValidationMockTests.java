@@ -33,7 +33,7 @@ public final class DataConnectionsDataConnectionValidationMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"errorMessage\":\"gywwpgjxs\"},{\"errorMessage\":\"tf\"},{\"errorMessage\":\"gicgaaoepttaq\"}]}";
+            "{\"value\":[{\"errorMessage\":\"qwahoi\"},{\"errorMessage\":\"wgniipr\"},{\"errorMessage\":\"vawuwzdufypivlsb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,14 +65,14 @@ public final class DataConnectionsDataConnectionValidationMockTests {
             manager
                 .dataConnections()
                 .dataConnectionValidation(
-                    "fwyfwlwxjwet",
-                    "psihcla",
-                    "zvaylptrsqqw",
+                    "emmucfxh",
+                    "kkflrmymyincqlhr",
+                    "s",
                     new DataConnectionValidationInner()
-                        .withDataConnectionName("cmwqkchcxwa")
-                        .withProperties(new DataConnectionInner().withLocation("w")),
+                        .withDataConnectionName("lmiiiovg")
+                        .withProperties(new DataConnectionInner().withLocation("xuugqkc")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gywwpgjxs", response.value().get(0).errorMessage());
+        Assertions.assertEquals("qwahoi", response.value().get(0).errorMessage());
     }
 }

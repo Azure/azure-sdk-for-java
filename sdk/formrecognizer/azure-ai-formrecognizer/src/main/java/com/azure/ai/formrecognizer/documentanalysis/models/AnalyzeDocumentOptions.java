@@ -5,17 +5,16 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Options that may be passed when using analyze document API on Document Analysis client.
+ * The configurable options to be passed when using analyze document API on Document Analysis client.
  */
 @Fluent
 public final class AnalyzeDocumentOptions {
     private List<String> pages;
     private String locale;
-
-    private List<String> queryFields;
     private List<DocumentAnalysisFeature> documentAnalysisFeatures;
 
     /**
@@ -67,24 +66,6 @@ public final class AnalyzeDocumentOptions {
     }
 
     /**
-     * Get the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     * @return List of additional fields to extract from analysis.
-     */
-    public List<String> getQueryFields() {
-        return queryFields;
-    }
-
-    /**
-     * Set the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     * @param queryFields List of additional fields to extract from analysis.
-     * @return the updated {@code AnalyzeDocumentOptions} value.
-     */
-    public AnalyzeDocumentOptions setQueryFields(List<String> queryFields) {
-        this.queryFields = queryFields;
-        return this;
-    }
-
-    /**
      * Get the list of optional analysis features.
      * @return List of optional analysis features.
      */
@@ -99,6 +80,18 @@ public final class AnalyzeDocumentOptions {
      */
     public AnalyzeDocumentOptions setDocumentAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
         this.documentAnalysisFeatures = documentAnalysisFeatures;
+        return this;
+    }
+
+    /**
+     * Set optional analysis features.
+     * @param documentAnalysisFeatures List of optional analysis features.
+     * @return the updated {@code AnalyzeDocumentOptions} value.
+     */
+    public AnalyzeDocumentOptions setDocumentAnalysisFeatures(DocumentAnalysisFeature... documentAnalysisFeatures) {
+        if (documentAnalysisFeatures != null) {
+            this.documentAnalysisFeatures = Arrays.asList(documentAnalysisFeatures);
+        }
         return this;
     }
 }

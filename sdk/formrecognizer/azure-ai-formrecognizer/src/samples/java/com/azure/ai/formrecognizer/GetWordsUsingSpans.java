@@ -41,7 +41,7 @@ public class GetWordsUsingSpans {
         File selectionMarkDocument = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/forms/Form_1.jpg");
         Path filePath = selectionMarkDocument.toPath();
-        BinaryData selectionMarkDocumentData = BinaryData.fromFile(filePath);
+        BinaryData selectionMarkDocumentData = BinaryData.fromFile(filePath, (int) selectionMarkDocument.length());
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", selectionMarkDocumentData);

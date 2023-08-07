@@ -7,17 +7,17 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CommunicationUserIdentifierModel model. */
+/** A user that got created with an Azure Communication Services resource. */
 @Fluent
 public final class CommunicationUserIdentifierModel {
     /*
-     * The id property.
+     * The Id of the communication user.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
-     * Get the id property: The id property.
+     * Get the id property: The Id of the communication user.
      *
      * @return the id value.
      */
@@ -26,7 +26,7 @@ public final class CommunicationUserIdentifierModel {
     }
 
     /**
-     * Set the id property: The id property.
+     * Set the id property: The Id of the communication user.
      *
      * @param id the id value to set.
      * @return the CommunicationUserIdentifierModel object itself.

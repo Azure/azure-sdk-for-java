@@ -3,11 +3,11 @@
 
 package com.azure.maps.route;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MapsRouteClientBuilderTest {
     // Test for null RenderClientId, the client ID value

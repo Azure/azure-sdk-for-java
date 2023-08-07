@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
@@ -33,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Cancelled\",\"privateEndpoint\":{\"id\":\"pjbi\"},\"groupIds\":[\"mfxumvfcluyovw\",\"nbkfezzxscy\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"g\",\"actionsRequired\":\"ujb\"}},\"etag\":\"omvzzbtd\",\"id\":\"qvpn\",\"name\":\"yujviylwdshfssn\",\"type\":\"bgye\"}";
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"ruud\"},\"groupIds\":[\"ibthostgktstvd\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"zedqbcvhzlhplo\",\"actionsRequired\":\"kdl\"}},\"etag\":\"qfbumlkxtrqjf\",\"id\":\"mlmbtxhwgfwsrta\",\"name\":\"coezbrhubskh\",\"type\":\"dyg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +63,12 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("rydxtqm", "eoxorggufhyao", "tbghhavgrvkf", Context.NONE)
+                .getWithResponse("tbaxk", "xywr", "kpyklyhp", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.PENDING, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("g", response.privateLinkServiceConnectionState().description());
+                PrivateLinkServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("zedqbcvhzlhplo", response.privateLinkServiceConnectionState().description());
     }
 }

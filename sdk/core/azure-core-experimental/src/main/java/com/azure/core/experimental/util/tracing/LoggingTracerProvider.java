@@ -4,6 +4,7 @@
 package com.azure.core.experimental.util.tracing;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -11,8 +12,9 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.core.util.tracing.TracingLink;
 
-import java.util.UUID;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -22,6 +24,12 @@ import java.util.function.Function;
  */
 public class LoggingTracerProvider implements TracerProvider {
     private static final TracingOptions DEFAULT_OPTIONS = new TracingOptions().setEnabled(false);
+
+    /**
+     * Creates new instance of {@link LoggingTracerProvider}.
+     */
+    public LoggingTracerProvider() {
+    }
 
     /**
      * {@inheritDoc}
@@ -73,8 +81,24 @@ public class LoggingTracerProvider implements TracerProvider {
             }
 
             LoggingSpan span = new LoggingSpan(name, options.getSpanKind(), getSpan(context));
-            options.getAttributes().forEach((k, v) -> span.addKeyValue(k, v));
+            if (options.getAttributes() != null) {
+                options.getAttributes().forEach((k, v) -> span.addKeyValue(k, v));
+            }
             span.addKeyValue("startTimestamp", options.getStartTimestamp());
+
+            if (options.getLinks() != null) {
+                for (int i = 0; i < options.getLinks().size(); i++) {
+                    TracingLink link = options.getLinks().get(i);
+                    span.addKeyValue("link[" + i + "].traceId", link.getContext().getData("traceId").orElse(null));
+                    span.addKeyValue("link[" + i + "].spanId", link.getContext().getData("spanId").orElse(null));
+
+                    if (link.getAttributes() != null) {
+                        for (Map.Entry<String, Object> attribute : link.getAttributes().entrySet()) {
+                            span.addKeyValue("link[" + i + "]." + attribute.getKey(), attribute.getValue());
+                        }
+                    }
+                }
+            }
             return context.addData("span", span);
         }
 
@@ -110,11 +134,9 @@ public class LoggingTracerProvider implements TracerProvider {
                 return Context.NONE;
             }
 
-            String traceId = traceparent.substring(3, 35);
-            String spanId = traceparent.substring(36, 52);
-            LoggingSpan span = new LoggingSpan("extracted", SpanKind.INTERNAL, traceId, spanId);
-
-            return new Context("span", span);
+            // follows https://www.w3.org/TR/trace-context/
+            return new Context("traceId", traceparent.substring(3, 35))
+                .addData("spanId", traceparent.substring(36, 52));
         }
 
         private LoggingSpan getSpan(Context context) {
@@ -153,8 +175,8 @@ public class LoggingTracerProvider implements TracerProvider {
         }
 
         LoggingSpan(String name, SpanKind kind, String traceId, String parentSpanId) {
-            this.traceId = traceId != null ? traceId : UUID.randomUUID().toString().replace("-", "");
-            this.spanId = UUID.randomUUID().toString().replace("-", "").substring(16);
+            this.traceId = traceId != null ? traceId : getRandomId(32);
+            this.spanId = getRandomId(16);
             this.log = LOGGER.atInfo()
                 .addKeyValue("traceId", this.traceId)
                 .addKeyValue("spanId", spanId)
@@ -185,6 +207,15 @@ public class LoggingTracerProvider implements TracerProvider {
                     log.log("span ended");
                 }
             }
+        }
+
+        /**
+         * Generates random id with given length up to 32 chars.
+         */
+        private static String getRandomId(int length) {
+            return CoreUtils.randomUuid().toString()
+                .replace("-", "")
+                .substring(32 - length);
         }
     }
 }

@@ -185,38 +185,47 @@ extends:
         displayName: 'Dependency Version Overrides'
         dependsOn: []
         jobs:
-          - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
             parameters:
-              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-              MatrixConfigs:
-                - Name: version_overrides_tests
-                  Path: sdk/core/version-overrides-matrix.json
-                  Selection: all
-                  GenerateVMJobs: true
-              AdditionalParameters:
-                ServiceDirectory: core
-                Artifacts:
-                  - name: azure-core-version-tests
-                    groupId: com.azure
-                    safeName: azurecoreversiontests
+              ServiceDirectory: core
+              Artifacts:
+                - name: azure-core-version-tests
+                  groupId: com.azure
+                  safeName: azurecoreversiontests
+              VersionOverrides:
+                - jackson_2.10
+                - jackson_2.11
+                - jackson_2.12
+                - jackson_2.14
+                - jackson_2.15
+                - reactor_2020
+                - reactor_2022
+              TestGoals: surefire:test
       - stage: AzureJsonReflectVersionSupport
         displayName: 'azure-json-reflect Version Support'
         dependsOn: []
         jobs:
-          - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
             parameters:
-              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-              MatrixConfigs:
-                - Name: azure_json_reflect_version_support
-                  Path: sdk/core/azure-json-reflect-version-support-matrix.json
-                  Selection: all
-                  GenerateVMJobs: true
-              AdditionalParameters:
-                ServiceDirectory: core
-                Artifacts:
-                  - name: azure-json-reflect
-                    groupId: com.azure
-                    safeName: azurejsonreflect
+              ServiceDirectory: core
+              Artifacts:
+                - name: azure-json-reflect
+                  groupId: com.azure
+                  safeName: azurejsonreflect
+              VersionOverrides:
+                - gson_2.4
+                - gson_2.5
+                - gson_2.6
+                - gson_2.7
+                - gson_2.8
+                - gson_2.9
+                - jackson_2.10
+                - jackson_2.11
+                - jackson_2.12
+                - jackson_2.13
+                - jackson_2.14
+                - jackson_2.15
+              TestGoals: surefire:test
 
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml

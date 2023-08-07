@@ -9,7 +9,7 @@ import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignmentCheckNam
 /** Samples for ClusterPrincipalAssignments CheckNameAvailability. */
 public final class ClusterPrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoClusterPrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterPrincipalAssignmentsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsCheckNameAvailability.

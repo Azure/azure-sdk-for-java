@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.PartitionBasedGoneNotifier;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -84,6 +85,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
+    private PartitionBasedGoneNotifier partitionBasedGoneNotifier;
+
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
                 || this.operationType == OperationType.ReadFeed
@@ -105,6 +108,12 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else {
             return this.operationType.equals(OperationType.ExecuteJavaScript) && isReadOnlyScript.equalsIgnoreCase(Boolean.TRUE.toString());
         }
+    }
+
+    public boolean isMetadataRequest() {
+        return (this.getOperationType() != OperationType.ExecuteJavaScript
+            && this.getResourceType() == ResourceType.StoredProcedure)
+            || this.getResourceType() != ResourceType.Document;
     }
 
     public RxDocumentServiceRequest setNonIdempotentWriteRetriesEnabled(boolean enabled) {
@@ -1170,12 +1179,20 @@ public class RxDocumentServiceRequest implements Cloneable {
             this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.toString());
         }
     }
-  
+
     public Duration getResponseTimeout() {
         return responseTimeout;
     }
 
     public void setResponseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
+    }
+
+    public void setPartitionBasedGoneNotifier(PartitionBasedGoneNotifier partitionBasedGoneNotifier) {
+        this.partitionBasedGoneNotifier = partitionBasedGoneNotifier;
+    }
+
+    public PartitionBasedGoneNotifier getPartitionBasedGoneNotifier() {
+        return partitionBasedGoneNotifier;
     }
 }

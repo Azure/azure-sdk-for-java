@@ -6,20 +6,19 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineListResult;
-import org.junit.jupiter.api.Test;
 
 public final class SqlVirtualMachineListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SqlVirtualMachineListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"identity\":{\"type\":\"None\"},\"properties\":{\"virtualMachineResourceId\":\"gukdkexxppo\",\"provisioningState\":\"xaxcfjpgddtocjjx\",\"sqlImageOffer\":\"pmouexhdz\",\"sqlServerLicenseType\":\"PAYG\",\"sqlManagement\":\"LightWeight\",\"leastPrivilegeMode\":\"Enabled\",\"sqlImageSku\":\"Developer\",\"sqlVirtualMachineGroupResourceId\":\"bzv\",\"wsfcStaticIp\":\"t\",\"enableAutomaticUpgrade\":false},\"location\":\"pzaoqvuhr\",\"tags\":{\"mjthjqkwp\":\"fcyddg\"},\"id\":\"eicxmqciwqvhkhi\",\"name\":\"uigdtopbobjog\",\"type\":\"m\"},{\"identity\":{\"type\":\"None\"},\"properties\":{\"virtualMachineResourceId\":\"rzayv\",\"provisioningState\":\"pgvdf\",\"sqlImageOffer\":\"otkftutqxlngx\",\"sqlServerLicenseType\":\"AHUB\",\"sqlManagement\":\"LightWeight\",\"leastPrivilegeMode\":\"Enabled\",\"sqlImageSku\":\"Web\",\"sqlVirtualMachineGroupResourceId\":\"xdqmidtthzrvqdra\",\"wsfcStaticIp\":\"yb\",\"enableAutomaticUpgrade\":true},\"location\":\"skanyk\",\"tags\":{\"ndrvynhzg\":\"cuiywgqyw\",\"ecfvmm\":\"phrcgyncoc\",\"sxlzevgbmqj\":\"oo\",\"lzu\":\"abcypmivk\"},\"id\":\"ccfwnfnbacfion\",\"name\":\"ebxetqgtzxdp\",\"type\":\"qbqqwxr\"}],\"nextLink\":\"eallnwsubisnj\"}")
+                    "{\"value\":[{\"identity\":{\"principalId\":\"eb5fbf4d-559e-4c8c-b748-e806cc8b6ece\",\"type\":\"None\",\"tenantId\":\"3a23954a-6ca7-49bc-adc3-485f8a27c26b\"},\"properties\":{\"virtualMachineResourceId\":\"m\",\"provisioningState\":\"hrzayvvtpgvdf\",\"sqlImageOffer\":\"otkftutqxlngx\",\"sqlServerLicenseType\":\"AHUB\",\"sqlManagement\":\"LightWeight\",\"leastPrivilegeMode\":\"Enabled\",\"sqlImageSku\":\"Web\",\"sqlVirtualMachineGroupResourceId\":\"xdqmidtthzrvqdra\",\"wsfcStaticIp\":\"yb\",\"enableAutomaticUpgrade\":false},\"location\":\"kanyktzlcuiywg\",\"tags\":{\"gpphrcgyn\":\"gndrvynh\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\",\"ebxetqgtzxdp\":\"ccfwnfnbacfion\"},\"id\":\"qbqqwxr\",\"name\":\"feallnwsu\",\"type\":\"isnjampmngnz\"}],\"nextLink\":\"xaqwoochcbonqv\"}")
                 .toObject(SqlVirtualMachineListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SqlVirtualMachineListResult model = new SqlVirtualMachineListResult();
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineListResult.class);
     }

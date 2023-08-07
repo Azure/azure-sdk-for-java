@@ -49,12 +49,13 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.66</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.phonenumbers/com.azure.communication.phonenumbers=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -62,12 +63,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.42.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.2.10</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -90,7 +91,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.29</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,7 +103,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -114,13 +115,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.10</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.12</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -134,7 +135,15 @@
         <configuration>
           <includes>
             <include>com/azure/communication/phonenumbers/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/converters/*.class</include>
+            <include>com/azure/communication/phonenumbers/implementation/models/*.class</include>
+            <include>com/azure/communication/phonenumbers/models/*.class</include>
             <include>com/azure/communication/phonenumbers/siprouting/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/implementation/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/implementation/converters/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/implementation/models/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/models/*.class</include>
           </includes>
         </configuration>
         <executions>

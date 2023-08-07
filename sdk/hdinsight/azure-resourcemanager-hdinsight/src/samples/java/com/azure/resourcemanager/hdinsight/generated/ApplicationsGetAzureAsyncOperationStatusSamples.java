@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Applications GetAzureAsyncOperationStatus. */
 public final class ApplicationsGetAzureAsyncOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetApplicationCreationAsyncOperationStatus.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetApplicationCreationAsyncOperationStatus.json
      */
     /**
      * Sample code: Get the azure async operation status.
@@ -20,6 +18,6 @@ public final class ApplicationsGetAzureAsyncOperationStatusSamples {
         manager
             .applications()
             .getAzureAsyncOperationStatusWithResponse(
-                "rg1", "cluster1", "app", "CF938302-6B4D-44A0-A6D2-C0D67E847AEC", Context.NONE);
+                "rg1", "cluster1", "app", "CF938302-6B4D-44A0-A6D2-C0D67E847AEC", com.azure.core.util.Context.NONE);
     }
 }

@@ -94,6 +94,15 @@ public final class CallConnectionProperties {
      *
      * @return sourceIdentity value.
      */
+    public CommunicationIdentifier getSource() {
+        return sourceIdentity;
+    }
+
+    /**
+     * Get the source identity.
+     *
+     * @return sourceIdentity value.
+     */
     public CommunicationIdentifier getSourceIdentity() {
         return sourceIdentity;
     }
@@ -160,7 +169,7 @@ public final class CallConnectionProperties {
     public String getMediaSubscriptionId() {
         return mediaSubscriptionId;
     }
-    
+
     /**
      *  Get identity that answered the call
      * @return identity that answered the call
@@ -168,7 +177,15 @@ public final class CallConnectionProperties {
     public CommunicationUserIdentifier getAnsweredByIdentifier() {
         return answeredByIdentifier;
     }
-    
+
+    /**
+     *  Get identity that answered the call
+     * @return identity that answered the call
+     */
+    public CommunicationUserIdentifier getAnsweredBy() {
+        return answeredByIdentifier;
+    }
+
     /**
      * Get correlationId for the call
      * @return correlationId for the call

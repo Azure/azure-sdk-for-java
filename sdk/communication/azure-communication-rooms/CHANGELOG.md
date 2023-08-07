@@ -1,5 +1,33 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.2 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.2.9` to version `1.2.10`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
+
+## 1.0.1 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.2.8` to version `1.2.9`.
+
 ## 1.0.0 (2023-06-12)
 General Availability version of the Azure Communication Services Rooms Java SDK.
 

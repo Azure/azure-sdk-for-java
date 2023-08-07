@@ -11,7 +11,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.mocking.MockFileChannel;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -474,6 +477,7 @@ public class FluxUtilTest {
     }
 
     @Test
+    @DisabledOnOs(OS.WINDOWS) // Test is disabled on Windows as a FileChannel isn't used.
     public void toFluxByteBufferFileInputStreamChannelCloses() throws IOException {
         AtomicInteger positionCalls = new AtomicInteger();
         AtomicInteger sizeCalls = new AtomicInteger();
@@ -514,6 +518,33 @@ public class FluxUtilTest {
         assertEquals(1, positionCalls.get());
         assertEquals(1, sizeCalls.get());
         assertEquals(1, implCloseChannelCalls.get());
+    }
+
+    /**
+     * Verifies that the usage of {@link FluxUtil#toFluxByteBuffer(InputStream)} with a {@link FileInputStream} does
+     * not prevent the file from being deleted.
+     *
+     * @throws IOException If an error occurs while creating the temporary file.
+     */
+    @RepeatedTest(10) // Repeat the test times to ensure it's not a fluke.
+    public void ensureFileInputStreamFileCanBeDeletedAsConversionToFluxByteBuffer() throws IOException {
+        Path file = Files.createTempFile("canBeDeleted" + CoreUtils.randomUuid(), "");
+        Files.write(file, "some random data".getBytes(StandardCharsets.UTF_8));
+        FileInputStream fileInputStream = new FileInputStream(file.toFile());
+
+        Mono<Void> convertThenDeleteFile = FluxUtil.toFluxByteBuffer(fileInputStream)
+            .then(Mono.create(sink -> {
+                try {
+                    fileInputStream.close();
+                    Files.delete(file);
+                    sink.success();
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            }));
+
+        StepVerifier.create(convertThenDeleteFile).verifyComplete();
+        assertTrue(Files.notExists(file));
     }
 
     public Flux<ByteBuffer> mockReturnType() {

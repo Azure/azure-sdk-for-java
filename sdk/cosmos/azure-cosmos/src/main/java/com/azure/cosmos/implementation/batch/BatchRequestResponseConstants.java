@@ -10,7 +10,7 @@ package com.azure.cosmos.implementation.batch;
 public final class BatchRequestResponseConstants {
 
     // Size limits:
-    public static final int MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES = 220201;
+    public static final int DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES = 220201;
     public static final int MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST = 100;
 
     public static final int DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS = 1000;
@@ -48,4 +48,5 @@ public final class BatchRequestResponseConstants {
 
     public static final int MAX_COLLECTION_RECREATION_RETRY_COUNT = 10;
     public static final int MAX_COLLECTION_RECREATION_REFRESH_INTERVAL_IN_SECONDS = 1;
+    public static final String PRESERVE_ORDERING_EXCEPTION_MESSAGE = "Failed due to a previous operation failing with an exception that should not be retried with the same id and partition key. This is unique to the preserve ordering flag.";
 }

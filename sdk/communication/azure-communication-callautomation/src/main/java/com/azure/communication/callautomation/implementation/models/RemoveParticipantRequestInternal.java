@@ -23,6 +23,12 @@ public final class RemoveParticipantRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * The callback URI to override the main callback URI.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
     /**
      * Get the participantToRemove property: The participants to be removed from the call.
      *
@@ -62,6 +68,26 @@ public final class RemoveParticipantRequestInternal {
      */
     public RemoveParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback URI to override the main callback URI.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback URI to override the main callback URI.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the RemoveParticipantRequestInternal object itself.
+     */
+    public RemoveParticipantRequestInternal setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Volumes Update. */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Volumes_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Volumes_Patch.json
      */
     /**
      * Sample code: Patch volume.

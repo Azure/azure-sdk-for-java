@@ -7,7 +7,7 @@ package com.azure.resourcemanager.webpubsub.generated;
 /** Samples for WebPubSubSharedPrivateLinkResources CreateOrUpdate. */
 public final class WebPubSubSharedPrivateLinkResourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubSharedPrivateLinkResources_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubSharedPrivateLinkResources_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_CreateOrUpdate.

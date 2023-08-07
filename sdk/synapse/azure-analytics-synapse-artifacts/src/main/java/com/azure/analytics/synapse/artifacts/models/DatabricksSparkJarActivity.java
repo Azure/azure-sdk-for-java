@@ -132,6 +132,20 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public DatabricksSparkJarActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkJarActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public DatabricksSparkJarActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

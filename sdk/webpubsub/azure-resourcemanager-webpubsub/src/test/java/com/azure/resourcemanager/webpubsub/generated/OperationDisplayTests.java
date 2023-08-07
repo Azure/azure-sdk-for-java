@@ -14,26 +14,26 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"tihfx\",\"resource\":\"jbpzvgnwzsymg\",\"operation\":\"uf\",\"description\":\"zk\"}")
+                    "{\"provider\":\"ozkrwfndiodjpslw\",\"resource\":\"dpvwryoqpsoaccta\",\"operation\":\"kljla\",\"description\":\"cr\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("tihfx", model.provider());
-        Assertions.assertEquals("jbpzvgnwzsymg", model.resource());
-        Assertions.assertEquals("uf", model.operation());
-        Assertions.assertEquals("zk", model.description());
+        Assertions.assertEquals("ozkrwfndiodjpslw", model.provider());
+        Assertions.assertEquals("dpvwryoqpsoaccta", model.resource());
+        Assertions.assertEquals("kljla", model.operation());
+        Assertions.assertEquals("cr", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("tihfx")
-                .withResource("jbpzvgnwzsymg")
-                .withOperation("uf")
-                .withDescription("zk");
+                .withProvider("ozkrwfndiodjpslw")
+                .withResource("dpvwryoqpsoaccta")
+                .withOperation("kljla")
+                .withDescription("cr");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("tihfx", model.provider());
-        Assertions.assertEquals("jbpzvgnwzsymg", model.resource());
-        Assertions.assertEquals("uf", model.operation());
-        Assertions.assertEquals("zk", model.description());
+        Assertions.assertEquals("ozkrwfndiodjpslw", model.provider());
+        Assertions.assertEquals("dpvwryoqpsoaccta", model.resource());
+        Assertions.assertEquals("kljla", model.operation());
+        Assertions.assertEquals("cr", model.description());
     }
 }

@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import static com.azure.cosmos.implementation.ClientRetryPolicyTest.validateSuccess;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 
 public class RenameCollectionAwareClientRetryPolicyTest {
 
@@ -22,7 +23,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
     @Test(groups = "unit", timeOut = TIMEOUT)
     public void onBeforeSendRequestNotInvoked() {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
 
         IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy());
         RxClientCollectionCache rxClientCollectionCache = Mockito.mock(RxClientCollectionCache.class);
@@ -51,7 +52,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
     @Test(groups = "unit", timeOut = TIMEOUT)
     public void shouldRetryWithNotFoundStatusCode() {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null),Mockito.eq(false));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
         IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy());
         RxClientCollectionCache rxClientCollectionCache = Mockito.mock(RxClientCollectionCache.class);
 
@@ -77,7 +78,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
     @Test(groups = "unit", timeOut = TIMEOUT)
     public void shouldRetryWithNotFoundStatusCodeAndReadSessionNotAvailableSubStatusCode() {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
         IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy());
         RxClientCollectionCache rxClientCollectionCache = Mockito.mock(RxClientCollectionCache.class);
 
@@ -114,7 +115,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
     @Test(groups = "unit", timeOut = TIMEOUT)
     public void shouldRetryWithGenericException() {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
         IRetryPolicyFactory retryPolicyFactory = new RetryPolicy(mockDiagnosticsClientContext(), endpointManager, ConnectionPolicy.getDefaultPolicy());
         RxClientCollectionCache rxClientCollectionCache = Mockito.mock(RxClientCollectionCache.class);
 
