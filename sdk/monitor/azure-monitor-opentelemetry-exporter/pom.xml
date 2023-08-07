@@ -54,12 +54,12 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.25.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.25.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -122,7 +122,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.25.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -196,8 +196,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.25.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.25.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
