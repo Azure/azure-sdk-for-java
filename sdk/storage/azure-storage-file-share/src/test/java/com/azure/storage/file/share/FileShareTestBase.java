@@ -4,6 +4,8 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.*;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
@@ -538,6 +540,16 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
         // Or handle the case when all retries are exhausted
         return null;
+    }
+
+    protected static String getAuthToken() {
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
+            return "recordingBearerToken";
+        }
+        List<String> scopes = new ArrayList<>();
+        scopes.add("https://storage.azure.com/.default");
+        return new EnvironmentCredentialBuilder().build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {

@@ -46,13 +46,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class DirectoryAsyncApiTests extends FileShareTestBase{
 
-    ShareDirectoryAsyncClient primaryDirectoryAsyncClient;
-    ShareClient shareClient;
-    String directoryPath;
-    String shareName;
-    static Map<String, String> testMetadata;
-    FileSmbProperties smbProperties;
-    static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
+    private ShareDirectoryAsyncClient primaryDirectoryAsyncClient;
+    private ShareClient shareClient;
+    private String directoryPath;
+    private String shareName;
+    private static Map<String, String> testMetadata;
+    private FileSmbProperties smbProperties;
+    private static final String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
     public void setup() {

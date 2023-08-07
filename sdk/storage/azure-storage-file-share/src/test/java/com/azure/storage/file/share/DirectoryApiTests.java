@@ -1613,7 +1613,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         int maxRetries = 5;
         long retryDelayMillis = 1000;
 
-        for (int i = 0; i <= maxRetries; i++) {
+        for (int i = 0; i < maxRetries; i++) {
             try {
                 HttpClientOptions clientOptions = new HttpClientOptions()
                     .setApplicationId("client-options-id")
@@ -1635,12 +1635,10 @@ public class DirectoryApiTests extends FileShareTestBase {
                 return;
             } catch (Exception e) {
                 // Test failed; wait before retrying
-                if (i < maxRetries) {
-                    try {
-                        Thread.sleep(retryDelayMillis);
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
+                try {
+                    Thread.sleep(retryDelayMillis);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
                 }
             }
         }
