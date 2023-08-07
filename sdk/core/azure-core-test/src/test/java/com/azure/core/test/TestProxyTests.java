@@ -16,6 +16,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
@@ -314,6 +315,7 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Accept")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client).build();
