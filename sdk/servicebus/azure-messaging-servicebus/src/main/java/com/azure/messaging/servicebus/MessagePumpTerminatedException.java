@@ -10,24 +10,25 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 
 /**
- * The exception emitted by the mono returned from the MessagePump#begin() API.
- * If available, the {@link TerminatedException#getCause()}} indicates the cause for the termination of message pumping.
+ * The exception emitted by the mono returned from the {@link SessionsMessagePump#begin()} and
+ * {@link NonSessionMessagePump#begin()} API. If available, the {@link MessagePumpTerminatedException#getCause()}}
+ * indicates the cause for the termination of message pumping.
  */
-final class TerminatedException extends RuntimeException {
+final class MessagePumpTerminatedException extends RuntimeException {
     private static final String PUMP_ID_KEY = "pump-id";
     private final long pumpId;
     private final String fqdn;
     private final String entityPath;
 
     /**
-     * Instantiate {@link TerminatedException} representing termination of a MessagePump.
+     * Instantiate {@link MessagePumpTerminatedException} representing termination of a MessagePump.
      *
      * @param pumpId The unique identifier of the MessagePump that terminated.
      * @param fqdn The FQDN of the host from which the message was pumping.
      * @param entityPath The path to the entity within the FQDN streaming message.
      * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
      */
-    TerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt) {
+    MessagePumpTerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt) {
         super(detectedAt);
         this.pumpId = pumpId;
         this.fqdn = fqdn;
@@ -35,7 +36,7 @@ final class TerminatedException extends RuntimeException {
     }
 
     /**
-     * Instantiate {@link TerminatedException} representing termination of a MessagePump.
+     * Instantiate {@link MessagePumpTerminatedException} representing termination of a MessagePump.
      *
      * @param pumpId The unique identifier of the MessagePump that terminated.
      * @param fqdn The FQDN of the host from which the message was pumping.
@@ -43,7 +44,7 @@ final class TerminatedException extends RuntimeException {
      * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
      * @param terminationCause The reason for the termination of the pump.
      */
-    TerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt, Throwable terminationCause) {
+    MessagePumpTerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt, Throwable terminationCause) {
         super(detectedAt, terminationCause);
         this.pumpId = pumpId;
         this.fqdn = fqdn;
@@ -51,16 +52,16 @@ final class TerminatedException extends RuntimeException {
     }
 
     /**
-     * Instantiate {@link TerminatedException} that represents the case when the MessagePump terminates by running
+     * Instantiate {@link MessagePumpTerminatedException} that represents the case when the MessagePump terminates by running
      * into the completion.
      *
      * @param pumpId The unique identifier of the pump that terminated.
      * @param fqdn The FQDN of the host from which the message was pumping.
      * @param entityPath The path to the entity within the FQDN streaming message.
-     * @return the {@link TerminatedException}.
+     * @return the {@link MessagePumpTerminatedException}.
      */
-    static TerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
-        return new TerminatedException(pumpId, fqdn, entityPath, "pumping#reached-completion");
+    static MessagePumpTerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
+        return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#reached-completion");
     }
 
     /**
@@ -72,7 +73,7 @@ final class TerminatedException extends RuntimeException {
      */
     void log(ClientLogger logger, String message, boolean logError) {
         if (logError) {
-            final TerminatedException error = this;
+            final MessagePumpTerminatedException error = this;
             logger.atInfo()
                 .addKeyValue(PUMP_ID_KEY, pumpId)
                 .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
