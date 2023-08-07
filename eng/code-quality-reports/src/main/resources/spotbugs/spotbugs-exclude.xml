@@ -2701,7 +2701,7 @@
   </Match>
   <!-- False positives -->
   <Match>
-    <Class name="com.azure.messaging.servicebus.NonSessionProcessor$RollingMessagePump"/>
+    <Class name="com.azure.messaging.servicebus.NonSessionProcessor$RollingNonSessionMessagePump"/>
     <Or>
       <Field name="builder"/>
       <Field name="logger"/>
@@ -2718,10 +2718,10 @@
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
-  <!-- The RollingMessagePump and RollingSessionsMessagePump doesn't need to be serializable -->
+  <!-- The RollingNonSessionMessagePump and RollingSessionsMessagePump doesn't need to be serializable -->
   <Match>
     <Class
-      name="~com\.azure\.messaging\.servicebus\.NonSessionProcessor\$RollingMessagePump"/>
+      name="~com\.azure\.messaging\.servicebus\.NonSessionProcessor\$RollingNonSessionMessagePump"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>

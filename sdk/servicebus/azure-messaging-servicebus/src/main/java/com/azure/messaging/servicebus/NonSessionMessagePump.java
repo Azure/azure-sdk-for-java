@@ -28,7 +28,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED
 /**
  * Abstraction to pump messages using a {@link ServiceBusReceiverAsyncClient} as long as the client is healthy.
  */
-final class MessagePump {
+final class NonSessionMessagePump {
     private static final AtomicLong COUNTER = new AtomicLong();
     private static final String PUMP_ID_KEY = "pump-id";
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
@@ -47,7 +47,7 @@ final class MessagePump {
     private final ServiceBusTracer tracer;
 
     /**
-     * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
+     * Instantiate {@link NonSessionMessagePump} that pumps messages emitted by the given {@code client}. The messages
      * are pumped to the {@code processMessage} concurrently with the parallelism equal to {@code concurrency}.
      *
      * @param client The underlying client to read messages from the broker.
@@ -56,7 +56,7 @@ final class MessagePump {
      * @param concurrency The pumping concurrency, i.e., how many invocations of {@code processMessage} should happen in parallel.
      * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
      */
-    MessagePump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
+    NonSessionMessagePump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
         Consumer<ServiceBusErrorContext> processError, int concurrency, boolean enableAutoDisposition) {
         this.pumpId = COUNTER.incrementAndGet();
         this.client = client;
@@ -67,7 +67,7 @@ final class MessagePump {
         loggingContext.put(PUMP_ID_KEY, this.pumpId);
         loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, this.fqdn);
         loggingContext.put(ENTITY_PATH_KEY, this.entityPath);
-        this.logger = new ClientLogger(MessagePump.class, loggingContext);
+        this.logger = new ClientLogger(NonSessionMessagePump.class, loggingContext);
 
         this.processMessage = processMessage;
         this.processError = processError;
@@ -90,7 +90,7 @@ final class MessagePump {
     /**
      * Begin pumping messages in parallel, with the parallelism equal to the configured {@code concurrency}.
      *
-     * @return a mono that emits {@link TerminatedException} when this {@link MessagePump} terminates.
+     * @return a mono that emits {@link TerminatedException} when this {@link NonSessionMessagePump} terminates.
      * The pumping terminates when the underlying client encounters a non-retriable error, the retries exhaust,
      * or rejection when scheduling concurrently.
      */

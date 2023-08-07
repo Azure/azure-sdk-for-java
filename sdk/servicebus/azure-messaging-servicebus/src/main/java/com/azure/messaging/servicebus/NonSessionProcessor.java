@@ -27,7 +27,7 @@ public final class NonSessionProcessor {
     private final Consumer<ServiceBusErrorContext> processError;
     private final boolean enableAutoDisposition;
     private boolean isRunning;
-    private RollingMessagePump rollingMessagePump;
+    private RollingNonSessionMessagePump rollingMessagePump;
 
     NonSessionProcessor(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
@@ -44,13 +44,13 @@ public final class NonSessionProcessor {
     }
 
     void start() {
-        final RollingMessagePump p;
+        final RollingNonSessionMessagePump p;
         synchronized (lock) {
             if (isRunning) {
                 return;
             }
             isRunning = true;
-            rollingMessagePump = new RollingMessagePump(builder, processMessage, processError, concurrency, enableAutoDisposition);
+            rollingMessagePump = new RollingNonSessionMessagePump(builder, processMessage, processError, concurrency, enableAutoDisposition);
             p = rollingMessagePump;
         }
         p.begin();
@@ -63,7 +63,7 @@ public final class NonSessionProcessor {
     }
 
     void close() {
-        final RollingMessagePump p;
+        final RollingNonSessionMessagePump p;
         synchronized (lock) {
             if (!isRunning) {
                 return;
@@ -80,7 +80,7 @@ public final class NonSessionProcessor {
     }
 
     String getIdentifier() {
-        final RollingMessagePump p;
+        final RollingNonSessionMessagePump p;
         synchronized (lock) {
             p = rollingMessagePump;
         }
@@ -88,11 +88,12 @@ public final class NonSessionProcessor {
     }
 
     /**
-     * The abstraction to stream messages using {@link MessagePump}. {@link RollingMessagePump} transparently switch
-     * (rolls) to the next {@link MessagePump} to continue streaming when the current pump terminates.
+     * The abstraction to stream messages using {@link NonSessionMessagePump}. {@link RollingNonSessionMessagePump}
+     * transparently switch (rolls) to the next {@link NonSessionMessagePump} to continue streaming when the current pump
+     * terminates.
      */
-    static final class RollingMessagePump extends AtomicBoolean {
-        private static final RuntimeException DISPOSED_ERROR = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
+    static final class RollingNonSessionMessagePump extends AtomicBoolean {
+        private static final RuntimeException DISPOSED_ERROR = new RuntimeException("The Processor closure disposed the RollingNonSessionMessagePump.");
         private static final Duration NEXT_PUMP_BACKOFF = Duration.ofSeconds(5);
         private final ClientLogger logger;
         private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder;
@@ -104,9 +105,9 @@ public final class NonSessionProcessor {
         private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
 
         /**
-         * Instantiate {@link RollingMessagePump} that stream messages using {@link MessagePump}.
-         * The {@link RollingMessagePump} rolls to the next {@link MessagePump} to continue streaming when the current
-         * {@link MessagePump} terminates.
+         * Instantiate {@link RollingNonSessionMessagePump} that stream messages using {@link NonSessionMessagePump}.
+         * The {@link RollingNonSessionMessagePump} rolls to the next {@link NonSessionMessagePump} to continue streaming when the current
+         * {@link NonSessionMessagePump} terminates.
          *
          * @param builder The builder to build the client for pulling messages from the broker.
          * @param processMessage The consumer to invoke for each message.
@@ -114,10 +115,10 @@ public final class NonSessionProcessor {
          * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel.
          * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
          */
-        RollingMessagePump(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
+        RollingNonSessionMessagePump(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
             int concurrency, boolean enableAutoDisposition) {
-            this.logger = new ClientLogger(RollingMessagePump.class);
+            this.logger = new ClientLogger(RollingNonSessionMessagePump.class);
             this.builder = builder;
             this.concurrency = concurrency;
             this.processError = processError;
@@ -127,7 +128,7 @@ public final class NonSessionProcessor {
 
         /**
          * Begin streaming messages. To terminate the streaming, dispose the pump by invoking
-         * {@link RollingMessagePump#dispose()}.
+         * {@link RollingNonSessionMessagePump#dispose()}.
          *
          * @throws IllegalStateException If the API is called more than once or after the disposal.
          */
@@ -150,7 +151,7 @@ public final class NonSessionProcessor {
                 },
                 client -> {
                     clientIdentifier.set(client.getIdentifier());
-                    final MessagePump pump = new MessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
+                    final NonSessionMessagePump pump = new NonSessionMessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
                     return pump.begin();
                 },
                 client -> {
@@ -169,9 +170,9 @@ public final class NonSessionProcessor {
         }
 
         /**
-         * Retry spec to roll to the next {@link MessagePump} with a back-off. If the spec is asked for retry after
-         * the {@link RollingMessagePump} is disposed of (due to {@link NonSessionProcessor} closure), then an exception
-         * {@link RollingMessagePump#DISPOSED_ERROR} will be emitted.
+         * Retry spec to roll to the next {@link NonSessionMessagePump} with a back-off. If the spec is asked for retry after
+         * the {@link RollingNonSessionMessagePump} is disposed of (due to {@link NonSessionProcessor} closure), then an exception
+         * {@link RollingNonSessionMessagePump#DISPOSED_ERROR} will be emitted.
          *
          * @return the retry spec.
          */
@@ -183,11 +184,11 @@ public final class NonSessionProcessor {
                     if (error == null) {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() not expected to be null."));
                     }
-                    if (!(error instanceof MessagePump.TerminatedException)) {
+                    if (!(error instanceof NonSessionMessagePump.TerminatedException)) {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be MessagePump.TerminatedException.", error));
                     }
 
-                    final MessagePump.TerminatedException e = (MessagePump.TerminatedException) error;
+                    final NonSessionMessagePump.TerminatedException e = (NonSessionMessagePump.TerminatedException) error;
 
                     if (disposable.isDisposed()) {
                         e.log(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.", true);
