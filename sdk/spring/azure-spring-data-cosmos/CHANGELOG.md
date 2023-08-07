@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue with IN statement in annotated queries not working for `Long` data type - See [PR 36267](https://github.com/Azure/azure-sdk-for-java/pull/36267).
 
 #### Other Changes
 
