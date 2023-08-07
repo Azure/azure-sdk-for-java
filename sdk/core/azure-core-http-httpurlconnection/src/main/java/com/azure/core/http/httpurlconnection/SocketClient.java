@@ -24,9 +24,7 @@ public class SocketClient {
         this(host, 80);
     }
 
-    // todo - this should return a HttpResponse
-    //  need a response handler to do this
-    public void sendPatchRequest(HttpRequest httpRequest) throws IOException {
+    public HttpResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
         String request = buildPatchRequest(httpRequest);
         try (Socket socket = new Socket(host, port)) {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -36,53 +34,55 @@ public class SocketClient {
             outputStreamWriter.write(request);
             outputStreamWriter.flush();
 
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = in.readLine()) != null) {
-                sb.append(line);
-                sb.append("\r\n");
-            }
-
-            HttpResponse response = getResponse(httpRequest, sb.toString());
+            HttpResponse response = buildResponse(httpRequest, in);
 
             out.close();
             in.close();
             System.out.println(response);
+            return response;
         }
     }
 
     // This method extracts an HttpResponse object from the response string
-    // todo - this is clunky. It may be better to pass an inputstream
-    //  to this method and have it read line by line
-    private HttpResponse getResponse(HttpRequest request, String responseString) {
-        // Separate the status line and headers from the body
-        String headerField = responseString.split("\r\n\r\n")[0];
-        byte[] body = responseString.split("\r\n\r\n")[1].getBytes();
-
-        String statusLine = headerField.split("\r\n")[0];
-        // Retrieve the status code from the status line
+    private HttpResponse buildResponse(HttpRequest request, BufferedReader reader) throws IOException {
+        // Read the first line as the status line
+        String statusLine = reader.readLine();
+        // Extract the status code from the status line
         int dotIndex = statusLine.indexOf('.');
         int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+5));
 
-        String[] headers = headerField.split("\r\n");
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-
-        for (int i = 1; i < headers.length; i++) {
-            String k = headers[i].split(": ")[0];
-            String v = headers[i].split(": ")[1];
-            // Convert the String key to a HttpHeaderName
-            // Add the key and value to the headers
+        // Read the headers until reaching a newline
+        // Extract the key and value, add to headers
+        HttpHeaders headers = new HttpHeaders();
+        String line;
+        // todo - need a better way to check for end of headers
+        while ((line = reader.readLine()) != null && !line.isEmpty()) {
+            System.out.println("line: " + line);
+            String k = line.split(": ")[0];
+            String v = line.split(": ")[1];
+            System.out.println("Key: " + k + "\tValue: " + v);
             // todo - may need to check that the HttpHeaderName is valid
-            httpHeaders.set(HttpHeaderName.fromString(k), v);
+            headers.set(HttpHeaderName.fromString(k), v);
         }
-        return new HttpResponse(request, httpHeaders, statusCode, body);
+
+        // Read the newline through
+        reader.readLine();
+        // The remainder of the response is the body
+        StringBuilder bodyString = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            bodyString.append(line);
+        }
+
+        // Convert the body String to a byte array needed for the HttpResponse
+        byte[] body = bodyString.toString().getBytes();
+
+        return new HttpResponse(request, headers, statusCode, body);
     }
 
-    // todo - make this a generic request builder or leave as strictly PATCH?
     private String buildPatchRequest(HttpRequest httpRequest) {
         final StringBuilder request = new StringBuilder();
         // Add the status line
+        // todo - hard code the method as PATCH
         request.append(httpRequest.getHttpMethod())
             .append(" ")
             .append(httpRequest.getUrl().getPath())
