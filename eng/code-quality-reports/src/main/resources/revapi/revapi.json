@@ -312,6 +312,11 @@
           "code" : "java.method.addedToInterface",
           "new" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Method was added to an interface."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setCaeEnabled(boolean)",
+          "justification" : "Method was removed."
         }
       ]
     }
