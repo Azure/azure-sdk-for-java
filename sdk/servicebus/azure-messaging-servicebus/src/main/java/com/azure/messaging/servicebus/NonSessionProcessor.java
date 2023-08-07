@@ -184,11 +184,11 @@ public final class NonSessionProcessor {
                     if (error == null) {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() not expected to be null."));
                     }
-                    if (!(error instanceof NonSessionMessagePump.TerminatedException)) {
+                    if (!(error instanceof TerminatedException)) {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be MessagePump.TerminatedException.", error));
                     }
 
-                    final NonSessionMessagePump.TerminatedException e = (NonSessionMessagePump.TerminatedException) error;
+                    final TerminatedException e = (TerminatedException) error;
 
                     if (disposable.isDisposed()) {
                         e.log(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.", true);
