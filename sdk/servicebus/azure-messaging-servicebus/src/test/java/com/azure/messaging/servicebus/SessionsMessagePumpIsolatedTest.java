@@ -245,7 +245,7 @@ public class SessionsMessagePumpIsolatedTest {
                 .thenAwait(connectionStatePollInterval.multipliedBy(3))
                 .verifyErrorSatisfies(e -> {
                     Assertions.assertTrue(e instanceof SessionsMessagePump.TerminatedException);
-                    Assertions.assertEquals("Cannot pump messages after termination. (Detected at connection-state-poll).", e.getMessage());
+                    Assertions.assertEquals("session#connection-state-poll", e.getMessage());
                 });
         }
         verify(session1.link, times(1)).closeAsync();
@@ -476,7 +476,7 @@ public class SessionsMessagePumpIsolatedTest {
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
                 .verifyErrorSatisfies(e -> {
-                    Assertions.assertTrue(e instanceof SessionsMessagePump.TerminatedException);
+                    Assertions.assertTrue(e instanceof IllegalStateException);
                 });
         }
         verify(onTerminate, times(1)).run();
