@@ -66,7 +66,14 @@ public interface ApplicationGateway
 
     // Getters
 
-    /** @return disabled SSL protocols */
+    /**
+     * Get the disabled SSL protocols.
+     *
+     * @return disabled SSL protocols
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             This attribute has no effect for V2 gateways, instead, use {@link ApplicationGateway#sslPolicy()}.
+     */
+    @Deprecated
     Collection<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
@@ -203,7 +210,11 @@ public interface ApplicationGateway
      */
     Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync();
 
-    /** @return SSL policy of the application gateway */
+    /**
+     * Get the SSL policy for the application gateway.
+     *
+     * @return SSL policy of the application gateway
+     */
     ApplicationGatewaySslPolicy sslPolicy();
 
     /** Grouping of application gateway definition stages. */
