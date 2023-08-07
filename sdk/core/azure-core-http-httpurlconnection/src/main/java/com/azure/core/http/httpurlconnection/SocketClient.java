@@ -6,6 +6,7 @@ import com.azure.core.http.HttpHeaders;
 
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
 
 // A socket client to be used to handle PATCH requests
 
@@ -38,7 +39,6 @@ public class SocketClient {
 
             out.close();
             in.close();
-            System.out.println(response);
             return response;
         }
     }
@@ -49,18 +49,14 @@ public class SocketClient {
         String statusLine = reader.readLine();
         // Extract the status code from the status line
         int dotIndex = statusLine.indexOf('.');
-        int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+5));
-
+        int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+6));
         // Read the headers until reaching a newline
         // Extract the key and value, add to headers
         HttpHeaders headers = new HttpHeaders();
         String line;
-        // todo - need a better way to check for end of headers
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
-            System.out.println("line: " + line);
             String k = line.split(": ")[0];
             String v = line.split(": ")[1];
-            System.out.println("Key: " + k + "\tValue: " + v);
             // todo - may need to check that the HttpHeaderName is valid
             headers.set(HttpHeaderName.fromString(k), v);
         }
@@ -71,7 +67,6 @@ public class SocketClient {
         while ((line = reader.readLine()) != null) {
             bodyString.append(line);
         }
-
         // Convert the body String to a byte array needed for the HttpResponse
         byte[] body = bodyString.toString().getBytes();
 
@@ -85,12 +80,11 @@ public class SocketClient {
         request.append(httpRequest.getHttpMethod())
             .append(" ")
             .append(httpRequest.getUrl().getPath())
-            .append(" HTTP/1.0");
-        System.out.println(request);
+            .append(" HTTP/1.0")
+            .append("\r\n");
         // Add the headers
         // First check if there are any headers to add
         if (httpRequest.getHeaders().getSize() > 0) {
-            request.append("\r\n");
             for (HttpHeader headerLine : httpRequest.getHeaders()) {
                 request.append(headerLine.getName())
                     .append(": ")
@@ -98,17 +92,14 @@ public class SocketClient {
                     .append("\r\n");
             }
         }
-        // Add the body
-        // Check if there is a body to add
-        // todo - add content length check
+        // Add the body if there is a body to add
         if (httpRequest.getBody() != null) {
-            request.append("\r\n");
-            request.append(httpRequest.getBody().toString());
+            request.append("\r\n")
+                .append(httpRequest.getBody().toString())
+                .append("\r\n");
         }
-        // Add end of file
-        // todo - is this only needed when there is no content-length header?
-        request.append("\r\n\r\n");
-        System.out.println(request);
+        // Add carriage return linefeed to mark end of message
+        request.append("\r\n");
         return request.toString();
     }
 }
