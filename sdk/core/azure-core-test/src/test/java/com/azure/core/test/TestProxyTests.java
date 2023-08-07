@@ -19,9 +19,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
-import com.azure.core.test.utils.TestProxyDownloader;
 import com.azure.core.test.utils.TestProxyUtils;
-import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,14 +34,11 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -238,15 +233,14 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
-    @Tag("Record")
+    @Tag("Playback")
     public void testRecordWithRedaction() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -315,15 +309,14 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
-    @Tag("Record")
+    @Tag("Playback")
     public void testBodyRegexRedactRecord() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -415,56 +408,11 @@ public class TestProxyTests extends TestProxyTestBase {
 
     private RecordedTestProxyData readDataFromFile() {
         try {
-            File recordFile = new File(locateAssetJsonFilePath());
-            BufferedReader reader = Files.newBufferedReader(recordFile.toPath());
+            BufferedReader reader = Files.newBufferedReader(Paths.get(interceptorManager.getRecordingFileLocation()));
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
-    }
-
-    private String locateAssetJsonFilePath() throws IOException {
-        String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
-            TestProxyUtils.getProxyProcessName()).toString();
-        Path engRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "eng");
-        String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
-        System.out.printf("Target repo root: %s\n", targetRepoRoot);
-        System.out.printf("Eng repo root: %s\n", engRepoRoot.toString());
-        String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json").toString();
-        System.out.printf("AssetPath being passed to config locate is %s\n", assetPath);
-        System.out.printf("CommandLine: %s\n", commandLine);
-        ProcessBuilder builder = new ProcessBuilder(commandLine,
-            "config",
-            "locate",
-            "-a",
-            assetPath);
-        Map<String, String> environment = builder.environment();
-        environment.put("LOGGING__LOGLEVEL", "Information");
-        environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
-        environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
-        builder.directory(engRepoRoot.toFile());
-        Process process = builder.start();
-
-        BufferedReader reader =
-            new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            stringBuilder.append(line).append("\n");
-        }
-
-        String[] lines = stringBuilder.toString().split("\n");
-            System.out.printf("Process output: %s\n", stringBuilder);
-        String filePath = lines[lines.length - 1];
-        String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
-        String relativePath =
-            engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
-                .toString();
-        System.out.printf("Relative path: \"%s\"\n", relativePath);
-        System.out.printf("Line Filtered: \"%s\"\n", filePath);
-        return Paths.get(filePath, relativePath).toString();
-
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

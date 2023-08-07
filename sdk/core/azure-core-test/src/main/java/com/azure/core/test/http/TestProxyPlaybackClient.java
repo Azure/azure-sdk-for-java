@@ -23,14 +23,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
@@ -91,6 +94,9 @@ public class TestProxyPlaybackClient implements HttpClient {
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+            String xRecordingFileLocation
+                = new String(Base64.getUrlDecoder().decode(
+                    response.getHeaders().get(X_RECORDING_FILE_LOCATION).getValue()), StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -114,6 +120,7 @@ public class TestProxyPlaybackClient implements HttpClient {
                 String value = stringStringEntry.getValue();
                 strings.add(value);
             }
+            strings.addLast(xRecordingFileLocation);
             return strings;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
