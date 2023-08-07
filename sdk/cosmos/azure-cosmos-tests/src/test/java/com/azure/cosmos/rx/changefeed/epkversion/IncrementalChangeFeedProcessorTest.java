@@ -236,6 +236,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             preferredRegions.add(databaseAccountLocation.getName());
         }
 
+        assertThat(preferredRegions).isNotNull();
+        assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
         CosmosAsyncClient cosmosAsyncClient = clientBuilder
             .multipleWriteRegionsEnabled(true)
             .endpointDiscoveryEnabled(true)
@@ -259,7 +262,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 List<InternalObjectNode> createdDocuments = new ArrayList<>();
                 Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
                 setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+                // create a gap between previously written documents
                 Thread.sleep(3000);
+
                 ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                     .hostName(hostName)
                     .feedContainer(createdFeedCollection)
@@ -342,6 +348,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             preferredRegions.add(databaseAccountLocation.getName());
         }
 
+        assertThat(preferredRegions).isNotNull();
+        assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
         CosmosAsyncClient cosmosAsyncClientForLocalRegion = clientBuilder
             .multipleWriteRegionsEnabled(true)
             .endpointDiscoveryEnabled(true)
@@ -374,12 +383,16 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
             createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
 
+            // allow some time to ensure collection is available for read
+            Thread.sleep(5_000);
+
             try {
 
                 List<InternalObjectNode> createdDocuments = new ArrayList<>();
                 Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
                 setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
 
+                // create a gap between previously written documents
                 Thread.sleep(3000);
 
                 ChangeFeedProcessor changeFeedProcessorSatelliteRegion = new ChangeFeedProcessorBuilder()
@@ -413,7 +426,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     throw ex;
                 }
 
+                // allow some time to ensure CFP instance has started
                 Thread.sleep(1000);
+
                 List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
                 setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
 
@@ -460,6 +475,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             preferredRegions.add(databaseAccountLocation.getName());
         }
 
+        assertThat(preferredRegions).isNotNull();
+        assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
         CosmosAsyncClient cosmosAsyncClientLocalRegion = clientBuilder
             .multipleWriteRegionsEnabled(true)
             .endpointDiscoveryEnabled(true)
@@ -492,7 +510,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
             createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
 
-            Thread.sleep(20_000);
+            // allow some time to ensure collection is available for read
+            Thread.sleep(5_000);
 
             try {
                 Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
@@ -547,23 +566,34 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .buildChangeFeedProcessor();
 
                 try {
-                    changeFeedProcessorLocalRegion.start().publishOn(Schedulers.boundedElastic()).block();
+                    // enforce both CFP instances are started
+                    changeFeedProcessorLocalRegion
+                        .start()
+                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .publishOn(Schedulers.boundedElastic())
+                        .block();
+                    changeFeedProcessorSatelliteRegion
+                        .start()
+                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .publishOn(Schedulers.boundedElastic())
+                        .block();
                 } catch (Exception ex) {
                     logger.error("Change feed processor did not start in the expected time", ex);
                     throw ex;
                 }
 
-                Thread.sleep(1000);
+                assertThat(changeFeedProcessorLocalRegion.isStarted()).as("Change feed processor instance is running...").isTrue();
+                assertThat(changeFeedProcessorSatelliteRegion.isStarted()).as("Change feed processor instance is running...").isTrue();
+
                 List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
-                changeFeedProcessorSatelliteRegion.start().publishOn(Schedulers.boundedElastic()).subscribe();
                 setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+
+                // abruptly initiate stopping the CFP instance for the local region
+                changeFeedProcessorLocalRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
                 // Wait for the feed processor to receive and process the documents.
                 waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
-                changeFeedProcessorLocalRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
-
-                changeFeedProcessorSatelliteRegion.start().publishOn(Schedulers.boundedElastic()).subscribe();
                 setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
 
                 Thread.sleep(2 * 4000);
