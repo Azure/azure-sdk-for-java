@@ -476,7 +476,9 @@ public class SessionsMessagePumpIsolatedTest {
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.begin())
                 .verifyErrorSatisfies(e -> {
-                    Assertions.assertTrue(e instanceof IllegalStateException);
+                    Assertions.assertTrue(e instanceof SessionsMessagePump.TerminatedException);
+                    Assertions.assertNotNull(e.getCause());
+                    Assertions.assertTrue(e.getCause() instanceof IllegalStateException);
                 });
         }
         verify(onTerminate, times(1)).run();

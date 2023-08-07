@@ -220,10 +220,23 @@ final class SessionsMessagePump {
             return Mono.firstWithSignal(terminatePumping, pumping);
         };
 
-        return Mono.usingWhen(createReceiversMono, pumpFromReceiversMono,
+        final Mono<Void> pumpingMessages = Mono.usingWhen(createReceiversMono, pumpFromReceiversMono,
             (__) -> terminate(TerminalSignalType.COMPLETED),
             (__, e) -> terminate(TerminalSignalType.ERRORED),
             (__) -> terminate(TerminalSignalType.CANCELED));
+
+        return pumpingMessages
+            .onErrorMap(e -> {
+                if (e instanceof TerminatedException) {
+                    // 'e' propagated from pollConnectionState(), NextSession.mono(),
+                    // RollingSessionReceiver.(nextSessionReceiver()|NextSessionStream,flux())
+                    //
+                    return e;
+                }
+                // 'e' here could be reactor.core.CompositeException (e.g, 2 RollingSessionReceiver triggering error concurrently).
+                return new TerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
+            })
+            .then(Mono.error(() -> TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
     }
 
     private Mono<Void> pollConnectionState() {
