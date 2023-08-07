@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -122,9 +123,12 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  *  SessionsMessagePump.begin().</p>
  */
 final class SessionsMessagePump {
+    private static final AtomicLong COUNTER = new AtomicLong();
+    private static final String PUMP_ID_KEY = "pump-id";
     private static final ArrayList<RollingSessionReceiver> EMPTY = new ArrayList<>(0);
     private static final ArrayList<RollingSessionReceiver> TERMINATED = new ArrayList<>(0);
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
+    private final long  pumpId;
     private final ClientLogger logger;
     private final String identifier;
     private final String fqdn;
@@ -153,7 +157,9 @@ final class SessionsMessagePump {
         int prefetch, boolean enableAutoDisposition, Mono<ServiceBusManagementNode> managementNode,
         MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError, Runnable onTerminate) {
-        final Map<String, Object> loggingContext = new HashMap<>(2);
+        this.pumpId = COUNTER.incrementAndGet();
+        final Map<String, Object> loggingContext = new HashMap<>(3);
+        loggingContext.put(PUMP_ID_KEY, pumpId);
         loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
         this.logger = new ClientLogger(SessionsMessagePump.class, loggingContext);
@@ -176,15 +182,7 @@ final class SessionsMessagePump {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null.");
         this.onTerminate = Objects.requireNonNull(onTerminate, "'onTerminate' cannot be null.");
         this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fqdn, entityPath, receiveMode);
-        this.nextSession = new NextSession(sessionAcquirer).mono();
-    }
-
-    String getFqdn() {
-        return fqdn;
-    }
-
-    String getEntityPath() {
-        return entityPath;
+        this.nextSession = new NextSession(pumpId, fqdn, entityPath, sessionAcquirer).mono();
     }
 
     String getIdentifier() {
@@ -223,22 +221,22 @@ final class SessionsMessagePump {
         };
 
         return Mono.usingWhen(createReceiversMono, pumpFromReceiversMono,
-            (__) -> terminate(TerminationReason.COMPLETED),
-            (__, e) -> terminate(TerminationReason.ERRORED),
-            (__) -> terminate(TerminationReason.CANCELED));
+            (__) -> terminate(TerminalSignalType.COMPLETED),
+            (__, e) -> terminate(TerminalSignalType.ERRORED),
+            (__) -> terminate(TerminalSignalType.CANCELED));
     }
 
     private Mono<Void> pollConnectionState() {
         return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
             .handle((ignored, sink) -> {
                 if (sessionAcquirer.isConnectionClosed()) {
-                    final RuntimeException e = logger.atVerbose().log(new TerminatedException("connection-state-poll"));
+                    final RuntimeException e = logger.atInfo().log(new TerminatedException(pumpId, fqdn, entityPath, "session#connection-state-poll"));
                     sink.error(e);
                 }
             }).then();
     }
 
-    private Mono<Void> terminate(TerminationReason reason) {
+    private Mono<Void> terminate(TerminalSignalType signalType) {
         final List<RollingSessionReceiver> rollingReceivers = rollingReceiversRef.getAndSet(TERMINATED);
         if (rollingReceivers == TERMINATED) {
             return Mono.empty();
@@ -248,7 +246,7 @@ final class SessionsMessagePump {
         // the When operator in SessionsMessagePump.begin() detects that it needs to emit terminal signal, as a pre-step,
         // it will go ahead and cancel the Mono returned by each RollingSessionReceiver instance, which will cause it's
         // backing MessageFlux instance to close the ServiceBusSessionReactorReceiver and runs RollingSessionReceiver.terminate(,).
-        logger.atInfo().log("Pump terminated. Reason:" + reason);
+        logger.atInfo().log("Pump terminated. signal:" + signalType);
         receiversTracker.clear();
         this.onTerminate.run();
         return Mono.empty();
@@ -257,7 +255,7 @@ final class SessionsMessagePump {
     private List<RollingSessionReceiver> createRollingSessionReceivers() {
         final ArrayList<RollingSessionReceiver> rollingReceivers = new ArrayList<>(maxConcurrentSessions);
         for (int rollerId = 1; rollerId <= maxConcurrentSessions; rollerId++) {
-            final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(rollerId, instrumentation,
+            final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(pumpId, rollerId, instrumentation,
                 fqdn, entityPath, nextSession, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession,
                 prefetch, enableAutoDisposition, managementNode, serializer, retryPolicy, processMessage, processError,
                 receiversTracker);
@@ -267,12 +265,14 @@ final class SessionsMessagePump {
     }
 
     private void throwIfTerminatedOrInitialized() {
+        // Any error thrown here is IllegalStateException since SessionsMessagePump#begin() caller is attempting
+        // to invoke it in unexpected way (invoke post termination or invoke more than once).
         final List<RollingSessionReceiver> l = rollingReceiversRef.get();
         if (l == TERMINATED) {
-            throw logger.atVerbose().log(new TerminatedException("sessions-message-pump#begin()"));
+            throw logger.atVerbose().log(new IllegalStateException("Cannot invoke begin() once terminated."));
         }
         if (l != EMPTY) {
-            throw logger.atVerbose().log(new UnsupportedOperationException("Cannot invoke begin() more than once."));
+            throw logger.atVerbose().log(new IllegalStateException("Cannot invoke begin() more than once."));
         }
     }
 
@@ -294,9 +294,15 @@ final class SessionsMessagePump {
     private static final class NextSession
         implements Supplier<Mono<ServiceBusSessionAcquirer.Session>> {
         private final AtomicReference<Boolean> isTerminated = new AtomicReference<>(false);
+        private final long pumpId;
+        private final String fqdn;
+        private final String entityPath;
         private final ServiceBusSessionAcquirer sessionAcquirer;
 
-        NextSession(ServiceBusSessionAcquirer sessionAcquirer) {
+        NextSession(long pumpId, String fqdn, String entityPath, ServiceBusSessionAcquirer sessionAcquirer) {
+            this.pumpId = pumpId;
+            this.fqdn = fqdn;
+            this.entityPath = entityPath;
             this.sessionAcquirer = sessionAcquirer;
         }
 
@@ -308,13 +314,14 @@ final class SessionsMessagePump {
         @Override
         public Mono<ServiceBusSessionAcquirer.Session> get() {
             if (isTerminated.get()) {
-                return Mono.error(new TerminatedException("acquire-session"));
+                return Mono.error(new TerminatedException(pumpId, fqdn, entityPath, "session#acquire"));
             }
             return sessionAcquirer.acquire()
                 .onErrorMap(e -> {
                     isTerminated.set(true);
-                    return new TerminatedException("acquire-session", e);
+                    return new TerminatedException(pumpId, fqdn, entityPath, "session#acquire", e);
                 });
+            // The 'TerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
         }
     }
 
@@ -328,6 +335,7 @@ final class SessionsMessagePump {
         private static final State<ServiceBusSessionReactorReceiver> INIT = State.init();
         private static final State<ServiceBusSessionReactorReceiver> TERMINATED = State.terminated();
         private final ClientLogger logger;
+        private final long pumpId;
         private final int rollerId;
         private final String fqdn;
         private final String entityPath;
@@ -345,13 +353,14 @@ final class SessionsMessagePump {
         private final NextSessionStream nextSessionStream;
         private final  MessageFlux messageFlux;
 
-        RollingSessionReceiver(int rollerId, ServiceBusReceiverInstrumentation instrumentation, String fqdn, String entityPath,
-            Mono<ServiceBusSessionAcquirer.Session> nextSession, Duration maxSessionLockRenew, Duration sessionIdleTimeout,
-            int concurrency, int prefetch, boolean enableAutoDisposition, Mono<ServiceBusManagementNode> managementNode,
-            MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
+        RollingSessionReceiver(long pumpId, int rollerId, ServiceBusReceiverInstrumentation instrumentation, String fqdn,
+            String entityPath, Mono<ServiceBusSessionAcquirer.Session> nextSession, Duration maxSessionLockRenew,
+            Duration sessionIdleTimeout, int concurrency, int prefetch, boolean enableAutoDisposition,
+            Mono<ServiceBusManagementNode> managementNode, MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
             SessionReceiversTracker receiversTracker) {
             super(INIT);
+            this.pumpId = pumpId;
             final Map<String, Object> loggingContext = new HashMap<>(3);
             loggingContext.put(ROLLER_ID_KEY, rollerId);
             loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn);
@@ -371,7 +380,7 @@ final class SessionsMessagePump {
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
             this.receiversTracker = receiversTracker;
-            this.nextSessionStream = new NextSessionStream(nextSession);
+            this.nextSessionStream = new NextSessionStream(pumpId, rollerId, fqdn, entityPath, nextSession);
             final Flux<ServiceBusSessionReactorReceiver> nextSessionReceiverStream = nextSessionStream.flux()
                 .map(this::nextSessionReceiver);
             this.messageFlux = new MessageFlux(nextSessionReceiverStream, prefetch, CreditFlowMode.RequestDriven, retryPolicy);
@@ -396,22 +405,22 @@ final class SessionsMessagePump {
                     final RunOnWorker handleMessageOnWorker = new RunOnWorker(this::handleMessage, workerScheduler);
                     return this.messageFlux.flatMap(handleMessageOnWorker, concurrency, 1).then();
                 },
-                (workerScheduler) -> terminate(TerminationReason.COMPLETED, workerScheduler),
-                (workerScheduler, e) -> terminate(TerminationReason.ERRORED, workerScheduler),
-                (workerScheduler) -> terminate(TerminationReason.CANCELED, workerScheduler)
+                (workerScheduler) -> terminate(TerminalSignalType.COMPLETED, workerScheduler),
+                (workerScheduler, e) -> terminate(TerminalSignalType.ERRORED, workerScheduler),
+                (workerScheduler) -> terminate(TerminalSignalType.CANCELED, workerScheduler)
             );
         }
 
-        private Mono<Void> terminate(TerminationReason reason, Scheduler workerScheduler) {
+        private Mono<Void> terminate(TerminalSignalType signalType, Scheduler workerScheduler) {
             final State<ServiceBusSessionReactorReceiver> state = super.getAndSet(TERMINATED);
             if (state == TERMINATED) {
                 return Mono.empty();
             }
             // By the time one of the terminal handlers in RollingSessionReceiver.begin() invokes this terminate(,) API,
             // it is guaranteed that the ServiceBusSessionReactorReceiver instance in 'state' (i.e. current session internal
-            // receiver) is closed by the backing MessageFlux. Hence, we only need to dispose the resources unknown to the
-            // MessageFlux.
-            logger.atInfo().log("Roller terminated. Reason:" + reason);
+            // receiver) is closed by the backing MessageFlux. Hence, we only need to dispose the resources not managed
+            // by the ServiceBusSessionReactorReceiver.
+            logger.atInfo().log("Roller terminated. rollerId:" + rollerId + " signal:" + signalType);
             nextSessionStream.close();
             workerScheduler.dispose();
             return Mono.empty();
@@ -421,7 +430,7 @@ final class SessionsMessagePump {
             final State<ServiceBusSessionReactorReceiver> lastState = super.get();
             if (lastState == TERMINATED) {
                 nextSession.closeAsync().subscribe();
-                throw new TerminatedException("rolling-session-receiver");
+                throw new TerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
             }
             final ServiceBusSessionReactorReceiver nextReceiver = new ServiceBusSessionReactorReceiver(
                 logger, tracer, managementNode, nextSession.properties, nextSession.link, maxSessionLockRenew, sessionIdleTimeout);
@@ -436,7 +445,7 @@ final class SessionsMessagePump {
                 //      'compareAndSet' resulting in T1 not closing its ServiceBusSessionReactorReceiver.
                 //
                 nextReceiver.closeAsync().subscribe();
-                throw new TerminatedException("rolling-session-receiver");
+                throw new TerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
             }
             if (lastState != INIT) {
                 final ServiceBusSessionReactorReceiver lastReceiver = lastState.receiver;
@@ -518,21 +527,34 @@ final class SessionsMessagePump {
          * the common Mono {@link NextSession#mono()} to acquire unique sessions.</p>
          */
         private static final class NextSessionStream extends AtomicBoolean {
+            private final long pumpId;
+            private final int rollerId;
+            private final String fqdn;
+            private final String entityPath;
             private final Mono<ServiceBusSessionAcquirer.Session> newSession;
 
-            NextSessionStream(Mono<ServiceBusSessionAcquirer.Session> nextSession) {
+            NextSessionStream(long pumpId, int rollerId, String fqdn, String entityPath, Mono<ServiceBusSessionAcquirer.Session> nextSession) {
                 super(false);
+                this.pumpId = pumpId;
+                this.rollerId = rollerId;
+                this.fqdn = fqdn;
+                this.entityPath = entityPath;
                 this.newSession = Mono.defer(() -> {
                     final boolean isTerminated = super.get();
-                    return isTerminated ? Mono.error(new TerminatedException("session-link-stream")) : nextSession;
+                    if (isTerminated) {
+                        return Mono.error(new TerminatedException(this.pumpId, this.fqdn, this.entityPath, "session#next-link roller_" + this.rollerId));
+                    } else {
+                        return nextSession;
+                    }
                 }).map(session -> {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
                         session.closeAsync().subscribe();
-                        throw new TerminatedException("session-link-stream");
+                        throw new TerminatedException(this.pumpId, this.fqdn, this.entityPath, "session#next-link roller_" + this.rollerId);
                     }
                     return session;
                 });
+                // The 'TerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
             }
 
             Flux<ServiceBusSessionAcquirer.Session> flux() {
@@ -764,22 +786,90 @@ final class SessionsMessagePump {
     }
 
     /**
-     * The reason for {@link SessionsMessagePump} and {@link RollingSessionReceiver} termination.
+     * The signal that triggered {@link SessionsMessagePump} and {@link RollingSessionReceiver} termination.
      */
-    private enum TerminationReason {
+    private enum TerminalSignalType {
         COMPLETED,
         ERRORED,
         CANCELED,
-        CLOSED,
     }
 
+    /**
+     * The exception emitted by the mono returned from the MessagePump#begin() API.
+     * If available, the {@link TerminatedException#getCause()}} indicates the cause for the termination of message pumping.
+     */
     static final class TerminatedException extends RuntimeException {
-        TerminatedException(String callSite) {
-            super("Cannot pump messages after termination. (Detected at " + callSite + ").");
+        private static final String PUMP_ID_KEY = "pump-id";
+        private final long pumpId;
+        private final String fqdn;
+        private final String entityPath;
+
+        /**
+         * Instantiate {@link TerminatedException} representing termination of a MessagePump.
+         *
+         * @param pumpId The unique identifier of the MessagePump that terminated.
+         * @param fqdn The FQDN of the host from which the message was pumping.
+         * @param entityPath The path to the entity within the FQDN streaming message.
+         * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
+         */
+        TerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt) {
+            super(detectedAt);
+            this.pumpId = pumpId;
+            this.fqdn = fqdn;
+            this.entityPath = entityPath;
         }
 
-        TerminatedException(String callSite, Throwable cause) {
-            super("Cannot pump messages after terminal error. (Detected at " + callSite + ").", cause);
+        /**
+         * Instantiate {@link TerminatedException} representing termination of a MessagePump.
+         *
+         * @param pumpId The unique identifier of the MessagePump that terminated.
+         * @param fqdn The FQDN of the host from which the message was pumping.
+         * @param entityPath The path to the entity within the FQDN streaming message.
+         * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
+         * @param terminationCause The reason for the termination of the pump.
+         */
+        TerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt, Throwable terminationCause) {
+            super(detectedAt, terminationCause);
+            this.pumpId = pumpId;
+            this.fqdn = fqdn;
+            this.entityPath = entityPath;
+        }
+
+        /**
+         * Instantiate {@link TerminatedException} that represents the case when the MessagePump terminates by running
+         * into the completion.
+         *
+         * @param pumpId The unique identifier of the pump that terminated.
+         * @param fqdn The FQDN of the host from which the message was pumping.
+         * @param entityPath The path to the entity within the FQDN streaming message.
+         * @return the {@link TerminatedException}.
+         */
+        static TerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
+            return new TerminatedException(pumpId, fqdn, entityPath, "pumping#reached-completion");
+        }
+
+        /**
+         * Logs the given {@code message} along with pump identifier, FQDN and entity path.
+         *
+         * @param logger The logger.
+         * @param message The message to log.
+         * @param logError should this (TerminatedException) error be logged as well.
+         */
+        void log(ClientLogger logger, String message, boolean logError) {
+            if (logError) {
+                final TerminatedException error = this;
+                logger.atInfo()
+                    .addKeyValue(PUMP_ID_KEY, pumpId)
+                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log(message, error);
+            } else {
+                logger.atInfo()
+                    .addKeyValue(PUMP_ID_KEY, pumpId)
+                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log(message);
+            }
         }
     }
 }
