@@ -262,10 +262,9 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             if ((exception instanceof PartitionIsMigratingException ||
             exception instanceof InvalidPartitionException ||
             exception instanceof PartitionKeyRangeIsSplittingException) &&
-            request.getPartitionSplitNotifier() != null) {
+            request.getPartitionBasedGoneNotifier() != null) {
                 CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(request.getPartitionKeyInternal()), request.getActivityId().toString());
-                request.getPartitionSplitNotifier().partitionSplit(cosmosItemIdentity);
-
+                request.getPartitionBasedGoneNotifier().partitionBasedGone(cosmosItemIdentity);
             }
             if (exception instanceof GoneException) {
                 return handleGoneException((GoneException)exception);

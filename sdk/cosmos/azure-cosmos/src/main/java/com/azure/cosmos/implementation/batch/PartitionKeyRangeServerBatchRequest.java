@@ -12,7 +12,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class PartitionKeyRangeServerBatchRequest extends ServerBatchRequest {
 
     private final String partitionKeyRangeId;
-    private PartitionSplitNotifier partitionSplitNotifier;
+    private PartitionBasedGoneNotifier partitionBasedGoneNotifier;
 
     /**
      * Initializes a new instance of the {@link PartitionKeyRangeServerBatchRequest} class.
@@ -35,15 +35,14 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
     private PartitionKeyRangeServerBatchRequest(
         final String partitionKeyRangeId,
         int maxBodyLength,
-        int maxOperationCount, PartitionSplitNotifier partitionSplitNotifier) {
+        int maxOperationCount, PartitionBasedGoneNotifier partitionBasedGoneNotifier) {
 
         super(maxBodyLength, maxOperationCount);
 
         checkNotNull(partitionKeyRangeId, "expected non-null partitionKeyRangeId");
         this.partitionKeyRangeId = partitionKeyRangeId;
-        this.partitionSplitNotifier = partitionSplitNotifier;
+        this.partitionBasedGoneNotifier = partitionBasedGoneNotifier;
     }
-
 
     /**
      * Creates an instance of {@link ServerOperationBatchRequest}. In case of direct mode requests, all the
@@ -82,12 +81,12 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         final String partitionKeyRangeId,
         final List<CosmosItemOperation> operations,
         final int maxBodyLength,
-        final int maxOperationCount, PartitionSplitNotifier partitionSplitNotifier) {
+        final int maxOperationCount, PartitionBasedGoneNotifier partitionBasedGoneNotifier) {
 
         final PartitionKeyRangeServerBatchRequest request = new PartitionKeyRangeServerBatchRequest(
             partitionKeyRangeId,
             maxBodyLength,
-            maxOperationCount, partitionSplitNotifier);
+            maxOperationCount, partitionBasedGoneNotifier);
 
         request.setAtomicBatch(false);
         request.setShouldContinueOnError(true);
@@ -106,7 +105,7 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         return this.partitionKeyRangeId;
     }
 
-    public PartitionSplitNotifier getPartitionSplitNotifier() {
-        return partitionSplitNotifier;
+    public PartitionBasedGoneNotifier getPartitionBasedGoneNotifier() {
+        return partitionBasedGoneNotifier;
     }
 }

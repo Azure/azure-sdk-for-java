@@ -1681,7 +1681,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (serverBatchRequest instanceof PartitionKeyRangeServerBatchRequest) {
             PartitionKeyRangeServerBatchRequest partitionKeyRangeServerBatchRequest = (PartitionKeyRangeServerBatchRequest) serverBatchRequest;
-            request.setPartitionSplitNotifier(partitionKeyRangeServerBatchRequest.getPartitionSplitNotifier());
+            request.setPartitionBasedGoneNotifier(partitionKeyRangeServerBatchRequest.getPartitionBasedGoneNotifier());
         }
 
         if (options != null) {

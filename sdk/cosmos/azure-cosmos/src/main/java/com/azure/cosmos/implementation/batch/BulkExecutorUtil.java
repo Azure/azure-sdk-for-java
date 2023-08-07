@@ -46,13 +46,13 @@ final class BulkExecutorUtil {
             BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
     }
 
-    static ServerOperationBatchRequest createBatchRequest(List<CosmosItemOperation> operations, String partitionKeyRangeId, int maxMicroBatchPayloadSizeInBytes, PartitionSplitNotifier partitionSplitNotifier) {
+    static ServerOperationBatchRequest createBatchRequest(List<CosmosItemOperation> operations, String partitionKeyRangeId, int maxMicroBatchPayloadSizeInBytes, PartitionBasedGoneNotifier partitionBasedGoneNotifier) {
 
         return PartitionKeyRangeServerBatchRequest.createBatchRequest(
             partitionKeyRangeId,
             operations,
             maxMicroBatchPayloadSizeInBytes,
-            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST, partitionSplitNotifier);
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST, partitionBasedGoneNotifier);
     }
 
     static boolean isTransientFailure(int statusCode, int substatusCode) {
@@ -66,10 +66,10 @@ final class BulkExecutorUtil {
     }
 
     static boolean isTransientFailure(Exception e) {
-        if (e instanceof CosmosException) {
-            return isTransientFailure(((CosmosException) e).getStatusCode(), ((CosmosException) e).getSubStatusCode());
+        CosmosException cosmosException = Utils.as(e, CosmosException.class);
+        if (cosmosException != null) {
+            return isTransientFailure(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
         }
-
         return false;
     }
 

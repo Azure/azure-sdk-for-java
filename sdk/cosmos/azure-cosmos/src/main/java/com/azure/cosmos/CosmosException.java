@@ -623,7 +623,6 @@ public class CosmosException extends AzureException {
                         return new CosmosException(statusCode, message, responseHeaders, exception);
                     }
 
-
                     @Override
                     public List<String> getReplicaStatusList(CosmosException cosmosException) {
                         return cosmosException.getReplicaStatusList();

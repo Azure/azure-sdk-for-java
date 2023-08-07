@@ -13,8 +13,6 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 
-import java.util.Objects;
-
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -52,6 +50,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         this.item = item;
         this.context = context;
         this.requestOptions = requestOptions;
+        this.index = 0;
     }
 
     /**
@@ -111,6 +110,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     }
 
     public void setIndex(int index) {
+        // Only want to set the index the first time it is encountered in the bulk executor
         if (this.index == 0) {
             this.index = index;
         }

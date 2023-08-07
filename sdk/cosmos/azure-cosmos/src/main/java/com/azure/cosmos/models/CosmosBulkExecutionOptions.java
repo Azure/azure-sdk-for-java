@@ -35,7 +35,7 @@ public final class CosmosBulkExecutionOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
-    private boolean preserveOrdering;
+    private boolean orderingPreserved;
     private List<String> excludeRegions;
 
     /**
@@ -129,13 +129,14 @@ public final class CosmosBulkExecutionOptions {
      * Attention! Please adjust this value with caution.
      * By increasing this value, more concurrent requests will be allowed to be sent to the server,
      * in which case may cause 429 or request timed out due to saturate local resources, which could degrade the performance.
+     * When ordering is required, the maxMicroBatchConcurrency is limited to 1.
      *
      * @param maxMicroBatchConcurrency the micro batch concurrency.
      *
      * @return the bulk processing options.
      */
     public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
-        if (preserveOrdering) {
+        if (orderingPreserved) {
             checkArgument(
                 maxMicroBatchConcurrency == 1,
                 "maxMicroBatchConcurrency has to be 1 when preserve ordering is enabled.");
@@ -277,18 +278,18 @@ public final class CosmosBulkExecutionOptions {
 
     /**
      * Sets the preserve ordering flag.
-     * @param preserveOrdering the preserve ordering flag.
+     * @param orderingPreserved the preserve ordering flag.
      */
-    void setPreserveOrdering(boolean preserveOrdering) {
-        this.preserveOrdering = preserveOrdering;
+    void setOrderingPreserved(boolean orderingPreserved) {
+        this.orderingPreserved = orderingPreserved;
     }
 
     /**
      * Gets the preserve ordering flag.
      * @return the preserve ordering flag.
      */
-    boolean getPreserveOrdering() {
-        return this.preserveOrdering;
+    boolean isOrderingPreserved() {
+        return this.orderingPreserved;
     }
 
     /**
@@ -330,14 +331,14 @@ public final class CosmosBulkExecutionOptions {
                 }
 
                 @Override
-                public void setPreserveOrdering(CosmosBulkExecutionOptions options,
-                                                boolean preserveOrdering) {
-                    options.setPreserveOrdering(preserveOrdering);
+                public void setOrderingPreserved(CosmosBulkExecutionOptions options,
+                                                boolean orderingPreserved) {
+                    options.setOrderingPreserved(orderingPreserved);
                 }
 
                 @Override
-                public boolean getPreserveOrdering(CosmosBulkExecutionOptions options) {
-                    return options.getPreserveOrdering();
+                public boolean isOrderingPreserved(CosmosBulkExecutionOptions options) {
+                    return options.isOrderingPreserved();
                 }
 
                 @Override

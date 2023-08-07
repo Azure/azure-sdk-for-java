@@ -6,17 +6,16 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.models.CosmosItemIdentity;
 
 /**
- * Notifies when a partition split happens
+ * Notifies when a partition based gone happens
  */
-public class PartitionSplitNotifier {
+public class PartitionBasedGoneNotifier {
     Notifiable<CosmosItemIdentity> notify;
 
-    public PartitionSplitNotifier(Notifiable<CosmosItemIdentity> notify) {
+    public PartitionBasedGoneNotifier(Notifiable<CosmosItemIdentity> notify) {
         this.notify = notify;
     }
 
-
-    public void partitionSplit(CosmosItemIdentity cosmosItemIdentity) {
+    public void partitionBasedGone(CosmosItemIdentity cosmosItemIdentity) {
         notify.notify(cosmosItemIdentity);
     }
 

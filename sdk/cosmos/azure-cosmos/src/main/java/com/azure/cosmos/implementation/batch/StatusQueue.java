@@ -14,12 +14,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 class StatusQueue<TContext> {
 
-
     enum Status {
         /** All the items in the queue should be retried after failure */
         Retry,
-        /** Indicates a split happened so items in the queue should be added to the main sink */
-        Split,
+        /** Indicates a partition based gone happened so items in the queue should be added to the main sink */
+        PartitionBasedGone,
         /** Indicates item will not be retried and items in the queue will be failed fast */
         NoRetry,
     }

@@ -37,6 +37,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.Disposable;
@@ -212,17 +213,17 @@ public class BulkExecutorTest extends BatchTestBase {
             Flux.fromIterable(cosmosItemOperations),
             new CosmosBulkExecutionOptions());
 
-        try {
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(connectionCloseRule, serverResponseDelayRule))
-                .block();
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(container, Arrays.asList(connectionCloseRule, serverResponseDelayRule))
+            .block();
 
-            List<CosmosBulkOperationResponse<BulkExecutorTest>>  bulkResponse =
+        List<CosmosBulkOperationResponse<BulkExecutorTest>>  bulkResponse =
                 Flux
                     .deferContextual(context -> executor.execute())
                     .collectList()
                     .block();
 
+        try {
             assertThat(bulkResponse.size()).isEqualTo(1);
 
             CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(0);
@@ -237,80 +238,18 @@ public class BulkExecutorTest extends BatchTestBase {
         }
     }
 
-
-
-    // Makes sure ordering is kept with normal flow of bulk
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void executeBulk_preserveOrdering() throws InterruptedException {
-        int totalRequest = 100;
-        this.container = createContainer(database);
-
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-        String duplicatePK = UUID.randomUUID().toString();
-        String id = UUID.randomUUID().toString();
-        for (int i = 0; i < totalRequest; i++) {
-            if (i == 0) {
-                BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(id, 2, 4, "type1",
-                    duplicatePK);
-                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(eventDoc,
-                    new PartitionKey(duplicatePK)));
-            } else {
-                cosmosItemOperations.add(CosmosBulkOperations.getPatchItemOperation(id,
-                    new PartitionKey(duplicatePK),
-                    CosmosPatchOperations.create().replace("/type", "updated" + i)));
-            }
-        }
-
-        CosmosItemOperation[] itemOperationsArray =
-            new CosmosItemOperation[cosmosItemOperations.size()];
-        cosmosItemOperations.toArray(itemOperationsArray);
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-            .getCosmosBulkExecutionOptionsAccessor()
-            .setPreserveOrdering(cosmosBulkExecutionOptions, true);
-
-        Flux<CosmosItemOperation> inputFlux = Flux
-            .fromArray(itemOperationsArray)
-            .delayElements(Duration.ofMillis(100));
-        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
-            container,
-            inputFlux,
-            cosmosBulkExecutionOptions);
-
-
-        try {
-            List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
-                Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
-
-
-            assertThat(bulkResponse.size()).isEqualTo(totalRequest);
-
-            for (int i = 0; i < cosmosItemOperations.size(); i++) {
-                CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(i);
-                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse =
-                    operationResponse.getResponse();
-                if (i == 0) {
-                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-                } else {
-                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-                }
-                assertThat(operationResponse.getOperation()).isEqualTo(cosmosItemOperations.get(i));
-                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
-                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
-            }
-        } finally {
-            if (executor != null && !executor.isDisposed()) {
-                executor.dispose();
-            }
-        }
+    @DataProvider()
+    public Object[][] faultInjectionProvider() {
+        return new Object[][]{
+            {null},
+            {injectBatchFailure("RequestRateTooLarge", FaultInjectionServerErrorType.TOO_MANY_REQUEST, 10)},
+            {injectBatchFailure("PartitionSplit", FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 2)}
+        };
     }
 
-    // tests preserving order in the regular retry flow
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 25)
-    public void executeBulk_preserveOrdering_OnThrottling() throws InterruptedException {
+    // tests preserving order in the regular retry flow and when a partition split happens
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 25, dataProvider = "faultInjectionProvider")
+    public void executeBulk_preserveOrdering_OnFaults(FaultInjectionRule rule) throws InterruptedException {
         int totalRequest = 100;
         this.container = createContainer(database);
 
@@ -330,34 +269,32 @@ public class BulkExecutorTest extends BatchTestBase {
             }
         }
 
-        CosmosItemOperation[] itemOperationsArray =
-            new CosmosItemOperation[cosmosItemOperations.size()];
-        cosmosItemOperations.toArray(itemOperationsArray);
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
-            .setPreserveOrdering(cosmosBulkExecutionOptions, true);
-
-        FaultInjectionRule requestRateTooLargeRule = injectFailure("RequestRateTooLarge",
-            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, 10);
+            .setOrderingPreserved(cosmosBulkExecutionOptions, true);
 
 
         Flux<CosmosItemOperation> inputFlux = Flux
-            .fromArray(itemOperationsArray)
+            .fromIterable(cosmosItemOperations)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
+        final BulkExecutorWithOrderingPreserved<BulkExecutorTest> executor = new BulkExecutorWithOrderingPreserved<>(
             this.container,
             inputFlux,
             cosmosBulkExecutionOptions);
 
-        try {
+        if (rule != null) {
             CosmosFaultInjectionHelper
                 .configureFaultInjectionRules(this.container,
-                    Arrays.asList(requestRateTooLargeRule))
+                    Arrays.asList(rule))
                 .block();
+        }
 
-            List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
-                Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
+
+        List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
+            Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
+
+        try {
 
             assertThat(bulkResponse.size()).isEqualTo(totalRequest);
 
@@ -372,98 +309,21 @@ public class BulkExecutorTest extends BatchTestBase {
                 } else {
                     assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
                 }
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
             }
         } finally {
             if (executor != null && !executor.isDisposed()) {
                 executor.dispose();
             }
-            requestRateTooLargeRule.disable();
-        }
-
-    }
-
-    // tests preserve ordering when partition split happens
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 25)
-    public void executeBulk_preserveOrdering_OnPartitionSplit() throws InterruptedException {
-        int totalRequest = 100;
-        this.container = createContainer(database);
-
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-        String duplicatePK = UUID.randomUUID().toString();
-        String id = UUID.randomUUID().toString();
-        for (int i = 0; i < totalRequest; i++) {
-            if (i == 0) {
-                BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(id, 2, 4, "type1",
-                    duplicatePK);
-                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(eventDoc,
-                    new PartitionKey(duplicatePK)));
-            } else {
-                cosmosItemOperations.add(CosmosBulkOperations.getPatchItemOperation(id,
-                    new PartitionKey(duplicatePK),
-                    CosmosPatchOperations.create().replace("/type", "updated" + i)));
+            if (rule != null) {
+                rule.disable();
             }
         }
-
-        CosmosItemOperation[] itemOperationsArray =
-            new CosmosItemOperation[cosmosItemOperations.size()];
-        cosmosItemOperations.toArray(itemOperationsArray);
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-            .getCosmosBulkExecutionOptionsAccessor()
-            .setPreserveOrdering(cosmosBulkExecutionOptions, true);
-
-        FaultInjectionRule partitionSplitRule = injectFailure("PartitionSplit",
-            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 2);
-
-
-        Flux<CosmosItemOperation> inputFlux = Flux
-            .fromArray(itemOperationsArray)
-            .delayElements(Duration.ofMillis(100));
-        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
-            this.container,
-            inputFlux,
-            cosmosBulkExecutionOptions);
-
-        try {
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(this.container,
-                    Arrays.asList(partitionSplitRule))
-                .block();
-
-            List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
-                Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
-
-            assertThat(bulkResponse.size()).isEqualTo(totalRequest);
-
-            for (int i = 0; i < cosmosItemOperations.size(); i++) {
-                CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(i);
-                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse =
-                    operationResponse.getResponse();
-
-                assertThat(operationResponse.getOperation()).isEqualTo(cosmosItemOperations.get(i));
-                if (i == 0) {
-                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-                } else {
-                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-                }
-                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
-                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
-            }
-        } finally {
-            if (executor != null && !executor.isDisposed()) {
-                executor.dispose();
-            }
-            partitionSplitRule.disable();
-        }
-
     }
 
     // Tests No Retry Exception flow
@@ -489,32 +349,29 @@ public class BulkExecutorTest extends BatchTestBase {
             }
         }
 
-        CosmosItemOperation[] itemOperationsArray =
-            new CosmosItemOperation[cosmosItemOperations.size()];
-        cosmosItemOperations.toArray(itemOperationsArray);
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
-            .setPreserveOrdering(cosmosBulkExecutionOptions, true);
+            .setOrderingPreserved(cosmosBulkExecutionOptions, true);
 
-        FaultInjectionRule rule = injectFailure("ServiceUnavailable",
-            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 1);
+        FaultInjectionRule rule = injectBatchFailure("ServiceUnavailable", FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 1);
 
         Flux<CosmosItemOperation> inputFlux = Flux
-            .fromArray(itemOperationsArray)
+            .fromIterable(cosmosItemOperations)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutorTemp<BulkExecutorTest> executor = new BulkExecutorTemp<>(
+        final BulkExecutorWithOrderingPreserved<BulkExecutorTest> executor = new BulkExecutorWithOrderingPreserved<>(
             this.container,
             inputFlux,
             cosmosBulkExecutionOptions);
-        try {
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(this.container,
-                    Arrays.asList(rule))
-                .block();
-            List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
-                Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
 
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(this.container,
+                Arrays.asList(rule))
+            .block();
+        List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
+            Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
+
+        try {
             assertThat(bulkResponse.size()).isEqualTo(totalRequest);
 
 
@@ -534,8 +391,7 @@ public class BulkExecutorTest extends BatchTestBase {
         }
     }
 
-    private FaultInjectionRule injectFailure(String id,
-        FaultInjectionOperationType operationType, FaultInjectionServerErrorType serverErrorType, int hitlimit) {
+    private FaultInjectionRule injectBatchFailure(String id, FaultInjectionServerErrorType serverErrorType, int hitLimit) {
 
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
@@ -555,18 +411,16 @@ public class BulkExecutorTest extends BatchTestBase {
         }
 
         FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
-            .operationType(operationType)
+            .operationType(FaultInjectionOperationType.BATCH_ITEM)
             .connectionType(connectionType)
             .build();
 
-        FaultInjectionRule rule = new FaultInjectionRuleBuilder(id)
+        return new FaultInjectionRuleBuilder(id)
             .condition(condition)
             .result(result)
             .startDelay(Duration.ofSeconds(1))
-            .hitLimit(hitlimit)
+            .hitLimit(hitLimit)
             .build();
-
-        return rule;
     }
 
 

@@ -26,7 +26,7 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
-import com.azure.cosmos.implementation.batch.BulkExecutorTemp;
+import com.azure.cosmos.implementation.batch.BulkExecutorWithOrderingPreserved;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -1309,8 +1309,8 @@ public class CosmosAsyncContainer {
              // revert easily back to original bulk executor
              if (ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
                 .getCosmosBulkExecutionOptionsAccessor()
-                .getPreserveOrdering(cosmosBulkExecutionOptions)) {
-                 final BulkExecutorTemp<TContext> executor = new BulkExecutorTemp<>(this, operations, cosmosBulkExecutionOptions);
+                .isOrderingPreserved(cosmosBulkExecutionOptions)) {
+                 final BulkExecutorWithOrderingPreserved<TContext> executor = new BulkExecutorWithOrderingPreserved<>(this, operations, cosmosBulkExecutionOptions);
                  return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
              } else {
                  final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);

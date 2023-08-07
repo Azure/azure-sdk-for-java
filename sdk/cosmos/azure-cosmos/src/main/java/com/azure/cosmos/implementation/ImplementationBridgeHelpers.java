@@ -411,10 +411,10 @@ public class ImplementationBridgeHelpers {
 
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
-            void setPreserveOrdering(CosmosBulkExecutionOptions options,
+            void setOrderingPreserved(CosmosBulkExecutionOptions options,
                                             boolean preserveOrdering);
 
-            boolean getPreserveOrdering(CosmosBulkExecutionOptions options);
+            boolean isOrderingPreserved(CosmosBulkExecutionOptions options);
 
             <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
 

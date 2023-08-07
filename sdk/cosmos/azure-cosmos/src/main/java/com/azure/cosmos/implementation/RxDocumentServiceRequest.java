@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.batch.PartitionSplitNotifier;
+import com.azure.cosmos.implementation.batch.PartitionBasedGoneNotifier;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -85,7 +85,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
-    private PartitionSplitNotifier partitionSplitNotifier;
+    private PartitionBasedGoneNotifier partitionBasedGoneNotifier;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
@@ -1188,11 +1188,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.responseTimeout = responseTimeout;
     }
 
-    public void setPartitionSplitNotifier(PartitionSplitNotifier partitionSplitNotifier) {
-        this.partitionSplitNotifier = partitionSplitNotifier;
+    public void setPartitionBasedGoneNotifier(PartitionBasedGoneNotifier partitionBasedGoneNotifier) {
+        this.partitionBasedGoneNotifier = partitionBasedGoneNotifier;
     }
 
-    public PartitionSplitNotifier getPartitionSplitNotifier() {
-        return partitionSplitNotifier;
+    public PartitionBasedGoneNotifier getPartitionBasedGoneNotifier() {
+        return partitionBasedGoneNotifier;
     }
 }
