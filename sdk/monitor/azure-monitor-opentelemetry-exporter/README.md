@@ -58,7 +58,7 @@ OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
     .build()
     .getOpenTelemetrySdk();
 
-Tracer tracer = openTelemetrySdk.getTracer("Sample");
+Tracer tracer = openTelemetry.getTracer("Sample");
 ```
 
 ##### Create spans
