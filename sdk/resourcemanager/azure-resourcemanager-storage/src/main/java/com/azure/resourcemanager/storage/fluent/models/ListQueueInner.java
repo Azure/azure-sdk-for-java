@@ -18,6 +18,10 @@ public final class ListQueueInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ListQueueProperties innerQueueProperties;
 
+    /** Creates an instance of ListQueueInner class. */
+    public ListQueueInner() {
+    }
+
     /**
      * Get the innerQueueProperties property: List Queue resource properties.
      *
