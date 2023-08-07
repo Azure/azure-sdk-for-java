@@ -328,7 +328,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
-            buildInteractiveRequestParameters(request, loginHint, redirectUri, options.getBrowserCustomizationOptions());
+            buildInteractiveRequestParameters(request, loginHint, redirectUri);
         PublicClientApplication pc =  getPublicClientInstance(request).getValue();
         try {
             return new MsalToken(pc.acquireToken(builder.build()).get());

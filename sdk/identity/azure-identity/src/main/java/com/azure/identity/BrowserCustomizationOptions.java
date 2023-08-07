@@ -24,7 +24,7 @@ public class BrowserCustomizationOptions {
 
     /**
      * Configure the property to set HtmlMessageError which the browser will show to the user when the user
-     * finishes authenticating successfully, but an error occurred. You can use a string format e.g.
+     * finishes authenticating, but an error occurred. You can use a string format e.g.
      * "An error has occurred: {0} details: {1}."
      *
      * @param htmlMessageError the message to display when user finishes authenticating, but an error occurred.

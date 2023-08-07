@@ -467,7 +467,7 @@ public abstract class IdentityClientBase {
         return builder.build();
     }
 
-    InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri, BrowserCustomizationOptions browserCustomizationOptions) {
+    InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
             InteractiveRequestParameters.builder(redirectUri)
                 .scopes(new HashSet<>(request.getScopes()))
@@ -479,6 +479,8 @@ public abstract class IdentityClientBase {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             builder.claims(customClaimRequest);
         }
+
+        BrowserCustomizationOptions browserCustomizationOptions = options.getBrowserCustomizationOptions();
 
         if (IdentityUtil.browserCustomizationOptionsPresent(browserCustomizationOptions)) {
             SystemBrowserOptions.SystemBrowserOptionsBuilder browserOptionsBuilder =  SystemBrowserOptions.builder();

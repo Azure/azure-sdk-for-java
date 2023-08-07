@@ -798,7 +798,7 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
-            buildInteractiveRequestParameters(request, loginHint, redirectUri, options.getBrowserCustomizationOptions());
+            buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
         SynchronizedAccessor<PublicClientApplication> publicClient = getPublicClientInstance(request);
 

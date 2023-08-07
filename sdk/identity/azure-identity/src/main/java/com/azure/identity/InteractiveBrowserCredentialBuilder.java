@@ -219,6 +219,4 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
         return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
             loginHint, identityClientOptions);
     }
-
-
 }
