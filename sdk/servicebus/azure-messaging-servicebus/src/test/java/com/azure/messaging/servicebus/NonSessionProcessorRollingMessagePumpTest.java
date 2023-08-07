@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 import java.io.IOException;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.NonSessionProcessor.RollingMessagePump;
+import com.azure.messaging.servicebus.NonSessionProcessor.RollingNonSessionMessagePump;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,7 +46,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, m -> { }, e -> { }, 1, false);
 
         pump.dispose();
         assertThrows(IllegalStateException.class, () -> pump.begin());
@@ -60,7 +60,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, m -> { }, e -> { }, 1, false);
 
         pump.begin();
         try {
@@ -81,7 +81,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
         doNothing().when(client).close();
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, m -> { }, e -> { }, 1, false);
 
         StepVerifier.create(pump.beginIntern())
             .thenAwait()

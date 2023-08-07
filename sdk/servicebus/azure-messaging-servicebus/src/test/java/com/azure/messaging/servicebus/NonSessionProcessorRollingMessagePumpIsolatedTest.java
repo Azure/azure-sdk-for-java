@@ -21,7 +21,7 @@ import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Flux;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.NonSessionProcessor.RollingMessagePump;
+import com.azure.messaging.servicebus.NonSessionProcessor.RollingNonSessionMessagePump;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.scheduler.VirtualTimeScheduler;
@@ -88,7 +88,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         when(firstClient.isConnectionClosed()).thenReturn(false, true);
         doNothing().when(firstClient).close();
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, m -> { }, e -> { }, 1, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -139,7 +139,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
             consumedMessages.add(messageContext.getMessage());
         };
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, false);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, messageConsumer, e -> { }, 1, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -188,7 +188,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
             consumedMessages.add(messageContext.getMessage());
         };
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, false);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, messageConsumer, e -> { }, 1, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -227,7 +227,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
             consumedMessages.add(messageContext.getMessage());
         };
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, true);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, messageConsumer, e -> { }, 1, true);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -272,7 +272,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
             consumedErrors.add(errorContext.getException());
         };
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, true);
+        final RollingNonSessionMessagePump pump = new RollingNonSessionMessagePump(builder, messageConsumer, errorConsumer, 1, true);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
