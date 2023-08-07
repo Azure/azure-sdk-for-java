@@ -25,15 +25,7 @@ import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import com.azure.storage.file.share.models.ClearRange;
-import com.azure.storage.file.share.models.FileRange;
-import com.azure.storage.file.share.models.LeaseStateType;
-import com.azure.storage.file.share.models.ListSharesOptions;
-import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.ShareErrorCode;
-import com.azure.storage.file.share.models.ShareItem;
-import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
-import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.*;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
@@ -633,6 +625,53 @@ public class FileShareTestBase extends TestProxyTestBase {
         return clearRanges;
     }
 
+    protected static boolean assertMetricsAreEqual(ShareMetrics expected, ShareMetrics actual) {
+        if (expected == null) {
+            return actual == null;
+        } else {
+            return Objects.equals(expected.isEnabled(), actual.isEnabled()) &&
+                Objects.equals(expected.isIncludeApis(), actual.isIncludeApis()) &&
+                Objects.equals(expected.getVersion(), actual.getVersion()) &&
+                assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy());
+        }
+    }
+
+    protected static boolean assertRetentionPoliciesAreEqual(ShareRetentionPolicy expected, ShareRetentionPolicy actual) {
+        if (expected == null) {
+            return actual == null;
+        } else {
+            return Objects.equals(expected.getDays(), actual.getDays()) &&
+                Objects.equals(expected.isEnabled(), actual.isEnabled());
+        }
+    }
+
+    static boolean assertCorsAreEqual(List<ShareCorsRule> expected, List<ShareCorsRule> actual) {
+        if (expected == null) {
+            return actual == null;
+        } else {
+            if (expected.size() != actual.size()) {
+                return false;
+            }
+            for (int i = 0; i < expected.size(); i++) {
+                if (!assertCorRulesAreEqual(expected.get(i), actual.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    static boolean assertCorRulesAreEqual(ShareCorsRule expected, ShareCorsRule actual) {
+        if (expected == null) {
+            return actual == null;
+        } else {
+            return Objects.equals(expected.getAllowedHeaders(), actual.getAllowedHeaders()) &&
+                Objects.equals(expected.getAllowedMethods(), actual.getAllowedMethods()) &&
+                Objects.equals(expected.getAllowedOrigins(), actual.getAllowedOrigins()) &&
+                Objects.equals(expected.getMaxAgeInSeconds(), actual.getMaxAgeInSeconds());
+        }
+    }
+
     // add this to FileTestHelper class
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
         ShareErrorCode errMessage) {
@@ -645,6 +684,17 @@ public class FileShareTestBase extends TestProxyTestBase {
     protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
+    }
+
+    protected static boolean assertFileServicePropertiesAreEqual(ShareServiceProperties expected,
+        ShareServiceProperties actual) {
+        if (expected == null) {
+            return actual == null;
+        } else {
+            return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics()) &&
+                assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics()) &&
+                assertCorsAreEqual(expected.getCors(), actual.getCors());
+        }
     }
 
     protected static Stream<Arguments> startCopyWithCopySourceFileErrorSupplier() {
@@ -678,6 +728,10 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static boolean olderThan20190707ServiceVersion() {
         return olderThan(ShareServiceVersion.V2019_07_07);
+    }
+
+    protected static boolean olderThan20191212ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2019_12_12);
     }
 
     protected static boolean olderThan20200210ServiceVersion() {
@@ -728,5 +782,13 @@ public class FileShareTestBase extends TestProxyTestBase {
     protected Duration getPollingDuration(long liveTestDurationInMillis) {
         return (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) ? Duration.ofMillis(10)
             : Duration.ofMillis(liveTestDurationInMillis);
+    }
+
+    protected static boolean isServiceVersionSpecified() {
+        return ENVIRONMENT.getServiceVersion() != null;
+    }
+
+    protected static boolean isPlaybackMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.PLAYBACK;
     }
 }
