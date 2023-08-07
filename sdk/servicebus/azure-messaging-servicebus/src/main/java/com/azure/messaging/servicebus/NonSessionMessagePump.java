@@ -99,11 +99,15 @@ final class NonSessionMessagePump {
         final Mono<Void> pumping = client.nonSessionProcessorReceiveV2()
             .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
 
-        return Mono.firstWithSignal(pumping, terminatePumping)
+        final Mono<Void> pumpingMessages = Mono.firstWithSignal(pumping, terminatePumping);
+
+        return pumpingMessages
             .onErrorMap(e -> {
                 if (e instanceof TerminatedException) {
+                    // 'e' propagated from pollConnectionState().
                     return e;
                 }
+                // 'e' propagated from client.nonSessionProcessorReceiveV2().
                 return new TerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
             })
             .then(Mono.error(() -> TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
