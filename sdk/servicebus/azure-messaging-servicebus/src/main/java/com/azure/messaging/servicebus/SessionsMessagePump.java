@@ -194,7 +194,7 @@ final class SessionsMessagePump {
      * The Mono emits terminal signal once there is a failure in obtaining a new session.
      *
      * <p>The Mono emits {@link UnsupportedOperationException} if it is subscribed more than once. If the Mono is subscribed
-     * after the termination of SessionsMessagePump it emits {@link TerminatedException}.</p>
+     * after the termination of SessionsMessagePump it emits {@link MessagePumpTerminatedException}.</p>
      *
      * @return the Mono to begin and cancel message pumping.
      */
@@ -227,23 +227,23 @@ final class SessionsMessagePump {
 
         return pumpingMessages
             .onErrorMap(e -> {
-                if (e instanceof TerminatedException) {
+                if (e instanceof MessagePumpTerminatedException) {
                     // 'e' propagated from pollConnectionState(), NextSession.mono(),
                     // RollingSessionReceiver.(nextSessionReceiver()|NextSessionStream,flux())
                     //
                     return e;
                 }
                 // 'e' here could be reactor.core.CompositeException (e.g, 2 RollingSessionReceiver triggering error concurrently).
-                return new TerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
+                return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
             })
-            .then(Mono.error(() -> TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
+            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
     }
 
     private Mono<Void> pollConnectionState() {
         return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
             .handle((ignored, sink) -> {
                 if (sessionAcquirer.isConnectionClosed()) {
-                    final RuntimeException e = logger.atInfo().log(new TerminatedException(pumpId, fqdn, entityPath, "session#connection-state-poll"));
+                    final RuntimeException e = logger.atInfo().log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#connection-state-poll"));
                     sink.error(e);
                 }
             }).then();
@@ -294,8 +294,8 @@ final class SessionsMessagePump {
      * All the {@link RollingSessionReceiver} in the {@link SessionsMessagePump} shares this Mono to obtain unique sessions.
      *
      * <p>The event the Mono fails to acquire a session, the type marks itself as terminated (i.e., self-terminate) and
-     * notifies the subscription about the failure as {@link TerminatedException}. Any later subscriptions will be notified
-     * with TerminatedException.</p>
+     * notifies the subscription about the failure as {@link MessagePumpTerminatedException}. Any later subscriptions will
+     * be notified with MessagePumpTerminatedException.</p>
      *
      * <p>If a RollingSessionReceiver encounters acquire session failure, it stops pumping and emit terminal signal.
      * At this point, the SessionMessagePump will cancel all other RollingSessionReceiver instances. The design of
@@ -327,12 +327,12 @@ final class SessionsMessagePump {
         @Override
         public Mono<ServiceBusSessionAcquirer.Session> get() {
             if (isTerminated.get()) {
-                return Mono.error(new TerminatedException(pumpId, fqdn, entityPath, "session#acquire"));
+                return Mono.error(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#acquire"));
             }
             return sessionAcquirer.acquire()
                 .onErrorMap(e -> {
                     isTerminated.set(true);
-                    return new TerminatedException(pumpId, fqdn, entityPath, "session#acquire", e);
+                    return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#acquire", e);
                 });
             // The 'TerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
         }
@@ -443,7 +443,7 @@ final class SessionsMessagePump {
             final State<ServiceBusSessionReactorReceiver> lastState = super.get();
             if (lastState == TERMINATED) {
                 nextSession.closeAsync().subscribe();
-                throw new TerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
+                throw new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
             }
             final ServiceBusSessionReactorReceiver nextReceiver = new ServiceBusSessionReactorReceiver(
                 logger, tracer, managementNode, nextSession.properties, nextSession.link, maxSessionLockRenew, sessionIdleTimeout);
@@ -458,7 +458,7 @@ final class SessionsMessagePump {
                 //      'compareAndSet' resulting in T1 not closing its ServiceBusSessionReactorReceiver.
                 //
                 nextReceiver.closeAsync().subscribe();
-                throw new TerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
+                throw new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
             }
             if (lastState != INIT) {
                 final ServiceBusSessionReactorReceiver lastReceiver = lastState.receiver;
@@ -555,7 +555,8 @@ final class SessionsMessagePump {
                 this.newSession = Mono.defer(() -> {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
-                        return Mono.error(new TerminatedException(this.pumpId, this.fqdn, this.entityPath, "session#next-link roller_" + this.rollerId));
+                        return Mono.error(new MessagePumpTerminatedException(this.pumpId, this.fqdn, this.entityPath,
+                            "session#next-link roller_" + this.rollerId));
                     } else {
                         return nextSession;
                     }
@@ -563,7 +564,8 @@ final class SessionsMessagePump {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
                         session.closeAsync().subscribe();
-                        throw new TerminatedException(this.pumpId, this.fqdn, this.entityPath, "session#next-link roller_" + this.rollerId);
+                        throw new MessagePumpTerminatedException(this.pumpId, this.fqdn, this.entityPath,
+                            "session#next-link roller_" + this.rollerId);
                     }
                     return session;
                 });
