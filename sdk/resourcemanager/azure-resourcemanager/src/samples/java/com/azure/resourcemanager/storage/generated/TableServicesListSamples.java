@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TableServices List. */
 public final class TableServicesListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableServicesList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableServicesList.json
      */
     /**
      * Sample code: TableServicesList.
@@ -22,6 +20,6 @@ public final class TableServicesListSamples {
             .manager()
             .serviceClient()
             .getTableServices()
-            .listWithResponse("res9290", "sto1590", Context.NONE);
+            .listWithResponse("res9290", "sto1590", com.azure.core.util.Context.NONE);
     }
 }

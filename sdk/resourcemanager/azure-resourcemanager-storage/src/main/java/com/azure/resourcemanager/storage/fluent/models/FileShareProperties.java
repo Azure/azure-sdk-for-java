@@ -133,6 +133,10 @@ public final class FileShareProperties {
     @JsonProperty(value = "snapshotTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime snapshotTime;
 
+    /** Creates an instance of FileShareProperties class. */
+    public FileShareProperties() {
+    }
+
     /**
      * Get the lastModifiedTime property: Returns the date and time the share was last modified.
      *
