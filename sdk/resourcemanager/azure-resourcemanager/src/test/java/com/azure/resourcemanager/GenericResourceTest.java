@@ -11,6 +11,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
@@ -127,6 +133,57 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
         Assertions.assertTrue(pool.tags().containsKey("myTagKey"));
 
         azureResourceManager.genericResources().deleteById(poolId);
+    }
+
+    @Test
+    public void canGetDefaultApiVersionForChildResources() {
+        // test privateDnsZones/virtualNetworkLinks which has the same child resource name as dnsForwardingRulesets/virtualNetworkLinks
+        String vnetName = generateRandomResourceName("vnet", 15);
+        String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
+        String vnetLinkName = generateRandomResourceName("pdvnl", 15);
+
+        Network network = azureResourceManager.networks().define(vnetName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnetA", "10.0.0.0/29")
+            .create();
+
+        PrivateDnsZone pdz = azureResourceManager.privateDnsZones().define(topLevelDomain)
+            .withExistingResourceGroup(rgName)
+            .defineVirtualNetworkLink(vnetLinkName)
+            .disableAutoRegistration()
+            .withVirtualNetworkId(network.id())
+            .withETagCheck()
+            .attach()
+            .create();
+
+        String vnetLinkId = pdz.virtualNetworkLinks().list().stream().iterator().next().id();
+        GenericResource vnetLink = azureResourceManager.genericResources().getById(vnetLinkId);
+        Assertions.assertEquals(vnetLinkName, vnetLink.name());
+
+        azureResourceManager.genericResources().deleteById(vnetLinkId);
+
+        // test sites/config, which searches its parent's(sites) api-version
+        String webappName = generateRandomResourceName("webapp", 15);
+        azureResourceManager.webApps()
+            .define(webappName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
+            .withMinTlsVersion(SupportedTlsVersions.ONE_ONE)
+            .create();
+
+        SiteConfigResourceInner configInner = azureResourceManager
+            .webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .getConfiguration(rgName, webappName);
+
+        GenericResource genericConfig = azureResourceManager.genericResources().getById(configInner.id());
+        Assertions.assertEquals(configInner.name(), genericConfig.name());
     }
 
     private SqlElasticPool ensureElasticPoolWithSpace() {

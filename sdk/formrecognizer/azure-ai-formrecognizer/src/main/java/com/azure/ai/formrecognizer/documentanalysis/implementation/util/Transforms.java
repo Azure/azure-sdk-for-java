@@ -62,7 +62,9 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
+import com.azure.ai.formrecognizer.documentanalysis.models.FontWeight;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ContentSource;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
@@ -188,6 +190,17 @@ public class Transforms {
                     DocumentStyleHelper.setConfidence(documentStyle, innerDocumentStyle.getConfidence());
                     DocumentStyleHelper.setIsHandwritten(documentStyle, innerDocumentStyle.isHandwritten());
                     DocumentStyleHelper.setSpans(documentStyle, toDocumentSpans(innerDocumentStyle.getSpans()));
+                    DocumentStyleHelper.setColor(documentStyle, innerDocumentStyle.getColor());
+                    DocumentStyleHelper.setBackgroundColor(documentStyle, innerDocumentStyle.getBackgroundColor());
+                    if (innerDocumentStyle.getFontWeight() != null) {
+                        DocumentStyleHelper.setFontWeight(documentStyle,
+                                FontWeight.fromString(innerDocumentStyle.getFontWeight().toString()));
+                    }
+                    DocumentStyleHelper.setSimilarFontFamily(documentStyle, innerDocumentStyle.getSimilarFontFamily());
+                    if (innerDocumentStyle.getFontStyle() != null) {
+                        DocumentStyleHelper.setFontStyle(documentStyle,
+                                FontStyle.fromString(innerDocumentStyle.getFontStyle().toString()));
+                    }
                     return documentStyle;
                 })
                 .collect(Collectors.toList()));
@@ -287,19 +300,19 @@ public class Transforms {
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(
-        TrainingDataContentSource trainingDataContentSource, DocumentModelBuildMode buildMode,
+        ContentSource contentSource, DocumentModelBuildMode buildMode,
         String modelId, BuildDocumentModelOptions buildDocumentModelOptions) {
         BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest(modelId,
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
                 .fromString(buildMode.toString()))
             .setDescription(buildDocumentModelOptions.getDescription())
             .setTags(buildDocumentModelOptions.getTags());
-        if (trainingDataContentSource instanceof BlobContentSource) {
-            BlobContentSource azureBlobSource = (BlobContentSource) trainingDataContentSource;
+        if (contentSource instanceof BlobContentSource) {
+            BlobContentSource azureBlobSource = (BlobContentSource) contentSource;
             buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(azureBlobSource.getContainerUrl())
                 .setPrefix(azureBlobSource.getPrefix()));
-        } else if (trainingDataContentSource instanceof BlobFileListContentSource) {
-            BlobFileListContentSource azureBlobFileListSource = (BlobFileListContentSource) trainingDataContentSource;
+        } else if (contentSource instanceof BlobFileListContentSource) {
+            BlobFileListContentSource azureBlobFileListSource = (BlobFileListContentSource) contentSource;
             buildDocumentModelRequest.setAzureBlobFileListSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(azureBlobFileListSource.getContainerUrl(), azureBlobFileListSource.getFileList()));
         }
         return buildDocumentModelRequest;
@@ -785,16 +798,16 @@ public class Transforms {
         tags.forEach((key, classifierDocumentTypeDetails) -> {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails innerClassifyDocTypeDetails
                 = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails();
-            if (classifierDocumentTypeDetails.getTrainingDataContentSource() instanceof BlobFileListContentSource) {
+            if (classifierDocumentTypeDetails.getContentSource() instanceof BlobFileListContentSource) {
                 innerClassifyDocTypeDetails.setAzureBlobFileListSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
-                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl(),
-                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getFileList()));
+                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl(),
+                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource()).getFileList()));
             } else {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
-                        ((BlobContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl())
-                        .setPrefix(((BlobContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getPrefix()));
+                        ((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl())
+                        .setPrefix(((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getPrefix()));
             }
             innerTags.put(key, innerClassifyDocTypeDetails);
         });

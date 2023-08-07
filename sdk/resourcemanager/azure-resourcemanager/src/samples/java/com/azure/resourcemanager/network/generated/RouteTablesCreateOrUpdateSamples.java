@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for RouteTables CreateOrUpdate. */
 public final class RouteTablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RouteTableCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/RouteTableCreate.json
      */
     /**
      * Sample code: Create route table.
@@ -30,7 +30,7 @@ public final class RouteTablesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RouteTableCreateWithRoute.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/RouteTableCreateWithRoute.json
      */
     /**
      * Sample code: Create route table with route.

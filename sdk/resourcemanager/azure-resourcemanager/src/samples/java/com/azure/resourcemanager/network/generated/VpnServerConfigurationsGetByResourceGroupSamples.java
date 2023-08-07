@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VpnServerConfigurations GetByResourceGroup. */
 public final class VpnServerConfigurationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnServerConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VpnServerConfigurationGet.json
      */
     /**
      * Sample code: VpnServerConfigurationGet.

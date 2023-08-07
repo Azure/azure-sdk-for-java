@@ -19,7 +19,7 @@ import java.util.Arrays;
 /** Samples for ConnectionMonitors CreateOrUpdate. */
 public final class ConnectionMonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherConnectionMonitorCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkWatcherConnectionMonitorCreate.json
      */
     /**
      * Sample code: Create connection monitor V1.
@@ -67,7 +67,7 @@ public final class ConnectionMonitorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherConnectionMonitorV2Create.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkWatcherConnectionMonitorV2Create.json
      */
     /**
      * Sample code: Create connection monitor V2.
