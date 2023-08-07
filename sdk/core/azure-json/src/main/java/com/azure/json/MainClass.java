@@ -1,21 +1,20 @@
-import com.azure.json.*;
-import com.sun.jdi.InvalidTypeException;
+package com.azure.json;
+
 
 /**
- * This class acts purely as a playground for testing and playing around with 
- * the current implementation of the JSON model related classes:   
- *      - JsonElement 
- *      - JsonArray 
- *      - JsonBoolean 
- *      - JsonNull 
- *      - JsonNumber 
- *      - JsonObject 
- *      - JsonString 
- * 
- * NOTE: can be removed later. 
+ * This class acts purely as a playground for testing and playing around with
+ * the current implementation of the JSON model related classes:
+ *      - JsonElement
+ *      - JsonArray
+ *      - JsonBoolean
+ *      - JsonNull
+ *      - JsonNumber
+ *      - JsonObject
+ *      - JsonString
+ * NOTE: can be removed later.
  */
 public class MainClass {
-    public static void main(String[] args) throws InvalidTypeException {
+    public static void main(String[] args) throws InvalidJsonDataTypeException {
 
         int[] numArray = new int[10];
         numArray[0] = 3;
