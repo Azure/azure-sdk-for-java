@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-render</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Maps SDK Render client library</name>
@@ -45,6 +45,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
@@ -59,17 +64,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.42.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.11</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.12</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -81,7 +86,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

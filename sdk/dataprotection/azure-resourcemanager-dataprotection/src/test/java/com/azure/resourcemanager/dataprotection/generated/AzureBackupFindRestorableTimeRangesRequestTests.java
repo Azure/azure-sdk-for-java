@@ -14,24 +14,23 @@ public final class AzureBackupFindRestorableTimeRangesRequestTests {
     public void testDeserialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model =
             BinaryData
-                .fromString(
-                    "{\"sourceDataStoreType\":\"ArchiveStore\",\"startTime\":\"vlvqhjkbegi\",\"endTime\":\"nmxiebwwaloayqc\"}")
+                .fromString("{\"sourceDataStoreType\":\"VaultStore\",\"startTime\":\"nqpeh\",\"endTime\":\"doy\"}")
                 .toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("vlvqhjkbegi", model.startTime());
-        Assertions.assertEquals("nmxiebwwaloayqc", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("nqpeh", model.startTime());
+        Assertions.assertEquals("doy", model.endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model =
             new AzureBackupFindRestorableTimeRangesRequest()
-                .withSourceDataStoreType(RestoreSourceDataStoreType.ARCHIVE_STORE)
-                .withStartTime("vlvqhjkbegi")
-                .withEndTime("nmxiebwwaloayqc");
+                .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE)
+                .withStartTime("nqpeh")
+                .withEndTime("doy");
         model = BinaryData.fromObject(model).toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("vlvqhjkbegi", model.startTime());
-        Assertions.assertEquals("nmxiebwwaloayqc", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("nqpeh", model.startTime());
+        Assertions.assertEquals("doy", model.endTime());
     }
 }

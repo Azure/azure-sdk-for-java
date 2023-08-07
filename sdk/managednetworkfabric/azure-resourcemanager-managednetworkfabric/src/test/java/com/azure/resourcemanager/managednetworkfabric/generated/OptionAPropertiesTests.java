@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managednetworkfabric.models.FabricBfdConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.OptionAProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,36 +15,29 @@ public final class OptionAPropertiesTests {
         OptionAProperties model =
             BinaryData
                 .fromString(
-                    "{\"mtu\":672281417,\"vlanId\":772220460,\"peerASN\":811259907,\"bfdConfiguration\":{\"interval\":1114052241,\"multiplier\":873117739},\"primaryIpv4Prefix\":\"gsh\",\"primaryIpv6Prefix\":\"gsgbpfgzdjt\",\"secondaryIpv4Prefix\":\"zflbqvg\",\"secondaryIpv6Prefix\":\"vl\"}")
+                    "{\"mtu\":341229695,\"vlanId\":1997920691,\"peerASN\":5808363193481084491,\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":946572249,\"multiplier\":716093008}}")
                 .toObject(OptionAProperties.class);
-        Assertions.assertEquals("gsh", model.primaryIpv4Prefix());
-        Assertions.assertEquals("gsgbpfgzdjt", model.primaryIpv6Prefix());
-        Assertions.assertEquals("zflbqvg", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("vl", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(672281417, model.mtu());
-        Assertions.assertEquals(772220460, model.vlanId());
-        Assertions.assertEquals(811259907, model.peerAsn());
+        Assertions.assertEquals(341229695, model.mtu());
+        Assertions.assertEquals(1997920691, model.vlanId());
+        Assertions.assertEquals(5808363193481084491L, model.peerAsn());
+        Assertions.assertEquals(946572249, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(716093008, model.bfdConfiguration().multiplier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OptionAProperties model =
             new OptionAProperties()
-                .withPrimaryIpv4Prefix("gsh")
-                .withPrimaryIpv6Prefix("gsgbpfgzdjt")
-                .withSecondaryIpv4Prefix("zflbqvg")
-                .withSecondaryIpv6Prefix("vl")
-                .withMtu(672281417)
-                .withVlanId(772220460)
-                .withPeerAsn(811259907)
-                .withBfdConfiguration(new FabricBfdConfiguration());
+                .withMtu(341229695)
+                .withVlanId(1997920691)
+                .withPeerAsn(5808363193481084491L)
+                .withBfdConfiguration(
+                    new BfdConfiguration().withIntervalInMilliSeconds(946572249).withMultiplier(716093008));
         model = BinaryData.fromObject(model).toObject(OptionAProperties.class);
-        Assertions.assertEquals("gsh", model.primaryIpv4Prefix());
-        Assertions.assertEquals("gsgbpfgzdjt", model.primaryIpv6Prefix());
-        Assertions.assertEquals("zflbqvg", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("vl", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(672281417, model.mtu());
-        Assertions.assertEquals(772220460, model.vlanId());
-        Assertions.assertEquals(811259907, model.peerAsn());
+        Assertions.assertEquals(341229695, model.mtu());
+        Assertions.assertEquals(1997920691, model.vlanId());
+        Assertions.assertEquals(5808363193481084491L, model.peerAsn());
+        Assertions.assertEquals(946572249, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(716093008, model.bfdConfiguration().multiplier());
     }
 }

@@ -109,8 +109,7 @@ public class WorkerAdapter {
 
     public static Map<String, ChannelConfiguration> convertChannelConfigurationsToPublic(Map<String, ChannelConfigurationInternal> internal) {
         return internal != null ? internal.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ChannelConfiguration()
-                .setCapacityCostPerJob(entry.getValue().getCapacityCostPerJob())
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ChannelConfiguration(entry.getValue().getCapacityCostPerJob())
                 .setMaxNumberOfJobs(entry.getValue().getMaxNumberOfJobs()))) : new HashMap<>();
     }
 

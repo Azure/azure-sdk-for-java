@@ -8,9 +8,11 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpExtendedCommunityInner;
-import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunity;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import java.util.Collections;
 import java.util.List;
@@ -51,21 +53,25 @@ public final class IpExtendedCommunityImpl
         return this.innerModel().systemData();
     }
 
-    public CommunityActionTypes action() {
-        return this.innerModel().action();
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
     }
 
-    public List<String> routeTargets() {
-        List<String> inner = this.innerModel().routeTargets();
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
+    }
+
+    public List<IpExtendedCommunityRule> ipExtendedCommunityRules() {
+        List<IpExtendedCommunityRule> inner = this.innerModel().ipExtendedCommunityRules();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public String annotation() {
@@ -190,6 +196,17 @@ public final class IpExtendedCommunityImpl
         return this;
     }
 
+    public IpExtendedCommunityImpl withIpExtendedCommunityRules(
+        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+        if (isInCreateMode()) {
+            this.innerModel().withIpExtendedCommunityRules(ipExtendedCommunityRules);
+            return this;
+        } else {
+            this.updateBody.withIpExtendedCommunityRules(ipExtendedCommunityRules);
+            return this;
+        }
+    }
+
     public IpExtendedCommunityImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -200,19 +217,14 @@ public final class IpExtendedCommunityImpl
         }
     }
 
-    public IpExtendedCommunityImpl withAction(CommunityActionTypes action) {
-        this.innerModel().withAction(action);
-        return this;
-    }
-
-    public IpExtendedCommunityImpl withRouteTargets(List<String> routeTargets) {
-        this.innerModel().withRouteTargets(routeTargets);
-        return this;
-    }
-
     public IpExtendedCommunityImpl withAnnotation(String annotation) {
-        this.innerModel().withAnnotation(annotation);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAnnotation(annotation);
+            return this;
+        } else {
+            this.updateBody.withAnnotation(annotation);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

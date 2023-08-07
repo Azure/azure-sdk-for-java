@@ -16,27 +16,26 @@ public final class LiveTraceConfigurationTests {
         LiveTraceConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"enabled\":\"mkfssxqukkfplgm\",\"categories\":[{\"name\":\"kjz\",\"enabled\":\"es\"},{\"name\":\"vlopwiyighx\",\"enabled\":\"dwzbaiue\"},{\"name\":\"a\",\"enabled\":\"nyqupedeojnabck\"}]}")
+                    "{\"enabled\":\"gdknnqv\",\"categories\":[{\"name\":\"qntorudsgsahmkyc\",\"enabled\":\"auwjuetaebu\"},{\"name\":\"vdmovsmzlxwabm\",\"enabled\":\"efkifr\"}]}")
                 .toObject(LiveTraceConfiguration.class);
-        Assertions.assertEquals("mkfssxqukkfplgm", model.enabled());
-        Assertions.assertEquals("kjz", model.categories().get(0).name());
-        Assertions.assertEquals("es", model.categories().get(0).enabled());
+        Assertions.assertEquals("gdknnqv", model.enabled());
+        Assertions.assertEquals("qntorudsgsahmkyc", model.categories().get(0).name());
+        Assertions.assertEquals("auwjuetaebu", model.categories().get(0).enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiveTraceConfiguration model =
             new LiveTraceConfiguration()
-                .withEnabled("mkfssxqukkfplgm")
+                .withEnabled("gdknnqv")
                 .withCategories(
                     Arrays
                         .asList(
-                            new LiveTraceCategory().withName("kjz").withEnabled("es"),
-                            new LiveTraceCategory().withName("vlopwiyighx").withEnabled("dwzbaiue"),
-                            new LiveTraceCategory().withName("a").withEnabled("nyqupedeojnabck")));
+                            new LiveTraceCategory().withName("qntorudsgsahmkyc").withEnabled("auwjuetaebu"),
+                            new LiveTraceCategory().withName("vdmovsmzlxwabm").withEnabled("efkifr")));
         model = BinaryData.fromObject(model).toObject(LiveTraceConfiguration.class);
-        Assertions.assertEquals("mkfssxqukkfplgm", model.enabled());
-        Assertions.assertEquals("kjz", model.categories().get(0).name());
-        Assertions.assertEquals("es", model.categories().get(0).enabled());
+        Assertions.assertEquals("gdknnqv", model.enabled());
+        Assertions.assertEquals("qntorudsgsahmkyc", model.categories().get(0).name());
+        Assertions.assertEquals("auwjuetaebu", model.categories().get(0).enabled());
     }
 }

@@ -65,11 +65,33 @@ public interface NetworkFabric {
     String networkFabricSku();
 
     /**
-     * Gets the rackCount property: Number of racks associated to Network Fabric.Possible values are from 2-8.
+     * Gets the fabricVersion property: The version of Network Fabric.
+     *
+     * @return the fabricVersion value.
+     */
+    String fabricVersion();
+
+    /**
+     * Gets the routerIds property: Array of router IDs.
+     *
+     * @return the routerIds value.
+     */
+    List<String> routerIds();
+
+    /**
+     * Gets the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
+     * belongs.
+     *
+     * @return the networkFabricControllerId value.
+     */
+    String networkFabricControllerId();
+
+    /**
+     * Gets the rackCount property: Number of compute racks associated to Network Fabric.
      *
      * @return the rackCount value.
      */
-    int rackCount();
+    Integer rackCount();
 
     /**
      * Gets the serverCountPerRack property: Number of servers.Possible values are from 1-16.
@@ -93,26 +115,11 @@ public interface NetworkFabric {
     String ipv6Prefix();
 
     /**
-     * Gets the routerId property: Router Id of CE to be used for MP-BGP between PE and CE.
-     *
-     * @return the routerId value.
-     */
-    String routerId();
-
-    /**
      * Gets the fabricAsn property: ASN of CE devices for CE/PE connectivity.
      *
      * @return the fabricAsn value.
      */
-    int fabricAsn();
-
-    /**
-     * Gets the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
-     * belongs.
-     *
-     * @return the networkFabricControllerId value.
-     */
-    String networkFabricControllerId();
+    long fabricAsn();
 
     /**
      * Gets the terminalServerConfiguration property: Network and credentials configuration currently applied to
@@ -127,21 +134,7 @@ public interface NetworkFabric {
      *
      * @return the managementNetworkConfiguration value.
      */
-    ManagementNetworkConfiguration managementNetworkConfiguration();
-
-    /**
-     * Gets the operationalState property: Gets the operational state of the resource.
-     *
-     * @return the operationalState value.
-     */
-    NetworkFabricOperationalState operationalState();
-
-    /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
+    ManagementNetworkConfigurationProperties managementNetworkConfiguration();
 
     /**
      * Gets the racks property: List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed
@@ -152,18 +145,41 @@ public interface NetworkFabric {
     List<String> racks();
 
     /**
-     * Gets the l2IsolationDomains property: List of L2IsolationDomain resource IDs under the Network Fabric.
+     * Gets the l2IsolationDomains property: List of L2 Isolation Domain resource IDs under the Network Fabric.
      *
      * @return the l2IsolationDomains value.
      */
     List<String> l2IsolationDomains();
 
     /**
-     * Gets the l3IsolationDomains property: List of L3IsolationDomain resource IDs under the Network Fabric.
+     * Gets the l3IsolationDomains property: List of L3 Isolation Domain resource IDs under the Network Fabric.
      *
      * @return the l3IsolationDomains value.
      */
     List<String> l3IsolationDomains();
+
+    /**
+     * Gets the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    ConfigurationState configurationState();
+
+    /**
+     * Gets the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
+     * updating, Succeeded or Failed. During this process, the states keep changing based on the status of NFC
+     * provisioning.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -205,13 +221,22 @@ public interface NetworkFabric {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithNetworkFabricSku,
+            DefinitionStages.WithNetworkFabricControllerId,
+            DefinitionStages.WithServerCountPerRack,
+            DefinitionStages.WithIpv4Prefix,
+            DefinitionStages.WithFabricAsn,
+            DefinitionStages.WithTerminalServerConfiguration,
+            DefinitionStages.WithManagementNetworkConfiguration,
             DefinitionStages.WithCreate {
     }
+
     /** The NetworkFabric definition stages. */
     interface DefinitionStages {
         /** The first stage of the NetworkFabric definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the NetworkFabric definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -230,6 +255,7 @@ public interface NetworkFabric {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the NetworkFabric definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -238,23 +264,105 @@ public interface NetworkFabric {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithNetworkFabricSku withExistingResourceGroup(String resourceGroupName);
         }
+
+        /** The stage of the NetworkFabric definition allowing to specify networkFabricSku. */
+        interface WithNetworkFabricSku {
+            /**
+             * Specifies the networkFabricSku property: Supported Network Fabric SKU.Example: Compute / Aggregate racks.
+             * Once the user chooses a particular SKU, only supported racks can be added to the Network Fabric. The SKU
+             * determines whether it is a single / multi rack Network Fabric..
+             *
+             * @param networkFabricSku Supported Network Fabric SKU.Example: Compute / Aggregate racks. Once the user
+             *     chooses a particular SKU, only supported racks can be added to the Network Fabric. The SKU determines
+             *     whether it is a single / multi rack Network Fabric.
+             * @return the next definition stage.
+             */
+            WithNetworkFabricControllerId withNetworkFabricSku(String networkFabricSku);
+        }
+
+        /** The stage of the NetworkFabric definition allowing to specify networkFabricControllerId. */
+        interface WithNetworkFabricControllerId {
+            /**
+             * Specifies the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the
+             * NetworkFabric belongs..
+             *
+             * @param networkFabricControllerId Azure resource ID for the NetworkFabricController the NetworkFabric
+             *     belongs.
+             * @return the next definition stage.
+             */
+            WithServerCountPerRack withNetworkFabricControllerId(String networkFabricControllerId);
+        }
+
+        /** The stage of the NetworkFabric definition allowing to specify serverCountPerRack. */
+        interface WithServerCountPerRack {
+            /**
+             * Specifies the serverCountPerRack property: Number of servers.Possible values are from 1-16..
+             *
+             * @param serverCountPerRack Number of servers.Possible values are from 1-16.
+             * @return the next definition stage.
+             */
+            WithIpv4Prefix withServerCountPerRack(int serverCountPerRack);
+        }
+
+        /** The stage of the NetworkFabric definition allowing to specify ipv4Prefix. */
+        interface WithIpv4Prefix {
+            /**
+             * Specifies the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19..
+             *
+             * @param ipv4Prefix IPv4Prefix for Management Network. Example: 10.1.0.0/19.
+             * @return the next definition stage.
+             */
+            WithFabricAsn withIpv4Prefix(String ipv4Prefix);
+        }
+
+        /** The stage of the NetworkFabric definition allowing to specify fabricAsn. */
+        interface WithFabricAsn {
+            /**
+             * Specifies the fabricAsn property: ASN of CE devices for CE/PE connectivity..
+             *
+             * @param fabricAsn ASN of CE devices for CE/PE connectivity.
+             * @return the next definition stage.
+             */
+            WithTerminalServerConfiguration withFabricAsn(long fabricAsn);
+        }
+
+        /** The stage of the NetworkFabric definition allowing to specify terminalServerConfiguration. */
+        interface WithTerminalServerConfiguration {
+            /**
+             * Specifies the terminalServerConfiguration property: Network and credentials configuration currently
+             * applied to terminal server..
+             *
+             * @param terminalServerConfiguration Network and credentials configuration currently applied to terminal
+             *     server.
+             * @return the next definition stage.
+             */
+            WithManagementNetworkConfiguration withTerminalServerConfiguration(
+                TerminalServerConfiguration terminalServerConfiguration);
+        }
+
+        /** The stage of the NetworkFabric definition allowing to specify managementNetworkConfiguration. */
+        interface WithManagementNetworkConfiguration {
+            /**
+             * Specifies the managementNetworkConfiguration property: Configuration to be used to setup the management
+             * network..
+             *
+             * @param managementNetworkConfiguration Configuration to be used to setup the management network.
+             * @return the next definition stage.
+             */
+            WithCreate withManagementNetworkConfiguration(
+                ManagementNetworkConfigurationProperties managementNetworkConfiguration);
+        }
+
         /**
          * The stage of the NetworkFabric definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithNetworkFabricSku,
                 DefinitionStages.WithRackCount,
-                DefinitionStages.WithServerCountPerRack,
-                DefinitionStages.WithIpv4Prefix,
                 DefinitionStages.WithIpv6Prefix,
-                DefinitionStages.WithFabricAsn,
-                DefinitionStages.WithNetworkFabricControllerId,
-                DefinitionStages.WithTerminalServerConfiguration,
-                DefinitionStages.WithManagementNetworkConfiguration,
                 DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
@@ -271,6 +379,7 @@ public interface NetworkFabric {
              */
             NetworkFabric create(Context context);
         }
+
         /** The stage of the NetworkFabric definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -281,107 +390,29 @@ public interface NetworkFabric {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the NetworkFabric definition allowing to specify networkFabricSku. */
-        interface WithNetworkFabricSku {
-            /**
-             * Specifies the networkFabricSku property: Supported Network Fabric SKU.Example: Compute / Aggregate racks.
-             * Once the user chooses a particular SKU, only supported racks can be added to the Network Fabric. The SKU
-             * determines whether it is a single / multi rack Network Fabric..
-             *
-             * @param networkFabricSku Supported Network Fabric SKU.Example: Compute / Aggregate racks. Once the user
-             *     chooses a particular SKU, only supported racks can be added to the Network Fabric. The SKU determines
-             *     whether it is a single / multi rack Network Fabric.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkFabricSku(String networkFabricSku);
-        }
+
         /** The stage of the NetworkFabric definition allowing to specify rackCount. */
         interface WithRackCount {
             /**
-             * Specifies the rackCount property: Number of racks associated to Network Fabric.Possible values are from
-             * 2-8..
+             * Specifies the rackCount property: Number of compute racks associated to Network Fabric..
              *
-             * @param rackCount Number of racks associated to Network Fabric.Possible values are from 2-8.
+             * @param rackCount Number of compute racks associated to Network Fabric.
              * @return the next definition stage.
              */
-            WithCreate withRackCount(int rackCount);
+            WithCreate withRackCount(Integer rackCount);
         }
-        /** The stage of the NetworkFabric definition allowing to specify serverCountPerRack. */
-        interface WithServerCountPerRack {
-            /**
-             * Specifies the serverCountPerRack property: Number of servers.Possible values are from 1-16..
-             *
-             * @param serverCountPerRack Number of servers.Possible values are from 1-16.
-             * @return the next definition stage.
-             */
-            WithCreate withServerCountPerRack(int serverCountPerRack);
-        }
-        /** The stage of the NetworkFabric definition allowing to specify ipv4Prefix. */
-        interface WithIpv4Prefix {
-            /**
-             * Specifies the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19..
-             *
-             * @param ipv4Prefix IPv4Prefix for Management Network. Example: 10.1.0.0/19.
-             * @return the next definition stage.
-             */
-            WithCreate withIpv4Prefix(String ipv4Prefix);
-        }
+
         /** The stage of the NetworkFabric definition allowing to specify ipv6Prefix. */
         interface WithIpv6Prefix {
             /**
-             * Specifies the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59..
+             * Specifies the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
              *
              * @param ipv6Prefix IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
              * @return the next definition stage.
              */
             WithCreate withIpv6Prefix(String ipv6Prefix);
         }
-        /** The stage of the NetworkFabric definition allowing to specify fabricAsn. */
-        interface WithFabricAsn {
-            /**
-             * Specifies the fabricAsn property: ASN of CE devices for CE/PE connectivity..
-             *
-             * @param fabricAsn ASN of CE devices for CE/PE connectivity.
-             * @return the next definition stage.
-             */
-            WithCreate withFabricAsn(int fabricAsn);
-        }
-        /** The stage of the NetworkFabric definition allowing to specify networkFabricControllerId. */
-        interface WithNetworkFabricControllerId {
-            /**
-             * Specifies the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the
-             * NetworkFabric belongs..
-             *
-             * @param networkFabricControllerId Azure resource ID for the NetworkFabricController the NetworkFabric
-             *     belongs.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkFabricControllerId(String networkFabricControllerId);
-        }
-        /** The stage of the NetworkFabric definition allowing to specify terminalServerConfiguration. */
-        interface WithTerminalServerConfiguration {
-            /**
-             * Specifies the terminalServerConfiguration property: Network and credentials configuration currently
-             * applied to terminal server..
-             *
-             * @param terminalServerConfiguration Network and credentials configuration currently applied to terminal
-             *     server.
-             * @return the next definition stage.
-             */
-            WithCreate withTerminalServerConfiguration(TerminalServerConfiguration terminalServerConfiguration);
-        }
-        /** The stage of the NetworkFabric definition allowing to specify managementNetworkConfiguration. */
-        interface WithManagementNetworkConfiguration {
-            /**
-             * Specifies the managementNetworkConfiguration property: Configuration to be used to setup the management
-             * network..
-             *
-             * @param managementNetworkConfiguration Configuration to be used to setup the management network.
-             * @return the next definition stage.
-             */
-            WithCreate withManagementNetworkConfiguration(
-                ManagementNetworkConfiguration managementNetworkConfiguration);
-        }
+
         /** The stage of the NetworkFabric definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -393,6 +424,7 @@ public interface NetworkFabric {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the NetworkFabric resource.
      *
@@ -402,7 +434,15 @@ public interface NetworkFabric {
 
     /** The template for NetworkFabric update. */
     interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithTerminalServerConfiguration, UpdateStages.WithAnnotation {
+        extends UpdateStages.WithTags,
+            UpdateStages.WithRackCount,
+            UpdateStages.WithServerCountPerRack,
+            UpdateStages.WithIpv4Prefix,
+            UpdateStages.WithIpv6Prefix,
+            UpdateStages.WithFabricAsn,
+            UpdateStages.WithTerminalServerConfiguration,
+            UpdateStages.WithManagementNetworkConfiguration,
+            UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *
@@ -418,18 +458,75 @@ public interface NetworkFabric {
          */
         NetworkFabric apply(Context context);
     }
+
     /** The NetworkFabric update stages. */
     interface UpdateStages {
         /** The stage of the NetworkFabric update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Azure resource tags that will replace the existing ones..
+             * Specifies the tags property: Resource tags.
              *
-             * @param tags Azure resource tags that will replace the existing ones.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the NetworkFabric update allowing to specify rackCount. */
+        interface WithRackCount {
+            /**
+             * Specifies the rackCount property: Number of compute racks associated to Network Fabric..
+             *
+             * @param rackCount Number of compute racks associated to Network Fabric.
+             * @return the next definition stage.
+             */
+            Update withRackCount(Integer rackCount);
+        }
+
+        /** The stage of the NetworkFabric update allowing to specify serverCountPerRack. */
+        interface WithServerCountPerRack {
+            /**
+             * Specifies the serverCountPerRack property: Number of servers.Possible values are from 1-16..
+             *
+             * @param serverCountPerRack Number of servers.Possible values are from 1-16.
+             * @return the next definition stage.
+             */
+            Update withServerCountPerRack(Integer serverCountPerRack);
+        }
+
+        /** The stage of the NetworkFabric update allowing to specify ipv4Prefix. */
+        interface WithIpv4Prefix {
+            /**
+             * Specifies the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19..
+             *
+             * @param ipv4Prefix IPv4Prefix for Management Network. Example: 10.1.0.0/19.
+             * @return the next definition stage.
+             */
+            Update withIpv4Prefix(String ipv4Prefix);
+        }
+
+        /** The stage of the NetworkFabric update allowing to specify ipv6Prefix. */
+        interface WithIpv6Prefix {
+            /**
+             * Specifies the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59..
+             *
+             * @param ipv6Prefix IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
+             * @return the next definition stage.
+             */
+            Update withIpv6Prefix(String ipv6Prefix);
+        }
+
+        /** The stage of the NetworkFabric update allowing to specify fabricAsn. */
+        interface WithFabricAsn {
+            /**
+             * Specifies the fabricAsn property: ASN of CE devices for CE/PE connectivity..
+             *
+             * @param fabricAsn ASN of CE devices for CE/PE connectivity.
+             * @return the next definition stage.
+             */
+            Update withFabricAsn(Long fabricAsn);
+        }
+
         /** The stage of the NetworkFabric update allowing to specify terminalServerConfiguration. */
         interface WithTerminalServerConfiguration {
             /**
@@ -440,8 +537,23 @@ public interface NetworkFabric {
              *     server.
              * @return the next definition stage.
              */
-            Update withTerminalServerConfiguration(TerminalServerPatchableProperties terminalServerConfiguration);
+            Update withTerminalServerConfiguration(
+                NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration);
         }
+
+        /** The stage of the NetworkFabric update allowing to specify managementNetworkConfiguration. */
+        interface WithManagementNetworkConfiguration {
+            /**
+             * Specifies the managementNetworkConfiguration property: Configuration to be used to setup the management
+             * network..
+             *
+             * @param managementNetworkConfiguration Configuration to be used to setup the management network.
+             * @return the next definition stage.
+             */
+            Update withManagementNetworkConfiguration(
+                ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration);
+        }
+
         /** The stage of the NetworkFabric update allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -453,6 +565,7 @@ public interface NetworkFabric {
             Update withAnnotation(String annotation);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -475,8 +588,9 @@ public interface NetworkFabric {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void provision();
+    CommonPostActionResponseForDeviceUpdate provision();
 
     /**
      * Implements the operation to the underlying resources.
@@ -487,8 +601,9 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void provision(Context context);
+    CommonPostActionResponseForDeviceUpdate provision(Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -497,8 +612,9 @@ public interface NetworkFabric {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void deprovision();
+    CommonPostActionResponseForDeviceUpdate deprovision();
 
     /**
      * Implements the operation to the underlying resources.
@@ -509,6 +625,193 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void deprovision(Context context);
+    CommonPostActionResponseForDeviceUpdate deprovision(Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param body Network Fabric properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param body Network Fabric properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate upgrade(UpdateVersion body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate refreshConfiguration();
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate refreshConfiguration(Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
+        UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
+        UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param body Validate configuration properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param body Validate configuration properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topology of the underlying resources in the given Network Fabric instance.
+     */
+    ValidateConfigurationResponse getTopology();
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topology of the underlying resources in the given Network Fabric instance.
+     */
+    ValidateConfigurationResponse getTopology(Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate commitConfiguration();
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate commitConfiguration(Context context);
 }

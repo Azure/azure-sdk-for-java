@@ -6,25 +6,17 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDevicePatchParametersProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The NetworkDevicePatchParameters resource definition. */
+/** The Network Device Patch Parameters defines the patch parameters of the resource. */
 @Fluent
-public final class NetworkDevicePatchParameters {
+public final class NetworkDevicePatchParameters extends TagsUpdate {
     /*
      * Network Device Patch properties.
      */
     @JsonProperty(value = "properties")
     private NetworkDevicePatchParametersProperties innerProperties;
-
-    /*
-     * Azure resource tags that will replace the existing ones.
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of NetworkDevicePatchParameters class. */
     public NetworkDevicePatchParameters() {
@@ -39,28 +31,15 @@ public final class NetworkDevicePatchParameters {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Azure resource tags that will replace the existing ones.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Azure resource tags that will replace the existing ones.
-     *
-     * @param tags the tags value to set.
-     * @return the NetworkDevicePatchParameters object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public NetworkDevicePatchParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
     /**
-     * Get the hostname property: The host Name of the device.
+     * Get the hostname property: The host name of the device.
      *
      * @return the hostname value.
      */
@@ -69,7 +48,7 @@ public final class NetworkDevicePatchParameters {
     }
 
     /**
-     * Set the hostname property: The host Name of the device.
+     * Set the hostname property: The host name of the device.
      *
      * @param hostname the hostname value to set.
      * @return the NetworkDevicePatchParameters object itself.
@@ -83,8 +62,8 @@ public final class NetworkDevicePatchParameters {
     }
 
     /**
-     * Get the serialNumber property: serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969.
+     * Get the serialNumber property: Serial number of the device. Format of serial Number -
+     * Make;Model;HardwareRevisionId;SerialNumber.
      *
      * @return the serialNumber value.
      */
@@ -93,8 +72,8 @@ public final class NetworkDevicePatchParameters {
     }
 
     /**
-     * Set the serialNumber property: serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example:
-     * Arista;DCS-7280DR3-24;12.05;JPE21116969.
+     * Set the serialNumber property: Serial number of the device. Format of serial Number -
+     * Make;Model;HardwareRevisionId;SerialNumber.
      *
      * @param serialNumber the serialNumber value to set.
      * @return the NetworkDevicePatchParameters object itself.
@@ -135,7 +114,9 @@ public final class NetworkDevicePatchParameters {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

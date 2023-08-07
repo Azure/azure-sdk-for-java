@@ -16,6 +16,12 @@ public final class FeatureSettings {
     @JsonProperty(value = "crossSubscriptionRestoreSettings")
     private CrossSubscriptionRestoreSettings crossSubscriptionRestoreSettings;
 
+    /*
+     * The crossRegionRestoreSettings property.
+     */
+    @JsonProperty(value = "crossRegionRestoreSettings")
+    private CrossRegionRestoreSettings crossRegionRestoreSettings;
+
     /** Creates an instance of FeatureSettings class. */
     public FeatureSettings() {
     }
@@ -42,6 +48,26 @@ public final class FeatureSettings {
     }
 
     /**
+     * Get the crossRegionRestoreSettings property: The crossRegionRestoreSettings property.
+     *
+     * @return the crossRegionRestoreSettings value.
+     */
+    public CrossRegionRestoreSettings crossRegionRestoreSettings() {
+        return this.crossRegionRestoreSettings;
+    }
+
+    /**
+     * Set the crossRegionRestoreSettings property: The crossRegionRestoreSettings property.
+     *
+     * @param crossRegionRestoreSettings the crossRegionRestoreSettings value to set.
+     * @return the FeatureSettings object itself.
+     */
+    public FeatureSettings withCrossRegionRestoreSettings(CrossRegionRestoreSettings crossRegionRestoreSettings) {
+        this.crossRegionRestoreSettings = crossRegionRestoreSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -49,6 +75,9 @@ public final class FeatureSettings {
     public void validate() {
         if (crossSubscriptionRestoreSettings() != null) {
             crossSubscriptionRestoreSettings().validate();
+        }
+        if (crossRegionRestoreSettings() != null) {
+            crossRegionRestoreSettings().validate();
         }
     }
 }

@@ -14,17 +14,21 @@ public final class EventNameFilterTests {
     public void testDeserialize() throws Exception {
         EventNameFilter model =
             BinaryData
-                .fromString("{\"type\":\"EventName\",\"systemEvents\":[\"n\"],\"userEventPattern\":\"ph\"}")
+                .fromString(
+                    "{\"type\":\"EventName\",\"systemEvents\":[\"lnpkciay\",\"riykhyawfvjlbox\"],\"userEventPattern\":\"kjlmx\"}")
                 .toObject(EventNameFilter.class);
-        Assertions.assertEquals("n", model.systemEvents().get(0));
-        Assertions.assertEquals("ph", model.userEventPattern());
+        Assertions.assertEquals("lnpkciay", model.systemEvents().get(0));
+        Assertions.assertEquals("kjlmx", model.userEventPattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventNameFilter model = new EventNameFilter().withSystemEvents(Arrays.asList("n")).withUserEventPattern("ph");
+        EventNameFilter model =
+            new EventNameFilter()
+                .withSystemEvents(Arrays.asList("lnpkciay", "riykhyawfvjlbox"))
+                .withUserEventPattern("kjlmx");
         model = BinaryData.fromObject(model).toObject(EventNameFilter.class);
-        Assertions.assertEquals("n", model.systemEvents().get(0));
-        Assertions.assertEquals("ph", model.userEventPattern());
+        Assertions.assertEquals("lnpkciay", model.systemEvents().get(0));
+        Assertions.assertEquals("kjlmx", model.userEventPattern());
     }
 }

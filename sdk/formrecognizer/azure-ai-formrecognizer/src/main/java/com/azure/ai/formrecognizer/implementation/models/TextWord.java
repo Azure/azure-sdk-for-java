@@ -29,6 +29,9 @@ public final class TextWord {
     @JsonProperty(value = "confidence")
     private Float confidence;
 
+    /** Creates an instance of TextWord class. */
+    public TextWord() {}
+
     /**
      * Get the text property: The text content of the word.
      *

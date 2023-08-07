@@ -10,37 +10,31 @@ import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NetworkRuleSetTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NetworkRuleSet model =
             BinaryData
                 .fromString(
-                    "{\"virtualNetworkRules\":[{\"id\":\"nxqbzvddn\",\"action\":\"Allow\",\"state\":\"networkSourceDeleted\"},{\"id\":\"icbtwnpzao\",\"action\":\"Allow\",\"state\":\"provisioning\"},{\"id\":\"hcffcyddglmjthjq\",\"action\":\"Allow\",\"state\":\"networkSourceDeleted\"},{\"id\":\"icxm\",\"action\":\"Allow\",\"state\":\"deprovisioning\"}]}")
+                    "{\"virtualNetworkRules\":[{\"id\":\"qpuedckzywbiex\",\"action\":\"Allow\",\"state\":\"failed\"}]}")
                 .toObject(NetworkRuleSet.class);
-        Assertions.assertEquals("nxqbzvddn", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("qpuedckzywbiex", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NetworkRuleSet model =
             new NetworkRuleSet()
                 .withVirtualNetworkRules(
                     Arrays
                         .asList(
-                            new VirtualNetworkRule().withVirtualNetworkResourceId("nxqbzvddn").withAction(Action.ALLOW),
                             new VirtualNetworkRule()
-                                .withVirtualNetworkResourceId("icbtwnpzao")
-                                .withAction(Action.ALLOW),
-                            new VirtualNetworkRule()
-                                .withVirtualNetworkResourceId("hcffcyddglmjthjq")
-                                .withAction(Action.ALLOW),
-                            new VirtualNetworkRule().withVirtualNetworkResourceId("icxm").withAction(Action.ALLOW)));
+                                .withVirtualNetworkResourceId("qpuedckzywbiex")
+                                .withAction(Action.ALLOW)));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSet.class);
-        Assertions.assertEquals("nxqbzvddn", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("qpuedckzywbiex", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());
     }
 }

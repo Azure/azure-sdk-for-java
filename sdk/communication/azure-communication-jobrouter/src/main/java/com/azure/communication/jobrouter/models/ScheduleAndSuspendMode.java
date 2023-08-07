@@ -7,33 +7,31 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** The ScheduleAndSuspendMode model. */
 @Fluent
 public final class ScheduleAndSuspendMode {
+    /**
+     * Creates an instance of ScheduleAndSuspendMode class.
+     *
+     * @param scheduleAt The time at which this job will be scheduled.
+     */
+    public ScheduleAndSuspendMode(OffsetDateTime scheduleAt) {
+        this.scheduleAt = Objects.requireNonNull(scheduleAt, "'scheduleAt' cannot be null.");
+    }
     /*
      * The scheduleAt property.
      */
     @JsonProperty(value = "scheduleAt")
-    private OffsetDateTime scheduleAt;
+    private final OffsetDateTime scheduleAt;
 
     /**
-     * Get the scheduleAt property: The scheduleAt property.
+     * Get the scheduleAt property: The time at which this job will be scheduled.
      *
-     * @return the scheduleAt value.
+     * @return the scheduleAt value
      */
     public OffsetDateTime getScheduleAt() {
         return this.scheduleAt;
-    }
-
-    /**
-     * Set the scheduleAt property: The scheduleAt property.
-     *
-     * @param scheduleAt the scheduleAt value to set.
-     * @return the ScheduleAndSuspendMode object itself.
-     */
-    public ScheduleAndSuspendMode setScheduleAt(OffsetDateTime scheduleAt) {
-        this.scheduleAt = scheduleAt;
-        return this;
     }
 }
