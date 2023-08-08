@@ -317,6 +317,54 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setCaeEnabled(boolean)",
           "justification" : "Method was removed."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method reactor.core.publisher.Mono<java.lang.String> com.azure.security.attestation.AttestationAsyncClient::attestTpm(java.lang.String)",
+          "new" : "method reactor.core.publisher.Mono<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationAsyncClient::attestTpm(com.azure.core.util.BinaryData)",
+          "justification" : "return type changed type parameter."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter reactor.core.publisher.Mono<java.lang.String> com.azure.security.attestation.AttestationAsyncClient::attestTpm(===java.lang.String===)",
+          "new" : "parameter reactor.core.publisher.Mono<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationAsyncClient::attestTpm(===com.azure.core.util.BinaryData===)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method reactor.core.publisher.Mono<com.azure.core.http.rest.Response<java.lang.String>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(java.lang.String)",
+          "new" : "method reactor.core.publisher.Mono<com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(com.azure.core.util.BinaryData)",
+          "justification" : "return type changed type parameter."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter reactor.core.publisher.Mono<com.azure.core.http.rest.Response<java.lang.String>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(===java.lang.String===)",
+          "new" : "parameter reactor.core.publisher.Mono<com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult>> com.azure.security.attestation.AttestationAsyncClient::attestTpmWithResponse(===com.azure.core.util.BinaryData===)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+        },
+        {
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method java.lang.String com.azure.security.attestation.AttestationClient::attestTpm(java.lang.String)",
+          "new" : "method com.azure.security.attestation.models.TpmAttestationResult com.azure.security.attestation.AttestationClient::attestTpm(com.azure.core.util.BinaryData)",
+          "justification" : "The return type changed from 'java.lang.String' to  'com.azure.security.attestation.models.TpmAttestationResult'."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.lang.String com.azure.security.attestation.AttestationClient::attestTpm(===java.lang.String===)",
+          "new" : "parameter com.azure.security.attestation.models.TpmAttestationResult com.azure.security.attestation.AttestationClient::attestTpm(===com.azure.core.util.BinaryData===)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method com.azure.core.http.rest.Response<java.lang.String> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(com.azure.core.util.BinaryData, com.azure.core.util.Context)",
+          "justification" : "return type changed type parameter."
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter com.azure.core.http.rest.Response<java.lang.String> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===java.lang.String===, com.azure.core.util.Context)",
+          "new" : "parameter com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===com.azure.core.util.BinaryData===, com.azure.core.util.Context)",
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
         }
       ]
     }
