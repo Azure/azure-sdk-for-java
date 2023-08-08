@@ -23,6 +23,10 @@ public final class LeaseShareResponseInner {
     @JsonProperty(value = "leaseTimeSeconds")
     private String leaseTimeSeconds;
 
+    /** Creates an instance of LeaseShareResponseInner class. */
+    public LeaseShareResponseInner() {
+    }
+
     /**
      * Get the leaseId property: Returned unique lease ID that must be included with any request to delete the share, or
      * to renew, change, or release the lease.

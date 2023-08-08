@@ -40,6 +40,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.Aggregation;
 import io.opentelemetry.sdk.metrics.InstrumentSelector;
@@ -315,9 +316,13 @@ public final class AzureMonitorExporterBuilder {
                         TempDirs.getSubDir(tempDir, "telemetry"),
                         pipeline,
                         LocalStorageStats.noop(),
-                        false));
+                        false),
+                    // TODO (trask) pass in autoconfigure's ConfigProperties after converting this to autoconfigure
+                    ResourceConfiguration.createEnvironmentResource());
         } else {
-            telemetryItemExporter = new TelemetryItemExporter(pipeline, TelemetryPipelineListener.noop());
+            telemetryItemExporter = new TelemetryItemExporter(
+                    // TODO (trask) pass in autoconfigure's ConfigProperties after converting this to autoconfigure
+                    pipeline, TelemetryPipelineListener.noop(), ResourceConfiguration.createEnvironmentResource());
         }
         return telemetryItemExporter;
     }

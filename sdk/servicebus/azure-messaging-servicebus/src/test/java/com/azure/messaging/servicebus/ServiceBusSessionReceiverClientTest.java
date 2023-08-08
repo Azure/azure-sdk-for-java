@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,7 @@ class ServiceBusSessionReceiverClientTest {
     void beforeEach(TestInfo testInfo) {
         MockitoAnnotations.initMocks(this);
         when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
-            "fqdn", "entity", null, false));
+            "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
     }
 
     @AfterEach

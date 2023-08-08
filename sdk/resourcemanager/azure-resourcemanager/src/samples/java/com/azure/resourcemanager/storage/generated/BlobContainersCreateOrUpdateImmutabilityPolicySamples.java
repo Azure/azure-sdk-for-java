@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
 
 /** Samples for BlobContainers CreateOrUpdateImmutabilityPolicy. */
 public final class BlobContainersCreateOrUpdateImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersPutImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPutImmutabilityPolicy.json
      */
     /**
      * Sample code: CreateOrUpdateImmutabilityPolicy.
@@ -31,11 +30,11 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicySamples {
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(3)
                     .withAllowProtectedAppendWrites(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
      */
     /**
      * Sample code: CreateOrUpdateImmutabilityPolicyWithAllowProtectedAppendWritesAll.
@@ -57,6 +56,6 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicySamples {
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(3)
                     .withAllowProtectedAppendWritesAll(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

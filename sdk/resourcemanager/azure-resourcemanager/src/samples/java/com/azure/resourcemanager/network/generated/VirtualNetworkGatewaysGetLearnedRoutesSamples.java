@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualNetworkGateways GetLearnedRoutes. */
 public final class VirtualNetworkGatewaysGetLearnedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkGatewayLearnedRoutes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualNetworkGatewayLearnedRoutes.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayLearnedRoutes.

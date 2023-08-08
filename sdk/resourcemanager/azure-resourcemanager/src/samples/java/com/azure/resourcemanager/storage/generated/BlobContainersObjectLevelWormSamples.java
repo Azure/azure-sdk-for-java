@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BlobContainers ObjectLevelWorm. */
 public final class BlobContainersObjectLevelWormSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/ObjectLevelWormContainerMigration.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/ObjectLevelWormContainerMigration.json
      */
     /**
      * Sample code: VersionLevelWormContainerMigration.
@@ -22,6 +20,6 @@ public final class BlobContainersObjectLevelWormSamples {
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .objectLevelWorm("res1782", "sto7069", "container6397", Context.NONE);
+            .objectLevelWorm("res1782", "sto7069", "container6397", com.azure.core.util.Context.NONE);
     }
 }

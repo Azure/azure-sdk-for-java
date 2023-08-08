@@ -66,6 +66,10 @@ public final class UpdateHistoryProperty {
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
+    /** Creates an instance of UpdateHistoryProperty class. */
+    public UpdateHistoryProperty() {
+    }
+
     /**
      * Get the update property: The ImmutabilityPolicy update type of a blob container, possible values include: put,
      * lock and extend.

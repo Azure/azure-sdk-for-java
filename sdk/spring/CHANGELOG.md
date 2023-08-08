@@ -1,6 +1,32 @@
 # Release History
-# (Unreleased)
-Upgrade Spring Boot dependencies version to 2.7.13 and Spring Cloud dependencies version to 2021.0.7
+
+## 5.4.0 (2023-08-02)
+- This release is compatible with Spring Boot 3.0.0-3.1.0. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.3. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.15.
+- Upgrade `azure-resourcemanager` to 2.29.0.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Fix the issue that `AzureMessagingListenerAutoConfiguration` not included in `spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` [#34690](https://github.com/Azure/azure-sdk-for-java/issues/34690), [#35717](https://github.com/Azure/azure-sdk-for-java/pull/35717).
+- Improve default AAD configuration condition [#36126](https://github.com/Azure/azure-sdk-for-java/pull/36126).
+- Exclude unsupported bean `AzureGlobalProperties` from AOT processing and registration [#36001](https://github.com/Azure/azure-sdk-for-java/issues/36001).
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
+
+### Bugs Fixed
+- Fixes a bug where exclusions from the portal don't map correctly resulting in a `java.lang.ClassCastException` [#35823](https://github.com/Azure/azure-sdk-for-java/issues/35823)
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#540-2023-08-02) for more details.
 
 ## 4.10.0 (2023-08-01)
 - This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.13. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>11) should be supported, but they aren't tested with this release.)

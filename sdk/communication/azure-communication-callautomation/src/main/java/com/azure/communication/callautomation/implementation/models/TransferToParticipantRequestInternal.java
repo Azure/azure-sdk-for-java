@@ -36,10 +36,10 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel transferee;
 
     /*
-     * The callback URI override.
+     * The callback URI to override the main callback URI.
      */
-    @JsonProperty(value = "callbackUriOverride")
-    private String callbackUriOverride;
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
@@ -104,8 +104,6 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Get the transferee property: Transferee is the participant who is transferring the call.
      *
      * @return the transferee value.
@@ -126,23 +124,22 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
->>>>>>> 1800d18d847 (add transfer in group call support)
-     * Get the callbackUriOverride property: The callback URI override.
+     * Get the callbackUri property: The callback URI to override the main callback URI.
      *
-     * @return the callbackUriOverride value.
+     * @return the callbackUri value.
      */
-    public String getCallbackUriOverride() {
-        return this.callbackUriOverride;
+    public String getCallbackUri() {
+        return this.callbackUri;
     }
 
     /**
-     * Set the callbackUriOverride property: The callback URI override.
+     * Set the callbackUri property: The callback URI to override the main callback URI.
      *
-     * @param callbackUriOverride the callbackUriOverride value to set.
+     * @param callbackUri the callbackUri value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
-    public TransferToParticipantRequestInternal setCallbackUriOverride(String callbackUriOverride) {
-        this.callbackUriOverride = callbackUriOverride;
+    public TransferToParticipantRequestInternal setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

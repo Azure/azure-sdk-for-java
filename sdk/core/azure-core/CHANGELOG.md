@@ -1,10 +1,19 @@
 # Release History
 
-## 1.42.0-beta.2 (Unreleased)
+## 1.43.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.42.0 (2023-08-04)
+
+### Features Added
+- Added `setCaeEnabled` and `isCaeEnabled` APIs to `TokenRequestContext` to indicate CAE authentication flow to be used downstream.
 
 ### Bugs Fixed
 
@@ -13,8 +22,8 @@
   ([#35628](https://github.com/Azure/azure-sdk-for-java/issues/35628))
 - Fixed a bug where JacksonDatabind215 throws AccessControlException under SecurityManager
   ([#36187](https://github.com/Azure/azure-sdk-for-java/issues/36187))
-
-### Other Changes
+- Prevent FluxUtil from using MappedByteBuffer on Windows to fix a Java runtime behavior bug in Windows
+  ([#36168](https://github.com/Azure/azure-sdk-for-java/pull/36168))
 
 ## 1.42.0-beta.1 (2023-07-24)
 

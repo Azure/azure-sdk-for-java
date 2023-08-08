@@ -74,23 +74,23 @@ com.azure:azure-communication-jobrouter;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-communication-rooms;1.0.2;1.1.0-beta.1
 com.azure:azure-containers-containerregistry;1.1.2;1.2.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core;1.41.0;1.42.0-beta.2
-com.azure:azure-core-amqp;2.8.7;2.9.0-beta.5
+com.azure:azure-core;1.42.0;1.43.0-beta.1
+com.azure:azure-core-amqp;2.8.8;2.9.0-beta.5
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-experimental;1.0.0-beta.41;1.0.0-beta.42
-com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-core-http-netty;1.13.5;1.14.0-beta.2
-com.azure:azure-core-http-okhttp;1.11.11;1.12.0-beta.1
-com.azure:azure-core-http-vertx;1.0.0-beta.9;1.0.0-beta.10
-com.azure:azure-core-management;1.11.3;1.12.0-beta.1
-com.azure:azure-core-metrics-opentelemetry;1.0.0-beta.10;1.0.0-beta.11
+com.azure:azure-core-experimental;1.0.0-beta.42;1.0.0-beta.43
+com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.5;1.0.0-beta.6
+com.azure:azure-core-http-netty;1.13.6;1.14.0-beta.2
+com.azure:azure-core-http-okhttp;1.11.12;1.12.0-beta.1
+com.azure:azure-core-http-vertx;1.0.0-beta.10;1.0.0-beta.11
+com.azure:azure-core-management;1.11.4;1.12.0-beta.1
+com.azure:azure-core-metrics-opentelemetry;1.0.0-beta.11;1.0.0-beta.12
 com.azure:azure-core-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-serializer-avro-apache;1.0.0-beta.37;1.0.0-beta.38
+com.azure:azure-core-serializer-avro-apache;1.0.0-beta.38;1.0.0-beta.39
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-core-serializer-json-gson;1.2.2;1.3.0-beta.1
-com.azure:azure-core-serializer-json-jackson;1.4.2;1.5.0-beta.1
-com.azure:azure-core-test;1.18.1;1.19.0-beta.1
-com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.37;1.0.0-beta.38
+com.azure:azure-core-serializer-json-gson;1.2.3;1.3.0-beta.1
+com.azure:azure-core-serializer-json-jackson;1.4.3;1.5.0-beta.1
+com.azure:azure-core-test;1.19.0;1.20.0-beta.1
+com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.38;1.0.0-beta.39
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos;4.48.0;4.49.0-beta.1
@@ -127,7 +127,7 @@ com.azure:azure-maps-geolocation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-render;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-json;1.0.1;1.1.0-beta.1
+com.azure:azure-json;1.1.0;1.2.0-beta.1
 com.azure:azure-json-gson;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-json-reflect;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-messaging-eventgrid;4.17.1;4.18.0-beta.1
@@ -434,8 +434,6 @@ com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-core;1.42.0-beta.2
-
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
