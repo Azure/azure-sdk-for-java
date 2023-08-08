@@ -47,7 +47,7 @@ public class BrowserCustomizationOptions {
 
     /**
      * Get the configured message which the browser will show to the user when the user
-     * finishes authenticating successfully, but an error occurred.
+     * finishes authenticating, but an error occurred.
      *
      * @return the string message.
      */
