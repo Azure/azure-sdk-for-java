@@ -41,6 +41,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGene
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.Aggregation;
 import io.opentelemetry.sdk.metrics.InstrumentSelector;
@@ -56,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.util.Collections.emptyMap;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
@@ -234,6 +237,10 @@ public final class AzureMonitorExporterBuilder {
      */
     // TODO (trask) deprecate in favor of getOpenTelemetrySdkBuilder()?
     public SpanExporter buildTraceExporter() {
+        return buildTraceExporter(DefaultConfigProperties.create(emptyMap()));
+    }
+
+    private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
         SpanDataMapper mapper =
             new SpanDataMapper(
                 true,
@@ -241,7 +248,7 @@ public final class AzureMonitorExporterBuilder {
                 (event, instrumentationName) -> false,
                 (span, event) -> false);
 
-        return new AzureMonitorTraceExporter(mapper, initExporterBuilder());
+        return new AzureMonitorTraceExporter(mapper, initExporterBuilder(configProperties));
     }
 
     /**
@@ -257,7 +264,11 @@ public final class AzureMonitorExporterBuilder {
      */
     // TODO (trask) deprecate in favor of getOpenTelemetrySdkBuilder()?
     public MetricExporter buildMetricExporter() {
-        TelemetryItemExporter telemetryItemExporter = initExporterBuilder();
+        return buildMetricExporter(DefaultConfigProperties.create(emptyMap()));
+    }
+
+    private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
+        TelemetryItemExporter telemetryItemExporter = initExporterBuilder(configProperties);
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), this::populateDefaults, telemetryItemExporter::send);
         return new AzureMonitorMetricExporter(
@@ -274,11 +285,16 @@ public final class AzureMonitorExporterBuilder {
      */
     // TODO (trask) deprecate in favor of getOpenTelemetrySdkBuilder()?
     public LogRecordExporter buildLogRecordExporter() {
-        return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, false, this::populateDefaults), initExporterBuilder());
+        return buildLogRecordExporter(DefaultConfigProperties.create(emptyMap()));
     }
 
-    private TelemetryItemExporter initExporterBuilder() {
+    private LogRecordExporter buildLogRecordExporter(ConfigProperties config) {
+        return new AzureMonitorLogRecordExporter(
+            new LogDataMapper(true, false, this::populateDefaults),
+                initExporterBuilder(config));
+    }
+
+    private TelemetryItemExporter initExporterBuilder(ConfigProperties configProperties) {
         if (connectionString == null) {
             // if connection string is not set, try loading from configuration
             Configuration configuration = Configuration.getGlobalConfiguration();
@@ -317,12 +333,12 @@ public final class AzureMonitorExporterBuilder {
                         pipeline,
                         LocalStorageStats.noop(),
                         false),
-                    // TODO (trask) pass in autoconfigure's ConfigProperties after converting this to autoconfigure
-                    ResourceConfiguration.createEnvironmentResource());
+                    ResourceConfiguration.createEnvironmentResource(configProperties));
         } else {
             telemetryItemExporter = new TelemetryItemExporter(
-                    // TODO (trask) pass in autoconfigure's ConfigProperties after converting this to autoconfigure
-                    pipeline, TelemetryPipelineListener.noop(), ResourceConfiguration.createEnvironmentResource());
+                    pipeline,
+                    TelemetryPipelineListener.noop(),
+                    ResourceConfiguration.createEnvironmentResource(configProperties));
         }
         return telemetryItemExporter;
     }
@@ -380,21 +396,21 @@ public final class AzureMonitorExporterBuilder {
             .addSpanExporterCustomizer(
                 (spanExporter, configProperties) -> {
                     if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                        spanExporter = buildTraceExporter();
+                        spanExporter = buildTraceExporter(configProperties);
                     }
                     return spanExporter;
                 })
             .addMetricExporterCustomizer(
                 (metricExporter, configProperties) -> {
                     if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                        metricExporter = buildMetricExporter();
+                        metricExporter = buildMetricExporter(configProperties);
                     }
                     return metricExporter;
                 })
             .addLogRecordExporterCustomizer(
                 (logRecordExporter, configProperties) -> {
                     if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                        logRecordExporter = buildLogRecordExporter();
+                        logRecordExporter = buildLogRecordExporter(configProperties);
                     }
                     return logRecordExporter;
                 })
