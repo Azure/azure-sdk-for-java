@@ -60,7 +60,7 @@ public class EasmDefenderClientTestBase extends TestProxyTestBase {
                         .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                         .resourceGroupName(
                                 Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName("sdktest")
+                        .workspaceName(Configuration.getGlobalConfiguration().get("ENDPOINT", "workspacename"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -82,7 +82,7 @@ public class EasmDefenderClientTestBase extends TestProxyTestBase {
                         .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                         .resourceGroupName(
                                 Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName("sdktest")
+                        .workspaceName(Configuration.getGlobalConfiguration().get("ENDPOINT", "workspacename"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -104,7 +104,7 @@ public class EasmDefenderClientTestBase extends TestProxyTestBase {
                         .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                         .resourceGroupName(
                                 Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName("sdktest")
+                        .workspaceName(Configuration.getGlobalConfiguration().get("ENDPOINT", "workspacename"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -126,7 +126,7 @@ public class EasmDefenderClientTestBase extends TestProxyTestBase {
                         .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                         .resourceGroupName(
                                 Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName("sdktest")
+                        .workspaceName(Configuration.getGlobalConfiguration().get("ENDPOINT", "workspacename"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -148,7 +148,7 @@ public class EasmDefenderClientTestBase extends TestProxyTestBase {
                         .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                         .resourceGroupName(
                                 Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName("sdktest")
+                        .workspaceName(Configuration.getGlobalConfiguration().get("ENDPOINT", "workspacename"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -170,7 +170,7 @@ public class EasmDefenderClientTestBase extends TestProxyTestBase {
                         .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                         .resourceGroupName(
                                 Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName("sdktest")
+                        .workspaceName(Configuration.getGlobalConfiguration().get("ENDPOINT", "workspacename"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -192,7 +192,7 @@ public class EasmDefenderClientTestBase extends TestProxyTestBase {
                         .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                         .resourceGroupName(
                                 Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName("sdktest")
+                        .workspaceName(Configuration.getGlobalConfiguration().get("ENDPOINT", "workspacename"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
