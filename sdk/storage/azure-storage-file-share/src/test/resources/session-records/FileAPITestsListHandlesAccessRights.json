@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/b7913060b79130606a987681475560b7afe948ddb5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2023-01-03",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.18.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a9628f61-91d9-4d5b-943d-113c404ff2ce"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2023-01-03",
+      "ETag" : "0x8DB2F1819079FE3",
+      "Last-Modified" : "Mon, 27 Mar 2023 23:07:54 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7af0af46-b01a-0009-4300-613c4a000000",
+      "Date" : "Mon, 27 Mar 2023 23:07:54 GMT",
+      "x-ms-client-request-id" : "a9628f61-91d9-4d5b-943d-113c404ff2ce"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/myshare/mydirectory%2Fmyfile?comp=listhandles",
+    "Headers" : {
+      "x-ms-version" : "2023-01-03",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.18.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8f237898-cbc4-4ecb-8307-2bf0e089b2fc"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2023-01-03",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "7af0af49-b01a-0009-4400-613c4a000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults><Entries><Handle><HandleId>327694</HandleId><Path>mydirectory/myfile</Path><FileId>11529285414812647424</FileId><ParentId>13835128424026341376</ParentId><SessionId>9232493599814320213</SessionId><AccessRightList><AccessRight>Write</AccessRight></AccessRightList><ClientIp>131.107.160.103:54155</ClientIp><OpenTime>Sat, 25 Mar 2023 00:07:48 GMT</OpenTime></Handle></Entries><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 27 Mar 2023 23:07:54 GMT",
+      "x-ms-client-request-id" : "8f237898-cbc4-4ecb-8307-2bf0e089b2fc",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b7913060b79130606a987681475560b7afe948ddb5", "b7913060b79130606a9020826b0aff4056f84140af" ]
+}

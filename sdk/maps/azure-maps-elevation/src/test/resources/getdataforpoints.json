@@ -1,0 +1,18 @@
+{
+    "data": [
+        {
+            "coordinate": {
+                "latitude": 46.84646479863713,
+                "longitude": -121.66853362143818
+            },
+            "elevationInMeter": 2298.65819
+        },
+        {
+            "coordinate": {
+                "latitude": 46.856464798637127,
+                "longitude": -121.68853362143818
+            },
+            "elevationInMeter": 2505.19454
+        }
+    ]
+}

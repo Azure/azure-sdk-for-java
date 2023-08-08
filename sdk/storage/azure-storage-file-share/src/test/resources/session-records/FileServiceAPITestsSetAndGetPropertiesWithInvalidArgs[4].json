@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3da93bf0-e614-49b6-89ff-054f2dbd5e1b",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "340",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidXmlNodeValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "324ddc6b-401a-0015-65eb-41dd02000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:324ddc6b-401a-0015-65eb-41dd02000000\nTime:2021-05-05T20:19:39.8291355Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "x-ms-client-request-id" : "3da93bf0-e614-49b6-89ff-054f2dbd5e1b",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=b9a843af&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "86098d73-ba6d-4244-853e-023847571338"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "ad0f3e3b-401a-0067-72eb-41da4d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>b9a843af</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "86098d73-ba6d-4244-853e-023847571338",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b9a843afb9a843af5f6505158c8d77e87c65419683" ]
+}

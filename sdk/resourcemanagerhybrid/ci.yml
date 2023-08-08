@@ -1,0 +1,58 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger: none
+pr: none
+
+# Safe name uses hybrid at end instead to remove conflict with
+# com.azure.resourcemanager.hybridcompute.
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: resourcemanagerhybrid
+    Artifacts:
+      - name: azure-resourcemanager
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappservicehybrid
+      - name: azure-resourcemanager-appservice
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappservicehybrid
+      - name: azure-resourcemanager-authorization
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerauthorizationhybrid
+      - name: azure-resourcemanager-compute
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercomputehybrid
+      - name: azure-resourcemanager-containerregistry
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerregistryhybrid
+      - name: azure-resourcemanager-containerservice
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerservicehybrid
+      - name: azure-resourcemanager-dns
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdnshybrid
+      - name: azure-resourcemanager-eventhubs
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventhubshybrid
+      - name: azure-resourcemanager-keyvault
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkeyvaulthybrid
+      - name: azure-resourcemanager-monitor
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermonitorhybrid
+      - name: azure-resourcemanager-network
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernetworkhybrid
+      - name: azure-resourcemanager-resources
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourceshybrid
+      - name: azure-resourcemanager-storage
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstoragehybrid
+    MatrixFilters:
+      - TestFromSource=^$|false
+    PreBuildSteps:
+      - task: PythonScript@0
+        displayName: 'Set sdk/resourcemanagerhyrbid in root POM'
+        inputs:
+          scriptPath: 'sdk/resourcemanagerhybrid/update_root_pom.py'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'

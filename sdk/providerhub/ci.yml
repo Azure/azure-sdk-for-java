@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/providerhub/ci.yml
+      - sdk/providerhub/azure-resourcemanager-providerhub/
+    exclude:
+      - sdk/providerhub/pom.xml
+      - sdk/providerhub/azure-resourcemanager-providerhub/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/providerhub/ci.yml
+      - sdk/providerhub/azure-resourcemanager-providerhub/
+    exclude:
+      - sdk/providerhub/pom.xml
+      - sdk/providerhub/azure-resourcemanager-providerhub/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerproviderhub
+    displayName: azure-resourcemanager-providerhub
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: providerhub
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-providerhub
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerproviderhub
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerproviderhub }}

@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/selfhelp/ci.yml
+      - sdk/selfhelp/azure-resourcemanager-selfhelp/
+    exclude:
+      - sdk/selfhelp/pom.xml
+      - sdk/selfhelp/azure-resourcemanager-selfhelp/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/selfhelp/ci.yml
+      - sdk/selfhelp/azure-resourcemanager-selfhelp/
+    exclude:
+      - sdk/selfhelp/pom.xml
+      - sdk/selfhelp/azure-resourcemanager-selfhelp/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerselfhelp
+    displayName: azure-resourcemanager-selfhelp
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: selfhelp
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-selfhelp
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerselfhelp
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerselfhelp }}

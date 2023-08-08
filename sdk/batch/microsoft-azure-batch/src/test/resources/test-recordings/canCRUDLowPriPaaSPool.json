@@ -1,0 +1,676 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "HEAD",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:53:44 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "3d9b025d-8aad-4342-a9e0-79e34413a030",
+      "retry-after" : "0",
+      "request-id" : "4864c35b-f5d8-497d-a8b4-17ba93f449da",
+      "StatusCode" : "404",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:53:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4",
+      "retry-after" : "0",
+      "request-id" : "e99318f1-134a-4b19-a251-ff94cea2145b",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:53:45 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "a107168e-37c5-470f-8d65-50ab38d4a315",
+      "etag" : "0x8DB5B49B09751EC",
+      "location" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:53:45 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:53:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "da8b5ede-16c2-4a5c-85a6-f95fe442c2a4",
+      "etag" : "0x8DB5B49B09751EC",
+      "retry-after" : "0",
+      "request-id" : "f8ee8cb1-3681-4ebc-a848-a53e8d7918fb",
+      "StatusCode" : "200",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:53:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "a1968387-469b-46af-9b73-616d6bb27117",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:53:45 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "50e5ef09-c620-412c-b8d6-e45ab023ebf3",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49B09751EC",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49B09751EC\",\"lastModified\":\"2023-05-23T04:53:45.65043Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:54:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "f42a37fb-3dba-4269-a7e4-a33be520c74b",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:53:45 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "5b8a2fbe-b3e8-4b75-a97d-b82e6046cc3c",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49B09751EC",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49B09751EC\",\"lastModified\":\"2023-05-23T04:53:45.65043Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:54:46 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "33bf013e-4241-40a9-badf-270ca8046006",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:53:45 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "959d7d38-fb9f-4741-9690-a2bf5da10fae",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49B09751EC",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49B09751EC\",\"lastModified\":\"2023-05-23T04:53:45.65043Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:55:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "62e7d559-db6c-4b8a-999d-bb2535594aa9",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:53:45 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "475a9b39-fa4a-40c0-92b7-e36a8dc43dc8",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49B09751EC",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49B09751EC\",\"lastModified\":\"2023-05-23T04:53:45.65043Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:13.2030155Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4/resize?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:55:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4/resize",
+      "retry-after" : "0",
+      "request-id" : "5a90d69a-c2f6-4b1e-aed5-9fa444b596f6",
+      "StatusCode" : "202",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:16 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "06ebf941-c734-40cd-8743-fa00e4ca88ce",
+      "etag" : "0x8DB5B49E6E4F7A0",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:55:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "6b44b1dd-2827-4336-8a7f-c1fe20b32150",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:16 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "1cfc5b43-8a69-48c5-81ea-02543d32f9e1",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E6E4F7A0",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E6E4F7A0\",\"lastModified\":\"2023-05-23T04:55:16.7562656Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:53:45.65043Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:16.7562656Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:55:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "b37d0249-0fdd-4aa8-bf59-6121da82f82f",
+      "retry-after" : "0",
+      "request-id" : "41e34f36-887c-47f5-ae4a-8cfbe0a15cc0",
+      "StatusCode" : "202",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:55:16 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "18063353-552a-4b5a-a4fc-f0bdedd63739",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "857d4301-a0ea-4b8a-b112-1aca3abd6233",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:55:32 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "7dd1a984-f1f5-4902-a696-f7f2546c66b9",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "ad1b1bc0-aecf-46e1-9b96-3c7efc44b4ce",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:55:47 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "1d792ed3-166a-444c-918f-5b31a25650ae",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "bd0b0ab3-aadb-446c-82e1-8dec86d6fb15",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:56:02 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "1efb384a-e9fe-4304-8bb1-307aacd45b38",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "3d27abf8-6b1d-4c4b-810a-33894827c6de",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:56:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "a154afe7-e46f-4c56-bdfe-194342c117df",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "15b548a7-ec45-4d76-be99-0a0075ecbdfd",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:56:32 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "a1d89b1b-6eb3-45d2-b644-9101140d4217",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c15a0cb3-01ed-4e0b-a9b2-ebc686bf11c0",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:56:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "e8200d6a-9e43-472b-a028-ff0a8844d9a6",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "6c07d855-1b39-4e95-a24b-39d08e65f950",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:57:03 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "de53bdaa-0361-40c2-bf1c-849dfb351f66",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "6bc9d9db-1ded-4814-a5d4-a42b38b89fe4",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:57:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "2f2c8ebd-acf0-48ad-9b63-5ae7c192ba82",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "738144de-d99b-43ff-afa9-4c9d33c1c099",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:57:33 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "bbbffb0e-7d85-4c66-a8c3-e89f141bf98e",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "0e2c85e9-5ffd-4c4c-a4b5-693b974d76cb",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:57:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "b81cc444-dff0-48d0-8c4b-fa274f7e9c8b",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "dbfe2957-e742-4729-b3cd-545f4008ef10",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:58:04 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "e47ba8c9-04d8-4ec5-b7d1-3c1bb6289721",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "fa4223ae-64c7-4d59-92a1-b79423d1af67",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:58:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "8e57c3e8-901f-4549-b287-821edcf19e24",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "3be5ee8f-32e8-48f6-9b4e-929df58d0210",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:58:34 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "ceebb99f-c77c-4093-ade7-919dbb7151d3",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c3e216e3-eac8-44c6-a20a-1aed61ce4159",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:58:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "15db8b3f-5e01-4172-a631-f8ba2ac4156b",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "a768f0a5-e35c-4879-8b8a-5fe799b3f063",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:59:05 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "27dc9c8f-509e-4806-ac99-0a2914f95d50",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "f21d9a62-a8a8-456c-bf21-b54d914e9c18",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:59:19 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "e0649e84-662c-493a-a600-6b8dd5c9ed36",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c812b6eb-a10b-4bfc-bd87-a82e57a27a80",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:59:34 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "9acef577-1b7b-4a78-b2a9-0fdcd8654de7",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c9796e67-5739-454f-aa4a-c25497f0d362",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:59:50 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "aaa14367-ad06-49f2-a7cb-fcf9e9faf0c1",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:55:17 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "5c99bc85-5141-4cef-814d-b0ef35289e8d",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B49E71CF798",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool4\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4\",\"eTag\":\"0x8DB5B49E71CF798\",\"lastModified\":\"2023-05-23T04:55:17.1232664Z\",\"creationTime\":\"2023-05-23T04:53:45.65043Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:55:17.1232664Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:55:27.2047156Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 05:00:04 GMT",
+      "content-length" : "343",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "2fc8583b-28c1-4a9e-9f1d-ba183a12b4bc",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "retry-after" : "0",
+      "request-id" : "1c4c946a-87ac-4b84-8431-4e1849209830",
+      "StatusCode" : "404",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"PoolNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified pool does not exist.\\nRequestId:1c4c946a-87ac-4b84-8431-4e1849209830\\nTime:2023-05-23T05:00:05.8575138Z\"\r\n  }\r\n}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-testpool4?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 05:00:05 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "1bda4e63-2bbe-49bc-a6b2-6eb7ef70f443",
+      "retry-after" : "0",
+      "request-id" : "db94a2db-aa9b-48cf-9397-8341d065e8ed",
+      "StatusCode" : "404",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  } ],
+  "variables" : [ ]
+}

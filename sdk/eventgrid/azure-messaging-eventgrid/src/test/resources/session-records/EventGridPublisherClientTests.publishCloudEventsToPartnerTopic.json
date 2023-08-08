@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.centraluseuap-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (14.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ca44182b-dcce-416c-978a-455877cd4dd6",
+      "Content-Type" : "application/cloudevents-batch+json; charset=utf-8"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2018-01-01",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6f1699a0-55e9-4633-97fa-37c5781cb3c3",
+      "Date" : "Mon, 04 Apr 2022 07:01:45 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
