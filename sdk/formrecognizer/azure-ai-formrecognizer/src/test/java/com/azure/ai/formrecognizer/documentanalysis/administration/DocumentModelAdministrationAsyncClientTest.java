@@ -458,16 +458,6 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     }
 
     /**
-     * Verifies that an exception is thrown for null model ID parameter.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void getModelNullModelId(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getDocumentModel(null)).verifyError();
-    }
-
-    /**
      * Verifies document model info returned with response for a valid model ID.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

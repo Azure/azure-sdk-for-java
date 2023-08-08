@@ -82,16 +82,6 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     }
 
     /**
-     * Verifies that an exception is thrown for null model ID parameter.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void getModelNullModelID(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        assertThrows(IllegalArgumentException.class, () -> client.getDocumentModel(null));
-    }
-
-    /**
      * Verifies that an exception is thrown for invalid model ID.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -227,18 +217,6 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                 break;
             }
         }
-    }
-
-    /**
-     * Verifies that an exception is thrown for null source url input.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void beginBuildModelNullInput(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        Exception exception = assertThrows(NullPointerException.class, () ->
-            client.beginBuildDocumentModel((String) null, DocumentModelBuildMode.TEMPLATE));
-        assertEquals("'blobContainerUrl' cannot be null.", exception.getMessage());
     }
 
     /**

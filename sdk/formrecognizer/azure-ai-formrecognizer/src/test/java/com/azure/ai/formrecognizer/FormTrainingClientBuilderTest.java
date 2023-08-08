@@ -107,13 +107,12 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void trainingClientBuilderInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            assertThrows(RuntimeException.class, () -> clientBuilder.endpoint(INVALID_ENDPOINT)
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .buildClient()
-                .getFormRecognizerClient()
-                .beginRecognizeContentFromUrl(input).getFinalResult());
-        });
+        assertThrows(RuntimeException.class, () -> new FormTrainingClientBuilder()
+            .endpoint(INVALID_ENDPOINT)
+            .credential(new AzureKeyCredential(getApiKey())).httpClient(httpClient).serviceVersion(serviceVersion)
+            .buildClient()
+            .getFormRecognizerClient()
+            .beginRecognizeContentFromUrl(TEST_FILE).getFinalResult());
     }
 
     @Test

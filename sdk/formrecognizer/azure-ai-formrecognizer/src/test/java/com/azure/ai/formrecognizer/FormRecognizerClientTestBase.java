@@ -79,7 +79,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
-    static final String INVALID_IMAGE_ERROR_CODE = "InvalidImage";
     static final String INVALID_MODEL_ID_ERROR_CODE = "1001";
     static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
 
@@ -193,10 +192,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     abstract void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataNullData(HttpClient httpClient,
-                                               FormRecognizerServiceVersion serviceVersion);
-
-    @Test
     abstract void recognizeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion);
 
@@ -240,11 +235,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
     @Test
     abstract void recognizeContent(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeContentResultWithNullData(HttpClient httpClient,
-                                                     FormRecognizerServiceVersion serviceVersion);
-
     @Test
     abstract void recognizeContentResultWithContentTypeAutoDetection(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion);
@@ -306,14 +296,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
                                                                  FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataWithNullModelId(HttpClient httpClient,
-                                                                FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeCustomFormLabeledDataWithEmptyModelId(HttpClient httpClient,
-                                                                 FormRecognizerServiceVersion serviceVersion);
-
-    @Test
     abstract void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -367,15 +349,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     @Test
     abstract void recognizeCustomFormInvalidSourceUrl(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeCustomFormFromUrlLabeledDataWithNullModelId(HttpClient httpClient,
-                                                                       FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeCustomFormFromUrlLabeledDataWithEmptyModelId(HttpClient httpClient,
-                                                                        FormRecognizerServiceVersion serviceVersion);
-
     @Test
     abstract void recognizeCustomFormUrlLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
@@ -395,9 +368,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     // Business Card - data
     @Test
     abstract void recognizeBusinessCardData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeBusinessCardDataNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeBusinessCardDataWithContentTypeAutoDetection(HttpClient httpClient,

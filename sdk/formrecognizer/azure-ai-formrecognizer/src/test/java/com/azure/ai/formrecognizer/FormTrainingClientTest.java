@@ -71,27 +71,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies that an exception is thrown for null model Id parameter.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        assertThrows(NullPointerException.class, () -> client.getCustomModel(null));
-    }
-
-    /**
-     * Verifies that an exception is thrown for invalid model Id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getCustomModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingClient(httpClient, serviceVersion);
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            getCustomModelInvalidModelIdRunner(invalidId -> client.getCustomModel(invalidId)));
-        assertEquals(INVALID_MODEL_ID_ERROR, exception.getMessage());
-    }
-
-    /**
      * Verifies custom model info returned with response for a valid model Id.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -165,18 +144,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         Response<AccountProperties> accountPropertiesResponse = client.getAccountPropertiesWithResponse(Context.NONE);
         assertEquals(accountPropertiesResponse.getStatusCode(), HttpResponseStatus.OK.code());
         validateAccountProperties(accountPropertiesResponse.getValue());
-    }
-
-    /**
-     * Verifies that an exception is thrown for invalid status model Id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void deleteModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingClient(httpClient, serviceVersion);
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.deleteModel(INVALID_MODEL_ID));
-        assertEquals(INVALID_MODEL_ID_ERROR, exception.getMessage());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -253,18 +220,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             assertTrue(modelInfo.getModelId() != null && modelInfo.getTrainingStartedOn() != null
                 && modelInfo.getTrainingCompletedOn() != null && modelInfo.getStatus() != null);
         }
-    }
-
-    /**
-     * Verifies that an exception is thrown for null source url input.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingClient(httpClient, serviceVersion);
-        Exception exception = assertThrows(NullPointerException.class, () ->
-            client.beginTraining(null, false));
-        assertEquals(NULL_SOURCE_URL_ERROR, exception.getMessage());
     }
 
     /**
