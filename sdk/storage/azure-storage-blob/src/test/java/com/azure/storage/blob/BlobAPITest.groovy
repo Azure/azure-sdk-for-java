@@ -104,6 +104,8 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+        
+        //comment
     }
 
     def "Upload input stream overwrite"() {
