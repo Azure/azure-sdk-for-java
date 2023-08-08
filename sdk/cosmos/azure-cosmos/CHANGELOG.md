@@ -16,8 +16,6 @@
 * Improved the channel health check flow to deem a channel unhealthy when it sees consecutive cancellations. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
 * Optimized the replica validation flow to validate replica health with `Unknown` health status only when the replica is 
 used by a container which is also part of the connection warm-up flow. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
-* Made cancellation prone health check gate to deem channel as unhealthy when last successful wire read was seen 10s ago and after 3 consecutive 
-cancellations. - See [PR 36280](https://github.com/Azure/azure-sdk-for-java/pull/36280)
 
 #### Other Changes
 
