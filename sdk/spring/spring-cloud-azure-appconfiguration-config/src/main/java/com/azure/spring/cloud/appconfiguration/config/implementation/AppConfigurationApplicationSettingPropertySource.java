@@ -52,28 +52,23 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
     private final String snapshotName;
 
     AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter, String snapshotName,
         int maxRetryTime) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(keyFilter + originEndpoint + "/" + getLabelName(labelFilter), replicaClient);
+        super(getName(snapshotName, keyFilter, labelFilter, originEndpoint), replicaClient);
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.maxRetryTime = maxRetryTime;
         this.keyFilter = keyFilter;
         this.labelFilter = labelFilter;
-        this.snapshotName = null;
-    }
-
-    AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName, int maxRetryTime) {
-        // The context alone does not uniquely define a PropertySource, append storeName
-        // and label to uniquely define a PropertySource
-        super(snapshotName + originEndpoint + "/", replicaClient);
-        this.keyVaultClientFactory = keyVaultClientFactory;
-        this.maxRetryTime = maxRetryTime;
-        this.keyFilter = null;
-        this.labelFilter = null;
         this.snapshotName = snapshotName;
+    }
+    
+    private static String getName(String snapshotName, String keyFilter, String[] labelFilter, String originEndpoint) {
+        if (StringUtils.hasText(snapshotName)) {
+            return snapshotName + originEndpoint + "/";
+        }
+        return keyFilter + originEndpoint + "/" + getLabelName(labelFilter);
     }
 
     /**

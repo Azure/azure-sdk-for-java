@@ -111,7 +111,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         TRIM.add(KEY_FILTER);
 
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, SNAPSHOT_NAME, 60);
+            keyVaultClientFactoryMock, null, null, SNAPSHOT_NAME, 60);
     }
 
     @AfterEach

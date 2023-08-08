@@ -19,7 +19,6 @@ import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
-import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
@@ -268,15 +267,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationApplicationSettingPropertySource propertySource;
-            if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
-                propertySource = new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client,
-                    keyVaultClientFactory, selectedKeys.getSnapshotName(), appProperties.getMaxRetryTime());
-            } else {
-                propertySource = new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client,
-                    keyVaultClientFactory, selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
-                    appProperties.getMaxRetryTime());
-            }
+            AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
+                store.getEndpoint(), client, keyVaultClientFactory, selectedKeys.getKeyFilter(),
+                selectedKeys.getLabelFilter(profiles), null, appProperties.getMaxRetryTime());
             propertySource.initProperties(store.getTrim());
             sourceList.add(propertySource);
 

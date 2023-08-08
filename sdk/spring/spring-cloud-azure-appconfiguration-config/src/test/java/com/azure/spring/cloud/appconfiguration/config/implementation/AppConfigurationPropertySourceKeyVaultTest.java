@@ -97,7 +97,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         String[] labelFilter = { "\0" };
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
-            keyVaultClientFactory, KEY_FILTER, labelFilter, 60);
+            keyVaultClientFactory, KEY_FILTER, labelFilter, null, 60);
 
         TEST_ITEMS.add(ITEM_1);
         TEST_ITEMS.add(ITEM_2);
