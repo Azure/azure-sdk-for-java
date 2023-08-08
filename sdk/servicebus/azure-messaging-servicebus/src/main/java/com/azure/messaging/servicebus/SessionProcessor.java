@@ -146,7 +146,7 @@ public final class SessionProcessor {
         Mono<Void> beginIntern() {
             final Mono<Void> pumping = Mono.using(
                 () -> {
-                    final SessionsMessagePump pump = builder.buildPumpForProcessor(logger, concurrency, processMessage, processError);
+                    final SessionsMessagePump pump = builder.buildPumpForProcessor(logger, processMessage, processError, concurrency);
                     return pump;
                 },
                 pump -> {

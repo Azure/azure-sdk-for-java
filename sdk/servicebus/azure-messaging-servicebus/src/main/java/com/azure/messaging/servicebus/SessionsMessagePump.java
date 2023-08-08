@@ -44,6 +44,7 @@ import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
@@ -74,7 +75,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  * <p>Once the Mono from {@link SessionsMessagePump#begin} terminates, to restart the pumping a new {@link SessionsMessagePump}
  * instance should be obtained.</p>
  *
- * <p>The abstraction SessionAwareProcessor takes care of managing a {@link SessionsMessagePump} and obtaining the next
+ * <p>The abstraction {@link SessionProcessor} takes care of managing a {@link SessionsMessagePump} and obtaining the next
  * SessionsMessagePump when current one terminates.</p>
  *
  * <p>The SessionsMessagePump termination flow – there are 2 cases leading to SessionsMessagePump termination</p>
@@ -104,10 +105,10 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  * ServiceBusSessionReactorReceiver.closeAsync().subscribe() or call may in progress.</p>
  *
  * <p>In either way when Thread T1’s cancel() call returns, The onCancel hook of usingWhen operator in
- * RollingSessionReceiver.receive() subscribe to RollingSessionReceiver.terminate(TerminationReason.CANCELED, Scheduler)
+ * RollingSessionReceiver.receive() subscribe to RollingSessionReceiver.terminate(TerminalSignalType.CANCELED, Scheduler)
  * marking RollingSessionReceiver as terminated and dispose the Scheduler it owns.
  *
- * <p>Now that RollingSessionReceiver.terminate(TerminationReason.CANCELED, Scheduler) returned control to T1, the When
+ * <p>Now that RollingSessionReceiver.terminate(TerminalSignalType.CANCELED, Scheduler) returned control to T1, the When
  * operator moves to the next Mono in the list to perform similar cancellation.</p>
  *
  *<p>Note: In SessionsMessagePump termination by cancellation case, subscription made to the *.closeAsync() is fire-n-forget.</p>
@@ -115,8 +116,8 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  *  <strong>A RollingSessionReceiver failing to acquire a new session link</strong>
  *
  *  <p> Read the termination by 'Cancelling Mono returned by RollingSessionReceiver.begin()'. When the upstream of
- *  RollingSessionReceiver.MessageFlux fails to acquire a link, it emits TerminatedException (with inner error describing
- *  the cause). The RollingSessionReceiver.MessageFlux receiving this error propagates the error to downstream usingWhen
+ *  RollingSessionReceiver.MessageFlux fails to acquire a link, it emits {@link MessagePumpTerminatedException} (with inner error
+ *  describing the cause). The RollingSessionReceiver.MessageFlux receiving this error propagates the error to downstream usingWhen
  *  operator in RollingSessionReceiver.begin(). The usingWhen operator invokes RollingSessionReceiver.terminate(,) to mark
  *  it as terminated and disposes the Scheduler it owns. The error will further flow to When operator in SessionsMessagePump.begin(),
  *  which cancels rest of the RollingSessionReceiver.MessageFlux, finally the error is emitted by the Mono returned by
@@ -124,7 +125,6 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  */
 final class SessionsMessagePump {
     private static final AtomicLong COUNTER = new AtomicLong();
-    private static final String PUMP_ID_KEY = "pump-id";
     private static final ArrayList<RollingSessionReceiver> EMPTY = new ArrayList<>(0);
     private static final ArrayList<RollingSessionReceiver> TERMINATED = new ArrayList<>(0);
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
@@ -211,12 +211,12 @@ final class SessionsMessagePump {
         });
 
         final Function<List<RollingSessionReceiver>, Mono<Void>> pumpFromReceiversMono = rollingReceivers -> {
-            final List<Mono<Void>> pumpingMono = new ArrayList<>(rollingReceivers.size());
+            final List<Mono<Void>> pumpingList = new ArrayList<>(rollingReceivers.size());
             for (RollingSessionReceiver rollingReceiver : rollingReceivers) {
-                pumpingMono.add(rollingReceiver.begin());
+                pumpingList.add(rollingReceiver.begin());
             }
             final Mono<Void> terminatePumping = pollConnectionState();
-            final Mono<Void> pumping = Mono.when(pumpingMono);
+            final Mono<Void> pumping = Mono.when(pumpingList);
             return Mono.firstWithSignal(terminatePumping, pumping);
         };
 
@@ -228,12 +228,10 @@ final class SessionsMessagePump {
         return pumpingMessages
             .onErrorMap(e -> {
                 if (e instanceof MessagePumpTerminatedException) {
-                    // 'e' propagated from pollConnectionState(), NextSession.mono(),
-                    // RollingSessionReceiver.(nextSessionReceiver()|NextSessionStream,flux())
-                    //
+                    // Source of 'e': pollConnectionState|NextSession.mono|RollingSessionReceiver.(nextSessionReceiver|NextSessionStream.flux)
                     return e;
                 }
-                // 'e' here could be reactor.core.CompositeException (e.g, 2 RollingSessionReceiver triggering error concurrently).
+                // 'e' here could be reactor.core.CompositeException, e.g, 2 RollingSessionReceiver errors concurrently.
                 return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
             })
             .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
@@ -243,7 +241,8 @@ final class SessionsMessagePump {
         return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
             .handle((ignored, sink) -> {
                 if (sessionAcquirer.isConnectionClosed()) {
-                    final RuntimeException e = logger.atInfo().log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#connection-state-poll"));
+                    final RuntimeException e = logger.atInfo()
+                        .log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#connection-state-poll"));
                     sink.error(e);
                 }
             }).then();
@@ -334,7 +333,7 @@ final class SessionsMessagePump {
                     isTerminated.set(true);
                     return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#acquire", e);
                 });
-            // The 'TerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
+            // The 'MessagePumpTerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
         }
     }
 
@@ -569,7 +568,7 @@ final class SessionsMessagePump {
                     }
                     return session;
                 });
-                // The 'TerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
+                // The 'MessagePumpTerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
             }
 
             Flux<ServiceBusSessionAcquirer.Session> flux() {
