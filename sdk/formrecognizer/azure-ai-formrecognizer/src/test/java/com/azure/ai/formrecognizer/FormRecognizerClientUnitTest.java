@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -10,10 +13,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_UUID_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE;
+import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTPS_LOCALHOST;
 import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,11 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Class to test client side validations for Form Recognizer clients.
  */
-public class FormRecognizerUnitTest {
+public class FormRecognizerClientUnitTest {
 
     private static FormRecognizerClient client;
     private static FormRecognizerAsyncClient asyncClient;
-    private static String INPUT_STRING = "Hello World!";
+    private static final String INPUT_STRING = "Hello World!";
 
     @BeforeAll
     protected static void beforeTest() {
@@ -43,7 +49,8 @@ public class FormRecognizerUnitTest {
      */
     @Test
     public void recognizeReceiptDataNullData() {
-        assertThrows(NullPointerException.class, () -> client.beginRecognizeReceipts(null, 0).setPollInterval(ONE_NANO_DURATION));
+        assertThrows(NullPointerException.class,
+            () -> client.beginRecognizeReceipts(null, 0).setPollInterval(ONE_NANO_DURATION));
     }
 
     /**
@@ -126,10 +133,10 @@ public class FormRecognizerUnitTest {
      */
     @Test
     public void recognizeCustomFormFromUrlLabeledDataWithEmptyModelId() {
-            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> asyncClient.beginRecognizeCustomFormsFromUrl("", FAKE_ENCODED_EMPTY_SPACE_URL)
-                    .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
-            assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> asyncClient.beginRecognizeCustomFormsFromUrl("", FAKE_ENCODED_EMPTY_SPACE_URL)
+                .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
+        assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
     /**
@@ -162,7 +169,7 @@ public class FormRecognizerUnitTest {
      */
     @Test
     public void recognizeIDDocumentDataNullDataSync() {
-        
+
         assertThrows(NullPointerException.class, () -> client.beginRecognizeIdentityDocuments(null, 0));
     }
 
@@ -175,9 +182,9 @@ public class FormRecognizerUnitTest {
             () -> client.beginRecognizeCustomForms("",
                     new ByteArrayInputStream(INPUT_STRING.getBytes()),
                     INPUT_STRING.length(),
-                new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
-                Context.NONE)
-            .setPollInterval(ONE_NANO_DURATION));
+                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                    Context.NONE)
+                .setPollInterval(ONE_NANO_DURATION));
         assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
@@ -201,5 +208,18 @@ public class FormRecognizerUnitTest {
             null, FAKE_ENCODED_EMPTY_SPACE_URL, new RecognizeCustomFormsOptions()
                 .setPollInterval(ONE_NANO_DURATION), Context.NONE));
         assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
+    }
+
+    /**
+     * Test for invalid endpoint, which throws connection refused exception message.
+     */
+    @Test
+    public void clientBuilderWithInvalidEndpoint() {
+        assertThrows(RuntimeException.class,
+            () -> new FormRecognizerClientBuilder()
+                .credential(new AzureKeyCredential("fakeKey"))
+                .endpoint(INVALID_ENDPOINT)
+                .buildClient()
+                .beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG).getFinalResult());
     }
 }

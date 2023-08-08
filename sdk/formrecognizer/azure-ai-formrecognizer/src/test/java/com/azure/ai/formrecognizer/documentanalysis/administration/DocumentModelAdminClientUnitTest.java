@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
@@ -25,9 +28,8 @@ public class DocumentModelAdminClientUnitTest {
     private static DocumentModelAdministrationAsyncClient asyncClient;
     private static DocumentAnalysisClient analysisClient;
     private static DocumentAnalysisAsyncClient analysisAsyncClient;
-    private static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or" +
-        " " +
-        "empty";
+    private static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or"
+        + "empty";
 
     @BeforeAll
     protected static void beforeTest() {
@@ -41,7 +43,7 @@ public class DocumentModelAdminClientUnitTest {
         DocumentModelAdministrationClientBuilder adminBuilder = new DocumentModelAdministrationClientBuilder()
             .endpoint("https://localhost:8080")
             .credential(new AzureKeyCredential("fakeKey"));
-        
+
         client = adminBuilder.buildClient();
         asyncClient = adminBuilder.buildAsyncClient();
     }
