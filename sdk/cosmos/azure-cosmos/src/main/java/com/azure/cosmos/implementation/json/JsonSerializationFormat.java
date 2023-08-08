@@ -25,9 +25,22 @@ enum JsonSerializationFormat {
     // All other format values need to be > 127,
     // otherwise a valid JSON starting character (0-9, f[alse], t[rue], n[ull],{,[,") might be interpreted as a serialization format.
 
+    private final byte byteValue;
+
     JsonSerializationFormat(byte byteValue) {
         this.byteValue = byteValue;
     }
 
-    private final byte byteValue;
+    public byte getByteValue() {
+        return byteValue;
+    }
+
+    public static JsonSerializationFormat fromByte(byte value) {
+        for (JsonSerializationFormat enumValue : JsonSerializationFormat.values()) {
+            if (enumValue.byteValue == value) {
+                return enumValue;
+            }
+        }
+        throw new IllegalArgumentException("No JsonSerializationFormat with byte value " + value);
+    }
 }
