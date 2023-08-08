@@ -1,5 +1,6 @@
 package com.azure.spring.cloud.config.connectionstring;
 
+import com.azure.spring.cloud.config.Constants;
 import com.azure.spring.cloud.config.MessageProperties;
 import com.azure.spring.cloud.feature.management.FeatureManager;
 import com.azure.spring.cloud.feature.management.web.FeatureManagerSnapshot;
@@ -17,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = LoadConfigsTest.class)
 @TestPropertySource(properties = {
-    "spring.cloud.azure.appconfiguration.stores[0].connection-string=${Azure_APP_CONFIGURATION_CONNECTION_STRING}",
+    "authMethod=" + Constants.CONNECTION_STRING,
+    "spring.cloud.azure.appconfiguration.stores[0].connection-string=${APP_CONFIGURATION_CONNECTION_STRING}",
     "spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled= true" })
 @Configuration
 @EnableConfigurationProperties(value = MessageProperties.class)

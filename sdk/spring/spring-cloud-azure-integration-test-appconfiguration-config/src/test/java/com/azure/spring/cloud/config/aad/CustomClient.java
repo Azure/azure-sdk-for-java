@@ -1,5 +1,6 @@
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.aad;
 
+import com.azure.spring.cloud.config.BaseCustomClient;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -11,10 +12,10 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.SecretClientCustomizer;
 
-public class CustomClient implements ConfigurationClientCustomizer, SecretClientCustomizer {
-    
+public class CustomClient extends BaseCustomClient implements ConfigurationClientCustomizer, SecretClientCustomizer {
+
     private final Environment environment;
-    
+
     public CustomClient(Environment environment) {
         this.environment = environment;
     }
@@ -29,7 +30,7 @@ public class CustomClient implements ConfigurationClientCustomizer, SecretClient
                 cred.authorityHost(AzureAuthorityHosts.AZURE_CHINA);
             }
         }
-        
+
         return cred.build();
     }
 
