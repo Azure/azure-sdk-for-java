@@ -39,6 +39,7 @@ public final class DocumentModelDetails {
 
     private OffsetDateTime expiresOn;
 
+    private String serviceVersion;
 
     /**
      * Get the Unique model identifier.
@@ -118,6 +119,23 @@ public final class DocumentModelDetails {
     private void setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
     }
+    /**
+     * Get the API version used to create this document classifier.
+     *
+     * @return the apiVersion value.
+     */
+    public String getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /**
+     * Set the API version used to create this document classifier.
+     *
+     * @param serviceVersion the apiVersion value to set.
+     */
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
 
     static {
         DocumentModelDetailsHelper.setAccessor(new DocumentModelDetailsHelper.DocumentModelDetailsAccessor() {
@@ -149,6 +167,11 @@ public final class DocumentModelDetails {
             @Override
             public void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expiresOn) {
                 documentModelDetails.setExpiresOn(expiresOn);
+            }
+
+            @Override
+            public void setServiceVersion(DocumentModelDetails documentModelDetails, String apiVersion) {
+                documentModelDetails.setServiceVersion(apiVersion);
             }
         });
     }

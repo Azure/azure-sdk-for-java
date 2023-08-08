@@ -142,7 +142,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+            interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -169,7 +169,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+            interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());

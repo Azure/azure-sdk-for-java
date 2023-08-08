@@ -154,7 +154,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;document -&gt;
      *                 document.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -202,7 +201,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .subscribe&#40;analyzeResult -&gt; &#123;
      *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;document -&gt;
      *                 document.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -305,7 +303,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;analyzedDocument -&gt;
      *                 analyzedDocument.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -346,8 +343,9 @@ public final class DocumentAnalysisAsyncClient {
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
      * final AnalyzeDocumentOptions analyzeDocumentOptions =
-     *     new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;.setDocumentAnalysisFeatures&#40;Arrays.asList&#40;
-     *         DocumentAnalysisFeature.FORMULAS&#41;&#41;;
+     *     new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;.setDocumentAnalysisFeatures&#40;
+     *         Collections.singletonList&#40;
+     *             DocumentAnalysisFeature.FORMULAS&#41;&#41;;
      *
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
@@ -358,7 +356,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .subscribe&#40;analyzeResult -&gt; &#123;
      *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;analyzedDocument -&gt;
      *                 analyzedDocument.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -548,7 +545,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;analyzedDocument -&gt;
      *                 analyzedDocument.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;

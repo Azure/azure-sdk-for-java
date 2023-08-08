@@ -44,7 +44,7 @@ public class AnalyzeBusinessCardFromUrlAsync {
 
         PollerFlux<OperationResult, AnalyzeResult> analyzeBusinessCardPoller
             = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard",
-            businessCardUrl, new AnalyzeDocumentOptions().setPages(Arrays.asList("1")).setLocale("en-US"));
+            businessCardUrl, new AnalyzeDocumentOptions().setPages(Collections.singletonList("1")).setLocale("en-US"));
 
         Mono<AnalyzeResult> businessCardPageResultsMono
             = analyzeBusinessCardPoller

@@ -112,7 +112,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     private void setMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
     public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,

@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationKind;
@@ -38,6 +39,8 @@ public final class OperationSummaryHelper {
 
         void setResourceLocation(OperationSummary operationSummary, String resourceLocation);
         void setTags(OperationSummary operationSummary, Map<String, String> tags);
+
+        void setServiceVersion(OperationSummary operationSummary, String serviceVersion);
     }
 
     /**
@@ -80,5 +83,9 @@ public final class OperationSummaryHelper {
 
     static void setTags(OperationSummary operationSummary, Map<String, String> tags) {
         accessor.setTags(operationSummary, tags);
+    }
+
+    static void setServiceVersion(OperationSummary operationSummary, String serviceVersion) {
+        accessor.setServiceVersion(operationSummary, serviceVersion);
     }
 }

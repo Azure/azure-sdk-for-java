@@ -18,6 +18,7 @@ public final class DocumentModelDetailsHelper {
     private DocumentModelDetailsHelper() {
     }
 
+
     /**
      * Type defining the methods to set the non-public properties of an {@link DocumentModelDetails} instance.
      */
@@ -34,6 +35,7 @@ public final class DocumentModelDetailsHelper {
         void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags);
 
         void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expiresOn);
+        void setServiceVersion(DocumentModelDetails documentModelDetails, String apiVersion);
     }
 
     /**
@@ -67,5 +69,9 @@ public final class DocumentModelDetailsHelper {
 
     static void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expirationDateTime) {
         accessor.setExpiresOn(documentModelDetails, expirationDateTime);
+    }
+
+    static void setServiceVersion(DocumentModelDetails documentModelDetails, String serviceVersion) {
+        accessor.setServiceVersion(documentModelDetails, serviceVersion);
     }
 }
