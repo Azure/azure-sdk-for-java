@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-jsonschema</artifactId>
-  <version>1.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
 
   <name>Microsoft Azure client library for Schema Registry JSON Schema Serializer</name>
   <description>NetworkNT JSON Schema serializer for Azure Schema Registry client library</description>

@@ -12,7 +12,7 @@ trigger:
       - sdk/schemaregistry/pom.xml
       - sdk/schemaregistry/azure-data-schemaregistry/pom.xml
       - sdk/schemaregistry/azure-data-schemaregistry-apacheavro/pom.xml
-      - sdk/schemaregistry/azure-data-schemaregistry-jsonschemavalidator/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry-jsonschema/pom.xml
 
 pr:
   branches:
@@ -28,7 +28,7 @@ pr:
       - sdk/schemaregistry/pom.xml
       - sdk/schemaregistry/azure-data-schemaregistry/pom.xml
       - sdk/schemaregistry/azure-data-schemaregistry-apacheavro/pom.xml
-      - sdk/schemaregistry/azure-data-schemaregistry-jsonschemavalidator/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry-jsonschema/pom.xml
 
 parameters:
 - name: release_azuredataschemaregistry
@@ -39,8 +39,8 @@ parameters:
   displayName: 'azure-data-schemaregistry-apacheavro'
   type: boolean
   default: true
-- name: release_azuredataschemaregistryjsonschemavalidator
-  displayName: 'azure-data-schemaregistry-jsonschemavalidator'
+- name: release_azuredataschemaregistryjsonschema
+  displayName: 'azure-data-schemaregistry-jsonschema'
   type: boolean
   default: true
 
@@ -60,5 +60,5 @@ extends:
         releaseInBatch: ${{ parameters.release_azuredataschemaregistryapacheavro }}
       - name: azure-data-schemaregistry-jsonschemavalidator
         groupId: com.azure
-        safeName: azuredataschemaregistryjsonschemavalidator
-        releaseInBatch: ${{ parameters.release_azuredataschemaregistryjsonschemavalidator }}
+        safeName: azuredataschemaregistryjsonschema
+        releaseInBatch: ${{ parameters.release_azuredataschemaregistryjsonschema }}
