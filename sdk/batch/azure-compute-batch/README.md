@@ -121,14 +121,16 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 # Build Code
-To build the code open a console, navigate to the project subdirectory (sdk/batch/azure-compute-batch/, and run
+To build the code open a console, navigate to the project subdirectory (sdk/batch/azure-compute-batch/), and run
 ```
-maven build
+mvn install -f pom.xml
 ```
+For more information about building the client library including installing the associated build tools, please see the [Azure Java SDK Building wiki][java_building_wiki]  
 
 # Test Code
 
-All tests are run from the `sdk/batch/azure-compute-batch` directory. They can be run either on the command line or from a Java IDE, such as IntelliJ as Junit (Note that if you wish to run the tests within IntelliJ, you will need to temporarily delete the module-info.java file.
+All tests are run from the `sdk/batch/azure-compute-batch` directory. They can be run either on the command line or from a Java IDE, such as IntelliJ as Junit (Note that if you wish to run the tests within IntelliJ, you will need to temporarily delete the module-info.java file). 
+If you are working on either the src or test code within an IDE, be sure you are also building the client library with Maven commands in the CLI as the build system is configured to target both JDK 8 and 11. Please see the [Build Code section](#build-code).
 
 Tests are run in two phases: Record and Playback. During the first Record phase, integration tests create real Batch resources on Azure using the Batch API, and JSON files are created locally to capture the response from Azure. In the second Playback phase, the integrations tests only exercise assertions against the JSON files themselves.
 
@@ -181,3 +183,4 @@ Generate a client secret for this principal
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[java_building_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/Building

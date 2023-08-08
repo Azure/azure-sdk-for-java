@@ -332,6 +332,7 @@ public final class JobsImpl {
         Mono<Response<Void>> terminate(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
@@ -352,6 +353,7 @@ public final class JobsImpl {
         Response<Void> terminateSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
@@ -1754,7 +1756,7 @@ public final class JobsImpl {
      *         maxWallClockTime: Duration (Optional)
      *         maxTaskRetryCount: Integer (Optional)
      *     }
-     *     poolInfo (Required): {
+     *     poolInfo (Optional): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -2079,7 +2081,7 @@ public final class JobsImpl {
      *         maxWallClockTime: Duration (Optional)
      *         maxTaskRetryCount: Integer (Optional)
      *     }
-     *     poolInfo (Required): {
+     *     poolInfo (Optional): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -3607,13 +3609,16 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
                 requestLocal -> {
                     if (requestLocal.getBody() != null
                             && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
                     }
                 });
         return FluxUtil.withContext(
@@ -3621,6 +3626,7 @@ public final class JobsImpl {
                         service.terminate(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
+                                contentType,
                                 jobId,
                                 accept,
                                 requestOptionsLocal,
@@ -3689,18 +3695,22 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateWithResponse(String jobId, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
                 requestLocal -> {
                     if (requestLocal.getBody() != null
                             && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
                     }
                 });
         return service.terminateSync(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
+                contentType,
                 jobId,
                 accept,
                 requestOptionsLocal,

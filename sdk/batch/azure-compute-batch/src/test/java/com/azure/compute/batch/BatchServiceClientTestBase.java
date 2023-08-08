@@ -65,6 +65,8 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
     protected TaskClient taskClient;
 
+    protected BatchNodesClient nodesClient;
+
 	static final int MAX_LEN_ID = 64;
 
     static String REDACTED = "REDACTED";
@@ -101,6 +103,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         certificatesClient = batchClientBuilder.buildCertificatesClient();
         jobScheduleClient = batchClientBuilder.buildJobScheduleClient();
         taskClient = batchClientBuilder.buildTaskClient();
+        nodesClient = batchClientBuilder.buildBatchNodesClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {

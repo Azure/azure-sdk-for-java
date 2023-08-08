@@ -585,7 +585,7 @@ public final class JobClient {
      *         maxWallClockTime: Duration (Optional)
      *         maxTaskRetryCount: Integer (Optional)
      *     }
-     *     poolInfo (Required): {
+     *     poolInfo (Optional): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)

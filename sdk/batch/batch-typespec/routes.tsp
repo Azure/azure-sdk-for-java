@@ -19,7 +19,7 @@ using Azure.ClientGenerator.Core;
 
 namespace BatchService;
 
-// Templates 
+// Templates
 
 /**
  * A remote procedure call (RPC) operation with additional response.
@@ -122,7 +122,7 @@ last aggregation interval is returned.
     """)
       @query
       starttime?: utcDateTime;
-    
+
       @doc("""
     The latest time from which to include metrics. This must be at least two hours
     before the current time. If not specified this defaults to the end time of the
@@ -130,7 +130,7 @@ last aggregation interval is returned.
     """)
       @query
       endtime?: utcDateTime;
-    
+
       @doc("""
     An OData $filter clause. For more information on constructing this filter, see
     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
@@ -790,6 +790,10 @@ Tasks cannot be added and any remaining active Tasks will not be scheduled.
   Terminate is RpcOperation<
     BatchClientRequestHeaders &
       BatchMatchHeaders & {
+        @doc("Type of content")
+        @header("content-type")
+        contentType: "application/json; odata=minimalmetadata";
+
         @doc("The ID of the Job to terminate.")
         @path
         jobId: string;
@@ -2639,7 +2643,7 @@ applications can be returned.
   @query
   @minValue(1)
   @maxValue(1000)
-  
+
   maxresults?: int32 = 1000;
 
   #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
@@ -2650,7 +2654,7 @@ directly.
 """)
   @header
   @format("date-time-rfc1123")
-  
+
   `ocp-date`?: string;
 }
 

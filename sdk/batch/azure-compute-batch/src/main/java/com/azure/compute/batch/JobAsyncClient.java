@@ -603,7 +603,7 @@ public final class JobAsyncClient {
      *         maxWallClockTime: Duration (Optional)
      *         maxTaskRetryCount: Integer (Optional)
      *     }
-     *     poolInfo (Required): {
+     *     poolInfo (Optional): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
