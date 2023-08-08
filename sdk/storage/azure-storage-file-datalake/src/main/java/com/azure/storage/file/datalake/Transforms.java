@@ -123,6 +123,7 @@ class Transforms {
     public static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
     public static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
     public static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
+    public static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
