@@ -347,6 +347,7 @@ public abstract class IdentityClientBase {
                 : clientId, credential);
 
         applicationBuilder
+            .instanceDiscovery(false)
             .validateAuthority(false)
             .logPii(options.isSupportLoggingEnabled());
 
