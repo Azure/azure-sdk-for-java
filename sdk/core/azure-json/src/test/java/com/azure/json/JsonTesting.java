@@ -1,3 +1,5 @@
+package com.azure.json;
+
 import com.sun.jdi.InvalidTypeException;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
