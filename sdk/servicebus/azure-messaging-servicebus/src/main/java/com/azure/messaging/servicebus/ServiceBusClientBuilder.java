@@ -1673,8 +1673,9 @@ public final class ServiceBusClientBuilder implements
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
         }
 
-        SessionsMessagePump buildPumpForProcessor(ClientLogger logger, final int concurrencyPerSession,
-            Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError) {
+        SessionsMessagePump buildPumpForProcessor(ClientLogger logger,
+            Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
+            int concurrencyPerSession) {
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;

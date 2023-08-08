@@ -24,13 +24,23 @@ import java.util.function.Function;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
 
 /**
- * Abstraction to pump messages using a {@link ServiceBusReceiverAsyncClient} as long as the client is healthy.
+ * Abstraction to pump messages using a {@link ServiceBusReceiverAsyncClient} (associated with a session unaware entity)
+ * as long as the client is healthy.
+ *
+ * <p>The pumping starts upon subscribing to the Mono that {@link NonSessionMessagePump#begin} returns. The pumping can
+ * be stopped by cancelling the subscription that {@link NonSessionMessagePump#begin} returned.</p>
+ *
+ * <p>Once the Mono from {@link NonSessionMessagePump#begin} terminates, to restart the pumping a new {@link NonSessionMessagePump}
+ * instance should be obtained.</p>
+ *
+ * <p>The abstraction {@link ServiceBusProcessor} takes care of managing a {@link NonSessionMessagePump} and obtaining
+ * the next NonSessionMessagePump when current one terminates.</p>
  */
 final class NonSessionMessagePump {
     private static final AtomicLong COUNTER = new AtomicLong();
-    private static final String PUMP_ID_KEY = "pump-id";
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
     private final long  pumpId;
     private final ServiceBusReceiverAsyncClient client;
@@ -104,10 +114,10 @@ final class NonSessionMessagePump {
         return pumpingMessages
             .onErrorMap(e -> {
                 if (e instanceof MessagePumpTerminatedException) {
-                    // 'e' propagated from pollConnectionState().
+                    // Source of 'e': pollConnectionState.
                     return e;
                 }
-                // 'e' propagated from client.nonSessionProcessorReceiveV2().
+                // 'e' propagated from client.nonSessionProcessorReceiveV2.
                 return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
             })
             .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
@@ -117,7 +127,8 @@ final class NonSessionMessagePump {
         return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
             .handle((ignored, sink) -> {
                 if (client.isConnectionClosed()) {
-                    final RuntimeException e = logger.atInfo().log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "non-session#connection-state-poll"));
+                    final RuntimeException e = logger.atInfo()
+                        .log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "non-session#connection-state-poll"));
                     sink.error(e);
                 }
             }).then();
