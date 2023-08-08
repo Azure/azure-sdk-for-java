@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
 
 /**
  * The exception emitted by the mono returned from the {@link SessionsMessagePump#begin()} and
@@ -15,7 +16,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED
  * indicates the cause for the termination of message pumping.
  */
 final class MessagePumpTerminatedException extends RuntimeException {
-    private static final String PUMP_ID_KEY = "pump-id";
     private final long pumpId;
     private final String fqdn;
     private final String entityPath;
