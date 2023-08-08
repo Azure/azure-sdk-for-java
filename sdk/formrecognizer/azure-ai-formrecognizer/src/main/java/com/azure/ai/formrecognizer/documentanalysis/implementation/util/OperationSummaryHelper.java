@@ -3,10 +3,9 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationKind;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationKind;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -79,7 +80,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
-    static final String INVALID_IMAGE_ERROR_CODE = "InvalidImage";
     static final String INVALID_MODEL_ID_ERROR_CODE = "1001";
     static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
 
