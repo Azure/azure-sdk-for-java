@@ -41,6 +41,6 @@ enum JsonSerializationFormat {
                 return enumValue;
             }
         }
-        throw new IllegalArgumentException("No JsonSerializationFormat with byte value " + value);
+        throw new IllegalArgumentException("No JsonSerializationFormat with byte value " + value + ".");
     }
 }

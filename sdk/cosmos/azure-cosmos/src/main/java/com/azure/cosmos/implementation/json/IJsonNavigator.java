@@ -168,16 +168,16 @@ interface IJsonNavigator {
     /**
      * Creates an {@link IJsonReader} that is able to read the supplied {@link IJsonNavigatorNode}.
      *
-     * @param jsonNavigatorNode The node to create a reader from.
+     * @param node The node to create a reader from.
      * @return The {@link IJsonReader} that is able to read the supplied {@link IJsonNavigatorNode}.
      */
-    IJsonReader createReader(IJsonNavigatorNode jsonNavigatorNode);
+    IJsonReader createReader(IJsonNavigatorNode node);
 
     /**
      * Writes a {@link IJsonNavigatorNode} to a {@link IJsonWriter}.
      *
-     * @param jsonNavigatorNode The {@link IJsonNavigatorNode} to write.
-     * @param jsonWriter        The {@link IJsonWriter} to write to.
+     * @param node The {@link IJsonNavigatorNode} to write.
+     * @param writer        The {@link IJsonWriter} to write to.
      */
-    void writeNode(IJsonNavigatorNode jsonNavigatorNode, IJsonWriter jsonWriter);
+    void writeNode(IJsonNavigatorNode node, IJsonWriter writer);
 }

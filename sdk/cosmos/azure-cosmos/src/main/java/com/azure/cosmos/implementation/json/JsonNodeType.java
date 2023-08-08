@@ -85,9 +85,4 @@ enum JsonNodeType {
      * Corresponds to a UUID type in Java for the extended types.
      */
     UUID,
-
-    /**
-     * Unknown JsonNodeType.
-     */
-    UNKNOWN,
 }
