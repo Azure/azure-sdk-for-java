@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mpcnetworkfunction/ci.yml
+      - sdk/mpcnetworkfunction/azure-resourcemanager-mpcnetworkfunction/
+    exclude:
+      - sdk/mpcnetworkfunction/pom.xml
+      - sdk/mpcnetworkfunction/azure-resourcemanager-mpcnetworkfunction/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mpcnetworkfunction/ci.yml
+      - sdk/mpcnetworkfunction/azure-resourcemanager-mpcnetworkfunction/
+    exclude:
+      - sdk/mpcnetworkfunction/pom.xml
+      - sdk/mpcnetworkfunction/azure-resourcemanager-mpcnetworkfunction/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagermpcnetworkfunction
+    displayName: azure-resourcemanager-mpcnetworkfunction
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: mpcnetworkfunction
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-mpcnetworkfunction
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermpcnetworkfunction
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermpcnetworkfunction }}
