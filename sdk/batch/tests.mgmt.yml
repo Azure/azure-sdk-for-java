@@ -1,0 +1,16 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: batch
+      Artifacts:
+        - name: azure-resourcemanager-batch
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagerbatch
+      Clouds: 'Public'
+      # Batch account has regional quota limit on test subscription. Only run tests on Windows to avoid exceeding.
+      MatrixFilters:
+        - pool=.*(win).*

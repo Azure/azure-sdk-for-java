@@ -1,0 +1,64 @@
+trigger: none
+
+variables:
+  - template: ../../eng/pipelines/templates/variables/globals.yml
+  - name: AdditionalArgs
+    value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      CloudConfig:
+        Cosmos_Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      Clouds: 'Cosmos_Public_Integration'
+      MatrixConfigs:
+        - Name: Cosmos_live_test
+          Path: sdk/cosmos/platform-matrix.json
+          Selection: all
+          GenerateVMJobs: true
+      ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-tests
+          groupId: com.azure
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+      TimeoutInMinutes: 120
+      MaxParallel: 8
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestGoals: 'verify'
+      TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      TestName: 'Spring_Data_Cosmos_Integration'
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      MatrixConfigs:
+        - Name: Cosmos_live_test_integration
+          Path: sdk/spring/cosmos-integration-matrix.json
+          Selection: all
+          GenerateVMJobs: true
+      ServiceDirectory: spring
+      TestResourceDirectories:
+        - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
+      Artifacts:
+        - name: azure-spring-data-cosmos
+          groupId: com.azure
+          safeName: azurespringdatacosmos
+      TimeoutInMinutes: 90
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestGoals: 'clean verify'
+      TestOptions: '$(ProfileFlag)'

@@ -1,0 +1,877 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javanwmrg50391?api-version=2019-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "49727134-9809-413b-ac16-eb5a7c81464e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "233",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "078c4311-119c-4ae4-a642-2681d463e220",
+      "Date" : "Fri, 08 Oct 2021 02:45:49 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024549Z:078c4311-119c-4ae4-a642-2681d463e220",
+      "Expires" : "-1",
+      "x-ms-request-id" : "078c4311-119c-4ae4-a642-2681d463e220",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391\",\"name\":\"javanwmrg50391\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b4c54b1d-5197-4141-a782-5ac33df89159",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "408",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "aa5c47fb-d1d9-4885-b05f-0637f32f9c49",
+      "Date" : "Fri, 08 Oct 2021 02:45:51 GMT",
+      "x-ms-arm-service-request-id" : "f81d7bd4-5ac3-45b3-808d-f4699ca78fbf",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024551Z:aa5c47fb-d1d9-4885-b05f-0637f32f9c49",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/f2351c3d-02f0-41a3-881f-d3839dd46131?api-version=2018-11-01",
+      "x-ms-request-id" : "f2351c3d-02f0-41a3-881f-d3839dd46131",
+      "Body" : "{\r\n  \"name\": \"asg49108\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108\",\r\n  \"etag\": \"W/\\\"1755f8a3-808c-4566-9d0c-e43e168639c9\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "b4c54b1d-5197-4141-a782-5ac33df89159",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/f2351c3d-02f0-41a3-881f-d3839dd46131?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d68366fe-93a2-4f2a-a7b8-7903532e16b5"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2e9a8d26-d8a6-4385-98cb-8b33ec6f41f4",
+      "Date" : "Fri, 08 Oct 2021 02:46:01 GMT",
+      "x-ms-arm-service-request-id" : "bed7613a-7291-4404-9061-7680c1e5992d",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024602Z:2e9a8d26-d8a6-4385-98cb-8b33ec6f41f4",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6e0437c7-7e3d-446e-b75b-b4a178abec14",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "d68366fe-93a2-4f2a-a7b8-7903532e16b5",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e6ed404-19b1-4b12-a357-c3a9b7ef0e8f"
+    },
+    "Response" : {
+      "content-length" : "409",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ad556c20-cb57-4b37-9334-904535ce366a",
+      "Date" : "Fri, 08 Oct 2021 02:46:01 GMT",
+      "x-ms-arm-service-request-id" : "f41d999f-541f-436c-bf38-854aa3b90a8d",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"523d00ca-7cdd-42c8-b619-aaa116a9e3de\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024602Z:ad556c20-cb57-4b37-9334-904535ce366a",
+      "Expires" : "-1",
+      "x-ms-request-id" : "81589069-db24-4223-bd02-60780221bdba",
+      "Body" : "{\r\n  \"name\": \"asg49108\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108\",\r\n  \"etag\": \"W/\\\"523d00ca-7cdd-42c8-b619-aaa116a9e3de\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "4e6ed404-19b1-4b12-a357-c3a9b7ef0e8f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg46277?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f87b736-ce05-402d-b681-b3f316682d1c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "408",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "9e304e88-a0d7-4596-91c4-325075ec1c85",
+      "Date" : "Fri, 08 Oct 2021 02:46:03 GMT",
+      "x-ms-arm-service-request-id" : "74a5e8e1-4da9-413f-a128-372f93dc5ff0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024604Z:9e304e88-a0d7-4596-91c4-325075ec1c85",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/cfed9168-6dda-4daa-991f-1cbbdadf3027?api-version=2018-11-01",
+      "x-ms-request-id" : "cfed9168-6dda-4daa-991f-1cbbdadf3027",
+      "Body" : "{\r\n  \"name\": \"asg46277\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg46277\",\r\n  \"etag\": \"W/\\\"ffee0bb1-f3ed-4f30-a6fa-8c239c0cbe21\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "2f87b736-ce05-402d-b681-b3f316682d1c",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/cfed9168-6dda-4daa-991f-1cbbdadf3027?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9852aecb-5dcf-4155-9c7c-bd37ef19694e"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "02afb9cb-10a7-49a9-b52b-d79023bbcd61",
+      "Date" : "Fri, 08 Oct 2021 02:46:14 GMT",
+      "x-ms-arm-service-request-id" : "80523c97-219d-4642-a019-1c8e74c84dcd",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024614Z:02afb9cb-10a7-49a9-b52b-d79023bbcd61",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b4c2a256-4441-4e9f-9172-01eba0e3d1df",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "9852aecb-5dcf-4155-9c7c-bd37ef19694e",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg46277?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "57d26136-2787-4171-94f7-5ae3ad86981f"
+    },
+    "Response" : {
+      "content-length" : "409",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "04bbe5b7-62df-4f1b-ad86-d32a6b1e8223",
+      "Date" : "Fri, 08 Oct 2021 02:46:14 GMT",
+      "x-ms-arm-service-request-id" : "57418b5a-c5e5-4768-8fb3-ea75e11d0ba3",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"2aa31252-0b20-4257-af53-354278035c91\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024614Z:04bbe5b7-62df-4f1b-ad86-d32a6b1e8223",
+      "Expires" : "-1",
+      "x-ms-request-id" : "fa151391-95e4-4ad7-8120-49635a873275",
+      "Body" : "{\r\n  \"name\": \"asg46277\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg46277\",\r\n  \"etag\": \"W/\\\"2aa31252-0b20-4257-af53-354278035c91\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "57d26136-2787-4171-94f7-5ae3ad86981f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "01d34f5c-7190-452d-9890-eba4ed0bc68b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "408",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "a8c210e3-9b57-49d4-98ef-f79fb0ef74de",
+      "Date" : "Fri, 08 Oct 2021 02:46:16 GMT",
+      "x-ms-arm-service-request-id" : "bd1ebb54-c166-4652-8fac-69f3fbb41c90",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024617Z:a8c210e3-9b57-49d4-98ef-f79fb0ef74de",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/61d4a3fb-5e17-4974-b3d9-0924e39b9ea8?api-version=2018-11-01",
+      "x-ms-request-id" : "61d4a3fb-5e17-4974-b3d9-0924e39b9ea8",
+      "Body" : "{\r\n  \"name\": \"asg98996\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996\",\r\n  \"etag\": \"W/\\\"f7b42668-2479-41ef-9977-cccc5633aca8\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "01d34f5c-7190-452d-9890-eba4ed0bc68b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/61d4a3fb-5e17-4974-b3d9-0924e39b9ea8?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be680495-927e-4c73-824f-1c22523148c9"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2b43173a-dfe9-4b96-9064-f10562074c13",
+      "Date" : "Fri, 08 Oct 2021 02:46:27 GMT",
+      "x-ms-arm-service-request-id" : "004f17bf-a35e-42d8-8794-44302d33c6f1",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024627Z:2b43173a-dfe9-4b96-9064-f10562074c13",
+      "Expires" : "-1",
+      "x-ms-request-id" : "904978cf-bbff-424b-ac6b-f02e2cbf4f5f",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "be680495-927e-4c73-824f-1c22523148c9",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a7ffcb60-6711-47cd-96e2-97779922cbc1"
+    },
+    "Response" : {
+      "content-length" : "409",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "817f9acf-d3be-4e5b-9d1e-55d0c1aa9915",
+      "Date" : "Fri, 08 Oct 2021 02:46:26 GMT",
+      "x-ms-arm-service-request-id" : "7f821c90-72d6-492c-9261-9d84fe743ada",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"d0143d8e-6f49-4c26-8225-8a4d88777c6f\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024627Z:817f9acf-d3be-4e5b-9d1e-55d0c1aa9915",
+      "Expires" : "-1",
+      "x-ms-request-id" : "53ed833b-bfe1-49de-8eeb-4586e19af19e",
+      "Body" : "{\r\n  \"name\": \"asg98996\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996\",\r\n  \"etag\": \"W/\\\"d0143d8e-6f49-4c26-8225-8a4d88777c6f\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "a7ffcb60-6711-47cd-96e2-97779922cbc1",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg94206?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bbcb11c1-69f9-49c1-8253-7384f44fee0d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "408",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "e7bff6dc-f651-4a73-b430-42223fe7df08",
+      "Date" : "Fri, 08 Oct 2021 02:46:27 GMT",
+      "x-ms-arm-service-request-id" : "02a6d38f-3a42-4a5d-ba41-670f224e2256",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024628Z:e7bff6dc-f651-4a73-b430-42223fe7df08",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/6a14536b-4179-4817-b10d-a395a8ec9896?api-version=2018-11-01",
+      "x-ms-request-id" : "6a14536b-4179-4817-b10d-a395a8ec9896",
+      "Body" : "{\r\n  \"name\": \"asg94206\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg94206\",\r\n  \"etag\": \"W/\\\"e2a2077e-aa00-4c49-a8f7-ca91a0830177\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "bbcb11c1-69f9-49c1-8253-7384f44fee0d",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/6a14536b-4179-4817-b10d-a395a8ec9896?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a89be1e9-8184-4a5f-afd1-2e2b3933d4b7"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7e31596d-442a-4dc8-a224-3ec855a80b93",
+      "Date" : "Fri, 08 Oct 2021 02:46:38 GMT",
+      "x-ms-arm-service-request-id" : "90927781-0b49-4f56-bdf9-582d3dd52c18",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024638Z:7e31596d-442a-4dc8-a224-3ec855a80b93",
+      "Expires" : "-1",
+      "x-ms-request-id" : "489090ba-1060-48c7-a774-d5f2945665dd",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "a89be1e9-8184-4a5f-afd1-2e2b3933d4b7",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg94206?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c18bf4bb-8bc8-40ba-9ef9-985ec334fe9f"
+    },
+    "Response" : {
+      "content-length" : "409",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1f79f7ed-0874-47d3-a462-a4025ef90f02",
+      "Date" : "Fri, 08 Oct 2021 02:46:38 GMT",
+      "x-ms-arm-service-request-id" : "d47200c2-7a6b-46cf-b0a4-4107a2c64af9",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"33c84864-878f-4633-9046-ab25f76e9ba8\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024638Z:1f79f7ed-0874-47d3-a462-a4025ef90f02",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1facc598-adbd-4553-a15f-a0a3ca83425f",
+      "Body" : "{\r\n  \"name\": \"asg94206\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg94206\",\r\n  \"etag\": \"W/\\\"33c84864-878f-4633-9046-ab25f76e9ba8\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "c18bf4bb-8bc8-40ba-9ef9-985ec334fe9f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "63663d71-6536-4431-bc1d-9c67d5a58628",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "10078",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1193",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "42c6210f-1b35-4e23-8d17-2d229807d1a0",
+      "Date" : "Fri, 08 Oct 2021 02:46:40 GMT",
+      "x-ms-arm-service-request-id" : "4cf40ce8-432f-4825-a07c-7689488a4f63",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024640Z:42c6210f-1b35-4e23-8d17-2d229807d1a0",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/65a11de5-449e-42cc-b324-bfc556178de0?api-version=2018-11-01",
+      "x-ms-request-id" : "65a11de5-449e-42cc-b324-bfc556178de0",
+      "Body" : "{\r\n  \"name\": \"nsg90103\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103\",\r\n  \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"d8fe0ec9-c4b4-4d36-90c8-e884a5304776\",\r\n    \"securityRules\": [\r\n      {\r\n        \"name\": \"rule1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule1\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"protocol\": \"Tcp\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"80\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 100,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule2\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule2\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"foo!!\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22-25\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 200,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"sourceApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg46277\"\r\n            }\r\n          ]\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule3\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule3\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 300,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"destinationApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg94206\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    ],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"84c54a3b-c999-48f2-9f0f-e997c8f1e2b4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "x-ms-client-request-id" : "63663d71-6536-4431-bc1d-9c67d5a58628",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/65a11de5-449e-42cc-b324-bfc556178de0?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b6c33603-4624-4a5e-9f1b-f004b2febb53"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "bf8d6bf9-d233-4379-b696-02ed537a0470",
+      "Date" : "Fri, 08 Oct 2021 02:46:43 GMT",
+      "x-ms-arm-service-request-id" : "a2398654-cc33-4421-b2f6-e51748ec3c00",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024643Z:bf8d6bf9-d233-4379-b696-02ed537a0470",
+      "Expires" : "-1",
+      "x-ms-request-id" : "999afeeb-64c5-4545-8423-1b7b9b4fd195",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "b6c33603-4624-4a5e-9f1b-f004b2febb53",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fcd4d499-bdff-47a0-a0a9-b9f0d2160a15"
+    },
+    "Response" : {
+      "content-length" : "10088",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7b46889f-338e-4d16-bc7a-acbe201a4cea",
+      "Date" : "Fri, 08 Oct 2021 02:46:42 GMT",
+      "x-ms-arm-service-request-id" : "8ad7d03a-8056-40c0-b63c-8e1813d2ac56",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"998560fb-13fe-4931-ab41-ae57754931e4\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024643Z:7b46889f-338e-4d16-bc7a-acbe201a4cea",
+      "Expires" : "-1",
+      "x-ms-request-id" : "cb81e57c-a597-4f46-be14-b3d475c935ef",
+      "Body" : "{\r\n  \"name\": \"nsg90103\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103\",\r\n  \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"d8fe0ec9-c4b4-4d36-90c8-e884a5304776\",\r\n    \"securityRules\": [\r\n      {\r\n        \"name\": \"rule1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule1\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"protocol\": \"Tcp\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"80\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 100,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule2\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule2\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"foo!!\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22-25\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 200,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"sourceApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg46277\"\r\n            }\r\n          ]\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule3\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule3\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 300,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"destinationApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg94206\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    ],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"998560fb-13fe-4931-ab41-ae57754931e4\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "x-ms-client-request-id" : "fcd4d499-bdff-47a0-a0a9-b9f0d2160a15",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg68805?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5770d8b2-a9b8-404e-812b-022f7eec2162",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "408",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "1a8a7c0d-1816-4274-ab19-27e761845a1f",
+      "Date" : "Fri, 08 Oct 2021 02:46:45 GMT",
+      "x-ms-arm-service-request-id" : "3959d131-9d6a-4dd4-b372-3c4446f8dcac",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024645Z:1a8a7c0d-1816-4274-ab19-27e761845a1f",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/94c15803-9b25-4539-94fa-3155f420d2f4?api-version=2018-11-01",
+      "x-ms-request-id" : "94c15803-9b25-4539-94fa-3155f420d2f4",
+      "Body" : "{\r\n  \"name\": \"asg68805\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg68805\",\r\n  \"etag\": \"W/\\\"47329369-b07e-49ed-9fed-c2b0c96a56c8\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "5770d8b2-a9b8-404e-812b-022f7eec2162",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/94c15803-9b25-4539-94fa-3155f420d2f4?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6efd3e39-a8a8-4f0e-9c75-88e8668a3958"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e34f893a-9b31-46ab-9951-7b1c0146dc26",
+      "Date" : "Fri, 08 Oct 2021 02:46:55 GMT",
+      "x-ms-arm-service-request-id" : "664b2b67-ef51-4aef-b6de-7a501aa2ffd0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024655Z:e34f893a-9b31-46ab-9951-7b1c0146dc26",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6001d124-7715-448e-a473-157520c0d302",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "6efd3e39-a8a8-4f0e-9c75-88e8668a3958",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg68805?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "58ec527d-383b-432c-86b4-8c36454e0021"
+    },
+    "Response" : {
+      "content-length" : "409",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c0eca958-775b-4de3-aa0d-056b66781112",
+      "Date" : "Fri, 08 Oct 2021 02:46:55 GMT",
+      "x-ms-arm-service-request-id" : "75fb87d4-4db3-4d5d-a485-54a8b45e5c92",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"3e924057-4cf7-49c5-92ba-750b87c76a8e\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024656Z:c0eca958-775b-4de3-aa0d-056b66781112",
+      "Expires" : "-1",
+      "x-ms-request-id" : "4bf59b5d-563a-4158-88d3-697f1f82f3e2",
+      "Body" : "{\r\n  \"name\": \"asg68805\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg68805\",\r\n  \"etag\": \"W/\\\"3e924057-4cf7-49c5-92ba-750b87c76a8e\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "58ec527d-383b-432c-86b4-8c36454e0021",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg72724?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cf2802d4-eea3-4a5e-875d-4388acbd0b11",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "408",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "7e03901d-9d87-4890-b74c-809d8789eba4",
+      "Date" : "Fri, 08 Oct 2021 02:46:57 GMT",
+      "x-ms-arm-service-request-id" : "f1a4b08e-397c-49ba-85f4-31978c000e1b",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024658Z:7e03901d-9d87-4890-b74c-809d8789eba4",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/58ad76aa-e22b-43cd-8fe9-6b2436ccb6f2?api-version=2018-11-01",
+      "x-ms-request-id" : "58ad76aa-e22b-43cd-8fe9-6b2436ccb6f2",
+      "Body" : "{\r\n  \"name\": \"asg72724\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg72724\",\r\n  \"etag\": \"W/\\\"c677590e-6697-418c-b867-2721b6edcf9f\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "cf2802d4-eea3-4a5e-875d-4388acbd0b11",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/58ad76aa-e22b-43cd-8fe9-6b2436ccb6f2?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "937c752c-21ca-4785-a0d4-6520f6010e15"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "0d355b11-fc8a-46b7-a053-aea40c4e1e59",
+      "Date" : "Fri, 08 Oct 2021 02:47:07 GMT",
+      "x-ms-arm-service-request-id" : "9d5fb894-051c-4c1d-8bea-0673b2563aed",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024708Z:0d355b11-fc8a-46b7-a053-aea40c4e1e59",
+      "Expires" : "-1",
+      "x-ms-request-id" : "7d9f7e9d-8d09-45ca-b17d-95a291d7e5ad",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "937c752c-21ca-4785-a0d4-6520f6010e15",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg72724?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4aa7e321-9f14-4b34-9c33-9c88976056bb"
+    },
+    "Response" : {
+      "content-length" : "409",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9ab47e5e-ad2e-4417-a18e-7ff440ef90b3",
+      "Date" : "Fri, 08 Oct 2021 02:47:08 GMT",
+      "x-ms-arm-service-request-id" : "137b4d71-dee9-4d8c-82bd-cdaccf48cc6b",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"78fecbfa-038a-455a-ba84-878d8ca887f6\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024708Z:9ab47e5e-ad2e-4417-a18e-7ff440ef90b3",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6d9f2813-5633-46a1-9d3b-05fb2cc2b948",
+      "Body" : "{\r\n  \"name\": \"asg72724\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg72724\",\r\n  \"etag\": \"W/\\\"78fecbfa-038a-455a-ba84-878d8ca887f6\\\"\",\r\n  \"type\": \"Microsoft.Network/applicationSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "4aa7e321-9f14-4b34-9c33-9c88976056bb",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "50453b60-e5cd-47c7-8311-a328eb3bee22",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "10078",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1193",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a1760184-9118-488b-aa67-8ea35d5e193a",
+      "Date" : "Fri, 08 Oct 2021 02:47:08 GMT",
+      "x-ms-arm-service-request-id" : "3f4a5d85-6510-4dcd-8884-75b6aed9b95a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024708Z:a1760184-9118-488b-aa67-8ea35d5e193a",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/287d0989-478e-4660-9fec-36886105eff3?api-version=2018-11-01",
+      "x-ms-request-id" : "287d0989-478e-4660-9fec-36886105eff3",
+      "Body" : "{\r\n  \"name\": \"nsg90103\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103\",\r\n  \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"d8fe0ec9-c4b4-4d36-90c8-e884a5304776\",\r\n    \"securityRules\": [\r\n      {\r\n        \"name\": \"rule1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule1\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"protocol\": \"Tcp\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"80\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 100,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule2\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule2\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"foo!!\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22-25\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 200,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"sourceApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg68805\"\r\n            }\r\n          ]\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule3\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule3\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 300,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"destinationApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg72724\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    ],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"effded23-8d94-4241-8ff1-6fed6a336180\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "x-ms-client-request-id" : "50453b60-e5cd-47c7-8311-a328eb3bee22",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/287d0989-478e-4660-9fec-36886105eff3?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1eab8c84-bb6a-4bad-88d1-55e15e5c71fb"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "10d6daab-6ca3-43a0-8368-6920b17cf446",
+      "Date" : "Fri, 08 Oct 2021 02:47:10 GMT",
+      "x-ms-arm-service-request-id" : "f658de03-73e6-4d6b-8e57-b30065ad0a2d",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024711Z:10d6daab-6ca3-43a0-8368-6920b17cf446",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c121832c-c890-4d06-bdad-58986711f472",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "1eab8c84-bb6a-4bad-88d1-55e15e5c71fb",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ffb6f315-f863-4b97-8d9a-79cfb9269746"
+    },
+    "Response" : {
+      "content-length" : "10088",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "681229ef-ddf6-4a12-bbba-a86fa5827bbc",
+      "Date" : "Fri, 08 Oct 2021 02:47:11 GMT",
+      "x-ms-arm-service-request-id" : "3289a152-0e7c-4eae-a5c7-703ae5a2061f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024712Z:681229ef-ddf6-4a12-bbba-a86fa5827bbc",
+      "Expires" : "-1",
+      "x-ms-request-id" : "fedd8947-c85d-42dd-985d-d1c44651e4a0",
+      "Body" : "{\r\n  \"name\": \"nsg90103\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103\",\r\n  \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"d8fe0ec9-c4b4-4d36-90c8-e884a5304776\",\r\n    \"securityRules\": [\r\n      {\r\n        \"name\": \"rule1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule1\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"protocol\": \"Tcp\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"80\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 100,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule2\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule2\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"foo!!\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22-25\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 200,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"sourceApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg68805\"\r\n            }\r\n          ]\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule3\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule3\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 300,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"destinationApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg72724\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    ],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "x-ms-client-request-id" : "ffb6f315-f863-4b97-8d9a-79cfb9269746",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "29487c59-6094-45b7-b70b-7086aa2a4423",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "10088",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ee8f16cd-f9e4-4fbd-b53d-fc48ef19ecb2",
+      "Date" : "Fri, 08 Oct 2021 02:47:11 GMT",
+      "x-ms-arm-service-request-id" : "8873282a-295d-48bc-a2e8-b3e23aa08159",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\"",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024712Z:ee8f16cd-f9e4-4fbd-b53d-fc48ef19ecb2",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b32602a6-39c0-412b-af7b-490c2115eea8",
+      "Body" : "{\r\n  \"name\": \"nsg90103\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103\",\r\n  \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"southcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"d8fe0ec9-c4b4-4d36-90c8-e884a5304776\",\r\n    \"securityRules\": [\r\n      {\r\n        \"name\": \"rule1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule1\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"protocol\": \"Tcp\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"80\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 100,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule2\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule2\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"foo!!\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22-25\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 200,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"sourceApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg49108\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg68805\"\r\n            }\r\n          ]\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"rule3\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/securityRules/rule3\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/securityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"22\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 300,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": [],\r\n          \"destinationApplicationSecurityGroups\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg72724\"\r\n            },\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/applicationSecurityGroups/asg98996\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    ],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"0e6728ff-0c78-4eef-b1a3-1a10c1fc98ad\\\"\",\r\n        \"type\": \"Microsoft.Network/networkSecurityGroups/defaultSecurityRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\",\r\n          \"sourcePortRanges\": [],\r\n          \"destinationPortRanges\": [],\r\n          \"sourceAddressPrefixes\": [],\r\n          \"destinationAddressPrefixes\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "x-ms-client-request-id" : "29487c59-6094-45b7-b70b-7086aa2a4423",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg50391/providers/Microsoft.Network/networkSecurityGroups/nsg90103?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "303bc455-2489-42de-9793-698b1fe5ce22",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14998",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "7ed50329-7024-4519-8e60-38c98d5ec6cd",
+      "Date" : "Fri, 08 Oct 2021 02:47:12 GMT",
+      "x-ms-arm-service-request-id" : "fc71ac92-cea7-44c4-9d79-0b99b61fcd27",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024712Z:7ed50329-7024-4519-8e60-38c98d5ec6cd",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/19e1f1d6-5f4b-43cb-80b9-07163544f2bb?api-version=2018-11-01",
+      "x-ms-request-id" : "19e1f1d6-5f4b-43cb-80b9-07163544f2bb",
+      "x-ms-client-request-id" : "303bc455-2489-42de-9793-698b1fe5ce22",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operationResults/19e1f1d6-5f4b-43cb-80b9-07163544f2bb?api-version=2018-11-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/19e1f1d6-5f4b-43cb-80b9-07163544f2bb?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c0aa6774-effa-49a7-b32b-756f80d0c3fe"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "3b05b096-5bd7-42a9-a700-19c108234d60",
+      "Date" : "Fri, 08 Oct 2021 02:47:22 GMT",
+      "x-ms-arm-service-request-id" : "7141a593-ef55-47f2-a594-5903df2e7ffb",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024723Z:3b05b096-5bd7-42a9-a700-19c108234d60",
+      "Expires" : "-1",
+      "x-ms-request-id" : "0dac6deb-ac7f-435b-809a-188c27403e6b",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "c0aa6774-effa-49a7-b32b-756f80d0c3fe",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operationResults/19e1f1d6-5f4b-43cb-80b9-07163544f2bb?api-version=2018-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7c25da5d-9e3b-4034-86d1-687ca96ccfff"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Azure-AsyncNotification" : "Enabled",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "204",
+      "x-ms-correlation-request-id" : "7ed50329-7024-4519-8e60-38c98d5ec6cd",
+      "Date" : "Fri, 08 Oct 2021 02:47:22 GMT",
+      "x-ms-arm-service-request-id" : "fc71ac92-cea7-44c4-9d79-0b99b61fcd27",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024723Z:120a6f79-ecca-4870-a7e5-d3776fd567ec",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/19e1f1d6-5f4b-43cb-80b9-07163544f2bb?api-version=2018-11-01",
+      "x-ms-request-id" : "19e1f1d6-5f4b-43cb-80b9-07163544f2bb",
+      "Body" : "",
+      "x-ms-client-request-id" : "303bc455-2489-42de-9793-698b1fe5ce22",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operationResults/19e1f1d6-5f4b-43cb-80b9-07163544f2bb?api-version=2018-11-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javanwmrg50391?api-version=2019-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6731566f-5fe3-4b68-aecb-b3eefa685665",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "38452f27-ef6d-4be9-aa3e-d0a1311ef11b",
+      "Date" : "Fri, 08 Oct 2021 02:47:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211008T024724Z:38452f27-ef6d-4be9-aa3e-d0a1311ef11b",
+      "Expires" : "-1",
+      "x-ms-request-id" : "38452f27-ef6d-4be9-aa3e-d0a1311ef11b",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBTldNUkc1MDM5MS1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2019-10-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javanwmrg50391", "asg49108", "asg46277", "asg98996", "asg94206", "asg68805", "asg72724", "nsg90103" ]
+}

@@ -1,0 +1,5 @@
+language: groovy
+jdk:
+  - oraclejdk8
+script:
+  - mvn test

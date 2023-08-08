@@ -1,0 +1,33 @@
+{
+  "@id": "ROOM_WITH_WIFI_MODEL_ID",
+  "@type": "Interface",
+  "displayName": "RoomWithWifi",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "Temperature",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "Humidity",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "IsOccupied",
+      "schema": "boolean"
+    },
+    {
+      "@type": "Property",
+      "name": "EmployeeId",
+      "schema": "string"
+    },
+    {
+      "@type": "Component",
+      "name": "WIFI_COMPONENT_NAME",
+      "schema": "WIFI_MODEL_ID"
+    }
+  ],
+  "@context": ["dtmi:dtdl:context;2"]
+}

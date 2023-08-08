@@ -1,0 +1,94 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/077e46a00077e46a0f28050530f61686ba7024fa58e9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "864b4b7b-7287-44c4-b5d6-3895de4b9f08"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1E779A999AFD",
+      "Last-Modified" : "Fri, 15 Apr 2022 00:33:47 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a4ce63bd-501e-0057-1160-50bccb000000",
+      "x-ms-client-request-id" : "864b4b7b-7287-44c4-b5d6-3895de4b9f08",
+      "Date" : "Fri, 15 Apr 2022 00:33:46 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/077e46a00077e46a0f28050530f61686ba7024fa58e9/077e46a01077e46a0f2854068cfa9833e16ba4033af9",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ccafbc4c-8b75-4546-8228-f14a582f8f0a",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Fri, 15 Apr 2022 00:33:47 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Fri, 15 Apr 2022 00:33:47 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8DA1E779AE378C1",
+      "x-ms-request-id" : "634d559a-501e-0035-3260-507eec000000",
+      "x-ms-client-request-id" : "ccafbc4c-8b75-4546-8228-f14a582f8f0a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/077e46a00077e46a0f28050530f61686ba7024fa58e9/077e46a01077e46a0f2854068cfa9833e16ba4033af9?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66a7badf-e645-420f-ab0e-969388f58112"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-id" : "255b1880-66fd-497d-80d7-61488cfaf3f5",
+      "eTag" : "0x8DA1E779AE378C1",
+      "Last-Modified" : "Fri, 15 Apr 2022 00:33:47 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "634d55b2-501e-0035-4660-507eec000000",
+      "x-ms-client-request-id" : "66a7badf-e645-420f-ab0e-969388f58112",
+      "Date" : "Fri, 15 Apr 2022 00:33:47 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.blob.core.windows.net/077e46a00077e46a0f28050530f61686ba7024fa58e9/077e46a01077e46a0f2854068cfa9833e16ba4033af9",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "13a62d45-7218-40a8-b9ce-877d65a3057a"
+    },
+    "Response" : {
+      "content-length" : "264",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseIdMismatchWithBlobOperation",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "80d24f17-501e-0047-5660-5079a3000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseIdMismatchWithBlobOperation</Code><Message>The lease ID specified did not match the lease ID for the blob.\nRequestId:80d24f17-501e-0047-5660-5079a3000000\nTime:2022-04-15T00:33:47.6810001Z</Message></Error>",
+      "x-ms-client-request-id" : "13a62d45-7218-40a8-b9ce-877d65a3057a",
+      "Date" : "Fri, 15 Apr 2022 00:33:47 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "077e46a00077e46a0f28050530f61686ba7024fa58e9", "077e46a01077e46a0f2854068cfa9833e16ba4033af9" ]
+}

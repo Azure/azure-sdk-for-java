@@ -1,0 +1,116 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/e43e0333e43e033317f56137d9b9bcdfc0b54907a5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "37c7c29e-3928-4632-8ffa-6b49ee3d88e3"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D910031E03625D",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:42 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8b065720-b01a-0001-6eeb-41956d000000",
+      "x-ms-client-request-id" : "37c7c29e-3928-4632-8ffa-6b49ee3d88e3",
+      "Date" : "Wed, 05 May 2021 20:19:42 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/e43e0333e43e033317f56137d9b9bcdfc0b54907a5/e43e0333e43e033317f6363337e32adca3904cf5a0?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8a53fc96-cda0-4848-8fd1-19b35933b80d"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "x-ms-file-permission-key" : "3917056552249722909*6811422022089678740",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2021-05-05T20:19:42.5331619Z",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:42 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 05 May 2021 20:19:41 GMT",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-change-time" : "2021-05-05T20:19:42.5331619Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8D910031E15DDA3",
+      "x-ms-request-id" : "121db1cd-b01a-0073-48eb-419222000000",
+      "x-ms-client-request-id" : "8a53fc96-cda0-4848-8fd1-19b35933b80d",
+      "x-ms-file-last-write-time" : "2021-05-05T20:19:42.5331619Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/e43e0333e43e033317f56137d9b9bcdfc0b54907a5/e43e0333e43e033317f6363337e32adca3904cf5a0%2Ftestfile:",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9662b9b3-11e3-44fa-9dfc-cc3c82f2c9c0"
+    },
+    "Response" : {
+      "content-length" : "243",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidResourceName",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "082d0f69-e01a-001c-6beb-4198d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:082d0f69-e01a-001c-6beb-4198d1000000\nTime:2021-05-05T20:19:42.6358427Z</Message></Error>",
+      "x-ms-client-request-id" : "9662b9b3-11e3-44fa-9dfc-cc3c82f2c9c0",
+      "Date" : "Wed, 05 May 2021 20:19:41 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=e43e0333&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6010680c-1cff-4919-b3b0-f12405dd0370"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "090f335d-601a-0002-51eb-417409000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>e43e0333</Prefix><Shares><Share><Name>e43e0333e43e033317f56137d9b9bcdfc0b54907a5</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:42 GMT</Last-Modified><Etag>\"0x8D910031E03625D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>5120</Quota><AccessTier>TransactionOptimized</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:19:42 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "6010680c-1cff-4919-b3b0-f12405dd0370",
+      "Date" : "Wed, 05 May 2021 20:19:42 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/e43e0333e43e033317f56137d9b9bcdfc0b54907a5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cb5d394c-7e1e-455e-bcb6-95046b811134"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "35d39915-101a-006a-55eb-411299000000",
+      "x-ms-client-request-id" : "cb5d394c-7e1e-455e-bcb6-95046b811134",
+      "Date" : "Wed, 05 May 2021 20:19:42 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e43e0333e43e033317f56137d9b9bcdfc0b54907a5", "e43e0333e43e033317f6363337e32adca3904cf5a0" ]
+}

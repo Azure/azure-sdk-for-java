@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/billingbenefits/ci.yml
+      - sdk/billingbenefits/azure-resourcemanager-billingbenefits/
+    exclude:
+      - sdk/billingbenefits/pom.xml
+      - sdk/billingbenefits/azure-resourcemanager-billingbenefits/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/billingbenefits/ci.yml
+      - sdk/billingbenefits/azure-resourcemanager-billingbenefits/
+    exclude:
+      - sdk/billingbenefits/pom.xml
+      - sdk/billingbenefits/azure-resourcemanager-billingbenefits/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerbillingbenefits
+    displayName: azure-resourcemanager-billingbenefits
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: billingbenefits
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-billingbenefits
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerbillingbenefits
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerbillingbenefits }}

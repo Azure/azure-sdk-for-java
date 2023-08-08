@@ -1,0 +1,51 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/textanalytics/
+    exclude:
+      - sdk/textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics-perf/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/textanalytics/
+    exclude:
+      - sdk/textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics-perf/pom.xml
+
+parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: textanalytics
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-ai-textanalytics
+        groupId: com.azure
+        safeName: azureaitextanalytics
+    AdditionalModules:
+      - name: azure-ai-textanalytics-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

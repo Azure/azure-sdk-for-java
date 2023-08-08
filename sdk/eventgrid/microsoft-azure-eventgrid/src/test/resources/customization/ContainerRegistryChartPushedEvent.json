@@ -1,0 +1,22 @@
+[
+  {
+    "id": "56afc886-767b-d359-d59e-0da7877166b2",
+    "topic": "/SUBSCRIPTIONS/ID/RESOURCEGROUPS/rg/PROVIDERS/MICROSOFT.ContainerRegistry/test1",
+    "subject": "test1",
+    "eventType": "Microsoft.ContainerRegistry.ChartPushed",
+    "eventTime": "2018-01-02T19:17:44.4383997Z",
+    "data": {
+	"id":"id",
+        "timestamp":null,
+        "action":"action1",
+        "target":{
+           "mediaType":"mediatype1",
+           "digest":"digest1",
+           "name":"name1",
+           "version":null
+        }
+    },
+    "dataVersion": "",
+    "metadataVersion": "1"
+  }
+]

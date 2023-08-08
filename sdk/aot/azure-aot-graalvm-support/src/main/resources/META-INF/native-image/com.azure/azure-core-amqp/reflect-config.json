@@ -1,0 +1,6 @@
+[
+  {
+    "name":"com.azure.core.amqp.models.CbsAuthorizationType",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  }
+]

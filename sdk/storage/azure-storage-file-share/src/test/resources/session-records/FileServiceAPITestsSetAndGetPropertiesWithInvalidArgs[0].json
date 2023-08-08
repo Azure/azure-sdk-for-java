@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4344b111-312a-4c32-906f-bd3e006c2d9a",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "294",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidXmlDocument",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "9b3a8a86-601a-005f-3eeb-417e8d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:9b3a8a86-601a-005f-3eeb-417e8d000000\nTime:2021-05-05T20:19:38.7715219Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "x-ms-client-request-id" : "4344b111-312a-4c32-906f-bd3e006c2d9a",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=ddc486ab&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1881f9da-ec90-4f06-9d63-782f7a8ec94b"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "0eb6bd0a-c01a-0024-58eb-413c11000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>ddc486ab</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "1881f9da-ec90-4f06-9d63-782f7a8ec94b",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ddc486abddc486abf11261819d16218947d14e56a3" ]
+}

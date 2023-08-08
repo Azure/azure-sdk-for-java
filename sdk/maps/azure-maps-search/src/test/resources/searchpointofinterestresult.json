@@ -1,0 +1,296 @@
+{
+    "summary": {
+        "query": "caviar lobster pasta",
+        "queryType": "NON_NEAR",
+        "queryTime": 229,
+        "numResults": 4,
+        "offset": 0,
+        "totalResults": 4,
+        "fuzzyLevel": 2
+    },
+    "results": [
+        {
+            "type": "POI",
+            "id": "076009019505325",
+            "score": 3.8570568562,
+            "info": "search:ta:076009019505325-BR",
+            "poi": {
+                "name": "Maison Du Caviar e MR Pasta",
+                "categorySet": [
+                    {
+                        "id": 7332
+                    }
+                ],
+                "categories": [
+                    "market"
+                ],
+                "classifications": [
+                    {
+                        "code": "MARKET",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "market"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetNumber": "385",
+                "streetName": "Rua Bandeira Paulista",
+                "municipalitySubdivision": "Itaim Bibi",
+                "municipality": "São Paulo",
+                "countrySubdivision": "São Paulo",
+                "postalCode": "04532",
+                "extendedPostalCode": "04532-011",
+                "countryCode": "BR",
+                "country": "Brasil",
+                "countryCodeISO3": "BRA",
+                "freeformAddress": "Rua Bandeira Paulista, 385, 04532-011, São Paulo",
+                "localName": "São Paulo"
+            },
+            "position": {
+                "lat": -23.5829,
+                "lon": -46.6761
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": -23.582,
+                    "lon": -46.67708
+                },
+                "btmRightPoint": {
+                    "lat": -23.5838,
+                    "lon": -46.67512
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": -23.58291,
+                        "lon": -46.67615
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "826009035607884",
+            "score": 3.6233570576,
+            "info": "search:ta:826009035607884-GB",
+            "poi": {
+                "name": "Lobster Pot",
+                "phone": "+44 1305 820242",
+                "categorySet": [
+                    {
+                        "id": 7315139
+                    }
+                ],
+                "url": "lobsterpotrestaurantportland.co.uk",
+                "categories": [
+                    "restaurant",
+                    "snacks"
+                ],
+                "classifications": [
+                    {
+                        "code": "RESTAURANT",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "snacks"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "restaurant"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Portland Bill Road",
+                "municipality": "Portland",
+                "countrySecondarySubdivision": "Dorset",
+                "countrySubdivision": "ENG",
+                "countrySubdivisionName": "England",
+                "postalCode": "DT5",
+                "extendedPostalCode": "DT5 2JT",
+                "countryCode": "GB",
+                "country": "United Kingdom",
+                "countryCodeISO3": "GBR",
+                "freeformAddress": "Portland Bill Road, Portland, DT5 2JT",
+                "localName": "Portland"
+            },
+            "position": {
+                "lat": 50.5148,
+                "lon": -2.45576
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 50.5157,
+                    "lon": -2.45717
+                },
+                "btmRightPoint": {
+                    "lat": 50.5139,
+                    "lon": -2.45435
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 50.51485,
+                        "lon": -2.45597
+                    }
+                }
+            ],
+            "dataSources": {
+                "poiDetails": [
+                    {
+                        "id": "Rm91cnNxdWFyZTo0YmI2NDYyZGVmMTU5Yzc0ZmRiMDc1Zjc=",
+                        "sourceName": "Foursquare"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "POI",
+            "id": "818009001495479",
+            "score": 3.4669928551,
+            "info": "search:ta:818009001495479-EG",
+            "poi": {
+                "name": "Caviar",
+                "categorySet": [
+                    {
+                        "id": 7315
+                    }
+                ],
+                "categories": [
+                    "restaurant"
+                ],
+                "classifications": [
+                    {
+                        "code": "RESTAURANT",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "restaurant"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Roshdi",
+                "municipalitySubdivision": "Markaz El Wasta",
+                "municipality": "El Wasta",
+                "countrySubdivision": "Beni Suef",
+                "countryCode": "EG",
+                "country": "Egypt",
+                "countryCodeISO3": "EGY",
+                "freeformAddress": "Roshdi, El Wasta, Beni Suef",
+                "localName": "El Wasta"
+            },
+            "position": {
+                "lat": 29.34059,
+                "lon": 31.20616
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 29.34149,
+                    "lon": 31.20513
+                },
+                "btmRightPoint": {
+                    "lat": 29.33969,
+                    "lon": 31.20719
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 29.34063,
+                        "lon": 31.20617
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "446007000000106",
+            "score": 3.2549066544,
+            "info": "search:ta:446007000000106-MO",
+            "poi": {
+                "name": "King's Lobster",
+                "phone": "+853 2882 5828",
+                "categorySet": [
+                    {
+                        "id": 7315043
+                    }
+                ],
+                "categories": [
+                    "restaurant",
+                    "seafood"
+                ],
+                "classifications": [
+                    {
+                        "code": "RESTAURANT",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "seafood"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "restaurant"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Rua dos Mercadores",
+                "municipalitySubdivision": "Nossa Senhora do Carmo",
+                "municipality": "Macau",
+                "countrySubdivision": "Macau",
+                "countryCode": "MO",
+                "country": "Macau RAE",
+                "countryCodeISO3": "MAC",
+                "freeformAddress": "Rua dos Mercadores, Nossa Senhora do Carmo, Macau",
+                "localName": "Nossa Senhora do Carmo"
+            },
+            "position": {
+                "lat": 22.15263,
+                "lon": 113.55592
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 22.15353,
+                    "lon": 113.55495
+                },
+                "btmRightPoint": {
+                    "lat": 22.15173,
+                    "lon": 113.55689
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 22.15261,
+                        "lon": 113.55594
+                    }
+                }
+            ],
+            "dataSources": {
+                "poiDetails": [
+                    {
+                        "id": "Rm91cnNxdWFyZTo1ODcxZGQwNDVkYThmNDFlZDc4NDM5MGM=",
+                        "sourceName": "Foursquare"
+                    }
+                ]
+            }
+        }
+    ]
+}

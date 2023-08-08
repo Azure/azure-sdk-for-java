@@ -1,0 +1,37 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/personalizer/
+    exclude:
+      - sdk/personalizer/pom.xml
+      - sdk/personalizer/azure-ai-personalizer/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/personalizer/
+    exclude:
+      - sdk/personalizer/pom.xml
+      - sdk/personalizer/azure-ai-personalizer/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: personalizer
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-ai-personalizer
+        groupId: com.azure
+        safeName: azureaipersonalizer

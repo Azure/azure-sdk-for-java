@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/3313208e3313208eddb96379b544c8035bbd4a74be?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "92995456-769b-4ef7-b613-639e8d8fbe3f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D910031E61ADD3",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:43 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a0ad10de-f01a-004d-34eb-41055d000000",
+      "x-ms-client-request-id" : "92995456-769b-4ef7-b613-639e8d8fbe3f",
+      "Date" : "Wed, 05 May 2021 20:19:42 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=3313208e&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "db6b9a99-3024-45d5-a1d7-17b91783ba0d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c7637777-b01a-0011-29eb-415005000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>3313208e</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "db6b9a99-3024-45d5-a1d7-17b91783ba0d",
+      "Date" : "Wed, 05 May 2021 20:19:43 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "3313208e3313208eddb96379b544c8035bbd4a74be", "3313208e3313208eddb315983924cdca862c4f2780", "3313208e3313208eddb668681787ea19cf174ca8b7" ]
+}

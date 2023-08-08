@@ -1,0 +1,82 @@
+{
+    "tool": "Credential Scanner",
+    "suppressions": [
+        {
+            "placeholder": [
+                "serverappsecret"
+            ],
+            "_justification": "Secret used by jackson json property and test code, it is fake."
+        },
+        {
+            "placeholder": [
+              "administratorLoginPassword"
+            ],
+            "_justification": "Secret used by spring-cloud-azure-integration-tests/test-resources/jdbc/mysql/test-resources.json"
+        },
+        {
+            "placeholder": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "_justification": "SHA-256 encrypted random data generated at test time."
+        },
+        {
+            "placeholder": "OAuth2ClientCredential",
+            "_justification": "Javadoc in azure-resourcemanager-datafactory"
+        },
+        {
+            "placeholder": [
+                "h2PermissionGrants",
+                "h2PermissionScopes"
+            ],
+            "_justification": "Javadoc in azure-resourcemanager"
+        },
+        {
+            "placeholder": [
+                "h2AllowImplicitFlow",
+                "h2Permissions"
+            ],
+            "_justification": "Javadoc in azure resourcemanagerhybrid"
+        },
+        {
+            "file": [
+                "eng/common/testproxy/dotnet-devcert.pfx",
+                "sdk/cosmos/azure-cosmos-tests/src/test/resources/server.jks",
+                "sdk/cosmos/azure-cosmos-tests/src/test/resources/client.jks",
+                "sdk/identity/azure-identity/src/test/resources/cert-chain.pem",
+                "sdk/identity/azure-identity/src/test/resources/key.pem",
+                "sdk/identity/azure-identity/src/test/resources/keyStore.pfx",
+                "sdk/keyvault/azure-security-keyvault-certificates/src/test/resources/pemCert.pem",
+                "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/pkcs12_base64_testdata.cer",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256key.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256keynew.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p384keynew.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p521keynew.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/SECP256key.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem"
+            ],
+            "_justification": "File contains private key used by test code."
+        },
+        {
+            "file": [
+                "sdk/appconfiguration/azure-data-appconfiguration/src/main/java/com/azure/data/appconfiguration/implementation/FakeCredentialConstants.java"
+            ],
+            "_justification": "File contains fake key used by implementation code."
+        },
+        {
+            "file": [
+                "sdk/communication/azure-communication-common-perf/src/main/java/com.azure.communication.common.perf/FakeCredentialInTest.java",
+                "sdk/keyvault/azure-security-keyvault-certificates/src/test/java/com/azure/security/keyvault/certificates/FakeCredentialInTest.java",
+                "sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/FakeCredentialInTest.java",
+                "sdk/spring/spring-cloud-azure-service/src/test/java/com/azure/spring/cloud/service/implementation/storage/FakeCredentialInTest.java",
+                "sdk/storage/azure-storage-blob/src/test/java/com/azure/storage/blob/FakeCredentialInTest.java",
+                "sdk/storage/azure-storage-common/src/test/java/com/azure/storage/common/FakeCredentialInTest.java",
+                "sdk/storage/microsoft-azure-storage-blob/src/test/java/com/microsoft/azure/storage/FakeCredentialInTest.groovy"
+            ],
+            "_justification": "File contains fake key used by test code."
+        },
+        {
+            "file": [
+              "sdk/core/azure-core-test/src/main/resources/keystore.jks"
+            ],
+            "_justification": "Dummy keystore to enable HTTPS testing with LocalTestServer. Contains no real secrets."
+        }
+    ]
+}

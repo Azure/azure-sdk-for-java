@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/db9f1b6adb9f1b6ab4316669104155f912ff4c84af?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0dc5ba68-b3d2-4e7e-9f8d-1510e49d0f12"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F7D542C7BC2",
+      "Last-Modified" : "Sat, 16 Apr 2022 07:47:16 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f91b0c33-b01a-0002-2066-51ac40000000",
+      "x-ms-client-request-id" : "0dc5ba68-b3d2-4e7e-9f8d-1510e49d0f12",
+      "Date" : "Sat, 16 Apr 2022 07:47:16 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.file.core.windows.net/db9f1b6adb9f1b6ab4316669104155f912ff4c84af/testCreateFile",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2d1475e2-9513-4871-b9d4-8b6c5dbb1ec5"
+    },
+    "Response" : {
+      "content-length" : "223",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "f91b0c36-b01a-0002-2166-51ac40000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:f91b0c36-b01a-0002-2166-51ac40000000\nTime:2022-04-16T07:47:17.1609994Z</Message></Error>",
+      "x-ms-client-request-id" : "2d1475e2-9513-4871-b9d4-8b6c5dbb1ec5",
+      "Date" : "Sat, 16 Apr 2022 07:47:16 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "db9f1b6adb9f1b6ab4316669104155f912ff4c84af" ]
+}

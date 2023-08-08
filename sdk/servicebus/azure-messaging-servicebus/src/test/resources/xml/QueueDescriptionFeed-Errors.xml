@@ -1,0 +1,2420 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="text">Queues</title>
+    <id>https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05</id>
+    <updated>2023-03-29T23:22:17Z</updated>
+    <link rel="self" href="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05" />
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***?api-version=2021-05</id>
+        <title type="text">Foodbar</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>1779</SizeInBytes>
+                <MessageCount>7</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7613031Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7613031Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:21:52.2852877Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>5</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>3</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>-1</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-1?api-version=2021-05</id>
+        <title type="text">***-1</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-1?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7425037Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7425037Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:41.6047886Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-10?api-version=2021-05</id>
+        <title type="text">***-10</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-10?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>196</SizeInBytes>
+                <MessageCount>1</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7424946Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7424946Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:12:22.149186Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>1</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-11?api-version=2021-05</id>
+        <title type="text">***-11</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-11?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>784</SizeInBytes>
+                <MessageCount>4</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.6642191Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.6642191Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:08:01.5478385Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>3</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>1</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-12?api-version=2021-05</id>
+        <title type="text">***-12</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-12?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.4454503Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.4454503Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-13?api-version=2021-05</id>
+        <title type="text">***-13</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-13?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5113034Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5113034Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:22:17.5212215Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-14?api-version=2021-05</id>
+        <title type="text">***-14</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-14?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.6610696Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.6610696Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:05:09.1484555Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-15?api-version=2021-05</id>
+        <title type="text">***-15</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-15?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.4812928Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.4812928Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-16?api-version=2021-05</id>
+        <title type="text">***-16</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-16?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.3360257Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.3360257Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-17?api-version=2021-05</id>
+        <title type="text">***-17</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-17?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5860234Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5860234Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:10:38.3835857Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-18?api-version=2021-05</id>
+        <title type="text">***-18</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-18?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5106734Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5106734Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:39.9421343Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-19?api-version=2021-05</id>
+        <title type="text">***-19</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-19?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>470</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5984334Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5984334Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:20:45.1401378Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>2</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>-2</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-2?api-version=2021-05</id>
+        <title type="text">***-2</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-2?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7110309Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7110309Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:20:45.3388651Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-20?api-version=2021-05</id>
+        <title type="text">***-20</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-20?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.6668089Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.6668089Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:09:14.2592154Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-21?api-version=2021-05</id>
+        <title type="text">***-21</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-21?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>320</SizeInBytes>
+                <MessageCount>2</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5838403Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5838403Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:40.8223607Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>2</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-22?api-version=2021-05</id>
+        <title type="text">***-22</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-22?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>2080</SizeInBytes>
+                <MessageCount>10</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.2548057Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.2548057Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:05:06.9453144Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>10</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-23?api-version=2021-05</id>
+        <title type="text">***-23</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-23?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>196</SizeInBytes>
+                <MessageCount>1</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.6018751Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.6018751Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:05:54.807649Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>1</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-24?api-version=2021-05</id>
+        <title type="text">***-24</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-24?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5105581Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5105581Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:12:05.967619Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-3?api-version=2021-05</id>
+        <title type="text">***-3</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-3?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5550122Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5550122Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:39.9172752Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-4?api-version=2021-05</id>
+        <title type="text">***-4</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-4?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5906541Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5906541Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:11.5677509Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-5?api-version=2021-05</id>
+        <title type="text">***-5</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-5?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.3666296Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.3666296Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:16.0290149Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-6?api-version=2021-05</id>
+        <title type="text">***-6</title>
+        <published>2023-03-29T23:03:42Z</published>
+        <updated>2023-03-29T23:03:42Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-6?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>2140</SizeInBytes>
+                <MessageCount>10</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:42.3407374Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:42.3407374Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:13:22.5944005Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>10</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-7?api-version=2021-05</id>
+        <title type="text">***-7</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-7?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.448799Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.448799Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:20:07.5101787Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-8?api-version=2021-05</id>
+        <title type="text">***-8</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-8?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>392</SizeInBytes>
+                <MessageCount>2</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5838403Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5838403Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:07:59.5693733Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>1</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>1</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***?api-version=2021-05</id>
+        <title type="text">***</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>2479</SizeInBytes>
+                <MessageCount>9</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.6932185Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.6932185Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:43.5270294Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>9</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>1</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>-1</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-1?api-version=2021-05</id>
+        <title type="text">***-1</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-1?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7761896Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7761896Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:42.6632772Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-10?api-version=2021-05</id>
+        <title type="text">***-10</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-10?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>292</SizeInBytes>
+                <MessageCount>1</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.4924863Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.4924863Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:12:22.3366557Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>1</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-11?api-version=2021-05</id>
+        <title type="text">***-11</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-11?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5673119Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5673119Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-12?api-version=2021-05</id>
+        <title type="text">***-12</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-12?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.6207497Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.6207497Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:20:54.8106973Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-13?api-version=2021-05</id>
+        <title type="text">***-13</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-13?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5281552Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5281552Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:22:17.6716861Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-14?api-version=2021-05</id>
+        <title type="text">***-14</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-14?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>1260</SizeInBytes>
+                <MessageCount>2</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.6797753Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.6797753Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:05:08.9479224Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>2</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-15?api-version=2021-05</id>
+        <title type="text">***-15</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-15?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.2704331Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.2704331Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-16?api-version=2021-05</id>
+        <title type="text">***-16</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-16?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7268853Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7268853Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-17?api-version=2021-05</id>
+        <title type="text">***-17</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-17?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7300576Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7300576Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-18?api-version=2021-05</id>
+        <title type="text">***-18</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-18?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5730681Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5730681Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:40.0539338Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-19?api-version=2021-05</id>
+        <title type="text">***-19</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-19?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5912354Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5912354Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-2?api-version=2021-05</id>
+        <title type="text">***-2</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-2?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.364052Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.364052Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-20?api-version=2021-05</id>
+        <title type="text">***-20</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-20?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5550122Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5550122Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-21?api-version=2021-05</id>
+        <title type="text">***-21</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-21?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>512</SizeInBytes>
+                <MessageCount>2</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.426559Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.426559Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:41.0554805Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>2</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-22?api-version=2021-05</id>
+        <title type="text">***-22</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-22?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.9141633Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.9141633Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-23?api-version=2021-05</id>
+        <title type="text">***-23</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-23?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>292</SizeInBytes>
+                <MessageCount>1</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7424946Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7424946Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:07:10.1010823Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>1</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-24?api-version=2021-05</id>
+        <title type="text">***-24</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-24?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.680004Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.680004Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:12:18.3210446Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-3?api-version=2021-05</id>
+        <title type="text">***-3</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-3?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.4500223Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.4500223Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:18:40.7696958Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-4?api-version=2021-05</id>
+        <title type="text">***-4</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-4?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5703999Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5703999Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:11.9577202Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-5?api-version=2021-05</id>
+        <title type="text">***-5</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-5?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.7424946Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.7424946Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:19:16.7794236Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-6?api-version=2021-05</id>
+        <title type="text">***-6</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-6?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>3110</SizeInBytes>
+                <MessageCount>10</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5125172Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5125172Z</UpdatedAt>
+                <AccessedAt>2023-03-29T23:15:22.9341364Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>10</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-7?api-version=2021-05</id>
+        <title type="text">***-7</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-7?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5575162Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5575162Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-8?api-version=2021-05</id>
+        <title type="text">***-8</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-8?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.445619Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.445619Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***-9?api-version=2021-05</id>
+        <title type="text">***-9</title>
+        <published>2023-03-29T23:03:26Z</published>
+        <updated>2023-03-29T23:03:26Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***-9?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT15S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>5</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:03:26.5918531Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:03:26.5918531Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/***49506?api-version=2021-05</id>
+        <title type="text">***49506</title>
+        <published>2023-03-29T23:22:14Z</published>
+        <updated>2023-03-29T23:22:14Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../***49506?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT45S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>true</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.477S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT2M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>7</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules>
+                    <AuthorizationRule i:type="SharedAccessAuthorizationRule">
+                        <ClaimType>SharedAccessKey</ClaimType>
+                        <ClaimValue>None</ClaimValue>
+                        <Rights>
+                            <AccessRights>Send</AccessRights>
+                        </Rights>
+                        <KeyName>test-rule</KeyName>
+                        <PrimaryKey>foo</PrimaryKey>
+                        <SecondaryKey>bar</SecondaryKey>
+                    </AuthorizationRule>
+                </AuthorizationRules>
+                <Status>Active</Status>
+                <ForwardTo>https://***/***-5</ForwardTo>
+                <CreatedAt>2023-03-29T23:22:14.713Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:22:14.733Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <UserMetadata>some-metadata-for-testing</UserMetadata>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <ForwardDeadLetteredMessagesTo>https://***/***-5</ForwardDeadLetteredMessagesTo>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/test06689?api-version=2021-05</id>
+        <title type="text">test06689</title>
+        <published>2023-03-29T23:22:00Z</published>
+        <updated>2023-03-29T23:22:00Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../test06689?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT45S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>true</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.477S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT2M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>7</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:22:00.677Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:22:00.723Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <UserMetadata>some-metadata-for-testing</UserMetadata>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.477S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/test43443?api-version=2021-05</id>
+        <title type="text">test43443</title>
+        <published>2023-03-29T23:21:52Z</published>
+        <updated>2023-03-29T23:21:53Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../test43443?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT45S</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>true</RequiresDuplicateDetection>
+                <RequiresSession>true</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.477S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT2M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>7</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules>
+                    <AuthorizationRule i:type="SharedAccessAuthorizationRule">
+                        <ClaimType>SharedAccessKey</ClaimType>
+                        <ClaimValue>None</ClaimValue>
+                        <Rights>
+                            <AccessRights>Send</AccessRights>
+                        </Rights>
+                        <KeyName>test-rule</KeyName>
+                        <PrimaryKey>foo</PrimaryKey>
+                        <SecondaryKey>bar</SecondaryKey>
+                    </AuthorizationRule>
+                </AuthorizationRules>
+                <Status>Active</Status>
+                <CreatedAt>2023-03-29T23:21:52.9898724Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:21:52.9898724Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <UserMetadata>some-metadata-for-testing</UserMetadata>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.477S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+    <entry xml:base="https://***/$Resources/***s?$skip=0&amp;$top=100&amp;api-version=2021-05">
+        <id>https://***/test84938?api-version=2021-05</id>
+        <title type="text">test84938</title>
+        <published>2023-03-29T23:22:06Z</published>
+        <updated>2023-03-29T23:22:06Z</updated>
+        <author>
+            <name>sb-java-ta50662921d664a43</name>
+        </author>
+        <link rel="self" href="../test84938?api-version=2021-05" />
+        <content type="application/xml">
+            <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <LockDuration>PT1M</LockDuration>
+                <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+                <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+                <RequiresSession>false</RequiresSession>
+                <DefaultMessageTimeToLive>P10675199DT2H48M5.477S</DefaultMessageTimeToLive>
+                <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+                <DuplicateDetectionHistoryTimeWindow>PT1M</DuplicateDetectionHistoryTimeWindow>
+                <MaxDeliveryCount>10</MaxDeliveryCount>
+                <EnableBatchedOperations>true</EnableBatchedOperations>
+                <SizeInBytes>0</SizeInBytes>
+                <MessageCount>0</MessageCount>
+                <IsAnonymousAccessible>false</IsAnonymousAccessible>
+                <AuthorizationRules></AuthorizationRules>
+                <Status>Active</Status>
+                <ForwardTo>https://***/***-5</ForwardTo>
+                <CreatedAt>2023-03-29T23:22:06.14Z</CreatedAt>
+                <UpdatedAt>2023-03-29T23:22:06.197Z</UpdatedAt>
+                <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+                <SupportOrdering>true</SupportOrdering>
+                <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+                    <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+                    <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+                    <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+                    <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+                    <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+                </CountDetails>
+                <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+                <EnablePartitioning>false</EnablePartitioning>
+                <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+                <ForwardDeadLetteredMessagesTo>https://***/***-5</ForwardDeadLetteredMessagesTo>
+                <EnableExpress>false</EnableExpress>
+                <MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes>
+            </QueueDescription>
+        </content>
+    </entry>
+</feed>

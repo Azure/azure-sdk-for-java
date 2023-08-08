@@ -1,0 +1,2424 @@
+{
+    "batchSummary" : {
+      "successfulRequests" : 4,
+      "totalRequests" : 4
+    },
+    "batchItems" : [ {
+      "statusCode" : 200,
+      "error" : null,
+      "result" : {
+        "summary" : {
+          "query" : "400 broad st seattle wa 98109",
+          "queryType" : {
+            "name" : "NON_NEAR",
+            "clazz" : "com.azure.maps.search.models.QueryType"
+          },
+          "queryTime" : 4,
+          "numResults" : 2,
+          "top" : null,
+          "skip" : 0,
+          "totalResults" : 2,
+          "fuzzyLevel" : 1,
+          "geoBias" : null
+        },
+        "results" : [ {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p1/19823530",
+          "score" : 11.9729099274,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "400",
+            "routeNumbers" : null,
+            "streetName" : "Broad Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Seattle",
+            "municipalitySubdivision" : "Queen Anne",
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "King",
+            "countrySubdivision" : "WA",
+            "postalCode" : "98109",
+            "extendedPostalCode" : "98109-4607",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "400 Broad Street, Seattle, WA 98109",
+            "countrySubdivisionName" : "Washington",
+            "localName" : "Seattle",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 47.62039,
+            "longitude" : -122.34928,
+            "lat" : 47.62039,
+            "lon" : -122.34928
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 47.62129,
+              "longitude" : -122.35061,
+              "lat" : 47.62129,
+              "lon" : -122.35061
+            },
+            "bottomRight" : {
+              "latitude" : 47.61949,
+              "longitude" : -122.34795,
+              "lat" : 47.61949,
+              "lon" : -122.34795
+            },
+            "topRight" : {
+              "latitude" : 47.62129,
+              "longitude" : -122.34795,
+              "lat" : 47.62129,
+              "lon" : -122.34795
+            },
+            "southWest" : {
+              "latitude" : 47.61949,
+              "longitude" : -122.35061,
+              "lat" : 47.61949,
+              "lon" : -122.35061
+            },
+            "northEast" : {
+              "latitude" : 47.62129,
+              "longitude" : -122.34795,
+              "lat" : 47.62129,
+              "lon" : -122.34795
+            },
+            "bottomLeft" : {
+              "latitude" : 47.61949,
+              "longitude" : -122.35061,
+              "lat" : 47.61949,
+              "lon" : -122.35061
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 47.61982,
+              "longitude" : -122.34886,
+              "lat" : 47.61982,
+              "lon" : -122.34886
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 47.62129,
+              "longitude" : -122.35061,
+              "lat" : 47.62129,
+              "lon" : -122.35061
+            },
+            "bottomRight" : {
+              "latitude" : 47.61949,
+              "longitude" : -122.34795,
+              "lat" : 47.61949,
+              "lon" : -122.34795
+            },
+            "topRight" : {
+              "latitude" : 47.62129,
+              "longitude" : -122.34795,
+              "lat" : 47.62129,
+              "lon" : -122.34795
+            },
+            "southWest" : {
+              "latitude" : 47.61949,
+              "longitude" : -122.35061,
+              "lat" : 47.61949,
+              "lon" : -122.35061
+            },
+            "northEast" : {
+              "latitude" : 47.62129,
+              "longitude" : -122.34795,
+              "lat" : 47.62129,
+              "lon" : -122.34795
+            },
+            "bottomLeft" : {
+              "latitude" : 47.61949,
+              "longitude" : -122.35061,
+              "lat" : 47.61949,
+              "lon" : -122.35061
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Street",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/STR/p2/5735312",
+          "score" : 10.22519207,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : null,
+            "routeNumbers" : null,
+            "streetName" : "Broad Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Seattle",
+            "municipalitySubdivision" : "South Lake Union",
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "King",
+            "countrySubdivision" : "WA",
+            "postalCode" : "98109",
+            "extendedPostalCode" : "98109-4942",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "Broad Street, Seattle, WA 98109",
+            "countrySubdivisionName" : "Washington",
+            "localName" : "Seattle",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 47.61911,
+            "longitude" : -122.3497,
+            "lat" : 47.61911,
+            "lon" : -122.3497
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 47.61965,
+              "longitude" : -122.35041,
+              "lat" : 47.61965,
+              "lon" : -122.35041
+            },
+            "bottomRight" : {
+              "latitude" : 47.61857,
+              "longitude" : -122.349,
+              "lat" : 47.61857,
+              "lon" : -122.349
+            },
+            "topRight" : {
+              "latitude" : 47.61965,
+              "longitude" : -122.349,
+              "lat" : 47.61965,
+              "lon" : -122.349
+            },
+            "southWest" : {
+              "latitude" : 47.61857,
+              "longitude" : -122.35041,
+              "lat" : 47.61857,
+              "lon" : -122.35041
+            },
+            "northEast" : {
+              "latitude" : 47.61965,
+              "longitude" : -122.349,
+              "lat" : 47.61965,
+              "lon" : -122.349
+            },
+            "bottomLeft" : {
+              "latitude" : 47.61857,
+              "longitude" : -122.35041,
+              "lat" : 47.61857,
+              "lon" : -122.35041
+            }
+          },
+          "entryPoints" : null,
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 47.61965,
+              "longitude" : -122.35041,
+              "lat" : 47.61965,
+              "lon" : -122.35041
+            },
+            "bottomRight" : {
+              "latitude" : 47.61857,
+              "longitude" : -122.349,
+              "lat" : 47.61857,
+              "lon" : -122.349
+            },
+            "topRight" : {
+              "latitude" : 47.61965,
+              "longitude" : -122.349,
+              "lat" : 47.61965,
+              "lon" : -122.349
+            },
+            "southWest" : {
+              "latitude" : 47.61857,
+              "longitude" : -122.35041,
+              "lat" : 47.61857,
+              "lon" : -122.35041
+            },
+            "northEast" : {
+              "latitude" : 47.61965,
+              "longitude" : -122.349,
+              "lat" : 47.61965,
+              "lon" : -122.349
+            },
+            "bottomLeft" : {
+              "latitude" : 47.61857,
+              "longitude" : -122.35041,
+              "lat" : 47.61857,
+              "lon" : -122.35041
+            }
+          }
+        } ]
+      }
+    }, {
+      "statusCode" : 200,
+      "error" : null,
+      "result" : {
+        "summary" : {
+          "query" : "one microsoft way redmond wa 98052",
+          "queryType" : {
+            "name" : "NON_NEAR",
+            "clazz" : "com.azure.maps.search.models.QueryType"
+          },
+          "queryTime" : 149,
+          "numResults" : 3,
+          "top" : null,
+          "skip" : 0,
+          "totalResults" : 3510,
+          "fuzzyLevel" : 2,
+          "geoBias" : null
+        },
+        "results" : [ {
+          "type" : {
+            "name" : "Street",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/STR/p3/5407837",
+          "score" : 10.22519207,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : null,
+            "routeNumbers" : null,
+            "streetName" : "Microsoft Way",
+            "streetNameAndNumber" : null,
+            "municipality" : "Redmond",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "King",
+            "countrySubdivision" : "WA",
+            "postalCode" : "98052",
+            "extendedPostalCode" : "98052-6399",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "Microsoft Way, Redmond, WA 98052",
+            "countrySubdivisionName" : "Washington",
+            "localName" : "Redmond",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 47.64016,
+            "longitude" : -122.1245,
+            "lat" : 47.64016,
+            "lon" : -122.1245
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 47.64016,
+              "longitude" : -122.12466,
+              "lat" : 47.64016,
+              "lon" : -122.12466
+            },
+            "bottomRight" : {
+              "latitude" : 47.64012,
+              "longitude" : -122.12424,
+              "lat" : 47.64012,
+              "lon" : -122.12424
+            },
+            "topRight" : {
+              "latitude" : 47.64016,
+              "longitude" : -122.12424,
+              "lat" : 47.64016,
+              "lon" : -122.12424
+            },
+            "southWest" : {
+              "latitude" : 47.64012,
+              "longitude" : -122.12466,
+              "lat" : 47.64012,
+              "lon" : -122.12466
+            },
+            "northEast" : {
+              "latitude" : 47.64016,
+              "longitude" : -122.12424,
+              "lat" : 47.64016,
+              "lon" : -122.12424
+            },
+            "bottomLeft" : {
+              "latitude" : 47.64012,
+              "longitude" : -122.12466,
+              "lat" : 47.64012,
+              "lon" : -122.12466
+            }
+          },
+          "entryPoints" : null,
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 47.64016,
+              "longitude" : -122.12466,
+              "lat" : 47.64016,
+              "lon" : -122.12466
+            },
+            "bottomRight" : {
+              "latitude" : 47.64012,
+              "longitude" : -122.12424,
+              "lat" : 47.64012,
+              "lon" : -122.12424
+            },
+            "topRight" : {
+              "latitude" : 47.64016,
+              "longitude" : -122.12424,
+              "lat" : 47.64016,
+              "lon" : -122.12424
+            },
+            "southWest" : {
+              "latitude" : 47.64012,
+              "longitude" : -122.12466,
+              "lat" : 47.64012,
+              "lon" : -122.12466
+            },
+            "northEast" : {
+              "latitude" : 47.64016,
+              "longitude" : -122.12424,
+              "lat" : 47.64016,
+              "lon" : -122.12424
+            },
+            "bottomLeft" : {
+              "latitude" : 47.64012,
+              "longitude" : -122.12466,
+              "lat" : 47.64012,
+              "lon" : -122.12466
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Street",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/STR/p2/5737081",
+          "score" : 10.0968618393,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : null,
+            "routeNumbers" : null,
+            "streetName" : "157th Avenue Northeast",
+            "streetNameAndNumber" : null,
+            "municipality" : "Redmond",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "King",
+            "countrySubdivision" : "WA",
+            "postalCode" : "98052",
+            "extendedPostalCode" : "98052-5344, 98052-5399",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "157th Avenue Northeast, Redmond, WA 98052",
+            "countrySubdivisionName" : "Washington",
+            "localName" : "Redmond",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 47.64351,
+            "longitude" : -122.13056,
+            "lat" : 47.64351,
+            "lon" : -122.13056
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 47.64471,
+              "longitude" : -122.13058,
+              "lat" : 47.64471,
+              "lon" : -122.13058
+            },
+            "bottomRight" : {
+              "latitude" : 47.6425,
+              "longitude" : -122.13014,
+              "lat" : 47.6425,
+              "lon" : -122.13014
+            },
+            "topRight" : {
+              "latitude" : 47.64471,
+              "longitude" : -122.13014,
+              "lat" : 47.64471,
+              "lon" : -122.13014
+            },
+            "southWest" : {
+              "latitude" : 47.6425,
+              "longitude" : -122.13058,
+              "lat" : 47.6425,
+              "lon" : -122.13058
+            },
+            "northEast" : {
+              "latitude" : 47.64471,
+              "longitude" : -122.13014,
+              "lat" : 47.64471,
+              "lon" : -122.13014
+            },
+            "bottomLeft" : {
+              "latitude" : 47.6425,
+              "longitude" : -122.13058,
+              "lat" : 47.6425,
+              "lon" : -122.13058
+            }
+          },
+          "entryPoints" : null,
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 47.64471,
+              "longitude" : -122.13058,
+              "lat" : 47.64471,
+              "lon" : -122.13058
+            },
+            "bottomRight" : {
+              "latitude" : 47.6425,
+              "longitude" : -122.13014,
+              "lat" : 47.6425,
+              "lon" : -122.13014
+            },
+            "topRight" : {
+              "latitude" : 47.64471,
+              "longitude" : -122.13014,
+              "lat" : 47.64471,
+              "lon" : -122.13014
+            },
+            "southWest" : {
+              "latitude" : 47.6425,
+              "longitude" : -122.13058,
+              "lat" : 47.6425,
+              "lon" : -122.13058
+            },
+            "northEast" : {
+              "latitude" : 47.64471,
+              "longitude" : -122.13014,
+              "lat" : 47.64471,
+              "lon" : -122.13014
+            },
+            "bottomLeft" : {
+              "latitude" : 47.6425,
+              "longitude" : -122.13058,
+              "lat" : 47.6425,
+              "lon" : -122.13058
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Street",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/STR/p3/5392397",
+          "score" : 7.9237017632,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : null,
+            "routeNumbers" : null,
+            "streetName" : "Redmond Way",
+            "streetNameAndNumber" : null,
+            "municipality" : "Redmond",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "King",
+            "countrySubdivision" : "WA",
+            "postalCode" : "98052",
+            "extendedPostalCode" : "98052-0008, 98052-0578, 98052-0908, 98052-1504, 98052-3824, 98052-3827, 98052-3829, 98052-3830, 98052-3831, 98052-3832, 98052-3833, 98052-3834, 98052-3835, 98052-3836, 98052-3862, 98052-4060, 98052-4403, 98052-4404, 98052-4405, 98052-4406, 98052-4407, 98052-4429, 98052-4433, 98052-4434, 98052-4435, 98052-4448, 98052-4449, 98052-4450, 98052-4472, 98052-4906, 98052-4907, 98052-4909, 98052-4913, 98052-5000, 98052-5006, 98052-5011, 98052-5012, 98052-5016, 98052-5079",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "Redmond Way, Redmond, WA 98052",
+            "countrySubdivisionName" : "Washington",
+            "localName" : "Redmond",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 47.66985,
+            "longitude" : -122.10805,
+            "lat" : 47.66985,
+            "lon" : -122.10805
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 47.67519,
+              "longitude" : -122.1244,
+              "lat" : 47.67519,
+              "lon" : -122.1244
+            },
+            "bottomRight" : {
+              "latitude" : 47.6572,
+              "longitude" : -122.0977,
+              "lat" : 47.6572,
+              "lon" : -122.0977
+            },
+            "topRight" : {
+              "latitude" : 47.67519,
+              "longitude" : -122.0977,
+              "lat" : 47.67519,
+              "lon" : -122.0977
+            },
+            "southWest" : {
+              "latitude" : 47.6572,
+              "longitude" : -122.1244,
+              "lat" : 47.6572,
+              "lon" : -122.1244
+            },
+            "northEast" : {
+              "latitude" : 47.67519,
+              "longitude" : -122.0977,
+              "lat" : 47.67519,
+              "lon" : -122.0977
+            },
+            "bottomLeft" : {
+              "latitude" : 47.6572,
+              "longitude" : -122.1244,
+              "lat" : 47.6572,
+              "lon" : -122.1244
+            }
+          },
+          "entryPoints" : null,
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 47.67519,
+              "longitude" : -122.1244,
+              "lat" : 47.67519,
+              "lon" : -122.1244
+            },
+            "bottomRight" : {
+              "latitude" : 47.6572,
+              "longitude" : -122.0977,
+              "lat" : 47.6572,
+              "lon" : -122.0977
+            },
+            "topRight" : {
+              "latitude" : 47.67519,
+              "longitude" : -122.0977,
+              "lat" : 47.67519,
+              "lon" : -122.0977
+            },
+            "southWest" : {
+              "latitude" : 47.6572,
+              "longitude" : -122.1244,
+              "lat" : 47.6572,
+              "lon" : -122.1244
+            },
+            "northEast" : {
+              "latitude" : 47.67519,
+              "longitude" : -122.0977,
+              "lat" : 47.67519,
+              "lon" : -122.0977
+            },
+            "bottomLeft" : {
+              "latitude" : 47.6572,
+              "longitude" : -122.1244,
+              "lat" : 47.6572,
+              "lon" : -122.1244
+            }
+          }
+        } ]
+      }
+    }, {
+      "statusCode" : 200,
+      "error" : null,
+      "result" : {
+        "summary" : {
+          "query" : "350 5th ave new york ny 10118",
+          "queryType" : {
+            "name" : "NON_NEAR",
+            "clazz" : "com.azure.maps.search.models.QueryType"
+          },
+          "queryTime" : 176,
+          "numResults" : 3,
+          "top" : null,
+          "skip" : 0,
+          "totalResults" : 839,
+          "fuzzyLevel" : 1,
+          "geoBias" : null
+        },
+        "results" : [ {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p0/45836528",
+          "score" : 12.0984487534,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "350",
+            "routeNumbers" : null,
+            "streetName" : "5th Avenue",
+            "streetNameAndNumber" : null,
+            "municipality" : "New York",
+            "municipalitySubdivision" : "Manhattan",
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "New York",
+            "countrySubdivision" : "NY",
+            "postalCode" : "10001",
+            "extendedPostalCode" : "10001-3105",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "350 5th Avenue, New York, NY 10001",
+            "countrySubdivisionName" : "New York",
+            "localName" : "New York",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 40.74817,
+            "longitude" : -73.985,
+            "lat" : 40.74817,
+            "lon" : -73.985
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 40.74907,
+              "longitude" : -73.98619,
+              "lat" : 40.74907,
+              "lon" : -73.98619
+            },
+            "bottomRight" : {
+              "latitude" : 40.74727,
+              "longitude" : -73.98381,
+              "lat" : 40.74727,
+              "lon" : -73.98381
+            },
+            "topRight" : {
+              "latitude" : 40.74907,
+              "longitude" : -73.98381,
+              "lat" : 40.74907,
+              "lon" : -73.98381
+            },
+            "southWest" : {
+              "latitude" : 40.74727,
+              "longitude" : -73.98619,
+              "lat" : 40.74727,
+              "lon" : -73.98619
+            },
+            "northEast" : {
+              "latitude" : 40.74907,
+              "longitude" : -73.98381,
+              "lat" : 40.74907,
+              "lon" : -73.98381
+            },
+            "bottomLeft" : {
+              "latitude" : 40.74727,
+              "longitude" : -73.98619,
+              "lat" : 40.74727,
+              "lon" : -73.98619
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 40.74808,
+              "longitude" : -73.98482,
+              "lat" : 40.74808,
+              "lon" : -73.98482
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 40.74907,
+              "longitude" : -73.98619,
+              "lat" : 40.74907,
+              "lon" : -73.98619
+            },
+            "bottomRight" : {
+              "latitude" : 40.74727,
+              "longitude" : -73.98381,
+              "lat" : 40.74727,
+              "lon" : -73.98381
+            },
+            "topRight" : {
+              "latitude" : 40.74907,
+              "longitude" : -73.98381,
+              "lat" : 40.74907,
+              "lon" : -73.98381
+            },
+            "southWest" : {
+              "latitude" : 40.74727,
+              "longitude" : -73.98619,
+              "lat" : 40.74727,
+              "lon" : -73.98619
+            },
+            "northEast" : {
+              "latitude" : 40.74907,
+              "longitude" : -73.98381,
+              "lat" : 40.74907,
+              "lon" : -73.98381
+            },
+            "bottomLeft" : {
+              "latitude" : 40.74727,
+              "longitude" : -73.98619,
+              "lat" : 40.74727,
+              "lon" : -73.98619
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p1/44807433",
+          "score" : 12.0984487534,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "350",
+            "routeNumbers" : null,
+            "streetName" : "5th Avenue",
+            "streetNameAndNumber" : null,
+            "municipality" : "New York",
+            "municipalitySubdivision" : "Brooklyn",
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Kings",
+            "countrySubdivision" : "NY",
+            "postalCode" : "11215",
+            "extendedPostalCode" : "11215-2813",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "350 5th Avenue, Brooklyn, NY 11215",
+            "countrySubdivisionName" : "New York",
+            "localName" : "Brooklyn",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 40.67199,
+            "longitude" : -73.98423,
+            "lat" : 40.67199,
+            "lon" : -73.98423
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 40.67289,
+              "longitude" : -73.98542,
+              "lat" : 40.67289,
+              "lon" : -73.98542
+            },
+            "bottomRight" : {
+              "latitude" : 40.67109,
+              "longitude" : -73.98304,
+              "lat" : 40.67109,
+              "lon" : -73.98304
+            },
+            "topRight" : {
+              "latitude" : 40.67289,
+              "longitude" : -73.98304,
+              "lat" : 40.67289,
+              "lon" : -73.98304
+            },
+            "southWest" : {
+              "latitude" : 40.67109,
+              "longitude" : -73.98542,
+              "lat" : 40.67109,
+              "lon" : -73.98542
+            },
+            "northEast" : {
+              "latitude" : 40.67289,
+              "longitude" : -73.98304,
+              "lat" : 40.67289,
+              "lon" : -73.98304
+            },
+            "bottomLeft" : {
+              "latitude" : 40.67109,
+              "longitude" : -73.98542,
+              "lat" : 40.67109,
+              "lon" : -73.98542
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 40.67189,
+              "longitude" : -73.98402,
+              "lat" : 40.67189,
+              "lon" : -73.98402
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 40.67289,
+              "longitude" : -73.98542,
+              "lat" : 40.67289,
+              "lon" : -73.98542
+            },
+            "bottomRight" : {
+              "latitude" : 40.67109,
+              "longitude" : -73.98304,
+              "lat" : 40.67109,
+              "lon" : -73.98304
+            },
+            "topRight" : {
+              "latitude" : 40.67289,
+              "longitude" : -73.98304,
+              "lat" : 40.67289,
+              "lon" : -73.98304
+            },
+            "southWest" : {
+              "latitude" : 40.67109,
+              "longitude" : -73.98542,
+              "lat" : 40.67109,
+              "lon" : -73.98542
+            },
+            "northEast" : {
+              "latitude" : 40.67289,
+              "longitude" : -73.98304,
+              "lat" : 40.67289,
+              "lon" : -73.98304
+            },
+            "bottomLeft" : {
+              "latitude" : 40.67109,
+              "longitude" : -73.98542,
+              "lat" : 40.67109,
+              "lon" : -73.98542
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Address Range",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/ADDR/p0/48048724",
+          "score" : 11.9583129883,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "350",
+            "routeNumbers" : null,
+            "streetName" : "5th Avenue",
+            "streetNameAndNumber" : null,
+            "municipality" : "New York",
+            "municipalitySubdivision" : "Edgewater Park",
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Bronx",
+            "countrySubdivision" : "NY",
+            "postalCode" : "10465",
+            "extendedPostalCode" : null,
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "350 5th Avenue, Bronx, NY 10465",
+            "countrySubdivisionName" : "New York",
+            "localName" : "Bronx",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 40.82242,
+            "longitude" : -73.80802,
+            "lat" : 40.82242,
+            "lon" : -73.80802
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 40.82298,
+              "longitude" : -73.80806,
+              "lat" : 40.82298,
+              "lon" : -73.80806
+            },
+            "bottomRight" : {
+              "latitude" : 40.8223,
+              "longitude" : -73.80794,
+              "lat" : 40.8223,
+              "lon" : -73.80794
+            },
+            "topRight" : {
+              "latitude" : 40.82298,
+              "longitude" : -73.80794,
+              "lat" : 40.82298,
+              "lon" : -73.80794
+            },
+            "southWest" : {
+              "latitude" : 40.8223,
+              "longitude" : -73.80806,
+              "lat" : 40.8223,
+              "lon" : -73.80806
+            },
+            "northEast" : {
+              "latitude" : 40.82298,
+              "longitude" : -73.80794,
+              "lat" : 40.82298,
+              "lon" : -73.80794
+            },
+            "bottomLeft" : {
+              "latitude" : 40.8223,
+              "longitude" : -73.80806,
+              "lat" : 40.8223,
+              "lon" : -73.80806
+            }
+          },
+          "entryPoints" : null,
+          "addressRanges" : {
+            "rangeLeft" : null,
+            "rangeRight" : "1872 - 2",
+            "from" : {
+              "latitude" : 40.82298,
+              "longitude" : -73.80806,
+              "lat" : 40.82298,
+              "lon" : -73.80806
+            },
+            "to" : {
+              "latitude" : 40.8223,
+              "longitude" : -73.80794,
+              "lat" : 40.8223,
+              "lon" : -73.80794
+            }
+          },
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 40.82298,
+              "longitude" : -73.80806,
+              "lat" : 40.82298,
+              "lon" : -73.80806
+            },
+            "bottomRight" : {
+              "latitude" : 40.8223,
+              "longitude" : -73.80794,
+              "lat" : 40.8223,
+              "lon" : -73.80794
+            },
+            "topRight" : {
+              "latitude" : 40.82298,
+              "longitude" : -73.80794,
+              "lat" : 40.82298,
+              "lon" : -73.80794
+            },
+            "southWest" : {
+              "latitude" : 40.8223,
+              "longitude" : -73.80806,
+              "lat" : 40.8223,
+              "lon" : -73.80806
+            },
+            "northEast" : {
+              "latitude" : 40.82298,
+              "longitude" : -73.80794,
+              "lat" : 40.82298,
+              "lon" : -73.80794
+            },
+            "bottomLeft" : {
+              "latitude" : 40.8223,
+              "longitude" : -73.80806,
+              "lat" : 40.8223,
+              "lon" : -73.80806
+            }
+          }
+        } ]
+      }
+    }, {
+      "statusCode" : 200,
+      "error" : null,
+      "result" : {
+        "summary" : {
+          "query" : "1 main street",
+          "queryType" : {
+            "name" : "NON_NEAR",
+            "clazz" : "com.azure.maps.search.models.QueryType"
+          },
+          "queryTime" : 5,
+          "numResults" : 10,
+          "top" : null,
+          "skip" : 0,
+          "totalResults" : 79526,
+          "fuzzyLevel" : 1,
+          "geoBias" : null
+        },
+        "results" : [ {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "AU/PAD/p0/934769",
+          "score" : 7.9061021805,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "1",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Atherton",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Barron",
+            "countrySubdivision" : "Queensland",
+            "postalCode" : "4883",
+            "extendedPostalCode" : null,
+            "countryCode" : "AU",
+            "country" : "Australia",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "1 Main Street, Atherton, Queensland, 4883",
+            "countrySubdivisionName" : null,
+            "localName" : "Atherton",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : -17.26282,
+            "longitude" : 145.47707,
+            "lat" : -17.26282,
+            "lon" : 145.47707
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : -17.26192,
+              "longitude" : 145.47613,
+              "lat" : -17.26192,
+              "lon" : 145.47613
+            },
+            "bottomRight" : {
+              "latitude" : -17.26372,
+              "longitude" : 145.47801,
+              "lat" : -17.26372,
+              "lon" : 145.47801
+            },
+            "topRight" : {
+              "latitude" : -17.26192,
+              "longitude" : 145.47801,
+              "lat" : -17.26192,
+              "lon" : 145.47801
+            },
+            "southWest" : {
+              "latitude" : -17.26372,
+              "longitude" : 145.47613,
+              "lat" : -17.26372,
+              "lon" : 145.47613
+            },
+            "northEast" : {
+              "latitude" : -17.26192,
+              "longitude" : 145.47801,
+              "lat" : -17.26192,
+              "lon" : 145.47801
+            },
+            "bottomLeft" : {
+              "latitude" : -17.26372,
+              "longitude" : 145.47613,
+              "lat" : -17.26372,
+              "lon" : 145.47613
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : -17.26272,
+              "longitude" : 145.47735,
+              "lat" : -17.26272,
+              "lon" : 145.47735
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : -17.26192,
+              "longitude" : 145.47613,
+              "lat" : -17.26192,
+              "lon" : 145.47613
+            },
+            "bottomRight" : {
+              "latitude" : -17.26372,
+              "longitude" : 145.47801,
+              "lat" : -17.26372,
+              "lon" : 145.47801
+            },
+            "topRight" : {
+              "latitude" : -17.26192,
+              "longitude" : 145.47801,
+              "lat" : -17.26192,
+              "lon" : 145.47801
+            },
+            "southWest" : {
+              "latitude" : -17.26372,
+              "longitude" : 145.47613,
+              "lat" : -17.26372,
+              "lon" : 145.47613
+            },
+            "northEast" : {
+              "latitude" : -17.26192,
+              "longitude" : 145.47801,
+              "lat" : -17.26192,
+              "lon" : 145.47801
+            },
+            "bottomLeft" : {
+              "latitude" : -17.26372,
+              "longitude" : 145.47613,
+              "lat" : -17.26372,
+              "lon" : 145.47613
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "AU/PAD/p0/9713139",
+          "score" : 7.9061021805,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "1",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Winchelsea",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "West Coast Victoria",
+            "countrySubdivision" : "Victoria",
+            "postalCode" : "3241",
+            "extendedPostalCode" : null,
+            "countryCode" : "AU",
+            "country" : "Australia",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "1 Main Street, Winchelsea, Victoria, 3241",
+            "countrySubdivisionName" : null,
+            "localName" : "Winchelsea",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : -38.24279,
+            "longitude" : 143.99119,
+            "lat" : -38.24279,
+            "lon" : 143.99119
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : -38.24189,
+              "longitude" : 143.99004,
+              "lat" : -38.24189,
+              "lon" : 143.99004
+            },
+            "bottomRight" : {
+              "latitude" : -38.24369,
+              "longitude" : 143.99234,
+              "lat" : -38.24369,
+              "lon" : 143.99234
+            },
+            "topRight" : {
+              "latitude" : -38.24189,
+              "longitude" : 143.99234,
+              "lat" : -38.24189,
+              "lon" : 143.99234
+            },
+            "southWest" : {
+              "latitude" : -38.24369,
+              "longitude" : 143.99004,
+              "lat" : -38.24369,
+              "lon" : 143.99004
+            },
+            "northEast" : {
+              "latitude" : -38.24189,
+              "longitude" : 143.99234,
+              "lat" : -38.24189,
+              "lon" : 143.99234
+            },
+            "bottomLeft" : {
+              "latitude" : -38.24369,
+              "longitude" : 143.99004,
+              "lat" : -38.24369,
+              "lon" : 143.99004
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : -38.24248,
+              "longitude" : 143.99028,
+              "lat" : -38.24248,
+              "lon" : 143.99028
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : -38.24189,
+              "longitude" : 143.99004,
+              "lat" : -38.24189,
+              "lon" : 143.99004
+            },
+            "bottomRight" : {
+              "latitude" : -38.24369,
+              "longitude" : 143.99234,
+              "lat" : -38.24369,
+              "lon" : 143.99234
+            },
+            "topRight" : {
+              "latitude" : -38.24189,
+              "longitude" : 143.99234,
+              "lat" : -38.24189,
+              "lon" : 143.99234
+            },
+            "southWest" : {
+              "latitude" : -38.24369,
+              "longitude" : 143.99004,
+              "lat" : -38.24369,
+              "lon" : 143.99004
+            },
+            "northEast" : {
+              "latitude" : -38.24189,
+              "longitude" : 143.99234,
+              "lat" : -38.24189,
+              "lon" : 143.99234
+            },
+            "bottomLeft" : {
+              "latitude" : -38.24369,
+              "longitude" : 143.99004,
+              "lat" : -38.24369,
+              "lon" : 143.99004
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p0/56172955",
+          "score" : 7.8942890167,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "1",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Harrington",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Washington",
+            "countrySubdivision" : "ME",
+            "postalCode" : "04643",
+            "extendedPostalCode" : "04643-3023",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "1 Main Street, Harrington, ME 04643",
+            "countrySubdivisionName" : "Maine",
+            "localName" : "Harrington",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 44.62128,
+            "longitude" : -67.81531,
+            "lat" : 44.62128,
+            "lon" : -67.81531
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 44.62218,
+              "longitude" : -67.81657,
+              "lat" : 44.62218,
+              "lon" : -67.81657
+            },
+            "bottomRight" : {
+              "latitude" : 44.62038,
+              "longitude" : -67.81405,
+              "lat" : 44.62038,
+              "lon" : -67.81405
+            },
+            "topRight" : {
+              "latitude" : 44.62218,
+              "longitude" : -67.81405,
+              "lat" : 44.62218,
+              "lon" : -67.81405
+            },
+            "southWest" : {
+              "latitude" : 44.62038,
+              "longitude" : -67.81657,
+              "lat" : 44.62038,
+              "lon" : -67.81657
+            },
+            "northEast" : {
+              "latitude" : 44.62218,
+              "longitude" : -67.81405,
+              "lat" : 44.62218,
+              "lon" : -67.81405
+            },
+            "bottomLeft" : {
+              "latitude" : 44.62038,
+              "longitude" : -67.81657,
+              "lat" : 44.62038,
+              "lon" : -67.81657
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 44.62102,
+              "longitude" : -67.81564,
+              "lat" : 44.62102,
+              "lon" : -67.81564
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 44.62218,
+              "longitude" : -67.81657,
+              "lat" : 44.62218,
+              "lon" : -67.81657
+            },
+            "bottomRight" : {
+              "latitude" : 44.62038,
+              "longitude" : -67.81405,
+              "lat" : 44.62038,
+              "lon" : -67.81405
+            },
+            "topRight" : {
+              "latitude" : 44.62218,
+              "longitude" : -67.81405,
+              "lat" : 44.62218,
+              "lon" : -67.81405
+            },
+            "southWest" : {
+              "latitude" : 44.62038,
+              "longitude" : -67.81657,
+              "lat" : 44.62038,
+              "lon" : -67.81657
+            },
+            "northEast" : {
+              "latitude" : 44.62218,
+              "longitude" : -67.81405,
+              "lat" : 44.62218,
+              "lon" : -67.81405
+            },
+            "bottomLeft" : {
+              "latitude" : 44.62038,
+              "longitude" : -67.81657,
+              "lat" : 44.62038,
+              "lon" : -67.81657
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p0/56211241",
+          "score" : 7.8942890167,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "1",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Camden",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Knox",
+            "countrySubdivision" : "ME",
+            "postalCode" : "04843",
+            "extendedPostalCode" : "04843-1703",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "1 Main Street, Camden, ME 04843",
+            "countrySubdivisionName" : "Maine",
+            "localName" : "Camden",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 44.2098,
+            "longitude" : -69.06461,
+            "lat" : 44.2098,
+            "lon" : -69.06461
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 44.2107,
+              "longitude" : -69.06586,
+              "lat" : 44.2107,
+              "lon" : -69.06586
+            },
+            "bottomRight" : {
+              "latitude" : 44.2089,
+              "longitude" : -69.06336,
+              "lat" : 44.2089,
+              "lon" : -69.06336
+            },
+            "topRight" : {
+              "latitude" : 44.2107,
+              "longitude" : -69.06336,
+              "lat" : 44.2107,
+              "lon" : -69.06336
+            },
+            "southWest" : {
+              "latitude" : 44.2089,
+              "longitude" : -69.06586,
+              "lat" : 44.2089,
+              "lon" : -69.06586
+            },
+            "northEast" : {
+              "latitude" : 44.2107,
+              "longitude" : -69.06336,
+              "lat" : 44.2107,
+              "lon" : -69.06336
+            },
+            "bottomLeft" : {
+              "latitude" : 44.2089,
+              "longitude" : -69.06586,
+              "lat" : 44.2089,
+              "lon" : -69.06586
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 44.20985,
+              "longitude" : -69.06484,
+              "lat" : 44.20985,
+              "lon" : -69.06484
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 44.2107,
+              "longitude" : -69.06586,
+              "lat" : 44.2107,
+              "lon" : -69.06586
+            },
+            "bottomRight" : {
+              "latitude" : 44.2089,
+              "longitude" : -69.06336,
+              "lat" : 44.2089,
+              "lon" : -69.06336
+            },
+            "topRight" : {
+              "latitude" : 44.2107,
+              "longitude" : -69.06336,
+              "lat" : 44.2107,
+              "lon" : -69.06336
+            },
+            "southWest" : {
+              "latitude" : 44.2089,
+              "longitude" : -69.06586,
+              "lat" : 44.2089,
+              "lon" : -69.06586
+            },
+            "northEast" : {
+              "latitude" : 44.2107,
+              "longitude" : -69.06336,
+              "lat" : 44.2107,
+              "lon" : -69.06336
+            },
+            "bottomLeft" : {
+              "latitude" : 44.2089,
+              "longitude" : -69.06586,
+              "lat" : 44.2089,
+              "lon" : -69.06586
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p0/56362995",
+          "score" : 7.8942890167,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "1",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Mars Hill",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Aroostook",
+            "countrySubdivision" : "ME",
+            "postalCode" : "04758",
+            "extendedPostalCode" : "04758-3400",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "1 Main Street, Mars Hill, ME 04758",
+            "countrySubdivisionName" : "Maine",
+            "localName" : "Mars Hill",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 46.50949,
+            "longitude" : -67.86801,
+            "lat" : 46.50949,
+            "lon" : -67.86801
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 46.51039,
+              "longitude" : -67.86932,
+              "lat" : 46.51039,
+              "lon" : -67.86932
+            },
+            "bottomRight" : {
+              "latitude" : 46.50859,
+              "longitude" : -67.8667,
+              "lat" : 46.50859,
+              "lon" : -67.8667
+            },
+            "topRight" : {
+              "latitude" : 46.51039,
+              "longitude" : -67.8667,
+              "lat" : 46.51039,
+              "lon" : -67.8667
+            },
+            "southWest" : {
+              "latitude" : 46.50859,
+              "longitude" : -67.86932,
+              "lat" : 46.50859,
+              "lon" : -67.86932
+            },
+            "northEast" : {
+              "latitude" : 46.51039,
+              "longitude" : -67.8667,
+              "lat" : 46.51039,
+              "lon" : -67.8667
+            },
+            "bottomLeft" : {
+              "latitude" : 46.50859,
+              "longitude" : -67.86932,
+              "lat" : 46.50859,
+              "lon" : -67.86932
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 46.50953,
+              "longitude" : -67.86832,
+              "lat" : 46.50953,
+              "lon" : -67.86832
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 46.51039,
+              "longitude" : -67.86932,
+              "lat" : 46.51039,
+              "lon" : -67.86932
+            },
+            "bottomRight" : {
+              "latitude" : 46.50859,
+              "longitude" : -67.8667,
+              "lat" : 46.50859,
+              "lon" : -67.8667
+            },
+            "topRight" : {
+              "latitude" : 46.51039,
+              "longitude" : -67.8667,
+              "lat" : 46.51039,
+              "lon" : -67.8667
+            },
+            "southWest" : {
+              "latitude" : 46.50859,
+              "longitude" : -67.86932,
+              "lat" : 46.50859,
+              "lon" : -67.86932
+            },
+            "northEast" : {
+              "latitude" : 46.51039,
+              "longitude" : -67.8667,
+              "lat" : 46.51039,
+              "lon" : -67.8667
+            },
+            "bottomLeft" : {
+              "latitude" : 46.50859,
+              "longitude" : -67.86932,
+              "lat" : 46.50859,
+              "lon" : -67.86932
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p1/55965723",
+          "score" : 7.8942890167,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "1",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Kennebunk",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "York",
+            "countrySubdivision" : "ME",
+            "postalCode" : "04043",
+            "extendedPostalCode" : "04043-6820",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "1 Main Street, Kennebunk, ME 04043",
+            "countrySubdivisionName" : "Maine",
+            "localName" : "Kennebunk",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 43.38466,
+            "longitude" : -70.54259,
+            "lat" : 43.38466,
+            "lon" : -70.54259
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 43.38556,
+              "longitude" : -70.54383,
+              "lat" : 43.38556,
+              "lon" : -70.54383
+            },
+            "bottomRight" : {
+              "latitude" : 43.38376,
+              "longitude" : -70.54135,
+              "lat" : 43.38376,
+              "lon" : -70.54135
+            },
+            "topRight" : {
+              "latitude" : 43.38556,
+              "longitude" : -70.54135,
+              "lat" : 43.38556,
+              "lon" : -70.54135
+            },
+            "southWest" : {
+              "latitude" : 43.38376,
+              "longitude" : -70.54383,
+              "lat" : 43.38376,
+              "lon" : -70.54383
+            },
+            "northEast" : {
+              "latitude" : 43.38556,
+              "longitude" : -70.54135,
+              "lat" : 43.38556,
+              "lon" : -70.54135
+            },
+            "bottomLeft" : {
+              "latitude" : 43.38376,
+              "longitude" : -70.54383,
+              "lat" : 43.38376,
+              "lon" : -70.54383
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 43.38491,
+              "longitude" : -70.5428,
+              "lat" : 43.38491,
+              "lon" : -70.5428
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 43.38556,
+              "longitude" : -70.54383,
+              "lat" : 43.38556,
+              "lon" : -70.54383
+            },
+            "bottomRight" : {
+              "latitude" : 43.38376,
+              "longitude" : -70.54135,
+              "lat" : 43.38376,
+              "lon" : -70.54135
+            },
+            "topRight" : {
+              "latitude" : 43.38556,
+              "longitude" : -70.54135,
+              "lat" : 43.38556,
+              "lon" : -70.54135
+            },
+            "southWest" : {
+              "latitude" : 43.38376,
+              "longitude" : -70.54383,
+              "lat" : 43.38376,
+              "lon" : -70.54383
+            },
+            "northEast" : {
+              "latitude" : 43.38556,
+              "longitude" : -70.54135,
+              "lat" : 43.38556,
+              "lon" : -70.54135
+            },
+            "bottomLeft" : {
+              "latitude" : 43.38376,
+              "longitude" : -70.54383,
+              "lat" : 43.38376,
+              "lon" : -70.54383
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p0/26126156",
+          "score" : 7.8733692169,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "571 1/2",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Brookville",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Franklin",
+            "countrySubdivision" : "IN",
+            "postalCode" : "47012",
+            "extendedPostalCode" : "47012-1407",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "571 1/2 Main Street, Brookville, IN 47012",
+            "countrySubdivisionName" : "Indiana",
+            "localName" : "Brookville",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 39.42068,
+            "longitude" : -85.01258,
+            "lat" : 39.42068,
+            "lon" : -85.01258
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 39.42158,
+              "longitude" : -85.01374,
+              "lat" : 39.42158,
+              "lon" : -85.01374
+            },
+            "bottomRight" : {
+              "latitude" : 39.41978,
+              "longitude" : -85.01142,
+              "lat" : 39.41978,
+              "lon" : -85.01142
+            },
+            "topRight" : {
+              "latitude" : 39.42158,
+              "longitude" : -85.01142,
+              "lat" : 39.42158,
+              "lon" : -85.01142
+            },
+            "southWest" : {
+              "latitude" : 39.41978,
+              "longitude" : -85.01374,
+              "lat" : 39.41978,
+              "lon" : -85.01374
+            },
+            "northEast" : {
+              "latitude" : 39.42158,
+              "longitude" : -85.01142,
+              "lat" : 39.42158,
+              "lon" : -85.01142
+            },
+            "bottomLeft" : {
+              "latitude" : 39.41978,
+              "longitude" : -85.01374,
+              "lat" : 39.41978,
+              "lon" : -85.01374
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 39.42067,
+              "longitude" : -85.01278,
+              "lat" : 39.42067,
+              "lon" : -85.01278
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 39.42158,
+              "longitude" : -85.01374,
+              "lat" : 39.42158,
+              "lon" : -85.01374
+            },
+            "bottomRight" : {
+              "latitude" : 39.41978,
+              "longitude" : -85.01142,
+              "lat" : 39.41978,
+              "lon" : -85.01142
+            },
+            "topRight" : {
+              "latitude" : 39.42158,
+              "longitude" : -85.01142,
+              "lat" : 39.42158,
+              "lon" : -85.01142
+            },
+            "southWest" : {
+              "latitude" : 39.41978,
+              "longitude" : -85.01374,
+              "lat" : 39.41978,
+              "lon" : -85.01374
+            },
+            "northEast" : {
+              "latitude" : 39.42158,
+              "longitude" : -85.01142,
+              "lat" : 39.42158,
+              "lon" : -85.01142
+            },
+            "bottomLeft" : {
+              "latitude" : 39.41978,
+              "longitude" : -85.01374,
+              "lat" : 39.41978,
+              "lon" : -85.01374
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p0/45373401",
+          "score" : 7.8733692169,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "573 1/2",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "New Rochelle",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Westchester",
+            "countrySubdivision" : "NY",
+            "postalCode" : "10801",
+            "extendedPostalCode" : "10801-7172",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "573 1/2 Main Street, New Rochelle, NY 10801",
+            "countrySubdivisionName" : "New York",
+            "localName" : "New Rochelle",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 40.90733,
+            "longitude" : -73.78426,
+            "lat" : 40.90733,
+            "lon" : -73.78426
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 40.90823,
+              "longitude" : -73.78545,
+              "lat" : 40.90823,
+              "lon" : -73.78545
+            },
+            "bottomRight" : {
+              "latitude" : 40.90643,
+              "longitude" : -73.78307,
+              "lat" : 40.90643,
+              "lon" : -73.78307
+            },
+            "topRight" : {
+              "latitude" : 40.90823,
+              "longitude" : -73.78307,
+              "lat" : 40.90823,
+              "lon" : -73.78307
+            },
+            "southWest" : {
+              "latitude" : 40.90643,
+              "longitude" : -73.78545,
+              "lat" : 40.90643,
+              "lon" : -73.78545
+            },
+            "northEast" : {
+              "latitude" : 40.90823,
+              "longitude" : -73.78307,
+              "lat" : 40.90823,
+              "lon" : -73.78307
+            },
+            "bottomLeft" : {
+              "latitude" : 40.90643,
+              "longitude" : -73.78545,
+              "lat" : 40.90643,
+              "lon" : -73.78545
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 40.9072,
+              "longitude" : -73.78411,
+              "lat" : 40.9072,
+              "lon" : -73.78411
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 40.90823,
+              "longitude" : -73.78545,
+              "lat" : 40.90823,
+              "lon" : -73.78545
+            },
+            "bottomRight" : {
+              "latitude" : 40.90643,
+              "longitude" : -73.78307,
+              "lat" : 40.90643,
+              "lon" : -73.78307
+            },
+            "topRight" : {
+              "latitude" : 40.90823,
+              "longitude" : -73.78307,
+              "lat" : 40.90823,
+              "lon" : -73.78307
+            },
+            "southWest" : {
+              "latitude" : 40.90643,
+              "longitude" : -73.78545,
+              "lat" : 40.90643,
+              "lon" : -73.78545
+            },
+            "northEast" : {
+              "latitude" : 40.90823,
+              "longitude" : -73.78307,
+              "lat" : 40.90823,
+              "lon" : -73.78307
+            },
+            "bottomLeft" : {
+              "latitude" : 40.90643,
+              "longitude" : -73.78545,
+              "lat" : 40.90643,
+              "lon" : -73.78545
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p1/17638411",
+          "score" : 7.8733692169,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "333 1/2",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Brookville",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Franklin",
+            "countrySubdivision" : "IN",
+            "postalCode" : "47012",
+            "extendedPostalCode" : "47012-1333",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "333 1/2 Main Street, Brookville, IN 47012",
+            "countrySubdivisionName" : "Indiana",
+            "localName" : "Brookville",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 39.41805,
+            "longitude" : -85.01248,
+            "lat" : 39.41805,
+            "lon" : -85.01248
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 39.41895,
+              "longitude" : -85.01364,
+              "lat" : 39.41895,
+              "lon" : -85.01364
+            },
+            "bottomRight" : {
+              "latitude" : 39.41715,
+              "longitude" : -85.01132,
+              "lat" : 39.41715,
+              "lon" : -85.01132
+            },
+            "topRight" : {
+              "latitude" : 39.41895,
+              "longitude" : -85.01132,
+              "lat" : 39.41895,
+              "lon" : -85.01132
+            },
+            "southWest" : {
+              "latitude" : 39.41715,
+              "longitude" : -85.01364,
+              "lat" : 39.41715,
+              "lon" : -85.01364
+            },
+            "northEast" : {
+              "latitude" : 39.41895,
+              "longitude" : -85.01132,
+              "lat" : 39.41895,
+              "lon" : -85.01132
+            },
+            "bottomLeft" : {
+              "latitude" : 39.41715,
+              "longitude" : -85.01364,
+              "lat" : 39.41715,
+              "lon" : -85.01364
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 39.41806,
+              "longitude" : -85.01281,
+              "lat" : 39.41806,
+              "lon" : -85.01281
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 39.41895,
+              "longitude" : -85.01364,
+              "lat" : 39.41895,
+              "lon" : -85.01364
+            },
+            "bottomRight" : {
+              "latitude" : 39.41715,
+              "longitude" : -85.01132,
+              "lat" : 39.41715,
+              "lon" : -85.01132
+            },
+            "topRight" : {
+              "latitude" : 39.41895,
+              "longitude" : -85.01132,
+              "lat" : 39.41895,
+              "lon" : -85.01132
+            },
+            "southWest" : {
+              "latitude" : 39.41715,
+              "longitude" : -85.01364,
+              "lat" : 39.41715,
+              "lon" : -85.01364
+            },
+            "northEast" : {
+              "latitude" : 39.41895,
+              "longitude" : -85.01132,
+              "lat" : 39.41895,
+              "lon" : -85.01132
+            },
+            "bottomLeft" : {
+              "latitude" : 39.41715,
+              "longitude" : -85.01364,
+              "lat" : 39.41715,
+              "lon" : -85.01364
+            }
+          }
+        }, {
+          "type" : {
+            "name" : "Point Address",
+            "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+          },
+          "id" : "US/PAD/p1/17775773",
+          "score" : 7.8733692169,
+          "distanceInMeters" : null,
+          "info" : null,
+          "entityType" : null,
+          "pointOfInterest" : null,
+          "address" : {
+            "buildingNumber" : null,
+            "street" : null,
+            "crossStreet" : null,
+            "streetNumber" : "563 1/2",
+            "routeNumbers" : null,
+            "streetName" : "Main Street",
+            "streetNameAndNumber" : null,
+            "municipality" : "Brookville",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Franklin",
+            "countrySubdivision" : "IN",
+            "postalCode" : "47012",
+            "extendedPostalCode" : "47012-1407",
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "563 1/2 Main Street, Brookville, IN 47012",
+            "countrySubdivisionName" : "Indiana",
+            "localName" : "Brookville",
+            "boundingBox" : null
+          },
+          "position" : {
+            "latitude" : 39.42059,
+            "longitude" : -85.01218,
+            "lat" : 39.42059,
+            "lon" : -85.01218
+          },
+          "viewport" : {
+            "topLeft" : {
+              "latitude" : 39.42149,
+              "longitude" : -85.01334,
+              "lat" : 39.42149,
+              "lon" : -85.01334
+            },
+            "bottomRight" : {
+              "latitude" : 39.41969,
+              "longitude" : -85.01102,
+              "lat" : 39.41969,
+              "lon" : -85.01102
+            },
+            "topRight" : {
+              "latitude" : 39.42149,
+              "longitude" : -85.01102,
+              "lat" : 39.42149,
+              "lon" : -85.01102
+            },
+            "southWest" : {
+              "latitude" : 39.41969,
+              "longitude" : -85.01334,
+              "lat" : 39.41969,
+              "lon" : -85.01334
+            },
+            "northEast" : {
+              "latitude" : 39.42149,
+              "longitude" : -85.01102,
+              "lat" : 39.42149,
+              "lon" : -85.01102
+            },
+            "bottomLeft" : {
+              "latitude" : 39.41969,
+              "longitude" : -85.01334,
+              "lat" : 39.41969,
+              "lon" : -85.01334
+            }
+          },
+          "entryPoints" : [ {
+            "type" : {
+              "name" : "main",
+              "clazz" : "com.azure.maps.search.models.EntryPointType"
+            },
+            "position" : {
+              "latitude" : 39.42059,
+              "longitude" : -85.01278,
+              "lat" : 39.42059,
+              "lon" : -85.01278
+            }
+          } ],
+          "addressRanges" : null,
+          "dataSource" : null,
+          "matchType" : null,
+          "detourTime" : null,
+          "boundingBox" : {
+            "topLeft" : {
+              "latitude" : 39.42149,
+              "longitude" : -85.01334,
+              "lat" : 39.42149,
+              "lon" : -85.01334
+            },
+            "bottomRight" : {
+              "latitude" : 39.41969,
+              "longitude" : -85.01102,
+              "lat" : 39.41969,
+              "lon" : -85.01102
+            },
+            "topRight" : {
+              "latitude" : 39.42149,
+              "longitude" : -85.01102,
+              "lat" : 39.42149,
+              "lon" : -85.01102
+            },
+            "southWest" : {
+              "latitude" : 39.41969,
+              "longitude" : -85.01334,
+              "lat" : 39.41969,
+              "lon" : -85.01334
+            },
+            "northEast" : {
+              "latitude" : 39.42149,
+              "longitude" : -85.01102,
+              "lat" : 39.42149,
+              "lon" : -85.01102
+            },
+            "bottomLeft" : {
+              "latitude" : 39.41969,
+              "longitude" : -85.01334,
+              "lat" : 39.41969,
+              "lon" : -85.01334
+            }
+          }
+        } ]
+      }
+    } ],
+    "batchId" : "1374db33-461c-456a-b140-9b1057149f27"
+  }
