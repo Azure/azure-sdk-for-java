@@ -2699,6 +2699,11 @@
     <Field name="rollingSessionsMessagePump"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
+  <Match>
+    <Class name="com.azure.messaging.servicebus.ServiceBusProcessor"/>
+    <Field name="rollingMessagePump"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
   <!-- False positives -->
   <Match>
     <Class name="com.azure.messaging.servicebus.NonSessionProcessor$RollingNonSessionMessagePump"/>
@@ -2718,6 +2723,16 @@
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
+  <Match>
+    <Class name="com.azure.messaging.servicebus.ServiceBusProcessor$RollingMessagePump"/>
+    <Or>
+      <Field name="nonSessionBuilder"/>
+      <Field name="sessionBuilder"/>
+      <Field name="logger"/>
+      <Field name="disposable"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
   <!-- The RollingNonSessionMessagePump and RollingSessionsMessagePump doesn't need to be serializable -->
   <Match>
     <Class
@@ -2727,6 +2742,11 @@
   <Match>
     <Class
       name="~com\.azure\.messaging\.servicebus\.SessionProcessor\$RollingSessionsMessagePump"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+      name="~com\.azure\.messaging\.servicebus\.ServiceBusProcessor\$RollingMessagePump"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <!-- False positives -->
