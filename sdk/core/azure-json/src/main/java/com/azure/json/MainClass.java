@@ -1,5 +1,5 @@
 package com.azure.json;
-
+import com.azure.json.InvalidJsonDataTypeException; 
 
 /**
  * This class acts purely as a playground for testing and playing around with
@@ -37,6 +37,17 @@ public class MainClass {
                 .addElement(new JsonObject().addProperty("Value3", true).addProperty("Value4", null))
                 .toJson();
         System.out.println(arrayTest);
+
+        
+        // Testing that LinkedHashMap is working as expected 
+        JsonObject testingPropertyOrder = new JsonObject(); 
+        for(int i = 0; i < 10; i++) { 
+            testingPropertyOrder.addProperty(
+                "Property"+Integer.toString(i), 
+                "value"+Integer.toString(i)
+            );
+        }
+        System.out.println(testingPropertyOrder);
 
         /*
 

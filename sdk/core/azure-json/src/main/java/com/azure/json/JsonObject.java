@@ -1,9 +1,9 @@
 package com.azure.json;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * Class representing the JSON object type.
@@ -13,12 +13,10 @@ public class JsonObject extends JsonElement {
      * Stores the key and values of each property in the JsonObject. The values
      * may be any valid JSON type: object, array, string, number, boolean, and null
      */
-    private Map<String, JsonElement> properties = new HashMap<>();
+    private Map<String, JsonElement> properties = new LinkedHashMap<>();
 
     /**
      * Adds a new property into the JsonObject object.
-     * TODO: need code changes to make the properties stored in the order they
-     * are added
      *
      * @param key specifies the key of the property being added
      * @param element specifies the value of the property being added
