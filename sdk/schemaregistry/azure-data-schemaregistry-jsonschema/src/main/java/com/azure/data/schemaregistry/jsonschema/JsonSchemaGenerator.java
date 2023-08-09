@@ -4,7 +4,6 @@
 package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 
 /**
  * <a href="https://json-schema.org/">JSON schema</a> aware class that can validate and generate JSON schemas.
@@ -16,11 +15,11 @@ public abstract class JsonSchemaGenerator {
      *
      * @param data Data to verify.
      * @param dataType Type of data.
-     * @param schema The schema to verify the data against.
+     * @param schemaDefinition The schema to verify the data against.
      * @return True if the data matches its schema definition otherwise false.
      * @param <T> Target type of data.
      */
-    public abstract <T> boolean isValid(Object data, TypeReference<T> dataType, SchemaRegistrySchema schema);
+    public abstract <T> boolean isValid(Object data, TypeReference<T> dataType, String schemaDefinition);
 
     /**
      * Given a type, gets its JSON schema definition.
