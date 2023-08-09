@@ -54,17 +54,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.42.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.8.7</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.8.8</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <dependency>
@@ -77,13 +77,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.11</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.12</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -126,14 +126,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.41</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+      <version>1.0.0-beta.42</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.37</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.38</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
     </dependency>
 

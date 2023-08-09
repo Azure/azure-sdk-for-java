@@ -58,12 +58,6 @@ public final class SubvolumesDeleteMockTests {
 
         manager
             .subvolumes()
-            .delete(
-                "smgbzahgxqdl",
-                "rtltla",
-                "rltzkatbhjmz",
-                "nbsoqeqalarv",
-                "agunbtgfebw",
-                com.azure.core.util.Context.NONE);
+            .delete("aquflqbctqha", "zjrwdkqze", "yjleziunjx", "fza", "tkw", com.azure.core.util.Context.NONE);
     }
 }

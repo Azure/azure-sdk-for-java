@@ -101,7 +101,14 @@ public class SharedTokenCacheCredential implements TokenCredential {
             .map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+                request, error))
+            .onErrorMap(error -> {
+                if (identityClient.getIdentityClientOptions().isChained()) {
+                    return new CredentialUnavailableException(error.getMessage(), error);
+                } else {
+                    return error;
+                }
+            });
     }
 
     private AccessToken updateCache(MsalToken msalToken) {

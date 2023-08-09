@@ -1,14 +1,27 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.10.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `BrowserCustomizationOptions` to `InteractiveBrowserCredentialBuilder` to allow for customization of the browser window.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+- Renamed `enableSupportLogging` to `enableUnsafeSupportLogging`. This is a breaking change from 1.10.0-beta.1.
+
+## 1.10.0-beta.1 (2023-07-24)
+
+### Features Added
+- Added CAE Authentication support for Service principal authentication.
+- Added the ability to log PII from MSAL using new `enableSupportLogging` API.
+
+### Other Changes
+
+#### Behavioral Breaking Change
+- CAE Authentication is disabled by default. It needs to be enabled by invoking `setEnableCae` on `TokenRequestContext` class.
 
 ## 1.9.2 (2023-07-10)
 

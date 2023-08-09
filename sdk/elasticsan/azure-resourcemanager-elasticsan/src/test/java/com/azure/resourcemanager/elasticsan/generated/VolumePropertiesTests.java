@@ -9,32 +9,29 @@ import com.azure.resourcemanager.elasticsan.fluent.models.VolumeProperties;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VolumeProperties model =
             BinaryData
                 .fromString(
-                    "{\"volumeId\":\"pmng\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"aqw\"},\"sizeGiB\":8694303623294898689,\"storageTarget\":{\"targetIqn\":\"onq\",\"targetPortalHostname\":\"kvlrxnj\",\"targetPortalPort\":1486121572,\"provisioningState\":\"Deleting\",\"status\":\"Stopped"
-                        + " (deallocated)\"}}")
+                    "{\"volumeId\":\"xuutkncwscwsv\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"g\"},\"sizeGiB\":8759230338879353208,\"storageTarget\":{\"targetIqn\":\"qsx\",\"targetPortalHostname\":\"micykvceoveilo\",\"targetPortalPort\":660644635,\"provisioningState\":\"Creating\",\"status\":\"Unknown\"}}")
                 .toObject(VolumeProperties.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("aqw", model.creationData().sourceUri());
-        Assertions.assertEquals(8694303623294898689L, model.sizeGiB());
+        Assertions.assertEquals("g", model.creationData().sourceUri());
+        Assertions.assertEquals(8759230338879353208L, model.sizeGiB());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VolumeProperties model =
             new VolumeProperties()
-                .withCreationData(
-                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("aqw"))
-                .withSizeGiB(8694303623294898689L);
+                .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("g"))
+                .withSizeGiB(8759230338879353208L);
         model = BinaryData.fromObject(model).toObject(VolumeProperties.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("aqw", model.creationData().sourceUri());
-        Assertions.assertEquals(8694303623294898689L, model.sizeGiB());
+        Assertions.assertEquals("g", model.creationData().sourceUri());
+        Assertions.assertEquals(8759230338879353208L, model.sizeGiB());
     }
 }

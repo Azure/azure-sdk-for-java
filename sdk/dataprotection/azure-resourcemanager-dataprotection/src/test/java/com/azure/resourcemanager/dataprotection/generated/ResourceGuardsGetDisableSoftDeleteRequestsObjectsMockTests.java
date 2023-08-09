@@ -30,7 +30,7 @@ public final class ResourceGuardsGetDisableSoftDeleteRequestsObjectsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"qglcfhmlrqryxynq\",\"name\":\"rd\",\"type\":\"ovw\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"ohzjqatucoigeb\",\"name\":\"cnwfepbnwgfmxjg\",\"type\":\"bjb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +61,6 @@ public final class ResourceGuardsGetDisableSoftDeleteRequestsObjectsMockTests {
         PagedIterable<DppBaseResource> response =
             manager
                 .resourceGuards()
-                .getDisableSoftDeleteRequestsObjects("jw", "nyfusfzsvtuikzh", com.azure.core.util.Context.NONE);
+                .getDisableSoftDeleteRequestsObjects("hwpusxj", "aqehg", com.azure.core.util.Context.NONE);
     }
 }

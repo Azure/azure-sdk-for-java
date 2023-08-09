@@ -92,9 +92,9 @@
  *
  * <p>Let's take a look at the analysis client scenarios and their respective usage below.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Analyzing forms with prebuilt models</h2>
  *
@@ -179,9 +179,9 @@
  * <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/concept-model-overview?view=form-recog-2.1.0">models usage
  * documentation</a>.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Analyze a custom form with a model trained with or without labels.</h2>
  *

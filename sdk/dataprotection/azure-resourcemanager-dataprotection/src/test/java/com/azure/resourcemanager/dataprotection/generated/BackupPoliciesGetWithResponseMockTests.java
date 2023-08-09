@@ -31,7 +31,7 @@ public final class BackupPoliciesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"kudzpxgwj\",\"lma\"]},\"id\":\"tcyohpfkyrk\",\"name\":\"bdgiogsjk\",\"type\":\"nwqjnoba\"}";
+            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"eioqaqhvse\",\"fuqyrxpdlcgqlsi\"]},\"id\":\"jqfrddgamquh\",\"name\":\"os\",\"type\":\"sjuivfcdisyir\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class BackupPoliciesGetWithResponseMockTests {
         BaseBackupPolicyResource response =
             manager
                 .backupPolicies()
-                .getWithResponse("yvudtjuewbci", "xuuwhcj", "xccybvpa", com.azure.core.util.Context.NONE)
+                .getWithResponse("zaapmudqmeqwi", "pibudqwyxebeybpm", "znrtffyaqit", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kudzpxgwj", response.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("eioqaqhvse", response.properties().datasourceTypes().get(0));
     }
 }

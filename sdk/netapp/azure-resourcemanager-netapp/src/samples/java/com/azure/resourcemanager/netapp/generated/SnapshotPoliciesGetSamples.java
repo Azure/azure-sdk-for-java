@@ -7,7 +7,7 @@ package com.azure.resourcemanager.netapp.generated;
 /** Samples for SnapshotPolicies Get. */
 public final class SnapshotPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/SnapshotPolicies_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/SnapshotPolicies_Get.json
      */
     /**
      * Sample code: SnapshotPolicies_Get.

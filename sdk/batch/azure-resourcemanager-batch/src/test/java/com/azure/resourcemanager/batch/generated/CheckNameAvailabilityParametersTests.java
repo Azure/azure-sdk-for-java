@@ -7,20 +7,19 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameAvailabilityParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CheckNameAvailabilityParameters model =
-            BinaryData.fromString("{\"name\":\"oczvy\"}").toObject(CheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("oczvy", model.name());
+            BinaryData.fromString("{\"name\":\"cczsq\"}").toObject(CheckNameAvailabilityParameters.class);
+        Assertions.assertEquals("cczsq", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        CheckNameAvailabilityParameters model = new CheckNameAvailabilityParameters().withName("oczvy");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckNameAvailabilityParameters model = new CheckNameAvailabilityParameters().withName("cczsq");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("oczvy", model.name());
+        Assertions.assertEquals("cczsq", model.name());
     }
 }

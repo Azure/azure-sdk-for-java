@@ -9,11 +9,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Objects;
+
 /** A rule providing a binding to an external web server. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("webhook-rule")
 @Fluent
 public final class WebhookRouterRule extends RouterRule {
+    /**
+     * Creates an instance of WebhookRouterRule class.
+     *
+     * @param webhookUri Uri for Contoso's Web Server.
+     */
+    public WebhookRouterRule(String webhookUri) {
+        this.webhookUri = Objects.requireNonNull(webhookUri, "'webhookUri' cannot be null.");
+    }
+
     /*
      * Uri for Authorization Server.
      */
@@ -32,7 +43,7 @@ public final class WebhookRouterRule extends RouterRule {
      * Uri for Contoso's Web Server.
      */
     @JsonProperty(value = "webhookUri")
-    private String webhookUri;
+    private final String webhookUri;
 
     /**
      * Get the authorizationServerUri property: Uri for Authorization Server.
@@ -83,16 +94,5 @@ public final class WebhookRouterRule extends RouterRule {
      */
     public String getWebhookUri() {
         return this.webhookUri;
-    }
-
-    /**
-     * Set the webhookUri property: Uri for Contoso's Web Server.
-     *
-     * @param webhookUri the webhookUri value to set.
-     * @return the WebhookRule object itself.
-     */
-    public WebhookRouterRule setWebhookUri(String webhookUri) {
-        this.webhookUri = webhookUri;
-        return this;
     }
 }

@@ -269,6 +269,20 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public HDInsightSparkActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightSparkActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public HDInsightSparkActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

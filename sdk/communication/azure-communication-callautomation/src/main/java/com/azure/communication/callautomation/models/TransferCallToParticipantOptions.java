@@ -18,7 +18,18 @@ import com.azure.core.annotation.Fluent;
 public final class TransferCallToParticipantOptions {
     private final CommunicationIdentifier targetParticipant;
     private final CustomContext customContext;
-    private String callbackUrlOverride;
+    private String callbackUrl;
+
+    /**
+     *  Participant being transferred away
+     */
+    private CommunicationIdentifier transferee;
+
+
+
+    /**
+     * The operational context
+     */
     private String operationContext;
 
     /**
@@ -82,6 +93,26 @@ public final class TransferCallToParticipantOptions {
     }
 
     /**
+     * Get transferee.
+     *
+     * @return the transferee
+     */
+    public CommunicationIdentifier getTransferee() {
+        return transferee;
+    }
+
+    /**
+     * Set the transferee.
+     *
+     * @param transferee the transferee to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setTransferee(CommunicationIdentifier transferee) {
+        this.transferee = transferee;
+        return this;
+    }
+
+    /**
      * Get the call information to transfer target
      * @return a {@link CommunicationIdentifier} with information to transfer target
      */
@@ -102,18 +133,18 @@ public final class TransferCallToParticipantOptions {
      *
      * @return the callbackUrlOverride
      */
-    public String  getCallbackUrlOverride() {
-        return callbackUrlOverride;
+    public String getCallbackUrl() {
+        return callbackUrl;
     }
 
     /**
      * Set the operationContext.
      *
-     * @param callbackUrlOverride the callbackUrlOverride to set
+     * @param callbackUrl the callbackUrlOverride to set
      * @return the TransferCallToParticipantOptions object itself.
      */
-    public TransferCallToParticipantOptions setCallbackUrlOverride(String callbackUrlOverride) {
-        this.callbackUrlOverride = callbackUrlOverride;
+    public TransferCallToParticipantOptions setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
         return this;
     }
 }

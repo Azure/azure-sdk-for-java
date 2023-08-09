@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+  <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
 
   <name>Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter</name>
   <description>This package contains Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter.</description>
@@ -44,12 +44,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.41.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.42.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -75,6 +75,11 @@
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
       <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
@@ -128,31 +133,31 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.4.7</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.15.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.15.7</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.37</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.38</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.18.1</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.19.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.16.7</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.16.8</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -170,12 +175,6 @@
       <groupId>io.github.hakky54</groupId>
       <artifactId>logcaptor</artifactId>
       <version>2.9.0</version> <!-- {x-version-update;io.github.hakky54:logcaptor;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>uk.org.webcompere</groupId>
-      <artifactId>system-stubs-jupiter</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -201,10 +200,10 @@
                 <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>org.awaitility:awaitility:[4.2.0]</include> <!-- {x-include-update;org.awaitility:awaitility;external_dependency} -->
                 <include>io.github.hakky54:logcaptor:[2.9.0]</include> <!-- {x-include-update;io.github.hakky54:logcaptor;external_dependency} -->
-                <include>uk.org.webcompere:system-stubs-jupiter:[2.0.2]</include> <!-- {x-include-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
                 <include>com.squareup.okio:okio:[3.3.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -216,12 +215,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-        <configuration>
-          <systemPropertyVariables>
-            <!-- Parallel runs disabled due to concurrency issues with GlobalOpenTelemetry. -->
-            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-          </systemPropertyVariables>
-        </configuration>
       </plugin>
     </plugins>
   </build>

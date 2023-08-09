@@ -399,4 +399,28 @@ public class ReadmeSamples {
         System.out.println("Visualization graph type = " + visualizationJson.get("visualization").asText());
         // END: readme-sample-includevisualization
     }
+
+    /**
+     * Sample to show how to create a log query client using a sovereign cloud endpoint.
+     */
+    public void createLogsClientWithSovereignCloud() {
+        // BEGIN: readme-sample-createLogsQueryClientWithSovereignCloud
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("https://api.loganalytics.azure.cn/v1")
+            .buildClient();
+        // END: readme-sample-createLogsQueryClientWithSovereignCloud
+    }
+
+    /**
+     * Sample to show how to create a metrics query client using a sovereign cloud endpoint.
+     */
+    public void createMetricsClientWithSovereignCloud() {
+        // BEGIN: readme-sample-createMetricsQueryClientWithSovereignCloud
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("https://management.chinacloudapi.cn")
+            .buildClient();
+        // END: readme-sample-createMetricsQueryClientWithSovereignCloud
+    }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/OperationsList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void operationsList(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -14,23 +14,23 @@ public final class SharedPrivateLinkResourcePropertiesTests {
         SharedPrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
-                    "{\"groupId\":\"lcuhxwtctyqiklb\",\"privateLinkResourceId\":\"ovplw\",\"provisioningState\":\"Updating\",\"requestMessage\":\"gy\",\"status\":\"Rejected\"}")
+                    "{\"groupId\":\"udutnco\",\"privateLinkResourceId\":\"mr\",\"provisioningState\":\"Moving\",\"requestMessage\":\"vcofudfl\",\"status\":\"Disconnected\"}")
                 .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("lcuhxwtctyqiklb", model.groupId());
-        Assertions.assertEquals("ovplw", model.privateLinkResourceId());
-        Assertions.assertEquals("gy", model.requestMessage());
+        Assertions.assertEquals("udutnco", model.groupId());
+        Assertions.assertEquals("mr", model.privateLinkResourceId());
+        Assertions.assertEquals("vcofudfl", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedPrivateLinkResourceProperties model =
             new SharedPrivateLinkResourceProperties()
-                .withGroupId("lcuhxwtctyqiklb")
-                .withPrivateLinkResourceId("ovplw")
-                .withRequestMessage("gy");
+                .withGroupId("udutnco")
+                .withPrivateLinkResourceId("mr")
+                .withRequestMessage("vcofudfl");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("lcuhxwtctyqiklb", model.groupId());
-        Assertions.assertEquals("ovplw", model.privateLinkResourceId());
-        Assertions.assertEquals("gy", model.requestMessage());
+        Assertions.assertEquals("udutnco", model.groupId());
+        Assertions.assertEquals("mr", model.privateLinkResourceId());
+        Assertions.assertEquals("vcofudfl", model.requestMessage());
     }
 }
