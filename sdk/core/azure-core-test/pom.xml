@@ -66,31 +66,31 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.14.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.15.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.5.4</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.5.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty-http</artifactId>
-      <version>1.1.5</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+      <version>1.1.9</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -128,7 +128,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>test-jar</id>
@@ -143,17 +143,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-test:[3.5.4]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.14.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty-http:[1.1.5]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <include>io.projectreactor:reactor-test:[3.5.8]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.15.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.1.9]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
-                <include>org.junit.jupiter:junit-jupiter-api:[5.9.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-                <include>org.junit.jupiter:junit-jupiter-params:[5.9.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-params:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
                 <include>org.apache.commons:commons-compress:[1.22]</include> <!-- {x-include-update;org.apache.commons:commons-compress;external_dependency} -->
                 <include>org.eclipse.jetty:jetty-server:[9.4.51.v20230217]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-server;external_dependency} -->
                 <include>org.eclipse.jetty:jetty-servlet:[9.4.51.v20230217]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
