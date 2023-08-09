@@ -444,3 +444,13 @@ directive:
   where: $.definitions.QueryResultDocumentSemanticFieldState
   transform: $["x-ms-enum"].name = "SemanticFieldState";
 ```
+### Remove `Vector` Property
+
+Remove the `Vector` Property from `SearchRequest` in favor of the `Vectors` Array
+
+```yaml
+directive:
+- from: searchindex.json
+  where: $.definitions.SearchRequest
+  transform: delete $.properties.vector;
+```
