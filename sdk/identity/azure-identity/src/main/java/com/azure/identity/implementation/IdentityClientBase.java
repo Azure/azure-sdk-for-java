@@ -217,7 +217,7 @@ public abstract class IdentityClientBase {
             ConfidentialClientApplication.builder(clientId, credential);
         try {
             applicationBuilder = applicationBuilder
-                .logPii(options.isSupportLoggingEnabled())
+                .logPii(options.isUnsafeSupportLoggingEnabled())
                 .authority(authorityUrl)
                 .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
@@ -287,7 +287,7 @@ public abstract class IdentityClientBase {
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
             builder = builder
-                .logPii(options.isSupportLoggingEnabled())
+                .logPii(options.isUnsafeSupportLoggingEnabled())
                 .authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
@@ -351,7 +351,7 @@ public abstract class IdentityClientBase {
         applicationBuilder
             .instanceDiscovery(false)
             .validateAuthority(false)
-            .logPii(options.isSupportLoggingEnabled());
+            .logPii(options.isUnsafeSupportLoggingEnabled());
 
         try {
             applicationBuilder = applicationBuilder.authority(authorityUrl);
@@ -408,7 +408,7 @@ public abstract class IdentityClientBase {
 
         try {
             applicationBuilder = applicationBuilder.authority(authorityUrl)
-                .logPii(options.isSupportLoggingEnabled())
+                .logPii(options.isUnsafeSupportLoggingEnabled())
                 .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
@@ -485,12 +485,12 @@ public abstract class IdentityClientBase {
 
         if (IdentityUtil.browserCustomizationOptionsPresent(browserCustomizationOptions)) {
             SystemBrowserOptions.SystemBrowserOptionsBuilder browserOptionsBuilder =  SystemBrowserOptions.builder();
-            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getHtmlMessageSuccess())) {
-                browserOptionsBuilder.htmlMessageSuccess(browserCustomizationOptions.getHtmlMessageSuccess());
+            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage())) {
+                browserOptionsBuilder.htmlMessageSuccess(browserCustomizationOptions.getSuccessMessage());
             }
 
-            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getHtmlMessageError())) {
-                browserOptionsBuilder.htmlMessageError(browserCustomizationOptions.getHtmlMessageError());
+            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())) {
+                browserOptionsBuilder.htmlMessageError(browserCustomizationOptions.getErrorMessage());
             }
             builder.systemBrowserOptions(browserOptionsBuilder.build());
         }
