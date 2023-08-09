@@ -24,6 +24,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -31,9 +32,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -597,13 +598,13 @@ public class SecretClientImpl {
     }
 
     /**
-     * Polling operation to poll on the delete secret operation status.
+     * Async polling operation to poll on the delete secret operation status.
      */
     private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperationAsync(String keyName) {
-        return pollingContext ->
-            withContext(context -> service.getDeletedSecretPollerAsync(vaultUrl, keyName,
-                secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context))
+        return (pollingContext) ->
+            withContext(context ->
+                service.getDeletedSecretPollerAsync(vaultUrl, keyName, secretServiceVersion.getVersion(),
+                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(deletedSecretResponse -> {
                     if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() ->
@@ -623,17 +624,17 @@ public class SecretClientImpl {
     }
 
     /**
-     * Polling operation to poll on the delete secret operation status.
+     * Sync polling operation to poll on the delete secret operation status.
      */
     private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> createPollOperation(String keyName,
                                                                                                      Context context) {
-
-        return pollingContext -> {
+        return (pollingContext) -> {
             try {
-                Context contextToUse = context;
+                Context contextToUse = context == null ? Context.NONE : context;
                 contextToUse = enableSyncRestProxy(contextToUse);
                 Response<DeletedSecret> deletedSecretResponse = service.getDeletedSecretPoller(vaultUrl, keyName,
                     secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, contextToUse);
+
                 if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue());
@@ -660,9 +661,11 @@ public class SecretClientImpl {
     }
 
     private Response<DeletedSecret> deleteSecretWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
+
         return service.deleteSecret(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context);
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponseAsync(String name, Context context) {
@@ -699,22 +702,35 @@ public class SecretClientImpl {
 
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecretAsync(String name) {
         return new PollerFlux<>(getDefaultPollingInterval(),
-            recoverActivationOperation(name),
-            createRecoverPollOperation(name),
+            recoverActivationOperationAsync(name),
+            createRecoverPollOperationAsync(name),
             (pollerContext, firstResponse) -> Mono.empty(),
             (pollingContext) -> Mono.empty());
     }
 
-    private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
-        return (pollingContext) -> withContext(context -> recoverDeletedSecretWithResponseAsync(name,
-            context)).flatMap(keyResponse -> Mono.just(keyResponse.getValue()));
+    public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name, Context context) {
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                recoverActivationOperation(name, context).apply(cxt)),
+            createRecoverPollOperation(name, context),
+            (pollingContext, firstResponse) -> null,
+            (pollingContext) -> null);
+    }
+
+    private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperationAsync(String name) {
+        return (pollingContext) -> withContext(context -> recoverDeletedSecretWithResponseAsync(name, context))
+            .flatMap(keyResponse -> Mono.just(keyResponse.getValue()));
+    }
+
+    private Function<PollingContext<KeyVaultSecret>, KeyVaultSecret> recoverActivationOperation(String name, Context context) {
+        return (pollingContext) -> recoverDeletedSecretWithResponse(name, context).getValue();
     }
 
     /*
-     * Polling operation to poll on the recover deleted secret operation status.
+     * Async polling operation to poll on the recover deleted secret operation status.
      */
-    private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperation(String secretName) {
-        return pollingContext ->
+    private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperationAsync(String secretName) {
+        return (pollingContext) ->
             withContext(context ->
                 service.getSecretPollerAsync(vaultUrl, secretName, "", secretServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
@@ -735,12 +751,48 @@ public class SecretClientImpl {
                     pollingContext.getLatestResponse().getValue()));
     }
 
+    /**
+     * Sync polling operation to poll on the delete secret operation status.
+     */
+    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> createRecoverPollOperation(String secretName, Context context) {
+        return (pollingContext) -> {
+            try {
+                Context contextToUse = context == null ? Context.NONE : context;
+                contextToUse = enableSyncRestProxy(contextToUse);
+                Response<KeyVaultSecret> secretResponse =
+                    service.getSecretPoller(vaultUrl, secretName, "", secretServiceVersion.getVersion(),
+                        ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, contextToUse);
+
+                if (secretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    secretResponse.getValue());
+            } catch (HttpResponseException e) {
+                // This means permission is not granted for the get deleted key operation. In both cases the deletion
+                // operation was successful when activation operation succeeded before reaching here.
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue());
+            }
+        };
+    }
+
     private Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponseAsync(String name, Context context) {
         return service.recoverDeletedSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Recovering deleted secret - {}", name))
             .doOnSuccess(response -> LOGGER.verbose("Recovered deleted secret - {}", response.getValue().getName()))
             .doOnError(error -> LOGGER.warning("Failed to recover deleted secret - {}", name, error));
+    }
+
+    private Response<KeyVaultSecret> recoverDeletedSecretWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.recoverDeletedSecret(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<byte[]>> backupSecretWithResponseAsync(String name, Context context) {
@@ -784,20 +836,14 @@ public class SecretClientImpl {
             CONTENT_TYPE_HEADER_VALUE, context);
     }
 
-    public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
+    public PagedFlux<SecretProperties> listPropertiesOfSecretsAsync() {
         try {
             return new PagedFlux<>(
-                () -> withContext(this::listSecretsFirstPage),
-                continuationToken -> withContext(context -> listSecretsNextPage(continuationToken, context)));
+                () -> withContext(this::listSecretsFirstPageAsync),
+                continuationToken -> withContext(context -> listSecretsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
-    }
-
-    public PagedFlux<SecretProperties> listPropertiesOfSecrets(Context context) {
-        return new PagedFlux<>(
-            () -> listSecretsFirstPage(context),
-            continuationToken -> listSecretsNextPage(continuationToken, context));
     }
 
     /**
@@ -809,7 +855,7 @@ public class SecretClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
      * of results.
      */
-    private Mono<PagedResponse<SecretProperties>> listSecretsFirstPage(Context context) {
+    private Mono<PagedResponse<SecretProperties>> listSecretsFirstPageAsync(Context context) {
         try {
             return service.getSecretsAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, secretServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -822,8 +868,8 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClientImpl#listPropertiesOfSecrets()}.
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
+     * {@link SecretClientImpl#listPropertiesOfSecretsAsync()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
      * of the list operations.
@@ -831,7 +877,7 @@ public class SecretClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
      * of results.
      */
-    private Mono<PagedResponse<SecretProperties>> listSecretsNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<SecretProperties>> listSecretsNextPageAsync(String continuationToken, Context context) {
         try {
             return service.getSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -845,20 +891,59 @@ public class SecretClientImpl {
         }
     }
 
-    public PagedFlux<DeletedSecret> listDeletedSecrets() {
+    public PagedIterable<SecretProperties> listPropertiesOfSecrets() {
+        return new PagedIterable<>(
+            () -> listSecretsFirstPage(Context.NONE),
+            continuationToken -> listSecretsNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<SecretProperties> listPropertiesOfSecrets(Context context) {
+        return new PagedIterable<>(
+            () -> listSecretsFirstPage(context),
+            continuationToken -> listSecretsNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 secrets that can be found on a given key vault.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link PagedResponse} containing {@link SecretProperties} instances from the next page of results.
+     */
+    private PagedResponse<SecretProperties> listSecretsFirstPage(Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getSecrets(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, secretServiceVersion.getVersion(),
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
+     * {@link SecretClientImpl#listPropertiesOfSecrets(Context)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
+     *
+     * @return A {@link PagedResponse} containing {@link SecretProperties} instances from the next page of results.
+     */
+    private PagedResponse<SecretProperties> listSecretsNextPage(String continuationToken, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public PagedFlux<DeletedSecret> listDeletedSecretsAsync() {
         try {
             return new PagedFlux<>(
-                () -> withContext(this::listDeletedSecretsFirstPage),
-                continuationToken -> withContext(context -> listDeletedSecretsNextPage(continuationToken, context)));
+                () -> withContext(this::listDeletedSecretsFirstPageAsync),
+                continuationToken ->
+                    withContext(context -> listDeletedSecretsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
-    }
-
-    public PagedFlux<DeletedSecret> listDeletedSecrets(Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedSecretsFirstPage(context),
-            continuationToken -> listDeletedSecretsNextPage(continuationToken, context));
     }
 
     /**
@@ -870,7 +955,7 @@ public class SecretClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
      * of results.
      */
-    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage(Context context) {
+    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPageAsync(Context context) {
         try {
             return service.getDeletedSecretsAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, secretServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -883,8 +968,8 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClientImpl#listDeletedSecrets()}.
+     * Gets attributes of all the secrets given by the {@code continuationToken} that was retrieved from a call to
+     * {@link SecretClientImpl#listDeletedSecretsAsync()}.
      *
      * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
      * list operations.
@@ -892,7 +977,8 @@ public class SecretClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} that contains {@link DeletedSecret} from the next page of
      * results.
      */
-    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPageAsync(String continuationToken,
+                                                                               Context context) {
         try {
             return service.getDeletedSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
                     CONTENT_TYPE_HEADER_VALUE, context)
@@ -908,20 +994,53 @@ public class SecretClientImpl {
         }
     }
 
-    public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
+    public PagedIterable<DeletedSecret> listDeletedSecrets() {
+        return new PagedIterable<>(
+            () -> listDeletedSecretsFirstPage(Context.NONE),
+            continuationToken -> listDeletedSecretsNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<DeletedSecret> listDeletedSecrets(Context context) {
+        return new PagedIterable<>(
+            () -> listDeletedSecretsFirstPage(context),
+            continuationToken -> listDeletedSecretsNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 deleted secrets that can be found on a given key vault.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link PagedResponse} containing {@link SecretProperties} instances from the next page of results.
+     */
+    private PagedResponse<DeletedSecret> listDeletedSecretsFirstPage(Context context) {
+        return service.getDeletedSecrets(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, secretServiceVersion.getVersion(),
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of all the secrets given by the {@code continuationToken} that was retrieved from a call to
+     * {@link SecretClientImpl#listDeletedSecrets()}.
+     *
+     * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
+     * list operations.
+     *
+     * @return A {@link PagedResponse} that contains {@link DeletedSecret} from the next page of results.
+     */
+    private PagedResponse<DeletedSecret> listDeletedSecretsNextPage(String continuationToken, Context context) {
+        return service.getDeletedSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public PagedFlux<SecretProperties> listPropertiesOfSecretVersionsAsync(String name) {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listSecretVersionsFirstPage(name, context)),
-                continuationToken -> withContext(context -> listSecretVersionsNextPage(continuationToken, context)));
+                () -> withContext(context -> listSecretVersionsFirstPageAsync(name, context)),
+                continuationToken -> withContext(context -> listSecretVersionsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
-    }
-
-    public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
-        return new PagedFlux<>(
-            () -> listSecretVersionsFirstPage(name, context),
-            continuationToken -> listSecretVersionsNextPage(continuationToken, context));
     }
 
     /**
@@ -933,7 +1052,7 @@ public class SecretClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
      * of results.
      */
-    private Mono<PagedResponse<SecretProperties>> listSecretVersionsFirstPage(String name, Context context) {
+    private Mono<PagedResponse<SecretProperties>> listSecretVersionsFirstPageAsync(String name, Context context) {
         try {
             return service.getSecretVersionsAsync(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS,
                     secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
@@ -947,8 +1066,8 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretClientImpl#listPropertiesOfSecretVersions(String)}.
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
+     * {@link SecretClientImpl#listPropertiesOfSecretVersionsAsync(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
      * of the list operations.
@@ -956,7 +1075,8 @@ public class SecretClientImpl {
      * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
      * of results.
      */
-    private Mono<PagedResponse<SecretProperties>> listSecretVersionsNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<SecretProperties>> listSecretVersionsNextPageAsync(String continuationToken, Context
+        context) {
         try {
             return service.getSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -970,6 +1090,50 @@ public class SecretClientImpl {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name) {
+        return new PagedIterable<>(
+            () -> listSecretVersionsFirstPage(name, Context.NONE),
+            continuationToken -> listSecretVersionsNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
+        return new PagedIterable<>(
+            () -> listSecretVersionsFirstPage(name, context),
+            continuationToken -> listSecretVersionsNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 versions of a secret.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link PagedResponse} containing {@link SecretProperties} instances from the next page of results.
+     */
+    private PagedResponse<SecretProperties> listSecretVersionsFirstPage(String name, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getSecretVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, secretServiceVersion.getVersion(),
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
+     * {@link SecretClientImpl#listPropertiesOfSecretVersions(String)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
+     *
+     * @return A {@link PagedResponse} containing {@link SecretProperties} instances from the next page of results.
+     */
+    private PagedResponse<SecretProperties> listSecretVersionsNextPage(String continuationToken, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     private Context enableSyncRestProxy(Context context) {

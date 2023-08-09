@@ -4,10 +4,11 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.PartitionKey;
 
-public class FlushBuffersItemOperation extends CosmosItemOperationBase {
+public class FlushBuffersItemOperation extends CosmosItemOperationBase implements Comparable<CosmosItemOperation> {
     private static final String fixedId = "FlushBuffersItemOperation_7fea4e74-bcbb-4d86-aea1-3ef270e574aa";
     private static final FlushBuffersItemOperation singletonInstance = new FlushBuffersItemOperation();
 
@@ -46,5 +47,20 @@ public class FlushBuffersItemOperation extends CosmosItemOperationBase {
 
     public static FlushBuffersItemOperation singleton() {
         return singletonInstance;
+    }
+
+    @Override
+    public int compareTo(CosmosItemOperation operation) {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

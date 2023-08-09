@@ -15,7 +15,7 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
-import com.azure.ai.openai.models.ImageOperationStatus;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -24,18 +24,47 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClient.class);
+
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
+    }
 
     /**
      * Return the embeddings for a given prompt.
@@ -71,7 +100,8 @@ public final class OpenAIClient {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -86,10 +116,11 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(
-            String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions)
-                : serviceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions);
+                ? openAIServiceClient.getEmbeddingsWithResponse(
+                        deploymentOrModelName, embeddingsOptions, requestOptions)
+                : serviceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -161,7 +192,8 @@ public final class OpenAIClient {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -174,10 +206,11 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
-            String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions)
-                : serviceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
+                ? openAIServiceClient.getCompletionsWithResponse(
+                        deploymentOrModelName, completionsOptions, requestOptions)
+                : serviceClient.getCompletionsWithResponse(deploymentOrModelName, completionsOptions, requestOptions);
     }
 
     /**
@@ -240,7 +273,8 @@ public final class OpenAIClient {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -253,17 +287,19 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(
-            String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
                 ? openAIServiceClient.getChatCompletionsWithResponse(
-                        deploymentId, chatCompletionsOptions, requestOptions)
-                : serviceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions);
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions)
+                : serviceClient.getChatCompletionsWithResponse(
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
     /**
      * Return the embeddings for a given prompt.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -278,10 +314,11 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Embeddings getEmbeddings(String deploymentId, EmbeddingsOptions embeddingsOptions) {
+    public Embeddings getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(deploymentId, BinaryData.fromObject(embeddingsOptions), requestOptions)
+        return getEmbeddingsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
                 .getValue()
                 .toObject(Embeddings.class);
     }
@@ -290,7 +327,8 @@ public final class OpenAIClient {
      * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,10 +342,11 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Completions getCompletions(String deploymentId, CompletionsOptions completionsOptions) {
+    public Completions getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
+        return getCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
                 .getValue()
                 .toObject(Completions.class);
     }
@@ -316,7 +355,8 @@ public final class OpenAIClient {
      * Gets completions for the provided input prompt. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param prompt The prompt to generate completion text from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -328,15 +368,16 @@ public final class OpenAIClient {
      *     that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Completions getCompletions(String deploymentId, String prompt) {
-        return getCompletions(deploymentId, CompletionsUtils.defaultCompletionsOptions(prompt));
+    public Completions getCompletions(String deploymentOrModelName, String prompt) {
+        return getCompletions(deploymentOrModelName, CompletionsUtils.defaultCompletionsOptions(prompt));
     }
 
     /**
      * Gets completions as a stream for the provided input prompts. Completions support a wide variety of tasks and
      * generate text that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,11 +391,12 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<Completions> getCompletionsStream(
-            String deploymentId, CompletionsOptions completionsOptions) {
+            String deploymentOrModelName, CompletionsOptions completionsOptions) {
         completionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream =
-                getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
+                getCompletionsWithResponse(
+                                deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
                         .getValue()
                         .toFluxByteBuffer();
         OpenAIServerSentEvents<Completions> completionsStream =
@@ -366,7 +408,8 @@ public final class OpenAIClient {
      * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      * text that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -380,11 +423,12 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatCompletions getChatCompletions(String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
+    public ChatCompletions getChatCompletions(
+            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getChatCompletionsWithResponse(
-                        deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                 .getValue()
                 .toObject(ChatCompletions.class);
     }
@@ -393,7 +437,8 @@ public final class OpenAIClient {
      * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
      * generate text that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -407,12 +452,12 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<ChatCompletions> getChatCompletionsStream(
-            String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
+            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream =
                 getChatCompletionsWithResponse(
-                                deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                         .getValue()
                         .toFluxByteBuffer();
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
@@ -420,77 +465,50 @@ public final class OpenAIClient {
         return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
     }
 
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
     /**
-     * Initializes an instance of OpenAIClient class.
+     * Starts the generation of a batch of images from a text caption.
      *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
-        this.serviceClient = null;
-        openAIServiceClient = serviceClient;
-    }
-
-    /**
-     * Returns the status of the images operation.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
-     *         ]
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed/deleted) (Required)
-     *     error (Optional): (recursive schema, see error above)
-     * }
-     * }</pre>
-     *
-     * @param operationId .
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response}.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ImageResponse} for the image generation result.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getImageOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getImageOperationStatusWithResponse(operationId, requestOptions);
+    public ImageResponse getImages(ImageGenerationOptions imageGenerationOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        if (openAIServiceClient != null) {
+            return openAIServiceClient
+                    .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
+                    .getValue()
+                    .toObject(ImageResponse.class);
+        } else {
+            // TODO: Currently, we use async client block() to avoid a unknown LRO status "notRunning" which Azure Core
+            // will
+            //       fix the issue in August release and we will reuse the method
+            //       "SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration()" after.
+            try {
+                return this.serviceClient
+                        .beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData, requestOptions)
+                        .last()
+                        .flatMap(it -> it.getFinalResult())
+                        .map(it -> it.toObject(ImageOperationResponse.class).getResult())
+                        .block();
+            } catch (Exception e) {
+                Throwable unwrapped = Exceptions.unwrap(e);
+                if (unwrapped instanceof RuntimeException) {
+                    throw LOGGER.logExceptionAsError((RuntimeException) unwrapped);
+                } else if (unwrapped instanceof IOException) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) unwrapped));
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(unwrapped));
+                }
+            }
+        }
     }
 
     /**
@@ -503,6 +521,7 @@ public final class OpenAIClient {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -538,52 +557,8 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStartGenerateImage(
+    SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.beginStartGenerateImage(imageGenerationOptions, requestOptions);
-    }
-
-    /**
-     * Returns the status of the images operation.
-     *
-     * @param operationId .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the operation if the operation succeeded.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageOperationResponse getImageOperationStatus(String operationId) {
-        // Generated convenience method for getImageOperationStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getImageOperationStatusWithResponse(operationId, requestOptions)
-                .getValue()
-                .toObject(ImageOperationResponse.class);
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status details for long running operations.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, ImageOperationStatus> beginStartGenerateImage(
-            ImageGenerationOptions imageGenerationOptions) {
-        // Generated convenience method for beginStartGenerateImageWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginStartGenerateImageWithModel(
-                BinaryData.fromObject(imageGenerationOptions), requestOptions);
+        return this.serviceClient.beginBeginAzureBatchImageGeneration(imageGenerationOptions, requestOptions);
     }
 }

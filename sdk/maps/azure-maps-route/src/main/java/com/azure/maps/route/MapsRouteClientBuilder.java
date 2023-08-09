@@ -3,12 +3,6 @@
 
 package com.azure.maps.route;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -38,6 +32,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.route.implementation.RouteClientImpl;
 import com.azure.maps.route.implementation.RouteClientImplBuilder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Builder class used to instantiate both synchronous and asynchronous {@link MapsRouteClient} clients.
@@ -86,9 +86,10 @@ public final class MapsRouteClientBuilder implements AzureKeyCredentialTrait<Map
     private static final ClientLogger LOGGER = new ClientLogger(MapsRouteClientBuilder.class);
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+
     //subscription-key
+    static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
 
     // instance fields
     private final Map<String, String> properties = new HashMap<>();
@@ -167,7 +168,7 @@ public final class MapsRouteClientBuilder implements AzureKeyCredentialTrait<Map
     public MapsRouteClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("Pipeline is being set to 'null' when it was previously configured.");
-    
+
         }
         this.pipeline = pipeline;
         return this;
@@ -183,7 +184,7 @@ public final class MapsRouteClientBuilder implements AzureKeyCredentialTrait<Map
     public MapsRouteClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
-    
+
         }
         this.httpClient = httpClient;
         return this;

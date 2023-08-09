@@ -62,8 +62,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     public interface VirtualMachinesService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/listHosts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/listHosts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<HostInfoInner>>> listHosts(
@@ -77,8 +76,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/restartHosts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/restartHosts")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restartHosts(
@@ -93,8 +91,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/restartHosts/azureasyncoperations/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/restartHosts/azureasyncoperations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AsyncOperationResultInner>> getAsyncOperationStatus(
@@ -414,7 +411,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestartHosts(
         String resourceGroupName, String clusterName, List<String> hosts) {
-        return beginRestartHostsAsync(resourceGroupName, clusterName, hosts).getSyncPoller();
+        return this.beginRestartHostsAsync(resourceGroupName, clusterName, hosts).getSyncPoller();
     }
 
     /**
@@ -432,7 +429,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestartHosts(
         String resourceGroupName, String clusterName, List<String> hosts, Context context) {
-        return beginRestartHostsAsync(resourceGroupName, clusterName, hosts, context).getSyncPoller();
+        return this.beginRestartHostsAsync(resourceGroupName, clusterName, hosts, context).getSyncPoller();
     }
 
     /**

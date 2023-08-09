@@ -1,6 +1,6 @@
 # Release History
 
-## 12.23.0-beta.2 (Unreleased)
+## 12.24.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.24.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added RehydratePendingToCold value to ArchiveStatus enum.
+
+## 12.23.0 (2023-07-11)
+
+### Features Added
+- Added support for the `2023-01-03` service version.
+- Content length limit for `AppendBlobClient.appendBlock()` raised from 4 MiB to 100 MiB.
 
 ## 12.22.3 (2023-06-14)
 

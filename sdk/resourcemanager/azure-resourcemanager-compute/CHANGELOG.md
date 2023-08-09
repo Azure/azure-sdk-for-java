@@ -1,17 +1,29 @@
 # Release History
 
-## 2.28.0-beta.1 (Unreleased)
+## 2.30.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported `withLogicalSectorSizeInBytes` in `Disk`.
-- Supported `PREMIUM_V2_LRS` in `DiskSkuTypes`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.29.0 (2023-07-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.28.0 (2023-06-25)
+
+### Features Added
+
+- Supported `withLogicalSectorSizeInBytes` in `Disk`.
+- Supported `PREMIUM_V2_LRS` in `DiskSkuTypes`.
 
 ## 2.27.0 (2023-05-25)
 

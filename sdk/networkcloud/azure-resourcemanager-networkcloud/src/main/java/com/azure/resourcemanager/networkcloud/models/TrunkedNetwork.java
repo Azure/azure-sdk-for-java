@@ -66,6 +66,14 @@ public interface TrunkedNetwork {
     SystemData systemData();
 
     /**
+     * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    List<String> associatedResourceIds();
+
+    /**
      * Gets the clusterId property: The resource ID of the Network Cloud cluster this trunked network is associated
      * with.
      *
@@ -88,15 +96,16 @@ public interface TrunkedNetwork {
     String detailedStatusMessage();
 
     /**
-     * Gets the hybridAksClustersAssociatedIds property: The list of Hybrid AKS cluster resource IDs that are associated
-     * with this trunked network.
+     * Gets the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of Hybrid AKS cluster resource IDs that are associated with this trunked network.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
     List<String> hybridAksClustersAssociatedIds();
 
     /**
-     * Gets the hybridAksPluginType property: The network plugin type for Hybrid AKS.
+     * Gets the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
      *
      * @return the hybridAksPluginType value.
      */
@@ -126,8 +135,9 @@ public interface TrunkedNetwork {
     TrunkedNetworkProvisioningState provisioningState();
 
     /**
-     * Gets the virtualMachinesAssociatedIds property: The list of virtual machine resource IDs, excluding any Hybrid
-     * AKS virtual machines, that are currently using this trunked network.
+     * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this trunked
+     * network.
      *
      * @return the virtualMachinesAssociatedIds value.
      */
@@ -285,9 +295,11 @@ public interface TrunkedNetwork {
         /** The stage of the TrunkedNetwork definition allowing to specify hybridAksPluginType. */
         interface WithHybridAksPluginType {
             /**
-             * Specifies the hybridAksPluginType property: The network plugin type for Hybrid AKS..
+             * Specifies the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it
+             * will have no defined behavior and will be ignored. The network plugin type for Hybrid AKS..
              *
-             * @param hybridAksPluginType The network plugin type for Hybrid AKS.
+             * @param hybridAksPluginType Field Deprecated. The field was previously optional, now it will have no
+             *     defined behavior and will be ignored. The network plugin type for Hybrid AKS.
              * @return the next definition stage.
              */
             WithCreate withHybridAksPluginType(HybridAksPluginType hybridAksPluginType);

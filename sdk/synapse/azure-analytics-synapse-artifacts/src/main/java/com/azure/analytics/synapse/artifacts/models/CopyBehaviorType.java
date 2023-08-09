@@ -20,6 +20,14 @@ public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorTyp
     public static final CopyBehaviorType MERGE_FILES = fromString("MergeFiles");
 
     /**
+     * Creates a new instance of CopyBehaviorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CopyBehaviorType() {}
+
+    /**
      * Creates or finds a CopyBehaviorType from its string representation.
      *
      * @param name a name to look for.

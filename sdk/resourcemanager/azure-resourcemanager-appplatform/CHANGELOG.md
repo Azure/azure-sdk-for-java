@@ -1,6 +1,6 @@
 # Release History
 
-## 2.28.0-beta.1 (Unreleased)
+## 2.30.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed `SpringApp` creation failure for some pricing tiers with default settings.
+- Fixed a bug that calling `withActivation` multiple times during `SpringAppDeployment` creation would result in
+  multiple REST API calls.
+
+## 2.29.0-beta.1 (2023-07-21)
+
+- Use preview `api-version` `2023-03-01-preview`.
+
+## 2.28.0 (2023-06-25)
+
+### Breaking Changes
+
+- Removed `withFqdn` from `AppResourceProperties` as it's never functional in the backend.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-12-01`.
 
 ## 2.27.0 (2023-05-25)
 

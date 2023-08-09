@@ -20,7 +20,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
@@ -129,7 +129,7 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
                 .withExistingPrimaryNetworkInterface(networkInterface)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("testuser")
-                .withRootPassword(ResourceManagerTestBase.password())
+                .withRootPassword(ResourceManagerTestProxyTestBase.password())
                 .withExistingDataDisk(disk)
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .beginCreate();

@@ -11,6 +11,7 @@ import com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount
 import com.azure.search.documents.indexes.models.EntityCategory;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillVersion;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkill;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
 import com.azure.search.documents.indexes.models.ImageDetail;
@@ -26,6 +27,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SentimentSkill;
 import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
+import com.azure.search.documents.indexes.models.SentimentSkillVersion;
 import com.azure.search.documents.indexes.models.ShaperSkill;
 import com.azure.search.documents.indexes.models.SplitSkill;
 import com.azure.search.documents.indexes.models.SplitSkillLanguage;
@@ -1090,8 +1092,8 @@ public class SkillsetManagementTests extends SearchTestBase {
             .setContext(CONTEXT_VALUE));
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
-        outputs = Collections.singletonList(createOutputFieldMappingEntry("entities", "myEntities"));
-        skills.add(new EntityRecognitionSkill(inputs, outputs)
+        outputs = Collections.singletonList(createOutputFieldMappingEntry("namedEntities", "myEntities"));
+        skills.add(new EntityRecognitionSkill(inputs, outputs, EntityRecognitionSkillVersion.V3)
             .setCategories(categories)
             .setDefaultLanguageCode(EntityRecognitionSkillLanguage.EN)
             .setMinimumPrecision(0.5)
@@ -1120,8 +1122,8 @@ public class SkillsetManagementTests extends SearchTestBase {
             .setContext(CONTEXT_VALUE));
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
-        outputs = Collections.singletonList(createOutputFieldMappingEntry("score", "mySentiment"));
-        skills.add(new SentimentSkill(inputs, outputs)
+        outputs = Collections.singletonList(createOutputFieldMappingEntry("confidenceScores", "mySentiment"));
+        skills.add(new SentimentSkill(inputs, outputs, SentimentSkillVersion.V3)
             .setDefaultLanguageCode(sentimentLanguageCode)
             .setName("mysentiment")
             .setDescription("Tested Sentiment skill")
@@ -1298,10 +1300,10 @@ public class SkillsetManagementTests extends SearchTestBase {
             .singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs = Collections
-            .singletonList(createOutputFieldMappingEntry("score", "mySentiment"));
+            .singletonList(createOutputFieldMappingEntry("confidenceScores", "mySentiment"));
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
-            new SentimentSkill(inputs, outputs)
+            new SentimentSkill(inputs, outputs, SentimentSkillVersion.V3)
                 .setName("mysentiment")
                 .setDescription("Tested Sentiment skill")
                 .setContext(CONTEXT_VALUE)
@@ -1316,10 +1318,10 @@ public class SkillsetManagementTests extends SearchTestBase {
             .singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs = Collections
-            .singletonList(createOutputFieldMappingEntry("entities", "myEntities"));
+            .singletonList(createOutputFieldMappingEntry("namedEntities", "myEntities"));
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
-            new EntityRecognitionSkill(inputs, outputs)
+            new EntityRecognitionSkill(inputs, outputs, EntityRecognitionSkillVersion.V3)
                 .setName("myentity")
                 .setDescription("Tested Entity Recognition skill")
                 .setContext(CONTEXT_VALUE)

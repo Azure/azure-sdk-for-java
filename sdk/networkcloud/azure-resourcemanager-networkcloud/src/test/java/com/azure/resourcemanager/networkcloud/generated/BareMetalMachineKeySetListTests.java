@@ -21,16 +21,16 @@ public final class BareMetalMachineKeySetListTests {
         BareMetalMachineKeySetList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"t\",\"value\":[{\"extendedLocation\":{\"name\":\"vopvp\",\"type\":\"dbzqgqqihed\"},\"properties\":{\"azureGroupId\":\"vqwt\",\"detailedStatus\":\"AllActive\",\"detailedStatusMessage\":\"ibcysihsgqc\",\"expiration\":\"2021-01-02T11:43:38Z\",\"jumpHostsAllowed\":[],\"lastValidation\":\"2021-08-30T04:21:25Z\",\"osGroupName\":\"sdtmcdzs\",\"privilegeLevel\":\"Superuser\",\"provisioningState\":\"Canceled\",\"userList\":[],\"userListStatus\":[]},\"location\":\"xbzlmc\",\"tags\":{\"onqzinkfkbgbzbow\":\"pcvhdbevwqqxeys\",\"qkjjeokbz\":\"eqocljmygvk\"},\"id\":\"fezrx\",\"name\":\"czurtlei\",\"type\":\"q\"}]}")
+                    "{\"nextLink\":\"bpmzzn\",\"value\":[{\"extendedLocation\":{\"name\":\"fyaqitm\",\"type\":\"heioqa\"},\"properties\":{\"azureGroupId\":\"hvseufuqyrx\",\"detailedStatus\":\"AllInvalid\",\"detailedStatusMessage\":\"gql\",\"expiration\":\"2021-06-26T18:12:50Z\",\"jumpHostsAllowed\":[],\"lastValidation\":\"2021-03-25T09:48:32Z\",\"osGroupName\":\"qfrddgam\",\"privilegeLevel\":\"Superuser\",\"provisioningState\":\"Provisioning\",\"userList\":[],\"userListStatus\":[]},\"location\":\"rsjuivfcdisyir\",\"tags\":{\"xrxzbujrtr\":\"hcz\",\"khgn\":\"qvwre\",\"piqywnc\":\"nzonzl\",\"zehtdhgb\":\"jtszcof\"},\"id\":\"k\",\"name\":\"reljeamur\",\"type\":\"zmlovuanash\"}]}")
                 .toObject(BareMetalMachineKeySetList.class);
-        Assertions.assertEquals("t", model.nextLink());
-        Assertions.assertEquals("xbzlmc", model.value().get(0).location());
-        Assertions.assertEquals("pcvhdbevwqqxeys", model.value().get(0).tags().get("onqzinkfkbgbzbow"));
-        Assertions.assertEquals("vopvp", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("dbzqgqqihed", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("vqwt", model.value().get(0).azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T11:43:38Z"), model.value().get(0).expiration());
-        Assertions.assertEquals("sdtmcdzs", model.value().get(0).osGroupName());
+        Assertions.assertEquals("bpmzzn", model.nextLink());
+        Assertions.assertEquals("rsjuivfcdisyir", model.value().get(0).location());
+        Assertions.assertEquals("hcz", model.value().get(0).tags().get("xrxzbujrtr"));
+        Assertions.assertEquals("fyaqitm", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("heioqa", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("hvseufuqyrx", model.value().get(0).azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T18:12:50Z"), model.value().get(0).expiration());
+        Assertions.assertEquals("qfrddgam", model.value().get(0).osGroupName());
         Assertions.assertEquals(BareMetalMachineKeySetPrivilegeLevel.SUPERUSER, model.value().get(0).privilegeLevel());
     }
 
@@ -38,29 +38,38 @@ public final class BareMetalMachineKeySetListTests {
     public void testSerialize() throws Exception {
         BareMetalMachineKeySetList model =
             new BareMetalMachineKeySetList()
-                .withNextLink("t")
+                .withNextLink("bpmzzn")
                 .withValue(
                     Arrays
                         .asList(
                             new BareMetalMachineKeySetInner()
-                                .withLocation("xbzlmc")
-                                .withTags(mapOf("onqzinkfkbgbzbow", "pcvhdbevwqqxeys", "qkjjeokbz", "eqocljmygvk"))
-                                .withExtendedLocation(new ExtendedLocation().withName("vopvp").withType("dbzqgqqihed"))
-                                .withAzureGroupId("vqwt")
-                                .withExpiration(OffsetDateTime.parse("2021-01-02T11:43:38Z"))
+                                .withLocation("rsjuivfcdisyir")
+                                .withTags(
+                                    mapOf(
+                                        "xrxzbujrtr",
+                                        "hcz",
+                                        "khgn",
+                                        "qvwre",
+                                        "piqywnc",
+                                        "nzonzl",
+                                        "zehtdhgb",
+                                        "jtszcof"))
+                                .withExtendedLocation(new ExtendedLocation().withName("fyaqitm").withType("heioqa"))
+                                .withAzureGroupId("hvseufuqyrx")
+                                .withExpiration(OffsetDateTime.parse("2021-06-26T18:12:50Z"))
                                 .withJumpHostsAllowed(Arrays.asList())
-                                .withOsGroupName("sdtmcdzs")
+                                .withOsGroupName("qfrddgam")
                                 .withPrivilegeLevel(BareMetalMachineKeySetPrivilegeLevel.SUPERUSER)
                                 .withUserList(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(BareMetalMachineKeySetList.class);
-        Assertions.assertEquals("t", model.nextLink());
-        Assertions.assertEquals("xbzlmc", model.value().get(0).location());
-        Assertions.assertEquals("pcvhdbevwqqxeys", model.value().get(0).tags().get("onqzinkfkbgbzbow"));
-        Assertions.assertEquals("vopvp", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("dbzqgqqihed", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("vqwt", model.value().get(0).azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T11:43:38Z"), model.value().get(0).expiration());
-        Assertions.assertEquals("sdtmcdzs", model.value().get(0).osGroupName());
+        Assertions.assertEquals("bpmzzn", model.nextLink());
+        Assertions.assertEquals("rsjuivfcdisyir", model.value().get(0).location());
+        Assertions.assertEquals("hcz", model.value().get(0).tags().get("xrxzbujrtr"));
+        Assertions.assertEquals("fyaqitm", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("heioqa", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("hvseufuqyrx", model.value().get(0).azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T18:12:50Z"), model.value().get(0).expiration());
+        Assertions.assertEquals("qfrddgam", model.value().get(0).osGroupName());
         Assertions.assertEquals(BareMetalMachineKeySetPrivilegeLevel.SUPERUSER, model.value().get(0).privilegeLevel());
     }
 

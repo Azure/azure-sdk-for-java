@@ -318,7 +318,8 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the network property: Network properties of a server.
+     * Get the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @return the network value.
      */
@@ -327,7 +328,8 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the network property: Network properties of a server.
+     * Set the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @param network the network value to set.
      * @return the ServerInner object itself.
@@ -388,7 +390,8 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -398,7 +401,8 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerInner object itself.
@@ -413,7 +417,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -423,7 +427,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerInner object itself.
@@ -489,20 +493,6 @@ public final class ServerInner extends Resource {
      */
     public Integer replicaCapacity() {
         return this.innerProperties() == null ? null : this.innerProperties().replicaCapacity();
-    }
-
-    /**
-     * Set the replicaCapacity property: Replicas allowed for a server.
-     *
-     * @param replicaCapacity the replicaCapacity value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withReplicaCapacity(Integer replicaCapacity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerProperties();
-        }
-        this.innerProperties().withReplicaCapacity(replicaCapacity);
-        return this;
     }
 
     /**

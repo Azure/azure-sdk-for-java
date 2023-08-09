@@ -11,6 +11,7 @@ steps:
       key: 'jdk | "1.${{ parameters.LatestJdkFeatureVersion }}" | "$(CacheSalt)" | "$(Agent.OS)"'
       path: $(Agent.BuildDirectory)/jdk-${{ parameters.LatestJdkFeatureVersion }}
     displayName: 'Cache Latest JDK'
+    condition: eq(variables['IsLatestNonLtsJdk'], 'true')
 
   - task: PowerShell@2
     displayName: 'Install Latest JDK'
@@ -20,6 +21,7 @@ steps:
         -JdkFeatureVersion ${{ parameters.LatestJdkFeatureVersion }}
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
+    condition: eq(variables['IsLatestNonLtsJdk'], 'true')
 
   - pwsh: |
       Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
@@ -27,3 +29,4 @@ steps:
       Write-Host "Java 17 JDK: $Env:JAVA_HOME_17_X64"
       Write-Host "Latest JDK: $Env:JAVA_HOME_${{ parameters.LatestJdkFeatureVersion }}_X64"
     displayName: 'Verify Latest JDK Install'
+    condition: eq(variables['IsLatestNonLtsJdk'], 'true')

@@ -94,7 +94,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.15.5</version>
+    <version>5.15.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -137,7 +137,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.0</version>
+    <version>1.9.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -308,7 +308,7 @@ EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
     .buildAsyncConsumerClient();
 
-// Take a specific partitionId from EventHubConsumerAsyncClient.getPartitionIds()
+// Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
 String partitionId = "0";
 EventPosition startingPosition = EventPosition.latest();
 

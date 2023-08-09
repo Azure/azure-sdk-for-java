@@ -11,45 +11,42 @@ import com.azure.resourcemanager.batch.models.IpRule;
 import com.azure.resourcemanager.batch.models.NetworkProfile;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NetworkProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NetworkProfile model =
             BinaryData
                 .fromString(
-                    "{\"accountAccess\":{\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"dkfo\"},{\"value\":\"knygjofjddeq\"}]},\"nodeManagementAccess\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"pewnw\"},{\"value\":\"eitjz\"},{\"value\":\"flusarhmof\"},{\"value\":\"qhsmyurkdtml\"}]}}")
+                    "{\"accountAccess\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"wmrvktsizntocipa\"}]},\"nodeManagementAccess\":{\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"s\"},{\"value\":\"ucmpoyfd\"},{\"value\":\"fogknygjofjdde\"}]}}")
                 .toObject(NetworkProfile.class);
-        Assertions.assertEquals(EndpointAccessDefaultAction.ALLOW, model.accountAccess().defaultAction());
-        Assertions.assertEquals("dkfo", model.accountAccess().ipRules().get(0).value());
-        Assertions.assertEquals(EndpointAccessDefaultAction.DENY, model.nodeManagementAccess().defaultAction());
-        Assertions.assertEquals("pewnw", model.nodeManagementAccess().ipRules().get(0).value());
+        Assertions.assertEquals(EndpointAccessDefaultAction.DENY, model.accountAccess().defaultAction());
+        Assertions.assertEquals("wmrvktsizntocipa", model.accountAccess().ipRules().get(0).value());
+        Assertions.assertEquals(EndpointAccessDefaultAction.ALLOW, model.nodeManagementAccess().defaultAction());
+        Assertions.assertEquals("s", model.nodeManagementAccess().ipRules().get(0).value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NetworkProfile model =
             new NetworkProfile()
                 .withAccountAccess(
                     new EndpointAccessProfile()
-                        .withDefaultAction(EndpointAccessDefaultAction.ALLOW)
-                        .withIpRules(
-                            Arrays.asList(new IpRule().withValue("dkfo"), new IpRule().withValue("knygjofjddeq"))))
+                        .withDefaultAction(EndpointAccessDefaultAction.DENY)
+                        .withIpRules(Arrays.asList(new IpRule().withValue("wmrvktsizntocipa"))))
                 .withNodeManagementAccess(
                     new EndpointAccessProfile()
-                        .withDefaultAction(EndpointAccessDefaultAction.DENY)
+                        .withDefaultAction(EndpointAccessDefaultAction.ALLOW)
                         .withIpRules(
                             Arrays
                                 .asList(
-                                    new IpRule().withValue("pewnw"),
-                                    new IpRule().withValue("eitjz"),
-                                    new IpRule().withValue("flusarhmof"),
-                                    new IpRule().withValue("qhsmyurkdtml"))));
+                                    new IpRule().withValue("s"),
+                                    new IpRule().withValue("ucmpoyfd"),
+                                    new IpRule().withValue("fogknygjofjdde"))));
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals(EndpointAccessDefaultAction.ALLOW, model.accountAccess().defaultAction());
-        Assertions.assertEquals("dkfo", model.accountAccess().ipRules().get(0).value());
-        Assertions.assertEquals(EndpointAccessDefaultAction.DENY, model.nodeManagementAccess().defaultAction());
-        Assertions.assertEquals("pewnw", model.nodeManagementAccess().ipRules().get(0).value());
+        Assertions.assertEquals(EndpointAccessDefaultAction.DENY, model.accountAccess().defaultAction());
+        Assertions.assertEquals("wmrvktsizntocipa", model.accountAccess().ipRules().get(0).value());
+        Assertions.assertEquals(EndpointAccessDefaultAction.ALLOW, model.nodeManagementAccess().defaultAction());
+        Assertions.assertEquals("s", model.nodeManagementAccess().ipRules().get(0).value());
     }
 }

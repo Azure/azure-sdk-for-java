@@ -34,14 +34,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
 
     <!-- test   -->
     <dependency>
       <groupId>uk.org.webcompere</groupId>
       <artifactId>system-stubs-jupiter</artifactId>
-      <version>2.0.1</version> <!-- {x-version-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
+      <version>2.0.2</version> <!-- {x-version-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

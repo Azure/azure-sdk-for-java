@@ -13,7 +13,7 @@ public final class NetworkInterfaceTests {
         NetworkInterface model =
             BinaryData
                 .fromString(
-                    "{\"address\":\"bskhudygoookkqfq\",\"deviceConnectionType\":\"PCI\",\"model\":\"eorfm\",\"physicalSlot\":3853479977651234225,\"portCount\":8049009295595639573,\"portSpeed\":1642372848715191425,\"vendor\":\"vnqqybaryeua\"}")
+                    "{\"address\":\"hrdgoihxumwcto\",\"deviceConnectionType\":\"PCI\",\"model\":\"luudfdlwggytsb\",\"physicalSlot\":5516945390083190100,\"portCount\":7172783376520041766,\"portSpeed\":5602007225106690396,\"vendor\":\"qfi\"}")
                 .toObject(NetworkInterface.class);
     }
 

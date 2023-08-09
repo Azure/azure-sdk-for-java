@@ -1,15 +1,33 @@
 # Release History
 
-## 12.16.0-beta.2 (Unreleased)
+## 12.17.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed a bug that would cause authentication failures when trying to rename a path object while authenticating with a sas token that contained a leading question mark.
 
 ### Other Changes
+
+## 12.17.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added `DataLakeDirectoryClient.deleteRecursively()` which allows users to delete a directory and all of its contents recursively. 
+- Added support for paginated directory delete when using AAD authentication. Note that this feature only applies to HNS storage accounts and when using token authentication.
+
+## 12.16.0 (2023-07-11)
+
+### Features Added
+- Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data
+  to it using `ParallelTransferOptions`.
+- Added support for the `2023-01-03` service version.
+- Added owner, group, and permissions properties to `PathProperties`.
+- Added encryptionContext property to `FileParallelUploadOptions`.
+
+### Bugs Fixed
+- Fixed a bug that would cause authentication failures when trying to rename a path object while authenticating with a sas token that contained a leading question mark.
 
 ## 12.15.3 (2023-06-14)
 
@@ -29,6 +47,7 @@ to it using `ParallelTransferOptions`.
 - Added support for 2023-01-03 service version.
 - Added owner, group, and permissions properties to `PathProperties`.
 - Added encryptionContext property to `FileParallelUploadOptions`.
+
 ## 12.15.2 (2023-05-23)
 
 ### Other Changes

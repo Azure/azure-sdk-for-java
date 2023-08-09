@@ -58,7 +58,6 @@ public final class VolumesResetCifsPasswordMockTests {
 
         manager
             .volumes()
-            .resetCifsPassword(
-                "s", "gdotcubiipuipwo", "onmacjekniz", "hqvcimpevfgmblr", com.azure.core.util.Context.NONE);
+            .resetCifsPassword("lcplc", "khihihlhzds", "tzbsrgnowcjhf", "mvec", com.azure.core.util.Context.NONE);
     }
 }

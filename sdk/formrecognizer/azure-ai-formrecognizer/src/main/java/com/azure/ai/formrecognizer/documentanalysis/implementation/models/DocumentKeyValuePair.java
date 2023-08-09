@@ -4,12 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object representing a form field with distinct field label (key) and field value (may be empty). */
-@Fluent
+@Immutable
 public final class DocumentKeyValuePair {
     /*
      * Field label of the key-value pair.
@@ -24,12 +24,6 @@ public final class DocumentKeyValuePair {
     private DocumentKeyValueElement value;
 
     /*
-     * Common name of the key-value pair.
-     */
-    @JsonProperty(value = "commonName")
-    private String commonName;
-
-    /*
      * Confidence of correctly extracting the key-value pair.
      */
     @JsonProperty(value = "confidence", required = true)
@@ -42,7 +36,7 @@ public final class DocumentKeyValuePair {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentKeyValuePair(
+    private DocumentKeyValuePair(
             @JsonProperty(value = "key", required = true) DocumentKeyValueElement key,
             @JsonProperty(value = "confidence", required = true) float confidence) {
         this.key = key;
@@ -65,37 +59,6 @@ public final class DocumentKeyValuePair {
      */
     public DocumentKeyValueElement getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: Field value of the key-value pair.
-     *
-     * @param value the value value to set.
-     * @return the DocumentKeyValuePair object itself.
-     */
-    public DocumentKeyValuePair setValue(DocumentKeyValueElement value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the commonName property: Common name of the key-value pair.
-     *
-     * @return the commonName value.
-     */
-    public String getCommonName() {
-        return this.commonName;
-    }
-
-    /**
-     * Set the commonName property: Common name of the key-value pair.
-     *
-     * @param commonName the commonName value to set.
-     * @return the DocumentKeyValuePair object itself.
-     */
-    public DocumentKeyValuePair setCommonName(String commonName) {
-        this.commonName = commonName;
-        return this;
     }
 
     /**

@@ -18,7 +18,7 @@ public class TrafficManagerSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageTrafficManager() throws IOException {
         if (this.skipInPlayback()) {
             // sample creates certificate

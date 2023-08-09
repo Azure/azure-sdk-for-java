@@ -132,9 +132,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,9 +158,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,9 +183,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -202,9 +196,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,9 +212,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -244,9 +234,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,9 +257,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -284,9 +270,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * List operations
-     *
-     * <p>Lists all operations.
+     * Lists all operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,9 +285,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get operation
-     *
-     * <p>Gets operation info.
+     * Gets operation info.
      *
      * @param operationId Unique operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,9 +303,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get operation
-     *
-     * <p>Gets operation info.
+     * Gets operation info.
      *
      * @param operationId Unique operation ID.
      * @param context The context to associate with this operation.
@@ -340,9 +320,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get operation
-     *
-     * <p>Gets operation info.
+     * Gets operation info.
      *
      * @param operationId Unique operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,9 +334,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get operation
-     *
-     * <p>Gets operation info.
+     * Gets operation info.
      *
      * @param operationId Unique operation ID.
      * @param context The context to associate with this operation.
@@ -373,9 +349,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get operation
-     *
-     * <p>Gets operation info.
+     * Gets operation info.
      *
      * @param operationId Unique operation ID.
      * @param context The context to associate with this operation.
@@ -392,9 +366,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get operation
-     *
-     * <p>Gets operation info.
+     * Gets operation info.
      *
      * @param operationId Unique operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -408,9 +380,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
+     * Return information about the current resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -427,9 +397,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
+     * Return information about the current resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,9 +413,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
+     * Return information about the current resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,9 +425,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
+     * Return information about the current resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -475,9 +439,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
+     * Return information about the current resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,9 +454,7 @@ public final class MiscellaneousImpl {
     }
 
     /**
-     * Get resource info
-     *
-     * <p>Return information about the current resource.
+     * Return information about the current resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -16,21 +16,21 @@ public final class StorageAppliancePatchParametersTests {
         StorageAppliancePatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"serialNumber\":\"t\"},\"tags\":{\"j\":\"xfz\",\"penuy\":\"ttvwkpqh\",\"guaucmfdjwnla\":\"bqeqqekewvnqvcd\"}}")
+                    "{\"properties\":{\"serialNumber\":\"nekhenlusfnrdtj\"},\"tags\":{\"cq\":\"r\",\"uslvyjtcvuwkasi\":\"jvidttge\"}}")
                 .toObject(StorageAppliancePatchParameters.class);
-        Assertions.assertEquals("xfz", model.tags().get("j"));
-        Assertions.assertEquals("t", model.serialNumber());
+        Assertions.assertEquals("r", model.tags().get("cq"));
+        Assertions.assertEquals("nekhenlusfnrdtj", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageAppliancePatchParameters model =
             new StorageAppliancePatchParameters()
-                .withTags(mapOf("j", "xfz", "penuy", "ttvwkpqh", "guaucmfdjwnla", "bqeqqekewvnqvcd"))
-                .withSerialNumber("t");
+                .withTags(mapOf("cq", "r", "uslvyjtcvuwkasi", "jvidttge"))
+                .withSerialNumber("nekhenlusfnrdtj");
         model = BinaryData.fromObject(model).toObject(StorageAppliancePatchParameters.class);
-        Assertions.assertEquals("xfz", model.tags().get("j"));
-        Assertions.assertEquals("t", model.serialNumber());
+        Assertions.assertEquals("r", model.tags().get("cq"));
+        Assertions.assertEquals("nekhenlusfnrdtj", model.serialNumber());
     }
 
     @SuppressWarnings("unchecked")

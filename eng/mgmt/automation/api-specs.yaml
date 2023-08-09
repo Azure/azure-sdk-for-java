@@ -47,6 +47,8 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+fist:
+  service: iotfirmwaredefense
 graphservicesprod:
   service: graphservices
 help:

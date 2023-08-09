@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The indicator of whether or not to disable IPAM allocation on the network attachment definition injected into the
- * Hybrid AKS Cluster.
+ * Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The
+ * indicator of whether or not to disable IPAM allocation on the network attachment definition injected into the Hybrid
+ * AKS Cluster.
  */
 public final class HybridAksIpamEnabled extends ExpandableStringEnum<HybridAksIpamEnabled> {
     /** Static value True for HybridAksIpamEnabled. */
