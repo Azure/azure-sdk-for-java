@@ -25,9 +25,6 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * The type Feed response diagnostics.
  */
 public class FeedResponseDiagnostics {
-
-    private static final ObjectMapper mapper = new ObjectMapper();
-    private static final SimpleFilterProvider filterProvider = new SimpleFilterProvider();
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
@@ -39,11 +36,6 @@ public class FeedResponseDiagnostics {
         if (clientSideRequestStatistics != null) {
             this.clientSideRequestStatistics.addAll(clientSideRequestStatistics);
         }
-        mapper.registerModule(new SimpleModule()
-            .addSerializer(Duration.class, ToStringSerializer.instance)
-            .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
-            .addSerializer(Instant.class, ToStringSerializer.instance))
-            .setFilterProvider(filterProvider);
     }
 
     public FeedResponseDiagnostics(FeedResponseDiagnostics toBeCloned) {
@@ -76,11 +68,11 @@ public class FeedResponseDiagnostics {
     @Override
     public String toString() {
         try {
-            return mapper.writeValueAsString(this);
+            return Utils.getDurationEnabledObjectMapper().writeValueAsString(this);
         } catch (final JsonProcessingException error) {
             LOGGER.debug("could not convert {} value to JSON due to:", this.getClass(), error);
             try {
-                return lenientFormat("{\"error\":%s}", mapper.writeValueAsString(error.toString()));
+                return lenientFormat("{\"error\":%s}", Utils.getDurationEnabledObjectMapper().writeValueAsString(error.toString()));
             } catch (final JsonProcessingException exception) {
                 return "null";
             }
