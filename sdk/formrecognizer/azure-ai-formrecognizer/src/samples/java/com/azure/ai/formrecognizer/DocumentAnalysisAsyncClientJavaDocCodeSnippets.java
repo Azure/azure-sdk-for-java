@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Code snippet for {@link DocumentAnalysisAsyncClient}
@@ -67,7 +68,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult ->
                 analyzeResult.getDocuments()
-                    .stream()
                     .forEach(document ->
                         document.getFields()
                             .forEach((key, documentField) -> {
@@ -94,7 +94,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             .subscribe(analyzeResult -> {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()
-                    .stream()
                     .forEach(document ->
                         document.getFields()
                             .forEach((key, documentField) -> {
@@ -124,7 +123,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult ->
                 analyzeResult.getDocuments()
-                    .stream()
                     .forEach(analyzedDocument ->
                         analyzedDocument.getFields()
                             .forEach((key, documentField) -> {
@@ -147,8 +145,9 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{model_id}";
         final AnalyzeDocumentOptions analyzeDocumentOptions =
-            new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")).setDocumentAnalysisFeatures(Arrays.asList(
-                DocumentAnalysisFeature.FORMULAS));
+            new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")).setDocumentAnalysisFeatures(
+                Collections.singletonList(
+                    DocumentAnalysisFeature.FORMULAS));
 
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
@@ -159,7 +158,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             .subscribe(analyzeResult -> {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()
-                    .stream()
                     .forEach(analyzedDocument ->
                         analyzedDocument.getFields()
                             .forEach((key, documentField) -> {
