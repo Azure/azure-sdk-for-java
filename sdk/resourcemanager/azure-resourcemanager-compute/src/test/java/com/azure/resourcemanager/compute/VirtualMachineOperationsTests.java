@@ -32,6 +32,7 @@ import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
@@ -1606,6 +1607,47 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertFalse(vm.isVTpmEnabled());
 
         computeManager.virtualMachines().deleteById(vm.id());
+    }
+
+    @Test
+    public void canUpdateDeleteOptions() {
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE))
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+
+        vm.update()
+            .withOsDiskDeleteOptions(DeleteOptions.DETACH)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
+            .withDataDiskDeleteOptions(1, DeleteOptions.DETACH)
+            .apply();
+
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.primaryNetworkInterfaceDeleteOptions());
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DETACH.equals(disk.deleteOptions())));
+
+        vm.update()
+            .withNetworkInterfacesDeleteOptions(DeleteOptions.DELETE)
+            .withDataDisksDeleteOptions(DeleteOptions.DELETE)
+            .apply();
+
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
     }
 
     // *********************************** helper methods ***********************************
