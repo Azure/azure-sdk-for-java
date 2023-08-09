@@ -1,6 +1,6 @@
 package com.azure.json;
 
-import com.sun.jdi.InvalidTypeException;
+import com.azure.json.InvalidJsonDataTypeException; 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -210,7 +210,7 @@ public class JsonTesting {
 
     //Section 4: Modify existing Entries
     @Test
-    public void objectSetProperty() throws InvalidTypeException {
+    public void objectSetProperty() throws InvalidJsonDataTypeException {
         JsonElement test = new JsonObject().addProperty("First", "Keyword");
         test.asObject().setProperty("First", "Replaced");
         assertEquals("\"Replaced\"", test.asObject().getProperty("First").toString());
