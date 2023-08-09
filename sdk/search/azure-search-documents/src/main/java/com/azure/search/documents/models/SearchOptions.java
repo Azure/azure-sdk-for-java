@@ -956,7 +956,7 @@ public final class SearchOptions {
      * @return the SearchRequest object itself.
      */
     public SearchOptions setVectors(List<SearchQueryVector> vectors) {
-        setVectors(vectors);
+        this.vectors = vectors;
         return this;
     }
 
