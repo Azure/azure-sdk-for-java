@@ -10,7 +10,7 @@
 ### Bugs Fixed
 
 ### Other Changes
-- Renamed `enableSupportLogging` to `enableUnsafeSupportLogging`
+- Renamed `enableSupportLogging` to `enableUnsafeSupportLogging`. This is a breaking change from 1.10.0-beta.1.
 
 ## 1.10.0-beta.1 (2023-07-24)
 
