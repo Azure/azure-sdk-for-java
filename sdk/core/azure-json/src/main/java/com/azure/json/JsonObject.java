@@ -188,7 +188,7 @@ public class JsonObject extends JsonElement {
         // argument passed.
         for(Entry<String, JsonElement> entry : properties.entrySet()) {
             // Case: found entry with matching value. Returning the key as a result.
-            if(((JsonElement)value).equals(entry.getValue())) { return entry.getKey(); }
+            if(value.equals(entry.getValue())) { return entry.getKey(); }
             // TODO: the following code may be a better substitute for equating
             // two objects:
             // if(((JsonElement)value) == entry.getValue()) { return entry.getKey(); }
