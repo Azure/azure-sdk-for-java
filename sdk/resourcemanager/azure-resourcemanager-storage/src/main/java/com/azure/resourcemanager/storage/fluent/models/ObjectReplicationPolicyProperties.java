@@ -44,6 +44,10 @@ public final class ObjectReplicationPolicyProperties {
     @JsonProperty(value = "rules")
     private List<ObjectReplicationPolicyRule> rules;
 
+    /** Creates an instance of ObjectReplicationPolicyProperties class. */
+    public ObjectReplicationPolicyProperties() {
+    }
+
     /**
      * Get the policyId property: A unique id for object replication policy.
      *

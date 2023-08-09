@@ -72,6 +72,8 @@ public class DataLakeServiceAsyncClient {
 
     private final AzureSasCredential sasToken;
 
+    private final boolean isTokenCredentialAuthenticated;
+
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      *
@@ -82,7 +84,8 @@ public class DataLakeServiceAsyncClient {
      * @param blobServiceAsyncClient The underlying {@link BlobServiceAsyncClient}
      */
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken) {
+        String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken,
+        boolean isTokenCredentialAuthenticated) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -95,6 +98,8 @@ public class DataLakeServiceAsyncClient {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
 
         this.sasToken = sasToken;
+
+        this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
     }
 
     /**
@@ -120,7 +125,7 @@ public class DataLakeServiceAsyncClient {
         }
         return new DataLakeFileSystemAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName),
-            sasToken);
+            sasToken, isTokenCredentialAuthenticated);
     }
 
     /**

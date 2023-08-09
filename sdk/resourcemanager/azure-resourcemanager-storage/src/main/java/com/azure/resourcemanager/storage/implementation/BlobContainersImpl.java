@@ -111,7 +111,8 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
         BlobContainersClient client = this.innerModel();
         return client
-            .getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
+            .getImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, eTagValue)
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()))
             .map(this::wrapImmutabilityPolicyModel);
     }
 
@@ -169,7 +170,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
         String eTagValue) {
         BlobContainersClient client = this.innerModel();
         return client
-            .extendImmutabilityPolicyAsync(
+            .extendImmutabilityPolicyWithResponseAsync(
                 resourceGroupName,
                 accountName,
                 containerName,
@@ -177,6 +178,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays)
                     .withAllowProtectedAppendWrites(allowProtectedAppendWrites))
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()))
             .map(policyInner -> new ImmutabilityPolicyImpl(policyInner, this.manager));
     }
 
