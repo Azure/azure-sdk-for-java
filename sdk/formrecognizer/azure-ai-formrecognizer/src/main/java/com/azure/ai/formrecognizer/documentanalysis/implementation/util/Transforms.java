@@ -834,7 +834,7 @@ public class Transforms {
         DocumentClassifierDetailsHelper.setClassifierId(classifierDetails, inner.getClassifierId());
         DocumentClassifierDetailsHelper.setDescription(classifierDetails, inner.getDescription());
         DocumentClassifierDetailsHelper.setDocTypes(classifierDetails, fromInnerDocTypes(inner.getDocTypes()));
-        DocumentClassifierDetailsHelper.setApiVersion(classifierDetails, inner.getApiVersion());
+        DocumentClassifierDetailsHelper.setServiceVersion(classifierDetails, inner.getApiVersion());
         DocumentClassifierDetailsHelper.setCreatedOn(classifierDetails, inner.getCreatedDateTime());
         DocumentClassifierDetailsHelper.setExpiresOn(classifierDetails, inner.getExpirationDateTime());
 

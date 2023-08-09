@@ -18,7 +18,6 @@ public final class DocumentModelDetailsHelper {
     private DocumentModelDetailsHelper() {
     }
 
-
     /**
      * Type defining the methods to set the non-public properties of an {@link DocumentModelDetails} instance.
      */

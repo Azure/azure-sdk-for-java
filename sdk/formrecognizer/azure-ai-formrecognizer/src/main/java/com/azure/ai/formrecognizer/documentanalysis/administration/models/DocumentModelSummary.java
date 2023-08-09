@@ -114,9 +114,9 @@ public final class DocumentModelSummary {
     }
 
     /**
-     * Get the API version used to create this document classifier.
+     * Get the Service version used to create this document classifier.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
     public String getServiceVersion() {
         return this.serviceVersion;
@@ -125,7 +125,7 @@ public final class DocumentModelSummary {
     /**
      * Set the API version used to create this document classifier.
      *
-     * @param serviceVersion the apiVersion value to set.
+     * @param serviceVersion the service version value to set.
      */
     void setServiceVersion(String serviceVersion) {
         this.serviceVersion = serviceVersion;

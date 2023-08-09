@@ -146,9 +146,9 @@ public class OperationDetails {
         this.tags = tags;
     }
     /**
-     * Get the API version used to create this document classifier.
+     * Get the Service version used to create this document classifier.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
     public String getServiceVersion() {
         return this.serviceVersion;
@@ -157,7 +157,7 @@ public class OperationDetails {
     /**
      * Set the API version used to create this document classifier.
      *
-     * @param serviceVersion the apiVersion value to set.
+     * @param serviceVersion the service version value to set.
      */
     void setServiceVersion(String serviceVersion) {
         this.serviceVersion = serviceVersion;
@@ -202,8 +202,8 @@ public class OperationDetails {
             }
 
             @Override
-            public void setServiceVersion(OperationDetails operationDetails, String apiVersion) {
-                operationDetails.setServiceVersion(apiVersion);
+            public void setServiceVersion(OperationDetails operationDetails, String serviceVersion) {
+                operationDetails.setServiceVersion(serviceVersion);
             }
         });
     }
