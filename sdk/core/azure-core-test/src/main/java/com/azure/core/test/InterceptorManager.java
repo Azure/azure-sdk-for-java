@@ -331,13 +331,9 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
-                Queue<String> variables = testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(),
-                    testClassPath);
-
-                while (variables.size() > 1) {
-                    proxyVariableQueue.add(variables.poll());
-                }
-                xRecordingFileLocation = variables.poll();
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(),
+                    testClassPath));
+                xRecordingFileLocation = testProxyPlaybackClient.getRecordingFileLocation();
             }
             return testProxyPlaybackClient;
         } else {

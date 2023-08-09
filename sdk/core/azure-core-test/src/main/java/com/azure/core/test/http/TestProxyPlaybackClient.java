@@ -49,6 +49,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     private final HttpClient client;
     private final URL proxyUrl;
     private String xRecordingId;
+    private String xRecordingFileLocation;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
@@ -94,7 +95,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-            String xRecordingFileLocation
+            xRecordingFileLocation
                 = new String(Base64.getUrlDecoder().decode(
                     response.getHeaders().get(X_RECORDING_FILE_LOCATION).getValue()), StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
@@ -120,7 +121,6 @@ public class TestProxyPlaybackClient implements HttpClient {
                 String value = stringStringEntry.getValue();
                 strings.add(value);
             }
-            strings.addLast(xRecordingFileLocation);
             return strings;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -220,5 +220,13 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     private boolean isPlayingBack() {
         return xRecordingId != null;
+    }
+
+    /**
+     * Get the recording file location in assets repo.
+     * @return the assets repo location of the recording file.
+     */
+    public String getRecordingFileLocation() {
+        return xRecordingFileLocation;
     }
 }
