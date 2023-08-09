@@ -5,6 +5,7 @@ package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 
@@ -122,7 +123,12 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
                 "'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
         }
 
-        final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, 100);
+        final SerializerAdapter serializerAdapterToUse = serializerAdapter != null
+            ? serializerAdapter
+            : JacksonAdapter.createDefaultSerializerAdapter();
+
+        final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, 100,
+            serializerAdapterToUse);
 
         return new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient, jsonSchemaGenerator, options);
     }
