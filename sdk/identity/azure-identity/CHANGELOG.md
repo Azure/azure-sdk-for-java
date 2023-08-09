@@ -1,16 +1,13 @@
 # Release History
 
-## 1.10.0-beta.2 (Unreleased)
+## 1.10.0 (2023-08-09)
 
 ### Features Added
 - Added `BrowserCustomizationOptions` to `InteractiveBrowserCredentialBuilder` to allow for customization of the browser window.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 - Renamed `enableSupportLogging` to `enableUnsafeSupportLogging`. This is a breaking change from 1.10.0-beta.1.
+- `DefaultAzureCredential` will try all developer credentials. Previously if a developer credential attempted to acquire a token and failed, it would stop the chain. Deployed credentials are unaffected.
 
 ## 1.10.0-beta.1 (2023-07-24)
 
