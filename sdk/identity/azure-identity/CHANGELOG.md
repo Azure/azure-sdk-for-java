@@ -3,6 +3,7 @@
 ## 1.10.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `BrowserCustomizationOptions` to `InteractiveBrowserCredentialBuilder` to allow for customization of the browser window.
 
 ### Breaking Changes
 

@@ -23,7 +23,8 @@ public class BrowserCustomizationOptions {
     }
 
     /**
-     * Configure the property to set error message which the browser will show to the user upon failed authentication.
+     * Configure the property to set error message which the browser will show to the user upon failed to acquire an
+     * access token.
      * You can use a string format e.g.
      * "An error has occurred: {0} details: {1}.", the details will be populated by the library.
      *
