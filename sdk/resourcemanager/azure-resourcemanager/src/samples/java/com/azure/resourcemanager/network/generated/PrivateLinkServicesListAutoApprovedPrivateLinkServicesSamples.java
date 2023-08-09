@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PrivateLinkServices ListAutoApprovedPrivateLinkServices. */
 public final class PrivateLinkServicesListAutoApprovedPrivateLinkServicesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/AutoApprovedPrivateLinkServicesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/AutoApprovedPrivateLinkServicesGet.json
      */
     /**
      * Sample code: Get list of private link service id that can be linked to a private end point with auto approved.

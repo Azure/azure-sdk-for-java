@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyFilter;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for ObjectReplicationPoliciesOperation CreateOrUpdate. */
 public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountCreateObjectReplicationPolicyOnSource.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountCreateObjectReplicationPolicyOnSource.json
      */
     /**
      * Sample code: StorageAccountCreateObjectReplicationPolicyOnSource.
@@ -45,11 +44,11 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                                         new ObjectReplicationPolicyFilter()
                                             .withPrefixMatch(Arrays.asList("blobA", "blobB"))
                                             .withMinCreationTime("2020-02-19T16:05:00Z")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
      */
     /**
      * Sample code: StorageAccountUpdateObjectReplicationPolicyOnDestination.
@@ -83,11 +82,11 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                                 new ObjectReplicationPolicyRule()
                                     .withSourceContainer("scont179")
                                     .withDestinationContainer("dcont179"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountCreateObjectReplicationPolicyOnDestination.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountCreateObjectReplicationPolicyOnDestination.json
      */
     /**
      * Sample code: StorageAccountCreateObjectReplicationPolicyOnDestination.
@@ -117,11 +116,11 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                                     .withFilters(
                                         new ObjectReplicationPolicyFilter()
                                             .withPrefixMatch(Arrays.asList("blobA", "blobB"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdateObjectReplicationPolicyOnSource.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateObjectReplicationPolicyOnSource.json
      */
     /**
      * Sample code: StorageAccountUpdateObjectReplicationPolicyOnSource.
@@ -156,6 +155,6 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
                                     .withRuleId("cfbb4bc2-8b60-429f-b05a-d1e0942b33b2")
                                     .withSourceContainer("scont179")
                                     .withDestinationContainer("dcont179"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

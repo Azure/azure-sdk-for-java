@@ -27,6 +27,10 @@ public final class FileShareInner extends AzureEntityResource {
     @JsonProperty(value = "properties")
     private FileShareProperties innerFileShareProperties;
 
+    /** Creates an instance of FileShareInner class. */
+    public FileShareInner() {
+    }
+
     /**
      * Get the innerFileShareProperties property: Properties of the file share.
      *

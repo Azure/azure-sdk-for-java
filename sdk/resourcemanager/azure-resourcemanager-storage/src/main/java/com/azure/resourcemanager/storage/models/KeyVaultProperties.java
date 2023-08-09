@@ -48,6 +48,10 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "currentVersionedKeyExpirationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime currentVersionedKeyExpirationTimestamp;
 
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
+
     /**
      * Get the keyName property: The name of KeyVault key.
      *

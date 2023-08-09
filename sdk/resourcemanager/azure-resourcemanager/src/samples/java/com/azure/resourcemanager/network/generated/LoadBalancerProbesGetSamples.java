@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for LoadBalancerProbes Get. */
 public final class LoadBalancerProbesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/LoadBalancerProbeGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/LoadBalancerProbeGet.json
      */
     /**
      * Sample code: LoadBalancerProbeGet.

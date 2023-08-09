@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for NetworkWatchers GetAzureReachabilityReport. */
 public final class NetworkWatchersGetAzureReachabilityReportSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherAzureReachabilityReportGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkWatcherAzureReachabilityReportGet.json
      */
     /**
      * Sample code: Get Azure Reachability Report.

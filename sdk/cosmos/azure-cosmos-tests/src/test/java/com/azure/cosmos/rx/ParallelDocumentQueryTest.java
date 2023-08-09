@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -469,7 +470,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
-        client = getClientBuilder().buildAsyncClient();
+        client = getClientBuilder().consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

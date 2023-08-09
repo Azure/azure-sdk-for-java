@@ -9,6 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Collection;
+import java.util.List;
 
 /** A client-side representation of an HTTP load balancing rule. */
 @Fluent()
@@ -27,11 +28,25 @@ public interface LoadBalancingRule
     /** @return the number of minutes before an inactive connection is closed */
     int idleTimeoutInMinutes();
 
-    /** @return the backend associated with the load balancing rule */
+    /**
+     * Gets the backend associated with the load balancing rule.
+     * <p>
+     * If there are multiple backends associated with the rule, this API only returns the first backend.
+     * Use {@link #backends()} for the case of multiple backends associated with the rule.
+     *
+     * @return the backend associated with the load balancing rule
+     */
     LoadBalancerBackend backend();
 
     /** @return the probe associated with the load balancing rule */
     LoadBalancerProbe probe();
+
+    /**
+     * Gets the list of backends associated with the load balancing rule.
+     *
+     * @return the list of backends associated with the load balancing rule
+     */
+    List<LoadBalancerBackend> backends();
 
     /** Grouping of load balancing rule definition stages. */
     interface DefinitionStages {

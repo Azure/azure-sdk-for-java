@@ -797,7 +797,8 @@ public class IdentityClient extends IdentityClientBase {
         } catch (URISyntaxException e) {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
-        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = buildInteractiveRequestParameters(request, loginHint, redirectUri);
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
+            buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
         SynchronizedAccessor<PublicClientApplication> publicClient = getPublicClientInstance(request);
 

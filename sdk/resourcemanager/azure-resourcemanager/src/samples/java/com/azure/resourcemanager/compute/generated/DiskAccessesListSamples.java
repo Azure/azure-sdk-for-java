@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for DiskAccesses List. */
 public final class DiskAccessesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccess_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskAccessExamples/DiskAccess_ListBySubscription.json
      */
     /**
      * Sample code: List all disk access resources in a subscription.

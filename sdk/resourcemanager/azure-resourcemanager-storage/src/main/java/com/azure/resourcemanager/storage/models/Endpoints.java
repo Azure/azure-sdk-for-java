@@ -58,6 +58,10 @@ public final class Endpoints {
     @JsonProperty(value = "internetEndpoints")
     private StorageAccountInternetEndpoints internetEndpoints;
 
+    /** Creates an instance of Endpoints class. */
+    public Endpoints() {
+    }
+
     /**
      * Get the blob property: Gets the blob endpoint.
      *
