@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
  * Package-private class that holds additional options when creating serializer.
@@ -13,6 +14,7 @@ class SerializerOptions {
     private final boolean autoRegisterSchemas;
     private final int maxCacheSize;
     private final String schemaGroup;
+    private final SerializerAdapter serializerAdapter;
 
     /**
      * Creates a new instance.
@@ -21,10 +23,21 @@ class SerializerOptions {
      * @param autoRegisterSchemas {@code true} to register schema if it does not exist, {@code false} otherwise.
      * @param maxCacheSize The maximum cache size for the serializer.
      */
-    SerializerOptions(String schemaGroup, boolean autoRegisterSchemas, int maxCacheSize) {
+    SerializerOptions(String schemaGroup, boolean autoRegisterSchemas, int maxCacheSize,
+        SerializerAdapter serializerAdapter) {
         this.schemaGroup = schemaGroup;
         this.autoRegisterSchemas = autoRegisterSchemas;
         this.maxCacheSize = maxCacheSize;
+        this.serializerAdapter = serializerAdapter;
+    }
+
+    /**
+     * Gets whether to auto-register schemas.
+     *
+     * @return {@code true} to register schema if it does not exist; {@code false} otherwise.
+     */
+    public boolean autoRegisterSchemas() {
+        return autoRegisterSchemas;
     }
 
     /**
@@ -43,5 +56,14 @@ class SerializerOptions {
      */
     String getSchemaGroup() {
         return schemaGroup;
+    }
+
+    /**
+     * Gets the serializer used for serialization.
+     *
+     * @return The serializer.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return serializerAdapter;
     }
 }
