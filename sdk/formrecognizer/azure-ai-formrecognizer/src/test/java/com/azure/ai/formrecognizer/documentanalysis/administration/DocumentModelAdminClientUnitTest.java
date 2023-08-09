@@ -29,7 +29,7 @@ public class DocumentModelAdminClientUnitTest {
     private static DocumentAnalysisClient analysisClient;
     private static DocumentAnalysisAsyncClient analysisAsyncClient;
     private static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or"
-        + "empty";
+        + " empty";
 
     @BeforeAll
     protected static void beforeTest() {
