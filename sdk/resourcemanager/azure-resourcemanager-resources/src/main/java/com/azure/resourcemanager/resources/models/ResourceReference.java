@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource Id model. */
 @Immutable
-public final class ResourceReference {
+public class ResourceReference {
     /*
-     * The fully qualified resource Id.
+     * The resourceId of a resource managed by the deployment stack.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -21,7 +21,7 @@ public final class ResourceReference {
     }
 
     /**
-     * Get the id property: The fully qualified resource Id.
+     * Get the id property: The resourceId of a resource managed by the deployment stack.
      *
      * @return the id value.
      */
