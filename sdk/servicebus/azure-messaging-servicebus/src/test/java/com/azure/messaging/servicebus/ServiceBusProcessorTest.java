@@ -12,7 +12,6 @@ import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
-import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions.ProcessorModeV2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -88,7 +87,7 @@ public class ServiceBusProcessorTest {
         final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
             .setMaxConcurrentCalls(1);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
@@ -167,7 +166,7 @@ public class ServiceBusProcessorTest {
         final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
             .setMaxConcurrentCalls(1);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
@@ -251,7 +250,7 @@ public class ServiceBusProcessorTest {
         final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
             .setMaxConcurrentCalls(1);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
@@ -311,7 +310,7 @@ public class ServiceBusProcessorTest {
         final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
             .setMaxConcurrentCalls(1);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         if (isV2) {
             when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
@@ -379,7 +378,7 @@ public class ServiceBusProcessorTest {
             .setMaxConcurrentCalls(1)
             .setDisableAutoComplete(true);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         if (isV2) {
             when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
@@ -459,7 +458,7 @@ public class ServiceBusProcessorTest {
         final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
             .setMaxConcurrentCalls(1);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
@@ -507,7 +506,7 @@ public class ServiceBusProcessorTest {
         final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
             .setMaxConcurrentCalls(1);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -558,7 +557,7 @@ public class ServiceBusProcessorTest {
         final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
             .setMaxConcurrentCalls(1);
         if (isV2) {
-            options.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            options.setV2(true);
         }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
