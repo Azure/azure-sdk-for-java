@@ -75,7 +75,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  * <p>Once the Mono from {@link SessionsMessagePump#begin} terminates, to restart the pumping a new {@link SessionsMessagePump}
  * instance should be obtained.</p>
  *
- * <p>The abstraction {@link SessionProcessor} takes care of managing a {@link SessionsMessagePump} and obtaining the next
+ * <p>The abstraction {@link ServiceBusProcessor} takes care of managing a {@link SessionsMessagePump} and obtaining the next
  * SessionsMessagePump when current one terminates.</p>
  *
  * <p>The SessionsMessagePump termination flow – there are 2 cases leading to SessionsMessagePump termination</p>
