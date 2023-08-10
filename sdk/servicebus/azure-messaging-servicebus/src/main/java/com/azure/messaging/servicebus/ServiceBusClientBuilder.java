@@ -1707,7 +1707,7 @@ public final class ServiceBusClientBuilder implements
         public ServiceBusProcessorClient buildProcessorClient() {
             final boolean isSessionProcessorOnV2 = v2StackSupport.isSessionProcessorAsyncReceiveEnabled(configuration);
             if (isSessionProcessorOnV2) {
-                processorClientOptions.setProcessorModeV2(ProcessorModeV2.SESSION);
+                processorClientOptions.setV2(true);
             }
             return new ServiceBusProcessorClient(sessionReceiverClientBuilder,
                 sessionReceiverClientBuilder.queueName, sessionReceiverClientBuilder.topicName,
@@ -2358,9 +2358,9 @@ public final class ServiceBusClientBuilder implements
          *     callbacks are not set.
          */
         public ServiceBusProcessorClient buildProcessorClient() {
-            final boolean nonSessionProcessorV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
-            if (nonSessionProcessorV2) {
-                processorClientOptions.setProcessorModeV2(ProcessorModeV2.NON_SESSION);
+            final boolean isNonSessionProcessorV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
+            if (isNonSessionProcessorV2) {
+                processorClientOptions.setV2(true);
                 validateReceiverClientBuilder();
             }
             // Build the Processor Client for Non-session receiving.
@@ -2371,8 +2371,8 @@ public final class ServiceBusClientBuilder implements
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }
 
-        // In V1, the Processor Constructor builds the ServiceBusReceiverAsyncClient eagerly. In V2 Processor, the client
-        // will be built lazily, i.e., when the application calls Processor::start() API. This is a helper method for
+        // In V1, the ServiceBusProcessorClient Constructor builds the ServiceBusReceiverAsyncClient eagerly. In V2 Processor,
+        // the client will be built lazily, i.e., when the application calls start() API. This is a helper method for
         // V2 Processor build time input validations.
         private void validateReceiverClientBuilder() {
             final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;
